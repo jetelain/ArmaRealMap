@@ -5,18 +5,17 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Xsl;
+using System.Text.Json;
 using CoordinateSharp;
-using lambertcs;
 using NetTopologySuite.Geometries;
 using OsmSharp;
 using OsmSharp.Complete;
+using OsmSharp.Db;
+using OsmSharp.Db.Impl;
 using OsmSharp.Geo;
 using OsmSharp.Streams;
+using OsmSharp.Tags;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.ColorSpaces;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -25,16 +24,59 @@ using SRTM.Sources.NASA;
 
 namespace ArmaRealMap
 {
+    class Category
+    {
+        internal readonly Color Color;
+        internal readonly int Priority;
+        public Category(Color color, int priority)
+        {
+            Color = color;
+            Priority = priority;
+        }
+
+        internal static Category Water = new Category(Color.Blue, 1);
+        internal static Category WetLand = new Category(Color.LightBlue, 2);
+        internal static Category Forest = new Category(Color.Green, 3);
+        internal static Category Grass = new Category(Color.YellowGreen, 4);
+        internal static Category FarmLand = new Category(Color.Yellow, 5);
+        internal static Category Sand = new Category(Color.SandyBrown, 6);
+        internal static Category Rocks = new Category(Color.DarkGray, 7);
+        internal static Category Concrete = new Category(Color.Gray, 8);
+
+        internal static Category Building = new Category(Color.Black, 0);
+    }
+
+    class CategorizedGeometry
+    {
+        internal readonly Category Category;
+        internal readonly OsmGeo OsmGeo;
+        internal readonly Geometry Geometry;
+
+        public CategorizedGeometry(Category category, OsmGeo osmGeo, Geometry geometry)
+        {
+            this.Category = category;
+            this.OsmGeo = osmGeo;
+            this.Geometry = geometry;
+        }
+    }
+
     class Program
     {
         private static readonly EagerLoad eagerUTM = new EagerLoad(false) { UTM_MGRS = true };
 
         static void Main(string[] args)
         {
+            var config = JsonSerializer.Deserialize<Config>(File.ReadAllText("config.json"));
+
+            Trace.Listeners.Clear();
+            Trace.Listeners.Add(new TextWriterTraceListener(@"osm.log"));
+            Trace.WriteLine("----------------------------------------------------------------------------------------------------");
+
             var size = 4096;
             var cellSize = 5;
 
-            var startPointMGRS = new MilitaryGridReferenceSystem("32T", "LT", 23000, 70800);
+            //var startPointMGRS = new MilitaryGridReferenceSystem("32T", "LT", 23000, 70800);
+            var startPointMGRS = new MilitaryGridReferenceSystem(config.BottomLeft.GridZone, config.BottomLeft.D, config.BottomLeft.E, config.BottomLeft.N);
 
             var area = GetArea(startPointMGRS, size, cellSize);
 
@@ -42,10 +84,13 @@ namespace ArmaRealMap
 
             //BuildElevationGrid(area);
 
-            BuildLand(area);
+            BuildLand(config, area);
+
+            Trace.WriteLine("----------------------------------------------------------------------------------------------------");
+            Trace.Flush();
         }
 
-        private static void BuildLand(AreaInfos area)
+        private static void BuildLand(Config config,AreaInfos area)
         {
             var startPointUTM = area.StartPointUTM;
 
@@ -54,128 +99,191 @@ namespace ArmaRealMap
             var right = (float)Math.Max(area.SouthEast.Longitude.ToDouble(), area.NorthEast.Longitude.ToDouble());
             var bottom = (float)Math.Min(area.SouthEast.Latitude.ToDouble(), area.SouthWest.Latitude.ToDouble());
 
-            using (var fileStream = File.OpenRead(@"E:\Carto\area.osm.pbf"))
+            using (var fileStream = File.OpenRead(config.OSM))
             {
                 var source = new PBFOsmStreamSource(fileStream);
 
+                var db = new SnapshotDb(new MemorySnapshotDb(source));
 
-                var filtered = source;//.FilterBox(left,top,right,bottom, true);
+                var filtered = source.FilterBox(left,top,right,bottom, true);
 
-                using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize))
+                var toRender = new List<CategorizedGeometry>();
+
+                var interpret = new DefaultFeatureInterpreter2();
+                var list = filtered.Where(osmGeo =>
+                (osmGeo.Type == OsmSharp.OsmGeoType.Way || osmGeo.Type == OsmSharp.OsmGeoType.Relation)
+                && osmGeo.Tags != null/*
+                && interpret.IsPotentiallyArea(osmGeo.Tags)*/).ToList();
+
+                foreach (OsmGeo osmGeo in list)
                 {
-                    var nodes = filtered.Where(n => n.Type == OsmSharp.OsmGeoType.Node).Cast<Node>().ToDictionary(n => n.Id, n => n);
-                    var ways = filtered.Where(n => n.Type == OsmSharp.OsmGeoType.Way).Cast<Way>().ToDictionary(n => n.Id, n => n);
-
-                    var forestList = filtered.Where(osmGeo => osmGeo.Type == OsmSharp.OsmGeoType.Way && osmGeo.Tags != null && osmGeo.Tags.ContainsKey("landuse")).ToList();
-                    var forestPolyList = filtered.Where(osmGeo => osmGeo.Type == OsmSharp.OsmGeoType.Relation && osmGeo.Tags != null && osmGeo.Tags.ContainsKey("landuse")).ToList();
-
-                    foreach (Relation land in forestPolyList)
+                    var category = GetCategory(osmGeo.Tags, interpret);
+                    if (category != null)
                     {
-                        var landuse = GetColor(land.Tags["landuse"]);
-
-                        if (landuse != null)
+                        var complete = osmGeo.CreateComplete(db);
+                        var count = 0;
+                        foreach (var feature in interpret.Interpret(complete))
                         {
-                            var points = ProcessPoly(startPointUTM, img, nodes, ways, land);
-                            if (points.Any())
-                            {
-                                img.Mutate(p => p.FillPolygon(new SolidBrush(landuse.Value), points.ToArray()));
-                            }
+                            toRender.Add(new CategorizedGeometry(category, osmGeo, feature.Geometry));
+                            count++;
+                        }
+                        if (count == 0)
+                        {
+                           
                         }
                     }
-                    foreach (Way land in forestList)
-                    {
-                        var landuse = GetColor(land.Tags["landuse"]);
-                        if (landuse != null)
-                        {
-                            var points = ToMapPoints(startPointUTM, img, nodes, land);
-                            img.Mutate(p => p.FillPolygon(new SolidBrush(landuse.Value), points));
-                        }
-                    }
+                }
 
+                var buildings = toRender.Count(b => b.Category == Category.Building);
+                var shapes = toRender.Count(b => b.Category != Category.Building);
+
+                using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, Color.LightGreen))
+                {
+                    var done = 0;
+                    foreach (var item in toRender.Where(b => b.Category != Category.Building).OrderByDescending(e => e.Category.Priority))
+                    {
+                        if ( done % 100 == 0)
+                        {
+                            Console.WriteLine($"Drawing ... {Math.Round(done * 100.0 / shapes, 2)}% done");
+                        }
+                        DrawGeometry(startPointUTM, img, new SolidBrush(item.Category.Color), item.Geometry);
+                        done++;
+                    }
                     img.Save("osm.png");
                 }
             }
         }
 
-        private static Color? GetColor(string landuse)
+        private static string Get(TagsCollectionBase tags, string key)
         {
-            switch (landuse)
-            { // TODO: les zones peuvent avoir plusieurs landuse, il faut faire plusieurs passes pour prioriser
-                case "forest": return Color.Green;
-                case "grass": return Color.YellowGreen;
-                case "farmland": return Color.Yellow;
-                case "farmyard": return Color.Yellow;
-                case "vineyard": return Color.Yellow;
-                case "orchard": return Color.Yellow;
-                case "meadow": return Color.Yellow;
-                case "industrial": return Color.Gray;
-                case "residential": return Color.Gray;
-                case "cemetery": return Color.Gray;
-                case "retail": return Color.Gray;
+            string value;
+            if (tags.TryGetValue(key, out value))
+            {
+                return value;
             }
-            Console.WriteLine(landuse);
             return null;
         }
 
-        private static List<PointF> ProcessPoly(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, Dictionary<long?, Node> nodes, Dictionary<long?, Way> ways, Relation forest)
+        private static void DrawGeometry(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, IBrush solidBrush, Geometry geometry)
         {
-            List<PointF> points = new List<PointF>();
-
-
-            var currentOuter = new List<Node>();
-            var currentInner = new List<Node>();
-            var inners = new List<List<Node>>();
-
-            foreach (var member in forest.Members)
+            if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
             {
-                if (member.Role == "outer")
+                foreach (var geo in ((GeometryCollection)geometry).Geometries)
                 {
-                    if (currentOuter.Count > 0 && currentOuter.First() == currentOuter.Last())
-                    {
-                        FlushOuter(startPointUTM, img, points, currentOuter, currentInner, inners);
-                    }
-                    currentOuter.AddRange(ways[member.Id].Nodes.Select(id => nodes[id]));
-                }
-                else if (member.Role == "inner")
-                {
-                    if (currentInner.Count > 0 && currentInner.First() == currentInner.Last())
-                    {
-                        inners.Add(currentInner.ToList());
-                        currentInner.Clear();
-                    }
-                    currentInner.AddRange(ways[member.Id].Nodes.Select(id => nodes[id]));
+                    DrawGeometry(startPointUTM, img, solidBrush, geo);
                 }
             }
+            else if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
+            {
+                var poly = (Polygon)geometry;
+                // TODO : holes
+                var points = ToMapPoints(startPointUTM, img, poly.Shell.Coordinates).ToArray();
+                try
+                {
+                    img.Mutate(p => p.FillPolygon(solidBrush, points));
+                }
+                catch
+                {
 
-            FlushOuter(startPointUTM, img, points, currentOuter, currentInner, inners);
-            return points;
+                }
+            }
+            else if (geometry.OgcGeometryType == OgcGeometryType.LineString)
+            {
+                var line = (LineString)geometry;
+                var points = ToMapPoints(startPointUTM, img, line.Coordinates).ToArray();
+                try
+                {
+                    if (line.IsClosed)
+                    {
+                        img.Mutate(p => p.FillPolygon(solidBrush, points));
+                    }
+                    else
+                    {
+                        img.Mutate(p => p.DrawLines(solidBrush, 6.0f, points));
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+            else
+            {
+                Console.WriteLine(geometry.OgcGeometryType);
+            }
         }
 
-        private static void FlushOuter(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, List<PointF> points, List<Node> currentOuter, List<Node> currentInner, List<List<Node>> inners)
-        {
-            if (currentInner.Count > 0)
-            {
-                inners.Add(currentInner.ToList());
-                currentInner.Clear();
-            }
-            points.AddRange(ToMapPoints(startPointUTM, img, currentOuter));
 
-            foreach (var inner in inners)
+
+        private static Category GetCategory(TagsCollectionBase tags, FeatureInterpreter interpreter)
+        {
+            if ( tags.ContainsKey("water") || (tags.ContainsKey("waterway") && !tags.IsFalse("waterway")))
             {
-                if (points.Any())
-                {
-                    var loopBack = points.Last();
-                    points.AddRange(ToMapPoints(startPointUTM, img, inner));
-                    points.Add(loopBack);
-                }
-                else
-                {
-                    points.AddRange(ToMapPoints(startPointUTM, img, inner));
-                }
+                return Category.Water;
             }
-            
-            inners.Clear();
-            currentOuter.Clear();
+            if (tags.ContainsKey("building") && !tags.IsFalse("building"))
+            {
+                return Category.Building;
+            }
+
+            if (Get(tags, "type") == "boundary")
+            {
+                return null;
+            }
+
+            switch (Get(tags, "surface"))
+            {
+                case "grass": return Category.Grass;
+                case "sand": return Category.Sand;
+                case "concrete": return Category.Concrete;
+            }
+
+            switch (Get(tags, "landuse"))
+            { 
+                case "forest": return Category.Forest;
+                case "grass": return Category.Grass;
+                case "farmland": return Category.FarmLand;
+                case "farmyard": return Category.FarmLand;
+                case "vineyard": return Category.FarmLand;
+                case "orchard": return Category.FarmLand;
+                case "meadow": return Category.FarmLand;
+                case "industrial": return Category.Concrete;
+                case "residential": return Category.Concrete;
+                case "cemetery": return Category.Concrete;
+                case "railway": return Category.Concrete;
+                case "retail": return Category.Concrete;
+
+                case "basin": return Category.Water;
+                case "reservoir": return Category.Water;
+                case "allotments": return Category.Grass;
+                //case "military": return Color.DarkRed;
+            }
+
+            switch (Get(tags, "natural"))
+            { 
+                case "wood": return Category.Forest;
+                case "water": return Category.Water;
+                case "grass": return Category.Grass;
+                case "heath": return Category.Grass;
+                case "grassland": return Category.Grass;
+                case "scrub": return Category.Grass;
+                case "wetland": return Category.WetLand;
+                case "tree_row": return Category.Forest;
+                case "scree": return Category.Sand;
+                case "sand": return Category.Sand;
+                case "beach": return Category.Sand;
+            }
+
+
+            if (interpreter.IsPotentiallyArea(tags))
+            {
+                tags.RemoveKey("source");
+                tags.RemoveKey("name");
+                tags.RemoveKey("alt_name");
+                Trace.WriteLine(tags);
+                //Console.WriteLine(tags);
+            }
+            return null;
         }
 
         private static PointF[] ToMapPoints(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, Dictionary<long?, Node> nodes, Way way)
@@ -188,6 +296,17 @@ namespace ArmaRealMap
                 .Select(n => new CoordinateSharp.Coordinate(n.Latitude.Value, n.Longitude.Value, eagerUTM).UTM)
                 .Select(u => new PointF((float)(u.Easting - startPointUTM.Easting), (float)img.Height - (float)(u.Northing - startPointUTM.Northing)));
         }
+        private static IEnumerable<PointF> ToMapPoints(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
+        {
+            return nodes
+                .Select(n => new CoordinateSharp.Coordinate(n.Y, n.X, eagerUTM).UTM)
+                .Select(u => new PointF(
+                    (float)(u.Easting - startPointUTM.Easting),
+                    (float)img.Height - (float)(u.Northing - startPointUTM.Northing) 
+                ));
+        }
+        
+
 
         private static void BuildImage( AreaInfos area)
         {
@@ -224,10 +343,10 @@ namespace ArmaRealMap
 
         }
 
-        private static void BuildElevationGrid(AreaInfos area)
+        private static void BuildElevationGrid(ConfigSRTM configSRTM, AreaInfos area)
         {
-            var credentials = new NetworkCredential("", "");
-            var srtmData = new SRTMData(@"E:\Carto\SRTMv3", new NASASource(credentials));
+            var credentials = new NetworkCredential(configSRTM.Login, configSRTM.Password);
+            var srtmData = new SRTMData(configSRTM.Cache, new NASASource(credentials));
             var elevationMatrix = new double[area.Size, area.Size];
             var startPointUTM = area.StartPointUTM;
             var sw = Stopwatch.StartNew();
@@ -274,7 +393,7 @@ namespace ArmaRealMap
 
             using(var writer = new StreamWriter(new FileStream("elevation.asc", FileMode.Create, FileAccess.Write)))
             {
-                writer.WriteLine($"nrows         {area.Size}");
+                writer.WriteLine($"ncols         {area.Size}");
                 writer.WriteLine($"nrows         {area.Size}");
                 writer.WriteLine($"xllcorner     {startPointUTM.Easting:0}");
                 writer.WriteLine($"yllcorner     {startPointUTM.Northing:0}");
