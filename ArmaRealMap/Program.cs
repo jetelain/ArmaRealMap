@@ -76,7 +76,8 @@ namespace ArmaRealMap
 
                 foreach(var building in toRender.Where(b => b.Category == Category.Building))
                 {
-                    var box = ComputeBox(ToSimplePoints(startPointUTM, area.Height, building.Geometry.Coordinates).ToArray());
+                    var box1 = ComputeBox(ToPixelsPoints(startPointUTM, area.Height, building.Geometry.Coordinates).ToArray());
+                    var box2 = ComputeBox(ToTerrainBuilderPoints(startPointUTM, building.Geometry.Coordinates).ToArray());
                 }
 
                 //DrawShapes(area, startPointUTM, toRender);
@@ -143,8 +144,19 @@ namespace ArmaRealMap
                     cw = (maxx - minx);
                     ch = (maxy - miny);
                     ca = theta * 180.0 / Math.PI;
-                    cx = ((maxx * Math.Cos(-theta)) + (miny * Math.Sin(-theta)) + ax) - ((cw / 2 * Math.Cos(theta)) - (ch / 2 * Math.Sin(theta)));
-                    cy = ((miny * Math.Cos(-theta)) - (maxx * Math.Sin(-theta)) + ay) - ((cw / 2 * Math.Sin(theta)) + (ch / 2 * Math.Cos(theta)));
+                    cx = ((minx + maxx) * Math.Cos(-theta) / 2) + ((miny + maxy) * Math.Sin(-theta) / 2) + ax;
+                    cy = ((miny + maxy) * Math.Cos(-theta) / 2) - ((minx + maxx) * Math.Sin(-theta) / 2) + ay;
+
+                    //var c1xp = (minx * Math.Cos(-theta)) + (miny * Math.Sin(-theta)) + ax;
+                    //var c1yp = (miny * Math.Cos(-theta)) - (minx * Math.Sin(-theta)) + ay;
+                    //var c2xp = (maxx * Math.Cos(-theta)) + (miny * Math.Sin(-theta)) + ax;
+                    //var c2yp = (miny * Math.Cos(-theta)) - (maxx * Math.Sin(-theta)) + ay;
+                    //var c3xp = (maxx * Math.Cos(-theta)) + (maxy * Math.Sin(-theta)) + ax;
+                    //var c3yp = (maxy * Math.Cos(-theta)) - (maxx * Math.Sin(-theta)) + ay;
+                    //var c4xp = (minx * Math.Cos(-theta)) + (maxy * Math.Sin(-theta)) + ax;
+                    //var c4yp = (maxy * Math.Cos(-theta)) - (minx * Math.Sin(-theta)) + ay;
+                    //cx = (c3xp + c1xp) / 2;
+                    //cy = (c3yp + c1yp) / 2;
                 }
                 ax = bx;
                 ay = by;
@@ -227,7 +239,7 @@ namespace ArmaRealMap
             {
                 var poly = (Polygon)geometry;
                 // TODO : holes
-                var points = ToMapPoints(startPointUTM, img, poly.Shell.Coordinates).ToArray();
+                var points = ToPixelsPoints(startPointUTM, img, poly.Shell.Coordinates).ToArray();
                 try
                 {
                     img.Mutate(p => p.FillPolygon(solidBrush, points));
@@ -240,7 +252,7 @@ namespace ArmaRealMap
             else if (geometry.OgcGeometryType == OgcGeometryType.LineString)
             {
                 var line = (LineString)geometry;
-                var points = ToMapPoints(startPointUTM, img, line.Coordinates).ToArray();
+                var points = ToPixelsPoints(startPointUTM, img, line.Coordinates).ToArray();
                 try
                 {
                     if (line.IsClosed)
@@ -336,12 +348,12 @@ namespace ArmaRealMap
             return null;
         }
 
-        private static IEnumerable<PointF> ToMapPoints(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
+        private static IEnumerable<PointF> ToPixelsPoints(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
         {
-            return ToSimplePoints(startPointUTM, img.Height, nodes);
+            return ToPixelsPoints(startPointUTM, img.Height, nodes);
         }
 
-        private static IEnumerable<PointF> ToSimplePoints(UniversalTransverseMercator startPointUTM, float height, IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
+        private static IEnumerable<PointF> ToPixelsPoints(UniversalTransverseMercator startPointUTM, float height, IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
         {
             return nodes
                 .Select(n => new CoordinateSharp.Coordinate(n.Y, n.X, eagerUTM).UTM)
@@ -351,9 +363,16 @@ namespace ArmaRealMap
                 ));
         }
 
-        
 
-        
+        private static IEnumerable<PointF> ToTerrainBuilderPoints(UniversalTransverseMercator startPointUTM, IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
+        {
+            return nodes
+                .Select(n => new CoordinateSharp.Coordinate(n.Y, n.X, eagerUTM).UTM)
+                .Select(u => new PointF(
+                    (float)(u.Easting - startPointUTM.Easting) + 200000f,
+                    (float)(u.Northing - startPointUTM.Northing)
+                ));
+        }
 
         private static AreaInfos GetArea(MilitaryGridReferenceSystem startPointMGRS, int size, int cellSize)
         {
