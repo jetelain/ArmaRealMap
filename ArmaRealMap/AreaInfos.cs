@@ -12,5 +12,8 @@ namespace ArmaRealMap
         public Coordinate SouthEast { get; set; }
         public int CellSize { get; internal set; }
         public int Size { get; internal set; }
+
+        public int Height { get { return Size * CellSize; } }
+        public int Width { get { return Size * CellSize; } }
     }
 }

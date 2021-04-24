@@ -24,42 +24,6 @@ using SRTM.Sources.NASA;
 
 namespace ArmaRealMap
 {
-    class Category
-    {
-        internal readonly Color Color;
-        internal readonly int Priority;
-        public Category(Color color, int priority)
-        {
-            Color = color;
-            Priority = priority;
-        }
-
-        internal static Category Water = new Category(Color.Blue, 1);
-        internal static Category WetLand = new Category(Color.LightBlue, 2);
-        internal static Category Forest = new Category(Color.Green, 3);
-        internal static Category Grass = new Category(Color.YellowGreen, 4);
-        internal static Category FarmLand = new Category(Color.Yellow, 5);
-        internal static Category Sand = new Category(Color.SandyBrown, 6);
-        internal static Category Rocks = new Category(Color.DarkGray, 7);
-        internal static Category Concrete = new Category(Color.Gray, 8);
-
-        internal static Category Building = new Category(Color.Black, 0);
-    }
-
-    class CategorizedGeometry
-    {
-        internal readonly Category Category;
-        internal readonly OsmGeo OsmGeo;
-        internal readonly Geometry Geometry;
-
-        public CategorizedGeometry(Category category, OsmGeo osmGeo, Geometry geometry)
-        {
-            this.Category = category;
-            this.OsmGeo = osmGeo;
-            this.Geometry = geometry;
-        }
-    }
-
     class Program
     {
         private static readonly EagerLoad eagerUTM = new EagerLoad(false) { UTM_MGRS = true };
@@ -72,10 +36,9 @@ namespace ArmaRealMap
             Trace.Listeners.Add(new TextWriterTraceListener(@"osm.log"));
             Trace.WriteLine("----------------------------------------------------------------------------------------------------");
 
-            var size = 4096;
-            var cellSize = 5;
+            var size = config.GridSize;
+            var cellSize = config.CellSize;
 
-            //var startPointMGRS = new MilitaryGridReferenceSystem("32T", "LT", 23000, 70800);
             var startPointMGRS = new MilitaryGridReferenceSystem(config.BottomLeft.GridZone, config.BottomLeft.D, config.BottomLeft.E, config.BottomLeft.N);
 
             var area = GetArea(startPointMGRS, size, cellSize);
@@ -105,52 +68,139 @@ namespace ArmaRealMap
 
                 var db = new SnapshotDb(new MemorySnapshotDb(source));
 
-                var filtered = source.FilterBox(left,top,right,bottom, true);
+                var filtered = source.FilterBox(left, top, right, bottom, true);
 
-                var toRender = new List<CategorizedGeometry>();
-
-                var interpret = new DefaultFeatureInterpreter2();
-                var list = filtered.Where(osmGeo =>
-                (osmGeo.Type == OsmSharp.OsmGeoType.Way || osmGeo.Type == OsmSharp.OsmGeoType.Relation)
-                && osmGeo.Tags != null/*
-                && interpret.IsPotentiallyArea(osmGeo.Tags)*/).ToList();
-
-                foreach (OsmGeo osmGeo in list)
-                {
-                    var category = GetCategory(osmGeo.Tags, interpret);
-                    if (category != null)
-                    {
-                        var complete = osmGeo.CreateComplete(db);
-                        var count = 0;
-                        foreach (var feature in interpret.Interpret(complete))
-                        {
-                            toRender.Add(new CategorizedGeometry(category, osmGeo, feature.Geometry));
-                            count++;
-                        }
-                        if (count == 0)
-                        {
-                           
-                        }
-                    }
-                }
+                var toRender = GetShapes(db, filtered);
 
                 var buildings = toRender.Count(b => b.Category == Category.Building);
-                var shapes = toRender.Count(b => b.Category != Category.Building);
 
-                using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, Color.LightGreen))
+                foreach(var building in toRender.Where(b => b.Category == Category.Building))
                 {
-                    var done = 0;
-                    foreach (var item in toRender.Where(b => b.Category != Category.Building).OrderByDescending(e => e.Category.Priority))
-                    {
-                        if ( done % 100 == 0)
-                        {
-                            Console.WriteLine($"Drawing ... {Math.Round(done * 100.0 / shapes, 2)}% done");
-                        }
-                        DrawGeometry(startPointUTM, img, new SolidBrush(item.Category.Color), item.Geometry);
-                        done++;
-                    }
-                    img.Save("osm.png");
+                    var box = ComputeBox(ToSimplePoints(startPointUTM, area.Height, building.Geometry.Coordinates).ToArray());
                 }
+
+                //DrawShapes(area, startPointUTM, toRender);
+            }
+        }
+
+        private static BoudingBox ComputeBox(PointF[] points)
+        {
+            int i;
+
+            double ax;
+            double ay;
+            double bx;
+            double by;
+
+            double dx;
+            double dy;
+
+            double minx;
+            double miny;
+            double maxx;
+            double maxy;
+
+            double theta;
+            double minarea;
+            double area;
+
+            double cw = 0;
+            double ch = 0;
+            double cx = 0;
+            double cy = 0;
+            double ca = 0;
+
+            int j;
+
+            minarea = double.MaxValue;
+
+            ax = points[points.Length - 1].X;
+            ay = points[points.Length - 1].Y;
+
+            for (i = 0; i < points.Length; i++)
+            {
+                bx = points[i].X; by = points[i].Y;
+                dx = (ax - bx);
+                dy = (ay - by);
+                theta = Math.Atan2(dy, dx);
+                maxx = double.MinValue;
+                maxy = double.MinValue;
+                minx = double.MaxValue;
+                miny = double.MaxValue;
+                for (j = 0; j < points.Length; j++)
+                {
+                    var rx = ((points[j].X - ax) * Math.Cos(theta)) + ((points[j].Y - ay) * Math.Sin(theta));
+                    var ry = ((points[j].Y - ay) * Math.Cos(theta)) - ((points[j].X - ax) * Math.Sin(theta));
+                    if (rx > maxx) { maxx = rx; }
+                    if (ry > maxy) { maxy = ry; }
+                    if (rx < minx) { minx = rx; }
+                    if (ry < miny) { miny = ry; }
+                }
+                area = (maxx - minx) * (maxy - miny);
+                if (area < minarea)
+                {
+                    minarea = area;
+                    cw = (maxx - minx);
+                    ch = (maxy - miny);
+                    ca = theta * 180.0 / Math.PI;
+                    cx = ((maxx * Math.Cos(-theta)) + (miny * Math.Sin(-theta)) + ax) - ((cw / 2 * Math.Cos(theta)) - (ch / 2 * Math.Sin(theta)));
+                    cy = ((miny * Math.Cos(-theta)) - (maxx * Math.Sin(-theta)) + ay) - ((cw / 2 * Math.Sin(theta)) + (ch / 2 * Math.Cos(theta)));
+                }
+                ax = bx;
+                ay = by;
+            }
+
+            return new BoudingBox(cx, cy, cw, ch, ca);
+        }
+
+        private static List<CategorizedGeometry> GetShapes(SnapshotDb db, OsmStreamSource filtered)
+        {
+            var toRender = new List<CategorizedGeometry>();
+
+            var interpret = new DefaultFeatureInterpreter2();
+            var list = filtered.Where(osmGeo =>
+            (osmGeo.Type == OsmSharp.OsmGeoType.Way || osmGeo.Type == OsmSharp.OsmGeoType.Relation)
+            && osmGeo.Tags != null).ToList();
+
+            foreach (OsmGeo osmGeo in list)
+            {
+                var category = GetCategory(osmGeo.Tags, interpret);
+                if (category != null)
+                {
+                    var complete = osmGeo.CreateComplete(db);
+                    var count = 0;
+                    foreach (var feature in interpret.Interpret(complete))
+                    {
+                        toRender.Add(new CategorizedGeometry(category, osmGeo, feature.Geometry));
+                        count++;
+                    }
+                    if (count == 0)
+                    {
+
+                    }
+                }
+            }
+
+            return toRender;
+        }
+
+        private static void DrawShapes(AreaInfos area, UniversalTransverseMercator startPointUTM, List<CategorizedGeometry> toRender)
+        {
+            var shapes = toRender.Count(b => b.Category != Category.Building);
+
+            using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, Color.LightGreen))
+            {
+                var done = 0;
+                foreach (var item in toRender.Where(b => b.Category != Category.Building).OrderByDescending(e => e.Category.Priority))
+                {
+                    if (done % 100 == 0)
+                    {
+                        Console.WriteLine($"Drawing ... {Math.Round(done * 100.0 / shapes, 2)}% done");
+                    }
+                    DrawGeometry(startPointUTM, img, new SolidBrush(item.Category.Color), item.Geometry);
+                    done++;
+                }
+                img.Save("osm.png");
             }
         }
 
@@ -286,131 +336,24 @@ namespace ArmaRealMap
             return null;
         }
 
-        private static PointF[] ToMapPoints(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, Dictionary<long?, Node> nodes, Way way)
-        {
-            return ToMapPoints(startPointUTM, img, way.Nodes.Select(n => nodes[n])).ToArray();
-        }
-        private static IEnumerable<PointF> ToMapPoints(UniversalTransverseMercator startPointUTM, Image<Rgb24> img,  IEnumerable<Node> nodes)
-        {
-            return nodes
-                .Select(n => new CoordinateSharp.Coordinate(n.Latitude.Value, n.Longitude.Value, eagerUTM).UTM)
-                .Select(u => new PointF((float)(u.Easting - startPointUTM.Easting), (float)img.Height - (float)(u.Northing - startPointUTM.Northing)));
-        }
         private static IEnumerable<PointF> ToMapPoints(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
+        {
+            return ToSimplePoints(startPointUTM, img.Height, nodes);
+        }
+
+        private static IEnumerable<PointF> ToSimplePoints(UniversalTransverseMercator startPointUTM, float height, IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
         {
             return nodes
                 .Select(n => new CoordinateSharp.Coordinate(n.Y, n.X, eagerUTM).UTM)
                 .Select(u => new PointF(
                     (float)(u.Easting - startPointUTM.Easting),
-                    (float)img.Height - (float)(u.Northing - startPointUTM.Northing) 
+                    (float)height - (float)(u.Northing - startPointUTM.Northing)
                 ));
         }
+
         
 
-
-        private static void BuildImage( AreaInfos area)
-        {
-            var bd = new BdOrtho();
-
-            using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize))
-            {
-                var startPointUTM = area.StartPointUTM;
-                var eager = new EagerLoad(false);
-                var sw = Stopwatch.StartNew();
-                for (int y = 0; y < img.Height; y++)
-                {
-                    for (int x = 0; x < img.Width; x++)
-                    {
-                        var point = new UniversalTransverseMercator(
-                            startPointUTM.LatZone,
-                            startPointUTM.LongZone,
-                            startPointUTM.Easting + (double)x,
-                            startPointUTM.Northing + (double)y);
-
-                        var latLong = UniversalTransverseMercator.ConvertUTMtoLatLong(point, eager);
-
-                        img[x, img.Height - y - 1] = bd.GetPixel(latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble());
-                    }
-                    var value = y + 1;
-                    var percentDone = Math.Round((double)value * 100d / img.Height, 2);
-                    var milisecondsLeft = sw.ElapsedMilliseconds * (img.Height - value) / value;
-                    Console.WriteLine($"{percentDone}% - {Math.Ceiling(milisecondsLeft / 60000d)} min left");
-                }
-                sw.Stop();
-                img.Save("sat.png");
-            }
-
-
-        }
-
-        private static void BuildElevationGrid(ConfigSRTM configSRTM, AreaInfos area)
-        {
-            var credentials = new NetworkCredential(configSRTM.Login, configSRTM.Password);
-            var srtmData = new SRTMData(configSRTM.Cache, new NASASource(credentials));
-            var elevationMatrix = new double[area.Size, area.Size];
-            var startPointUTM = area.StartPointUTM;
-            var sw = Stopwatch.StartNew();
-            var eager = new EagerLoad(false);
-            var min = 4000d;
-            var max = 0d;
-            for (int y = 0; y < area.Size; y++)
-            {
-                for (int x = 0; x < area.Size; x++)
-                {
-                    var point = new UniversalTransverseMercator(
-                            startPointUTM.LatZone,
-                            startPointUTM.LongZone,
-                            startPointUTM.Easting + (double)(x * area.CellSize) + (double)area.CellSize / 2.0d,
-                            startPointUTM.Northing + (double)(y * area.CellSize) + (double)area.CellSize / 2.0d);
-
-                    var latLong = UniversalTransverseMercator.ConvertUTMtoLatLong(point, eager);
-
-                    var elevation = srtmData.GetElevationBilinear(latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble()) ?? double.NaN;
-                    elevationMatrix[x, y] = elevation;
-                    max = Math.Max(elevation, max);
-                    min = Math.Min(elevation, min);
-                }
-
-                var value = y + 1;
-                var percentDone = Math.Round((double)value * 100d / area.Size, 2);
-                var milisecondsLeft = sw.ElapsedMilliseconds * (area.Size - value) / value;
-                Console.WriteLine($"{percentDone}% - {Math.Ceiling(milisecondsLeft / 60000d)} min left");
-            }
-            sw.Stop();
-
-            using (var img = new Image<Rgb24>(area.Size, area.Size))
-            {
-                for (int y = 0; y < area.Size; y++)
-                {
-                    for (int x = 0; x < area.Size; x++)
-                    {
-                        byte value = (byte)((elevationMatrix[x, y] - min) * 255 / (max - min));
-                        img[x, area.Size - y - 1] = new Rgb24(value, value, value);
-                    }
-                }
-                img.Save("elevation.png");
-            }
-
-            using(var writer = new StreamWriter(new FileStream("elevation.asc", FileMode.Create, FileAccess.Write)))
-            {
-                writer.WriteLine($"ncols         {area.Size}");
-                writer.WriteLine($"nrows         {area.Size}");
-                writer.WriteLine($"xllcorner     {startPointUTM.Easting:0}");
-                writer.WriteLine($"yllcorner     {startPointUTM.Northing:0}");
-                writer.WriteLine($"cellsize      {area.CellSize}");
-                writer.WriteLine($"NODATA_value  -9999");
-
-                for (int y = 0; y < area.Size; y++)
-                {
-                    for (int x = 0; x < area.Size; x++)
-                    {
-                        writer.Write(elevationMatrix[x, area.Size - y - 1].ToString("0.00", CultureInfo.InvariantCulture));
-                        writer.Write(" ");
-                    }
-                    writer.WriteLine();
-                }
-            }
-        }
+        
 
         private static AreaInfos GetArea(MilitaryGridReferenceSystem startPointMGRS, int size, int cellSize)
         {

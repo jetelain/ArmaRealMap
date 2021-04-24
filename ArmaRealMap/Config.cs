@@ -28,6 +28,8 @@ namespace ArmaRealMap
 
     public class Config
     {
+        public int GridSize { get; set; }
+        public int CellSize { get; set; }
         public ConfigBottomLeft BottomLeft { get; set; }
         public ConfigORTHO ORTHO { get; set; }
         public string OSM { get; set; }
