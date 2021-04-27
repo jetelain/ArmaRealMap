@@ -8,8 +8,9 @@ namespace ArmaRealMap.Libraries
     {
         public BuildingCategory Category { get; set; }
 
-        public List<ObjetInfos> Objects { get; set; }
+        public List<SingleObjetInfos> Objects { get; set; }
 
+        public List<CompositionInfos> Compositions { get; set; }
 
     }
 }

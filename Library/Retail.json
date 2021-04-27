@@ -1,0 +1,312 @@
+{
+  "Category": "Retail",
+  "Objects": [
+    {
+      "Name": "i_Shop_02_b_blue_F",
+      "Width": 15.93587,
+      "Depth": 10.88086,
+      "Height": 0,
+      "CX": 0.47483683,
+      "CY": 2.15268,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_02_b_brown_F",
+      "Width": 15.93587,
+      "Depth": 10.88086,
+      "Height": 0,
+      "CX": 0.47483683,
+      "CY": 0.15267992,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_02_b_pink_F",
+      "Width": 15.93587,
+      "Depth": 10.88086,
+      "Height": 0,
+      "CX": 0.47483683,
+      "CY": 1.1526799,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_02_b_white_F",
+      "Width": 15.93587,
+      "Depth": 10.88086,
+      "Height": 0,
+      "CX": 0.47483683,
+      "CY": 1.1526799,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_02_b_whiteblue_F",
+      "Width": 15.93587,
+      "Depth": 10.88086,
+      "Height": 0,
+      "CX": -0.5251627,
+      "CY": 1.1526799,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_02_b_yellow_F",
+      "Width": 15.93587,
+      "Depth": 10.88086,
+      "Height": 0,
+      "CX": -0.5251627,
+      "CY": 1.1526799,
+      "CZ": 0
+    },
+    {
+      "Name": "Supermarket_01_malden_F",
+      "Width": 16.88151,
+      "Depth": 28.3508,
+      "Height": 0,
+      "CX": 0.5407562,
+      "CY": 0.9971504,
+      "CZ": 0
+    },
+    {
+      "Name": "VillageStore_01_F",
+      "Width": 10.65194,
+      "Depth": 14.27043,
+      "Height": 0,
+      "CX": 0.008070469,
+      "CY": 0.06114483,
+      "CZ": 0
+    },
+    {
+      "Name": "Hotel_01_F",
+      "Width": 15.97072,
+      "Depth": 15.976231,
+      "Height": 0,
+      "CX": 1.25,
+      "CY": -0.25275517,
+      "CZ": 0
+    },
+    {
+      "Name": "Hotel_02_F",
+      "Width": 24.2679,
+      "Depth": 33.447502,
+      "Height": 0,
+      "CX": -0.2961502,
+      "CY": -2.1999702,
+      "CZ": 0
+    },
+    {
+      "Name": "ClothShelter_01_F",
+      "Width": 3.85531,
+      "Depth": 3.81598,
+      "Height": 0,
+      "CX": 0.50592995,
+      "CY": 0.5171399,
+      "CZ": 0
+    },
+    {
+      "Name": "ClothShelter_02_F",
+      "Width": 6.28802,
+      "Depth": 3.76616,
+      "Height": 0,
+      "CX": 2.47298,
+      "CY": -0.5267501,
+      "CZ": 0
+    },
+    {
+      "Name": "MetalShelter_01_F",
+      "Width": 3.7154698,
+      "Depth": 13.00006,
+      "Height": 0,
+      "CX": 2.4738748,
+      "CY": -0.50000525,
+      "CZ": 0
+    },
+    {
+      "Name": "MetalShelter_02_F",
+      "Width": 9.67412,
+      "Depth": 13.00506,
+      "Height": 0,
+      "CX": 2.5057096,
+      "CY": -0.5025101,
+      "CZ": 0
+    },
+    {
+      "Name": "WoodenShelter_01_F",
+      "Width": 4.1635,
+      "Depth": 3.7199101,
+      "Height": 0,
+      "CX": 2.4692502,
+      "CY": -0.5492301,
+      "CZ": 0
+    },
+    {
+      "Name": "WoodenShelter_01_ruins_F",
+      "Width": 5.5537596,
+      "Depth": 4.4900303,
+      "Height": 0,
+      "CX": 2.1762204,
+      "CY": -0.60323715,
+      "CZ": 0
+    },
+    {
+      "Name": "MultistoryBuilding_01_F",
+      "Width": 45.3239,
+      "Depth": 43.198997,
+      "Height": 0,
+      "CX": -0.12669945,
+      "CY": -0.425848,
+      "CZ": 0
+    },
+    {
+      "Name": "MultistoryBuilding_03_F",
+      "Width": 25.5595,
+      "Depth": 34.3441,
+      "Height": 0,
+      "CX": 2.8249502,
+      "CY": 0.80325127,
+      "CZ": 0
+    },
+    {
+      "Name": "MultistoryBuilding_04_F",
+      "Width": 29.9134,
+      "Depth": 30.5318,
+      "Height": 0,
+      "CX": 2.9846506,
+      "CY": 0.51625156,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_City_01_F",
+      "Width": 23.766,
+      "Depth": 12.89384,
+      "Height": 0,
+      "CX": 2.3148203,
+      "CY": 0.07442284,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_City_02_F",
+      "Width": 24.1947,
+      "Depth": 25.521,
+      "Height": 0,
+      "CX": 2.0823603,
+      "CY": 0.6505232,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_City_03_F",
+      "Width": 16.944519,
+      "Depth": 25.005001,
+      "Height": 0,
+      "CX": 2.4274406,
+      "CY": 0.42248726,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_City_04_F",
+      "Width": 18.48448,
+      "Depth": 26.4653,
+      "Height": 0,
+      "CX": 2.0316095,
+      "CY": -0.29661083,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_City_05_F",
+      "Width": 22.3214,
+      "Depth": 34.8513,
+      "Height": 0,
+      "CX": 2.5187502,
+      "CY": -1.4920502,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_City_06_F",
+      "Width": 25.8982,
+      "Depth": 22.3598,
+      "Height": 0,
+      "CX": 2.6596994,
+      "CY": 0.48737144,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_City_07_F",
+      "Width": 9.88331,
+      "Depth": 19.180729,
+      "Height": 0,
+      "CX": -1.5132241,
+      "CY": 0.7244749,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_Town_01_F",
+      "Width": 11.12599,
+      "Depth": 16.682331,
+      "Height": 0,
+      "CX": 2.5014544,
+      "CY": -0.61872435,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_Town_02_F",
+      "Width": 12.52563,
+      "Depth": 17.1679,
+      "Height": 0,
+      "CX": -0.699491,
+      "CY": -0.3652897,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_Town_03_F",
+      "Width": 14.92182,
+      "Depth": 21.082298,
+      "Height": 0,
+      "CX": 2.4980497,
+      "CY": -0.43459606,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_Town_04_F",
+      "Width": 10.52776,
+      "Depth": 18.643791,
+      "Height": 0,
+      "CX": 2.48765,
+      "CY": 0.29189205,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_Town_05_addon_F",
+      "Width": 8.650499,
+      "Depth": 3.73404,
+      "Height": 0,
+      "CX": 2.6200004,
+      "CY": -0.14254999,
+      "CZ": 0
+    },
+    {
+      "Name": "Shop_Town_05_F",
+      "Width": 19.09577,
+      "Depth": 19.75099,
+      "Height": 0,
+      "CX": 2.5004654,
+      "CY": -0.5558653,
+      "CZ": 0
+    },
+    {
+      "Name": "Supermarket_01_F",
+      "Width": 16.88151,
+      "Depth": 28.3508,
+      "Height": 0,
+      "CX": 1.5407553,
+      "CY": -1.0028496,
+      "CZ": 0
+    },
+    {
+      "Name": "Warehouse_03_F",
+      "Width": 20.387482,
+      "Depth": 15.863501,
+      "Height": 0,
+      "CX": -0.45521927,
+      "CY": 0.56074905,
+      "CZ": 0
+    }
+  ],
+  "Compositions": []
+}

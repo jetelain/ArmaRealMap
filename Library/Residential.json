@@ -1,0 +1,474 @@
+{
+  "Category": "Residential",
+  "Objects": [
+    {
+      "Name": "u_Addon_01_V1_F",
+      "Width": 8.42523,
+      "Depth": 5.4445734,
+      "Height": 0,
+      "CX": 2.4673882,
+      "CY": -0.5003865,
+      "CZ": 0
+    },
+    {
+      "Name": "u_Addon_02_V1_F",
+      "Width": 8.3526,
+      "Depth": 7.59974,
+      "Height": 0,
+      "CX": -0.5116918,
+      "CY": -0.42350006,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Addon_02_V1_F",
+      "Width": 8.3526,
+      "Depth": 7.59974,
+      "Height": 0,
+      "CX": -0.51168823,
+      "CY": -0.42350006,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Addon_03_V1_F",
+      "Width": 10.04242,
+      "Depth": 6.55797,
+      "Height": 0,
+      "CX": -0.5,
+      "CY": 0.48930907,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Addon_03mid_V1_F",
+      "Width": 10.042419,
+      "Depth": 6.61659,
+      "Height": 0,
+      "CX": -0.50000477,
+      "CY": 0.41073203,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Addon_04_V1_F",
+      "Width": 10.04242,
+      "Depth": 6.6165895,
+      "Height": 0,
+      "CX": -0.5,
+      "CY": -0.58926487,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Garage_V1_F",
+      "Width": 14.6741295,
+      "Depth": 6.6000004,
+      "Height": 0,
+      "CX": 1.4770651,
+      "CY": -0.50000215,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Garage_V2_F",
+      "Width": 14.6741295,
+      "Depth": 6.6000004,
+      "Height": 0,
+      "CX": 1.4770651,
+      "CY": -0.50000215,
+      "CZ": 0
+    },
+    {
+      "Name": "Metal_Shed_F",
+      "Width": 10.47763,
+      "Depth": 5.8022003,
+      "Height": 0,
+      "CX": 0.49769306,
+      "CY": -0.50082827,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Big_01_V1_F",
+      "Width": 14.11977,
+      "Depth": 16.51146,
+      "Height": 0,
+      "CX": 0.45030117,
+      "CY": -0.54585075,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Big_01_V2_F",
+      "Width": 14.11977,
+      "Depth": 16.51146,
+      "Height": 0,
+      "CX": 0.45030117,
+      "CY": -0.54585075,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Big_01_V3_F",
+      "Width": 14.11977,
+      "Depth": 16.51146,
+      "Height": 0,
+      "CX": 0.45030117,
+      "CY": -0.54585075,
+      "CZ": 0
+    },
+    {
+      "Name": "u_House_Big_01_V1_F",
+      "Width": 13.94849,
+      "Depth": 16.51146,
+      "Height": 0,
+      "CX": -0.5422993,
+      "CY": 0.45414925,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Big_02_V1_F",
+      "Width": 10.65746,
+      "Depth": 16.2631,
+      "Height": 0,
+      "CX": -0.62922287,
+      "CY": -1.0980697,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Big_02_V2_F",
+      "Width": 10.65746,
+      "Depth": 16.2631,
+      "Height": 0,
+      "CX": -0.62922287,
+      "CY": -1.0980697,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Big_02_V3_F",
+      "Width": 10.65746,
+      "Depth": 16.2631,
+      "Height": 0,
+      "CX": -0.62922287,
+      "CY": -1.0980697,
+      "CZ": 0
+    },
+    {
+      "Name": "u_House_Big_02_V1_F",
+      "Width": 10.54654,
+      "Depth": 16.26462,
+      "Height": 0,
+      "CX": 0.3153119,
+      "CY": -0.097310066,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Small_01_V1_F",
+      "Width": 10.86805,
+      "Depth": 14.117189,
+      "Height": 0,
+      "CX": -1.7061746,
+      "CY": 1.3585958,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Small_01_V2_F",
+      "Width": 10.86805,
+      "Depth": 14.117189,
+      "Height": 0,
+      "CX": -1.7061746,
+      "CY": 1.3585958,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Small_01_V3_F",
+      "Width": 10.86805,
+      "Depth": 14.117189,
+      "Height": 0,
+      "CX": 0.29382133,
+      "CY": 2.3585958,
+      "CZ": 0
+    },
+    {
+      "Name": "u_House_Small_01_V1_F",
+      "Width": 11.12107,
+      "Depth": 14.117189,
+      "Height": 0,
+      "CX": 0.4096303,
+      "CY": 1.3585958,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Small_02_V1_F",
+      "Width": 13.90605,
+      "Depth": 7.6622696,
+      "Height": 0,
+      "CX": -0.2260251,
+      "CY": -0.4769659,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Small_02_V2_F",
+      "Width": 13.90605,
+      "Depth": 7.6622696,
+      "Height": 0,
+      "CX": -0.2260251,
+      "CY": -0.4769659,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Small_02_V3_F",
+      "Width": 13.90605,
+      "Depth": 7.6622696,
+      "Height": 0,
+      "CX": -0.2260251,
+      "CY": -0.4769659,
+      "CZ": 0
+    },
+    {
+      "Name": "u_House_Small_02_V1_F",
+      "Width": 13.88224,
+      "Depth": 7.65592,
+      "Height": 0,
+      "CX": -1.2379303,
+      "CY": 1.5132699,
+      "CZ": 0
+    },
+    {
+      "Name": "i_House_Small_03_V1_F",
+      "Width": 12.40096,
+      "Depth": 14.50411,
+      "Height": 0,
+      "CX": -0.45630503,
+      "CY": 0.3979416,
+      "CZ": 0
+    },
+    {
+      "Name": "cargo_addon01_V1_F",
+      "Width": 4.13922,
+      "Depth": 2.9394,
+      "Height": 0,
+      "CX": 0.540257,
+      "CY": -0.51223,
+      "CZ": 0
+    },
+    {
+      "Name": "cargo_addon01_V2_F",
+      "Width": 4.18646,
+      "Depth": 2.94014,
+      "Height": 0,
+      "CX": 0.61866117,
+      "CY": 2.4874,
+      "CZ": 0
+    },
+    {
+      "Name": "cargo_addon02_V1_F",
+      "Width": 6.24254,
+      "Depth": 4.43928,
+      "Height": 0,
+      "CX": 2.40502,
+      "CY": -0.603521,
+      "CZ": 0
+    },
+    {
+      "Name": "cargo_addon02_V2_F",
+      "Width": 6.14494,
+      "Depth": 4.48104,
+      "Height": 0,
+      "CX": 2.35524,
+      "CY": -0.676103,
+      "CZ": 0
+    },
+    {
+      "Name": "Slum_House01_F",
+      "Width": 4.45106,
+      "Depth": 5.37292,
+      "Height": 0,
+      "CX": 0.5846579,
+      "CY": -0.99648,
+      "CZ": 0
+    },
+    {
+      "Name": "Slum_House02_F",
+      "Width": 5.66929,
+      "Depth": 6.80157,
+      "Height": 0,
+      "CX": -0.744215,
+      "CY": 0.15585017,
+      "CZ": 0
+    },
+    {
+      "Name": "Slum_House03_F",
+      "Width": 7.7079306,
+      "Depth": 5.48934,
+      "Height": 0,
+      "CX": -0.5400951,
+      "CY": 0.309443,
+      "CZ": 0
+    },
+    {
+      "Name": "I_Stone_HouseBig_V1_F",
+      "Width": 11.055639,
+      "Depth": 9.94792,
+      "Height": 0,
+      "CX": -0.71764946,
+      "CY": 0.25650787,
+      "CZ": 0
+    },
+    {
+      "Name": "I_Stone_HouseBig_V2_F",
+      "Width": 11.055639,
+      "Depth": 9.94792,
+      "Height": 0,
+      "CX": -0.71764946,
+      "CY": 0.25650787,
+      "CZ": 0
+    },
+    {
+      "Name": "I_Stone_HouseBig_V3_F",
+      "Width": 11.055639,
+      "Depth": 9.94792,
+      "Height": 0,
+      "CX": -0.71764946,
+      "CY": 0.25650787,
+      "CZ": 0
+    },
+    {
+      "Name": "I_Stone_Shed_V1_F",
+      "Width": 8.29332,
+      "Depth": 8.0966,
+      "Height": 0,
+      "CX": -0.4466598,
+      "CY": 0.22023487,
+      "CZ": 0
+    },
+    {
+      "Name": "I_Stone_Shed_V2_F",
+      "Width": 8.29332,
+      "Depth": 8.0966,
+      "Height": 0,
+      "CX": -0.4466598,
+      "CY": 0.22023487,
+      "CZ": 0
+    },
+    {
+      "Name": "I_Stone_Shed_V3_F",
+      "Width": 8.29332,
+      "Depth": 8.0966,
+      "Height": 0,
+      "CX": -0.4466598,
+      "CY": 0.22023487,
+      "CZ": 0
+    },
+    {
+      "Name": "I_Stone_HouseSmall_V1_F",
+      "Width": 20.4124,
+      "Depth": 9.22986,
+      "Height": 0,
+      "CX": 0.5091009,
+      "CY": 0.18700981,
+      "CZ": 0
+    },
+    {
+      "Name": "I_Stone_HouseSmall_V2_F",
+      "Width": 20.4124,
+      "Depth": 9.22986,
+      "Height": 0,
+      "CX": 0.5091009,
+      "CY": 0.18700981,
+      "CZ": 0
+    },
+    {
+      "Name": "I_Stone_HouseSmall_V3_F",
+      "Width": 20.4124,
+      "Depth": 9.22986,
+      "Height": 0,
+      "CX": 0.5091009,
+      "CY": 0.18700981,
+      "CZ": 0
+    },
+    {
+      "Name": "Unfinished_Building_01_F",
+      "Width": 10.86256,
+      "Depth": 15.64154,
+      "Height": 0,
+      "CX": -0.64223003,
+      "CY": -0.7936201,
+      "CZ": 0
+    },
+    {
+      "Name": "Unfinished_Building_02_F",
+      "Width": 17.58232,
+      "Depth": 20.8211,
+      "Height": 0,
+      "CX": 0.06538105,
+      "CY": 1.4739904,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_01_V1_F",
+      "Width": 9.361031,
+      "Depth": 15.37432,
+      "Height": 0,
+      "CX": -0.51003504,
+      "CY": -0.23203993,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_01_V2_F",
+      "Width": 9.361031,
+      "Depth": 15.374321,
+      "Height": 0,
+      "CX": 1.489965,
+      "CY": -2.2320404,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_01_V3_F",
+      "Width": 9.361031,
+      "Depth": 15.37432,
+      "Height": 0,
+      "CX": -0.51003504,
+      "CY": -1.2320399,
+      "CZ": 0
+    },
+    {
+      "Name": "u_Shop_01_V1_F",
+      "Width": 9.357849,
+      "Depth": 15.37432,
+      "Height": 0,
+      "CX": -0.5116248,
+      "CY": -1.2320399,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_02_V1_F",
+      "Width": 15.93587,
+      "Depth": 10.88086,
+      "Height": 0,
+      "CX": 1.4748349,
+      "CY": -0.8473201,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_02_V2_F",
+      "Width": 15.93587,
+      "Depth": 10.88086,
+      "Height": 0,
+      "CX": 0.47483683,
+      "CY": 1.1526799,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shop_02_V3_F",
+      "Width": 15.93587,
+      "Depth": 10.88086,
+      "Height": 0,
+      "CX": 0.47483683,
+      "CY": 1.1526799,
+      "CZ": 0
+    },
+    {
+      "Name": "u_Shop_02_V1_F",
+      "Width": 15.935869,
+      "Depth": 10.88086,
+      "Height": 0,
+      "CX": 0.4748373,
+      "CY": 1.1526799,
+      "CZ": 0
+    }
+  ],
+  "Compositions": []
+}

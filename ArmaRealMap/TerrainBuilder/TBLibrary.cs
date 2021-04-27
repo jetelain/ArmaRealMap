@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -16,5 +17,10 @@ namespace ArmaRealMap.TerrainBuilder
 
         [XmlIgnore]
         public string FullPath { get; set; }
+
+        public string GetAllFilesAsSqfArray()
+        {
+            return $"['{string.Join("',"+Environment.NewLine+"'", Template.Select(t => t.File))}']";
+        }
     }
 }

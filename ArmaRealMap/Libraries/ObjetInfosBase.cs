@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using ArmaRealMap.Geometries;
 
 namespace ArmaRealMap.Libraries
 {
-    public class ObjetInfos
+    public abstract class ObjetInfosBase
     {
-        public string Name { get; set; }
-
         public float Width { get; set; }
         public float Depth { get; set; }
         public float Height { get; set; }
@@ -15,6 +14,7 @@ namespace ArmaRealMap.Libraries
         public float CY { get; set; }
         public float CZ { get; set; }
 
+        [JsonIgnore]
         public float Surface { get { return Width * Depth; } }
 
         internal bool Fits(BoundingBox box, float minFactor, float maxFactor)

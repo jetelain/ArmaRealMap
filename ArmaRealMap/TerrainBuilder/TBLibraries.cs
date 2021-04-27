@@ -32,6 +32,9 @@ namespace ArmaRealMap.TerrainBuilder
             return Libraries.SelectMany(l => l.Template.Where(l => string.Equals(l.File, model, StringComparison.OrdinalIgnoreCase))).FirstOrDefault();
         }
 
-
+        public string GetAllSqf()
+        {
+            return string.Join(Environment.NewLine, Libraries.Select(t => t.Name + "=" + t.GetAllFilesAsSqfArray()+ ";")) + Environment.NewLine + $"libraries=[{string.Join("," + Environment.NewLine, Libraries.Select(t => t.Name))}];";
+        }
     }
 }

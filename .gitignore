@@ -339,3 +339,10 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /ArmaRealMap/config.json
+/Belfort/data/layers
+/Belfort/@ArmBelfort/addons/belfort/data/layers
+/Belfort/@ArmBelfort/hemtt.exe
+/Belfort/@ArmBelfort/addons/belfort/belfort.wrp
+/Belfort/@ArmBelfort/addons/arm_belfort.pbo
+/Belfort/belfort.wrp
+*.txt.old

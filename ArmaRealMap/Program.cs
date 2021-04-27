@@ -43,6 +43,8 @@ namespace ArmaRealMap
             var olibs = new ObjectLibraries();
             olibs.Load(config);
 
+            File.WriteAllText("library.sqf", olibs.TerrainBuilder.GetAllSqf());
+
             var size = config.GridSize;
             var cellSize = config.CellSize;
 
@@ -100,8 +102,7 @@ namespace ArmaRealMap
 
         private static void PlaceIsolatedTrees(AreaInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, OsmStreamSource filtered)
         {
-            var treeModels = olibs.TerrainBuilder.Libraries.FirstOrDefault(l => l.Name == "enoch_veg_tree");
-
+            var candidates = olibs.Libraries.Where(l => l.Category == BuildingCategory.IsolatedTree).SelectMany(l => l.Objects).ToList();
             var result = new StringBuilder();
 
             var trees = filtered.Where(o => o.Type == OsmGeoType.Node && Get(o.Tags, "natural") == "tree").ToList();
@@ -111,7 +112,7 @@ namespace ArmaRealMap
                 if (area.IsInside(pos))
                 {
                     var random = new Random((int)Math.Truncate(pos.X + pos.Y));
-                    var obj = treeModels.Template[random.Next(0, treeModels.Template.Count)];
+                    var obj = candidates[random.Next(0, candidates.Count)];
                     result.AppendFormat(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;0.0;",
                     obj.Name,
                     pos.X,
