@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Library name="a3_misc_helpers" shape="rectangle" default_fill="-16777216" default_outline="-65536" tex="0">
+	<Template>
+		<Name>Sign_Arrow_Direction_F</Name>
+		<File>a3\misc_f\Helpers\Sign_Arrow_Direction_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16727808</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1290806130</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Sign_Arrow_F</Name>
+		<File>a3\misc_f\Helpers\Sign_Arrow_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16727808</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-830563794</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Sign_Arrow_Large_F</Name>
+		<File>a3\misc_f\Helpers\Sign_Arrow_Large_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16727808</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>370959850</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Sign_Circle_F</Name>
+		<File>a3\misc_f\Helpers\Sign_Circle_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16727808</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-31135367</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Sign_Pointer_F</Name>
+		<File>a3\misc_f\Helpers\Sign_Pointer_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16727808</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1803274878</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Sign_sphere100cm_F</Name>
+		<File>a3\misc_f\Helpers\Sign_sphere100cm_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16727808</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1545095245</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Sign_sphere10cm_F</Name>
+		<File>a3\misc_f\Helpers\Sign_sphere10cm_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16727808</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-942880033</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Sign_sphere25cm_F</Name>
+		<File>a3\misc_f\Helpers\Sign_sphere25cm_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16727808</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>831981347</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>usertexture10m</Name>
+		<File>a3\misc_f\Helpers\usertexture10m.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16727808</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>115673726</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>usertexture1m</Name>
+		<File>a3\misc_f\Helpers\usertexture1m.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16727808</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>862085612</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+</Library>

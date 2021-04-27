@@ -5,7 +5,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.Json;
+using ArmaRealMap.Geometries;
+using ArmaRealMap.Libraries;
+using ArmaRealMap.TerrainBuilder;
 using CoordinateSharp;
 using NetTopologySuite.Geometries;
 using OsmSharp;
@@ -36,6 +40,9 @@ namespace ArmaRealMap
             Trace.Listeners.Add(new TextWriterTraceListener(@"osm.log"));
             Trace.WriteLine("----------------------------------------------------------------------------------------------------");
 
+            var olibs = new ObjectLibraries();
+            olibs.Load(config);
+
             var size = config.GridSize;
             var cellSize = config.CellSize;
 
@@ -47,13 +54,13 @@ namespace ArmaRealMap
 
             //BuildElevationGrid(area);
 
-            BuildLand(config, area);
+            BuildLand(config, area, olibs);
 
             Trace.WriteLine("----------------------------------------------------------------------------------------------------");
             Trace.Flush();
         }
 
-        private static void BuildLand(Config config,AreaInfos area)
+        private static void BuildLand(Config config,AreaInfos area, ObjectLibraries olibs)
         {
             var startPointUTM = area.StartPointUTM;
 
@@ -62,107 +69,125 @@ namespace ArmaRealMap
             var right = (float)Math.Max(area.SouthEast.Longitude.ToDouble(), area.NorthEast.Longitude.ToDouble());
             var bottom = (float)Math.Min(area.SouthEast.Latitude.ToDouble(), area.SouthWest.Latitude.ToDouble());
 
+
+            var usedObjects = new HashSet<string>();
+
             using (var fileStream = File.OpenRead(config.OSM))
             {
+                Console.WriteLine("Loading OSM data...");
                 var source = new PBFOsmStreamSource(fileStream);
 
                 var db = new SnapshotDb(new MemorySnapshotDb(source));
 
+                Console.WriteLine("Filter OSM data...");
                 var filtered = source.FilterBox(left, top, right, bottom, true);
+
+                Console.WriteLine("Processing...");
+
+                PlaceIsolatedTrees(area, olibs, usedObjects, filtered);
 
                 var toRender = GetShapes(db, filtered);
 
-                var buildings = toRender.Count(b => b.Category == Category.Building);
-
-                foreach(var building in toRender.Where(b => b.Category == Category.Building))
-                {
-                    var box1 = ComputeBox(ToPixelsPoints(startPointUTM, area.Height, building.Geometry.Coordinates).ToArray());
-                    var box2 = ComputeBox(ToTerrainBuilderPoints(startPointUTM, building.Geometry.Coordinates).ToArray());
-                }
+                PlaceBuildings(area, olibs, usedObjects, toRender);
 
                 //DrawShapes(area, startPointUTM, toRender);
             }
+
+
+            var libs = olibs.TerrainBuilder.Libraries.Where(l => usedObjects.Any(o => l.Template.Any(t => t.Name==o))).Distinct().ToList();
+            File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
         }
 
-        private static BoudingBox ComputeBox(PointF[] points)
+        private static void PlaceIsolatedTrees(AreaInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, OsmStreamSource filtered)
         {
-            int i;
+            var treeModels = olibs.TerrainBuilder.Libraries.FirstOrDefault(l => l.Name == "enoch_veg_tree");
 
-            double ax;
-            double ay;
-            double bx;
-            double by;
+            var result = new StringBuilder();
 
-            double dx;
-            double dy;
-
-            double minx;
-            double miny;
-            double maxx;
-            double maxy;
-
-            double theta;
-            double minarea;
-            double area;
-
-            double cw = 0;
-            double ch = 0;
-            double cx = 0;
-            double cy = 0;
-            double ca = 0;
-
-            int j;
-
-            minarea = double.MaxValue;
-
-            ax = points[points.Length - 1].X;
-            ay = points[points.Length - 1].Y;
-
-            for (i = 0; i < points.Length; i++)
+            var trees = filtered.Where(o => o.Type == OsmGeoType.Node && Get(o.Tags, "natural") == "tree").ToList();
+            foreach (var tree in trees)
             {
-                bx = points[i].X; by = points[i].Y;
-                dx = (ax - bx);
-                dy = (ay - by);
-                theta = Math.Atan2(dy, dx);
-                maxx = double.MinValue;
-                maxy = double.MinValue;
-                minx = double.MaxValue;
-                miny = double.MaxValue;
-                for (j = 0; j < points.Length; j++)
+                var pos = ToTerrainBuilderPoint(area.StartPointUTM, (Node)tree);  
+                if (area.IsInside(pos))
                 {
-                    var rx = ((points[j].X - ax) * Math.Cos(theta)) + ((points[j].Y - ay) * Math.Sin(theta));
-                    var ry = ((points[j].Y - ay) * Math.Cos(theta)) - ((points[j].X - ax) * Math.Sin(theta));
-                    if (rx > maxx) { maxx = rx; }
-                    if (ry > maxy) { maxy = ry; }
-                    if (rx < minx) { minx = rx; }
-                    if (ry < miny) { miny = ry; }
+                    var random = new Random((int)Math.Truncate(pos.X + pos.Y));
+                    var obj = treeModels.Template[random.Next(0, treeModels.Template.Count)];
+                    result.AppendFormat(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;0.0;",
+                    obj.Name,
+                    pos.X,
+                    pos.Y,
+                    random.NextDouble() * 360.0
+                    );
+                    usedObjects.Add(obj.Name);
+                    result.AppendLine();
                 }
-                area = (maxx - minx) * (maxy - miny);
-                if (area < minarea)
-                {
-                    minarea = area;
-                    cw = (maxx - minx);
-                    ch = (maxy - miny);
-                    ca = theta * 180.0 / Math.PI;
-                    cx = ((minx + maxx) * Math.Cos(-theta) / 2) + ((miny + maxy) * Math.Sin(-theta) / 2) + ax;
-                    cy = ((miny + maxy) * Math.Cos(-theta) / 2) - ((minx + maxx) * Math.Sin(-theta) / 2) + ay;
-
-                    //var c1xp = (minx * Math.Cos(-theta)) + (miny * Math.Sin(-theta)) + ax;
-                    //var c1yp = (miny * Math.Cos(-theta)) - (minx * Math.Sin(-theta)) + ay;
-                    //var c2xp = (maxx * Math.Cos(-theta)) + (miny * Math.Sin(-theta)) + ax;
-                    //var c2yp = (miny * Math.Cos(-theta)) - (maxx * Math.Sin(-theta)) + ay;
-                    //var c3xp = (maxx * Math.Cos(-theta)) + (maxy * Math.Sin(-theta)) + ax;
-                    //var c3yp = (maxy * Math.Cos(-theta)) - (maxx * Math.Sin(-theta)) + ay;
-                    //var c4xp = (minx * Math.Cos(-theta)) + (maxy * Math.Sin(-theta)) + ax;
-                    //var c4yp = (maxy * Math.Cos(-theta)) - (minx * Math.Sin(-theta)) + ay;
-                    //cx = (c3xp + c1xp) / 2;
-                    //cy = (c3yp + c1yp) / 2;
-                }
-                ax = bx;
-                ay = by;
             }
+            File.WriteAllText("trees.txt", result.ToString());
+        }
 
-            return new BoudingBox(cx, cy, cw, ch, ca);
+        private static void PlaceBuildings(AreaInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, List<CategorizedGeometry> toRender)
+        {
+            var result = new StringBuilder();
+            var buildings = toRender.Count(b => b.Category.IsBuilding);
+            var metas = toRender.Where(b => Category.BuildingCategorizers.Contains(b.Category)).ToList();
+            var done = 0;
+            foreach (var building in toRender.Where(b => b.Category.IsBuilding))
+            {
+                if (done % 100 == 0)
+                {
+                    Console.WriteLine($"Placing ... {Math.Round(done * 100.0 / buildings, 2)}% done");
+                }
+
+                if (building.BuildingCategory == null)
+                {
+                    building.BuildingCategory = metas.Where(m => m.Geometry.Contains(building.Geometry)).FirstOrDefault()?.BuildingCategory ?? BuildingCategory.Residential;
+                }
+
+                var points = ToTerrainBuilderPoints(area.StartPointUTM, building.Geometry.Coordinates).ToArray();
+
+
+                done++;
+
+                if (points.Any(p => !area.IsInside(p)))
+                {
+                    continue;
+                }
+
+                //var box = BoundingBox.Compute(ToPixelsPoints(startPointUTM, area.Height, building.Geometry.Coordinates).ToArray());
+                var box = BoundingBox.Compute(points);
+
+                var candidates = olibs.Libraries
+                    .Where(l => l.Category == building.BuildingCategory)
+                    .SelectMany(l => l.Objects.Where(o => o.Fits(box, 0.75f, 1.15f)))
+                    .ToList()
+                    .OrderByDescending(c => c.Surface)
+                    .Take(5)
+                    .ToList();
+
+                if (candidates.Count > 0)
+                {
+                    var random = new Random((int)Math.Truncate(box.Center.X + box.Center.Y));
+                    var obj = candidates[random.Next(0, candidates.Count)];
+
+                    var delta = obj.RotateToFit(box, 0.75f, 1.15f);
+                    if (delta == 0.0f)
+                    {
+                        result.AppendFormat(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;0.0;",
+                            obj.Name,
+                            box.Center.X + obj.CX,
+                            box.Center.Y + obj.CY,
+                            -box.Angle + delta
+                            );
+                        result.AppendLine();
+                        usedObjects.Add(obj.Name);
+                    }
+                }
+                else
+                {
+                    Trace.WriteLine($"Nothing fits {building.BuildingCategory} {box.Width} x {box.Height}");
+                }
+            }
+            File.WriteAllText("buildings.txt", result.ToString());
         }
 
         private static List<CategorizedGeometry> GetShapes(SnapshotDb db, OsmStreamSource filtered)
@@ -198,18 +223,18 @@ namespace ArmaRealMap
 
         private static void DrawShapes(AreaInfos area, UniversalTransverseMercator startPointUTM, List<CategorizedGeometry> toRender)
         {
-            var shapes = toRender.Count(b => b.Category != Category.Building);
+            var shapes = toRender.Count(b => !b.Category.IsBuilding);
 
             using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, Color.LightGreen))
             {
                 var done = 0;
-                foreach (var item in toRender.Where(b => b.Category != Category.Building).OrderByDescending(e => e.Category.Priority))
+                foreach (var item in toRender.Where(b => !b.Category.IsBuilding).OrderByDescending(e => e.Category.GroundTexturePriority))
                 {
                     if (done % 100 == 0)
                     {
                         Console.WriteLine($"Drawing ... {Math.Round(done * 100.0 / shapes, 2)}% done");
                     }
-                    DrawGeometry(startPointUTM, img, new SolidBrush(item.Category.Color), item.Geometry);
+                    DrawGeometry(startPointUTM, img, new SolidBrush(item.Category.GroundTextureColorCode), item.Geometry);
                     done++;
                 }
                 img.Save("osm.png");
@@ -219,7 +244,7 @@ namespace ArmaRealMap
         private static string Get(TagsCollectionBase tags, string key)
         {
             string value;
-            if (tags.TryGetValue(key, out value))
+            if (tags != null && tags.TryGetValue(key, out value))
             {
                 return value;
             }
@@ -285,6 +310,19 @@ namespace ArmaRealMap
             }
             if (tags.ContainsKey("building") && !tags.IsFalse("building"))
             {
+                switch(Get(tags, "building"))
+                {
+                    case "church": 
+                        return Category.BuildingChurch;
+                }
+                if (Get(tags, "historic") == "fort")
+                {
+                    return Category.BuildingHistoricalFort;
+                }
+                if (tags.ContainsKey("brand"))
+                {
+                    return Category.BuildingRetail;
+                }
                 return Category.Building;
             }
 
@@ -309,16 +347,16 @@ namespace ArmaRealMap
                 case "vineyard": return Category.FarmLand;
                 case "orchard": return Category.FarmLand;
                 case "meadow": return Category.FarmLand;
-                case "industrial": return Category.Concrete;
-                case "residential": return Category.Concrete;
+                case "industrial": return Category.Industrial;
+                case "residential": return Category.Residential;
                 case "cemetery": return Category.Concrete;
                 case "railway": return Category.Concrete;
-                case "retail": return Category.Concrete;
+                case "retail": return Category.Retail;
 
                 case "basin": return Category.Water;
                 case "reservoir": return Category.Water;
                 case "allotments": return Category.Grass;
-                //case "military": return Color.DarkRed;
+                case "military": return Category.Military;
             }
 
             switch (Get(tags, "natural"))
@@ -369,9 +407,18 @@ namespace ArmaRealMap
             return nodes
                 .Select(n => new CoordinateSharp.Coordinate(n.Y, n.X, eagerUTM).UTM)
                 .Select(u => new PointF(
-                    (float)(u.Easting - startPointUTM.Easting) + 200000f,
-                    (float)(u.Northing - startPointUTM.Northing)
+                    (float)u.Easting,
+                    (float)u.Northing
                 ));
+        }
+        private static PointF ToTerrainBuilderPoint(UniversalTransverseMercator startPointUTM, Node node)
+        {
+            var coord = new CoordinateSharp.Coordinate(node.Latitude.Value, node.Longitude.Value, eagerUTM).UTM;
+
+            return new PointF(
+                    (float)coord.Easting,
+                    (float)coord.Northing
+                );
         }
 
         private static AreaInfos GetArea(MilitaryGridReferenceSystem startPointMGRS, int size, int cellSize)

@@ -1,0 +1,2412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Library name="a3_struc_training" shape="rectangle" default_fill="-16777216" default_outline="-65536" tex="0">
+	<Template>
+		<Name>BlockConcrete_F</Name>
+		<File>a3\structures_f\Training\BlockConcrete_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1923155335</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Dirthump_1_F</Name>
+		<File>a3\structures_f\Training\Dirthump_1_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-705588688</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Dirthump_2_F</Name>
+		<File>a3\structures_f\Training\Dirthump_2_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-697327183</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Dirthump_3_F</Name>
+		<File>a3\structures_f\Training\Dirthump_3_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-689065678</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Dirthump_4_F</Name>
+		<File>a3\structures_f\Training\Dirthump_4_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-680804173</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>InvisibleTarget_F</Name>
+		<File>a3\structures_f\Training\InvisibleTarget_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1201172667</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Metal_Pole_F</Name>
+		<File>a3\structures_f\Training\Metal_Pole_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1029805047</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Obstacle_Bridge_F</Name>
+		<File>a3\structures_f\Training\Obstacle_Bridge_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-220079840</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Obstacle_Climb_F</Name>
+		<File>a3\structures_f\Training\Obstacle_Climb_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1161428812</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Obstacle_Crawl_F</Name>
+		<File>a3\structures_f\Training\Obstacle_Crawl_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-2129522370</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Obstacle_Cross_F</Name>
+		<File>a3\structures_f\Training\Obstacle_Cross_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-2125042473</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Obstacle_Pass_F</Name>
+		<File>a3\structures_f\Training\Obstacle_Pass_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1316602296</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Obstacle_Ramp_F</Name>
+		<File>a3\structures_f\Training\Obstacle_Ramp_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-985928247</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Obstacle_RunAround_F</Name>
+		<File>a3\structures_f\Training\Obstacle_RunAround_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-840728433</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Obstacle_saddle_F</Name>
+		<File>a3\structures_f\Training\Obstacle_saddle_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1781478814</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>RampConcreteHigh_F</Name>
+		<File>a3\structures_f\Training\RampConcreteHigh_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1830799072</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>RampConcrete_F</Name>
+		<File>a3\structures_f\Training\RampConcrete_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1837045182</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>ShootingPos_F</Name>
+		<File>a3\structures_f\Training\ShootingPos_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>532690552</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Shoot_House_Corner_F</Name>
+		<File>a3\structures_f\Training\Shoot_House_Corner_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1015555835</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Shoot_House_Panels_F</Name>
+		<File>a3\structures_f\Training\Shoot_House_Panels_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1480723285</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Shoot_House_Tunnel_F</Name>
+		<File>a3\structures_f\Training\Shoot_House_Tunnel_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1173313106</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Shoot_House_Wall_F</Name>
+		<File>a3\structures_f\Training\Shoot_House_Wall_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-35827</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1512580336</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Shoot_House_Wall_Long_F</Name>
+		<File>a3\structures_f\Training\Shoot_House_Wall_Long_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-35827</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-898860935</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Steel_Plate_F</Name>
+		<File>a3\structures_f\Training\Steel_Plate_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1871309495</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Steel_Plate_L_F</Name>
+		<File>a3\structures_f\Training\Steel_Plate_L_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>872510838</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Steel_Plate_Rabbit_F</Name>
+		<File>a3\structures_f\Training\Steel_Plate_Rabbit_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-385457346</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Steel_Plate_S_F</Name>
+		<File>a3\structures_f\Training\Steel_Plate_S_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>930341373</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_F</Name>
+		<File>a3\structures_f\Training\Target_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1889448568</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_Oval_F</Name>
+		<File>a3\structures_f\Training\Target_Oval_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1032629337</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_PopUp_F</Name>
+		<File>a3\structures_f\Training\Target_PopUp_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1043446213</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_PopUp_Large_F</Name>
+		<File>a3\structures_f\Training\Target_PopUp_Large_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1334031105</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_PopUp_Moving_90deg_F</Name>
+		<File>a3\structures_f\Training\Target_PopUp_Moving_90deg_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1002184902</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_PopUp_Moving_F</Name>
+		<File>a3\structures_f\Training\Target_PopUp_Moving_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>623240758</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_Rail_End_F</Name>
+		<File>a3\structures_f\Training\Target_Rail_End_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16711694</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>679871587</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_Rail_F</Name>
+		<File>a3\structures_f\Training\Target_Rail_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-16711694</Fill>
+		<Outline>-1</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-422890937</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>center</Name>
+		<File>a3\structures_f\Training\InvisibleTarget\center.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1763907435</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>sector02</Name>
+		<File>a3\structures_f\Training\InvisibleTarget\sector02.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>2129596360</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>sector03</Name>
+		<File>a3\structures_f\Training\InvisibleTarget\sector03.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>2129596361</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>sector04</Name>
+		<File>a3\structures_f\Training\InvisibleTarget\sector04.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>2129596362</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>sector05</Name>
+		<File>a3\structures_f\Training\InvisibleTarget\sector05.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>2129596363</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Cracked_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Cracked_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1878216059</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>310585963</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part01_Blue_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part01_Blue_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-716211983</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part01_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part01_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1877376726</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part01_Green_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part01_Green_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1947644474</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part01_Orange_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part01_Orange_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>609806981</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part01_Purple_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part01_Purple_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>861449907</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part01_Red_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part01_Red_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1541284280</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part02_Blue_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part02_Blue_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>2019633840</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part02_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part02_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1885638231</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part02_Green_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part02_Green_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1194356795</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part02_Orange_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part02_Orange_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-709907260</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part02_Purple_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part02_Purple_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-458264334</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part02_Red_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part02_Red_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>2051853513</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part03_Blue_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part03_Blue_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>460512367</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part03_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part03_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1893899736</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part03_Green_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part03_Green_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>441069116</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part03_Orange_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part03_Orange_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-2029621501</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part03_Purple_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part03_Purple_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1777978575</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part03_Red_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part03_Red_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1350024010</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part04_Blue_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part04_Blue_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1098609106</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part04_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part04_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1902161241</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part04_Green_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part04_Green_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-312218563</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part04_Orange_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part04_Orange_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>945631554</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part04_Purple_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part04_Purple_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1197274480</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Skeet_Clay_Part04_Red_F</Name>
+		<File>a3\structures_f\Training\SkeetMachine\Skeet_Clay_Part04_Red_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>648194507</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_PopUp_01_figure_F</Name>
+		<File>a3\structures_f_bootcamp\Training\Target_PopUp_01_figure_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>478134280</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_PopUp_01_mechanism_F</Name>
+		<File>a3\structures_f_bootcamp\Training\Target_PopUp_01_mechanism_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>297536163</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>BulletTrap_01_F</Name>
+		<File>a3\structures_f_mark\Training\BulletTrap_01_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-1858948904</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>ShootingMat_01_F</Name>
+		<File>a3\structures_f_mark\Training\ShootingMat_01_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>2130871146</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>ShootingMat_01_folded_F</Name>
+		<File>a3\structures_f_mark\Training\ShootingMat_01_folded_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>1718983747</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_Dueling_01_F</Name>
+		<File>a3\structures_f_mark\Training\Target_Dueling_01_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>496705771</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+	<Template>
+		<Name>Target_Swivel_01_F</Name>
+		<File>a3\structures_f_mark\Training\Target_Swivel_01_F.p3d</File>
+		<Date>2020-07-02 14:55:16.628765</Date>
+		<Archive></Archive>
+		<Fill>-9673539</Fill>
+		<Outline>-16777216</Outline>
+		<Scale>1.000000</Scale>
+		<Hash>-518573631</Hash>
+		<ScaleRandMin>0.000000</ScaleRandMin>
+		<ScaleRandMax>0.000000</ScaleRandMax>
+		<YawRandMin>0.000000</YawRandMin>
+		<YawRandMax>0.000000</YawRandMax>
+		<PitchRandMin>0.000000</PitchRandMin>
+		<PitchRandMax>0.000000</PitchRandMax>
+		<RollRandMin>0.000000</RollRandMin>
+		<RollRandMax>0.000000</RollRandMax>
+		<TexLLU>0.000000</TexLLU>
+		<TexLLV>0.000000</TexLLV>
+		<TexURU>1.000000</TexURU>
+		<TexURV>1.000000</TexURV>
+		<BBRadius>-1.000000</BBRadius>
+		<BBHScale>1.000000</BBHScale>
+		<AutoCenter>0</AutoCenter>
+		<XShift>0.000000</XShift>
+		<YShift>0.000000</YShift>
+		<ZShift>0.000000</ZShift>
+		<Height>0.000000</Height>
+		<BoundingMin X="999.000000" Y="999.000000" Z="999.000000"></BoundingMin>
+		<BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingMax>
+		<BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000"></BoundingCenter>
+		<Placement></Placement>
+	</Template>
+</Library>

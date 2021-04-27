@@ -1,4 +1,6 @@
-﻿using CoordinateSharp;
+﻿using System;
+using CoordinateSharp;
+using SixLabors.ImageSharp;
 
 namespace ArmaRealMap
 {
@@ -15,5 +17,11 @@ namespace ArmaRealMap
 
         public int Height { get { return Size * CellSize; } }
         public int Width { get { return Size * CellSize; } }
+
+        internal bool IsInside(PointF p)
+        {
+            return p.X > StartPointUTM.Easting && p.X < StartPointUTM.Easting + Width &&
+                p.Y > StartPointUTM.Northing && p.Y < StartPointUTM.Northing + Height;
+        }
     }
 }

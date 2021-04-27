@@ -34,5 +34,7 @@ namespace ArmaRealMap
         public ConfigORTHO ORTHO { get; set; }
         public string OSM { get; set; }
         public ConfigSRTM SRTM { get; set; }
+
+        public string Libraries { get; set; }
     }
 }

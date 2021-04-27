@@ -1,0 +1,2247 @@
+<?xml version="1.0" ?>
+<Library name="enoch_veg_tree" shape="elipse" default_fill="-16777216" default_outline="-65536" tex="0">
+    <Template>
+        <Name>D_Betula_pendula_stem</Name>
+        <File>a3\vegetation_f_enoch\tree\d_betula_pendula_stem.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>40865812</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>0.711095</BBRadius>
+        <BBHScale>6.330554</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>0.485065</Height>
+        <BoundingMin X="-4.713910" Y="-0.167209" Z="-0.679099" />
+        <BoundingMax X="4.289340" Y="0.802920" Z="0.743091" />
+        <BoundingCenter X="-0.212285" Y="0.317856" Z="0.031996" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>D_Betula_pendula_stump</Name>
+        <File>a3\vegetation_f_enoch\tree\d_betula_pendula_stump.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>828992876</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>0.874331</BBRadius>
+        <BBHScale>0.990446</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>2.594030</Height>
+        <BoundingMin X="-0.893255" Y="-1.080380" Z="-0.949782" />
+        <BoundingMax X="0.838701" Y="4.107680" Z="0.798880" />
+        <BoundingCenter X="-0.027277" Y="1.513650" Z="-0.075451" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>d_FagusSylvatica_fallen</Name>
+        <File>a3\vegetation_f_enoch\tree\d_fagussylvatica_fallen.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>888761230</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.969380</BBRadius>
+        <BBHScale>2.495649</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>3.863885</Height>
+        <BoundingMin X="-10.778099" Y="-3.190970" Z="-4.149980" />
+        <BoundingMax X="9.034260" Y="4.536800" Z="3.788780" />
+        <BoundingCenter X="-0.871920" Y="0.672915" Z="-0.180600" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>d_FagusSylvatica_fallenb</Name>
+        <File>a3\vegetation_f_enoch\tree\d_fagussylvatica_fallenb.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1961850964</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.319665</BBRadius>
+        <BBHScale>1.656894</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>0.882709</Height>
+        <BoundingMin X="-2.424020" Y="-0.237258" Z="-1.160170" />
+        <BoundingMax X="1.949070" Y="1.528160" Z="1.479160" />
+        <BoundingCenter X="-0.237475" Y="0.645451" Z="0.159495" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>d_FagusSylvatica_fallenc</Name>
+        <File>a3\vegetation_f_enoch\tree\d_fagussylvatica_fallenc.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1961850965</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>0.651599</BBRadius>
+        <BBHScale>1.917927</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>0.240776</Height>
+        <BoundingMin X="-1.308780" Y="-0.093606" Z="-0.356932" />
+        <BoundingMax X="1.190660" Y="0.387947" Z="0.946267" />
+        <BoundingCenter X="-0.059060" Y="0.147171" Z="0.294667" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>d_FagusSylvatica_stumpb</Name>
+        <File>a3\vegetation_f_enoch\tree\d_fagussylvatica_stumpb.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>51106229</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.569710</BBRadius>
+        <BBHScale>1.195511</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>2.112795</Height>
+        <BoundingMin X="-1.809370" Y="-1.151120" Z="-1.549310" />
+        <BoundingMax X="1.943840" Y="3.074470" Z="1.590110" />
+        <BoundingCenter X="0.067235" Y="0.961675" Z="0.020400" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>d_FagusSylvatica_stumpc</Name>
+        <File>a3\vegetation_f_enoch\tree\d_fagussylvatica_stumpc.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>51106230</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>0.943748</BBRadius>
+        <BBHScale>1.000000</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>0.587034</Height>
+        <BoundingMin X="-0.883934" Y="-0.582752" Z="-0.944657" />
+        <BoundingMax X="1.003561" Y="0.591315" Z="0.942839" />
+        <BoundingCenter X="0.059813" Y="0.004282" Z="-0.000909" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>D_Picea_stem1</Name>
+        <File>a3\vegetation_f_enoch\tree\d_picea_stem1.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>567515700</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.719725</BBRadius>
+        <BBHScale>3.449935</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>1.423663</Height>
+        <BoundingMin X="-5.266725" Y="-1.089545" Z="-1.706403" />
+        <BoundingMax X="6.599158" Y="1.757781" Z="1.733047" />
+        <BoundingCenter X="0.666216" Y="0.334118" Z="0.013322" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>D_Picea_stem2</Name>
+        <File>a3\vegetation_f_enoch\tree\d_picea_stem2.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>567515701</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.709567</BBRadius>
+        <BBHScale>3.356837</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>1.358819</Height>
+        <BoundingMin X="-6.570723" Y="-0.682145" Z="-1.480316" />
+        <BoundingMax X="4.906752" Y="2.035492" Z="1.938818" />
+        <BoundingCenter X="-0.831985" Y="0.676674" Z="0.229251" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>D_Picea_stump</Name>
+        <File>a3\vegetation_f_enoch\tree\d_picea_stump.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>699699843</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.069338</BBRadius>
+        <BBHScale>0.976155</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>0.736960</Height>
+        <BoundingMin X="-1.183286" Y="-0.327420" Z="-1.174040" />
+        <BoundingMax X="0.904393" Y="1.146500" Z="0.964636" />
+        <BoundingCenter X="-0.139446" Y="0.409540" Z="-0.104702" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_acer2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_acer2s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1666059717</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>9.817995</BBRadius>
+        <BBHScale>0.961255</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>11.405003</Height>
+        <BoundingMin X="-10.097301" Y="-2.073205" Z="-9.920830" />
+        <BoundingMax X="8.777890" Y="20.736801" Z="9.715160" />
+        <BoundingCenter X="-0.659705" Y="9.331799" Z="-0.102835" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>T_Betula_pendula_1s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_betula_pendula_1s.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1055210339</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.617090</BBRadius>
+        <BBHScale>1.778641</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>2.615554</Height>
+        <BoundingMin X="-2.561036" Y="-0.587608" Z="-1.669159" />
+        <BoundingMax X="3.191406" Y="4.643500" Z="1.565020" />
+        <BoundingCenter X="0.315185" Y="2.027946" Z="-0.052069" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>T_Betula_pendula_2f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_betula_pendula_2f.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1055144753</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>5.489546</BBRadius>
+        <BBHScale>0.679145</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>6.870770</Height>
+        <BoundingMin X="-3.537530" Y="-1.081340" Z="-5.369009" />
+        <BoundingMax X="3.918860" Y="12.660201" Z="5.610083" />
+        <BoundingCenter X="0.190665" Y="5.789431" Z="0.120537" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>T_Betula_pendula_2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_betula_pendula_2s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1055144740</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.904410</BBRadius>
+        <BBHScale>1.734094</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>5.156535</Height>
+        <BoundingMin X="-6.984213" Y="-1.103240" Z="-3.606900" />
+        <BoundingMax X="6.557014" Y="9.209830" Z="4.201920" />
+        <BoundingCenter X="-0.213599" Y="4.053295" Z="0.297510" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>T_Betula_pendula_2w</Name>
+        <File>a3\vegetation_f_enoch\tree\t_betula_pendula_2w.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1055144736</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>4.334800</BBRadius>
+        <BBHScale>1.728797</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>3.590785</Height>
+        <BoundingMin X="-7.493291" Y="-0.962310" Z="-4.607910" />
+        <BoundingMax X="7.494688" Y="6.219260" Z="4.061690" />
+        <BoundingCenter X="0.000699" Y="2.628475" Z="-0.273110" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>T_Betula_pendula_3f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_betula_pendula_3f.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1055079154</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>7.869692</BBRadius>
+        <BBHScale>1.222952</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>9.130051</Height>
+        <BoundingMin X="-7.013498" Y="-1.159800" Z="-5.155980" />
+        <BoundingMax X="12.235022" Y="17.100302" Z="10.583405" />
+        <BoundingCenter X="2.610762" Y="7.970251" Z="2.713712" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>T_Betula_pendula_3s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_betula_pendula_3s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1055079141</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>11.195412</BBRadius>
+        <BBHScale>0.715957</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>7.745775</Height>
+        <BoundingMin X="-10.528090" Y="-1.195550" Z="-11.073698" />
+        <BoundingMax X="5.502771" Y="14.296000" Z="11.317125" />
+        <BoundingCenter X="-2.512659" Y="6.550225" Z="0.121714" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_fagus2f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagus2f.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1213099277</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>11.140755</BBRadius>
+        <BBHScale>1.015190</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>16.809959</Height>
+        <BoundingMin X="-13.436029" Y="-3.819111" Z="-10.145537" />
+        <BoundingMax X="9.183943" Y="29.800808" Z="12.135972" />
+        <BoundingCenter X="-2.126043" Y="12.990849" Z="0.995217" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_fagus2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagus2s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1213099264</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>6.084400</BBRadius>
+        <BBHScale>1.060849</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>9.660886</Height>
+        <BoundingMin X="-5.423400" Y="-2.081670" Z="-5.360830" />
+        <BoundingMax X="7.485860" Y="17.240101" Z="6.807970" />
+        <BoundingCenter X="1.031230" Y="7.579215" Z="0.723570" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_1f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_1f.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1555023695</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.805895</BBRadius>
+        <BBHScale>1.106078</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>7.657834</Height>
+        <BoundingMin X="-1.899020" Y="-0.565368" Z="-2.096240" />
+        <BoundingMax X="2.095900" Y="14.750300" Z="1.515550" />
+        <BoundingCenter X="0.098440" Y="7.092466" Z="-0.290345" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_1fb</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_1fb.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1768878893</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.132195</BBRadius>
+        <BBHScale>1.488600</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>3.308121</Height>
+        <BoundingMin X="-1.998950" Y="-0.610061" Z="-1.230610" />
+        <BoundingMax X="1.371820" Y="6.006180" Z="1.033780" />
+        <BoundingCenter X="-0.313565" Y="2.698060" Z="-0.098415" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_1fc</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_1fc.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1768878892</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>4.985785</BBRadius>
+        <BBHScale>0.824855</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>10.951252</Height>
+        <BoundingMin X="-4.168310" Y="-0.647002" Z="-5.091010" />
+        <BoundingMax X="4.056790" Y="21.255501" Z="4.880561" />
+        <BoundingCenter X="-0.055760" Y="10.304249" Z="-0.105225" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_1fd</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_1fd.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1768878891</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>4.008670</BBRadius>
+        <BBHScale>1.221068</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>11.836777</Height>
+        <BoundingMin X="-3.952000" Y="-2.856250" Z="-4.834080" />
+        <BoundingMax X="5.837720" Y="20.817303" Z="3.183260" />
+        <BoundingCenter X="0.942860" Y="8.980526" Z="-0.825410" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_1fe</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_1fe.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1768878890</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>5.323250</BBRadius>
+        <BBHScale>0.968328</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>10.234215</Height>
+        <BoundingMin X="-4.852871" Y="-0.953230" Z="-4.859650" />
+        <BoundingMax X="5.456430" Y="19.515200" Z="5.786850" />
+        <BoundingCenter X="0.301780" Y="9.280985" Z="0.463600" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_1s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_1s.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1555023708</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>2.217700</BBRadius>
+        <BBHScale>0.957120</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>4.305807</Height>
+        <BoundingMin X="-2.050461" Y="-0.240056" Z="-2.353353" />
+        <BoundingMax X="2.194749" Y="8.371558" Z="2.082048" />
+        <BoundingCenter X="0.072144" Y="4.065751" Z="-0.135653" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_2d</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_2d.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1555089292</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.239970</BBRadius>
+        <BBHScale>1.085512</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>9.475826</Height>
+        <BoundingMin X="-3.892820" Y="-0.965752" Z="-2.969090" />
+        <BoundingMax X="3.141230" Y="17.985901" Z="3.510850" />
+        <BoundingCenter X="-0.375795" Y="8.510075" Z="0.270880" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_2f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_2f.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1555089294</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>6.389006</BBRadius>
+        <BBHScale>0.972701</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>13.283015</Height>
+        <BoundingMin X="-7.095890" Y="-0.894930" Z="-6.231491" />
+        <BoundingMax X="5.333290" Y="25.671101" Z="6.546520" />
+        <BoundingCenter X="-0.881300" Y="12.388085" Z="0.157515" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_2fb</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_2fb.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1760617388</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>6.987975</BBRadius>
+        <BBHScale>0.650521</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>12.180201</Height>
+        <BoundingMin X="-4.758080" Y="-0.958099" Z="-6.652600" />
+        <BoundingMax X="4.333570" Y="23.402302" Z="7.323350" />
+        <BoundingCenter X="-0.212255" Y="11.222101" Z="0.335375" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_2fc</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_2fc.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1760617387</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>5.426890</BBRadius>
+        <BBHScale>0.800552</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>12.248680</Height>
+        <BoundingMin X="-4.373890" Y="-1.510760" Z="-3.678120" />
+        <BoundingMax X="4.315130" Y="22.986601" Z="7.175661" />
+        <BoundingCenter X="-0.029380" Y="10.737921" Z="1.748770" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_2s.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1555089307</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>6.166819</BBRadius>
+        <BBHScale>0.937189</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>8.691312</Height>
+        <BoundingMin X="-5.171542" Y="-1.042884" Z="-6.192573" />
+        <BoundingMax X="6.387412" Y="16.339739" Z="6.141065" />
+        <BoundingCenter X="0.607935" Y="7.648427" Z="-0.025754" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_2sb</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_2sb.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1759764601</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>5.946065</BBRadius>
+        <BBHScale>1.082296</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>9.208700</Height>
+        <BoundingMin X="-6.383030" Y="-1.388800" Z="-5.683110" />
+        <BoundingMax X="6.487780" Y="17.028601" Z="6.209020" />
+        <BoundingCenter X="0.052375" Y="7.819901" Z="0.262955" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_3d</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_3d.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1555154891</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.543260</BBRadius>
+        <BBHScale>1.344816</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>11.370607</Height>
+        <BoundingMin X="-5.015274" Y="-1.391370" Z="-3.668649" />
+        <BoundingMax X="4.514788" Y="21.349844" Z="3.417870" />
+        <BoundingCenter X="-0.250243" Y="9.979237" Z="-0.125389" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_3f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_3f.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1555154893</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>6.265845</BBRadius>
+        <BBHScale>0.993024</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>14.446415</Height>
+        <BoundingMin X="-6.234521" Y="-1.290230" Z="-6.762610" />
+        <BoundingMax X="6.209750" Y="27.602600" Z="5.769080" />
+        <BoundingCenter X="-0.012385" Y="13.156185" Z="-0.496765" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_3fb</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_3fb.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1752355883</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>7.487795</BBRadius>
+        <BBHScale>0.805789</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>13.724991</Height>
+        <BoundingMin X="-5.170470" Y="-1.100680" Z="-7.463690" />
+        <BoundingMax X="6.896701" Y="26.349302" Z="7.511900" />
+        <BoundingCenter X="0.863115" Y="12.624311" Z="0.024105" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_FagusSylvatica_3s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_fagussylvatica_3s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1555154906</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>9.987013</BBRadius>
+        <BBHScale>0.992895</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>13.270077</Height>
+        <BoundingMin X="-10.782591" Y="-1.484224" Z="-10.587049" />
+        <BoundingMax X="9.049513" Y="25.055929" Z="9.386976" />
+        <BoundingCenter X="-0.866539" Y="11.785852" Z="-0.600037" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_juglansRegia_2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_juglansregia_2s.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1224996543</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>8.020745</BBRadius>
+        <BBHScale>1.059803</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>9.877710</Height>
+        <BoundingMin X="-8.921322" Y="-2.765221" Z="-8.546890" />
+        <BoundingMax X="8.079491" Y="16.990200" Z="7.494600" />
+        <BoundingCenter X="-0.420916" Y="7.112490" Z="-0.526145" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_juglansRegia_3s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_juglansregia_3s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1225062142</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>13.844851</BBRadius>
+        <BBHScale>1.021524</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>13.278805</Height>
+        <BoundingMin X="-11.906700" Y="-4.929610" Z="-13.431101" />
+        <BoundingMax X="16.379002" Y="21.628000" Z="14.258600" />
+        <BoundingCenter X="2.236151" Y="8.349195" Z="0.413750" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_malusDomestica_2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_malusdomestica_2s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1599409576</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>4.465045</BBRadius>
+        <BBHScale>1.008359</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>4.803938</Height>
+        <BoundingMin X="-4.509820" Y="-0.515656" Z="-4.513590" />
+        <BoundingMax X="4.494920" Y="9.092220" Z="4.416500" />
+        <BoundingCenter X="-0.007450" Y="4.288282" Z="-0.048545" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_malusDomestica_3s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_malusdomestica_3s.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1599475175</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>6.014646</BBRadius>
+        <BBHScale>1.000000</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>7.003036</Height>
+        <BoundingMin X="-6.065721" Y="-0.672273" Z="-6.028721" />
+        <BoundingMax X="5.963571" Y="13.333800" Z="6.000570" />
+        <BoundingCenter X="-0.051075" Y="6.330764" Z="-0.014075" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PiceaAbiesNativitatis_2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabiesnativitatis_2s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-492990331</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>4.305486</BBRadius>
+        <BBHScale>0.982532</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>9.261173</Height>
+        <BoundingMin X="-4.222380" Y="-1.347880" Z="-4.218240" />
+        <BoundingMax X="4.238180" Y="17.174467" Z="4.392732" />
+        <BoundingCenter X="0.007900" Y="7.913294" Z="0.087246" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PiceaAbies_1f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_1f.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1641937369</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>2.043750</BBRadius>
+        <BBHScale>0.984670</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>4.413132</Height>
+        <BoundingMin X="-1.984690" Y="-0.822592" Z="-2.040430" />
+        <BoundingMax X="2.040150" Y="8.003671" Z="2.047070" />
+        <BoundingCenter X="0.027730" Y="3.590539" Z="0.003320" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PiceaAbies_1s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_1s.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1641937382</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.585920</BBRadius>
+        <BBHScale>1.077629</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>2.447591</Height>
+        <BoundingMin X="-1.709034" Y="-0.799372" Z="-1.572980" />
+        <BoundingMax X="1.709034" Y="4.095810" Z="1.598860" />
+        <BoundingCenter X="0.000000" Y="1.648219" Z="0.012940" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PiceaAbies_1sb</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_1sb.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>260472828</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.487105</BBRadius>
+        <BBHScale>0.959656</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>2.446439</Height>
+        <BoundingMin X="-1.440350" Y="-0.891517" Z="-1.403610" />
+        <BoundingMax X="1.413870" Y="4.001360" Z="1.570600" />
+        <BoundingCenter X="-0.013240" Y="1.554922" Z="0.083495" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_piceaabies_2d</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_2d.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1427690006</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.237305</BBRadius>
+        <BBHScale>1.241941</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>8.514971</Height>
+        <BoundingMin X="-1.666550" Y="-1.441640" Z="-1.112880" />
+        <BoundingMax X="1.406770" Y="15.588301" Z="1.361730" />
+        <BoundingCenter X="-0.129890" Y="7.073330" Z="0.124425" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PiceaAbies_2f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_2f.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1642002968</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.573265</BBRadius>
+        <BBHScale>0.897035</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>11.982056</Height>
+        <BoundingMin X="-3.077250" Y="-2.280510" Z="-3.371430" />
+        <BoundingMax X="3.333440" Y="21.683601" Z="3.775100" />
+        <BoundingCenter X="0.128095" Y="9.701546" Z="0.201835" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PiceaAbies_2fb</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_2fb.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>267881546</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.541960</BBRadius>
+        <BBHScale>0.882326</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>12.038111</Height>
+        <BoundingMin X="-3.461670" Y="-1.580720" Z="-3.745600" />
+        <BoundingMax X="2.788660" Y="22.495501" Z="3.338320" />
+        <BoundingCenter X="-0.336505" Y="10.457390" Z="-0.203640" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PiceaAbies_2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_2s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1642002981</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>4.196885</BBRadius>
+        <BBHScale>1.007957</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>8.834291</Height>
+        <BoundingMin X="-4.222380" Y="-1.347880" Z="-4.218240" />
+        <BoundingMax X="4.238180" Y="16.320702" Z="4.175530" />
+        <BoundingCenter X="0.007900" Y="7.486411" Z="-0.021355" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PiceaAbies_2sb</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_2sb.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>268734333</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.647785</BBRadius>
+        <BBHScale>1.007145</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>9.074190</Height>
+        <BoundingMin X="-3.599780" Y="-1.288380" Z="-3.828500" />
+        <BoundingMax X="3.747920" Y="16.860001" Z="3.467070" />
+        <BoundingCenter X="0.074070" Y="7.785810" Z="-0.180715" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_piceaabies_3d</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_3d.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1427755605</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>2.711380</BBRadius>
+        <BBHScale>1.070770</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>12.693996</Height>
+        <BoundingMin X="-3.201920" Y="-2.395190" Z="-2.773990" />
+        <BoundingMax X="2.604610" Y="22.992802" Z="2.648770" />
+        <BoundingCenter X="-0.298655" Y="10.298805" Z="-0.062610" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PiceaAbies_3f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_3f.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1642068567</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>4.271255</BBRadius>
+        <BBHScale>0.964845</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>14.605995</Height>
+        <BoundingMin X="-4.207231" Y="-2.366890" Z="-4.575140" />
+        <BoundingMax X="4.034970" Y="26.845100" Z="3.967371" />
+        <BoundingCenter X="-0.086130" Y="12.239105" Z="-0.303885" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PiceaAbies_3s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_piceaabies_3s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>1642068580</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>7.171460</BBRadius>
+        <BBHScale>1.019619</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>14.600166</Height>
+        <BoundingMin X="-7.435751" Y="-3.829030" Z="-7.319310" />
+        <BoundingMax X="7.188560" Y="25.371302" Z="7.023610" />
+        <BoundingCenter X="-0.123595" Y="10.771135" Z="-0.147850" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_1f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_1f.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1132102362</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.864340</BBRadius>
+        <BBHScale>0.980092</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>2.423913</Height>
+        <BoundingMin X="-1.869390" Y="-0.493567" Z="-1.839800" />
+        <BoundingMax X="1.785060" Y="4.354260" Z="1.888880" />
+        <BoundingCenter X="-0.042165" Y="1.930346" Z="0.024540" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_1s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_1s.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1132102349</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.096080</BBRadius>
+        <BBHScale>0.981060</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>1.332813</Height>
+        <BoundingMin X="-1.072750" Y="-0.206845" Z="-1.110600" />
+        <BoundingMax X="1.077890" Y="2.458780" Z="1.081560" />
+        <BoundingCenter X="0.002570" Y="1.125968" Z="-0.014520" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_2f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_2f.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1132036763</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.017210</BBRadius>
+        <BBHScale>0.950428</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>11.776778</Height>
+        <BoundingMin X="-2.768780" Y="-0.881254" Z="-2.744570" />
+        <BoundingMax X="2.966500" Y="22.672302" Z="3.289850" />
+        <BoundingCenter X="0.098860" Y="10.895524" Z="0.272640" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_2fb</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_2fb.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-495068099</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.599560</BBRadius>
+        <BBHScale>1.076265</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>11.666260</Height>
+        <BoundingMin X="-4.399830" Y="-0.781118" Z="-3.652880" />
+        <BoundingMax X="3.348330" Y="22.551401" Z="3.546240" />
+        <BoundingCenter X="-0.525750" Y="10.885141" Z="-0.053320" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_2s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1132036750</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.377640</BBRadius>
+        <BBHScale>0.983130</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>9.576810</Height>
+        <BoundingMin X="-3.282610" Y="-1.141920" Z="-3.377640" />
+        <BoundingMax X="3.358710" Y="18.011700" Z="3.377640" />
+        <BoundingCenter X="0.038050" Y="8.434890" Z="0.000000" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_2sb</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_2sb.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-494215312</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.317095</BBRadius>
+        <BBHScale>0.902324</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>8.539673</Height>
+        <BoundingMin X="-3.145770" Y="-0.859946" Z="-3.505960" />
+        <BoundingMax X="2.840420" Y="16.219400" Z="3.128230" />
+        <BoundingCenter X="-0.152675" Y="7.679728" Z="-0.188865" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_3d</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_3d.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1131971166</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.190170</BBRadius>
+        <BBHScale>0.998766</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>9.892151</Height>
+        <BoundingMin X="-3.096710" Y="-1.650800" Z="-3.258060" />
+        <BoundingMax X="3.275760" Y="18.133501" Z="3.122280" />
+        <BoundingCenter X="0.089525" Y="8.241350" Z="-0.067890" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_3f</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_3f.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1131971164</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.830880</BBRadius>
+        <BBHScale>1.054672</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>12.754581</Height>
+        <BoundingMin X="-3.860810" Y="-1.040160" Z="-3.313180" />
+        <BoundingMax X="4.219831" Y="24.469002" Z="4.348580" />
+        <BoundingCenter X="0.179510" Y="11.714420" Z="0.517700" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_3fb</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_3fb.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-486806594</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.488545</BBRadius>
+        <BBHScale>1.135353</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>11.579748</Height>
+        <BoundingMin X="-3.622650" Y="-0.920196" Z="-3.568820" />
+        <BoundingMax X="4.298810" Y="22.239302" Z="3.408270" />
+        <BoundingCenter X="0.338080" Y="10.659554" Z="-0.080275" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_3fc</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_3fc.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-486806593</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.703195</BBRadius>
+        <BBHScale>1.188703</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>11.849720</Height>
+        <BoundingMin X="-1.371440" Y="-1.013741" Z="-1.759710" />
+        <BoundingMax X="7.432561" Y="22.685699" Z="5.646680" />
+        <BoundingCenter X="3.030560" Y="10.835979" Z="1.943485" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_PinusSylvestris_3s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pinussylvestris_3s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1131971151</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>5.194085</BBRadius>
+        <BBHScale>1.054051</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>12.308245</Height>
+        <BoundingMin X="-5.576740" Y="-1.862590" Z="-5.699420" />
+        <BoundingMax X="5.372920" Y="22.753901" Z="4.688750" />
+        <BoundingCenter X="-0.101910" Y="10.445656" Z="-0.505335" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_populusn3s_f_1</Name>
+        <File>a3\vegetation_f_enoch\tree\t_populusn3s_f.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-2029946100</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>6.502358</BBRadius>
+        <BBHScale>0.930410</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>15.629604</Height>
+        <BoundingMin X="-5.960912" Y="-0.759208" Z="-6.054474" />
+        <BoundingMax X="6.138808" Y="30.500000" Z="6.950243" />
+        <BoundingCenter X="0.088948" Y="14.870396" Z="0.447884" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_pyrusCommunis_2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pyruscommunis_2s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-466229131</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>3.148000</BBRadius>
+        <BBHScale>1.012983</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>4.047558</Height>
+        <BoundingMin X="-3.263000" Y="-0.421156" Z="-3.191570" />
+        <BoundingMax X="3.114740" Y="7.673960" Z="3.104430" />
+        <BoundingCenter X="-0.074130" Y="3.626402" Z="-0.043570" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_pyrusCommunis_3s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_pyruscommunis_3s.p3d</File>
+        <Date>04/26/21 20:26:40</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-466163532</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>4.843656</BBRadius>
+        <BBHScale>1.016806</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>6.729022</Height>
+        <BoundingMin X="-5.206690" Y="-0.451444" Z="-4.666181" />
+        <BoundingMax X="4.643430" Y="13.006600" Z="5.021131" />
+        <BoundingCenter X="-0.281630" Y="6.277578" Z="0.177475" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_salix2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_salix2s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1079898333</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>9.561765</BBRadius>
+        <BBHScale>1.016352</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>7.562094</Height>
+        <BoundingMin X="-9.263181" Y="-1.980772" Z="-8.922009" />
+        <BoundingMax X="10.173059" Y="13.143415" Z="10.201521" />
+        <BoundingCenter X="0.454939" Y="5.581322" Z="0.639756" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_sorbus2s</Name>
+        <File>a3\vegetation_f_enoch\tree\t_sorbus2s.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>740155670</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>6.501421</BBRadius>
+        <BBHScale>1.169055</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>8.869112</Height>
+        <BoundingMin X="-6.129677" Y="-1.667063" Z="-7.040359" />
+        <BoundingMax X="9.071362" Y="16.071161" Z="5.962482" />
+        <BoundingCenter X="1.470842" Y="7.202049" Z="-0.538939" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>t_stub_picea</Name>
+        <File>a3\vegetation_f_enoch\tree\t_stub_picea.p3d</File>
+        <Date>04/26/21 20:26:41</Date>
+        <Archive></Archive>
+        <Fill>-16760832</Fill>
+        <Outline>-1</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>279839520</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>1.288570</BBRadius>
+        <BBHScale>0.997513</BBHScale>
+        <AutoCenter>1</AutoCenter>
+        <XShift>-0.000000</XShift>
+        <YShift>-0.000000</YShift>
+        <ZShift>-0.000000</ZShift>
+        <Height>0.709061</Height>
+        <BoundingMin X="-1.311275" Y="-0.885597" Z="-1.492669" />
+        <BoundingMax X="1.259456" Y="0.532525" Z="1.084471" />
+        <BoundingCenter X="-0.025909" Y="-0.176536" Z="-0.204099" />
+        <Placement></Placement>
+    </Template>
+</Library>
