@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="CoordinateSharp" Version="2.5.2.1" />
     <PackageReference Include="FreeImage-dotnet-core" Version="4.3.6" />
+    <PackageReference Include="NetTopologySuite.IO.ShapeFile" Version="2.0.0" />
     <PackageReference Include="OsmSharp" Version="7.0.0-pre014" />
     <PackageReference Include="OsmSharp.Geo" Version="7.0.0-pre014" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />

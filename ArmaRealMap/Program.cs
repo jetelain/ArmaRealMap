@@ -25,6 +25,12 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using SRTM;
 using SRTM.Sources.NASA;
+using NetTopologySuite.Features;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using OsmSharp;
+using OsmSharp.Geo;
+using OsmSharp.Streams;
 
 namespace ArmaRealMap
 {
@@ -86,11 +92,13 @@ namespace ArmaRealMap
 
                 Console.WriteLine("Processing...");
 
-                PlaceIsolatedTrees(area, olibs, usedObjects, filtered);
-
                 var toRender = GetShapes(db, filtered);
 
-                PlaceBuildings(area, olibs, usedObjects, toRender);
+                ExportForestAsShapeFile(area, toRender);
+
+                //PlaceIsolatedTrees(area, olibs, usedObjects, filtered);
+
+                //PlaceBuildings(area, olibs, usedObjects, toRender);
 
                 //DrawShapes(area, startPointUTM, toRender);
             }
@@ -98,6 +106,81 @@ namespace ArmaRealMap
 
             var libs = olibs.TerrainBuilder.Libraries.Where(l => usedObjects.Any(o => l.Template.Any(t => t.Name==o))).Distinct().ToList();
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
+        }
+
+        private static void ExportForestAsShapeFile(AreaInfos area, List<CategorizedGeometry> toRender)
+        {
+            var forest = toRender.Where(f => f.Category == Category.Forest).ToList();
+            var attributesTable = new AttributesTable();
+            var features = forest.SelectMany(f => ToPolygon(area, f.Geometry)).Select(f => new Feature(f, attributesTable)).ToList();
+            var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
+            var shapeWriter = new ShapefileDataWriter("forest.shp", new GeometryFactory())
+            {
+                Header = header
+            };
+            shapeWriter.Write(features);
+        }
+
+        private static IEnumerable<Polygon> ToPolygon(AreaInfos area, Geometry geometry)
+        {
+            if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
+            {
+                return ((MultiPolygon)geometry).Geometries.SelectMany(p => ToPolygon(area, p));
+            }
+            if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
+            {
+                var poly = (Polygon)geometry;
+                return new[] 
+                { 
+                    new Polygon(
+                        ToTerrainBuilderRing(area, poly.ExteriorRing),
+                        poly.InteriorRings.Select(h => ToTerrainBuilderRing(area, h)).ToArray()) 
+                };
+            }
+            if (geometry.OgcGeometryType == OgcGeometryType.LineString)
+            {
+                var line = (LineString)geometry;
+                if (line.IsClosed && line.Coordinates.Length > 4)
+                {
+                    return new[] 
+                    { 
+                        new Polygon(
+                            new LinearRing(
+                                ToTerrainBuilderPoints(area.StartPointUTM, ((LineString)geometry).Coordinates)
+                                .Select(p => new NetTopologySuite.Geometries.Coordinate(p.X, p.Y))
+                                .ToArray())) 
+                    };
+                }
+            }
+            return new Polygon[0];
+        }
+
+        private static PointF ClipPoint(PointF p, RectangleF clip)
+        {
+            return new PointF(Math.Max(clip.X, Math.Min(p.X, clip.X + clip.Width)),
+                Math.Max(clip.Y, Math.Min(p.Y, clip.Y + clip.Width)));
+        }
+
+        private static LinearRing ToTerrainBuilderRing(AreaInfos area, LineString line)
+        {
+            return new LinearRing(ToTerrainBuilderPoints(area.StartPointUTM, line.Coordinates).Select(p => new NetTopologySuite.Geometries.Coordinate(p.X, p.Y)).ToArray());
+        }
+
+        private static IEnumerable<LineString> ToLineString(AreaInfos area, Geometry geometry)
+        {
+            if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
+            {
+                return ((MultiPolygon)geometry).Geometries.SelectMany(p => ToLineString(area, p));
+            }
+            if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
+            {
+                return ToLineString(area, ((Polygon)geometry).ExteriorRing);
+            }
+            if (geometry.OgcGeometryType == OgcGeometryType.LineString)
+            {
+                return new[] { new LineString(ToTerrainBuilderPoints(area.StartPointUTM, ((LineString)geometry).Coordinates).Select(p => new NetTopologySuite.Geometries.Coordinate(p.X, p.Y)).ToArray()) };
+            }
+            throw new ArgumentException();
         }
 
         private static void PlaceIsolatedTrees(AreaInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, OsmStreamSource filtered)
@@ -228,17 +311,19 @@ namespace ArmaRealMap
 
             using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, Color.LightGreen))
             {
-                var done = 0;
-                foreach (var item in toRender.Where(b => !b.Category.IsBuilding).OrderByDescending(e => e.Category.GroundTexturePriority))
-                {
-                    if (done % 100 == 0)
+
+                    var done = 0;
+                    foreach (var item in toRender.Where(b => !b.Category.IsBuilding).OrderByDescending(e => e.Category.GroundTexturePriority))
                     {
-                        Console.WriteLine($"Drawing ... {Math.Round(done * 100.0 / shapes, 2)}% done");
+                        if (done % 100 == 0)
+                        {
+                            Console.WriteLine($"Drawing ... {Math.Round(done * 100.0 / shapes, 2)}% done");
+                        }
+                        DrawGeometry(startPointUTM, img, new SolidBrush(item.Category.GroundTextureColorCode), item.Geometry);
+                        done++;
                     }
-                    DrawGeometry(startPointUTM, img, new SolidBrush(item.Category.GroundTextureColorCode), item.Geometry);
-                    done++;
-                }
-                img.Save("osm.png");
+                    img.Save("osm.png");
+                
             }
         }
 
@@ -264,11 +349,40 @@ namespace ArmaRealMap
             else if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
             {
                 var poly = (Polygon)geometry;
-                // TODO : holes
                 var points = ToPixelsPoints(startPointUTM, img, poly.Shell.Coordinates).ToArray();
                 try
                 {
-                    img.Mutate(p => p.FillPolygon(solidBrush, points));
+                    if (poly.Holes.Length > 0 )
+                    {
+                        var clip = new Rectangle(
+                            (int)points.Select(p => p.X).Min() - 1,
+                            (int)points.Select(p => p.Y).Min() - 1,
+                            (int)(points.Select(p => p.X).Max() - points.Select(p => p.X).Min()) + 2,
+                            (int)(points.Select(p => p.Y).Max() - points.Select(p => p.Y).Min()) + 2);
+
+                        using (var dimg = new Image<Rgba32>(clip.Width, clip.Height, Color.Transparent))
+                        {
+                            var holes = poly.Holes.Select(h => 
+                            ToPixelsPoints(startPointUTM, img, h.Coordinates)
+                            .Select(p => new PointF(p.X - clip.X, p.Y -clip.Y)).ToArray()).ToList();
+
+                            dimg.Mutate(p =>
+                            {
+                                p.Clear(Color.Transparent);
+                                p.FillPolygon(solidBrush, points.Select(p => new PointF(p.X - clip.X, p.Y - clip.Y)).ToArray());
+                                foreach (var hpoints in holes)
+                                {
+                                    p.FillPolygon(new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { AlphaCompositionMode = PixelAlphaCompositionMode.Xor } }, solidBrush, hpoints);
+                                }
+                            });
+                            img.Mutate(p => p.DrawImage(dimg, new SixLabors.ImageSharp.Point(clip.X, clip.Y), 1));
+                        }
+
+                    }
+                    else
+                    {
+                        img.Mutate(p => p.FillPolygon(solidBrush, points));
+                    }
                 }
                 catch
                 {
