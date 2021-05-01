@@ -28,6 +28,7 @@ using OsmSharp.Logging;
 using OsmSharp.Tags;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace OsmSharp.Geo
 {
@@ -115,12 +116,12 @@ namespace OsmSharp.Geo
                     }
                     else if (!isArea && coordinates.Count < 2)
                     { // not a linestring, needs at least two coordinates.
-                        Logger.Log("DefaultFeatureInterpreter", TraceEventType.Warning, "{0} is supposed to be a linestring but has less than two coordinates.",
+                        Trace.TraceWarning("{0} is supposed to be a linestring but has less than two coordinates.",
                             osmObject.ToInvariantString());
                     }
                     else if (isArea && coordinates.Count < 4)
                     {// not a linearring, needs at least four coordinates, with first and last identical.
-                        Logger.Log("DefaultFeatureInterpreter", TraceEventType.Warning, "{0} is supposed to be a linearring but has less than four coordinates.",
+                        Trace.TraceWarning("{0} is supposed to be a linearring but has less than four coordinates.",
                             osmObject.ToInvariantString());
                     }
                     else
@@ -265,7 +266,7 @@ namespace OsmSharp.Geo
             // recusively try to assign the rings.
             if (!this.AssignRings(ways, out var rings))
             {
-                Logging.Logger.Log("DefaultFeatureInterpreter", TraceEventType.Error,
+                Trace.TraceError(
                     $"Ring assignment failed: invalid multipolygon relation [{relation.Id}] detected!");
             }
             // group the rings and create a multipolygon.
@@ -313,7 +314,7 @@ namespace OsmSharp.Geo
                     { // this ring is not contained in any other used rings.
                         if (!rings[idx].Key)
                         {
-                            Logging.Logger.Log("DefaultFeatureInterpreter", TraceEventType.Error,
+                            Trace.TraceError(
                                 "Invalid multipolygon relation: an 'inner' ring was detected without an 'outer'.");
                         }
                         outerIdx = idx;
@@ -364,7 +365,7 @@ namespace OsmSharp.Geo
                 }
                 else
                 { // unused rings left but they cannot be designated as 'outer'.
-                    Logging.Logger.Log("DefaultFeatureInterpreter", TraceEventType.Error,
+                    Trace.TraceError(
                         "Invalid multipolygon relation: Unassigned rings left.");
                     break;
                 }

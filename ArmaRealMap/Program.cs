@@ -45,9 +45,9 @@ namespace ArmaRealMap
 
             var area = GetAreaFromConfig(config);
 
-            SatelliteImageBuilder.BuildSatImage(area);
+            //SatelliteImageBuilder.BuildSatImage(area);
 
-            ElevationGridBuilder.BuildElevationGrid(config.SRTM, area);
+            //ElevationGridBuilder.BuildElevationGrid(config.SRTM, area);
 
             BuildLand(config, area, olibs);
 
@@ -67,7 +67,6 @@ namespace ArmaRealMap
         {
             var startPointUTM = area.StartPointUTM;
 
-
             var usedObjects = new HashSet<string>();
 
             using (var fileStream = File.OpenRead(config.OSM))
@@ -79,15 +78,20 @@ namespace ArmaRealMap
                 Console.WriteLine("Crop OSM data...");
                 OsmStreamSource filtered = CropDataToArea(area, source);
 
-                var toRender = GetShapes(db, filtered);
+                Roads(area, filtered, db);
+
+                //var toRender = GetShapes(db, filtered);
 
                 //ExportForestAsShapeFile(area, toRender);
 
                 //PlaceIsolatedTrees(area, olibs, usedObjects, filtered);
 
-                PlaceBuildings(area, olibs, usedObjects, toRender);
+                //PlaceBuildings(area, olibs, usedObjects, toRender);
 
-                DrawShapes(area, startPointUTM, toRender);
+                //DrawShapes(area, startPointUTM, toRender);
+
+
+
             }
 
 
@@ -162,21 +166,89 @@ namespace ArmaRealMap
             return new LinearRing(ToTerrainBuilderPoints(area.StartPointUTM, line.Coordinates).Select(p => new NetTopologySuite.Geometries.Coordinate(p.X, p.Y)).ToArray());
         }
 
-        private static IEnumerable<LineString> ToLineString(AreaInfos area, Geometry geometry)
+        private static IEnumerable<LineString> ToLineString(AreaInfos area, Geometry geometry, RectangleF rect)
         {
-            if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
-            {
-                return ((MultiPolygon)geometry).Geometries.SelectMany(p => ToLineString(area, p));
-            }
-            if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
-            {
-                return ToLineString(area, ((Polygon)geometry).ExteriorRing);
-            }
             if (geometry.OgcGeometryType == OgcGeometryType.LineString)
             {
-                return new[] { new LineString(ToTerrainBuilderPoints(area.StartPointUTM, ((LineString)geometry).Coordinates).Select(p => new NetTopologySuite.Geometries.Coordinate(p.X, p.Y)).ToArray()) };
+                var points = ToTerrainBuilderPoints(area.StartPointUTM, ((LineString)geometry).Coordinates).Where(p => area.IsInside(p)).ToList();
+                if (points.Count > 1)
+                {
+                    return new[] { new LineString(points.Select(p => new NetTopologySuite.Geometries.Coordinate(p.X - area.StartPointUTM.Easting + 200000, p.Y - area.StartPointUTM.Northing)).ToArray())};
+                }
+                return new LineString[0];
             }
-            throw new ArgumentException();
+            throw new ArgumentException(geometry.OgcGeometryType.ToString());
+        }
+        private static void Roads(AreaInfos area, OsmStreamSource filtered, SnapshotDb db)
+        {
+            var interpret = new DefaultFeatureInterpreter2();
+            var roads = filtered.Where(o => o.Type == OsmGeoType.Way && o.Tags.ContainsKey("highway")).ToList();
+            var rect = new RectangleF((float)area.StartPointUTM.Easting, (float)area.StartPointUTM.Northing, area.Width, area.Height);
+
+            var features = new List<Feature>();
+            foreach (var road in roads)
+            {
+                var kind = ToRoadType(road.Tags.GetValue("highway"));
+                if ( kind != null)
+                {
+                    var complete = road.CreateComplete(db);
+                    var count = 0;
+                    foreach (var feature in interpret.Interpret(complete))
+                    {
+                        var attributesTable = new AttributesTable();
+                        attributesTable.Add("ID", (int)kind); // ref
+                        attributesTable.Add("N", Get(road.Tags, "ref") ?? string.Empty);
+                        foreach (var linestring in ToLineString(area, feature.Geometry, rect))
+                        {
+                            features.Add(new Feature(linestring, attributesTable));
+                        }
+                        count++;
+                    }
+                    if (count == 0)
+                    {
+                        Trace.TraceWarning($"NO GEOMETRY FOR {road.Tags}");
+                    }
+                }
+            }
+            var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
+            var shapeWriter = new ShapefileDataWriter("roads.shp", new GeometryFactory())
+            {
+                Header = header
+            };
+            shapeWriter.Write(features);
+        }
+
+        private static RoadType? ToRoadType(string highway)
+        {
+            switch(highway)
+            {
+                case "motorway": 
+                    return RoadType.TarmacMotorway;
+                case "trunk": 
+                case "primary":
+                case "primary_link":
+                case "trunk_link":
+                case "motorway_link":
+                    return RoadType.TarmacPrimaryRoad;
+                case "seconday":
+                case "tertiary":
+                case "seconday_link":
+                case "tertiary_link":
+                case "unclassified":
+                case "road":
+                    return RoadType.TarmacSecondaryRoad;
+                case "living_street":
+                case "residential":
+                case "pedestrian":
+                    return RoadType.ConcreteCityRoad;
+                case "footway":
+                    return RoadType.DirtRoad;
+                case "path":
+                    return RoadType.DirtTrail;
+                case "track":
+                    return RoadType.DirtPath;
+            }
+            return null;
         }
 
         private static void PlaceIsolatedTrees(AreaInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, OsmStreamSource filtered)
@@ -290,7 +362,7 @@ namespace ArmaRealMap
                     }
                     if (count == 0)
                     {
-
+                        Trace.TraceWarning($"NO GEOMETRY FOR {osmGeo.Tags}");
                     }
                 }
                 report.ReportOneDone();

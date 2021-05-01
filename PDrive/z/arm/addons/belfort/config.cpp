@@ -31,7 +31,7 @@ class CfgWorlds
 		pictureMap = "";
 		pictureShot = "";
  
-		newRoadsShape = "";
+		newRoadsShape = "z\arm\addons\belfort\data\roads\roads.shp";
  
 		centerPosition[] =
 		{
