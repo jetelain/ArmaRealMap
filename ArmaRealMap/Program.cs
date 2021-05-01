@@ -4,14 +4,14 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Text.Json;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
-using ArmaRealMap.TerrainBuilder;
 using CoordinateSharp;
+using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using OsmSharp;
 using OsmSharp.Complete;
 using OsmSharp.Db;
@@ -23,14 +23,6 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using SRTM;
-using SRTM.Sources.NASA;
-using NetTopologySuite.Features;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
-using OsmSharp;
-using OsmSharp.Geo;
-using OsmSharp.Streams;
 
 namespace ArmaRealMap
 {
@@ -43,7 +35,7 @@ namespace ArmaRealMap
             var config = JsonSerializer.Deserialize<Config>(File.ReadAllText("config.json"));
 
             Trace.Listeners.Clear();
-            Trace.Listeners.Add(new TextWriterTraceListener(@"osm.log"));
+            Trace.Listeners.Add(new TextWriterTraceListener(@"arm.log"));
             Trace.WriteLine("----------------------------------------------------------------------------------------------------");
 
             var olibs = new ObjectLibraries();
@@ -51,16 +43,11 @@ namespace ArmaRealMap
 
             File.WriteAllText("library.sqf", olibs.TerrainBuilder.GetAllSqf());
 
-            var size = config.GridSize;
-            var cellSize = config.CellSize;
+            var area = GetAreaFromConfig(config);
 
-            var startPointMGRS = new MilitaryGridReferenceSystem(config.BottomLeft.GridZone, config.BottomLeft.D, config.BottomLeft.E, config.BottomLeft.N);
+            SatelliteImageBuilder.BuildSatImage(area);
 
-            var area = GetArea(startPointMGRS, size, cellSize);
-
-            //BuildImage(area);
-
-            //BuildElevationGrid(area);
+            ElevationGridBuilder.BuildElevationGrid(config.SRTM, area);
 
             BuildLand(config, area, olibs);
 
@@ -68,44 +55,53 @@ namespace ArmaRealMap
             Trace.Flush();
         }
 
+        private static AreaInfos GetAreaFromConfig(Config config)
+        {
+            var size = config.GridSize;
+            var cellSize = config.CellSize;
+            var startPointMGRS = new MilitaryGridReferenceSystem(config.BottomLeft.GridZone, config.BottomLeft.D, config.BottomLeft.E, config.BottomLeft.N);
+            return GetArea(startPointMGRS, size, cellSize);
+        }
+
         private static void BuildLand(Config config,AreaInfos area, ObjectLibraries olibs)
         {
             var startPointUTM = area.StartPointUTM;
-
-            var left = (float)Math.Min(area.SouthWest.Longitude.ToDouble(), area.NorthWest.Longitude.ToDouble());
-            var top = (float)Math.Max(area.NorthEast.Latitude.ToDouble(), area.NorthWest.Latitude.ToDouble());
-            var right = (float)Math.Max(area.SouthEast.Longitude.ToDouble(), area.NorthEast.Longitude.ToDouble());
-            var bottom = (float)Math.Min(area.SouthEast.Latitude.ToDouble(), area.SouthWest.Latitude.ToDouble());
 
 
             var usedObjects = new HashSet<string>();
 
             using (var fileStream = File.OpenRead(config.OSM))
             {
-                Console.WriteLine("Loading OSM data...");
+                Console.WriteLine("Load OSM data...");
                 var source = new PBFOsmStreamSource(fileStream);
-
                 var db = new SnapshotDb(new MemorySnapshotDb(source));
 
-                Console.WriteLine("Filter OSM data...");
-                var filtered = source.FilterBox(left, top, right, bottom, true);
-
-                Console.WriteLine("Processing...");
+                Console.WriteLine("Crop OSM data...");
+                OsmStreamSource filtered = CropDataToArea(area, source);
 
                 var toRender = GetShapes(db, filtered);
 
-                ExportForestAsShapeFile(area, toRender);
+                //ExportForestAsShapeFile(area, toRender);
 
                 //PlaceIsolatedTrees(area, olibs, usedObjects, filtered);
 
-                //PlaceBuildings(area, olibs, usedObjects, toRender);
+                PlaceBuildings(area, olibs, usedObjects, toRender);
 
-                //DrawShapes(area, startPointUTM, toRender);
+                DrawShapes(area, startPointUTM, toRender);
             }
 
 
             var libs = olibs.TerrainBuilder.Libraries.Where(l => usedObjects.Any(o => l.Template.Any(t => t.Name==o))).Distinct().ToList();
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
+        }
+
+        private static OsmStreamSource CropDataToArea(AreaInfos area, PBFOsmStreamSource source)
+        {
+            var left = (float)Math.Min(area.SouthWest.Longitude.ToDouble(), area.NorthWest.Longitude.ToDouble());
+            var top = (float)Math.Max(area.NorthEast.Latitude.ToDouble(), area.NorthWest.Latitude.ToDouble());
+            var right = (float)Math.Max(area.SouthEast.Longitude.ToDouble(), area.NorthEast.Longitude.ToDouble());
+            var bottom = (float)Math.Min(area.SouthEast.Latitude.ToDouble(), area.SouthWest.Latitude.ToDouble());
+            return source.FilterBox(left, top, right, bottom, true);
         }
 
         private static void ExportForestAsShapeFile(AreaInfos area, List<CategorizedGeometry> toRender)
@@ -214,14 +210,11 @@ namespace ArmaRealMap
             var result = new StringBuilder();
             var buildings = toRender.Count(b => b.Category.IsBuilding);
             var metas = toRender.Where(b => Category.BuildingCategorizers.Contains(b.Category)).ToList();
-            var done = 0;
+
+            var report = new ProgressReport("PlaceBuildings", buildings);
+
             foreach (var building in toRender.Where(b => b.Category.IsBuilding))
             {
-                if (done % 100 == 0)
-                {
-                    Console.WriteLine($"Placing ... {Math.Round(done * 100.0 / buildings, 2)}% done");
-                }
-
                 if (building.BuildingCategory == null)
                 {
                     building.BuildingCategory = metas.Where(m => m.Geometry.Contains(building.Geometry)).FirstOrDefault()?.BuildingCategory ?? BuildingCategory.Residential;
@@ -229,11 +222,9 @@ namespace ArmaRealMap
 
                 var points = ToTerrainBuilderPoints(area.StartPointUTM, building.Geometry.Coordinates).ToArray();
 
-
-                done++;
-
                 if (points.Any(p => !area.IsInside(p)))
                 {
+                    report.ReportOneDone();
                     continue;
                 }
 
@@ -270,19 +261,21 @@ namespace ArmaRealMap
                 {
                     Trace.WriteLine($"Nothing fits {building.BuildingCategory} {box.Width} x {box.Height}");
                 }
+                report.ReportOneDone();
             }
-            File.WriteAllText("buildings.txt", result.ToString());
+            report.TaskDone();
+            File.WriteAllText("buildings2.txt", result.ToString());
         }
 
         private static List<CategorizedGeometry> GetShapes(SnapshotDb db, OsmStreamSource filtered)
         {
+            Console.WriteLine("Filter OSM data...");
             var toRender = new List<CategorizedGeometry>();
-
             var interpret = new DefaultFeatureInterpreter2();
             var list = filtered.Where(osmGeo =>
             (osmGeo.Type == OsmSharp.OsmGeoType.Way || osmGeo.Type == OsmSharp.OsmGeoType.Relation)
             && osmGeo.Tags != null).ToList();
-
+            var report = new ProgressReport("GetShapes", list.Count);
             foreach (OsmGeo osmGeo in list)
             {
                 var category = GetCategory(osmGeo.Tags, interpret);
@@ -300,30 +293,26 @@ namespace ArmaRealMap
 
                     }
                 }
+                report.ReportOneDone();
             }
-
+            report.TaskDone();
             return toRender;
         }
 
         private static void DrawShapes(AreaInfos area, UniversalTransverseMercator startPointUTM, List<CategorizedGeometry> toRender)
         {
             var shapes = toRender.Count(b => !b.Category.IsBuilding);
-
+            var report = new ProgressReport("DrawShapes", shapes);
             using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, Color.LightGreen))
             {
-
-                    var done = 0;
-                    foreach (var item in toRender.Where(b => !b.Category.IsBuilding).OrderByDescending(e => e.Category.GroundTexturePriority))
-                    {
-                        if (done % 100 == 0)
-                        {
-                            Console.WriteLine($"Drawing ... {Math.Round(done * 100.0 / shapes, 2)}% done");
-                        }
-                        DrawGeometry(startPointUTM, img, new SolidBrush(item.Category.GroundTextureColorCode), item.Geometry);
-                        done++;
-                    }
-                    img.Save("osm.png");
-                
+                foreach (var item in toRender.Where(b => !b.Category.IsBuilding).OrderByDescending(e => e.Category.GroundTexturePriority))
+                {
+                    DrawGeometry(startPointUTM, img, new SolidBrush(item.Category.GroundTextureColorCode), item.Geometry);
+                    report.ReportOneDone();
+                }
+                report.TaskDone();
+                Console.WriteLine("SavePNG");
+                img.Save("osm2.png");
             }
         }
 

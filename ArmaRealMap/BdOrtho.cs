@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
-using System.Text;
 using FreeImageAPI;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -12,7 +11,8 @@ namespace ArmaRealMap
     public class BdOrtho
     {
         private readonly string[] allImages;
-        private readonly Dictionary<string, Image<Rgb24>> cache = new Dictionary<string, Image<Rgb24>>();
+        private readonly ConcurrentDictionary<string, Image<Rgb24>> cache = new ConcurrentDictionary<string, Image<Rgb24>>();
+        private readonly object fileSystemCacheLock = new object();
 
         public BdOrtho()
         {
@@ -25,29 +25,65 @@ namespace ArmaRealMap
 
             var tileX = (((int)p[0] / 5000) * 5);
             var tileY = (((int)p[1] / 5000) * 5);
-            var fileSuffix = $"-{tileX:0000}-{tileY+5:0000}-LA93-0M50-E080.jp2";
-            var tileFile = allImages.FirstOrDefault(p => p.EndsWith(fileSuffix, StringComparison.OrdinalIgnoreCase));
 
-            Image<Rgb24> img;
-            if (!cache.TryGetValue(tileFile, out img))
-            {
-                var plainPng = Path.ChangeExtension(tileFile, ".png");
-                if (!File.Exists(plainPng))
-                {
-                    Console.WriteLine($"Convert {tileFile}...");
-                    var jpeg2000 = FreeImage.LoadEx(tileFile);
-                    FreeImage.SaveEx(ref jpeg2000, plainPng, FREE_IMAGE_SAVE_FLAGS.PNG_Z_DEFAULT_COMPRESSION, true);
-                }
-                Console.WriteLine($"Load {plainPng}...");
-                img = Image.Load<Rgb24>(plainPng);
-                cache.Add(tileFile, img);
-            }
+            var img = GetTile(tileX, tileY);
 
             var x = ((int)p[0] - (tileX * 1000)) * 2;
             var y = 9999 - (((int)p[1] - (tileY * 1000)) * 2);
 
-            return img[x,y];
+            return img[x, y];
         }
+
+        private Image<Rgb24> GetTile(int tileX, int tileY)
+        {
+            var fileSuffix = $"-{tileX:0000}-{tileY + 5:0000}-LA93-0M50-E080.jp2";
+            var tileFile = allImages.FirstOrDefault(p => p.EndsWith(fileSuffix, StringComparison.OrdinalIgnoreCase));
+            Image<Rgb24> img;
+            if (!cache.TryGetValue(tileFile, out img))
+            {
+                var plainPng = Path.ChangeExtension(tileFile, ".png");
+                lock (fileSystemCacheLock)
+                {
+                    if (!File.Exists(plainPng))
+                    {
+                        var jpeg2000 = FreeImage.LoadEx(tileFile);
+                        FreeImage.SaveEx(ref jpeg2000, plainPng, FREE_IMAGE_SAVE_FLAGS.PNG_Z_DEFAULT_COMPRESSION, true);
+                    }
+                }
+                img = Image.Load<Rgb24>(plainPng);
+                cache.TryAdd(tileFile, img);
+            }
+            return img;
+        }
+
+        internal void Preload(AreaInfos areaInfos)
+        {
+            var points = new[]
+            {
+                LambertHelper.WGS84ToLambert93(areaInfos.NorthWest),
+                LambertHelper.WGS84ToLambert93(areaInfos.SouthWest),
+                LambertHelper.WGS84ToLambert93(areaInfos.NorthEast),
+                LambertHelper.WGS84ToLambert93(areaInfos.SouthEast)
+            };
+
+            var minTileX = ((points.Min(p => (int)p[0]) / 5000) * 5);
+            var maxTileX = ((points.Max(p => (int)p[0]) / 5000) * 5);
+            var minTileY = ((points.Min(p => (int)p[1]) / 5000) * 5);
+            var maxTileY = ((points.Max(p => (int)p[1]) / 5000) * 5);
+
+            var report = new ProgressReport("PreloadBdOrtho", (((maxTileX - minTileX) / 5) + 1) * (((maxTileY - minTileY) / 5) + 1));
+            for (var tileX = minTileX; tileX <= maxTileX; tileX += 5)
+            {
+                for (var tileY = minTileY; tileY <= maxTileY; tileY += 5)
+                {
+                    GetTile(tileX, tileY);
+                    report.ReportOneDone();
+                }
+            }
+            report.TaskDone();
+        }
+
+
     }
     /*
 

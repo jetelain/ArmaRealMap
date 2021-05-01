@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CoordinateSharp;
 using lambertcs;
 
 namespace ArmaRealMap
 {
     public static class LambertHelper
     {
+        public static double[] WGS84ToLambert93(Coordinate coordinate)
+        {
+            return WGS84ToLambert93(coordinate.Latitude.ToDouble(), coordinate.Longitude.ToDouble());
+        }
+
         public static double[] WGS84ToLambert93(double latitude, double longitude)
         {
             /**** Conversion latitude,longitude en coordonée lambert 93 ****/

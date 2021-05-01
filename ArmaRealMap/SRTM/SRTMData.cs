@@ -21,9 +21,11 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CoordinateSharp;
 
 namespace SRTM
 {
@@ -58,7 +60,7 @@ namespace SRTM
             _source = source;
             GetMissingCell = _source.GetMissingCell;
             DataDirectory = dataDirectory;
-            DataCells = new List<ISRTMDataCell>();
+            DataCells = new ConcurrentDictionary<Tuple<int, int>, ISRTMDataCell>();
         }
 
         /// <summary>
@@ -85,7 +87,7 @@ namespace SRTM
         /// <value>
         /// The SRTM data cells.
         /// </value>
-        private List<ISRTMDataCell> DataCells { get; set; }
+        private ConcurrentDictionary<Tuple<int,int>,ISRTMDataCell> DataCells { get; set; }
         
         #region Public methods
 
@@ -171,12 +173,11 @@ namespace SRTM
                 }
             }
 
-            var dataCell = DataCells.Where(dc => dc.Latitude == cellLatitude && dc.Longitude == cellLongitude).FirstOrDefault();
-            if (dataCell != null)
-            {
-                return dataCell;
-            }
+            return DataCells.GetOrAdd(new Tuple<int, int>(cellLatitude, cellLongitude), _ => LoadCell(latitude, longitude, cellLatitude, cellLongitude));
+        }
 
+        private ISRTMDataCell LoadCell(double latitude, double longitude, int cellLatitude, int cellLongitude)
+        {
             string filename = string.Format("{0}{1:D2}{2}{3:D3}",
                 cellLatitude < 0 ? "S" : "N",
                 Math.Abs(cellLatitude),
@@ -212,11 +213,11 @@ namespace SRTM
             
             if (File.Exists(filePath))
             {
-                dataCell = new SRTMDataCell(filePath);
+                return new SRTMDataCell(filePath);
             }
             else if(File.Exists(zipFilePath))
             {
-                dataCell = new SRTMDataCell(zipFilePath);
+                return new SRTMDataCell(zipFilePath);
             }
             else
             {
@@ -233,14 +234,16 @@ namespace SRTM
                 }
                 else
                 {
-                    dataCell = new EmptySRTMDataCell(txtFilePath);
+                    return new EmptySRTMDataCell(txtFilePath);
                 }
             }
-            DataCells.Add(dataCell);
-
-            return dataCell;
         }
-        
+
+        internal void PreloadCell(Coordinate point)
+        {
+            GetDataCell(point.Latitude.ToDouble(), point.Longitude.ToDouble());
+        }
+
         #endregion
     }
 }
