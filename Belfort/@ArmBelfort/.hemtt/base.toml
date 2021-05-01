@@ -13,3 +13,4 @@ exclude = [
     "*.png",
     "*.tga"
 ]
+version="0.0.1"

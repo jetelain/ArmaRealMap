@@ -20,8 +20,6 @@
 [Rr]eleases/
 x64/
 x86/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
 bld/
 [Bb]in/
 [Oo]bj/
@@ -338,11 +336,17 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-/ArmaRealMap/config.json
-/Belfort/data/layers
-/Belfort/@ArmBelfort/addons/belfort/data/layers
-/Belfort/@ArmBelfort/hemtt.exe
-/Belfort/@ArmBelfort/addons/belfort/belfort.wrp
-/Belfort/@ArmBelfort/addons/arm_belfort.pbo
-/Belfort/belfort.wrp
 *.txt.old
+/ArmaRealMap/config.json
+/Belfort/@ArmBelfort/addons/belfort/data/layers
+/PDrive/z/arm/addons/belfort/data/layers
+/Belfort/@ArmBelfort/textures
+/PDrive/z/arm/addons/belfort/texHeaders.bin
+/PDrive/z/arm/addons/belfort/belfort.wrp
+/PDrive/z/arm/addons/belfort/belfort.hpp
+*.exe
+*.bikey
+*.wrp
+*.pbo
+*.bin
+/Belfort/@ArmBelfort/addons/belfort/belfort.hpp
