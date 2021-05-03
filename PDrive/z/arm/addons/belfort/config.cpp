@@ -20,7 +20,8 @@ class CfgWorldList
 class CfgWorlds
 {
 	class Stratis;
-	class arm_belfort: Stratis
+	
+	class belfort: Stratis
 	{
 		cutscenes[] = {};
 		description = "BELFORT, France";
@@ -32,7 +33,7 @@ class CfgWorlds
 		pictureShot = "";
  
 		newRoadsShape = "z\arm\addons\belfort\data\roads\roads.shp";
- 
+		
 		centerPosition[] =
 		{
 			10240, 10240

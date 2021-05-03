@@ -78,7 +78,7 @@ namespace ArmaRealMap
                 Console.WriteLine("Crop OSM data...");
                 OsmStreamSource filtered = CropDataToArea(area, source);
 
-                Roads(area, filtered, db);
+                Roads(area, filtered, db, config);
 
                 //var toRender = GetShapes(db, filtered);
 
@@ -155,12 +155,6 @@ namespace ArmaRealMap
             return new Polygon[0];
         }
 
-        private static PointF ClipPoint(PointF p, RectangleF clip)
-        {
-            return new PointF(Math.Max(clip.X, Math.Min(p.X, clip.X + clip.Width)),
-                Math.Max(clip.Y, Math.Min(p.Y, clip.Y + clip.Width)));
-        }
-
         private static LinearRing ToTerrainBuilderRing(AreaInfos area, LineString line)
         {
             return new LinearRing(ToTerrainBuilderPoints(area.StartPointUTM, line.Coordinates).Select(p => new NetTopologySuite.Geometries.Coordinate(p.X, p.Y)).ToArray());
@@ -179,7 +173,9 @@ namespace ArmaRealMap
             }
             throw new ArgumentException(geometry.OgcGeometryType.ToString());
         }
-        private static void Roads(AreaInfos area, OsmStreamSource filtered, SnapshotDb db)
+
+
+        private static void Roads(AreaInfos area, OsmStreamSource filtered, SnapshotDb db, Config config)
         {
             var interpret = new DefaultFeatureInterpreter2();
             var roads = filtered.Where(o => o.Type == OsmGeoType.Way && o.Tags.ContainsKey("highway")).ToList();
@@ -197,10 +193,18 @@ namespace ArmaRealMap
                     {
                         var attributesTable = new AttributesTable();
                         attributesTable.Add("ID", (int)kind); // ref
-                        attributesTable.Add("N", Get(road.Tags, "ref") ?? string.Empty);
+                        //attributesTable.Add("N", Get(road.Tags, "ref") ?? string.Empty);
                         foreach (var linestring in ToLineString(area, feature.Geometry, rect))
                         {
-                            features.Add(new Feature(linestring, attributesTable));
+                            var len = linestring.Length;
+                            if (len >= 3)
+                            {
+                                features.Add(new Feature(linestring, attributesTable));
+                            }
+                            else
+                            {
+                                Console.WriteLine(kind);
+                            }
                         }
                         count++;
                     }
@@ -211,12 +215,13 @@ namespace ArmaRealMap
                 }
             }
             var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
-            var shapeWriter = new ShapefileDataWriter("roads.shp", new GeometryFactory())
+            var shapeWriter = new ShapefileDataWriter(Path.Combine(config.Target?.Roads ?? string.Empty,"roads.shp"), new GeometryFactory())
             {
                 Header = header
             };
             shapeWriter.Write(features);
         }
+
 
         private static RoadType? ToRoadType(string highway)
         {
@@ -230,7 +235,7 @@ namespace ArmaRealMap
                 case "trunk_link":
                 case "motorway_link":
                     return RoadType.TarmacPrimaryRoad;
-                case "seconday":
+                case "secondary":
                 case "tertiary":
                 case "seconday_link":
                 case "tertiary_link":
@@ -248,6 +253,7 @@ namespace ArmaRealMap
                 case "track":
                     return RoadType.DirtPath;
             }
+            Trace.WriteLine($"Unknown highway='{highway}'");
             return null;
         }
 

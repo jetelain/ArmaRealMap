@@ -26,6 +26,12 @@ namespace ArmaRealMap
         public string Cache { get; set; }
     }
 
+    public class TargetConfig
+    {
+        public string Roads { get; set; }
+        public string Imagery { get; set; }
+    }
+
     public class Config
     {
         public int GridSize { get; set; }
@@ -36,5 +42,8 @@ namespace ArmaRealMap
         public ConfigSRTM SRTM { get; set; }
 
         public string Libraries { get; set; }
+
+
+        public TargetConfig Target { get; set; }
     }
 }
