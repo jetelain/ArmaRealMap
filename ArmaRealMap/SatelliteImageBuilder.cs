@@ -10,7 +10,7 @@ namespace ArmaRealMap
 {
     class SatelliteImageBuilder
     {
-        internal static void BuildSatImage(AreaInfos area)
+        internal static void BuildSatImage(MapInfos area, string targetFile)
         {
             var bd = new BdOrtho();
             bd.Preload(area);
@@ -37,8 +37,7 @@ namespace ArmaRealMap
                     }
                 });
                 report.TaskDone();
-                Console.WriteLine("SavePNG");
-                img.Save("sat2.png");
+                img.Save(targetFile);
             }
 
 

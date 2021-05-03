@@ -3,18 +3,25 @@
     internal enum RoadType
     {
         /// <summary>
-        /// 2x2
+        /// 2x1 designed to be side by side
         /// </summary>
-        TarmacMotorway = 1,
+        TwoLanesMotorway = 1,
+
         /// <summary>
         /// 2x1
         /// </summary>
-        TarmacPrimaryRoad = 2,
-        TarmacSecondaryRoad = 3,
-        TarmacCityRoad = 4,
-        ConcreteCityRoad = 5,
-        DirtRoad = 6,
-        DirtPath = 7,
-        DirtTrail = 8
+        TwoLanesPrimaryRoad = 2,
+
+        TwoLanesSecondaryRoad = 3,
+
+        TwoLanesCityRoad = 4,
+
+        TwoLanesConcreteRoad = 5,
+
+        SingleLaneDirtRoad = 6,
+
+        SingleLaneDirtPath = 7,
+
+        Trail = 8
     }
 }

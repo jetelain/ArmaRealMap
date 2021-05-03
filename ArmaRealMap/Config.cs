@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace ArmaRealMap
@@ -28,8 +29,16 @@ namespace ArmaRealMap
 
     public class TargetConfig
     {
-        public string Roads { get; set; }
-        public string Imagery { get; set; }
+        public string Roads => Path.Combine(Config ?? string.Empty, "data", "roads");
+
+        public string GroundDetailTextures => Path.Combine(Config ?? string.Empty, "data", "gdt");
+
+        public string Config => PboPrefix != null ? Path.Combine("P:\\", PboPrefix) : string.Empty;
+
+        public string PboPrefix { get; set; }
+
+        public string Terrain { get; set; }
+
     }
 
     public class Config

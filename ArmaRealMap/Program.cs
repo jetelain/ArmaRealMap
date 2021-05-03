@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using ArmaRealMap.Geometries;
+using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using CoordinateSharp;
 using NetTopologySuite.Features;
@@ -35,19 +36,22 @@ namespace ArmaRealMap
             var config = JsonSerializer.Deserialize<Config>(File.ReadAllText("config.json"));
 
             Trace.Listeners.Clear();
+
             Trace.Listeners.Add(new TextWriterTraceListener(@"arm.log"));
+
             Trace.WriteLine("----------------------------------------------------------------------------------------------------");
 
             var olibs = new ObjectLibraries();
             olibs.Load(config);
+            File.WriteAllText(Path.Combine(config.Target?.Terrain ?? string.Empty, "library.sqf"), olibs.TerrainBuilder.GetAllSqf());
 
-            File.WriteAllText("library.sqf", olibs.TerrainBuilder.GetAllSqf());
+            GDTConfigBuilder.PrepareGDT(config);
 
-            var area = GetAreaFromConfig(config);
+            var area = MapInfos.Create(config);
 
-            //SatelliteImageBuilder.BuildSatImage(area);
+            //SatelliteRawImage(config, area);
 
-            //ElevationGridBuilder.BuildElevationGrid(config.SRTM, area);
+            //ElevationGridBuilder.LoadOrGenerateElevationGrid(config, area);
 
             BuildLand(config, area, olibs);
 
@@ -55,15 +59,19 @@ namespace ArmaRealMap
             Trace.Flush();
         }
 
-        private static AreaInfos GetAreaFromConfig(Config config)
+
+
+        private static void SatelliteRawImage(Config config, MapInfos area)
         {
-            var size = config.GridSize;
-            var cellSize = config.CellSize;
-            var startPointMGRS = new MilitaryGridReferenceSystem(config.BottomLeft.GridZone, config.BottomLeft.D, config.BottomLeft.E, config.BottomLeft.N);
-            return GetArea(startPointMGRS, size, cellSize);
+            var rawSat = Path.Combine(config.Target?.Terrain ?? string.Empty, "sat-raw.png");
+            if (!File.Exists(rawSat))
+            {
+                SatelliteImageBuilder.BuildSatImage(area, rawSat);
+            }
         }
 
-        private static void BuildLand(Config config,AreaInfos area, ObjectLibraries olibs)
+
+        private static void BuildLand(Config config,MapInfos area, ObjectLibraries olibs)
         {
             var startPointUTM = area.StartPointUTM;
 
@@ -78,9 +86,11 @@ namespace ArmaRealMap
                 Console.WriteLine("Crop OSM data...");
                 OsmStreamSource filtered = CropDataToArea(area, source);
 
-                Roads(area, filtered, db, config);
+                //RenderCitiesNames(config, area, filtered);
 
-                //var toRender = GetShapes(db, filtered);
+                //Roads(area, filtered, db, config);
+
+                var toRender = OsmCategorizer.GetShapes(db, filtered);
 
                 //ExportForestAsShapeFile(area, toRender);
 
@@ -88,7 +98,7 @@ namespace ArmaRealMap
 
                 //PlaceBuildings(area, olibs, usedObjects, toRender);
 
-                //DrawShapes(area, startPointUTM, toRender);
+                DrawShapes(area, startPointUTM, toRender);
 
 
 
@@ -99,7 +109,53 @@ namespace ArmaRealMap
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
         }
 
-        private static OsmStreamSource CropDataToArea(AreaInfos area, PBFOsmStreamSource source)
+        private static void RenderCitiesNames(Config config, MapInfos area, OsmStreamSource filtered)
+        {
+            var places = filtered.Where(o => o.Type == OsmGeoType.Node && o.Tags.ContainsKey("place")).ToList();
+
+            var id = 0;
+            var sb = new StringBuilder();
+            foreach (OsmSharp.Node place in places)
+            {
+                var kind = ToArmaKind(place.Tags.GetValue("place"));
+                if (kind != null)
+                {
+                    var name = place.Tags.GetValue("name");
+                    var utmbPos = new CoordinateSharp.Coordinate(place.Latitude.Value, place.Longitude.Value, eagerUTM).UTM;
+                    var pos = new PointF((float)utmbPos.Easting, (float)utmbPos.Northing);
+
+                    if (area.IsInside(pos))
+                    {
+                        sb.AppendLine(FormattableString.Invariant($@"class Item{id}
+{{
+    name = ""{name}"";
+	position[]={{{pos.X - area.StartPointUTM.Easting:0.00},{pos.Y - area.StartPointUTM.Northing:0.00}}};
+	type=""{kind}"";
+	radiusA=500;
+	radiusB=500;
+	angle=0;
+}};"));
+                        id++;
+                    }
+                }
+            }
+
+            File.WriteAllText(Path.Combine(config.Target?.Config ?? string.Empty, "names.hpp"), sb.ToString());
+        }
+
+        private static string ToArmaKind(string place)
+        {
+            switch(place)
+            {
+                case "city": return "NameCityCapital";
+                case "town": return "NameCity";
+                case "village": return "NameVillage";
+                case "hamlet": return "NameLocal";
+            }
+            return null;
+        }
+
+        private static OsmStreamSource CropDataToArea(MapInfos area, PBFOsmStreamSource source)
         {
             var left = (float)Math.Min(area.SouthWest.Longitude.ToDouble(), area.NorthWest.Longitude.ToDouble());
             var top = (float)Math.Max(area.NorthEast.Latitude.ToDouble(), area.NorthWest.Latitude.ToDouble());
@@ -108,9 +164,9 @@ namespace ArmaRealMap
             return source.FilterBox(left, top, right, bottom, true);
         }
 
-        private static void ExportForestAsShapeFile(AreaInfos area, List<CategorizedGeometry> toRender)
+        private static void ExportForestAsShapeFile(MapInfos area, List<Area> toRender)
         {
-            var forest = toRender.Where(f => f.Category == Category.Forest).ToList();
+            var forest = toRender.Where(f => f.Category == AreaCategory.Forest).ToList();
             var attributesTable = new AttributesTable();
             var features = forest.SelectMany(f => ToPolygon(area, f.Geometry)).Select(f => new Feature(f, attributesTable)).ToList();
             var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
@@ -121,7 +177,7 @@ namespace ArmaRealMap
             shapeWriter.Write(features);
         }
 
-        private static IEnumerable<Polygon> ToPolygon(AreaInfos area, Geometry geometry)
+        private static IEnumerable<Polygon> ToPolygon(MapInfos area, Geometry geometry)
         {
             if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
             {
@@ -155,12 +211,12 @@ namespace ArmaRealMap
             return new Polygon[0];
         }
 
-        private static LinearRing ToTerrainBuilderRing(AreaInfos area, LineString line)
+        private static LinearRing ToTerrainBuilderRing(MapInfos area, LineString line)
         {
             return new LinearRing(ToTerrainBuilderPoints(area.StartPointUTM, line.Coordinates).Select(p => new NetTopologySuite.Geometries.Coordinate(p.X, p.Y)).ToArray());
         }
 
-        private static IEnumerable<LineString> ToLineString(AreaInfos area, Geometry geometry, RectangleF rect)
+        private static IEnumerable<LineString> ToLineString(MapInfos area, Geometry geometry)
         {
             if (geometry.OgcGeometryType == OgcGeometryType.LineString)
             {
@@ -175,16 +231,14 @@ namespace ArmaRealMap
         }
 
 
-        private static void Roads(AreaInfos area, OsmStreamSource filtered, SnapshotDb db, Config config)
+        private static void Roads(MapInfos area, OsmStreamSource filtered, SnapshotDb db, Config config)
         {
             var interpret = new DefaultFeatureInterpreter2();
             var roads = filtered.Where(o => o.Type == OsmGeoType.Way && o.Tags.ContainsKey("highway")).ToList();
-            var rect = new RectangleF((float)area.StartPointUTM.Easting, (float)area.StartPointUTM.Northing, area.Width, area.Height);
-
             var features = new List<Feature>();
             foreach (var road in roads)
             {
-                var kind = ToRoadType(road.Tags.GetValue("highway"));
+                var kind = OsmCategorizer.ToRoadType(road.Tags.GetValue("highway"));
                 if ( kind != null)
                 {
                     var complete = road.CreateComplete(db);
@@ -194,7 +248,7 @@ namespace ArmaRealMap
                         var attributesTable = new AttributesTable();
                         attributesTable.Add("ID", (int)kind); // ref
                         //attributesTable.Add("N", Get(road.Tags, "ref") ?? string.Empty);
-                        foreach (var linestring in ToLineString(area, feature.Geometry, rect))
+                        foreach (var linestring in ToLineString(area, feature.Geometry))
                         {
                             var len = linestring.Length;
                             if (len >= 3)
@@ -223,46 +277,13 @@ namespace ArmaRealMap
         }
 
 
-        private static RoadType? ToRoadType(string highway)
-        {
-            switch(highway)
-            {
-                case "motorway": 
-                    return RoadType.TarmacMotorway;
-                case "trunk": 
-                case "primary":
-                case "primary_link":
-                case "trunk_link":
-                case "motorway_link":
-                    return RoadType.TarmacPrimaryRoad;
-                case "secondary":
-                case "tertiary":
-                case "seconday_link":
-                case "tertiary_link":
-                case "unclassified":
-                case "road":
-                    return RoadType.TarmacSecondaryRoad;
-                case "living_street":
-                case "residential":
-                case "pedestrian":
-                    return RoadType.ConcreteCityRoad;
-                case "footway":
-                    return RoadType.DirtRoad;
-                case "path":
-                    return RoadType.DirtTrail;
-                case "track":
-                    return RoadType.DirtPath;
-            }
-            Trace.WriteLine($"Unknown highway='{highway}'");
-            return null;
-        }
 
-        private static void PlaceIsolatedTrees(AreaInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, OsmStreamSource filtered)
+        private static void PlaceIsolatedTrees(MapInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, OsmStreamSource filtered)
         {
-            var candidates = olibs.Libraries.Where(l => l.Category == BuildingCategory.IsolatedTree).SelectMany(l => l.Objects).ToList();
+            var candidates = olibs.Libraries.Where(l => l.Category == ObjectCategory.IsolatedTree).SelectMany(l => l.Objects).ToList();
             var result = new StringBuilder();
 
-            var trees = filtered.Where(o => o.Type == OsmGeoType.Node && Get(o.Tags, "natural") == "tree").ToList();
+            var trees = filtered.Where(o => o.Type == OsmGeoType.Node && OsmCategorizer.Get(o.Tags, "natural") == "tree").ToList();
             foreach (var tree in trees)
             {
                 var pos = ToTerrainBuilderPoint(area.StartPointUTM, (Node)tree);  
@@ -283,11 +304,11 @@ namespace ArmaRealMap
             File.WriteAllText("trees.txt", result.ToString());
         }
 
-        private static void PlaceBuildings(AreaInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, List<CategorizedGeometry> toRender)
+        private static void PlaceBuildings(MapInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, List<Area> toRender)
         {
             var result = new StringBuilder();
             var buildings = toRender.Count(b => b.Category.IsBuilding);
-            var metas = toRender.Where(b => Category.BuildingCategorizers.Contains(b.Category)).ToList();
+            var metas = toRender.Where(b => AreaCategory.BuildingCategorizers.Contains(b.Category)).ToList();
 
             var report = new ProgressReport("PlaceBuildings", buildings);
 
@@ -295,7 +316,7 @@ namespace ArmaRealMap
             {
                 if (building.BuildingCategory == null)
                 {
-                    building.BuildingCategory = metas.Where(m => m.Geometry.Contains(building.Geometry)).FirstOrDefault()?.BuildingCategory ?? BuildingCategory.Residential;
+                    building.BuildingCategory = metas.Where(m => m.Geometry.Contains(building.Geometry)).FirstOrDefault()?.BuildingCategory ?? ObjectCategory.Residential;
                 }
 
                 var points = ToTerrainBuilderPoints(area.StartPointUTM, building.Geometry.Coordinates).ToArray();
@@ -345,64 +366,24 @@ namespace ArmaRealMap
             File.WriteAllText("buildings2.txt", result.ToString());
         }
 
-        private static List<CategorizedGeometry> GetShapes(SnapshotDb db, OsmStreamSource filtered)
-        {
-            Console.WriteLine("Filter OSM data...");
-            var toRender = new List<CategorizedGeometry>();
-            var interpret = new DefaultFeatureInterpreter2();
-            var list = filtered.Where(osmGeo =>
-            (osmGeo.Type == OsmSharp.OsmGeoType.Way || osmGeo.Type == OsmSharp.OsmGeoType.Relation)
-            && osmGeo.Tags != null).ToList();
-            var report = new ProgressReport("GetShapes", list.Count);
-            foreach (OsmGeo osmGeo in list)
-            {
-                var category = GetCategory(osmGeo.Tags, interpret);
-                if (category != null)
-                {
-                    var complete = osmGeo.CreateComplete(db);
-                    var count = 0;
-                    foreach (var feature in interpret.Interpret(complete))
-                    {
-                        toRender.Add(new CategorizedGeometry(category, osmGeo, feature.Geometry));
-                        count++;
-                    }
-                    if (count == 0)
-                    {
-                        Trace.TraceWarning($"NO GEOMETRY FOR {osmGeo.Tags}");
-                    }
-                }
-                report.ReportOneDone();
-            }
-            report.TaskDone();
-            return toRender;
-        }
 
-        private static void DrawShapes(AreaInfos area, UniversalTransverseMercator startPointUTM, List<CategorizedGeometry> toRender)
+        private static void DrawShapes(MapInfos area, UniversalTransverseMercator startPointUTM, List<Area> toRender)
         {
-            var shapes = toRender.Count(b => !b.Category.IsBuilding);
+            var shapes = toRender.Count;
             var report = new ProgressReport("DrawShapes", shapes);
-            using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, Color.LightGreen))
+            using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, TerrainMaterial.GrassShort.Color))
             {
-                foreach (var item in toRender.Where(b => !b.Category.IsBuilding).OrderByDescending(e => e.Category.GroundTexturePriority))
+                foreach (var item in toRender.OrderByDescending(e => e.Category.GroundTexturePriority))
                 {
                     DrawGeometry(startPointUTM, img, new SolidBrush(item.Category.GroundTextureColorCode), item.Geometry);
                     report.ReportOneDone();
                 }
                 report.TaskDone();
                 Console.WriteLine("SavePNG");
-                img.Save("osm2.png");
+                img.Save("osm3.png");
             }
         }
 
-        private static string Get(TagsCollectionBase tags, string key)
-        {
-            string value;
-            if (tags != null && tags.TryGetValue(key, out value))
-            {
-                return value;
-            }
-            return null;
-        }
 
         private static void DrawGeometry(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, IBrush solidBrush, Geometry geometry)
         {
@@ -484,89 +465,6 @@ namespace ArmaRealMap
 
 
 
-        private static Category GetCategory(TagsCollectionBase tags, FeatureInterpreter interpreter)
-        {
-            if ( tags.ContainsKey("water") || (tags.ContainsKey("waterway") && !tags.IsFalse("waterway")))
-            {
-                return Category.Water;
-            }
-            if (tags.ContainsKey("building") && !tags.IsFalse("building"))
-            {
-                switch(Get(tags, "building"))
-                {
-                    case "church": 
-                        return Category.BuildingChurch;
-                }
-                if (Get(tags, "historic") == "fort")
-                {
-                    return Category.BuildingHistoricalFort;
-                }
-                if (tags.ContainsKey("brand"))
-                {
-                    return Category.BuildingRetail;
-                }
-                return Category.Building;
-            }
-
-            if (Get(tags, "type") == "boundary")
-            {
-                return null;
-            }
-
-            switch (Get(tags, "surface"))
-            {
-                case "grass": return Category.Grass;
-                case "sand": return Category.Sand;
-                case "concrete": return Category.Concrete;
-            }
-
-            switch (Get(tags, "landuse"))
-            { 
-                case "forest": return Category.Forest;
-                case "grass": return Category.Grass;
-                case "farmland": return Category.FarmLand;
-                case "farmyard": return Category.FarmLand;
-                case "vineyard": return Category.FarmLand;
-                case "orchard": return Category.FarmLand;
-                case "meadow": return Category.FarmLand;
-                case "industrial": return Category.Industrial;
-                case "residential": return Category.Residential;
-                case "cemetery": return Category.Concrete;
-                case "railway": return Category.Concrete;
-                case "retail": return Category.Retail;
-
-                case "basin": return Category.Water;
-                case "reservoir": return Category.Water;
-                case "allotments": return Category.Grass;
-                case "military": return Category.Military;
-            }
-
-            switch (Get(tags, "natural"))
-            { 
-                case "wood": return Category.Forest;
-                case "water": return Category.Water;
-                case "grass": return Category.Grass;
-                case "heath": return Category.Grass;
-                case "grassland": return Category.Grass;
-                case "scrub": return Category.Grass;
-                case "wetland": return Category.WetLand;
-                case "tree_row": return Category.Forest;
-                case "scree": return Category.Sand;
-                case "sand": return Category.Sand;
-                case "beach": return Category.Sand;
-            }
-
-
-            if (interpreter.IsPotentiallyArea(tags))
-            {
-                tags.RemoveKey("source");
-                tags.RemoveKey("name");
-                tags.RemoveKey("alt_name");
-                Trace.WriteLine(tags);
-                //Console.WriteLine(tags);
-            }
-            return null;
-        }
 
         private static IEnumerable<PointF> ToPixelsPoints(UniversalTransverseMercator startPointUTM, Image<Rgb24> img, IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
         {
@@ -603,45 +501,5 @@ namespace ArmaRealMap
                 );
         }
 
-        private static AreaInfos GetArea(MilitaryGridReferenceSystem startPointMGRS, int size, int cellSize)
-        {
-            var southWest = MilitaryGridReferenceSystem.MGRStoLatLong(startPointMGRS);
-
-            var startPointUTM = new UniversalTransverseMercator(
-                southWest.UTM.LatZone,
-                southWest.UTM.LongZone,
-                Math.Round(southWest.UTM.Easting),
-                Math.Round(southWest.UTM.Northing));
-
-            var southEast = UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
-                southWest.UTM.LatZone,
-                southWest.UTM.LongZone,
-                Math.Round(southWest.UTM.Easting) + (size * cellSize),
-                Math.Round(southWest.UTM.Northing)));
-
-            var northEast = UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
-                southWest.UTM.LatZone,
-                southWest.UTM.LongZone,
-                Math.Round(southWest.UTM.Easting) + (size * cellSize),
-                Math.Round(southWest.UTM.Northing) + (size * cellSize)));
-
-            var northWest = UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
-                southWest.UTM.LatZone,
-                southWest.UTM.LongZone,
-                Math.Round(southWest.UTM.Easting),
-                Math.Round(southWest.UTM.Northing) + (size * cellSize)));
-
-            return new AreaInfos
-            {
-                StartPointMGRS = startPointMGRS,
-                StartPointUTM = startPointUTM,
-                SouthWest = southWest,
-                NorthEast = northEast,
-                NorthWest = northWest,
-                SouthEast = southEast,
-                CellSize = cellSize,
-                Size = size
-            };
-        }
     }
 }

@@ -15,13 +15,13 @@ namespace ArmaRealMap.ElevationModel
 {
     public class ElevationGrid
     {
-        private readonly AreaInfos area;
-        private readonly double[,] elevationMatrix;
+        private readonly MapInfos area;
+        private readonly Image<Elevation> elevationImage;
 
-        internal ElevationGrid(AreaInfos areaInfos)
+        internal ElevationGrid(MapInfos areaInfos)
         {
             area = areaInfos;
-            elevationMatrix = new double[area.Size, area.Size];
+            elevationImage = new Image<Elevation>(area.Size, area.Size);
         }
 
         public void LoadFromSRTM(ConfigSRTM configSRTM)
@@ -29,7 +29,6 @@ namespace ArmaRealMap.ElevationModel
             var credentials = new NetworkCredential(configSRTM.Login, configSRTM.Password);
             var srtmData = new SRTMData(configSRTM.Cache, new NASASource(credentials));
             var startPointUTM = area.StartPointUTM;
-            //var sw = Stopwatch.StartNew();
             var eager = new EagerLoad(false);
 
             var done = 0;
@@ -51,13 +50,9 @@ namespace ArmaRealMap.ElevationModel
 
                     var latLong = UniversalTransverseMercator.ConvertUTMtoLatLong(point, eager);
 
-                    elevationMatrix[x, y] = srtmData.GetElevationBilinear(latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble()) ?? double.NaN;
+                    var elevation = srtmData.GetElevationBilinear(latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble()) ?? double.NaN;
+                    elevationImage[x, y] = new Elevation(elevation);
                 }
-
-                //var value = Interlocked.Increment(ref done);
-                //var percentDone = Math.Round((double)value * 100d / area.Size, 2);
-                //var milisecondsLeft = sw.ElapsedMilliseconds * (area.Size - value) / value;
-                //Console.WriteLine($"{percentDone}% - {Math.Ceiling(milisecondsLeft / 60000d)} min left");
                 report.ReportItemsDone(Interlocked.Increment(ref done));
             });
 
@@ -93,7 +88,8 @@ namespace ArmaRealMap.ElevationModel
                     int x = 0;
                     foreach(var item in line.Split(' ').Take(area.Size))
                     {
-                        elevationMatrix[x, y] = double.Parse(item, CultureInfo.InvariantCulture);
+                        var elevation = double.Parse(item, CultureInfo.InvariantCulture);
+                        elevationImage[x, y] = new Elevation(elevation);
                         x++;
                     }
                     report.ReportItemsDone(area.Size - y);
@@ -120,7 +116,7 @@ namespace ArmaRealMap.ElevationModel
                     report.ReportItemsDone(y);
                     for (int x = 0; x < area.Size; x++)
                     {
-                        writer.Write(elevationMatrix[x, area.Size - y - 1].ToString("0.00", CultureInfo.InvariantCulture));
+                        writer.Write(elevationImage[x, area.Size - y - 1].ToString());
                         writer.Write(" ");
                     }
                     writer.WriteLine();
@@ -134,12 +130,15 @@ namespace ArmaRealMap.ElevationModel
             var min = 4000d;
             var max = 0d;
 
+            var report = new ProgressReport("SavePreviewToPng", area.Size * 2);
+
             for (int y = 0; y < area.Size; y++)
             {
+                report.ReportItemsDone(y);
                 for (int x = 0; x < area.Size; x++)
                 {
-                    max = Math.Max(elevationMatrix[x, y], max);
-                    min = Math.Min(elevationMatrix[x, y], min);
+                    max = Math.Max(elevationImage[x, y].Value, max);
+                    min = Math.Min(elevationImage[x, y].Value, min);
                 }
             }
 
@@ -147,13 +146,15 @@ namespace ArmaRealMap.ElevationModel
             {
                 for (int y = 0; y < area.Size; y++)
                 {
+                    report.ReportItemsDone(area.Size + y);
                     for (int x = 0; x < area.Size; x++)
                     {
-                        byte value = (byte)((elevationMatrix[x, y] - min) * 255 / (max - min));
+                        byte value = (byte)((elevationImage[x, y].Value - min) * 255 / (max - min));
                         img[x, area.Size - y - 1] = new Rgb24(value, value, value);
                     }
                 }
                 img.Save(path);
+                report.TaskDone();
             }
         }
     }

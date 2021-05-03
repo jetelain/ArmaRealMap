@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Globalization;
 using System.Numerics;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -7,14 +6,23 @@ namespace ArmaRealMap.ElevationModel
 {
     public struct Elevation : IPixel<Elevation>
     {
-        public const float MaxValue = 9216;
-        public const float MinValue = -7168;
+        // 10000m -> Requires 20 bits for centimetric precision, should be fine on float32 (and on Vector4)
+        public const float MaxValue = 9000;
+        public const float MinValue = -1000;
 
         public float Value;
+        public float Alpha;
 
         public Elevation(float value)
         {
             Value = value;
+            Alpha = 1f;
+        }
+
+        public Elevation(double value)
+        {
+            Value = (float)value;
+            Alpha = 1f;
         }
 
         public bool Equals(Elevation other)
@@ -95,6 +103,7 @@ namespace ArmaRealMap.ElevationModel
         public void FromVector4(Vector4 vector)
         {
             Value = (vector.Z * (MaxValue - MinValue)) + MinValue;
+            Alpha = vector.W;
         }
 
         public void ToRgba32(ref Rgba32 dest)
@@ -109,7 +118,7 @@ namespace ArmaRealMap.ElevationModel
 
         public Vector4 ToVector4()
         {
-            return new Vector4(0, 0, (Value - MinValue) / (MaxValue - MinValue), 1f);
+            return new Vector4(0, 0, (Value - MinValue) / (MaxValue - MinValue), Alpha);
         }
 
         public override int GetHashCode()
@@ -124,6 +133,11 @@ namespace ArmaRealMap.ElevationModel
                 return Equals(elevation);
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString("0.00", CultureInfo.InvariantCulture);
         }
     }
 }

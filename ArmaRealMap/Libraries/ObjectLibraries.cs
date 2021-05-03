@@ -39,7 +39,7 @@ namespace ArmaRealMap.Libraries
             foreach (var file in Directory.GetFiles(config.Libraries, "*.txt"))
             {
                 var name = Path.GetFileNameWithoutExtension(file);
-                if (Enum.TryParse(name, out BuildingCategory category))
+                if (Enum.TryParse(name, out ObjectCategory category))
                 {
                     Libraries.Add(ParseText(file, category, jsons));
                 }
@@ -50,7 +50,7 @@ namespace ArmaRealMap.Libraries
             }
         }
 
-        private ObjectLibrary ParseText(string file, BuildingCategory categor, HashSet<string> jsons)
+        private ObjectLibrary ParseText(string file, ObjectCategory categor, HashSet<string> jsons)
         {
             var json = Path.ChangeExtension(file, ".json");
             ObjectLibrary lib;

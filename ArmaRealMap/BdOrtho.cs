@@ -8,7 +8,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace ArmaRealMap
 {
-    public class BdOrtho
+    public class BdOrtho : IDisposable
     {
         private readonly string[] allImages;
         private readonly ConcurrentDictionary<string, Image<Rgb24>> cache = new ConcurrentDictionary<string, Image<Rgb24>>();
@@ -56,7 +56,7 @@ namespace ArmaRealMap
             return img;
         }
 
-        internal void Preload(AreaInfos areaInfos)
+        internal void Preload(MapInfos areaInfos)
         {
             var points = new[]
             {
@@ -83,7 +83,14 @@ namespace ArmaRealMap
             report.TaskDone();
         }
 
-
+        public void Dispose()
+        {
+            foreach(var img in cache.Values)
+            {
+                img.Dispose();
+            }
+            cache.Clear();
+        }
     }
     /*
 

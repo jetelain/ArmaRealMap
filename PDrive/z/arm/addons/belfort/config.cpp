@@ -66,6 +66,8 @@ class CfgWorlds
 		minRocksInRockSquare = 2;
  
 		class Subdivision{};
-		class Names{};
+		class Names{
+			#include "names.hpp"
+		};
 	};
 };
