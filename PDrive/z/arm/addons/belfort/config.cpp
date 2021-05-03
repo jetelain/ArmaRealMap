@@ -14,7 +14,7 @@ class CfgPatches
  
 class CfgWorldList
 {
-	class arm_belfort{};
+	class belfort{};
 };
  
 class CfgWorlds
