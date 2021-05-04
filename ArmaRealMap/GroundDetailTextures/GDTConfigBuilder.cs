@@ -18,6 +18,9 @@ namespace ArmaRealMap.GroundTextureDetails
         {
             Directory.CreateDirectory(config.Target.GroundDetailTextures);
 
+            File.Copy(Path.Combine(config.Libraries, "gdt", "CfgSurfaces.hpp"), Path.Combine(config.Target.GroundDetailTextures, "CfgSurfaces.hpp"), true);
+            File.Copy(Path.Combine(config.Libraries, "gdt", "Clutter.hpp"), Path.Combine(config.Target.GroundDetailTextures, "Clutter.hpp"), true);
+
             foreach (var gdt in TerrainMaterial.All)
             {
                 var rvmat = Path.Combine(config.Libraries, "gdt", gdt.RvMat);
@@ -62,7 +65,7 @@ namespace ArmaRealMap.GroundTextureDetails
                 foreach (var gtd in TerrainMaterial.All)
                 {
                     var rgb = gtd.Color.ToPixel<Rgb24>();
-                    writer.WriteLine($@"    gtd_{gtd.ClassName}[]={{{rgb.R},{rgb.G},{rgb.B}}};");
+                    writer.WriteLine($@"    gtd_{gtd.ClassName}[]={{{{{rgb.R},{rgb.G},{rgb.B}}}}};");
                 }
                 writer.WriteLine("  };");
                 writer.WriteLine("};");

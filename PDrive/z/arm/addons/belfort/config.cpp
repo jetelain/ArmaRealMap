@@ -69,5 +69,11 @@ class CfgWorlds
 		class Names{
 			#include "names.hpp"
 		};
+		class DefaultClutter;
+		class clutter {
+			#include "data\gdt\Clutter.hpp"
+		};
 	};
 };
+
+#include "data\gdt\CfgSurfaces.hpp"

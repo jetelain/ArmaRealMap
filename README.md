@@ -12,9 +12,9 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
     - [ ] Adjust using buildings data
   - [ ] Generate ground texture details from OpenStreeMap data
     - [x] Baseline from terrain usage
-    - [ ] Adjust using roads data
+    - [x] Adjust using roads data
     - [ ] Adjust using parkings data
-    - [ ] Adjust using buildings data
+    - [x] Adjust using buildings data
   - [ ] Place best-fit buildings from OpenStreeMap data and objects libraries
     - [x] Residential buildings
     - [ ] Commercial buildings
@@ -27,13 +27,14 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
 	  - [x] Experimental using Terrain Processor
 	  - [ ] Builtin placing
     - [x] Isolated trees
+	- [ ] Tree rows
     - [ ] Rocks
     - [ ] Adjust using rivers and lakes data
     - [ ] Adjust using roads data
     - [ ] Adjust using parkings data
     - [ ] Adjust using buildings data
   - [ ] Place roads from OpenStreeMap data
-    - [ ] Roads
+    - [x] Roads
 	- [ ] Bridges
 	- [ ] Sidewalk
 	- [ ] Road lights

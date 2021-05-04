@@ -90,7 +90,7 @@ namespace ArmaRealMap
 
                 //Roads(area, filtered, db, config);
 
-                var toRender = OsmCategorizer.GetShapes(db, filtered);
+                var shapes = OsmCategorizer.GetShapes(db, filtered);
 
                 //ExportForestAsShapeFile(area, toRender);
 
@@ -98,7 +98,7 @@ namespace ArmaRealMap
 
                 //PlaceBuildings(area, olibs, usedObjects, toRender);
 
-                DrawShapes(area, startPointUTM, toRender);
+                DrawShapes(area, startPointUTM, shapes);
 
 
 
@@ -246,8 +246,7 @@ namespace ArmaRealMap
                     foreach (var feature in interpret.Interpret(complete))
                     {
                         var attributesTable = new AttributesTable();
-                        attributesTable.Add("ID", (int)kind); // ref
-                        //attributesTable.Add("N", Get(road.Tags, "ref") ?? string.Empty);
+                        attributesTable.Add("ID", (int)kind);
                         foreach (var linestring in ToLineString(area, feature.Geometry))
                         {
                             var len = linestring.Length;
