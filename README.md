@@ -27,7 +27,7 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
 	  - [x] Experimental using Terrain Processor
 	  - [ ] Builtin placing
     - [x] Isolated trees
-	- [ ] Tree rows
+    - [ ] Tree rows
     - [ ] Rocks
     - [ ] Adjust using rivers and lakes data
     - [ ] Adjust using roads data
@@ -35,13 +35,13 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
     - [ ] Adjust using buildings data
   - [ ] Place roads from OpenStreeMap data
     - [x] Roads
-	- [ ] Bridges
-	- [ ] Sidewalk
-	- [ ] Road lights
+    - [ ] Bridges
+    - [ ] Sidewalk
+    - [ ] Road lights
   - [ ] Place infrastrure elements  from OpenStreeMap data
-	- [ ] Railroads
-	- [ ] Powerlines
-	- [ ] Radio towers
+    - [ ] Railroads
+    - [ ] Powerlines
+    - [ ] Radio towers
 
 ## Data sources
 
@@ -49,8 +49,8 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
   - NASA SRTM : https://www2.jpl.nasa.gov/srtm/, needs account on https://urs.earthdata.nasa.gov/
   - OpenStreeMap, Get data in "osm.pbf" format, using 
     - https://protomaps.com/extracts
-	- https://download.bbbike.org/osm/
-	- See https://wiki.openstreetmap.org/wiki/Planet.osm for other tools
+    - https://download.bbbike.org/osm/
+    - See https://wiki.openstreetmap.org/wiki/Planet.osm for other tools
 
 ## Requirements
 

@@ -1,0 +1,96 @@
+{
+  "Category": "Church",
+  "Objects": [
+    {
+      "Name": "Chapel_02_yellow_F",
+      "Width": 4.19648,
+      "Depth": 5.58891,
+      "Height": 0,
+      "CX": 0.00048828125,
+      "CY": -0.6912551,
+      "CZ": 0
+    },
+    {
+      "Name": "Church_01_F",
+      "Width": 19.89658,
+      "Depth": 33.7303,
+      "Height": 0,
+      "CX": 1.9073486E-06,
+      "CY": 0.86216354,
+      "CZ": 0
+    },
+    {
+      "Name": "Church_03_F",
+      "Width": 16.438599,
+      "Depth": 20.4256,
+      "Height": 0,
+      "CX": -0.29692078,
+      "CY": -0.24465942,
+      "CZ": 0
+    },
+    {
+      "Name": "Church_02_F",
+      "Width": 13.98689,
+      "Depth": 41.7351,
+      "Height": 0,
+      "CX": 0.00015497208,
+      "CY": -0.0058460236,
+      "CZ": 0
+    },
+    {
+      "Name": "Cathedral_01_F",
+      "Width": 35.7467,
+      "Depth": 45.0922,
+      "Height": 0,
+      "CX": -6.866455E-05,
+      "CY": -0.1086216,
+      "CZ": 0
+    },
+    {
+      "Name": "Church_01_V2_F",
+      "Width": 27.060799,
+      "Depth": 18.40888,
+      "Height": 0,
+      "CX": -1.8260994,
+      "CY": -0.030593872,
+      "CZ": 0
+    },
+    {
+      "Name": "Chapel_Small_V1_F",
+      "Width": 7.6548405,
+      "Depth": 4.51136,
+      "Height": 0,
+      "CX": -0.6763201,
+      "CY": 0.007283926,
+      "CZ": 0
+    },
+    {
+      "Name": "Chapel_Small_V2_F",
+      "Width": 7.6548405,
+      "Depth": 4.51136,
+      "Height": 0,
+      "CX": -0.6763201,
+      "CY": 0.007283926,
+      "CZ": 0
+    },
+    {
+      "Name": "Chapel_V1_F",
+      "Width": 20.83333,
+      "Depth": 10.6762295,
+      "Height": 0,
+      "CX": -0.0052452087,
+      "CY": 0.051155567,
+      "CZ": 0
+    },
+    {
+      "Name": "Chapel_V2_F",
+      "Width": 20.83333,
+      "Depth": 10.6762295,
+      "Height": 0,
+      "CX": -0.0052452087,
+      "CY": 0.051155567,
+      "CZ": 0
+    }
+  ],
+  "Compositions": []
+}

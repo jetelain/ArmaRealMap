@@ -23,7 +23,7 @@ namespace ArmaRealMap
             }
             var elevation = new ElevationGrid(area);
             elevation.LoadFromAsc(rawElevation);
-            elevation.SavePreviewToPng(Path.ChangeExtension(rawElevation, ".png"));
+            //elevation.SavePreviewToPng(Path.ChangeExtension(rawElevation, ".png"));
             return elevation;
         }
     }

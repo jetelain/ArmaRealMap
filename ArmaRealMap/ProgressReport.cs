@@ -25,6 +25,11 @@ namespace ArmaRealMap
             WritePercent(0);
         }
 
+        public int Total
+        {
+            get { return itemsToDo; }
+        }
+
         public void ReportOneDone()
         {
             ++lastDone;
@@ -68,7 +73,7 @@ namespace ArmaRealMap
 
         private void WritePercent(double percent)
         {
-            var cols = Math.Min(20,(int)(percent / 5));
+            var cols = Math.Max(0,Math.Min(20,(int)(percent / 5)));
             Console.SetCursorPosition(20, top);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write(new string('#', cols));

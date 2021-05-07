@@ -2,60 +2,6 @@
   "Category": "Residential",
   "Objects": [
     {
-      "Name": "u_Addon_01_V1_F",
-      "Width": 8.42523,
-      "Depth": 5.4445734,
-      "Height": 0,
-      "CX": 2.4673882,
-      "CY": -0.5003865,
-      "CZ": 0
-    },
-    {
-      "Name": "u_Addon_02_V1_F",
-      "Width": 8.3526,
-      "Depth": 7.59974,
-      "Height": 0,
-      "CX": -0.5116918,
-      "CY": -0.42350006,
-      "CZ": 0
-    },
-    {
-      "Name": "i_Addon_02_V1_F",
-      "Width": 8.3526,
-      "Depth": 7.59974,
-      "Height": 0,
-      "CX": -0.51168823,
-      "CY": -0.42350006,
-      "CZ": 0
-    },
-    {
-      "Name": "i_Addon_03_V1_F",
-      "Width": 10.04242,
-      "Depth": 6.55797,
-      "Height": 0,
-      "CX": -0.5,
-      "CY": 0.48930907,
-      "CZ": 0
-    },
-    {
-      "Name": "i_Addon_03mid_V1_F",
-      "Width": 10.042419,
-      "Depth": 6.61659,
-      "Height": 0,
-      "CX": -0.50000477,
-      "CY": 0.41073203,
-      "CZ": 0
-    },
-    {
-      "Name": "i_Addon_04_V1_F",
-      "Width": 10.04242,
-      "Depth": 6.6165895,
-      "Height": 0,
-      "CX": -0.5,
-      "CY": -0.58926487,
-      "CZ": 0
-    },
-    {
       "Name": "i_Garage_V1_F",
       "Width": 14.6741295,
       "Depth": 6.6000004,
@@ -233,69 +179,6 @@
       "Height": 0,
       "CX": -0.45630503,
       "CY": 0.3979416,
-      "CZ": 0
-    },
-    {
-      "Name": "cargo_addon01_V1_F",
-      "Width": 4.13922,
-      "Depth": 2.9394,
-      "Height": 0,
-      "CX": 0.540257,
-      "CY": -0.51223,
-      "CZ": 0
-    },
-    {
-      "Name": "cargo_addon01_V2_F",
-      "Width": 4.18646,
-      "Depth": 2.94014,
-      "Height": 0,
-      "CX": 0.61866117,
-      "CY": 2.4874,
-      "CZ": 0
-    },
-    {
-      "Name": "cargo_addon02_V1_F",
-      "Width": 6.24254,
-      "Depth": 4.43928,
-      "Height": 0,
-      "CX": 2.40502,
-      "CY": -0.603521,
-      "CZ": 0
-    },
-    {
-      "Name": "cargo_addon02_V2_F",
-      "Width": 6.14494,
-      "Depth": 4.48104,
-      "Height": 0,
-      "CX": 2.35524,
-      "CY": -0.676103,
-      "CZ": 0
-    },
-    {
-      "Name": "Slum_House01_F",
-      "Width": 4.45106,
-      "Depth": 5.37292,
-      "Height": 0,
-      "CX": 0.5846579,
-      "CY": -0.99648,
-      "CZ": 0
-    },
-    {
-      "Name": "Slum_House02_F",
-      "Width": 5.66929,
-      "Depth": 6.80157,
-      "Height": 0,
-      "CX": -0.744215,
-      "CY": 0.15585017,
-      "CZ": 0
-    },
-    {
-      "Name": "Slum_House03_F",
-      "Width": 7.7079306,
-      "Depth": 5.48934,
-      "Height": 0,
-      "CX": -0.5400951,
-      "CY": 0.309443,
       "CZ": 0
     },
     {

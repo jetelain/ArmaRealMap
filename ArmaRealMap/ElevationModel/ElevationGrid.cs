@@ -16,7 +16,7 @@ namespace ArmaRealMap.ElevationModel
     public class ElevationGrid
     {
         private readonly MapInfos area;
-        private readonly Image<Elevation> elevationImage;
+        internal readonly Image<Elevation> elevationImage;
 
         internal ElevationGrid(MapInfos areaInfos)
         {

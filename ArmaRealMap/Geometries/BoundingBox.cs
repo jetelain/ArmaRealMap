@@ -1,19 +1,40 @@
 ﻿using System;
+using System.Linq;
+using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 
 namespace ArmaRealMap.Geometries
 {
     internal class BoundingBox
     {
-        public BoundingBox(float cx, float cy, float cw, float ch, float ca)
+        private readonly Lazy<Polygon> polygon;
+
+        public BoundingBox(float cx, float cy, float cw, float ch, float ca, TerrainPoint[] points)
+            : this(new TerrainPoint(cx, cy), cw, ch, ca, points)
         {
-            Center = new PointF(cx, cy);
+            /*Center = new TerrainPoint(cx, cy);
             Width = cw;
             Height = ch;
             Angle = ca;
+            Points = points;*/
         }
 
-        public PointF Center { get; }
+        public BoundingBox(TerrainPoint center, float cw, float ch, float ca, TerrainPoint[] points)
+        {
+            Center = center;
+            Width = cw;
+            Height = ch;
+            Angle = ca;
+            Points = points;
+            polygon = new Lazy<Polygon>(() => new Polygon(new LinearRing(Points.Concat(Points.Take(1)).Select(p => new Coordinate(p.X, p.Y)).ToArray())));
+        }
+
+        public BoundingBox(BoxJson json)
+            : this(new TerrainPoint(json.Center[0], json.Center[1]), json.Width, json.Height, json.Angle, json.Points.Select(p => new TerrainPoint(p[0],p[1])).ToArray())
+        {
+        }
+
+        public TerrainPoint Center { get; }
 
         /// <summary>
         /// Width in meters
@@ -30,8 +51,37 @@ namespace ArmaRealMap.Geometries
         /// </summary>
         public float Angle { get; }
 
+        /// <summary>
+        /// Points of rectangle
+        /// </summary>
+        public TerrainPoint[] Points { get; }
 
-        internal static BoundingBox Compute(PointF[] points)
+        public Polygon Poly => polygon.Value;
+
+        public BoundingBox Add (BoundingBox other)
+        {
+            return Compute(Points.Concat(other.Points).ToArray());
+        }
+
+        //public bool MayIntersects(BoundingBox other)
+        //{
+        //    var delta = Math.Max(Width, Height) + Math.Max(other.Width, other.Height);
+        //    return Math.Pow(other.Center.X - Center.X, 2) + Math.Pow(other.Center.Y - Center.Y, 2) < Math.Pow(delta, 2);
+        //}
+
+        public BoxJson ToJson()
+        {
+            return new BoxJson()
+            {
+                Center = new[] { Center.X, Center.Y },
+                Width = Width,
+                Height = Height,
+                Points = Points.Select(p => new[] { p.X, p.Y }).ToArray(),
+                Angle = Angle
+            };
+        }
+
+        internal static BoundingBox Compute(TerrainPoint[] points)
         {
             int i;
 
@@ -57,6 +107,15 @@ namespace ArmaRealMap.Geometries
             double cx = 0;
             double cy = 0;
             double ca = 0;
+
+            double c1xp = 0;
+            double c2xp = 0;
+            double c3xp = 0;
+            double c4xp = 0;
+            double c1yp = 0;
+            double c2yp = 0;
+            double c3yp = 0;
+            double c4yp = 0;
 
             int j;
 
@@ -91,17 +150,22 @@ namespace ArmaRealMap.Geometries
                     cw = (maxx - minx);
                     ch = (maxy - miny);
                     ca = theta * 180.0 / Math.PI;
-                    cx = ((minx + maxx) * Math.Cos(-theta) / 2) + ((miny + maxy) * Math.Sin(-theta) / 2) + ax;
-                    cy = ((miny + maxy) * Math.Cos(-theta) / 2) - ((minx + maxx) * Math.Sin(-theta) / 2) + ay;
 
-                    //var c1xp = (minx * Math.Cos(-theta)) + (miny * Math.Sin(-theta)) + ax;
-                    //var c1yp = (miny * Math.Cos(-theta)) - (minx * Math.Sin(-theta)) + ay;
-                    //var c2xp = (maxx * Math.Cos(-theta)) + (miny * Math.Sin(-theta)) + ax;
-                    //var c2yp = (miny * Math.Cos(-theta)) - (maxx * Math.Sin(-theta)) + ay;
-                    //var c3xp = (maxx * Math.Cos(-theta)) + (maxy * Math.Sin(-theta)) + ax;
-                    //var c3yp = (maxy * Math.Cos(-theta)) - (maxx * Math.Sin(-theta)) + ay;
-                    //var c4xp = (minx * Math.Cos(-theta)) + (maxy * Math.Sin(-theta)) + ax;
-                    //var c4yp = (maxy * Math.Cos(-theta)) - (minx * Math.Sin(-theta)) + ay;
+                    var cosMTheta = Math.Cos(-theta);
+                    var sinMTheta = Math.Sin(-theta);
+
+                    cx = ((minx + maxx) * cosMTheta / 2) + ((miny + maxy) * sinMTheta / 2) + ax;
+                    cy = ((miny + maxy) * cosMTheta / 2) - ((minx + maxx) * sinMTheta / 2) + ay;
+
+                    c1xp = (minx * cosMTheta) + (miny * sinMTheta) + ax;
+                    c1yp = (miny * cosMTheta) - (minx * sinMTheta) + ay;
+                    c2xp = (maxx * cosMTheta) + (miny * sinMTheta) + ax;
+                    c2yp = (miny * cosMTheta) - (maxx * sinMTheta) + ay;
+                    c3xp = (maxx * cosMTheta) + (maxy * sinMTheta) + ax;
+                    c3yp = (maxy * cosMTheta) - (maxx * sinMTheta) + ay;
+                    c4xp = (minx * cosMTheta) + (maxy * sinMTheta) + ax;
+                    c4yp = (maxy * cosMTheta) - (minx * sinMTheta) + ay;
+
                     //cx = (c3xp + c1xp) / 2;
                     //cy = (c3yp + c1yp) / 2;
                 }
@@ -109,7 +173,11 @@ namespace ArmaRealMap.Geometries
                 ay = by;
             }
 
-            return new BoundingBox((float)cx, (float)cy, (float)cw, (float)ch, (float)ca);
+            return new BoundingBox((float)cx, (float)cy, (float)cw, (float)ch, (float)ca, new[] { 
+                new TerrainPoint((float)c1xp, (float)c1yp),
+                new TerrainPoint((float)c2xp, (float)c2yp),
+                new TerrainPoint((float)c3xp, (float)c3yp),
+                new TerrainPoint((float)c4xp, (float)c4yp)});
         }
     }
 }

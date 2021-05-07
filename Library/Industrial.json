@@ -1,0 +1,330 @@
+{
+  "Category": "Industrial",
+  "Objects": [
+    {
+      "Name": "CementWorks_01_brick_F",
+      "Width": 30.356602,
+      "Depth": 49.3582,
+      "Height": 0,
+      "CX": -3.71385,
+      "CY": 5.4601593,
+      "CZ": 0
+    },
+    {
+      "Name": "CementWorks_01_grey_F",
+      "Width": 30.8722,
+      "Depth": 49.3964,
+      "Height": 0,
+      "CX": -3.45648,
+      "CY": 5.4614697,
+      "CZ": 0
+    },
+    {
+      "Name": "CoalPlant_01_MainBuilding_F",
+      "Width": 45.119102,
+      "Depth": 43.5771,
+      "Height": 0,
+      "CX": 5.255739,
+      "CY": -4.7709503,
+      "CZ": 0
+    },
+    {
+      "Name": "DPP_01_mainFactory_old_F",
+      "Width": 46.1033,
+      "Depth": 41.0418,
+      "Height": 0,
+      "CX": -1.5517101,
+      "CY": 0.5023136,
+      "CZ": 0
+    },
+    {
+      "Name": "dp_bigTank_old_F",
+      "Width": 17.085,
+      "Depth": 17.084991,
+      "Height": 0,
+      "CX": 0,
+      "CY": -0.022535324,
+      "CZ": 0
+    },
+    {
+      "Name": "PowerStation_01_F",
+      "Width": 11.16528,
+      "Depth": 15.85522,
+      "Height": 0,
+      "CX": -0.016740322,
+      "CY": -0.13009024,
+      "CZ": 0
+    },
+    {
+      "Name": "Sawmill_01_F",
+      "Width": 25.526299,
+      "Depth": 32.464,
+      "Height": 0,
+      "CX": -2.2427893,
+      "CY": -1.8151007,
+      "CZ": 0
+    },
+    {
+      "Name": "i_Shed_Ind_old_F",
+      "Width": 29.9333,
+      "Depth": 15.71608,
+      "Height": 0,
+      "CX": -0.5751505,
+      "CY": -0.45209026,
+      "CZ": 0
+    },
+    {
+      "Name": "dp_smallTank_old_F",
+      "Width": 7.7000003,
+      "Depth": 7.7,
+      "Height": 0,
+      "CX": -4.053116E-06,
+      "CY": 0,
+      "CZ": 0
+    },
+    {
+      "Name": "DPP_01_mainFactory_F",
+      "Width": 46.1033,
+      "Depth": 41.0418,
+      "Height": 0,
+      "CX": -1.5516491,
+      "CY": 0.50232124,
+      "CZ": 0
+    },
+    {
+      "Name": "DPP_01_smallFactory_F",
+      "Width": 23.1311,
+      "Depth": 14.62117,
+      "Height": 0,
+      "CX": 0.07155132,
+      "CY": 0.7994213,
+      "CZ": 0
+    },
+    {
+      "Name": "DPP_01_transformer_F",
+      "Width": 3.7091699,
+      "Depth": 3.68625,
+      "Height": 0,
+      "CX": 2.8729439E-05,
+      "CY": -0.20630097,
+      "CZ": 0
+    },
+    {
+      "Name": "DPP_01_waterCooler_F",
+      "Width": 9.92179,
+      "Depth": 6.60942,
+      "Height": 0,
+      "CX": 0.361506,
+      "CY": 0.7525501,
+      "CZ": 0
+    },
+    {
+      "Name": "StorageTank_01_large_F",
+      "Width": 46.4958,
+      "Depth": 46.4958,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0
+    },
+    {
+      "Name": "StorageTank_01_small_F",
+      "Width": 37.5834,
+      "Depth": 37.5835,
+      "Height": 0,
+      "CX": 0,
+      "CY": 4.5776367E-05,
+      "CZ": 0
+    },
+    {
+      "Name": "Warehouse_01_F",
+      "Width": 17.3337,
+      "Depth": 42.211403,
+      "Height": 0,
+      "CX": -0.00065898895,
+      "CY": 0.008460999,
+      "CZ": 0
+    },
+    {
+      "Name": "Warehouse_02_F",
+      "Width": 45.5854,
+      "Depth": 29.3251,
+      "Height": 0,
+      "CX": 0.000333786,
+      "CY": -1.2175598,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_boilerBuilding_F",
+      "Width": 48.009,
+      "Depth": 49.8346,
+      "Height": 0,
+      "CX": -1.4920502,
+      "CY": -0.8900757,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_clarifier_F",
+      "Width": 16.40262,
+      "Depth": 14.65866,
+      "Height": 0,
+      "CX": 1.7010899,
+      "CY": -0.85907984,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_crystallizer_F",
+      "Width": 19.94768,
+      "Depth": 19.19673,
+      "Height": 0,
+      "CX": 0.47606373,
+      "CY": 0.3261385,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_diffuser_F",
+      "Width": 19.0243,
+      "Depth": 49.1258,
+      "Height": 0,
+      "CX": 0.15991211,
+      "CY": 0.23956299,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_generalBuilding_F",
+      "Width": 30.2709,
+      "Depth": 50.2989,
+      "Height": 0,
+      "CX": 1.0740604,
+      "CY": 0.6838093,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_shed_F",
+      "Width": 21.5675,
+      "Depth": 36.499702,
+      "Height": 0,
+      "CX": -0.01798439,
+      "CY": 0.083250046,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_storageBin_big_F",
+      "Width": 28.920502,
+      "Depth": 28.7942,
+      "Height": 0,
+      "CX": 0.11024952,
+      "CY": 0.047099113,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_storageBin_medium_F",
+      "Width": 20.658901,
+      "Depth": 20.7024,
+      "Height": 0,
+      "CX": 0.083278656,
+      "CY": 6.67572E-06,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_storageBin_small_F",
+      "Width": 9.4982605,
+      "Depth": 9.4981,
+      "Height": 0,
+      "CX": 0.00011968613,
+      "CY": -3.0040741E-05,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_warehouse_F",
+      "Width": 34.179802,
+      "Depth": 38.233,
+      "Height": 0,
+      "CX": -6.4443207,
+      "CY": -3.6927204,
+      "CZ": 0
+    },
+    {
+      "Name": "SCF_01_washer_F",
+      "Width": 14.47263,
+      "Depth": 31.424599,
+      "Height": 0,
+      "CX": 0.045114994,
+      "CY": 2.5594196,
+      "CZ": 0
+    },
+    {
+      "Name": "SM_01_reservoirTower_F",
+      "Width": 10.65536,
+      "Depth": 10.8701,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0
+    },
+    {
+      "Name": "SM_01_shed_F",
+      "Width": 29.9333,
+      "Depth": 15.71608,
+      "Height": 0,
+      "CX": -0.5751505,
+      "CY": -0.45209026,
+      "CZ": 0
+    },
+    {
+      "Name": "WIP_F",
+      "Width": 49.1651,
+      "Depth": 39.9489,
+      "Height": 0,
+      "CX": 5.0969505,
+      "CY": 0.037750244,
+      "CZ": 0
+    },
+    {
+      "Name": "dp_mainFactory_addon2_F",
+      "Width": 11.69981,
+      "Depth": 29.9164,
+      "Height": 0,
+      "CX": 4.7683716E-06,
+      "CY": 0,
+      "CZ": 0
+    },
+    {
+      "Name": "dp_mainFactory_F",
+      "Width": 46.1033,
+      "Depth": 41.0418,
+      "Height": 0,
+      "CX": -1.55159,
+      "CY": 0.5022602,
+      "CZ": 0
+    },
+    {
+      "Name": "dp_smallFactory_F",
+      "Width": 23.1311,
+      "Depth": 14.62117,
+      "Height": 0,
+      "CX": 0.07155132,
+      "CY": 0.7994213,
+      "CZ": 0
+    },
+    {
+      "Name": "Factory_Main_F",
+      "Width": 28.455101,
+      "Depth": 37.728,
+      "Height": 0,
+      "CX": -0.73851967,
+      "CY": -0.5639992,
+      "CZ": 0
+    },
+    {
+      "Name": "dp_bigTank_F",
+      "Width": 17.085,
+      "Depth": 17.084991,
+      "Height": 0,
+      "CX": 0,
+      "CY": -0.022558212,
+      "CZ": 0
+    }
+  ],
+  "Compositions": []
+}
