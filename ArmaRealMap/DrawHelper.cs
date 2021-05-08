@@ -35,7 +35,6 @@ namespace ArmaRealMap
                     dimg.Mutate(p =>
                     {
                         var xor = new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { AlphaCompositionMode = PixelAlphaCompositionMode.Xor } };
-                        p.Clear(Color.Transparent);
                         p.FillPolygon(brush, outer.Select(p => new PointF(p.X - clip.X, p.Y - clip.Y)).ToArray());
                         foreach (var hpoints in holes)
                         {
