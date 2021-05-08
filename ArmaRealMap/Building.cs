@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ArmaRealMap.Geometries;
+using ArmaRealMap.Osm;
 using NetTopologySuite.Geometries;
 
 namespace ArmaRealMap
 {
     internal class Building
     {
-        public Building(Area area, TerrainPoint[] points)
+        public Building(OsmShape area, TerrainPoint[] points)
         {
-            Areas = new List<Area>() { area };
+            Shapes = new List<OsmShape>() { area };
             Box = BoundingBox.Compute(points);
             Category = area.BuildingCategory;
         }
@@ -20,7 +21,7 @@ namespace ArmaRealMap
             Category = json.Category;
         }
 
-        public List<Area> Areas { get; }
+        public List<OsmShape> Shapes { get; }
 
         public BoundingBox Box { get; private set; }
 
@@ -30,7 +31,7 @@ namespace ArmaRealMap
 
         public void Add(Building other)
         {
-            Areas.AddRange(other.Areas);
+            Shapes.AddRange(other.Shapes);
             Box = Box.Add(other.Box);
             Category = Category ?? other.Category;
         }

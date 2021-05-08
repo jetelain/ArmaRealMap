@@ -9,6 +9,7 @@ using System.Text.Json;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
+using ArmaRealMap.Osm;
 using CoordinateSharp;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
@@ -174,9 +175,9 @@ namespace ArmaRealMap
             return source.FilterBox(left, top, right, bottom, true);
         }
 
-        private static void ExportForestAsShapeFile(MapInfos area, List<Area> toRender)
+        private static void ExportForestAsShapeFile(MapInfos area, List<OsmShape> toRender)
         {
-            var forest = toRender.Where(f => f.Category == AreaCategory.Forest).ToList();
+            var forest = toRender.Where(f => f.Category == OsmShapeCategory.Forest).ToList();
             var attributesTable = new AttributesTable();
             var features = forest.SelectMany(f => ToPolygon(area, f.Geometry)).Select(f => new Feature(f, attributesTable)).ToList();
             var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
@@ -313,7 +314,7 @@ namespace ArmaRealMap
             File.WriteAllText("trees.txt", result.ToString());
         }
 
-        private static void PlaceBuildings(MapInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, List<Area> toRender)
+        private static void PlaceBuildings(MapInfos area, ObjectLibraries olibs, HashSet<string> usedObjects, List<OsmShape> toRender)
         {
             List<Building> buildings;
 
@@ -324,7 +325,7 @@ namespace ArmaRealMap
             else
             {
 
-                var removed = new List<Area>();
+                var removed = new List<OsmShape>();
                 var pass1 = BuildingPass1(area, toRender.Where(b => b.Category.IsBuilding).ToList(), removed);
                 Preview(area, removed, pass1, "pass1.png");
 
@@ -385,11 +386,11 @@ namespace ArmaRealMap
             Console.WriteLine("{0:0.0} % buildings placed", ok * 100.0 / buildings.Count);
         }
 
-        private static List<Building> BuildingPass4(MapInfos area, List<Area> toRender, List<Building> pass3)
+        private static List<Building> BuildingPass4(MapInfos area, List<OsmShape> toRender, List<Building> pass3)
         {
             var pass4 = pass3;
             var metas = toRender
-                .Where(b => AreaCategory.BuildingCategorizers.Contains(b.Category) && b.Category.BuildingType != ObjectCategory.Residential)
+                .Where(b => OsmShapeCategory.BuildingCategorizers.Contains(b.Category) && b.Category.BuildingType != ObjectCategory.Residential)
                 .Select(b => new
                 {
                     BuildingType = b.Category.BuildingType,
@@ -418,7 +419,7 @@ namespace ArmaRealMap
             return pass4;
         }
 
-        private static List<Building> BuildingPass1(MapInfos area, List<Area> buildings, List<Area> removed)
+        private static List<Building> BuildingPass1(MapInfos area, List<OsmShape> buildings, List<OsmShape> removed)
         {
             var pass1 = new List<Building>();
 
@@ -444,7 +445,7 @@ namespace ArmaRealMap
             return pass1;
         }
 
-        private static List<Building> BuldingPass2(List<Building> pass1Builidings, List<Area> removed)
+        private static List<Building> BuldingPass2(List<Building> pass1Builidings, List<OsmShape> removed)
         {
             var pass2 = new List<Building>();
 
@@ -460,7 +461,7 @@ namespace ArmaRealMap
 
             foreach (var building in heavy)
             {
-                removed.AddRange(small.Concat(large).Where(s => building.Poly.Contains(s.Poly)).SelectMany(b => b.Areas));
+                removed.AddRange(small.Concat(large).Where(s => building.Poly.Contains(s.Poly)).SelectMany(b => b.Shapes));
                 small.RemoveAll(s => building.Poly.Contains(s.Poly));
                 large.RemoveAll(s => building.Poly.Contains(s.Poly));
                 report2.ReportOneDone();
@@ -493,7 +494,7 @@ namespace ArmaRealMap
             return pass2;
         }
 
-        private static List<Building> BuildingPass3(List<Area> removed, List<Building> pass2)
+        private static List<Building> BuildingPass3(List<OsmShape> removed, List<Building> pass2)
         {
             var pass3 = pass2.OrderByDescending(l => l.Box.Width * l.Box.Height).ToList();
 
@@ -516,7 +517,7 @@ namespace ArmaRealMap
                         {
                             todo.Remove(other);
                             pass3.Remove(other);
-                            removed.AddRange(other.Areas);
+                            removed.AddRange(other.Shapes);
                         }
                         else
                         {
@@ -539,22 +540,22 @@ namespace ArmaRealMap
             return pass3;
         }
 
-        private static ProgressReport Preview(MapInfos area, List<Area> removed, List<Building> remainBuildings, string image)
+        private static ProgressReport Preview(MapInfos area, List<OsmShape> removed, List<Building> remainBuildings, string image)
         {
             ProgressReport report;
             using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, TerrainMaterial.GrassShort.Color))
             {
-                var kept = remainBuildings.SelectMany(b => b.Areas).ToList();
+                var kept = remainBuildings.SelectMany(b => b.Shapes).ToList();
 
                 report = new ProgressReport("DrawShapes", removed.Count + kept.Count);
                 foreach (var item in removed)
                 {
-                    DrawGeometry(area, img, new SolidBrush(Color.LightGray), item.Geometry);
+                    OsmDrawHelper.Draw(area, img, new SolidBrush(Color.LightGray), item);
                     report.ReportOneDone();
                 }
                 foreach (var item in kept)
                 {
-                    DrawGeometry(area, img, new SolidBrush(Color.DarkGray), item.Geometry);
+                    OsmDrawHelper.Draw(area, img, new SolidBrush(Color.DarkGray), item);
                     report.ReportOneDone();
                 }
                 report.TaskDone();
@@ -589,7 +590,7 @@ namespace ArmaRealMap
             return report;
         }
 
-        private static void DrawShapes(MapInfos area, List<Area> toRender)
+        private static void DrawShapes(MapInfos area, List<OsmShape> toRender)
         {
             var shapes = toRender.Count;
             var report = new ProgressReport("DrawShapes", shapes);
@@ -597,7 +598,7 @@ namespace ArmaRealMap
             {
                 foreach (var item in toRender.OrderByDescending(e => e.Category.GroundTexturePriority))
                 {
-                    DrawGeometry(area, img, new SolidBrush(item.Category.GroundTextureColorCode), item.Geometry);
+                    OsmDrawHelper.Draw(area, img, new SolidBrush(item.Category.GroundTextureColorCode), item);
                     report.ReportOneDone();
                 }
                 report.TaskDone();
@@ -607,82 +608,5 @@ namespace ArmaRealMap
         }
 
 
-        private static void DrawGeometry(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, Geometry geometry)
-        {
-            if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
-            {
-                foreach (var geo in ((GeometryCollection)geometry).Geometries)
-                {
-                    DrawGeometry(mapInfos, img, solidBrush, geo);
-                }
-            }
-            else if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
-            {
-                var poly = (Polygon)geometry;
-                var points = mapInfos.LatLngToPixelsPoints(poly.Shell.Coordinates).ToArray();
-                try
-                {
-                    if (poly.Holes.Length > 0 )
-                    {
-                        var clip = new Rectangle(
-                            (int)points.Select(p => p.X).Min() - 1,
-                            (int)points.Select(p => p.Y).Min() - 1,
-                            (int)(points.Select(p => p.X).Max() - points.Select(p => p.X).Min()) + 2,
-                            (int)(points.Select(p => p.Y).Max() - points.Select(p => p.Y).Min()) + 2);
-
-                        using (var dimg = new Image<Rgba32>(clip.Width, clip.Height, Color.Transparent))
-                        {
-                            var holes = poly.Holes.Select(h =>
-                            mapInfos.LatLngToPixelsPoints(h.Coordinates)
-                            .Select(p => new PointF(p.X - clip.X, p.Y -clip.Y)).ToArray()).ToList();
-
-                            dimg.Mutate(p =>
-                            {
-                                p.Clear(Color.Transparent);
-                                p.FillPolygon(solidBrush, points.Select(p => new PointF(p.X - clip.X, p.Y - clip.Y)).ToArray());
-                                foreach (var hpoints in holes)
-                                {
-                                    p.FillPolygon(new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { AlphaCompositionMode = PixelAlphaCompositionMode.Xor } }, solidBrush, hpoints);
-                                }
-                            });
-                            img.Mutate(p => p.DrawImage(dimg, new SixLabors.ImageSharp.Point(clip.X, clip.Y), 1));
-                        }
-
-                    }
-                    else
-                    {
-                        img.Mutate(p => p.FillPolygon(solidBrush, points));
-                    }
-                }
-                catch
-                {
-
-                }
-            }
-            else if (geometry.OgcGeometryType == OgcGeometryType.LineString)
-            {
-                var line = (LineString)geometry;
-                var points = mapInfos.LatLngToPixelsPoints(line.Coordinates).ToArray();
-                try
-                {
-                    if (line.IsClosed)
-                    {
-                        img.Mutate(p => p.FillPolygon(solidBrush, points));
-                    }
-                    else
-                    {
-                        img.Mutate(p => p.DrawLines(solidBrush, 6.0f, points));
-                    }
-                }
-                catch
-                {
-
-                }
-            }
-            else
-            {
-                Console.WriteLine(geometry.OgcGeometryType);
-            }
-        }
     }
 }

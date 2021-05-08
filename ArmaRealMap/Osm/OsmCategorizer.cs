@@ -10,15 +10,15 @@ using OsmSharp.Geo;
 using OsmSharp.Streams;
 using OsmSharp.Tags;
 
-namespace ArmaRealMap
+namespace ArmaRealMap.Osm
 {
     internal static class OsmCategorizer
     {
 
-        internal static List<Area> GetShapes(SnapshotDb db, OsmStreamSource filtered)
+        internal static List<OsmShape> GetShapes(SnapshotDb db, OsmStreamSource filtered)
         {
             Console.WriteLine("Filter OSM data...");
-            var toRender = new List<Area>();
+            var toRender = new List<OsmShape>();
             var interpret = new DefaultFeatureInterpreter2();
             var list = filtered.Where(osmGeo =>
             (osmGeo.Type == OsmSharp.OsmGeoType.Way || osmGeo.Type == OsmSharp.OsmGeoType.Relation)
@@ -33,7 +33,7 @@ namespace ArmaRealMap
                     var count = 0;
                     foreach (var feature in interpret.Interpret(complete))
                     {
-                        toRender.Add(new Area(category, osmGeo, feature.Geometry));
+                        toRender.Add(new OsmShape(category, osmGeo, feature.Geometry));
                         count++;
                     }
                     if (count == 0)
@@ -47,28 +47,28 @@ namespace ArmaRealMap
             return toRender;
         }
 
-        private static AreaCategory GetCategory(TagsCollectionBase tags, FeatureInterpreter interpreter)
+        private static OsmShapeCategory GetCategory(TagsCollectionBase tags, FeatureInterpreter interpreter)
         {
             if (tags.ContainsKey("water") || (tags.ContainsKey("waterway") && !tags.IsFalse("waterway")))
             {
-                return AreaCategory.Water;
+                return OsmShapeCategory.Water;
             }
             if (tags.ContainsKey("building") && !tags.IsFalse("building"))
             {
                 switch (Get(tags, "building"))
                 {
                     case "church":
-                        return AreaCategory.BuildingChurch;
+                        return OsmShapeCategory.BuildingChurch;
                 }
                 if (Get(tags, "historic") == "fort")
                 {
-                    return AreaCategory.BuildingHistoricalFort;
+                    return OsmShapeCategory.BuildingHistoricalFort;
                 }
                 if (tags.ContainsKey("brand"))
                 {
-                    return AreaCategory.BuildingRetail;
+                    return OsmShapeCategory.BuildingRetail;
                 }
-                return AreaCategory.Building;
+                return OsmShapeCategory.Building;
             }
 
             if (Get(tags, "type") == "boundary")
@@ -78,59 +78,59 @@ namespace ArmaRealMap
 
             switch (Get(tags, "surface"))
             {
-                case "grass": return AreaCategory.Grass;
-                case "sand": return AreaCategory.Sand;
-                case "concrete": return AreaCategory.Concrete;
+                case "grass": return OsmShapeCategory.Grass;
+                case "sand": return OsmShapeCategory.Sand;
+                case "concrete": return OsmShapeCategory.Concrete;
             }
 
 
 
             switch (Get(tags, "landuse"))
             {
-                case "forest": return AreaCategory.Forest;
-                case "grass": return AreaCategory.Grass;
-                case "village_green": return AreaCategory.Grass;
-                case "farmland": return AreaCategory.FarmLand;
-                case "farmyard": return AreaCategory.FarmLand;
-                case "vineyard": return AreaCategory.FarmLand;
-                case "orchard": return AreaCategory.FarmLand;
-                case "meadow": return AreaCategory.FarmLand;
-                case "industrial": return AreaCategory.Industrial;
-                case "residential": return AreaCategory.Residential;
-                case "cemetery": return AreaCategory.Grass;
-                case "railway": return AreaCategory.Dirt;
-                case "retail": return AreaCategory.Retail;
-                case "basin": return AreaCategory.Water;
-                case "reservoir": return AreaCategory.Water;
-                case "allotments": return AreaCategory.Grass;
-                case "military": return AreaCategory.Military;
+                case "forest": return OsmShapeCategory.Forest;
+                case "grass": return OsmShapeCategory.Grass;
+                case "village_green": return OsmShapeCategory.Grass;
+                case "farmland": return OsmShapeCategory.FarmLand;
+                case "farmyard": return OsmShapeCategory.FarmLand;
+                case "vineyard": return OsmShapeCategory.FarmLand;
+                case "orchard": return OsmShapeCategory.FarmLand;
+                case "meadow": return OsmShapeCategory.FarmLand;
+                case "industrial": return OsmShapeCategory.Industrial;
+                case "residential": return OsmShapeCategory.Residential;
+                case "cemetery": return OsmShapeCategory.Grass;
+                case "railway": return OsmShapeCategory.Dirt;
+                case "retail": return OsmShapeCategory.Retail;
+                case "basin": return OsmShapeCategory.Water;
+                case "reservoir": return OsmShapeCategory.Water;
+                case "allotments": return OsmShapeCategory.Grass;
+                case "military": return OsmShapeCategory.Military;
             }
 
             switch (Get(tags, "natural"))
             {
-                case "wood": return AreaCategory.Forest;
-                case "water": return AreaCategory.Water;
-                case "grass": return AreaCategory.Grass;
-                case "heath": return AreaCategory.Grass;
-                case "meadow": return AreaCategory.Grass;
-                case "grassland": return AreaCategory.Grass;
-                case "scrub": return AreaCategory.Grass;
-                case "wetland": return AreaCategory.WetLand;
-                case "tree_row": return AreaCategory.Forest;
-                case "scree": return AreaCategory.Sand;
-                case "sand": return AreaCategory.Sand;
-                case "beach": return AreaCategory.Sand;
+                case "wood": return OsmShapeCategory.Forest;
+                case "water": return OsmShapeCategory.Water;
+                case "grass": return OsmShapeCategory.Grass;
+                case "heath": return OsmShapeCategory.Grass;
+                case "meadow": return OsmShapeCategory.Grass;
+                case "grassland": return OsmShapeCategory.Grass;
+                case "scrub": return OsmShapeCategory.Grass;
+                case "wetland": return OsmShapeCategory.WetLand;
+                case "tree_row": return OsmShapeCategory.Forest;
+                case "scree": return OsmShapeCategory.Sand;
+                case "sand": return OsmShapeCategory.Sand;
+                case "beach": return OsmShapeCategory.Sand;
             }
 
             if (Get(tags, "leisure") == "garden")
             {
-                return AreaCategory.Grass;
+                return OsmShapeCategory.Grass;
             }
 
             var road = ToRoadType(Get(tags, "highway"));
             if (road != null && road.Value < RoadType.SingleLaneDirtRoad)
             {
-                return AreaCategory.Road;
+                return OsmShapeCategory.Road;
             }
 
             if (interpreter.IsPotentiallyArea(tags))
