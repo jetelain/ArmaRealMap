@@ -1,0 +1,39 @@
+{
+  "Category": "ForestTree",
+  "Objects": [
+    {
+      "Name": "t_malusDomestica_3s",
+      "Width": 12.0293,
+      "Depth": 12.0293,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0,
+	  "PlacementRadius": 5.0,
+	  "PlacementProbability": 0.4
+    },
+    {
+      "Name": "t_FagusSylvatica_3s",
+      "Width": 19.8321,
+      "Depth": 19.97402,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0,
+	  "PlacementRadius": 5.0,
+	  "PlacementProbability": 0.4
+    },
+    {
+      "Name": "t_PinusS2s_F",
+      "Width": 17.71954,
+      "Depth": 14.01576,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0,
+	  "PlacementRadius": 5.0,
+	  "PlacementProbability": 0.2
+    }
+  ],
+  "Compositions": []
+}
