@@ -4,9 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
@@ -81,7 +79,7 @@ namespace ArmaRealMap
                         var x = fillarea.Random.Next(rndX1, rndX2) / 10f;
                         var y = fillarea.Random.Next(rndY1, rndY2) / 10f;
                         var c = new Coordinate(x, y);
-                        if (fillarea.Shape.Contains(new NetTopologySuite.Geometries.Point(c)))
+                        if (IsPointInPolygon(fillarea.Shape, c))
                         {
                             var point = new TerrainPoint(x, y);
                             var obj = GetObjectToInsert(library, fillarea, clusters, point);
@@ -159,6 +157,57 @@ namespace ArmaRealMap
                 img.Save("forest-places.png");
             }
 
+        }
+
+        private static bool IsPointInPolygon(NetTopologySuite.Geometries.Polygon shape, Coordinate point)
+        {
+            if (PointInPolygon(shape.ExteriorRing.Coordinates, point) == 1)
+            {
+                return shape.InteriorRings.All(hole => PointInPolygon(hole.Coordinates, point) == 0);
+            }
+            return false;
+        }
+        private static int PointInPolygon(Coordinate[] path, Coordinate pt)
+        {
+            //returns 0 if false, +1 if true, -1 if pt ON polygon boundary
+            //See "The Point in Polygon Problem for Arbitrary Polygons" by Hormann & Agathos
+            //http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.88.5498&rep=rep1&type=pdf
+            int result = 0, cnt = path.Length;
+            if (cnt < 3) return 0;
+            Coordinate ip = path[0];
+            for (int i = 1; i <= cnt; ++i)
+            {
+                Coordinate ipNext = (i == cnt ? path[0] : path[i]);
+                if (ipNext.Y == pt.Y)
+                {
+                    if ((ipNext.X == pt.X) || (ip.Y == pt.Y && ((ipNext.X > pt.X) == (ip.X < pt.X))))
+                        return -1;
+                }
+                if ((ip.Y < pt.Y) != (ipNext.Y < pt.Y))
+                {
+                    if (ip.X >= pt.X)
+                    {
+                        if (ipNext.X > pt.X) result = 1 - result;
+                        else
+                        {
+                            double d = (double)(ip.X - pt.X) * (ipNext.Y - pt.Y) - (double)(ipNext.X - pt.X) * (ip.Y - pt.Y);
+                            if (d == 0) return -1;
+                            else if ((d > 0) == (ipNext.Y > ip.Y)) result = 1 - result;
+                        }
+                    }
+                    else
+                    {
+                        if (ipNext.X > pt.X)
+                        {
+                            double d = (double)(ip.X - pt.X) * (ipNext.Y - pt.Y) - (double)(ipNext.X - pt.X) * (ip.Y - pt.Y);
+                            if (d == 0) return -1;
+                            else if ((d > 0) == (ipNext.Y > ip.Y)) result = 1 - result;
+                        }
+                    }
+                }
+                ip = ipNext;
+            }
+            return result;
         }
 
         private static SingleObjetInfos GetObjectToInsert(ObjectLibrary library, FillArea fillarea, SimpleSpacialIndex<SingleObjetInfos> clusters, TerrainPoint point)
