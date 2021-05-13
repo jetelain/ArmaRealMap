@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Linq;
+using System.Numerics;
 using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 
 namespace ArmaRealMap.Geometries
 {
-    internal class BoundingBox
+    internal class BoundingBox : IBoundingShape
     {
         private readonly Lazy<Polygon> polygon;
 
         public BoundingBox(float cx, float cy, float cw, float ch, float ca, TerrainPoint[] points)
             : this(new TerrainPoint(cx, cy), cw, ch, ca, points)
         {
-            /*Center = new TerrainPoint(cx, cy);
-            Width = cw;
-            Height = ch;
-            Angle = ca;
-            Points = points;*/
         }
 
         public BoundingBox(TerrainPoint center, float cw, float ch, float ca, TerrainPoint[] points)
@@ -32,6 +28,7 @@ namespace ArmaRealMap.Geometries
         public BoundingBox(BoxJson json)
             : this(new TerrainPoint(json.Center[0], json.Center[1]), json.Width, json.Height, json.Angle, json.Points.Select(p => new TerrainPoint(p[0],p[1])).ToArray())
         {
+            
         }
 
         public TerrainPoint Center { get; }
@@ -58,9 +55,18 @@ namespace ArmaRealMap.Geometries
 
         public Polygon Poly => polygon.Value;
 
+        public Vector2 StartPoint => new Vector2(Points.Min(p => p.X), Points.Min(p => p.Y));
+
+        public Vector2 EndPoint => new Vector2(Points.Max(p => p.X), Points.Max(p => p.Y));
+
         public BoundingBox Add (BoundingBox other)
         {
             return Compute(Points.Concat(other.Points).ToArray());
+        }
+
+        public BoundingBox RotateM90()
+        {
+            return new BoundingBox(Center, Height, Width, Angle - 90, Points);
         }
 
         //public bool MayIntersects(BoundingBox other)

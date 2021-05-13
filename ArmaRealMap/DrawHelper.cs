@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -47,6 +49,56 @@ namespace ArmaRealMap
             else
             {
                 img.Mutate(p => p.FillPolygon(brush, outer.ToArray()));
+            }
+        }
+
+        internal static void FillGeometry(Image<Rgb24> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels)
+        {
+            if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
+            {
+                foreach (var geo in ((GeometryCollection)geometry).Geometries)
+                {
+                    FillGeometry(img, solidBrush, geo, toPixels);
+                }
+            }
+            else if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
+            {
+                var poly = (Polygon)geometry;
+                try
+                {
+                    FillPolygonWithHoles(img,
+                        toPixels(poly.Shell.Coordinates).ToList(),
+                        poly.Holes.Select(h => toPixels(h.Coordinates).Select(p => new PointF(p.X, p.Y)).ToList()).ToList(),
+                        solidBrush);
+                }
+                catch
+                {
+
+                }
+            }
+            else if (geometry.OgcGeometryType == OgcGeometryType.LineString)
+            {
+                var line = (LineString)geometry;
+                var points = toPixels(line.Coordinates).ToArray();
+                try
+                {
+                    if (line.IsClosed)
+                    {
+                        img.Mutate(p => p.FillPolygon(solidBrush, points));
+                    }
+                    else
+                    {
+                        img.Mutate(p => p.DrawLines(solidBrush, 6.0f, points));
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+            else
+            {
+                throw new NotSupportedException(geometry.OgcGeometryType.ToString());
             }
         }
     }

@@ -9,6 +9,7 @@
         HistoricalFort,
         Church,
 
-        IsolatedTree
+        IsolatedTree,
+        ForestTree
     }
 }

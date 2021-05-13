@@ -7,7 +7,7 @@ using SixLabors.ImageSharp;
 
 namespace ArmaRealMap
 {
-    internal class MapInfos
+    public class MapInfos
     {
         private static readonly EagerLoad eagerUTM = new EagerLoad(false) { UTM_MGRS = true };
 
@@ -20,13 +20,21 @@ namespace ArmaRealMap
         public int CellSize { get; internal set; }
         public int Size { get; internal set; }
 
+        public TerrainPoint P1 { get; set; }
+        public TerrainPoint P2 { get; set; }
+
         public int Height { get { return Size * CellSize; } }
         public int Width { get { return Size * CellSize; } }
 
         internal bool IsInside(TerrainPoint p)
         {
-            return p.X > StartPointUTM.Easting && p.X < StartPointUTM.Easting + Width &&
-                p.Y > StartPointUTM.Northing && p.Y < StartPointUTM.Northing + Height;
+            return p.X > P1.X && p.X < P2.X &&
+                   p.Y > P1.Y && p.Y < P2.Y;
+        }
+        internal bool IsInside(NetTopologySuite.Geometries.Coordinate p)
+        {
+            return p.X > P1.X && p.X < P2.X &&
+                   p.Y > P1.Y && p.Y < P2.Y;
         }
 
         internal static MapInfos Create(Config config)
@@ -74,7 +82,9 @@ namespace ArmaRealMap
                 NorthWest = northWest,
                 SouthEast = southEast,
                 CellSize = cellSize,
-                Size = size
+                Size = size,
+                P1 = new TerrainPoint((float)startPointUTM.Easting, (float)startPointUTM.Northing),
+                P2 = new TerrainPoint((float)startPointUTM.Easting + (size * cellSize), (float)startPointUTM.Northing + (size * cellSize))
             };
         }
 
@@ -112,6 +122,19 @@ namespace ArmaRealMap
         }
 
         public IEnumerable<PointF> TerrainToPixelsPoints(IEnumerable<TerrainPoint> points)
+        {
+            return points.Select(TerrainToPixelsPoint);
+        }
+
+        public PointF TerrainToPixelsPoint(NetTopologySuite.Geometries.Coordinate point)
+        {
+            return new PointF(
+                (float)(point.X - StartPointUTM.Easting),
+                (float)Height - (float)(point.Y - StartPointUTM.Northing)
+            );
+        }
+
+        public IEnumerable<PointF> TerrainToPixelsPoints(IEnumerable<NetTopologySuite.Geometries.Coordinate> points)
         {
             return points.Select(TerrainToPixelsPoint);
         }

@@ -15,6 +15,7 @@ namespace ArmaRealMap.Osm
         internal static void Draw(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, OsmShape shape)
         {
             DrawGeometry(mapInfos, img, solidBrush, shape.Geometry);
+            //DrawHelper.FillGeometry(img, solidBrush, shape.Geometry, mapInfos.LatLngToPixelsPoints);
         }
 
         private static void DrawGeometry(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, Geometry geometry)

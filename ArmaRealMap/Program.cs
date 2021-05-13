@@ -10,7 +10,6 @@ using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
-using CoordinateSharp;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -20,7 +19,6 @@ using OsmSharp.Db;
 using OsmSharp.Db.Impl;
 using OsmSharp.Geo;
 using OsmSharp.Streams;
-using OsmSharp.Tags;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -77,7 +75,6 @@ namespace ArmaRealMap
         private static void BuildLand(Config config, MapData data, MapInfos area, ObjectLibraries olibs)
         {
             var usedObjects = new HashSet<string>();
-
             using (var fileStream = File.OpenRead(config.OSM))
             {
                 Console.WriteLine("Load OSM data...");
@@ -95,9 +92,11 @@ namespace ArmaRealMap
 
                 //ExportForestAsShapeFile(area, toRender);
 
+                FillShapeWithObjects.MakeForest(area, shapes, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree));
+
                 //PlaceIsolatedTrees(area, olibs, usedObjects, filtered);
 
-                PlaceBuildings(area, olibs, usedObjects, shapes);
+                //PlaceBuildings(area, olibs, usedObjects, shapes);
 
                 //MakeLakeDeeper(data, shapes);
 
@@ -111,6 +110,8 @@ namespace ArmaRealMap
             var libs = olibs.TerrainBuilder.Libraries.Where(l => usedObjects.Any(o => l.Template.Any(t => t.Name==o))).Distinct().ToList();
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
         }
+
+
 
         //private static void MakeLakeDeeper(MapData data, List<Area> shapes)
         //{
@@ -179,52 +180,13 @@ namespace ArmaRealMap
         {
             var forest = toRender.Where(f => f.Category == OsmShapeCategory.Forest).ToList();
             var attributesTable = new AttributesTable();
-            var features = forest.SelectMany(f => ToPolygon(area, f.Geometry)).Select(f => new Feature(f, attributesTable)).ToList();
+            var features = forest.SelectMany(f => GeometryHelper.LatLngToTerrainPolygon(area, f.Geometry)).Select(f => new Feature(f, attributesTable)).ToList();
             var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
             var shapeWriter = new ShapefileDataWriter("forest.shp", new GeometryFactory())
             {
                 Header = header
             };
             shapeWriter.Write(features);
-        }
-
-        private static IEnumerable<Polygon> ToPolygon(MapInfos area, Geometry geometry)
-        {
-            if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
-            {
-                return ((MultiPolygon)geometry).Geometries.SelectMany(p => ToPolygon(area, p));
-            }
-            if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
-            {
-                var poly = (Polygon)geometry;
-                return new[] 
-                { 
-                    new Polygon(
-                        ToTerrainBuilderRing(area, poly.ExteriorRing),
-                        poly.InteriorRings.Select(h => ToTerrainBuilderRing(area, h)).ToArray()) 
-                };
-            }
-            if (geometry.OgcGeometryType == OgcGeometryType.LineString)
-            {
-                var line = (LineString)geometry;
-                if (line.IsClosed && line.Coordinates.Length > 4)
-                {
-                    return new[] 
-                    { 
-                        new Polygon(
-                            new LinearRing(
-                                area.LatLngToTerrainPoints(((LineString)geometry).Coordinates)
-                                .Select(p => new NetTopologySuite.Geometries.Coordinate(p.X, p.Y))
-                                .ToArray())) 
-                    };
-                }
-            }
-            return new Polygon[0];
-        }
-
-        private static LinearRing ToTerrainBuilderRing(MapInfos area, LineString line)
-        {
-            return new LinearRing(area.LatLngToTerrainPoints(line.Coordinates).Select(p => new NetTopologySuite.Geometries.Coordinate(p.X, p.Y)).ToArray());
         }
 
         private static IEnumerable<LineString> ToLineString(MapInfos area, Geometry geometry)
@@ -382,7 +344,7 @@ namespace ArmaRealMap
                 report.ReportOneDone();
             }
             report.TaskDone();
-            File.WriteAllText("buildings3.txt", result.ToString());
+            File.WriteAllText("buildings5.txt", result.ToString());
             Console.WriteLine("{0:0.0} % buildings placed", ok * 100.0 / buildings.Count);
         }
 
@@ -394,7 +356,7 @@ namespace ArmaRealMap
                 .Select(b => new
                 {
                     BuildingType = b.Category.BuildingType,
-                    Poly = ToPolygon(area, b.Geometry)
+                    Poly = GeometryHelper.LatLngToTerrainPolygon(area, b.Geometry)
                 })
                 .ToList();
 
@@ -603,7 +565,7 @@ namespace ArmaRealMap
                 }
                 report.TaskDone();
                 Console.WriteLine("SavePNG");
-                img.Save("osm3.png");
+                img.Save("osm4.png");
             }
         }
 
