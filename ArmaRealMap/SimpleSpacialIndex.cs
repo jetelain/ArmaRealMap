@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -6,23 +7,41 @@ using System.Text;
 
 namespace ArmaRealMap
 {
-    public class SimpleSpacialIndex<T>
+    public class SimpleSpacialIndex<T> where T : class
     {
         private class DataNode
         {
             public Vector2 start;
             public Vector2 end;
             public T value;
+            public bool isRemoved;
+        }
+        private class LockArea : IDisposable
+        {
+            public int x1;
+            public int y1;
+            public int x2;
+            public int y2;
+            public SimpleSpacialIndex<T> owner;
+            public void Dispose()
+            {
+                lock (owner.locks)
+                {
+                    owner.locks.Remove(this);
+                }
+            }
         }
 
         private readonly List<DataNode>[,] cells;
-        private readonly List<DataNode> all = new List<DataNode>();
+        private readonly ConcurrentBag<DataNode> all = new ConcurrentBag<DataNode>();
+        private readonly List<LockArea> locks = new List<LockArea>();
 
         private readonly Vector2 start;
         private readonly Vector2 end;
         private readonly Vector2 cellSize;
         private readonly Vector2 maxCell;
         private readonly int maxCellIndex;
+        private int removedCount = 0;
 
         public SimpleSpacialIndex(Vector2 start, Vector2 size, int cellCount = 512)
         {
@@ -41,10 +60,34 @@ namespace ArmaRealMap
             maxCell = new Vector2(maxCellIndex, maxCellIndex);
         }
 
-        public IEnumerable<T> Values => all.Select(a => a.value);
+        public IEnumerable<T> Values => all.Where(a => !a.isRemoved).Select(a => a.value);
 
-        public int Count => all.Count;
+        public int Count => all.Count - removedCount;
 
+        public bool TryLock(Vector2 start, Vector2 end, out IDisposable locker)
+        {
+            var p1 = Vector2.Clamp((start - this.start) / cellSize, Vector2.Zero, maxCell);
+            var p2 = Vector2.Clamp((end - this.start) / cellSize, Vector2.Zero, maxCell);
+            var x1 = (int)Math.Floor(p1.X);
+            var x2 = (int)Math.Ceiling(p2.X);
+            var y1 = (int)Math.Floor(p1.Y);
+            var y2 = (int)Math.Ceiling(p2.Y);
+            lock (locks)
+            {
+                if (locks.Any(a => a.x1 <= x2 &&
+                    a.y1 <= y2 &&
+                    a.x2 >= x1 &&
+                    a.y2 >= y1))
+                {
+                    locker = null;
+                    return false;
+                }
+                var lockArea = new LockArea() { x1 = x1, x2 = x2, y1 = y1, y2 = y2, owner = this };
+                locker = lockArea;
+                locks.Add(lockArea);
+            }
+            return true;
+        }
         private IEnumerable<List<DataNode>> GetCells(Vector2 start, Vector2 end)
         {
             var p1 = Vector2.Clamp((start - this.start) / cellSize, Vector2.Zero, maxCell);
@@ -101,6 +144,27 @@ namespace ArmaRealMap
             }
             return result.Select(n => n.value).ToList();
         }
- 
+
+        internal void Remove(Vector2 start, Vector2 end, T obj)
+        {
+            DataNode node = null;
+            foreach (var cell in GetCells(start, end))
+            {
+                if (node == null)
+                {
+                    node = cell.FirstOrDefault(n => n.value == obj);
+                }
+                if (node != null)
+                {
+                    cell.Remove(node);
+                }
+            }
+            if (node != null)
+            {
+                node.isRemoved = true;
+                node.value = null;
+                removedCount++;
+            }
+        }
     }
 }

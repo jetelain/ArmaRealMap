@@ -209,5 +209,24 @@ namespace ArmaRealMap.Geometries
         {
             return list.Where(p => p.IsValid).Concat(list.Where(p => !p.IsValid).SelectMany(ToValidPolygon));
         }
+
+        internal static IEnumerable<LineString> LatLngToLineString(MapInfos map, Geometry geometry)
+        {
+            return ToLineString(geometry, list => map.LatLngToTerrainPoints(list).Select(p => new Coordinate(p.X, p.Y)));
+        }
+
+        public static IEnumerable<LineString> ToLineString(Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<Coordinate>> transform)
+        {
+            if (geometry.OgcGeometryType == OgcGeometryType.LineString)
+            {
+                var points = transform(((LineString)geometry).Coordinates).ToArray();
+                if (points.Length > 1)
+                {
+                    return new[] { new LineString(points) };
+                }
+                return new LineString[0];
+            }
+            throw new ArgumentException(geometry.OgcGeometryType.ToString());
+        }
     }
 }

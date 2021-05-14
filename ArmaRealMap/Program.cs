@@ -92,7 +92,8 @@ namespace ArmaRealMap
 
                 //ExportForestAsShapeFile(area, toRender);
 
-                FillShapeWithObjects.MakeForest(area, shapes, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree));
+                new FillShapeWithObjects(area, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree))
+                    .MakeForest(shapes, filtered, db);
 
                 //PlaceIsolatedTrees(area, olibs, usedObjects, filtered);
 
