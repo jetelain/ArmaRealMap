@@ -62,7 +62,7 @@ namespace ArmaRealMap
             Trace.Flush();
 
             var objects = new SimpleSpacialIndex<TerrainObject>(
-                new Vector2((float)area.StartPointUTM.Easting, (float)area.StartPointUTM.Northing),
+                area.P1.Vector,
                 new Vector2(area.Width, area.Height));
 
             var forest = GeometryHelper.EnsureValidPolygons(
@@ -228,14 +228,14 @@ namespace ArmaRealMap
             report.TaskDone();
         }
 
-        private static void WriteFile(SimpleSpacialIndex<TerrainObject> objects, string forestPass1File)
+        private void WriteFile(SimpleSpacialIndex<TerrainObject> objects, string forestPass1File)
         {
             var report2 = new ProgressReport("WriteForestTxt", objects.Count);
             using (var writer = new StreamWriter(new FileStream(forestPass1File, FileMode.Create, FileAccess.Write)))
             {
                 foreach (var obj in objects.Values)
                 {
-                    writer.WriteLine(obj.ToString());
+                    writer.WriteLine(obj.ToString(area));
                     report2.ReportOneDone();
                 }
             }
@@ -254,8 +254,8 @@ namespace ArmaRealMap
                     var name = tokens[0].Trim('"');
                     var obj = library.Objects.First(o => o.Name == name);
                     var point = new TerrainPoint(
-                                float.Parse(tokens[1], CultureInfo.InvariantCulture),
-                                float.Parse(tokens[2], CultureInfo.InvariantCulture)
+                                (float)(double.Parse(tokens[1], CultureInfo.InvariantCulture) - area.StartPointUTM.Easting),
+                                (float)(double.Parse(tokens[2], CultureInfo.InvariantCulture) - area.StartPointUTM.Northing)
                                 );
                     var tobj = new TerrainObject(obj,
                             point,

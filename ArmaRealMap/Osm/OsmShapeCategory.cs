@@ -34,6 +34,7 @@ namespace ArmaRealMap.Osm
             Parent = parent;
         }
 
+        internal static readonly OsmShapeCategory Lake = new OsmShapeCategory(TerrainMaterial.WetLand, 1);
         internal static readonly OsmShapeCategory Water = new OsmShapeCategory(TerrainMaterial.WetLand, 1);
         internal static readonly OsmShapeCategory Forest = new OsmShapeCategory(TerrainMaterial.Forest, 4);
         internal static readonly OsmShapeCategory WetLand = new OsmShapeCategory(TerrainMaterial.WetLand, 2);

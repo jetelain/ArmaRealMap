@@ -17,8 +17,8 @@ namespace ArmaRealMap
         public Coordinate NorthEast { get; set; }
         public Coordinate NorthWest { get; set; }
         public Coordinate SouthEast { get; set; }
-        public int CellSize { get; internal set; }
-        public int Size { get; internal set; }
+        public int CellSize { get; set; }
+        public int Size { get; set; }
 
         public TerrainPoint P1 { get; set; }
         public TerrainPoint P2 { get; set; }
@@ -83,8 +83,8 @@ namespace ArmaRealMap
                 SouthEast = southEast,
                 CellSize = cellSize,
                 Size = size,
-                P1 = new TerrainPoint((float)startPointUTM.Easting, (float)startPointUTM.Northing),
-                P2 = new TerrainPoint((float)startPointUTM.Easting + (size * cellSize), (float)startPointUTM.Northing + (size * cellSize))
+                P1 = new TerrainPoint(0f, 0f),
+                P2 = new TerrainPoint(size * cellSize, size * cellSize)
             };
         }
 
@@ -105,7 +105,7 @@ namespace ArmaRealMap
         public TerrainPoint LatLngToTerrainPoint(NetTopologySuite.Geometries.Coordinate n)
         {
             var u = new Coordinate(n.Y, n.X, eagerUTM).UTM;
-            return new TerrainPoint((float)u.Easting, (float)u.Northing);
+            return new TerrainPoint((float)(u.Easting - StartPointUTM.Easting), (float)(u.Northing - StartPointUTM.Northing));
         }
 
         public IEnumerable<TerrainPoint> LatLngToTerrainPoints(IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
@@ -116,8 +116,8 @@ namespace ArmaRealMap
         public PointF TerrainToPixelsPoint(TerrainPoint point)
         {
             return new PointF(
-                (float)(point.X - StartPointUTM.Easting),
-                (float)Height - (float)(point.Y - StartPointUTM.Northing)
+                (float)(point.X),
+                (float)Height - (float)(point.Y)
             );
         }
 
@@ -129,8 +129,8 @@ namespace ArmaRealMap
         public PointF TerrainToPixelsPoint(NetTopologySuite.Geometries.Coordinate point)
         {
             return new PointF(
-                (float)(point.X - StartPointUTM.Easting),
-                (float)Height - (float)(point.Y - StartPointUTM.Northing)
+                (float)(point.X),
+                (float)Height - (float)(point.Y)
             );
         }
 
@@ -144,8 +144,8 @@ namespace ArmaRealMap
             var coord = new Coordinate(node.Latitude.Value, node.Longitude.Value, eagerUTM).UTM;
 
             return new TerrainPoint(
-                    (float)coord.Easting,
-                    (float)coord.Northing
+                    (float)(coord.Easting - StartPointUTM.Easting),
+                    (float)(coord.Northing - StartPointUTM.Northing)
                 );
         }
     }

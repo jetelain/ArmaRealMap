@@ -51,6 +51,10 @@ namespace ArmaRealMap.Osm
         {
             if (tags.ContainsKey("water") || (tags.ContainsKey("waterway") && !tags.IsFalse("waterway")))
             {
+                if (Get(tags, "water") == "lake")
+                {
+                    return OsmShapeCategory.Lake;
+                }
                 return OsmShapeCategory.Water;
             }
             if (tags.ContainsKey("building") && !tags.IsFalse("building"))
@@ -101,7 +105,7 @@ namespace ArmaRealMap.Osm
                 case "railway": return OsmShapeCategory.Dirt;
                 case "retail": return OsmShapeCategory.Retail;
                 case "basin": return OsmShapeCategory.Water;
-                case "reservoir": return OsmShapeCategory.Water;
+                case "reservoir": return OsmShapeCategory.Lake;
                 case "allotments": return OsmShapeCategory.Grass;
                 case "military": return OsmShapeCategory.Military;
             }
@@ -109,7 +113,7 @@ namespace ArmaRealMap.Osm
             switch (Get(tags, "natural"))
             {
                 case "wood": return OsmShapeCategory.Forest;
-                case "water": return OsmShapeCategory.Water;
+                case "water": return OsmShapeCategory.Lake;
                 case "grass": return OsmShapeCategory.Grass;
                 case "heath": return OsmShapeCategory.Grass;
                 case "meadow": return OsmShapeCategory.Grass;

@@ -30,7 +30,7 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
     - [ ] Tree rows
     - [ ] Rocks
     - [ ] Adjust using rivers and lakes data
-    - [ ] Adjust using roads data
+    - [x] Adjust using roads data
     - [ ] Adjust using parkings data
     - [ ] Adjust using buildings data
   - [ ] Place roads from OpenStreeMap data

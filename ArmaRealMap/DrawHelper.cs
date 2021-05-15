@@ -54,11 +54,23 @@ namespace ArmaRealMap
 
         internal static void FillGeometry(Image<Rgb24> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels)
         {
+            FillGeometry<Rgb24, Rgba32>(img, solidBrush, geometry, toPixels, Color.Transparent);
+        }
+
+        internal static void FillGeometry(Image<Rgba32> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels)
+        {
+            FillGeometry<Rgba32, Rgba32>(img, solidBrush, geometry, toPixels, Color.Transparent);
+        }
+
+        internal static void FillGeometry<TPixel, TPixelAlpha>(Image<TPixel> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels, TPixelAlpha transparent)
+            where TPixel : unmanaged, IPixel<TPixel>
+            where TPixelAlpha : unmanaged, IPixel<TPixelAlpha>
+        {
             if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
             {
                 foreach (var geo in ((GeometryCollection)geometry).Geometries)
                 {
-                    FillGeometry(img, solidBrush, geo, toPixels);
+                    FillGeometry(img, solidBrush, geo, toPixels, transparent);
                 }
             }
             else if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
@@ -69,7 +81,8 @@ namespace ArmaRealMap
                     FillPolygonWithHoles(img,
                         toPixels(poly.Shell.Coordinates).ToList(),
                         poly.Holes.Select(h => toPixels(h.Coordinates).Select(p => new PointF(p.X, p.Y)).ToList()).ToList(),
-                        solidBrush);
+                        solidBrush,
+                        transparent);
                 }
                 catch
                 {

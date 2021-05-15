@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using ArmaRealMap.Geometries;
@@ -50,7 +51,7 @@ namespace ArmaRealMap
 
             data.MapInfos = area;
 
-            //data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(config, area);
+            data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(config, area);
 
             //SatelliteRawImage(config, area);
 
@@ -92,8 +93,8 @@ namespace ArmaRealMap
 
                 //ExportForestAsShapeFile(area, toRender);
 
-                new FillShapeWithObjects(area, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree))
-                    .MakeForest(shapes, filtered, db);
+                //new FillShapeWithObjects(area, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree))
+                //    .MakeForest(shapes, filtered, db);
 
                 //PlaceIsolatedTrees(area, olibs, usedObjects, filtered);
 
@@ -103,8 +104,7 @@ namespace ArmaRealMap
 
                 //DrawShapes(area, shapes);
 
-
-
+                ProcessLakes(data, area, shapes);
             }
 
 
@@ -112,7 +112,89 @@ namespace ArmaRealMap
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
         }
 
+        private static void ProcessLakes(MapData data, MapInfos area, List<OsmShape> shapes)
+        {
+            var lakes = shapes.Where(s => s.Category == OsmShapeCategory.Lake).ToList();
 
+            var objects = new List<TerrainObject>();
+            var waterPound = new SingleObjetInfos()
+            {
+                Name = "pond_big_01",
+                Depth = 18.5f,
+                Width = 18.5f,
+                PlacementRadius = 9.25f
+            };
+
+            var report = new ProgressReport("Lakes", lakes.Count);
+            var cellSize = new Vector2(area.CellSize, area.CellSize);
+            foreach (var item in lakes)
+            {
+                var geo = GeometryHelper.LatLngToTerrainPolygon(area, item.Geometry).ToList();
+                if (geo.Count > 0)
+                {
+                    foreach (var g in geo)
+                    {
+                        var points = g.ExteriorRing.Coordinates.Select(g => new TerrainPoint((float)g.X, (float)g.Y)).ToList();
+                        var waterElevation = points.Min(p => data.Elevation.ElevationAt(p));
+
+                        var min = new TerrainPoint(
+                            points.Min(p => p.X),
+                            points.Min(p => p.Y));
+                        var max = new TerrainPoint(
+                            points.Max(p => p.X),
+                            points.Max(p => p.Y));
+                        var lakeElevation = data.Elevation.PrepareToMutate(min - cellSize, max + cellSize, waterElevation - 2.5f, waterElevation);
+                        DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(255, 255, 255, 255)), g, lakeElevation.ToPixels);
+                        foreach (var scaled in GeometryHelper.Offset(g, -10))
+                        {
+                            DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(0, 0, 0, 255)), scaled, lakeElevation.ToPixels);
+                        }
+                        lakeElevation.Apply();
+
+                        //var box = BoundingBox.Compute(points.ToArray());
+
+                        for (float x = min.X; x < max.X; x += 18.5f)
+                        {
+                            for (float y = min.Y; y < max.Y; y += 18.5f)
+                            {
+                                var p1 = new Coordinate(x, y);
+                                var p2 = new Coordinate(x + 18.5f, y);
+                                var p3 = new Coordinate(x, y + 18.5f);
+                                var p4 = new Coordinate(x + 18.5f, y + 18.5f);
+
+                                if (IsPointInPolygon(g, p1) || IsPointInPolygon(g, p2) || IsPointInPolygon(g, p3) || IsPointInPolygon(g, p4))
+                                {
+                                    if (area.IsInside(p1))
+                                    {
+                                        objects.Add(new TerrainObject(waterPound, new TerrainPoint(x, y), 0.0f, waterElevation - 0.2f));
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+                report.ReportOneDone();
+            }
+            report.TaskDone();
+
+            using (var writer = new StreamWriter(new FileStream("watertiles.txt", FileMode.Create, FileAccess.Write)))
+            {
+                foreach (var obj in objects)
+                {
+                    writer.WriteLine(obj.ToString(area));
+                }
+            }
+
+            data.Elevation.SaveToAsc("elevation-lakes.asc");
+            data.Elevation.SavePreviewToPng("elevation-lakes.png");
+        }
+
+        private static bool IsPointInPolygon(NetTopologySuite.Geometries.Polygon shape, Coordinate point)
+        {
+            return GeometryHelper.PointInPolygon(shape.ExteriorRing.Coordinates, point) != 0;
+        }
+        
 
         //private static void MakeLakeDeeper(MapData data, List<Area> shapes)
         //{
@@ -142,7 +224,7 @@ namespace ArmaRealMap
                         sb.AppendLine(FormattableString.Invariant($@"class Item{id}
 {{
     name = ""{name}"";
-	position[]={{{pos.X - area.StartPointUTM.Easting:0.00},{pos.Y - area.StartPointUTM.Northing:0.00}}};
+	position[]={{{pos.X:0.00},{pos.Y:0.00}}};
 	type=""{kind}"";
 	radiusA=500;
 	radiusB=500;
@@ -197,7 +279,7 @@ namespace ArmaRealMap
                 var points = area.LatLngToTerrainPoints(((LineString)geometry).Coordinates).Where(p => area.IsInside(p)).ToList();
                 if (points.Count > 1)
                 {
-                    return new[] { new LineString(points.Select(p => new NetTopologySuite.Geometries.Coordinate(p.X - area.StartPointUTM.Easting + 200000, p.Y - area.StartPointUTM.Northing)).ToArray())};
+                    return new[] { new LineString(points.Select(p => new NetTopologySuite.Geometries.Coordinate(p.X + 200000, p.Y)).ToArray())};
                 }
                 return new LineString[0];
             }
@@ -325,17 +407,18 @@ namespace ArmaRealMap
                     var obj = candidates[random.Next(0, candidates.Count)];
 
                     var delta = obj.RotateToFit(building.Box, 0.75f, 1.15f);
-                    /*if (delta == 0.0f)
-                    {*/
-                        result.AppendFormat(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;0.0;",
-                            obj.Name,
-                            building.Box.Center.X + obj.CX,
-                            building.Box.Center.Y + obj.CY,
-                            -building.Box.Angle + delta
-                            );
-                        result.AppendLine();
-                        usedObjects.Add(obj.Name);
-                    /*}*/
+                    TerrainObject terrainObj;
+                    if (delta != 0.0f)
+                    {
+                        terrainObj = new TerrainObject(obj, building.Box.RotateM90());
+                    }
+                    else
+                    {
+                        terrainObj = new TerrainObject(obj, building.Box);
+                    }
+                    result.Append(terrainObj.ToString(area));
+                    result.AppendLine();
+                    usedObjects.Add(obj.Name);
                     ok++;
                 }
                 else

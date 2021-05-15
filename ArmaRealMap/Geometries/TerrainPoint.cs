@@ -17,6 +17,11 @@ namespace ArmaRealMap.Geometries
             vector = new Vector2(x, y);
         }
 
+        public TerrainPoint(Vector2 vector)
+        {
+            this.vector = vector ;
+        }
+
         public float X => vector.X;
 
         public float Y => vector.Y;
@@ -42,5 +47,15 @@ namespace ArmaRealMap.Geometries
         public override bool Equals(object obj) => obj is TerrainPoint && Equals((TerrainPoint)obj);
 
         public bool Equals(TerrainPoint other) => vector.Equals(other.vector);
+
+        public static TerrainPoint operator +(TerrainPoint left, Vector2 right)
+        {
+            return new TerrainPoint(left.Vector + right);
+        }
+
+        public static TerrainPoint operator -(TerrainPoint left, Vector2 right)
+        {
+            return new TerrainPoint(left.Vector - right);
+        }
     }
 }
