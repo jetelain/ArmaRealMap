@@ -122,6 +122,18 @@ class CfgSurfaces
 		grassCover=0;
 		impact="hitConcrete";
 	};
+	class Freshwater: Default
+	{
+		files="watersurface*";
+		rough=0;
+		dust=0;
+		soundEnviron="water";
+		friction=0.89999998;
+		restitution=0;
+		isWater=1;
+		character="Empty";
+		impact="default_Mat";
+	};
 };
 class CfgSurfaceCharacters
 {

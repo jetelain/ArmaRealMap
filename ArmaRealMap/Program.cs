@@ -119,10 +119,10 @@ namespace ArmaRealMap
             var objects = new List<TerrainObject>();
             var waterPound = new SingleObjetInfos()
             {
-                Name = "pond_big_01",
-                Depth = 18.5f,
-                Width = 18.5f,
-                PlacementRadius = 9.25f
+                Name = "arm_pond_20",
+                Depth = 20f,
+                Width = 20f,
+                PlacementRadius = 10f
             };
 
             var report = new ProgressReport("Lakes", lakes.Count);
@@ -144,8 +144,12 @@ namespace ArmaRealMap
                             points.Max(p => p.X),
                             points.Max(p => p.Y));
                         var lakeElevation = data.Elevation.PrepareToMutate(min - cellSize, max + cellSize, waterElevation - 2.5f, waterElevation);
-                        DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(255, 255, 255, 255)), g, lakeElevation.ToPixels);
+                        DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(255, 255, 255, 128)), g, lakeElevation.ToPixels);
                         foreach (var scaled in GeometryHelper.Offset(g, -10))
+                        {
+                            DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(128, 128, 128, 192)), scaled, lakeElevation.ToPixels);
+                        }
+                        foreach (var scaled in GeometryHelper.Offset(g, -20))
                         {
                             DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(0, 0, 0, 255)), scaled, lakeElevation.ToPixels);
                         }
@@ -153,20 +157,20 @@ namespace ArmaRealMap
 
                         //var box = BoundingBox.Compute(points.ToArray());
 
-                        for (float x = min.X; x < max.X; x += 18.5f)
+                        for (float x = min.X; x < max.X; x += 20f)
                         {
-                            for (float y = min.Y; y < max.Y; y += 18.5f)
+                            for (float y = min.Y; y < max.Y; y += 20f)
                             {
                                 var p1 = new Coordinate(x, y);
-                                var p2 = new Coordinate(x + 18.5f, y);
-                                var p3 = new Coordinate(x, y + 18.5f);
-                                var p4 = new Coordinate(x + 18.5f, y + 18.5f);
+                                var p2 = new Coordinate(x + 20f, y);
+                                var p3 = new Coordinate(x, y + 20f);
+                                var p4 = new Coordinate(x + 20f, y + 20f);
 
                                 if (IsPointInPolygon(g, p1) || IsPointInPolygon(g, p2) || IsPointInPolygon(g, p3) || IsPointInPolygon(g, p4))
                                 {
                                     if (area.IsInside(p1))
                                     {
-                                        objects.Add(new TerrainObject(waterPound, new TerrainPoint(x, y), 0.0f, waterElevation - 0.2f));
+                                        objects.Add(new TerrainObject(waterPound, new TerrainPoint(x, y), 0.0f, waterElevation));
                                     }
                                 }
                             }
