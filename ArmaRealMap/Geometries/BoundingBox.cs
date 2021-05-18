@@ -53,6 +53,8 @@ namespace ArmaRealMap.Geometries
         /// </summary>
         public TerrainPoint[] Points { get; }
 
+        public Vector2 Size => new Vector2(Width, Height);
+
         public Polygon Poly => polygon.Value;
 
         public Vector2 StartPoint => new Vector2(Points.Min(p => p.X), Points.Min(p => p.Y));

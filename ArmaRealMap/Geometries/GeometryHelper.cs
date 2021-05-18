@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using ClipperLib;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Polygonize;
@@ -312,6 +313,77 @@ namespace ArmaRealMap.Geometries
                 ip = ipNext;
             }
             return result;
+        }
+
+        public static Vector2[] RotatedRectangleDegrees(Vector2 center, Vector2 size, float degrees)
+        {
+            return RotatedRectangleRadians(center, size, (float)(Math.PI * degrees / 180));
+        }
+        public static Vector2[] RotatedRectangleRadians(Vector2 center, Vector2 size, float radians)
+        {
+            var matrix = Matrix3x2.CreateRotation(radians, center);
+            var halfSize = size / 2;
+            var p1 = center - halfSize;
+            var p3 = center + halfSize;
+            return new[]
+            {
+                Vector2.Transform(p1,matrix),
+                Vector2.Transform(new Vector2(p3.X, p1.Y),matrix),
+                Vector2.Transform(p3,matrix),
+                Vector2.Transform(new Vector2(p1.X, p3.Y),matrix)
+            };
+        }
+
+        private static readonly float Cos60Sin30 = 0.5f;
+        private static readonly float Sin60Cos30 = 0.8660254f;
+
+        public static Vector2[] SimpleCircle(Vector2 center, float radius)
+        {
+            return new[] {
+                new Vector2(center.X, center.Y + radius),
+                new Vector2(center.X + (radius * Cos60Sin30), center.Y + (radius * Sin60Cos30)),
+                new Vector2(center.X + (radius * Sin60Cos30), center.Y + (radius * Cos60Sin30)),
+                new Vector2(center.X + radius, center.Y),
+                new Vector2(center.X + (radius * Sin60Cos30), center.Y - (radius * Cos60Sin30)),
+                new Vector2(center.X + (radius * Cos60Sin30), center.Y - (radius * Sin60Cos30)),
+                new Vector2(center.X, center.Y - radius),
+                new Vector2(center.X - (radius * Cos60Sin30), center.Y - (radius * Sin60Cos30)),
+                new Vector2(center.X - (radius * Sin60Cos30), center.Y - (radius * Cos60Sin30)),
+                new Vector2(center.X - radius, center.Y),
+                new Vector2(center.X - (radius * Sin60Cos30), center.Y + (radius * Cos60Sin30)),
+                new Vector2(center.X - (radius * Cos60Sin30), center.Y + (radius * Sin60Cos30)),
+                new Vector2(center.X, center.Y + radius)
+            };
+        }
+
+
+        public static IEnumerable<TerrainPoint> PointsOnPath(IEnumerable<TerrainPoint> points, float step = 1f)
+        {
+            var prev = points.First();
+            var result = new List<TerrainPoint>() { prev };
+            foreach (var point in points.Skip(1))
+            {
+                result.AddRange(PointsOnPath(prev, point, step, true));
+                prev = point;
+            }
+            return result;
+        }
+
+        public static IEnumerable<TerrainPoint> PointsOnPath(TerrainPoint a, TerrainPoint b, float step = 1f, bool skipFirst = false)
+        {
+            var delta = b.Vector - a.Vector;
+            var length = delta.Length();
+            var points = new List<TerrainPoint>();
+            if (!skipFirst)
+            {
+                points.Add(a);
+            }
+            for (float i = 0f; i < length; i += step)
+            {
+                points.Add(new TerrainPoint(Vector2.Lerp(a.Vector, b.Vector, i / length)));
+            }
+            points.Add(b);
+            return points;
         }
     }
 }

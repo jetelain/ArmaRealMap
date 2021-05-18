@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using ArmaRealMap.Geometries;
 
@@ -13,6 +14,8 @@ namespace ArmaRealMap.Libraries
         public float CX { get; set; }
         public float CY { get; set; }
         public float CZ { get; set; }
+
+        public Vector2 Size2D => new Vector2(Width, Depth);
 
         [JsonIgnore]
         public float Surface { get { return Width * Depth; } }

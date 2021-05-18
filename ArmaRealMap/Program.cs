@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using ArmaRealMap.Geometries;
@@ -31,6 +30,28 @@ namespace ArmaRealMap
     {
         static void Main(string[] args)
         {
+            /*var img = (Image<Rgba32>)Image.Load(@"D:\Julien\Downloads\MALI_HM.png");
+
+            var grid = new ElevationGrid(new MapInfos()
+            {
+                CellSize = 10,
+                Size = 8192,
+                StartPointUTM = new CoordinateSharp.UniversalTransverseMercator("31N", 200000, 0)
+            });
+
+            var minElevation = -2f;
+            var maxElevation = 300f;
+
+            for(int x = 0; x< img.Width; ++x)
+            {
+                for (int y = 0; y < img.Height; ++y)
+                {
+                    grid.elevationGrid[x, img.Height - y - 1] = minElevation + (img[x, y].R * maxElevation / 255);
+                }
+            }
+            grid.SaveToAsc("mali2.asc");*/
+
+
             var config = JsonSerializer.Deserialize<Config>(File.ReadAllText("config.json"));
 
             Trace.Listeners.Clear();
@@ -51,7 +72,7 @@ namespace ArmaRealMap
 
             data.MapInfos = area;
 
-            data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(config, area);
+            //data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(config, area);
 
             //SatelliteRawImage(config, area);
 
@@ -62,7 +83,6 @@ namespace ArmaRealMap
         }
 
 
-
         private static void SatelliteRawImage(Config config, MapInfos area)
         {
             var rawSat = Path.Combine(config.Target?.Terrain ?? string.Empty, "sat-raw.png");
@@ -71,8 +91,6 @@ namespace ArmaRealMap
                 SatelliteImageBuilder.BuildSatImage(area, rawSat);
             }
         }
-
-
         private static void BuildLand(Config config, MapData data, MapInfos area, ObjectLibraries olibs)
         {
             var usedObjects = new HashSet<string>();
@@ -103,102 +121,12 @@ namespace ArmaRealMap
                 //MakeLakeDeeper(data, shapes);
 
                 //DrawShapes(area, shapes);
-
-                ProcessLakes(data, area, shapes);
             }
 
 
-            var libs = olibs.TerrainBuilder.Libraries.Where(l => usedObjects.Any(o => l.Template.Any(t => t.Name==o))).Distinct().ToList();
+            var libs = olibs.TerrainBuilder.Libraries.Where(l => usedObjects.Any(o => l.Template.Any(t => t.Name == o))).Distinct().ToList();
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
         }
-
-        private static void ProcessLakes(MapData data, MapInfos area, List<OsmShape> shapes)
-        {
-            var lakes = shapes.Where(s => s.Category == OsmShapeCategory.Lake).ToList();
-
-            var objects = new List<TerrainObject>();
-            var waterPound = new SingleObjetInfos()
-            {
-                Name = "arm_pond_20",
-                Depth = 20f,
-                Width = 20f,
-                PlacementRadius = 10f
-            };
-
-            var report = new ProgressReport("Lakes", lakes.Count);
-            var cellSize = new Vector2(area.CellSize, area.CellSize);
-            foreach (var item in lakes)
-            {
-                var geo = GeometryHelper.LatLngToTerrainPolygon(area, item.Geometry).ToList();
-                if (geo.Count > 0)
-                {
-                    foreach (var g in geo)
-                    {
-                        var points = g.ExteriorRing.Coordinates.Select(g => new TerrainPoint((float)g.X, (float)g.Y)).ToList();
-                        var waterElevation = points.Min(p => data.Elevation.ElevationAt(p));
-
-                        var min = new TerrainPoint(
-                            points.Min(p => p.X),
-                            points.Min(p => p.Y));
-                        var max = new TerrainPoint(
-                            points.Max(p => p.X),
-                            points.Max(p => p.Y));
-                        var lakeElevation = data.Elevation.PrepareToMutate(min - cellSize, max + cellSize, waterElevation - 2.5f, waterElevation);
-                        DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(255, 255, 255, 128)), g, lakeElevation.ToPixels);
-                        foreach (var scaled in GeometryHelper.Offset(g, -10))
-                        {
-                            DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(128, 128, 128, 192)), scaled, lakeElevation.ToPixels);
-                        }
-                        foreach (var scaled in GeometryHelper.Offset(g, -20))
-                        {
-                            DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(0, 0, 0, 255)), scaled, lakeElevation.ToPixels);
-                        }
-                        lakeElevation.Apply();
-
-                        //var box = BoundingBox.Compute(points.ToArray());
-
-                        for (float x = min.X; x < max.X; x += 20f)
-                        {
-                            for (float y = min.Y; y < max.Y; y += 20f)
-                            {
-                                var p1 = new Coordinate(x, y);
-                                var p2 = new Coordinate(x + 20f, y);
-                                var p3 = new Coordinate(x, y + 20f);
-                                var p4 = new Coordinate(x + 20f, y + 20f);
-
-                                if (IsPointInPolygon(g, p1) || IsPointInPolygon(g, p2) || IsPointInPolygon(g, p3) || IsPointInPolygon(g, p4))
-                                {
-                                    if (area.IsInside(p1))
-                                    {
-                                        objects.Add(new TerrainObject(waterPound, new TerrainPoint(x, y), 0.0f, waterElevation));
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                }
-                report.ReportOneDone();
-            }
-            report.TaskDone();
-
-            using (var writer = new StreamWriter(new FileStream("watertiles.txt", FileMode.Create, FileAccess.Write)))
-            {
-                foreach (var obj in objects)
-                {
-                    writer.WriteLine(obj.ToString(area));
-                }
-            }
-
-            data.Elevation.SaveToAsc("elevation-lakes.asc");
-            data.Elevation.SavePreviewToPng("elevation-lakes.png");
-        }
-
-        private static bool IsPointInPolygon(NetTopologySuite.Geometries.Polygon shape, Coordinate point)
-        {
-            return GeometryHelper.PointInPolygon(shape.ExteriorRing.Coordinates, point) != 0;
-        }
-        
 
         //private static void MakeLakeDeeper(MapData data, List<Area> shapes)
         //{

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
-using System.Text;
 using NetTopologySuite.Geometries;
 
 namespace ArmaRealMap.Geometries
@@ -18,25 +17,9 @@ namespace ArmaRealMap.Geometries
             polygon = new Lazy<Polygon>(GeneratePolygon);
         }
 
-        private const float SinCos45 = 0.70710678119f;
-
         private Polygon GeneratePolygon()
         {
-            // Really basic circle approximation
-            return new Polygon(new LinearRing(
-                new[]
-                {
-                    new Coordinate(Center.X,                       Center.Y + Radius),
-                    new Coordinate(Center.X + (Radius * SinCos45), Center.Y + (Radius * SinCos45)),
-                    new Coordinate(Center.X + Radius,              Center.Y),
-                    new Coordinate(Center.X + (Radius * SinCos45), Center.Y - (Radius * SinCos45)),
-                    new Coordinate(Center.X,                       Center.Y - Radius),
-                    new Coordinate(Center.X - (Radius * SinCos45), Center.Y - (Radius * SinCos45)),
-                    new Coordinate(Center.X - Radius,              Center.Y),
-                    new Coordinate(Center.X - (Radius * SinCos45), Center.Y + (Radius * SinCos45)),
-                    new Coordinate(Center.X,                       Center.Y + Radius)
-                }
-                ));
+            return new Polygon(new LinearRing(GeometryHelper.SimpleCircle(Center.Vector, Radius).Select(p => new Coordinate(p.X, p.Y)).ToArray()));
         }
 
         public TerrainPoint Center { get; }

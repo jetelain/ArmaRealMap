@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
+﻿using System.Globalization;
 using System.Numerics;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
@@ -13,10 +11,11 @@ namespace ArmaRealMap
         private readonly IBoundingShape box;
         private readonly float? absoluteElevation;
 
-        public TerrainObject (SingleObjetInfos objectInfos, IBoundingShape box)
+        public TerrainObject (SingleObjetInfos objectInfos, IBoundingShape box, float? absoluteElevation = null)
         {
             this.box = box;
             this.objectInfos = objectInfos;
+            this.absoluteElevation = absoluteElevation;
         }
         public TerrainObject(SingleObjetInfos objectInfos, TerrainPoint point, float angle)
             : this(objectInfos, new BoundingCircle(point, objectInfos.GetPlacementRadius(), angle))
@@ -24,9 +23,9 @@ namespace ArmaRealMap
         }
 
         public TerrainObject(SingleObjetInfos objectInfos, TerrainPoint point, float angle, float absoluteElevation)
-            : this(objectInfos, new BoundingCircle(point, objectInfos.GetPlacementRadius(), angle))
+            : this(objectInfos, new BoundingCircle(point, objectInfos.GetPlacementRadius(), angle), absoluteElevation)
         {
-            this.absoluteElevation = absoluteElevation;
+
         }
 
         public Vector2 StartPoint => box.StartPoint;
@@ -54,16 +53,13 @@ namespace ArmaRealMap
                                 box.Center.X + objectInfos.CX + mapInfos.StartPointUTM.Easting,
                                 box.Center.Y + objectInfos.CY + mapInfos.StartPointUTM.Northing,
                                 -box.Angle,
-                                absoluteElevation.Value
-                                );
+                                absoluteElevation.Value);
             }
-
             return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;0.0;",
                             objectInfos.Name,
                             box.Center.X + objectInfos.CX + mapInfos.StartPointUTM.Easting,
                             box.Center.Y + objectInfos.CY + mapInfos.StartPointUTM.Northing,
-                            -box.Angle
-                            );
+                            -box.Angle);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace ArmaRealMap.Geometries
 
         public override int GetHashCode() => vector.GetHashCode();
 
-        public override string ToString() => $"[ X={X}, Y={Y} ]";
+        public override string ToString() => Vector.ToString();
 
         public override bool Equals(object obj) => obj is TerrainPoint && Equals((TerrainPoint)obj);
 
