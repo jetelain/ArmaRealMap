@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ArmaRealMap.Geometries;
 using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -113,6 +114,17 @@ namespace ArmaRealMap
             {
                 throw new NotSupportedException(geometry.OgcGeometryType.ToString());
             }
+        }
+
+        internal static void DrawPath(IImageProcessingContext d, TerrainPath path, float width, SolidBrush brush, MapInfos map)
+        {
+            DrawPath(d, path.Points, width, brush, map.TerrainToPixelsPoint);
+        }
+
+        internal static void DrawPath<T>(IImageProcessingContext d, IEnumerable<T> points, float width, SolidBrush brush, Func<T, PointF> project)
+        {
+            var pixelsPoints = points.Select(project).ToArray();
+                d.DrawLines(brush, width, pixelsPoints);
         }
     }
 }

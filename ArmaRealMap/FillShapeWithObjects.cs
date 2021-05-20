@@ -130,7 +130,7 @@ namespace ArmaRealMap
                             {
                                 if (obj.Poly.Distance(linestring) <= Width(kind.Value))
                                 {
-                                    objects.Remove(obj.StartPoint, obj.EndPoint, obj);
+                                    objects.Remove(obj.MinPoint.Vector, obj.MaxPoint.Vector, obj);
                                 }
                             }
                         }
@@ -181,7 +181,7 @@ namespace ArmaRealMap
                 {
                     if (match(toremove, obj))
                     {
-                        objects.Remove(obj.StartPoint, obj.EndPoint, obj);
+                        objects.Remove(obj.MinPoint.Vector, obj.MaxPoint.Vector, obj);
                     }
                 }
                 report.ReportOneDone();
@@ -339,11 +339,11 @@ namespace ArmaRealMap
                         var point = new TerrainPoint(x, y);
                         var obj = GetObjectToInsert(fillarea, clusters, point);
                         var candidate = new TerrainObject(obj, point, 0.0f);
-                        var potentialConflits = objects.Search(candidate.StartPoint, candidate.EndPoint);
+                        var potentialConflits = objects.Search(candidate.MinPoint.Vector, candidate.MaxPoint.Vector);
                         if (HasRoom(candidate, potentialConflits))
                         {
                             var toinsert = new TerrainObject(obj, point, (float)(fillarea.Random.NextDouble() * 360));
-                            objects.Insert(toinsert.StartPoint, toinsert.EndPoint, toinsert);
+                            objects.Insert(toinsert.MinPoint.Vector, toinsert.MaxPoint.Vector, toinsert);
                             wasChanged = true;
                             remainItems--;
                             Interlocked.Increment(ref generatedItems);

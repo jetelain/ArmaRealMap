@@ -30,8 +30,8 @@ namespace ArmaRealMap.Geometries
 
         public Polygon Poly => polygon.Value;
 
-        public Vector2 StartPoint => Center.Vector - new Vector2(Radius, Radius);
+        public TerrainPoint MinPoint => Center - new Vector2(Radius, Radius);
 
-        public Vector2 EndPoint => Center.Vector + new Vector2(Radius, Radius);
+        public TerrainPoint MaxPoint => Center + new Vector2(Radius, Radius);
     }
 }

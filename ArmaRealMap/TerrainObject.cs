@@ -5,7 +5,7 @@ using ArmaRealMap.Libraries;
 
 namespace ArmaRealMap
 {
-    internal class TerrainObject
+    internal class TerrainObject : ITerrainGeometry
     {
         private readonly SingleObjetInfos objectInfos;
         private readonly IBoundingShape box;
@@ -28,9 +28,9 @@ namespace ArmaRealMap
 
         }
 
-        public Vector2 StartPoint => box.StartPoint;
+        public TerrainPoint MinPoint => box.MinPoint;
 
-        public Vector2 EndPoint => box.EndPoint;
+        public TerrainPoint MaxPoint => box.MaxPoint;
 
         public NetTopologySuite.Geometries.Polygon Poly => box.Poly;
 

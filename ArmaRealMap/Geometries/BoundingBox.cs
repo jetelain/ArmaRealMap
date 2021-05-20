@@ -57,9 +57,9 @@ namespace ArmaRealMap.Geometries
 
         public Polygon Poly => polygon.Value;
 
-        public Vector2 StartPoint => new Vector2(Points.Min(p => p.X), Points.Min(p => p.Y));
+        public TerrainPoint MinPoint => new TerrainPoint(Points.Min(p => p.X), Points.Min(p => p.Y));
 
-        public Vector2 EndPoint => new Vector2(Points.Max(p => p.X), Points.Max(p => p.Y));
+        public TerrainPoint MaxPoint => new TerrainPoint(Points.Max(p => p.X), Points.Max(p => p.Y));
 
         public BoundingBox Add (BoundingBox other)
         {

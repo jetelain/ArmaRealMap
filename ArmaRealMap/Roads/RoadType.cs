@@ -1,6 +1,6 @@
 ﻿namespace ArmaRealMap
 {
-    internal enum RoadType
+    public enum RoadType
     {
         /// <summary>
         /// 2x1 designed to be side by side

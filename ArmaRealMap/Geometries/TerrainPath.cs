@@ -1,0 +1,85 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
+using ClipperLib;
+using NetTopologySuite.Geometries;
+
+namespace ArmaRealMap.Geometries
+{
+    public class TerrainPath : ITerrainGeometry
+    {
+        private readonly Lazy<LineString> asLineString;
+
+        public TerrainPath(List<TerrainPoint> points)
+        {
+            this.Points = points;
+            MinPoint = new TerrainPoint(points.Min(p => p.X), points.Min(p => p.Y));
+            MaxPoint = new TerrainPoint(points.Max(p => p.X), points.Max(p => p.Y));
+            EnveloppeSize = MaxPoint.Vector - MinPoint.Vector;
+            asLineString = new Lazy<LineString>(() => ToLineString(c => new Coordinate(c.X, c.Y)));
+        }
+
+        public List<TerrainPoint> Points { get; }
+
+        public TerrainPoint MinPoint { get; }
+
+        public TerrainPoint MaxPoint { get; }
+
+        public Vector2 EnveloppeSize { get; }
+        public float Length 
+        { 
+            get
+            {
+                // TODO: Own algorithm
+                return (float)asLineString.Value.Length;
+            }
+        }
+
+        public LineString ToLineString(Func<TerrainPoint, Coordinate> project)
+        {
+            return new LineString(Points.Select(project).ToArray());
+        }
+
+        public List<TerrainPolygon> ToTerrainPolygon(float width)
+        {
+            return TerrainPolygon.FromPath(Points, width);
+        }
+        public static IEnumerable<TerrainPath> FromGeometry(Geometry geometry, Func<Coordinate, TerrainPoint> project)
+        {
+            switch (geometry.OgcGeometryType)
+            {
+                case OgcGeometryType.LineString:
+                    return new[] { new TerrainPath(((LineString)geometry).Coordinates.Select(project).ToList()) };
+            }
+            return new TerrainPath[0];
+        }
+
+        public IEnumerable<TerrainPath> ClippedBy(TerrainPolygon polygon)
+        {
+            if (polygon.Holes.Count > 0)
+            {
+                throw new NotSupportedException();
+            }
+            var clipper = new Clipper();
+            clipper.AddPath(Points.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, false);
+            clipper.AddPath(polygon.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+            var result = new PolyTree();
+            clipper.Execute(ClipType.ctIntersection, result);
+            if (result.Childs.Any(c => c.ChildCount != 0))
+            {
+                throw new NotSupportedException();
+            }
+            return result.Childs.Select(c => new TerrainPath(c.Contour.Select(p => new TerrainPoint(p)).ToList())).ToList();
+        }
+        public bool EnveloppeIntersects(ITerrainGeometry other)
+        {
+            return other.MinPoint.X <= MaxPoint.X &&
+                other.MinPoint.Y <= MaxPoint.Y &&
+                other.MaxPoint.X >= MinPoint.X &&
+                other.MaxPoint.Y >= MinPoint.Y;
+        }
+    }
+}

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Numerics;
+using ClipperLib;
 
 namespace ArmaRealMap.Geometries
 {
     /// <summary>
     /// Coordinates for Terrain Builder (but not for road.shp, or imagery)
+    /// 
+    /// Good for up to 83 Km with 1 cm precision
     /// </summary>
     public class TerrainPoint : IEquatable<TerrainPoint>
     {
@@ -20,6 +23,12 @@ namespace ArmaRealMap.Geometries
         public TerrainPoint(Vector2 vector)
         {
             this.vector = vector ;
+        }
+        internal TerrainPoint(IntPoint point) : this(
+                  (float)(point.X  / GeometryHelper.ScaleForClipper), 
+                  (float)(point.Y / GeometryHelper.ScaleForClipper))
+        {
+
         }
 
         public float X => vector.X;
@@ -38,6 +47,11 @@ namespace ArmaRealMap.Geometries
         {
             x = X;
             y = Y;
+        }
+
+        public IntPoint ToIntPoint()
+        {
+            return new IntPoint(X * GeometryHelper.ScaleForClipper, Y * GeometryHelper.ScaleForClipper);
         }
 
         public override int GetHashCode() => vector.GetHashCode();

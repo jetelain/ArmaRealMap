@@ -11,7 +11,7 @@ namespace ArmaRealMap.Geometries
 {
     public static class GeometryHelper
     {
-        private const double ScaleForClipper = 1000d;
+        internal const double ScaleForClipper = 1000d;
 
         internal static IEnumerable<Polygon> LatLngToTerrainPolygon(MapInfos map, Geometry geometry)
         {
@@ -154,6 +154,14 @@ namespace ArmaRealMap.Geometries
                 previous = point;
             }
             return list;
+        }
+
+        internal static bool EnveloppeIntersects(ITerrainGeometry a, ITerrainGeometry b)
+        {
+            return b.MinPoint.X <= a.MaxPoint.X &&
+                b.MinPoint.Y <= a.MaxPoint.Y &&
+                b.MaxPoint.X >= a.MinPoint.X &&
+                b.MaxPoint.Y >= a.MinPoint.Y;
         }
 
         private static void AddIfNotSameAsLast(List<Coordinate> list, Coordinate coordinate)

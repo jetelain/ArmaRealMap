@@ -6,10 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using ArmaRealMap.ElevationModel;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
+using ArmaRealMap.Roads;
+using ClipperLib;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -30,27 +33,73 @@ namespace ArmaRealMap
     {
         static void Main(string[] args)
         {
-            /*var img = (Image<Rgba32>)Image.Load(@"D:\Julien\Downloads\MALI_HM.png");
+            /*var clipper = new ClipperOffset();
+            clipper.AddPath(new List<IntPoint>()
+            {
+                new IntPoint(0,0),
+                new IntPoint(100,100),
+                new IntPoint(200,100),
+            }, JoinType.jtSquare, EndType.etOpenSquare);
+            var tree = new List<List<IntPoint>>();
+            clipper.Execute(ref tree, 1);*/
+            /*
+            var img = (Image<Rgba32>)Image.Load(@"C:\Users\Julien\source\repos\jetelain\Mali\mapdata\MALI_HM.png");
+            var img2 = (Image<Rgba32>)Image.Load(@"C:\Users\Julien\source\repos\jetelain\Mali\mapdata\MALI_HM_CPLT.png");
 
             var grid = new ElevationGrid(new MapInfos()
             {
-                CellSize = 10,
+                CellSize = 5,
                 Size = 8192,
                 StartPointUTM = new CoordinateSharp.UniversalTransverseMercator("31N", 200000, 0)
             });
 
-            var minElevation = -2f;
+            var minElevation = 1f;
             var maxElevation = 300f;
 
             for(int x = 0; x< img.Width; ++x)
             {
                 for (int y = 0; y < img.Height; ++y)
                 {
-                    grid.elevationGrid[x, img.Height - y - 1] = minElevation + (img[x, y].R * maxElevation / 255);
+                    var c2 = img2[x, y];
+                    bool isCloseWater = c2.R > 250 && c2.G < 128 && c2.B < 128;
+                    bool isWater = c2.B > 250 && c2.G < 128 && c2.R < 128;
+                    var theory = minElevation + (img[x, y].R * maxElevation / 255);
+                    if ( isWater)
+                    {
+                        grid.elevationGrid[x, img.Height - y - 1] = -1;
+                    }
+                    else if(isCloseWater && theory < 1)
+                    {
+                        grid.elevationGrid[x, img.Height - y - 1] = 1;
+                    }
+                    else
+                    {
+                        grid.elevationGrid[x, img.Height - y - 1] = theory;
+                    }
                 }
             }
-            grid.SaveToAsc("mali2.asc");*/
 
+            for (int x = 1; x < img.Width-1; ++x)
+            {
+                for (int y = 1; y < img.Height-1; ++y)
+                {
+                    var c2 = img2[x, y];
+                    bool isCloseWater = c2.R > 250 && c2.G < 128 && c2.B < 128;
+                    bool isWater = c2.B > 250 && c2.G < 128 && c2.R < 128;
+                    if (isWater || isCloseWater)
+                    {
+                        var a = grid.elevationGrid[x-1, img.Height - y - 1];
+                        var b = grid.elevationGrid[x+1, img.Height - y - 1];
+                        var c = grid.elevationGrid[x, img.Height - y - 1];
+                        var d = grid.elevationGrid[x, img.Height - y - 2];
+                        var e = grid.elevationGrid[x, img.Height - y];
+                        grid.elevationGrid[x, img.Height - y - 1] = (a+b+c+d+e)/5f;
+                    }
+                }
+            }
+
+            grid.SavePreviewToPng(@"C:\Users\Julien\source\repos\jetelain\Mali\mapdata\mali_hm_preview.png");
+            grid.SaveToAsc(@"C:\Users\Julien\source\repos\jetelain\Mali\mapdata\mali.asc");*/
 
             var config = JsonSerializer.Deserialize<Config>(File.ReadAllText("config.json"));
 
@@ -105,9 +154,9 @@ namespace ArmaRealMap
 
                 //RenderCitiesNames(config, area, filtered);
 
-                //Roads(area, filtered, db, config);
+                RoadsBuilder.Roads(data, filtered, db, config);
 
-                var shapes = OsmCategorizer.GetShapes(db, filtered);
+                //var shapes = OsmCategorizer.GetShapes(db, filtered);
 
                 //ExportForestAsShapeFile(area, toRender);
 
@@ -127,15 +176,6 @@ namespace ArmaRealMap
             var libs = olibs.TerrainBuilder.Libraries.Where(l => usedObjects.Any(o => l.Template.Any(t => t.Name == o))).Distinct().ToList();
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
         }
-
-        //private static void MakeLakeDeeper(MapData data, List<Area> shapes)
-        //{
-        //    var lakes = shapes.Where(s => s.Category == AreaCategory.Water && OsmCategorizer.Get(s.OsmGeo.Tags, "natural") == "water").ToList();
-        //    foreach (var lake in lakes)
-        //    {
-
-        //    }
-        //}
 
         private static void RenderCitiesNames(Config config, MapInfos area, OsmStreamSource filtered)
         {
@@ -219,49 +259,6 @@ namespace ArmaRealMap
         }
 
 
-        private static void Roads(MapInfos area, OsmStreamSource filtered, SnapshotDb db, Config config)
-        {
-            var interpret = new DefaultFeatureInterpreter2();
-            var roads = filtered.Where(o => o.Type == OsmGeoType.Way && o.Tags.ContainsKey("highway")).ToList();
-            var features = new List<Feature>();
-            foreach (var road in roads)
-            {
-                var kind = OsmCategorizer.ToRoadType(road.Tags.GetValue("highway"));
-                if ( kind != null)
-                {
-                    var complete = road.CreateComplete(db);
-                    var count = 0;
-                    foreach (var feature in interpret.Interpret(complete))
-                    {
-                        var attributesTable = new AttributesTable();
-                        attributesTable.Add("ID", (int)kind);
-                        foreach (var linestring in ToLineString(area, feature.Geometry))
-                        {
-                            var len = linestring.Length;
-                            if (len >= 3)
-                            {
-                                features.Add(new Feature(linestring, attributesTable));
-                            }
-                            else
-                            {
-                                Console.WriteLine(kind);
-                            }
-                        }
-                        count++;
-                    }
-                    if (count == 0)
-                    {
-                        Trace.TraceWarning($"NO GEOMETRY FOR {road.Tags}");
-                    }
-                }
-            }
-            var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
-            var shapeWriter = new ShapefileDataWriter(Path.Combine(config.Target?.Roads ?? string.Empty,"roads.shp"), new GeometryFactory())
-            {
-                Header = header
-            };
-            shapeWriter.Write(features);
-        }
 
 
 
