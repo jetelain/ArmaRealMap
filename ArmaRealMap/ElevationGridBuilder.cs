@@ -10,7 +10,7 @@ namespace ArmaRealMap
             var elevation = new ElevationGrid(area);
             elevation.LoadFromSRTM(configSRTM);
             elevation.SaveToAsc(targetFile);
-            elevation.SavePreviewToPng(Path.ChangeExtension(targetFile,".png"));
+            elevation.SavePreview(Path.ChangeExtension(targetFile,".bmp"));
             return elevation;
         }
 
@@ -23,7 +23,7 @@ namespace ArmaRealMap
             }
             var elevation = new ElevationGrid(area);
             elevation.LoadFromAsc(rawElevation);
-            //elevation.SavePreviewToPng(Path.ChangeExtension(rawElevation, ".png"));
+            //elevation.SavePreview(Path.ChangeExtension(rawElevation, ".bmp"));
             return elevation;
         }
     }

@@ -29,13 +29,19 @@ namespace ArmaRealMap.ElevationModel
             this.elevationDelta = elevationDelta;
         }
 
+        public Color ElevationToColor(float elevation)
+        {
+            var b = (byte)((elevation - minElevation) * 255d / elevationDelta);
+            return Color.FromRgb(b, 0, b);
+        }
+
         public PointF ToPixel(TerrainPoint point)
         {
             var grid = elevationGrid.ToGrid(point);
             return new PointF(grid.X - startX, grid.Y - startY);
         }
 
-        public IEnumerable<PointF> ToPixel(IEnumerable<TerrainPoint> points)
+        public IEnumerable<PointF> ToPixels(IEnumerable<TerrainPoint> points)
         {
             return points.Select(ToPixel);
         }

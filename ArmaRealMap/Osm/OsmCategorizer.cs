@@ -131,7 +131,7 @@ namespace ArmaRealMap.Osm
                 return OsmShapeCategory.Grass;
             }
 
-            var road = ToRoadType(Get(tags, "highway"));
+            var road = ToRoadType(tags);
             if (road != null && road.Value < RoadType.SingleLaneDirtRoad)
             {
                 return OsmShapeCategory.Road;
@@ -148,9 +148,9 @@ namespace ArmaRealMap.Osm
             return null;
         }
 
-        internal static RoadType? ToRoadType(string highway)
+        internal static RoadType? ToRoadType(TagsCollectionBase tags)
         {
-            switch (highway)
+            switch (tags.GetValue("highway"))
             {
                 case "motorway":
                     return RoadType.TwoLanesMotorway;
@@ -169,16 +169,26 @@ namespace ArmaRealMap.Osm
                     return RoadType.TwoLanesSecondaryRoad;
                 case "living_street":
                 case "residential":
-                case "pedestrian":
                     return RoadType.TwoLanesConcreteRoad;
                 case "footway":
-                    return RoadType.SingleLaneDirtRoad;
+                    var footway = Get(tags, "footway");
+                    if (footway == "sidewalk" || footway == "crossing")
+                    {
+                        return null;
+                    }
+                    var side = Get(tags, "sidewalk");
+                    if (!string.IsNullOrEmpty(side) && side != "no")
+                    {
+                        return null;
+                    }
+                    return RoadType.Trail;
+                case "pedestrian":
                 case "path":
                     return RoadType.Trail;
                 case "track":
                     return RoadType.SingleLaneDirtPath;
             }
-            Trace.WriteLine($"Unknown highway='{highway}'");
+            Trace.WriteLine($"Unknown highway='{tags.GetValue("highway")}'");
             return null;
         }
 

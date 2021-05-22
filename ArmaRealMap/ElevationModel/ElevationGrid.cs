@@ -31,6 +31,13 @@ namespace ArmaRealMap.ElevationModel
             cellSize = new Vector2(area.CellSize);
             cellDelta = new Vector2(0.5f); // Elevation is at the center of the cell
         }
+        public ElevationGrid(ElevationGrid other)
+        {
+            area = other.area;
+            elevationGrid = (float[,])other.elevationGrid.Clone();
+            cellSize = other.cellSize;
+            cellDelta = other.cellDelta;
+        }
 
         public void LoadFromSRTM(ConfigSRTM configSRTM)
         {
@@ -65,6 +72,20 @@ namespace ArmaRealMap.ElevationModel
             });
 
             report.TaskDone();
+        }
+        internal float ElevationAround(TerrainPoint p)
+        {
+            return ElevationAround(p, cellSize.X / 2);
+        }
+
+        internal float ElevationAround(TerrainPoint p, float radius)
+        {
+            return 
+                (ElevationAt(p) + 
+                ElevationAt(p + new Vector2(-radius, -radius)) +
+                ElevationAt(p + new Vector2(radius, -radius)) +
+                ElevationAt(p + new Vector2(-radius, radius)) +
+                ElevationAt(p + new Vector2(radius, radius))) / 5f;
         }
 
         private void PreloadSRTM(SRTMData srtmData)
@@ -133,12 +154,12 @@ namespace ArmaRealMap.ElevationModel
             report.TaskDone();
         }
 
-        public void SavePreviewToPng(string path)
+        public void SavePreview(string path)
         {
             var min = 4000d;
             var max = -1000d;
 
-            var report = new ProgressReport("SavePreviewToPng", area.Size * 2);
+            var report = new ProgressReport("ElevationPreview", area.Size * 2);
 
             for (int y = 0; y < area.Size; y++)
             {
@@ -213,9 +234,65 @@ namespace ArmaRealMap.ElevationModel
             return Lerp(Lerp(val11, val01, deltaX), Lerp(val10, val00, deltaX), deltaY);
         }
 
-        internal Vector2 ToGrid(TerrainPoint point)
+        public Vector2 ToGrid(TerrainPoint point)
         {
             return ((point.Vector - area.P1.Vector) / cellSize) - cellDelta;
+        }
+
+        public TerrainPoint ToTerrain(int x, int y)
+        {
+            return ToTerrain(new Vector2(x, y));
+        }
+
+        public TerrainPoint ToTerrain(Vector2 grid)
+        {
+            return new TerrainPoint(((grid + cellDelta) * cellSize)  + area.P1.Vector);
+        }
+
+        public ElevationGridArea PrepareToMutate(TerrainPoint min, TerrainPoint max)
+        {
+            var posMin = ToGrid(min);
+            var posMax = ToGrid(max);
+            var x1 = (int)Math.Floor(posMin.X);
+            var y1 = (int)Math.Floor(posMin.Y);
+            var x2 = (int)Math.Ceiling(posMax.X);
+            var y2 = (int)Math.Ceiling(posMax.Y);
+
+            float maxElevation = 0.0f;
+            float minElevation = 4000.0f;
+
+            for (int x = x1; x < x2; ++x)
+            {
+                for (int y = y1; y < y2; ++y)
+                {
+                    if (x >= 0 && y >= 0 && x < area.Size && y < area.Size)
+                    {
+                        var elevation = elevationGrid[x, y];
+                        if ( elevation > maxElevation)
+                        {
+                            maxElevation = elevation;
+                        }
+                        if (elevation < minElevation)
+                        {
+                            minElevation = elevation;
+                        }
+                    }
+                }
+            }
+            var delta = maxElevation - minElevation;
+            var grid = new ElevationGridArea(this, x1, y1, x2 - x1 + 1, y2 - y1 + 1, minElevation, delta);
+            /*for (int x = x1; x < x2; ++x)
+            {
+                for (int y = y1; y < y2; ++y)
+                {
+                    if (x >= 0 && y >= 0 && x < area.Size && y < area.Size)
+                    {
+                        var b = (byte)((elevationGrid[x, y] - minElevation) * (float)byte.MaxValue / delta);
+                        grid.Image[x - x1, y - y1] = new Rgba32(b, b, b, byte.MaxValue);
+                    }
+                }
+            }*/
+            return grid;
         }
 
         public ElevationGridArea PrepareToMutate(TerrainPoint min, TerrainPoint max, float minElevation, float maxElevation)
@@ -226,7 +303,8 @@ namespace ArmaRealMap.ElevationModel
             var y1 = (int)Math.Floor(posMin.Y);
             var x2 = (int)Math.Ceiling(posMax.X);
             var y2 = (int)Math.Ceiling(posMax.Y);
-            return new ElevationGridArea(this, x1, y1, x2 - x1 + 1, y2 - y1 + 1, minElevation, maxElevation - minElevation);
+            var delta = maxElevation - minElevation;
+            return new ElevationGridArea(this, x1, y1, x2 - x1 + 1, y2 - y1 + 1, minElevation, delta);
         }
 
         public void Apply (int startX, int startY, Image<Rgba32> data, float minElevation, float elevationDelta)

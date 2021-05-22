@@ -20,15 +20,15 @@ namespace ArmaRealMap.Roads
             switch (value)
             {
                 case RoadType.TwoLanesMotorway:
-                    return 8f;
+                    return 10f;
                 case RoadType.TwoLanesPrimaryRoad:
-                    return 7f;
+                    return 8f;
                 case RoadType.TwoLanesSecondaryRoad:
                 case RoadType.TwoLanesCityRoad:
                 case RoadType.TwoLanesConcreteRoad:
-                    return 6f;
+                    return 7f;
                 case RoadType.SingleLaneDirtRoad:
-                    return 1.5f;
+                    return 3.5f;
                 case RoadType.SingleLaneDirtPath:
                     return 1f;
                 default:

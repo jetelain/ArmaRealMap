@@ -13,6 +13,7 @@ using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
 using ClipperLib;
+using Microsoft.Win32;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -101,6 +102,10 @@ namespace ArmaRealMap
             grid.SavePreviewToPng(@"C:\Users\Julien\source\repos\jetelain\Mali\mapdata\mali_hm_preview.png");
             grid.SaveToAsc(@"C:\Users\Julien\source\repos\jetelain\Mali\mapdata\mali.asc");*/
 
+            EnsureProjectDrive();
+
+            Console.Title = "ArmaRealMap";
+
             var config = JsonSerializer.Deserialize<Config>(File.ReadAllText("config.json"));
 
             Trace.Listeners.Clear();
@@ -121,7 +126,7 @@ namespace ArmaRealMap
 
             data.MapInfos = area;
 
-            //data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(config, area);
+            data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(config, area);
 
             //SatelliteRawImage(config, area);
 
@@ -130,6 +135,29 @@ namespace ArmaRealMap
             Trace.WriteLine("----------------------------------------------------------------------------------------------------");
             Trace.Flush();
         }
+
+#pragma warning disable CA1416 // Valider la compatibilité de la plateforme
+        private static void EnsureProjectDrive()
+        {
+            if (!Directory.Exists("P:\\"))
+            {
+                Console.WriteLine("Mount project drive");
+                string path = "";
+                using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 233800"))
+                {
+                    if (key != null)
+                    {
+                        path = (key.GetValue("InstallLocation") as string) ?? path;
+                    }
+                }
+                if (!string.IsNullOrEmpty(path))
+                {
+                    var processs = Process.Start(Path.Combine(path, @"WorkDrive\WorkDrive.exe"), "/Mount /y");
+                    processs.WaitForExit();
+                }
+            }
+        }
+#pragma warning restore CA1416 // Valider la compatibilité de la plateforme
 
 
         private static void SatelliteRawImage(Config config, MapInfos area)
@@ -163,7 +191,7 @@ namespace ArmaRealMap
                 //new FillShapeWithObjects(area, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree))
                 //    .MakeForest(shapes, filtered, db);
 
-                //PlaceIsolatedTrees(area, olibs, usedObjects, filtered);
+                PlaceIsolatedTrees(area, olibs, usedObjects, filtered);
 
                 //PlaceBuildings(area, olibs, usedObjects, shapes);
 
@@ -275,13 +303,7 @@ namespace ArmaRealMap
                 {
                     var random = new Random((int)Math.Truncate(pos.X + pos.Y));
                     var obj = candidates[random.Next(0, candidates.Count)];
-                    result.AppendFormat(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;0.0;",
-                    obj.Name,
-                    pos.X,
-                    pos.Y,
-                    random.NextDouble() * 360.0
-                    );
-                    usedObjects.Add(obj.Name);
+                    result.Append(new TerrainObject(obj, pos, (float)(random.NextDouble() * 360.0)).ToString(area));
                     result.AppendLine();
                 }
             }

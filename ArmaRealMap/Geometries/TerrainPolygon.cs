@@ -103,13 +103,13 @@ namespace ArmaRealMap.Geometries
                 NoHoles);
         }
 
-        public static List<TerrainPolygon> FromPath(IEnumerable<TerrainPoint> points, float width)
+        public static IEnumerable<TerrainPolygon> FromPath(IEnumerable<TerrainPoint> points, float width)
         {
             var clipper = new ClipperOffset();
             clipper.AddPath(points.Select(p => p.ToIntPoint()).ToList(), JoinType.jtSquare, EndType.etOpenSquare);
-            var tree = new List<List<IntPoint>>();
+            var tree = new PolyTree();
             clipper.Execute(ref tree, width * GeometryHelper.ScaleForClipper / 2);
-            return tree.Select(points => new TerrainPolygon(ToRing(points), NoHoles)).ToList();
+            return ToPolygons(tree);
         }
 
         public IEnumerable<TerrainPolygon> Offset(float offset)
@@ -131,7 +131,7 @@ namespace ArmaRealMap.Geometries
             {
                 clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
             }
-            foreach(var simple in others.Where(p => p.Holes.Count == 0))
+            foreach (var simple in others.Where(p => p.Holes.Count == 0))
             {
                 if (GeometryHelper.EnveloppeIntersects(this, simple))
                 {
@@ -140,10 +140,15 @@ namespace ArmaRealMap.Geometries
             }
             var result = new PolyTree();
             clipper.Execute(ClipType.ctDifference, result);
+            return ToPolygons(result);
+        }
+
+        private static IEnumerable<TerrainPolygon> ToPolygons(PolyTree result)
+        {
             return result.Childs.Select(c => new TerrainPolygon(ToRing(c.Contour), c.Childs.Select(h => ToRing(h.Contour)).ToList())).ToList();
         }
 
-        public IEnumerable<TerrainPolygon> Clip(TerrainPolygon other)
+        public IEnumerable<TerrainPolygon> ClippedBy(TerrainPolygon other)
         {
             if (other.Holes.Count != 0)
             {

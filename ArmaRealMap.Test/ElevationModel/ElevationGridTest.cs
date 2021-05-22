@@ -38,6 +38,8 @@ namespace ArmaRealMap.Test.ElevationModel
             Assert.Equal(115f, grid.ElevationAt(new TerrainPoint(10, 20)));
             Assert.Equal(130f, grid.ElevationAt(new TerrainPoint(30, 20)));
 
+            Assert.Equal(107.5f, grid.ElevationAt(new TerrainPoint(10, 17.5f)));
+
             Assert.Equal(122.5f, grid.ElevationAt(new TerrainPoint(20, 20)));
         }
     }

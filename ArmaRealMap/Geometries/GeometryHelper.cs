@@ -371,26 +371,28 @@ namespace ArmaRealMap.Geometries
             var result = new List<TerrainPoint>() { prev };
             foreach (var point in points.Skip(1))
             {
-                result.AddRange(PointsOnPath(prev, point, step, true));
+                PointsOnPath(result, prev, point, step);
                 prev = point;
             }
             return result;
         }
 
-        public static IEnumerable<TerrainPoint> PointsOnPath(TerrainPoint a, TerrainPoint b, float step = 1f, bool skipFirst = false)
+        private static IEnumerable<TerrainPoint> PointsOnPath(List<TerrainPoint>  points, TerrainPoint a, TerrainPoint b, float step = 1f)
         {
             var delta = b.Vector - a.Vector;
             var length = delta.Length();
-            var points = new List<TerrainPoint>();
-            if (!skipFirst)
+            for (float i = step; i < length; i += step)
             {
-                points.Add(a);
+                var point = new TerrainPoint(Vector2.Lerp(a.Vector, b.Vector, i / length));
+                if (points.Last() != point)
+                {
+                    points.Add(point);
+                }
             }
-            for (float i = 0f; i < length; i += step)
+            if (points.Last() != b)
             {
-                points.Add(new TerrainPoint(Vector2.Lerp(a.Vector, b.Vector, i / length)));
+                points.Add(b);
             }
-            points.Add(b);
             return points;
         }
     }

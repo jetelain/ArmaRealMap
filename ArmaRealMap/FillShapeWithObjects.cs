@@ -113,7 +113,7 @@ namespace ArmaRealMap
             var delta = new Vector2(10, 10);
             foreach (var road in roads)
             {
-                var kind = OsmCategorizer.ToRoadType(road.Tags.GetValue("highway"));
+                var kind = OsmCategorizer.ToRoadType(road.Tags);
                 if (kind != null && kind.Value <= RoadType.TwoLanesConcreteRoad)
                 {
                     var complete = road.CreateComplete(db);

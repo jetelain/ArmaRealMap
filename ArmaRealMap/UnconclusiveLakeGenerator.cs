@@ -111,7 +111,7 @@ namespace ArmaRealMap
             }
 
             data.Elevation.SaveToAsc("elevation-lakes2.asc");
-            data.Elevation.SavePreviewToPng("elevation-lakes2.png");
+            data.Elevation.SavePreview("elevation-lakes2.png");
         }
 
         private static bool TrySingleTile(MapData data, List<TerrainObject> objects, List<SingleObjetInfos> waterTiles, List<SingleObjetInfos> waterRounds, List<TerrainPoint> points, float ajustedWaterElevation)

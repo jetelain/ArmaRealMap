@@ -23,6 +23,8 @@ namespace ArmaRealMap.Geometries
         }
 
         public List<TerrainPoint> Points { get; }
+        public TerrainPoint FirstPoint => Points[0];
+        public TerrainPoint LastPoint => Points[Points.Count-1];
 
         public TerrainPoint MinPoint { get; }
 
@@ -43,7 +45,7 @@ namespace ArmaRealMap.Geometries
             return new LineString(Points.Select(project).ToArray());
         }
 
-        public List<TerrainPolygon> ToTerrainPolygon(float width)
+        public IEnumerable<TerrainPolygon> ToTerrainPolygon(float width)
         {
             return TerrainPolygon.FromPath(Points, width);
         }
