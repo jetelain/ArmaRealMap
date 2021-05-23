@@ -8,8 +8,11 @@ namespace ArmaRealMap
 {
     internal class MapData
     {
+        public Config Config { get; set; }
         public MapInfos MapInfos { get; set; }
         public ElevationGrid Elevation { get; set; }
         public List<Road> Roads { get; internal set; }
+        public List<Building> WantedBuildings { get; internal set; }
+        public TerrainObjectLayer Buildings { get; internal set; }
     }
 }

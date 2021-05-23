@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Numerics;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
@@ -46,19 +47,27 @@ namespace ArmaRealMap
 
         public string ToString(MapInfos mapInfos)
         {
+            var point = box.Center;
+            if (objectInfos.CX != 0 || objectInfos.CY != 0)
+            {
+                point = point + Vector2.Transform(
+                    new Vector2(objectInfos.CX, objectInfos.CY), 
+                    Matrix3x2.CreateRotation(box.Angle * MathF.PI / 180f)
+                    );
+            }
             if (absoluteElevation != null)
             {
                 return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;{4:0.000};",
                                 objectInfos.Name,
-                                box.Center.X + objectInfos.CX + mapInfos.StartPointUTM.Easting,
-                                box.Center.Y + objectInfos.CY + mapInfos.StartPointUTM.Northing,
+                                point.X + mapInfos.StartPointUTM.Easting,
+                                point.Y + mapInfos.StartPointUTM.Northing,
                                 -box.Angle,
                                 absoluteElevation.Value);
             }
             return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;0.0;",
                             objectInfos.Name,
-                            box.Center.X + objectInfos.CX + mapInfos.StartPointUTM.Easting,
-                            box.Center.Y + objectInfos.CY + mapInfos.StartPointUTM.Northing,
+                            point.X + mapInfos.StartPointUTM.Easting,
+                            point.Y + mapInfos.StartPointUTM.Northing,
                             -box.Angle);
         }
     }

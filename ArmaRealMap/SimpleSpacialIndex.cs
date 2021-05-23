@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,8 @@ using System.Text;
 
 namespace ArmaRealMap
 {
-    public class SimpleSpacialIndex<T> where T : class
+    public class SimpleSpacialIndex<T> : IEnumerable<T>
+        where T : class
     {
         private class DataNode
         {
@@ -165,6 +167,16 @@ namespace ArmaRealMap
                 node.value = null;
                 removedCount++;
             }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Values.GetEnumerator();
         }
     }
 }
