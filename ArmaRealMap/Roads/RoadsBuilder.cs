@@ -100,6 +100,7 @@ namespace ArmaRealMap.Roads
                         x.Image.Mutate(p =>
                         {
                             var pixelLength = ((Vector2)(x.ToPixel(segment.First) - x.ToPixel(segment.Second))).Length();
+                            p.DrawLines(x.ElevationToColor(segment.Elevation).WithAlpha(0.5f), pixelLength * 2.5f, x.ToPixel(segment.A), x.ToPixel(segment.B));
                             p.DrawLines(x.ElevationToColor(segment.Elevation), pixelLength * 1.5f, x.ToPixel(segment.A), x.ToPixel(segment.B));
                         });
                         x.Apply();

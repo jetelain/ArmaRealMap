@@ -185,7 +185,7 @@ namespace ArmaRealMap
 
                 //RenderCitiesNames(config, area, filtered);
 
-                //RoadsBuilder.Roads(data, filtered, db, config);
+                RoadsBuilder.Roads(data, filtered, db, config);
 
                 var shapes = OsmCategorizer.GetShapes(db, filtered);
 
