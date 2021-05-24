@@ -1,0 +1,66 @@
+{
+  "Category": "Bench",
+  "Objects": [
+    {
+      "Name": "Bench_01_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 1.9200001,
+      "Depth": 0.663688,
+      "Height": 0,
+      "CX": 4.1365623E-05,
+      "CY": 0.07739261,
+      "CZ": 0,
+      "Size2D": {}
+    },
+    {
+      "Name": "Bench_02_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 1.9200001,
+      "Depth": 0.663688,
+      "Height": 0,
+      "CX": 4.1365623E-05,
+      "CY": 0.07739261,
+      "CZ": 0,
+      "Size2D": {}
+    },
+    {
+      "Name": "Bench_03_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 1.92712,
+      "Depth": 0.70083106,
+      "Height": 0,
+      "CX": 0.001093924,
+      "CY": 0.07957959,
+      "CZ": 0,
+      "Size2D": {}
+    },
+    {
+      "Name": "Bench_04_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 2.11186,
+      "Depth": 0.80894804,
+      "Height": 0,
+      "CX": 0.0002565384,
+      "CY": 0.007966012,
+      "CZ": 0,
+      "Size2D": {}
+    },
+    {
+      "Name": "Bench_05_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 2.20725,
+      "Depth": 0.397179,
+      "Height": 0,
+      "CX": 0.0013099909,
+      "CY": -0.00014190376,
+      "CZ": 0,
+      "Size2D": {}
+    }
+  ],
+  "Compositions": []
+}

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ArmaRealMap.ElevationModel;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
+using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
@@ -27,17 +28,61 @@ namespace ArmaRealMap.Roads
 {
     internal static class RoadsBuilder
     {
-        internal static void Roads(MapData data, OsmStreamSource filtered, SnapshotDb db, Config config)
+        internal static void Roads(MapData data, OsmStreamSource filtered, SnapshotDb db, Config config, ObjectLibraries libs)
         {
             PrepareRoads(data, filtered, db);
 
             MergeRoads(data);
+
+
+            var template = libs.Libraries.Where(l => l.Category == ObjectCategory.RoadConcreteWall).SelectMany(l => l.Objects).FirstOrDefault();
+            if (template != null)
+            {
+                data.UsedObjects.Add(template.Name);
+                var layer = new TerrainObjectLayer(data.MapInfos);
+
+                var polys = data.Roads.Where(r => r.RoadType == RoadType.TwoLanesMotorway).SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList();
+
+                var merged = polys.First().Merge(polys.Skip(1).ToList()).ToList();
+
+                foreach (var poly in merged)
+                {
+                    var points = GeometryHelper.PointsOnPathRegular(poly.Shell, MathF.Floor(template.Width));
+                    foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
+                    {
+                        var delta = Vector2.Normalize(segment.Second.Vector - segment.First.Vector);
+                        var center = new TerrainPoint(Vector2.Lerp(segment.First.Vector, segment.Second.Vector, 0.5f));
+                        var angle = MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI;
+                        layer.Insert(new TerrainObject(template, center, angle));
+                    }
+                }
+
+                /*
+                foreach (var motor in data.Roads.Where(r => r.RoadType == RoadType.TwoLanesMotorway))
+                {
+                    foreach (var poly in motor.Path.ToTerrainPolygon(motor.Width))
+                    {
+                        var points = GeometryHelper.PointsOnPathRegular(poly.Shell, MathF.Floor(template.Width));
+                        foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
+                        {
+                            var delta = Vector2.Normalize(segment.Second.Vector - segment.First.Vector);
+                            var center = new TerrainPoint(Vector2.Lerp(segment.First.Vector, segment.Second.Vector, 0.5f));
+                            var angle = MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI;
+                            layer.Insert(new TerrainObject(template, center, angle));
+                        }
+                    }
+                }*/
+                layer.WriteFile("roadwalls.txt");
+            }
 
             SaveRoadsShp(data, config);
 
             AdjustElevationGrid(data);
 
             PreviewRoads(data);
+
+
+
         }
 
         private static void MergeRoads(MapData data)

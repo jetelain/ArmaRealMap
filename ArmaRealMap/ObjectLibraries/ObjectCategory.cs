@@ -10,6 +10,9 @@
         Church,
 
         IsolatedTree,
-        ForestTree
+        ForestTree,
+        PicnicTable,
+        Bench,
+        RoadConcreteWall
     }
 }

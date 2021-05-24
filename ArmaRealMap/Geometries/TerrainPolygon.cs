@@ -142,6 +142,23 @@ namespace ArmaRealMap.Geometries
             clipper.Execute(ClipType.ctDifference, result);
             return ToPolygons(result);
         }
+        public IEnumerable<TerrainPolygon> Merge(List<TerrainPolygon> others)
+        {
+            if (others.Any(p => p.Holes.Count != 0) || Holes.Count > 0)
+            {
+                throw new NotSupportedException();
+            }
+
+            var clipper = new Clipper();
+            clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
+            foreach (var simple in others.Where(p => p.Holes.Count == 0))
+            {
+                clipper.AddPath(simple.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
+            }
+            var result = new PolyTree();
+            clipper.Execute(ClipType.ctUnion, result, PolyFillType.pftPositive);
+            return ToPolygons(result);
+        }
 
         private static IEnumerable<TerrainPolygon> ToPolygons(PolyTree result)
         {

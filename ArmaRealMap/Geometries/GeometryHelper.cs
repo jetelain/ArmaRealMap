@@ -395,5 +395,32 @@ namespace ArmaRealMap.Geometries
             }
             return points;
         }
+
+
+        public static List<TerrainPoint> PointsOnPathRegular(IEnumerable<TerrainPoint> points, float step)
+        {
+            var previous = points.First();
+            var result = new List<TerrainPoint>() { previous };
+            var remainLength = step;
+            foreach (var point in points.Skip(1))
+            {
+                var delta = point.Vector - previous.Vector;
+                var length = delta.Length();
+                float positionOnSegment = remainLength;
+                while (positionOnSegment <= length)
+                {
+                    result.Add(new TerrainPoint(Vector2.Lerp(previous.Vector, point.Vector, positionOnSegment / length)));
+                    positionOnSegment += step;
+                }
+                remainLength = positionOnSegment - length;
+                previous = point;
+            }
+            if (result.Last() != previous)
+            {
+                result.Add(previous);
+            }
+            return result;
+        }
+
     }
 }

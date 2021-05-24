@@ -173,7 +173,7 @@ namespace ArmaRealMap
         }
         private static void BuildLand(Config config, MapData data, MapInfos area, ObjectLibraries olibs)
         {
-            var usedObjects = new HashSet<string>();
+            data.UsedObjects = new HashSet<string>();
             using (var fileStream = File.OpenRead(config.OSM))
             {
                 Console.WriteLine("Load OSM data...");
@@ -185,7 +185,7 @@ namespace ArmaRealMap
 
                 //RenderCitiesNames(config, area, filtered);
 
-                RoadsBuilder.Roads(data, filtered, db, config);
+                RoadsBuilder.Roads(data, filtered, db, config, olibs);
 
                 var shapes = OsmCategorizer.GetShapes(db, filtered);
 
@@ -194,9 +194,9 @@ namespace ArmaRealMap
                 //new FillShapeWithObjects(area, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree))
                 //    .MakeForest(shapes, filtered, db);
 
-                //PlaceIsolatedTrees(area, olibs, filtered);
+                PlaceIsolatedObjects(data, olibs, filtered);
 
-                BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
+                //BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 
                 //MakeLakeDeeper(data, shapes);
 
@@ -204,7 +204,7 @@ namespace ArmaRealMap
             }
 
 
-            var libs = olibs.TerrainBuilder.Libraries.Where(l => usedObjects.Any(o => l.Template.Any(t => t.Name == o))).Distinct().ToList();
+            var libs = olibs.TerrainBuilder.Libraries.Where(l => data.UsedObjects.Any(o => l.Template.Any(t => t.Name == o))).Distinct().ToList();
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
         }
 
@@ -289,30 +289,86 @@ namespace ArmaRealMap
             throw new ArgumentException(geometry.OgcGeometryType.ToString());
         }
 
-
-
-
-
-        private static void PlaceIsolatedTrees(MapInfos area, ObjectLibraries olibs, OsmStreamSource filtered)
+        private static void PlaceIsolatedObjects(MapData data, ObjectLibraries olibs, OsmStreamSource filtered)
         {
-            var candidates = olibs.Libraries.Where(l => l.Category == ObjectCategory.IsolatedTree).SelectMany(l => l.Objects).ToList();
-            var result = new StringBuilder();
+            TerrainObjectLayer result = 
+                PlaceObjects(
+                    data, 
+                    filtered, 
+                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.IsolatedTree), 
+                    o => OsmCategorizer.Get(o.Tags, "natural") == "tree");
+            result.WriteFile("trees.txt");
 
-            var trees = filtered.Where(o => o.Type == OsmGeoType.Node && OsmCategorizer.Get(o.Tags, "natural") == "tree").ToList();
-            foreach (Node tree in trees)
+            result =
+                PlaceObjects(
+                    data,
+                    filtered,
+                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.Bench),
+                    o => OsmCategorizer.Get(o.Tags, "amenity") == "bench");
+            result.WriteFile("benches.txt");
+
+            result =
+                PlaceObjects(
+                    data,
+                    filtered,
+                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.PicnicTable),
+                    o => OsmCategorizer.Get(o.Tags, "leisure") == "picnic_table");
+            result.WriteFile("picnictables.txt");
+        }
+
+        private static TerrainObjectLayer PlaceObjects(MapData data, OsmStreamSource filtered, ObjectLibrary lib, Func<Node, bool> filter)
+        {
+            var candidates = lib.Objects;
+            var area = data.MapInfos;
+            var result = new TerrainObjectLayer(area);
+            var nodes = filtered.Where(o => o.Type == OsmGeoType.Node && filter((Node)o)).ToList();
+            foreach (Node node in nodes)
             {
-                var pos = area.LatLngToTerrainPoint(tree);  
+                var pos = area.LatLngToTerrainPoint(node);
                 if (area.IsInside(pos))
                 {
                     var random = new Random((int)Math.Truncate(pos.X + pos.Y));
                     var obj = candidates[random.Next(0, candidates.Count)];
-                    result.Append(new TerrainObject(obj, pos, (float)(random.NextDouble() * 360.0)).ToString(area));
-                    result.AppendLine();
+                    var angle = GetAngle(node, () => (float)(random.NextDouble() * 360.0));
+                    result.Insert(new TerrainObject(obj, pos, angle));
+                    data.UsedObjects.Add(obj.Name);
                 }
             }
-            File.WriteAllText("trees.txt", result.ToString());
+            return result;
         }
 
+        private static float GetAngle(Node node, Func<float> defaultValue)
+        {
+            var dir = OsmCategorizer.Get(node.Tags, "direction");
+            if (!string.IsNullOrEmpty(dir))
+            {
+                switch (dir.ToUpperInvariant())
+                {
+                    case "N": return 0f; 
+                    case "NNE": return 22.5f; 
+                    case "NE": return 45f; 
+                    case "ENE": return 67.5f; 
+                    case "E": return 90; 
+                    case "ESE": return 112.5f; 
+                    case "SE": return 135f; 
+                    case "SSE": return 157.5f; 
+                    case "S": return 180; 
+                    case "SSW": return 202.5f; 
+                    case "SW": return 225; 
+                    case "WSW": return 247.5f; 
+                    case "W": return 270; 
+                    case "WNW": return 292.5f; 
+                    case "NW": return 315;
+                    case "NNW": return 337.5f;
+                }
+                float angle;
+                if (float.TryParse(dir, out angle))
+                {
+                    return angle;
+                }
+            }
+            return defaultValue();
+        }
 
         private static void DrawShapes(MapInfos area, List<OsmShape> toRender)
         {

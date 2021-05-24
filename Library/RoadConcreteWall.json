@@ -1,0 +1,18 @@
+{
+  "Category": "RoadConcreteWall",
+  "Objects": [
+    {
+      "Name": "Mil_ConcreteWall_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 4.00349,
+      "Depth": 0.487204,
+      "Height": 0,
+      "CX": -6.4611435E-05,
+      "CY": 0,
+      "CZ": 0,
+      "Size2D": {}
+    }
+  ],
+  "Compositions": []
+}

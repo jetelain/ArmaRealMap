@@ -1,0 +1,18 @@
+{
+  "Category": "PicnicTable",
+  "Objects": [
+    {
+      "Name": "WoodenTable_02_large_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 1.979897,
+      "Depth": 2.6984901,
+      "Height": 0,
+      "CX": -0.0021194816,
+      "CY": -0.0039750338,
+      "CZ": 0,
+      "Size2D": {}
+    }
+  ],
+  "Compositions": []
+}
