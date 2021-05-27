@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ArmaRealMap.ElevationModel;
+using ArmaRealMap.Geometries;
 using ArmaRealMap.Roads;
 
 namespace ArmaRealMap
@@ -15,5 +16,6 @@ namespace ArmaRealMap
         public List<Building> WantedBuildings { get; internal set; }
         public TerrainObjectLayer Buildings { get; internal set; }
         public HashSet<string> UsedObjects { get; internal set; }
+        public List<TerrainPolygon> Forests { get; internal set; }
     }
 }

@@ -5,25 +5,20 @@ namespace ArmaRealMap
 {
     class ElevationGridBuilder
     {
-        internal static ElevationGrid BuildElevationGrid(ConfigSRTM configSRTM, MapInfos area, string targetFile)
+        internal static ElevationGrid LoadOrGenerateElevationGrid(MapData data)
         {
-            var elevation = new ElevationGrid(area);
-            elevation.LoadFromSRTM(configSRTM);
-            elevation.SaveToAsc(targetFile);
-            elevation.SavePreview(Path.ChangeExtension(targetFile,".bmp"));
-            return elevation;
-        }
-
-        internal static ElevationGrid LoadOrGenerateElevationGrid(Config config, MapInfos area)
-        {
-            var rawElevation = Path.Combine(config.Target?.Terrain ?? string.Empty, "elevation-raw.asc");
-            if (!File.Exists(rawElevation))
+            var elevation = new ElevationGrid(data.MapInfos);
+            var cacheFile = data.Config.Target.GetCache("elevation-raw.asc");
+            if (!File.Exists(cacheFile))
             {
-                return BuildElevationGrid(config.SRTM, area, rawElevation);
+                elevation.LoadFromSRTM(data.Config.SRTM);
+                elevation.SaveToAsc(cacheFile);
+                elevation.SavePreview(data.Config.Target.GetDebug("elevation-raw.bmp"));
             }
-            var elevation = new ElevationGrid(area);
-            elevation.LoadFromAsc(rawElevation);
-            //elevation.SavePreview(Path.ChangeExtension(rawElevation, ".bmp"));
+            else
+            {
+                elevation.LoadFromAsc(cacheFile);
+            }
             return elevation;
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -48,6 +49,11 @@ namespace ArmaRealMap.Libraries
             {
                 Libraries.Add(JsonSerializer.Deserialize<ObjectLibrary>(File.ReadAllText(json), options));
             }
+        }
+
+        internal SingleObjetInfos GetObject(string name)
+        {
+            return Libraries.SelectMany(l => l.Objects).First(o => o.Name == name);
         }
 
         private ObjectLibrary ParseText(string file, ObjectCategory categor, HashSet<string> jsons)

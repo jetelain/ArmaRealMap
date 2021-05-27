@@ -7,13 +7,17 @@ using ArmaRealMap.Geometries;
 
 namespace ArmaRealMap.Roads
 {
-    public class Road
+    public class Road : ITerrainGeometry
     {
         public RoadType RoadType { get; set; }
 
         public TerrainPath Path { get; set; }
 
         public float Width => RoadTypeToWidth(RoadType);
+
+        public TerrainPoint MinPoint => Path.MinPoint;
+
+        public TerrainPoint MaxPoint => Path.MaxPoint;
 
         public static float RoadTypeToWidth(RoadType value)
         {

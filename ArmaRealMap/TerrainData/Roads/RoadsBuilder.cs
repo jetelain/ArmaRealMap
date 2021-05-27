@@ -43,7 +43,7 @@ namespace ArmaRealMap.Roads
 
                 var polys = data.Roads.Where(r => r.RoadType == RoadType.TwoLanesMotorway).SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList();
 
-                var merged = polys.First().Merge(polys.Skip(1).ToList()).ToList();
+                var merged = TerrainPolygon.MergeAll(polys).ToList();
 
                 foreach (var poly in merged)
                 {
@@ -72,14 +72,14 @@ namespace ArmaRealMap.Roads
                         }
                     }
                 }*/
-                layer.WriteFile("roadwalls.txt");
+                layer.WriteFile(data.Config.Target.GetTerrain("roadwalls.txt"));
             }
 
             SaveRoadsShp(data, config);
 
             AdjustElevationGrid(data);
 
-            PreviewRoads(data);
+            // PreviewRoads(data);
 
 
 
@@ -156,6 +156,14 @@ namespace ArmaRealMap.Roads
 
         private static void AdjustElevationGrid(MapData data)
         {
+            var cacheFile = data.Config.Target.GetCache("elevation-roads.asc");
+
+            if (File.Exists(cacheFile))
+            {
+                data.Elevation.LoadFromAsc(cacheFile);
+                return;
+            }
+
             var sortedRoads = data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad)/*.OrderByDescending(r => (int)r.RoadType)*/.ToList();
             var report = new ProgressReport("ElevationRoads", sortedRoads.Count );
             var gridConstraints = new int[data.MapInfos.Size, data.MapInfos.Size];
@@ -227,8 +235,8 @@ namespace ArmaRealMap.Roads
             
             report.TaskDone();
 
-            data.Elevation.SaveToAsc("elevation-roads.asc");
-            data.Elevation.SavePreview("elevation-roads.bmp");
+            data.Elevation.SaveToAsc(cacheFile);
+            data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-roads.bmp"));
         }
 
         private static void Pass(MapData data, Image<Rgba32> img, Road road, IEnumerable<TerrainPoint> allPoints, ElevationGridArea b, float coef)

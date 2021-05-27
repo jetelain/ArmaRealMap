@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ArmaRealMap.Libraries
@@ -12,5 +13,9 @@ namespace ArmaRealMap.Libraries
 
         public List<CompositionInfos> Compositions { get; set; }
 
+        internal SingleObjetInfos GetObject(string name)
+        {
+            return Objects.First(o => o.Name == name);
+        }
     }
 }

@@ -21,26 +21,28 @@ namespace ArmaRealMap.Buildings
     {
         public static void PlaceBuildings(MapData data, ObjectLibraries olibs, List<OsmShape> toRender)
         {
-            if (File.Exists("pass4.json"))
+            var pass4File = data.Config.Target.GetCache("buildings-pass4.json");
+
+            if (File.Exists(pass4File))
             {
-                data.WantedBuildings = JsonSerializer.Deserialize<IEnumerable<BuildingJson>>(File.ReadAllText("pass4.json")).Select(b => new Building(b)).ToList();
+                data.WantedBuildings = JsonSerializer.Deserialize<IEnumerable<BuildingJson>>(File.ReadAllText(pass4File)).Select(b => new Building(b)).ToList();
             }
             else
             {
                 var removed = new List<OsmShape>();
                 var pass1 = BuildingPass1(data.MapInfos, toRender.Where(b => b.Category.IsBuilding).ToList(), removed);
-                Preview(data.MapInfos, removed, pass1, "pass1.bmp");
+                Preview(data, removed, pass1, "buildings-pass1.bmp");
 
                 var pass2 = BuldingPass2(pass1, removed);
-                Preview(data.MapInfos, removed, pass2, "pass2.bmp");
+                Preview(data, removed, pass2, "buildings-pass2.bmp");
 
                 var pass3 = BuildingPass3(removed, pass2);
-                Preview(data.MapInfos, removed, pass3, "pass3.bmp");
+                Preview(data, removed, pass3, "buildings-pass3.bmp");
 
                 var pass4 = BuildingPass4(data.MapInfos, toRender, pass3);
-                Preview(data.MapInfos, removed, pass4, "pass4.bmp");
+                Preview(data, removed, pass4, "buildings-pass4.bmp");
 
-                File.WriteAllText("pass4.json", JsonSerializer.Serialize(pass4.Select(o => o.ToJson())));
+                File.WriteAllText(pass4File, JsonSerializer.Serialize(pass4.Select(o => o.ToJson())));
 
                 data.WantedBuildings = pass4;
             }
@@ -85,7 +87,7 @@ namespace ArmaRealMap.Buildings
             }
             report.TaskDone();
 
-            data.Buildings.WriteFile("buildings5.txt");
+            data.Buildings.WriteFile(data.Config.Target.GetTerrain("buildings.txt"));
 
             Console.WriteLine("{0:0.0} % buildings placed", ok * 100.0 / data.WantedBuildings.Count);
         }
@@ -244,22 +246,22 @@ namespace ArmaRealMap.Buildings
             return pass3;
         }
 
-        private static ProgressReport Preview(MapInfos area, List<OsmShape> removed, List<Building> remainBuildings, string image)
+        private static ProgressReport Preview(MapData data, List<OsmShape> removed, List<Building> remainBuildings, string image)
         {
             ProgressReport report;
-            using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, TerrainMaterial.GrassShort.Color))
+            using (var img = new Image<Rgb24>(data.MapInfos.Size * data.MapInfos.CellSize, data.MapInfos.Size * data.MapInfos.CellSize, TerrainMaterial.GrassShort.Color))
             {
                 var kept = remainBuildings.SelectMany(b => b.Shapes).ToList();
 
                 report = new ProgressReport("DrawShapes", removed.Count + kept.Count);
                 foreach (var item in removed)
                 {
-                    OsmDrawHelper.Draw(area, img, new SolidBrush(Color.LightGray), item);
+                    OsmDrawHelper.Draw(data.MapInfos, img, new SolidBrush(Color.LightGray), item);
                     report.ReportOneDone();
                 }
                 foreach (var item in kept)
                 {
-                    OsmDrawHelper.Draw(area, img, new SolidBrush(Color.DarkGray), item);
+                    OsmDrawHelper.Draw(data.MapInfos, img, new SolidBrush(Color.DarkGray), item);
                     report.ReportOneDone();
                 }
                 report.TaskDone();
@@ -282,13 +284,13 @@ namespace ArmaRealMap.Buildings
 
                     }
 
-                    img.Mutate(x => x.DrawPolygon(color, 1, area.TerrainToPixelsPoints(item.Box.Points).ToArray()));
+                    img.Mutate(x => x.DrawPolygon(color, 1, data.MapInfos.TerrainToPixelsPoints(item.Box.Points).ToArray()));
                     report.ReportOneDone();
                 }
                 report.TaskDone();
 
                 Console.WriteLine("Save");
-                img.Save(image);
+                img.Save(data.Config.Target.GetDebug(image));
             }
 
             return report;

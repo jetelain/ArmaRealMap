@@ -6,7 +6,7 @@ using NetTopologySuite.Geometries;
 
 namespace ArmaRealMap
 {
-    internal class Building
+    internal class Building : ITerrainGeometry
     {
         public Building(OsmShape area, TerrainPoint[] points)
         {
@@ -28,6 +28,10 @@ namespace ArmaRealMap
         public ObjectCategory? Category { get; set; }
 
         public Polygon Poly => Box.Poly;
+
+        public TerrainPoint MinPoint => Box.MinPoint;
+
+        public TerrainPoint MaxPoint => Box.MaxPoint;
 
         public void Add(Building other)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace ArmaRealMap
 {
@@ -29,16 +30,21 @@ namespace ArmaRealMap
 
     public class TargetConfig
     {
-        public string Roads => Path.Combine(Config ?? string.Empty, "data", "roads");
-
-        public string GroundDetailTextures => Path.Combine(Config ?? string.Empty, "data", "gdt");
-
-        public string Config => PboPrefix != null ? Path.Combine("P:\\", PboPrefix) : string.Empty;
-
         public string PboPrefix { get; set; }
-
         public string Terrain { get; set; }
+        public string Debug { get; set; }
+        public string Cache { get; set; }
 
+
+        [JsonIgnore]
+        public string Roads => Path.Combine(Config ?? string.Empty, "data", "roads");
+        [JsonIgnore]
+        public string GroundDetailTextures => Path.Combine(Config ?? string.Empty, "data", "gdt");
+        [JsonIgnore]
+        public string Config => PboPrefix != null ? Path.Combine("P:\\", PboPrefix) : string.Empty;
+        public string GetTerrain(string name) => Path.Combine(Terrain ?? string.Empty, name);
+        public string GetCache(string name) => Path.Combine(Cache ?? string.Empty, name);
+        public string GetDebug(string name) => Path.Combine(Debug ?? string.Empty, name);
     }
 
     public class Config
@@ -54,5 +60,6 @@ namespace ArmaRealMap
 
 
         public TargetConfig Target { get; set; }
+        public string OsmXml { get; internal set; }
     }
 }

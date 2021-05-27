@@ -124,7 +124,48 @@ namespace ArmaRealMap
         internal static void DrawPath<T>(IImageProcessingContext d, IEnumerable<T> points, float width, SolidBrush brush, Func<T, PointF> project)
         {
             var pixelsPoints = points.Select(project).ToArray();
-                d.DrawLines(brush, width, pixelsPoints);
+            d.DrawLines(brush, width, pixelsPoints);
+        }
+
+        internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, SolidBrush brush, MapInfos map)
+        {
+            FillPolygonWithHoles(d, polygon.Shell.Select(map.TerrainToPixelsPoint), polygon.Holes.Select(map.TerrainToPixelsPoints).ToList(), brush);
+        }
+
+        internal static void FillPolygonWithHoles(IImageProcessingContext p, IEnumerable<PointF> outer, List<IEnumerable<PointF>> holes, IBrush brush)
+        {
+            if (holes.Any())
+            {
+                var clip = new Rectangle(
+                    (int)outer.Min(p => p.X) - 1,
+                    (int)outer.Min(p => p.Y) - 1,
+                    (int)(outer.Max(p => p.X) - outer.Min(p => p.X)) + 2,
+                    (int)(outer.Max(p => p.Y) - outer.Min(p => p.Y)) + 2);
+                using (var dimg = new Image<Rgba32>(clip.Width, clip.Height, Color.Transparent))
+                {
+                    dimg.Mutate(p =>
+                    {
+                        var xor = new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { AlphaCompositionMode = PixelAlphaCompositionMode.Xor } };
+                        p.FillPolygon(brush, outer.Select(p => new PointF(p.X - clip.X, p.Y - clip.Y)).ToArray());
+                        foreach (var hpoints in holes)
+                        {
+                            p.FillPolygon(xor, brush, hpoints.Select(p => new PointF(p.X - clip.X, p.Y - clip.Y)).ToArray());
+                        }
+                    });
+                    try
+                    {
+                        p.DrawImage(dimg, clip.Location, 1);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+            else
+            {
+                p.FillPolygon(brush, outer.ToArray());
+            }
         }
     }
 }

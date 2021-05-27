@@ -33,6 +33,8 @@ namespace ArmaRealMap.Geometries
 
         public Vector2 EnveloppeSize { get; }
 
+        public Polygon AsPolygon => asPolygon.Value;
+
         public Polygon ToPolygon(Func<TerrainPoint, Coordinate> project)
         {
             return new Polygon(
@@ -118,45 +120,125 @@ namespace ArmaRealMap.Geometries
             return OffsetInternal(Shell, offset).SelectMany(ext => MakePolygon(ext, holes)).ToList();
         }
 
-        public IEnumerable<TerrainPolygon> Substract(List<TerrainPolygon> others)
+        public IEnumerable<TerrainPolygon> SubstractAll(List<TerrainPolygon> others)
         {
-            if (others.Any(p => p.Holes.Count != 0))
+            var result = new List<TerrainPolygon>() { this };
+            foreach(var other in others.Where(o => GeometryHelper.EnveloppeIntersects(this, o)))
             {
-                throw new NotSupportedException();
+                var previousResult = result.ToList();
+                result.Clear();
+                foreach(var subjet in previousResult)
+                {
+                    result.AddRange(subjet.Substract(other));
+                }
+            }
+            return result;
+        }
+
+        public IEnumerable<TerrainPolygon> Substract(TerrainPolygon other)
+        {
+            if (!GeometryHelper.EnveloppeIntersects(this, other))
+            {
+                return new[] { this };
             }
 
             var clipper = new Clipper();
             clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
             foreach (var hole in Holes)
             {
-                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true); // EvenOdd will do the job
             }
-            foreach (var simple in others.Where(p => p.Holes.Count == 0))
+            clipper.AddPath(other.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+            foreach (var hole in other.Holes)
             {
-                if (GeometryHelper.EnveloppeIntersects(this, simple))
-                {
-                    clipper.AddPath(simple.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
-                }
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true); // EvenOdd will do the job
             }
             var result = new PolyTree();
             clipper.Execute(ClipType.ctDifference, result);
             return ToPolygons(result);
         }
-        public IEnumerable<TerrainPolygon> Merge(List<TerrainPolygon> others)
+
+        public static IEnumerable<TerrainPolygon> MergeAll(List<TerrainPolygon> others)
         {
-            if (others.Any(p => p.Holes.Count != 0) || Holes.Count > 0)
+            var noholes = others.Where(p => p.Holes.Count == 0).ToList();
+            var tomerge = others.Where(p => p.Holes.Count != 0).ToList();
+
+            if (noholes.Count > 0)
             {
-                throw new NotSupportedException();
+                // Polygons with holes can easily merged
+                if (tomerge.Count == 0 )
+                {
+                    return QuickMergeAllWithNoHoles(noholes);
+                }
+                tomerge.AddRange(QuickMergeAllWithNoHoles(noholes));
             }
 
+            if (tomerge.Count > 1)
+            {
+                var changed = false;
+                do {
+                    changed = false;
+                    foreach(var poly in tomerge)
+                    {
+                        foreach(var other in tomerge.Where(other => other != poly && GeometryHelper.EnveloppeIntersects(poly, other)))
+                        {
+                            var merged = poly.Merge(other).ToList();
+                            if (merged.Count == 1) // successfully merged
+                            {
+                                tomerge.Remove(poly);
+                                tomerge.Remove(other);
+                                tomerge.Add(merged[0]);
+                                changed = true;
+                                break;
+                            }
+                            else if (merged.Count != 2)
+                            {
+                                // strange !
+                            }
+                        }
+                        if (changed)
+                        {
+                            break;
+                        }
+                    }
+                }
+                while (changed);
+            }
+            return tomerge;
+        }
+
+        private static IEnumerable<TerrainPolygon> QuickMergeAllWithNoHoles(List<TerrainPolygon> noholes)
+        {
             var clipper = new Clipper();
-            clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
-            foreach (var simple in others.Where(p => p.Holes.Count == 0))
+            foreach (var simple in noholes)
             {
                 clipper.AddPath(simple.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
             }
             var result = new PolyTree();
             clipper.Execute(ClipType.ctUnion, result, PolyFillType.pftPositive);
+            return ToPolygons(result);
+        }
+
+        public IEnumerable<TerrainPolygon> Merge(TerrainPolygon other)
+        {
+            if (!GeometryHelper.EnveloppeIntersects(this, other))
+            {
+                return new[] { this, other };
+            }
+
+            var clipper = new Clipper();
+            clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
+            foreach (var hole in Holes)
+            {
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true); // EvenOdd will do the job
+            }
+            clipper.AddPath(other.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+            foreach (var hole in other.Holes)
+            {
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true); // EvenOdd will do the job
+            }
+            var result = new PolyTree();
+            clipper.Execute(ClipType.ctUnion, result);
             return ToPolygons(result);
         }
 
@@ -181,7 +263,7 @@ namespace ArmaRealMap.Geometries
             clipper.AddPath(shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
             clipper.AddPath(clip.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
             var result = new PolyTree();
-            clipper.Execute(ClipType.ctDifference, result);
+            clipper.Execute(ClipType.ctIntersection, result);
             if (result.Childs.Any(c => c.ChildCount != 0))
             {
                 throw new NotSupportedException();
@@ -195,6 +277,15 @@ namespace ArmaRealMap.Geometries
                 point.Y <= MaxPoint.Y && point.Y >= MinPoint.Y)
             {
                 return ContainsRaw(point);
+            }
+            return false;
+        }
+
+        public bool Contains(TerrainPolygon other)
+        {
+            if (GeometryHelper.EnveloppeIntersects(this, other))
+            {
+                return AsPolygon.Contains(other.AsPolygon);
             }
             return false;
         }

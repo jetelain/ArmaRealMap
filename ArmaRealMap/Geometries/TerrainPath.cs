@@ -31,12 +31,15 @@ namespace ArmaRealMap.Geometries
         public TerrainPoint MaxPoint { get; }
 
         public Vector2 EnveloppeSize { get; }
+
+        public LineString AsLineString => asLineString.Value;
+
         public float Length 
         { 
             get
             {
                 // TODO: Own algorithm
-                return (float)asLineString.Value.Length;
+                return (float)AsLineString.Length;
             }
         }
 
