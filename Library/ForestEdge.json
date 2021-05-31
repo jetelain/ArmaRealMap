@@ -2,18 +2,6 @@
   "Category": "ForestEdge",
   "Objects": [
     {
-      "Name": "B_Betula_nana",
-      "PlacementProbability": 0.1,
-      "PlacementRadius": 1.25,
-      "Width": 3.44562,
-      "Depth": 2.85054,
-      "Height": 0,
-      "CX": 0,
-      "CY": 0,
-      "CZ": 0,
-      "Size2D": {}
-    },
-    {
       "Name": "B_Caragana_arborescens",
       "PlacementProbability": 0.1,
       "PlacementRadius": 2.5,
@@ -55,42 +43,6 @@
       "PlacementRadius": 1.5,
       "Width": 4.0647,
       "Depth": 4.00364,
-      "Height": 0,
-      "CX": 0,
-      "CY": 0,
-      "CZ": 0,
-      "Size2D": {}
-    },
-    {
-      "Name": "b_prunusSpinosa_2s",
-      "PlacementProbability": 0.1,
-      "PlacementRadius": 2,
-      "Width": 5.66274,
-      "Depth": 5.60458,
-      "Height": 0,
-      "CX": 0,
-      "CY": 0,
-      "CZ": 0,
-      "Size2D": {}
-    },
-    {
-      "Name": "b_rosaCanina_1s",
-      "PlacementProbability": 0.1,
-      "PlacementRadius": 1,
-      "Width": 2.69178,
-      "Depth": 2.65732,
-      "Height": 0,
-      "CX": 0,
-      "CY": 0,
-      "CZ": 0,
-      "Size2D": {}
-    },
-    {
-      "Name": "b_rosaCanina_2s",
-      "PlacementProbability": 0.1,
-      "PlacementRadius": 1.5,
-      "Width": 4.11106,
-      "Depth": 4.00918,
       "Height": 0,
       "CX": 0,
       "CY": 0,
