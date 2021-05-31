@@ -121,10 +121,10 @@ namespace ArmaRealMap
         {
             var clusters = GenerateClusters(fillarea);
 
-            var rndX1 = fillarea.X1 * 10;
-            var rndX2 = fillarea.X2 * 10;
-            var rndY1 = fillarea.Y1 * 10;
-            var rndY2 = fillarea.Y2 * 10;
+            var rndX1 = fillarea.X1 * 100;
+            var rndX2 = fillarea.X2 * 100;
+            var rndY1 = fillarea.Y1 * 100;
+            var rndY2 = fillarea.Y2 * 100;
 
             var remainItems = fillarea.ItemsToAdd;
             var unChangedLoops = 0;
@@ -133,8 +133,8 @@ namespace ArmaRealMap
                 var wasChanged = false;
                 for (int i = 0; i < fillarea.ItemsToAdd && remainItems > 0; ++i)
                 {
-                    var x = fillarea.Random.Next(rndX1, rndX2) / 10f;
-                    var y = fillarea.Random.Next(rndY1, rndY2) / 10f;
+                    var x = fillarea.Random.Next(rndX1, rndX2) / 100f;
+                    var y = fillarea.Random.Next(rndY1, rndY2) / 100f;
                     if (fillarea.Polygon.Contains(new TerrainPoint(x, y)))
                     {
                         var point = new TerrainPoint(x, y);

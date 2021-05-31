@@ -13,6 +13,7 @@
         ForestTree,
         PicnicTable,
         Bench,
-        RoadConcreteWall
+        RoadConcreteWall,
+        ForestEdge
     }
 }

@@ -32,12 +32,11 @@ namespace ArmaRealMap.Roads
                 case RoadType.TwoLanesConcreteRoad:
                     return 7f;
                 case RoadType.SingleLaneDirtRoad:
-                    return 3.5f;
                 case RoadType.SingleLaneDirtPath:
-                    return 1f;
+                    return 3.5f;
                 default:
                 case RoadType.Trail:
-                    return 0.5f;
+                    return 1f;
             }
         }
     }

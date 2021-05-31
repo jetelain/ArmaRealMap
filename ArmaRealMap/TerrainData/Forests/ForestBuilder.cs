@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
@@ -16,37 +17,102 @@ namespace ArmaRealMap.TerrainData.Forests
         {
             var forestPolygonsCropped = GetCroppedForestPolygons(data, shapes);
 
-            DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass1.bmp");
+            //DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass1.bmp");
 
             RemoveOverlaps(forestPolygonsCropped);
 
-            DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass2.bmp");
+            //DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass2.bmp");
 
             var substractPolygons = GetPriorityPolygons(data, shapes);
 
             var forestPolygonsCleaned = GetForestPolygons(forestPolygonsCropped, substractPolygons);
 
-            DebugHelper.Polygons(data, forestPolygonsCleaned, "forest-pass3.bmp");
+            //DebugHelper.Polygons(data, forestPolygonsCleaned, "forest-pass3.bmp");
 
             var objects = new FillShapeWithObjects(data, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree))
                     .Fill(forestPolygonsCleaned, 0.0100f, "forest-pass4.txt");
+
+            DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass4.bmp");
 
             // Remove trees at edge that may be a problem
 
             // Too close of building
             Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
 
-            // Too close roads
-            Remove(objects, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtPath), (road, tree) => tree.Poly.Distance(road.Path.AsLineString) < road.Width / 2);
-
-            // Trunc at middle of path
-            Remove(objects, data.Roads.Where(r => r.RoadType >= RoadType.SingleLaneDirtPath), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) < road.Width / 2);
+            // Too close of roads
+            Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
 
             objects.WriteFile(data.Config.Target.GetTerrain("forest.txt"));
-
             DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass5.bmp");
 
+            GenerateEdgeObjects(data, olibs, forestPolygonsCleaned);
+
+            DebugHelper.ObjectsInPolygons(data, wasRemoved, forestPolygonsCleaned, "forest-wasRemoved.bmp");
+
             data.Forests = forestPolygonsCleaned;
+
+        }
+
+        private static void GenerateEdgeObjects(MapData data, ObjectLibraries olibs, List<TerrainPolygon> forestPolygonsCleaned)
+        {
+            var margin = 1f;
+
+            var edges = forestPolygonsCleaned.SelectMany(f => f.Offset(-margin)).ToList();
+
+            /*var edgeObjects = new FillShapeWithObjects(data, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestEdge))
+                    .Fill(edges, 0.1f, "forest-edge.txt");*/
+
+            var lib = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestEdge);
+
+            var edgeObjects = new TerrainObjectLayer(data.MapInfos);
+            var rotate = Matrix3x2.CreateRotation(1.570796f);
+            var rnd = new Random(1);
+            var report = new ProgressReport("EdgeObjects", edges.Count);
+            foreach (var edgePoly in edges)
+            {
+                foreach (var ring in edgePoly.Holes.Concat(new[] { edgePoly.Shell }))
+                {
+                    var previous = ring.First();
+                    var result = new List<TerrainPoint>() { previous };
+                    var previousObj = lib.Objects[rnd.Next(0, lib.Objects.Count - 1)];
+                    var remainLength = previousObj.GetPlacementRadius();
+                    edgeObjects.Insert(new TerrainObject(previousObj, previous, (float)rnd.NextDouble() * 360));
+                    foreach (var point in ring.Skip(1))
+                    {
+                        var delta = point.Vector - previous.Vector;
+                        var length = delta.Length();
+                        var normalDelta = Vector2.Transform(Vector2.Normalize(delta), rotate);
+                        float positionOnSegment = remainLength;
+                        while (positionOnSegment <= length)
+                        {
+                            var obj = lib.Objects[rnd.Next(0, lib.Objects.Count - 1)];
+                            var objPoint = new TerrainPoint(Vector2.Lerp(previous.Vector, point.Vector, positionOnSegment / length));
+                            if (obj.GetPlacementRadius() > margin)
+                            {
+                                var dist = (obj.GetPlacementRadius() - margin);
+                                objPoint = objPoint + (normalDelta * (dist + obj.GetPlacementRadius() * (float)rnd.NextDouble()));
+                            }
+                            if (data.MapInfos.IsInside(objPoint))
+                            {
+                                edgeObjects.Insert(new TerrainObject(obj, objPoint, (float)rnd.NextDouble() * 360));
+                            }
+                            var minimalDelta = (obj.GetPlacementRadius() + previousObj.GetPlacementRadius());
+                            positionOnSegment += minimalDelta + (float)(rnd.NextDouble() * minimalDelta / 2); // next position with up to 50% space
+                            previousObj = obj;
+                        }
+                        remainLength = positionOnSegment - length;
+                        previous = point;
+                    }
+                }
+                report.ReportOneDone();
+            }
+            report.TaskDone();
+
+            Remove(edgeObjects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
+
+            edgeObjects.WriteFile(data.Config.Target.GetTerrain("forest-edge.txt"));
+
+            DebugHelper.ObjectsInPolygons(data, edgeObjects, forestPolygonsCleaned, "forest-edges.bmp");
         }
 
         private static void RemoveOverlaps(List<TerrainPolygon> forest)
@@ -143,22 +209,28 @@ namespace ArmaRealMap.TerrainData.Forests
             report.TaskDone();
             return forestPolygonsCropped;
         }
+
         private static float RoadClearWidth(Road r)
         {
-            if (r.RoadType < RoadType.TwoLanesSecondaryRoad)
+            if (r.RoadType < RoadType.TwoLanesPrimaryRoad)
             {
-                return r.Width * 1.5f;
+                return r.Width + 8f;
             }
-            return r.Width;
+            if (r.RoadType < RoadType.SingleLaneDirtPath)
+            {
+                return r.Width + 6f;
+            }
+            return r.Width + 3f;
         }
 
+        private static List<TerrainObject> wasRemoved = new List<TerrainObject>();
         private static void Remove<T>(TerrainObjectLayer objects, IEnumerable<T> toremoveList, Func<T, TerrainObject, bool> match)
             where T : ITerrainGeometry
         {
             var list = toremoveList.ToList();
 
             var report = new ProgressReport("Remove", list.Count);
-
+            var removed = 0;
             foreach (var toremove in list)
             {
                 foreach (var obj in objects.Search(toremove.MinPoint, toremove.MaxPoint))
@@ -166,11 +238,14 @@ namespace ArmaRealMap.TerrainData.Forests
                     if (match(toremove, obj))
                     {
                         objects.Remove(obj.MinPoint.Vector, obj.MaxPoint.Vector, obj);
+                        removed++;
+                        wasRemoved.Add(obj);
                     }
                 }
                 report.ReportOneDone();
             }
             report.TaskDone();
+            Console.WriteLine($"Removed => {removed}");
         }
     }
 }

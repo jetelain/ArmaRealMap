@@ -45,7 +45,7 @@ namespace ArmaRealMap.GroundTextureDetails
 
         internal static void GenerateLayersConfig(Config config)
         {
-            using (var writer = new StreamWriter(new FileStream(Path.Combine(config.Target?.Terrain ?? string.Empty, "layers.cfg"), FileMode.Create, FileAccess.Write)))
+            using (var writer = new StreamWriter(new FileStream(Path.Combine(config.Target.GroundDetailTextures, "layers.cfg"), FileMode.Create, FileAccess.Write)))
             {
                 writer.WriteLine("class Layers");
                 writer.WriteLine("{");

@@ -77,7 +77,10 @@ namespace ArmaRealMap.Roads
 
             SaveRoadsShp(data, config);
 
-            AdjustElevationGrid(data);
+            if (data.Elevation != null)
+            {
+                AdjustElevationGrid(data);
+            }
 
             // PreviewRoads(data);
 

@@ -132,7 +132,7 @@ namespace ArmaRealMap
 
             data.MapInfos = area;
 
-            data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(data);
+            //data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(data);
 
             //SatelliteRawImage(config, area);
 

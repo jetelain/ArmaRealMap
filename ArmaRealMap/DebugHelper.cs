@@ -50,7 +50,10 @@ namespace ArmaRealMap
         {
             ObjectsInPolygons(data, objects, objects.Count, areas, areas.Count, filename, Color.LightGreen, Color.DarkGreen);
         }
-
+        public static void ObjectsInPolygons(MapData data, ICollection<TerrainObject> objects, List<TerrainPolygon> areas, string filename)
+        {
+            ObjectsInPolygons(data, objects, objects.Count, areas, areas.Count, filename, Color.LightGreen, Color.DarkGreen);
+        }
         public static void ObjectsInPolygons(MapData data, SimpleSpacialIndex<TerrainObject> objects, List<FillArea> areas, string filename)
         {
             ObjectsInPolygons(data, objects, objects.Count, areas.Select(a => a.Polygon), areas.Count, filename, Color.LightGreen, Color.DarkGreen); 
