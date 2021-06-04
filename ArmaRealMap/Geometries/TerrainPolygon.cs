@@ -158,7 +158,7 @@ namespace ArmaRealMap.Geometries
             return ToPolygons(result);
         }
 
-        public static IEnumerable<TerrainPolygon> MergeAll(List<TerrainPolygon> others)
+        public static List<TerrainPolygon> MergeAll(List<TerrainPolygon> others)
         {
             var noholes = others.Where(p => p.Holes.Count == 0).ToList();
             var tomerge = others.Where(p => p.Holes.Count != 0).ToList();
@@ -207,7 +207,7 @@ namespace ArmaRealMap.Geometries
             return tomerge;
         }
 
-        private static IEnumerable<TerrainPolygon> QuickMergeAllWithNoHoles(List<TerrainPolygon> noholes)
+        private static List<TerrainPolygon> QuickMergeAllWithNoHoles(List<TerrainPolygon> noholes)
         {
             var clipper = new Clipper();
             foreach (var simple in noholes)
@@ -242,7 +242,30 @@ namespace ArmaRealMap.Geometries
             return ToPolygons(result);
         }
 
-        private static IEnumerable<TerrainPolygon> ToPolygons(PolyTree result)
+        public IEnumerable<TerrainPolygon> Intersection(TerrainPolygon other)
+        {
+            if (!GeometryHelper.EnveloppeIntersects(this, other))
+            {
+                return new TerrainPolygon[0];
+            }
+
+            var clipper = new Clipper();
+            clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
+            foreach (var hole in Holes)
+            {
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true); // EvenOdd will do the job
+            }
+            clipper.AddPath(other.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+            foreach (var hole in other.Holes)
+            {
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true); // EvenOdd will do the job
+            }
+            var result = new PolyTree();
+            clipper.Execute(ClipType.ctIntersection, result);
+            return ToPolygons(result);
+        }
+
+        private static List<TerrainPolygon> ToPolygons(PolyTree result)
         {
             return result.Childs.Select(c => new TerrainPolygon(ToRing(c.Contour), c.Childs.Select(h => ToRing(h.Contour)).ToList())).ToList();
         }

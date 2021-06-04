@@ -351,5 +351,7 @@ healthchecksdb
 *.wrp
 *.pbo
 *.bin
-/PDrive/z/arm/addons/belfort/data/gdt
+/PDrive/z/arm/addons/belfort/data/gdt/*.paa
+/PDrive/z/arm/addons/belfort/data/gdt/*.rvmat
+/PDrive/z/arm/addons/belfort/data/gdt/*.hpp
 /PDrive/z/arm/addons/belfort/names.hpp

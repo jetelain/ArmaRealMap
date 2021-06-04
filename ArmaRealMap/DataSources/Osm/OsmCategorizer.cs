@@ -15,7 +15,7 @@ namespace ArmaRealMap.Osm
     internal static class OsmCategorizer
     {
 
-        internal static List<OsmShape> GetShapes(SnapshotDb db, OsmStreamSource filtered)
+        internal static List<OsmShape> GetShapes(SnapshotDb db, OsmStreamSource filtered, MapInfos mapInfos)
         {
             Console.WriteLine("Filter OSM data...");
             var toRender = new List<OsmShape>();
@@ -33,7 +33,7 @@ namespace ArmaRealMap.Osm
                     var count = 0;
                     foreach (var feature in interpret.Interpret(complete))
                     {
-                        toRender.Add(new OsmShape(category, osmGeo, feature.Geometry));
+                        toRender.Add(new OsmShape(category, osmGeo, feature.Geometry, mapInfos));
                         count++;
                     }
                     if (count == 0)
@@ -68,6 +68,10 @@ namespace ArmaRealMap.Osm
                 {
                     return OsmShapeCategory.BuildingHistoricalFort;
                 }
+                if (Get(tags, "tower:type") == "communication")
+                {
+                    return OsmShapeCategory.BuildingRadioTower;
+                }
                 if (tags.ContainsKey("brand"))
                 {
                     return OsmShapeCategory.BuildingRetail;
@@ -100,6 +104,7 @@ namespace ArmaRealMap.Osm
                 case "orchard": return OsmShapeCategory.FarmLand;
                 case "meadow": return OsmShapeCategory.FarmLand;
                 case "industrial": return OsmShapeCategory.Industrial;
+                case "commercial": return OsmShapeCategory.Commercial;
                 case "residential": return OsmShapeCategory.Residential;
                 case "cemetery": return OsmShapeCategory.Grass;
                 case "railway": return OsmShapeCategory.Dirt;

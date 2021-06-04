@@ -227,9 +227,11 @@ namespace ArmaRealMap
 
                 //RenderCitiesNames(config, area, filtered);
 
-                RoadsBuilder.Roads(data, filtered, db, config, olibs);
+                var shapes = OsmCategorizer.GetShapes(db, filtered, data.MapInfos);
 
-                var shapes = OsmCategorizer.GetShapes(db, filtered);
+
+                RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes);
+
 
                 BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 

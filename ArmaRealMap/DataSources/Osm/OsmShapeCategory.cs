@@ -46,15 +46,17 @@ namespace ArmaRealMap.Osm
         internal static readonly OsmShapeCategory Dirt = new OsmShapeCategory(TerrainMaterial.Dirt, 8);
         internal static readonly OsmShapeCategory Military = new OsmShapeCategory(Grass, 10, ObjectCategory.Military);
         internal static readonly OsmShapeCategory Residential = new OsmShapeCategory(Grass, ObjectCategory.Residential);
+        internal static readonly OsmShapeCategory Commercial = new OsmShapeCategory(Grass, ObjectCategory.Residential);
         internal static readonly OsmShapeCategory Industrial = new OsmShapeCategory(Grass, ObjectCategory.Industrial);
         internal static readonly OsmShapeCategory Retail = new OsmShapeCategory(Grass, ObjectCategory.Retail);
 
-        internal static readonly OsmShapeCategory[] BuildingCategorizers = new[] { Residential, Industrial, Retail, Military };
+        internal static readonly OsmShapeCategory[] BuildingCategorizers = new[] { Residential, Industrial, Retail, Military, Commercial };
 
         internal static readonly OsmShapeCategory Building = new OsmShapeCategory(TerrainMaterial.Dirt, 0);
         internal static readonly OsmShapeCategory BuildingHistoricalFort = new OsmShapeCategory(Grass, ObjectCategory.HistoricalFort);
         internal static readonly OsmShapeCategory BuildingRetail = new OsmShapeCategory(Building, ObjectCategory.Retail);
         internal static readonly OsmShapeCategory BuildingChurch = new OsmShapeCategory(Building, ObjectCategory.Church);
+        internal static readonly OsmShapeCategory BuildingRadioTower = new OsmShapeCategory(Building, ObjectCategory.RadioTower);
 
         internal static readonly OsmShapeCategory Road = new OsmShapeCategory(TerrainMaterial.Dirt, 0);
 

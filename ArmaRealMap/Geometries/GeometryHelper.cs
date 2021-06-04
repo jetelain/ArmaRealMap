@@ -91,7 +91,7 @@ namespace ArmaRealMap.Geometries
             return new LinearRing(transform(line.Coordinates).ToArray());
         }
 
-        internal static bool EnveloppeIntersects(ITerrainGeometry a, ITerrainGeometry b)
+        internal static bool EnveloppeIntersects(this ITerrainGeometry a, ITerrainGeometry b)
         {
             return b.MinPoint.X <= a.MaxPoint.X &&
                 b.MinPoint.Y <= a.MaxPoint.Y &&

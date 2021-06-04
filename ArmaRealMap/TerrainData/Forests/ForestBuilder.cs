@@ -181,7 +181,7 @@ namespace ArmaRealMap.TerrainData.Forests
                     && !s.Category.IsBuilding
                     && s.Category != OsmShapeCategory.Building
                     && s.Category != OsmShapeCategory.Water)
-                .SelectMany(g => TerrainPolygon.FromGeometry(g.Geometry, data.MapInfos.LatLngToTerrainPoint)));
+                .SelectMany(g => g.TerrainPolygons));
 
             return substractPolygons;
         }
@@ -197,7 +197,7 @@ namespace ArmaRealMap.TerrainData.Forests
             var report = new ProgressReport("ForestCrop", forestShapes.Count);
             foreach (var shape in forestShapes)
             {
-                foreach (var poly in TerrainPolygon.FromGeometry(shape.Geometry, data.MapInfos.LatLngToTerrainPoint))
+                foreach (var poly in shape.TerrainPolygons)
                 {
                     foreach (var cropped in poly.ClippedBy(area))
                     {
@@ -224,7 +224,7 @@ namespace ArmaRealMap.TerrainData.Forests
         }
 
         private static List<TerrainObject> wasRemoved = new List<TerrainObject>();
-        private static void Remove<T>(TerrainObjectLayer objects, IEnumerable<T> toremoveList, Func<T, TerrainObject, bool> match)
+        public static void Remove<T>(TerrainObjectLayer objects, IEnumerable<T> toremoveList, Func<T, TerrainObject, bool> match)
             where T : ITerrainGeometry
         {
             var list = toremoveList.ToList();

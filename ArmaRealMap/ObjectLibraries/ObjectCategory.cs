@@ -14,6 +14,10 @@
         PicnicTable,
         Bench,
         RoadConcreteWall,
-        ForestEdge
+        ForestEdge,
+
+        RoadSideWalk,
+
+        RadioTower
     }
 }

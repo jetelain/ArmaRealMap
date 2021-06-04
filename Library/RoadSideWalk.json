@@ -1,0 +1,30 @@
+{
+  "Category": "RoadSideWalk",
+  "Objects": [
+    {
+      "Name": "Sidewalk_02_4m_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 4, 
+      "Depth": 2,
+      "Height": 0,
+      "CX": -9.3221664E-05,
+      "CY": -0.01865077,
+      "CZ": 0,
+      "Size2D": {}
+    },
+    {
+      "Name": "Sidewalk_02_8m_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 8,
+      "Depth": 2,
+      "Height": 0,
+      "CX": -0.076660156,
+      "CY": -0.016260743,
+      "CZ": 0,
+      "Size2D": {}
+    }
+  ],
+  "Compositions": []
+}

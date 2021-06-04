@@ -27,7 +27,7 @@ class arm_GrassGreenGroup: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrGrassGreen_group.p3d";
 	affectedByWind=0.60000002;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.89999998;
 	scaleMax=1.3;
 };
@@ -35,7 +35,7 @@ class arm_GrassDry: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrGrassDry.p3d";
 	affectedByWind=0.5;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.80000001;
 	scaleMax=1.2;
 };
@@ -43,7 +43,7 @@ class arm_GrassDryGroup: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrGrassDry_group.p3d";
 	affectedByWind=0.64999998;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.89999998;
 	scaleMax=1.5;
 };
@@ -51,7 +51,7 @@ class arm_GrassDryMediumGroup: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrGrassDryMedium_group.p3d";
 	affectedByWind=1;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.80000001;
 	scaleMax=1.2;
 };
@@ -107,7 +107,7 @@ class arm_PlantGreenShrub: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrPlantGreenShrub.p3d";
 	affectedByWind=0.5;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.60000002;
 	scaleMax=1.1;
 };
@@ -115,7 +115,7 @@ class arm_PlantGermaderGroup: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrPlantGermader_group.p3d";
 	affectedByWind=0.34999999;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.89999998;
 	scaleMax=1.5;
 };
@@ -123,7 +123,7 @@ class arm_WeedBrownTallGroup: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrWeedBrownTall_group.p3d";
 	affectedByWind=0.30000001;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.89999998;
 	scaleMax=1.25;
 };
@@ -131,7 +131,7 @@ class arm_WeedGreenTall: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrWeedGreenTall.p3d";
 	affectedByWind=0.30000001;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=1.2;
 	scaleMax=1.8;
 };
@@ -139,7 +139,7 @@ class arm_ThistlePurpleSmall: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrThistlePurple_small.p3d";
 	affectedByWind=0.1;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.89999998;
 	scaleMax=1.4;
 };
@@ -147,7 +147,7 @@ class arm_ThistleSmallYellow: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrThistleSmallYellow.p3d";
 	affectedByWind=0.2;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.60000002;
 	scaleMax=1.4;
 };
@@ -155,7 +155,7 @@ class arm_ThistleYellowShrub: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrThistleYellowShrub.p3d";
 	affectedByWind=0.2;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.69999999;
 	scaleMax=1.1;
 };
@@ -163,7 +163,7 @@ class arm_GrassTall_Dead: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Grass_Tall_Dead.p3d";
 	affectedByWind=1;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.60000002;
 	scaleMax=1;
 };
@@ -171,7 +171,7 @@ class arm_GrassGreen: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Grass_Green.p3d";
 	affectedByWind=1;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=1.2;
 	scaleMax=1.5;
 	surfaceColor[]={0.43099999,0.47499999,0.26699999};
@@ -180,7 +180,7 @@ class arm_GrassDry2: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Grass_Dry.p3d";
 	affectedByWind=1;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.30000001;
 	scaleMax=0.89999998;
 };
@@ -188,7 +188,7 @@ class arm_GrassBrushHighGreen: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Grass_BrushHigh_Green.p3d";
 	affectedByWind=0.80000001;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.69999999;
 	scaleMax=1;
 };
@@ -196,7 +196,7 @@ class arm_GrassBunchSmall: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Grass_Bunch_Small.p3d";
 	affectedByWind=0.80000001;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.30000001;
 	scaleMax=0.80000001;
 };
@@ -204,7 +204,7 @@ class arm_ThistleHighDead: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Thistle_High_Dead.p3d";
 	affectedByWind=1;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.40000001;
 	scaleMax=0.80000001;
 };
@@ -212,7 +212,7 @@ class arm_ThistleHigh: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Thistle_High.p3d";
 	affectedByWind=0.60000002;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.60000002;
 	scaleMax=1;
 };
@@ -220,7 +220,7 @@ class arm_ThistleSmallYellow2: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Thistle_Small_Yellow.p3d";
 	affectedByWind=0.30000001;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.30000001;
 	scaleMax=0.89999998;
 };
@@ -276,7 +276,7 @@ class arm_PlantGreenSmall: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Plant_Green_Small.p3d";
 	affectedByWind=0.69999999;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.5;
 	scaleMax=1.1;
 };
@@ -284,7 +284,7 @@ class arm_FlowerCakile: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Flower_Cakile.p3d";
 	affectedByWind=0.40000001;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.60000002;
 	scaleMax=1.1;
 };
@@ -292,7 +292,7 @@ class arm_FlowerLowYellow2: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_Flower_Low_Yellow2.p3d";
 	affectedByWind=0.40000001;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.60000002;
 	scaleMax=1;
 };
@@ -300,7 +300,7 @@ class arm_GrassCrookedDead: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_GrassCrooked.p3d";
 	affectedByWind=0.60000002;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.80000001;
 	scaleMax=1.2;
 };
@@ -308,7 +308,7 @@ class arm_GrassTall: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_GrassTall.p3d";
 	affectedByWind=0.80000001;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.75;
 	scaleMax=1.15;
 };
@@ -316,7 +316,7 @@ class arm_GrassLong_DryBunch: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_GrassLong_DryBunch.p3d";
 	affectedByWind=0.80000001;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=0.80000001;
 	scaleMax=1.4;
 };
@@ -324,7 +324,7 @@ class arm_GrassDesertGroupSoft: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_GrassGreen_GroupSoft.p3d";
 	affectedByWind=1;
-	swLighting=1;
+	swLighting=0;
 	scaleMin=1;
 	scaleMax=1.5;
 };

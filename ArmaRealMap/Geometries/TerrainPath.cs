@@ -62,15 +62,15 @@ namespace ArmaRealMap.Geometries
             return new TerrainPath[0];
         }
 
-        public IEnumerable<TerrainPath> ClippedBy(TerrainPolygon polygon)
+        public List<TerrainPath> Intersection(TerrainPolygon polygon)
         {
-            if (polygon.Holes.Count > 0)
-            {
-                throw new NotSupportedException();
-            }
             var clipper = new Clipper();
             clipper.AddPath(Points.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, false);
             clipper.AddPath(polygon.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+            foreach (var hole in polygon.Holes)
+            {
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true); // EvenOdd will do the job
+            }
             var result = new PolyTree();
             clipper.Execute(ClipType.ctIntersection, result);
             if (result.Childs.Any(c => c.ChildCount != 0))
@@ -78,6 +78,11 @@ namespace ArmaRealMap.Geometries
                 throw new NotSupportedException();
             }
             return result.Childs.Select(c => new TerrainPath(c.Contour.Select(p => new TerrainPoint(p)).ToList())).ToList();
+        }
+
+        public IEnumerable<TerrainPath> ClippedBy(TerrainPolygon polygon)
+        {
+            return Intersection(polygon);
         }
         public bool EnveloppeIntersects(ITerrainGeometry other)
         {

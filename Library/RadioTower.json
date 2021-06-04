@@ -1,0 +1,30 @@
+{
+  "Category": "RadioTower",
+  "Objects": [
+    {
+      "Name": "TTowerBig_1_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 15.867861,
+      "Depth": 15.864571,
+      "Height": 0,
+      "CX": -0.0022702217,
+      "CY": -0.0026750565,
+      "CZ": 0,
+      "Size2D": {}
+    },
+    {
+      "Name": "TTowerBig_2_F",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 7.89878,
+      "Depth": 8.808189,
+      "Height": 0,
+      "CX": -0.16184497,
+      "CY": -0.111517906,
+      "CZ": 0,
+      "Size2D": {}
+    }
+  ],
+  "Compositions": []
+}
