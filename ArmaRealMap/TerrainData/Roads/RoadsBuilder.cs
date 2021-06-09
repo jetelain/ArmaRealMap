@@ -63,7 +63,7 @@ namespace ArmaRealMap.Roads
             }
             report.TaskDone();
             
-            ForestBuilder.Remove(layer, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
+            ForestBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
 
 
             layer.WriteFile(data.Config.Target.GetTerrain("sidewalks.txt"));
@@ -92,7 +92,7 @@ namespace ArmaRealMap.Roads
             {
                 var delta = Vector2.Normalize(segment.Second.Vector - segment.First.Vector);
                 var center = new TerrainPoint(Vector2.Lerp(segment.First.Vector, segment.Second.Vector, 0.5f));
-                var angle = MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI;
+                var angle = (180f + (MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI)) % 360f;
                 layer.Insert(new TerrainObject(template, center, angle));
             }
         }
