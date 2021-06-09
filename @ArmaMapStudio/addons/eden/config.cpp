@@ -27,7 +27,7 @@ class display3DEN
 				};
 				class AMS_Export
 				{
-					text = "Export";
+					text = "Export to Arma Map Studio";
 					action = QUOTE([] spawn FUNC(export););
 				};
 			};
