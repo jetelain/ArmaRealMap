@@ -59,6 +59,7 @@ private _willFollowTerrain = ["Land_New_WiredFence_5m_F", "Land_New_WiredFence_1
 					private _simpleEden = getnumber (_classConfig >> "SimpleObject" >> "eden");
 					private _model = gettext (_classConfig >> "model");
 					private _keepHorizontal = getNumber (_classConfig >> "keepHorizontalPlacement");
+					private _realModel = (getModelInfo _x) select 1;
 					
 					if ( _class in _willFollowTerrain ) then {
 						_keepHorizontal = 0; // config is sometime wrong about this, FIXME: where does this information should come from ?
@@ -66,10 +67,10 @@ private _willFollowTerrain = ["Land_New_WiredFence_5m_F", "Land_New_WiredFence_1
 					
 					if ( (count _textures == 0 || _simpleEden == 1 || _class in _whiteList) && (_model != "\A3\Weapons_f\dummyweapon.p3d") ) then {
 						_classData = [true, _keepHorizontal];
-						_data pushBack [".class", _class, _model, boundingBoxReal _x, boundingCenter _x];
+						_data pushBack [".class", _class, _model, boundingBoxReal _x, boundingCenter _x, _realModel];
 					} else {
 						_classData = [false, 0];
-						WARNING_4("%1 cannot be exported: textures=%2, model=%3, simpleEden=%4", _class, _textures, _model, _simpleEden);
+						WARNING_5("%1 cannot be exported: textures=%2, model=%3, simpleEden=%4, realModel=%5", _class, _textures, _model, _simpleEden, _realModel);
 					};
 				} else {
 					_classData = [false];
