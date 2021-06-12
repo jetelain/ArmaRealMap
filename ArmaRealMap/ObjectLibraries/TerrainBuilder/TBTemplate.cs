@@ -26,7 +26,6 @@ namespace ArmaRealMap.TerrainBuilder
 		public float Scale { get; set; } = 1;
 		[XmlElement(Order = 7)]
 		public int Hash { get; set; }
-
 		[XmlElement(Order = 8)]
 		public float ScaleRandMin { get; set; }
 		[XmlElement(Order = 9)]
@@ -74,5 +73,17 @@ namespace ArmaRealMap.TerrainBuilder
         public TBVector BoundingCenter { get; set; }
 		[XmlElement(Order = 30)]
 		public string Placement { get; set; } = string.Empty;
+
+		public static int GenerateHash(string name)
+        {
+			uint _hash = 0;
+			foreach(var letter in name )
+            {
+				_hash = ((uint)(letter) + (_hash << 6) + (_hash << 16) - _hash) & 0xFFFFFFFF;
+			}
+			return (int)_hash;
+		}
+
+
 	}
 }

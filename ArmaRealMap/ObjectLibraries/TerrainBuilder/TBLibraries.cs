@@ -9,27 +9,37 @@ namespace ArmaRealMap.TerrainBuilder
 {
     public class TBLibraries
     {
+        public static readonly XmlSerializer Serializer = new XmlSerializer(typeof(TBLibrary));
+
         public List<TBLibrary> Libraries { get; } = new List<TBLibrary>();
 
         public void Load(Config config)
         {
-            var serializer = new XmlSerializer(typeof(TBLibrary));
-            foreach(var file in Directory.GetFiles(config.Libraries, "*.tml", SearchOption.AllDirectories))
+            LoadAllFrom(config.Libraries);
+        }
+
+        public void LoadAllFrom(string path)
+        {
+            foreach(var file in Directory.GetFiles(path, "*.tml", SearchOption.AllDirectories))
             {
                 using(var stream = File.OpenRead(file))
                 {
-                    var lib = (TBLibrary)serializer.Deserialize(stream);
+                    var lib = (TBLibrary)Serializer.Deserialize(stream);
                     lib.FullPath = file;
                     Libraries.Add(lib);
                 }
                 
             }
-
         }
 
-        public TBTemplate FindModel(string model)
+        public TBTemplate FindByModel(string model)
         {
             return Libraries.SelectMany(l => l.Template.Where(l => string.Equals(l.File, model, StringComparison.OrdinalIgnoreCase))).FirstOrDefault();
+        }
+
+        public TBTemplate FindByName(string name)
+        {
+            return Libraries.SelectMany(l => l.Template.Where(l => string.Equals(l.Name, name, StringComparison.OrdinalIgnoreCase))).FirstOrDefault();
         }
 
         public string GetAllSqf()

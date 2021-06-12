@@ -90,7 +90,7 @@ namespace ArmaRealMap.Libraries
                     var maxY = float.Parse(math.Groups[9].Value, CultureInfo.InvariantCulture);
                     var maxZ = float.Parse(math.Groups[10].Value, CultureInfo.InvariantCulture);
 
-                    var template = TerrainBuilder.FindModel(model.TrimStart('\\'));
+                    var template = TerrainBuilder.FindByModel(model.TrimStart('\\'));
 
                     var obj = new SingleObjetInfos();
                     obj.Name = template?.Name ?? Path.GetFileNameWithoutExtension(model);

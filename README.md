@@ -1,8 +1,22 @@
-# Arma Real Map
+# Arma Map Studio (AMS)
+
+![Workflow](./docs/workflow.svg)
+
+## Eden Map Editor (@ArmaMapStudio + AmsUtil)
+
+Edit your generated map in Arma 3 Eden Editor, like a regular missiion : 
+1. Add objects, hide objects to remove
+2. Export with @ArmaMapStudio addon
+3. Launch AmsUtil on the wrp file
+4. Pack/Binarize again
+5. It's done !
+
+You can also edit map generated with other tools with the same way.
+
+## Realistic Map Generator (ArmaRealMap)
 Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly automated process.
 
-
-## TODO List
+### TODO List
 
   - [x] Generate satellite image from IGN BD Ortho (50cm/pixel -> transformed to 1m/pixel)
   - [ ] Generate elevation grid from SRTM data
@@ -43,7 +57,7 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
     - [ ] Powerlines
     - [ ] Radio towers
 
-## Data sources
+### Data sources
 
   - IGN : https://geoservices.ign.fr/documentation/diffusion/telechargement-donnees-libres.html
   - NASA SRTM : https://www2.jpl.nasa.gov/srtm/, needs account on https://urs.earthdata.nasa.gov/
@@ -52,7 +66,7 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
     - https://download.bbbike.org/osm/
     - See https://wiki.openstreetmap.org/wiki/Planet.osm for other tools
 
-## Requirements
+### Requirements
 
   - RAM : 16 GB minimal, 32 GB recommanded
   - HDD : SSD recommanded, 64 GB free disk
