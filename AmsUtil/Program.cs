@@ -144,16 +144,18 @@ namespace TerrainBuilderUtil
                 // If surfaceNormal is exported if object placement is relative to surfaceNormal.
                 // => if present, it means that engine will make matrix relative to surfaceNormal
                 //    so we have to compensate it
-                // => if absent, it means that engine will apply directly the matrix 
+                // => if not, it means that engine will apply directly the matrix 
                 //    so we have nothing to do     
 
                 var surfaceNormal = GetVector((object[])array[5]);
-                var vectorCross = Vector3.Cross(vectorDir, vectorUp);
-                var newVectorUp = Vector3.Normalize(vectorUp + Vector3.Lerp(DefaultVectorUp, surfaceNormal, -1)); // XXX: is that correct ?
-                var newVectorDir = Vector3.Cross(newVectorUp, vectorCross); // ensure perfectly normal to newVectorUp
-
-                matrix = Matrix4x4.CreateWorld(position, -newVectorDir, newVectorUp);
-
+                if (surfaceNormal != DefaultVectorUp)
+                {
+                    var normalCompensation = Vector3.Lerp(DefaultVectorUp, surfaceNormal, -1);
+                    var normalFixMatrix = Matrix4x4.CreateWorld(Vector3.Zero, -Vector3.Cross(normalCompensation, DefaultVectorCross), normalCompensation);
+                    var newVectorUp = Vector3.Transform(vectorUp, normalFixMatrix);
+                    var newVectorDir = Vector3.Cross(newVectorUp, Vector3.Cross(vectorDir, vectorUp)); // ensure perfectly normal to newVectorUp
+                    matrix = Matrix4x4.CreateWorld(position, -newVectorDir, newVectorUp);
+                }
             }
             return new Matrix4P(matrix);
         }
