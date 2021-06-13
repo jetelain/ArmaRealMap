@@ -60,6 +60,62 @@ class Cfg3DEN
 	};
 };
 
+class CfgVehicles {
+	
+	class All;
+	
+    class Static: All 
+	{
+		class AmsEden
+		{
+			surfacenormal = 1;
+		};
+	};
+	
+    class Building: Static 
+	{
+		class AmsEden
+		{
+			surfacenormal = 0;
+		};
+	};
+
+	class Wall_F;
+	class Land_New_WiredFence_5m_F: Wall_F 
+	{
+		class AmsEden
+		{
+			surfacenormal = 1;
+			canexport = 1;
+		};
+    };
+    class Land_New_WiredFence_10m_F: Wall_F 
+	{
+		class AmsEden
+		{
+			surfacenormal = 1;
+			canexport = 1;
+		};
+    };
+	
+	class TargetBootcampHumanSimple_F;
+	class TargetBootcampHuman_F: TargetBootcampHumanSimple_F 
+	{
+		class AmsEden
+		{
+			canexport = 1;
+		};
+	};
+	
+	class AllVehicles: All 
+	{
+		class AmsEden
+		{
+			canexport = -1;
+		};
+    };
+};
+
 #include "CfgEventHandlers.hpp"
 
 

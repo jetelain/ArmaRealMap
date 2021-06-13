@@ -39,9 +39,6 @@ private _progressTotal = count _objects + count _systems;
 	
 } foreach _systems;
 
-private _whiteList = ["TargetBootcampHuman_F"];
-private _willFollowTerrain = ["Land_New_WiredFence_5m_F", "Land_New_WiredFence_10m_F"];
-
 {
 	if (_x get3DENAttribute "AMS_Exclude" select 0) then {
 		// Ignored
@@ -57,33 +54,40 @@ private _willFollowTerrain = ["Land_New_WiredFence_5m_F", "Land_New_WiredFence_1
 				if ( isClass _classConfig ) then {
 					private _textures = getarray (_classConfig >> "hiddenselectionstextures");
 					private _simpleEden = getnumber (_classConfig >> "SimpleObject" >> "eden");
+					private _surfacenormal = getnumber (_classConfig >> "AmsEden" >> "surfacenormal");
+					private _ams_canexport = getnumber (_classConfig >> "AmsEden" >> "canexport");
 					private _model = gettext (_classConfig >> "model");
-					private _keepHorizontal = getNumber (_classConfig >> "keepHorizontalPlacement");
 					private _realModel = (getModelInfo _x) select 1;
-					
-					if ( _class in _willFollowTerrain ) then {
-						_keepHorizontal = 0; // config is sometime wrong about this, FIXME: where does this information should come from ?
-					};
-					
-					if ( (count _textures == 0 || _simpleEden == 1 || _class in _whiteList) && (_model != "\A3\Weapons_f\dummyweapon.p3d") ) then {
-						_classData = [true, _keepHorizontal];
-						_data pushBack [".class", _class, _model, boundingBoxReal _x, boundingCenter _x, _realModel];
+					if ( (count _textures == 0 || _simpleEden == 1 || _ams_canexport == 1) && (_model != "\A3\Weapons_f\dummyweapon.p3d") && (_ams_canexport != -1)) then {
+						_classData = [true, _surfacenormal];
+						_data pushBack [".class", _class, _model, boundingBoxReal _x, boundingCenter _x, _realModel, _surfacenormal];
 					} else {
 						_classData = [false, 0];
 						WARNING_5("%1 cannot be exported: textures=%2, model=%3, simpleEden=%4, realModel=%5", _class, _textures, _model, _simpleEden, _realModel);
 					};
 				} else {
-					_classData = [false];
+					_classData = [false, 0];
 					WARNING_1("%1 not found", _class);
 				};
 				_classes set [_class,_classData];
 			};
 			if ( _classData select 0 ) then {
 				private _pos = getPosASL _x;
-				if ( _classData select 1 == 0 ) then { // keepHorizontalPlacement is false, will need extra processing
-					_data pushBack [_class, _pos, getPosWorld _x, vectorUp _x, vectorDir _x, surfaceNormal _pos];
+				private _dir = vectorDir _x;
+				private _up = vectorUp _x;
+				private _wpos = getPosWorld _x; 
+				
+				// DirAndUp has effect on getPosASL, we have to "correct" getPosWorld to take into account this
+				_x setVectorDirAndUp [[0,1,0],[0,0,1]];
+				private _pos2 = getPosASL _x;
+				_x setVectorDirAndUp [_dir,_up];
+				private _zfix = (_pos2 select 2) - (_pos select 2);
+				_wpos set [2, (_wpos select 2) - _zfix];
+
+				if ( _classData select 1 == 1 ) then { // when object follow _surfacenormal, extra processing is required
+					_data pushBack [_class, _pos, _wpos, _up, _dir, surfaceNormal _pos];
 				} else {
-					_data pushBack [_class, _pos, getPosWorld _x, vectorUp _x, vectorDir _x];
+					_data pushBack [_class, _pos, _wpos, _up, _dir];
 				};
 				_x set3DENLayer _toRemoveLayer;
 			};
@@ -106,4 +110,4 @@ toFixed -1;
 
 copyToClipboard _result;
 
-systemChat "Copied to clipboard";
+systemChat "Done. Copied to clipboard";
