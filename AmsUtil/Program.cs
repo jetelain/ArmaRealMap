@@ -169,7 +169,7 @@ namespace TerrainBuilderUtil
                 return objects;
             }
 
-            toRemove = toRemove.Where(m => !string.IsNullOrEmpty(m.Model)).Distinct().ToList();
+            toRemove = toRemove.Where(m => !string.IsNullOrEmpty(m.Model) && !string.IsNullOrEmpty(m.ModelName)).Distinct().ToList();
 
             var toRemoveIndex = new Dictionary<int, List<HideObject>>();
 

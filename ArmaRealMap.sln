@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArmaRealMap", "ArmaRealMap\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArmaRealMap.Test", "ArmaRealMap.Test\ArmaRealMap.Test.csproj", "{1D1A22BF-43E5-4ADD-B166-A544C96B24BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmsUtil", "TerrainBuilderUtil\AmsUtil.csproj", "{19FE9AD0-E02F-455A-8265-60C9FC420DA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmsUtil", "AmsUtil\AmsUtil.csproj", "{19FE9AD0-E02F-455A-8265-60C9FC420DA1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.PBO", "..\jetelain\bis-file-formats\BIS.PBO\BIS.PBO.csproj", "{DBB57DEC-FA2D-465E-A7DF-EF3D9EA8E0C4}"
 EndProject

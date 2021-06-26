@@ -19,7 +19,7 @@ private _progressTotal = count _objects + count _systems;
 		_x set3DENLayer _toRemoveLayer;
 		private _hidden = _x getVariable ["#objects",[]];
 		{
-			_data pushBack [".hide", getPosWorld _x, (getModelInfo _x) select 1];
+			_data pushBack [".hide", [_x] call FUNC(getPosWrp), (getModelInfo _x) select 1];
 		} foreach _hidden;
 	};
 	
@@ -28,7 +28,7 @@ private _progressTotal = count _objects + count _systems;
 		if ( _value == 5 ) then {
 			private _building = _x getVariable ["#building", objNull];
 			if ( !isNull _building ) then {
-				_data pushBack [".hideObj", getPosWorld _building, (getModelInfo _building) select 1];
+				_data pushBack [".hideObj",  [_building] call FUNC(getPosWrp), (getModelInfo _building) select 1];
 			};
 			_x set3DENLayer _toRemoveLayer;
 		};
