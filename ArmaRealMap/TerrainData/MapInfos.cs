@@ -20,11 +20,19 @@ namespace ArmaRealMap
         public int CellSize { get; set; }
         public int Size { get; set; }
 
+
         public TerrainPoint P1 { get; set; }
         public TerrainPoint P2 { get; set; }
 
-        public int Height { get { return Size * CellSize; } }
-        public int Width { get { return Size * CellSize; } }
+        public int Height => Size * CellSize;
+        public int Width => Size * CellSize;
+
+        /// <summary>
+        /// meters per pixels 
+        /// </summary>
+        public double ImageryResolution { get; private set; }
+        public int ImageryHeight => (int)(Height / ImageryResolution);
+        public int ImageryWidth => (int)(Width / ImageryResolution);
 
         internal bool IsInside(TerrainPoint p)
         {
@@ -42,10 +50,10 @@ namespace ArmaRealMap
             var size = config.GridSize;
             var cellSize = config.CellSize;
             var startPointMGRS = new MilitaryGridReferenceSystem(config.BottomLeft.GridZone, config.BottomLeft.D, config.BottomLeft.E, config.BottomLeft.N);
-            return Create(startPointMGRS, size, cellSize);
+            return Create(startPointMGRS, size, cellSize, config.Resolution);
         }
 
-        internal static MapInfos Create(MilitaryGridReferenceSystem startPointMGRS, int size, int cellSize)
+        internal static MapInfos Create(MilitaryGridReferenceSystem startPointMGRS, int size, int cellSize, double? resolution)
         {
             var southWest = MilitaryGridReferenceSystem.MGRStoLatLong(startPointMGRS);
 
@@ -84,7 +92,8 @@ namespace ArmaRealMap
                 CellSize = cellSize,
                 Size = size,
                 P1 = new TerrainPoint(0f, 0f),
-                P2 = new TerrainPoint(size * cellSize, size * cellSize)
+                P2 = new TerrainPoint(size * cellSize, size * cellSize),
+                ImageryResolution = resolution ?? 1d
             };
         }
 
@@ -92,8 +101,8 @@ namespace ArmaRealMap
         {
             var u = new Coordinate(n.Y, n.X, eagerUTM).UTM;
             return new PointF(
-                (float)(u.Easting - StartPointUTM.Easting),
-                (float)Height - (float)(u.Northing - StartPointUTM.Northing)
+                (float)((u.Easting - StartPointUTM.Easting) / ImageryResolution),
+                (float)((Height - (u.Northing - StartPointUTM.Northing)) / ImageryResolution)
             );
         }
 
@@ -116,8 +125,8 @@ namespace ArmaRealMap
         public PointF TerrainToPixelsPoint(TerrainPoint point)
         {
             return new PointF(
-                (float)(point.X),
-                (float)Height - (float)(point.Y)
+                (float)(point.X / ImageryResolution),
+                (float)((Height - point.Y) / ImageryResolution)
             );
         }
 
@@ -129,8 +138,8 @@ namespace ArmaRealMap
         public PointF TerrainToPixelsPoint(NetTopologySuite.Geometries.Coordinate point)
         {
             return new PointF(
-                (float)(point.X),
-                (float)Height - (float)(point.Y)
+                (float)(point.X / ImageryResolution),
+                (float)((Height - point.Y) / ImageryResolution)
             );
         }
 

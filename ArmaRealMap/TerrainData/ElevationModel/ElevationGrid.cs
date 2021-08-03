@@ -136,8 +136,8 @@ namespace ArmaRealMap.ElevationModel
             {
                 writer.WriteLine($"ncols         {area.Size}");
                 writer.WriteLine($"nrows         {area.Size}");
-                writer.WriteLine($"xllcorner     {area.StartPointUTM.Easting:0}");
-                writer.WriteLine($"yllcorner     {area.StartPointUTM.Northing:0}");
+                writer.WriteLine($"xllcorner     200000");
+                writer.WriteLine($"yllcorner     0");
                 writer.WriteLine($"cellsize      {area.CellSize}");
                 writer.WriteLine($"NODATA_value  -9999");
                 for (int y = 0; y < area.Size; y++)

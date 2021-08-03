@@ -2,13 +2,14 @@
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
+using ArmaRealMap.DataSources;
 using FreeImageAPI;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace ArmaRealMap
 {
-    public class BdOrtho : IDisposable
+    public class BdOrtho : IDisposable, ISatImageProvider
     {
         private readonly string[] allImages;
         private readonly ConcurrentDictionary<string, Image<Rgb24>> cache = new ConcurrentDictionary<string, Image<Rgb24>>();

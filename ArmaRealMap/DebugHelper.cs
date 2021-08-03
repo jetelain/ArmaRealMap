@@ -25,7 +25,7 @@ namespace ArmaRealMap
 
         public static void Polygons(MapData data, IEnumerable<TerrainPolygon> polygons, int count, string filename, Color areasColor)
         {
-            using (var img = new Image<Rgb24>(data.MapInfos.Width, data.MapInfos.Height, Color.Black))
+            using (var img = new Image<Rgb24>(data.MapInfos.ImageryWidth, data.MapInfos.ImageryHeight, Color.Black))
             {
                 DrawPolygons(data.MapInfos, polygons, count, areasColor, img);
                 img.Save(data.Config.Target.GetDebug(filename));
@@ -61,7 +61,7 @@ namespace ArmaRealMap
 
         public static void ObjectsInPolygons(MapData data, IEnumerable<TerrainObject> objects, int objectsCount, IEnumerable<TerrainPolygon> polygons, int polygonsCount, string filename, Color areasColor, Color objectsColors)
         {
-            using (var img = new Image<Rgb24>(data.MapInfos.Width, data.MapInfos.Height, Color.Black))
+            using (var img = new Image<Rgb24>(data.MapInfos.ImageryWidth, data.MapInfos.ImageryHeight, Color.Black))
             {
                 DrawPolygons(data.MapInfos, polygons, polygonsCount, areasColor, img);
                 img.Mutate(p =>

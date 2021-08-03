@@ -59,15 +59,15 @@ namespace ArmaRealMap
             {
                 return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;{4:0.000};",
                                 objectInfos.Name,
-                                point.X + mapInfos.StartPointUTM.Easting,
-                                point.Y + mapInfos.StartPointUTM.Northing,
+                                point.X + 200000/*+ mapInfos.StartPointUTM.Easting*/,
+                                point.Y /*+ mapInfos.StartPointUTM.Northing*/,
                                 -box.Angle,
                                 absoluteElevation.Value);
             }
             return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;0.0;",
                             objectInfos.Name,
-                            point.X + mapInfos.StartPointUTM.Easting,
-                            point.Y + mapInfos.StartPointUTM.Northing,
+                            point.X + 200000/*+ mapInfos.StartPointUTM.Easting*/,
+                            point.Y /*+ mapInfos.StartPointUTM.Northing*/,
                             -box.Angle);
         }
     }

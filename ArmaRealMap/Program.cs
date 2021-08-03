@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using ArmaRealMap.Buildings;
+using ArmaRealMap.DataSources.S2C;
 using ArmaRealMap.ElevationModel;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
@@ -70,7 +71,7 @@ namespace ArmaRealMap
                     var theory = minElevation + (img[x, y].R * maxElevation / 255);
                     if ( isWater)
                     {
-                        grid.elevationGrid[x, img.Height - y - 1] = -1;
+                        grid.elevationGrid[x, img.Height - y - 1] = -3;
                     }
                     else if(isCloseWater && theory < 1)
                     {
@@ -102,14 +103,16 @@ namespace ArmaRealMap
                 }
             }
 
-            grid.SavePreviewToPng(@"C:\Users\Julien\source\repos\jetelain\Mali\mapdata\mali_hm_preview.png");
-            grid.SaveToAsc(@"C:\Users\Julien\source\repos\jetelain\Mali\mapdata\mali.asc");*/
+            grid.SavePreview(@"C:\Users\Julien\source\repos\jetelain\Mali\mapdata\mali_hm_preview.bmp");
+            grid.SaveToAsc(@"C:\Users\Julien\source\repos\jetelain\Mali\mapdata\mali.asc");
+
+            return;*/
 
             EnsureProjectDrive();
 
             Console.Title = "ArmaRealMap";
 
-            var config = LoadConfig(Path.GetFullPath("config.json"));
+            var config = LoadConfig(Path.GetFullPath("arm_gossi.json"));
 
             Trace.Listeners.Clear();
 
@@ -117,14 +120,16 @@ namespace ArmaRealMap
 
             Trace.WriteLine("----------------------------------------------------------------------------------------------------");
 
+            // 
+            
             var olibs = new ObjectLibraries();
             olibs.Load(config);
-            File.WriteAllText(config.Target.GetTerrain("library.sqf"), olibs.TerrainBuilder.GetAllSqf());
-
-            //GDTConfigBuilder.PrepareGDT(config);
+            /*
+             * File.WriteAllText(config.Target.GetTerrain("library.sqf"), olibs.TerrainBuilder.GetAllSqf());
+            */
+            GDTConfigBuilder.PrepareGDT(config);
 
             var data = new MapData();
-
 
             data.Config = config;
 
@@ -132,7 +137,14 @@ namespace ArmaRealMap
 
             data.MapInfos = area;
 
-            //data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(data);
+            SatelliteRawImage(config, area);
+
+            if (!DownloadOsmData(config, area))
+            {
+                return;
+            }
+
+            data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(data);
 
             //SatelliteRawImage(config, area);
 
@@ -150,17 +162,27 @@ namespace ArmaRealMap
             config.Target.Terrain = GetExistingPath(configFilePath, config.Target.Terrain);
             config.Target.Cache = GetExistingPath(configFilePath, config.Target.Cache);
             config.SRTM.Cache = GetExistingPath(configFilePath, config.SRTM.Cache);
-            config.ORTHO.Path = GetPath(configFilePath, config.ORTHO.Path);
+            if (config.ORTHO != null)
+            {
+                config.ORTHO.Path = GetPath(configFilePath, config.ORTHO.Path);
+            }
             config.OSM = GetPath(configFilePath, config.OSM);
+
+            if (!Directory.Exists(config.Target.Config))
+            {
+                Directory.CreateDirectory(config.Target.Config);
+            }
 
             Console.WriteLine($"Target.Debug   = '{config.Target.Debug}'");
             Console.WriteLine($"Target.Terrain = '{config.Target.Terrain}'");
             Console.WriteLine($"Target.Cache   = '{config.Target.Cache}'");
             Console.WriteLine($"Target.Config  = '{config.Target.Config}'");
             Console.WriteLine($"SRTM.Cache     = '{config.SRTM.Cache}'");
-            Console.WriteLine($"ORTHO.Path     = '{config.ORTHO.Path}'");
+            if (config.ORTHO != null)
+            {
+                Console.WriteLine($"ORTHO.Path     = '{config.ORTHO.Path}'");
+            }
             Console.WriteLine($"OSM            = '{config.OSM}'");
-
             return config;
         }
 
@@ -208,7 +230,7 @@ namespace ArmaRealMap
             var rawSat = Path.Combine(config.Target?.Terrain ?? string.Empty, "sat-raw.png");
             if (!File.Exists(rawSat))
             {
-                SatelliteImageBuilder.BuildSatImage(area, rawSat);
+                SatelliteImageBuilder.BuildSatImage(area, rawSat, config.ORTHO);
             }
         }
 
@@ -219,33 +241,27 @@ namespace ArmaRealMap
             using (var fileStream = File.OpenRead(config.OSM))
             {
                 Console.WriteLine("Load OSM data...");
-                var source = new PBFOsmStreamSource(fileStream);
+                var source =  Path.GetExtension(config.OSM) == ".xml" ? (OsmStreamSource)new XmlOsmStreamSource(fileStream) : new PBFOsmStreamSource(fileStream);
                 var db = new SnapshotDb(new MemorySnapshotDb(source));
 
                 Console.WriteLine("Crop OSM data...");
                 OsmStreamSource filtered = CropDataToArea(area, source);
 
-                //RenderCitiesNames(config, area, filtered);
+                RenderCitiesNames(config, area, filtered);
 
                 var shapes = OsmCategorizer.GetShapes(db, filtered, data.MapInfos);
 
-
                 RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes);
-
 
                 BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 
                 ForestBuilder.Prepare(data, shapes, olibs);
 
-                //new FillShapeWithObjects(area, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree))
-                //    .MakeForest(shapes, filtered, db);
-
                 PlaceIsolatedObjects(data, olibs, filtered);
-
 
                 //MakeLakeDeeper(data, shapes);
 
-                //DrawShapes(area, shapes);
+                DrawShapes(config, area, data, shapes);
             }
 
 
@@ -253,10 +269,21 @@ namespace ArmaRealMap
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
         }
 
-        private static void DownloadOsmData(Config config, MapInfos area)
+        private static bool DownloadOsmData(Config config, MapInfos area)
         {
-            if (!File.Exists(config.OsmXml))
+            if (!File.Exists(config.OSM))
             {
+                if ( Path.GetExtension(config.OSM) != ".xml")
+                {
+                    Console.Error.WriteLine("OSM path extension must be '.xml' if file is not provided.");
+                    return false;
+                }
+
+                var dir = Path.GetDirectoryName(config.OSM);
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
                 var lonWestern = (float)Math.Min(area.SouthWest.Longitude.ToDouble(), area.NorthWest.Longitude.ToDouble());
                 var latNorther = (float)Math.Max(area.NorthEast.Latitude.ToDouble(), area.NorthWest.Latitude.ToDouble());
                 var lonEastern = (float)Math.Max(area.SouthEast.Longitude.ToDouble(), area.NorthEast.Longitude.ToDouble());
@@ -264,14 +291,15 @@ namespace ArmaRealMap
                 var uri = FormattableString.Invariant($"https://overpass-api.de/api/map?bbox={lonWestern},{latSouthern},{lonEastern},{latNorther}");
                 using (var client = new WebClient())
                 {
-                    client.DownloadFile(uri, config.OsmXml);
+                    client.DownloadFile(uri, config.OSM);
                 }
             }
+            return true;
         }
 
         private static void RenderCitiesNames(Config config, MapInfos area, OsmStreamSource filtered)
         {
-            var places = filtered.Where(o => o.Type == OsmGeoType.Node && o.Tags.ContainsKey("place")).ToList();
+            var places = filtered.Where(o => o.Type == OsmGeoType.Node && o.Tags != null && o.Tags.ContainsKey("place")).ToList();
 
             var id = 0;
             var sb = new StringBuilder();
@@ -314,7 +342,7 @@ namespace ArmaRealMap
             return null;
         }
 
-        private static OsmStreamSource CropDataToArea(MapInfos area, PBFOsmStreamSource source)
+        private static OsmStreamSource CropDataToArea(MapInfos area, OsmStreamSource source)
         {
             var left = (float)Math.Min(area.SouthWest.Longitude.ToDouble(), area.NorthWest.Longitude.ToDouble());
             var top = (float)Math.Max(area.NorthEast.Latitude.ToDouble(), area.NorthWest.Latitude.ToDouble());
@@ -404,23 +432,44 @@ namespace ArmaRealMap
             return defaultValue();
         }
 
-        private static void DrawShapes(MapInfos area, List<OsmShape> toRender)
+        private static void DrawShapes(Config config, MapInfos area, MapData data, List<OsmShape> toRender)
         {
-            var shapes = toRender.Count;
-            var report = new ProgressReport("DrawShapes", shapes);
-            using (var img = new Image<Rgb24>(area.Size * area.CellSize, area.Size * area.CellSize, TerrainMaterial.GrassShort.Color))
+            var shapes = toRender.Where(r => r.Category.GroundTexturePriority != 0).ToList();
+            
+            using (var img = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, TerrainMaterial.GrassShort.Color))
             {
-                foreach (var item in toRender.OrderByDescending(e => e.Category.GroundTexturePriority))
+                var report = new ProgressReport("Shapes", shapes.Count);
+                foreach (var item in shapes.OrderByDescending(e => e.Category.GroundTexturePriority))
                 {
                     OsmDrawHelper.Draw(area, img, new SolidBrush(item.Category.GroundTextureColorCode), item);
                     report.ReportOneDone();
                 }
                 report.TaskDone();
+
+                report = new ProgressReport("Roads", data.Roads.Count);
+                img.Mutate(d =>
+                {
+                    var brush = new SolidBrush(OsmShapeCategory.Road.GroundTextureColorCode);
+                    foreach (var road in data.Roads)
+                    {
+                        DrawHelper.DrawPath(d, road.Path, (float)(road.Width / area.ImageryResolution), brush, data.MapInfos);
+                        report.ReportOneDone();
+                    }
+                });
+                report.TaskDone();
+
+                report = new ProgressReport("Buildings", data.Buildings.Count);
+                foreach (var item in data.WantedBuildings)
+                {
+                    img.Mutate(x => x.FillPolygon(OsmShapeCategory.Building.GroundTextureColorCode, data.MapInfos.TerrainToPixelsPoints(item.Box.Points).ToArray()));
+                    report.ReportOneDone();
+                }
+                report.TaskDone();
                 Console.WriteLine("SavePNG");
-                img.Save("osm4.png");
+                img.Save(config.Target.GetTerrain("id.png"));
             }
         }
-
+        
 
     }
 }

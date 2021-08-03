@@ -4,7 +4,7 @@
 
 ## Eden Map Editor (@ArmaMapStudio + AmsUtil)
 
-Edit your generated map in Arma 3 Eden Editor, like a regular missiion : 
+Edit your generated map in Arma 3 Eden Editor, like a regular mission : 
 1. Add objects, hide objects to remove
 2. Export with @ArmaMapStudio addon
 3. Launch AmsUtil on the wrp file
@@ -18,7 +18,7 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
 
 ### TODO List
 
-  - [x] Generate satellite image from IGN BD Ortho (50cm/pixel -> transformed to 1m/pixel)
+  - [x] Generate satellite image from Sentinel-2 cloudless
   - [ ] Generate elevation grid from SRTM data
     - [x] Raw eleveation grid
     - [ ] Adjust using rivers and lakes data
@@ -59,12 +59,14 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
 
 ### Data sources
 
-  - IGN : https://geoservices.ign.fr/documentation/diffusion/telechargement-donnees-libres.html
   - NASA SRTM : https://www2.jpl.nasa.gov/srtm/, needs account on https://urs.earthdata.nasa.gov/
-  - OpenStreeMap, Get data in "osm.pbf" format, using 
-    - https://protomaps.com/extracts
-    - https://download.bbbike.org/osm/
-    - See https://wiki.openstreetmap.org/wiki/Planet.osm for other tools
+  - OpenStreeMap (automatic)
+  - Sentinel-2 cloudless - https://s2maps.eu (automatic)
+  
+Generated maps MUST includes following credits :
+  - Elevation Model : NASA - Shuttle Radar Topography Mission (SRTM)
+  - Cartography : © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap Contributors</a> - released under <a href="https://opendatacommons.org/licenses/odbl/">Open Data Commons Open Database License (ODbL)</a> 
+  - Satellite image : <a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2016 &amp; 2017) released under <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
 
 ### Requirements
 

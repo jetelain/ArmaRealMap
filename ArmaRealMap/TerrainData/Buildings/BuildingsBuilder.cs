@@ -249,7 +249,7 @@ namespace ArmaRealMap.Buildings
         private static ProgressReport Preview(MapData data, List<OsmShape> removed, List<Building> remainBuildings, string image)
         {
             ProgressReport report;
-            using (var img = new Image<Rgb24>(data.MapInfos.Size * data.MapInfos.CellSize, data.MapInfos.Size * data.MapInfos.CellSize, TerrainMaterial.GrassShort.Color))
+            using (var img = new Image<Rgb24>(data.MapInfos.ImageryWidth, data.MapInfos.ImageryHeight, TerrainMaterial.GrassShort.Color))
             {
                 var kept = remainBuildings.SelectMany(b => b.Shapes).ToList();
 

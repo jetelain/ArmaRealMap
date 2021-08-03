@@ -190,6 +190,12 @@ namespace SRTM
             int? elevation01 = ReadByteData(localLatMin, localLonMax);
             int? elevation11 = ReadByteData(localLatMax, localLonMax);
 
+            if (localLatMax >= PointsPerCell || localLonMax >= PointsPerCell || localLatMin < 0 || localLonMin < 0 )
+            {
+                //Can't do bilinear if missing one of the points. Default to regular.
+                return (double)GetElevation(latitude, longitude);
+            }
+
             if (!elevation00.HasValue || !elevation10.HasValue || !elevation01.HasValue || !elevation11.HasValue)
             {
                 //Can't do bilinear if missing one of the points. Default to regular.

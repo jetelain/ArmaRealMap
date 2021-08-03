@@ -9,6 +9,12 @@ namespace ArmaRealMap.GroundTextureDetails
 
         internal static void PrepareGDT(Config config)
         {
+            if (!Directory.Exists(config.Target.GroundDetailTextures))
+            {
+                Directory.CreateDirectory(config.Target.GroundDetailTextures);
+
+            }
+
             GenerateLayersConfig(config);
 
             PrepareTexturesFromLibrary(config);
@@ -16,8 +22,6 @@ namespace ArmaRealMap.GroundTextureDetails
 
         private static void PrepareTexturesFromLibrary(Config config)
         {
-            Directory.CreateDirectory(config.Target.GroundDetailTextures);
-
             File.Copy(Path.Combine(config.Libraries, "gdt", "CfgSurfaces.hpp"), Path.Combine(config.Target.GroundDetailTextures, "CfgSurfaces.hpp"), true);
             File.Copy(Path.Combine(config.Libraries, "gdt", "Clutter.hpp"), Path.Combine(config.Target.GroundDetailTextures, "Clutter.hpp"), true);
 

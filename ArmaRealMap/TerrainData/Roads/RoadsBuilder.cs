@@ -309,6 +309,10 @@ namespace ArmaRealMap.Roads
                 features.Add(new Feature(road.Path.ToLineString(p => new Coordinate(p.X + 200000, p.Y)), attributesTable));
             }
             var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
+            if (config.Target?.Roads != null && !Directory.Exists(config.Target?.Roads))
+            {
+                Directory.CreateDirectory(config.Target?.Roads);
+            }
             var shapeWriter = new ShapefileDataWriter(Path.Combine(config.Target?.Roads ?? string.Empty, "roads.shp"), new GeometryFactory())
             {
                 Header = header
@@ -319,7 +323,7 @@ namespace ArmaRealMap.Roads
         private static void PreviewRoads(MapData data, string file = "roads.bmp")
         {
             var report = new ProgressReport("PreviewRoads", data.Roads.Count);
-            using (var img = new Image<Rgb24>(data.MapInfos.Width, data.MapInfos.Height, TerrainMaterial.GrassShort.Color))
+            using (var img = new Image<Rgb24>(data.MapInfos.ImageryWidth, data.MapInfos.ImageryHeight, TerrainMaterial.GrassShort.Color))
             {
                 img.Mutate(d =>
                 {
@@ -339,7 +343,7 @@ namespace ArmaRealMap.Roads
         private static void PrepareRoads(MapData data, OsmStreamSource filtered, SnapshotDb db)
         {
             var interpret = new DefaultFeatureInterpreter2();
-            var osmRoads = filtered.Where(o => o.Type == OsmGeoType.Way && o.Tags.ContainsKey("highway")).ToList();
+            var osmRoads = filtered.Where(o => o.Type == OsmGeoType.Way && o.Tags != null && o.Tags.ContainsKey("highway")).ToList();
             var area = TerrainPolygon.FromRectangle(data.MapInfos.P1, data.MapInfos.P2);
             data.Roads = new List<Road>();
             var report = new ProgressReport("PrepareRoads", osmRoads.Count);

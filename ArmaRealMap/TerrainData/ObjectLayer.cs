@@ -55,8 +55,8 @@ namespace ArmaRealMap
                     var name = tokens[0].Trim('"');
                     var obj = resolveObject(name);
                     var point = new TerrainPoint(
-                                (float)(double.Parse(tokens[1], CultureInfo.InvariantCulture) - map.StartPointUTM.Easting),
-                                (float)(double.Parse(tokens[2], CultureInfo.InvariantCulture) - map.StartPointUTM.Northing)
+                                (float)(double.Parse(tokens[1], CultureInfo.InvariantCulture) - 200000 /*map.StartPointUTM.Easting*/),
+                                (float)(double.Parse(tokens[2], CultureInfo.InvariantCulture) - 0 /*map.StartPointUTM.Northing*/)
                                 );
                     var tobj = new TerrainObject(obj,
                             point,

@@ -51,6 +51,7 @@ namespace ArmaRealMap
     {
         public int GridSize { get; set; }
         public int CellSize { get; set; }
+        public double? Resolution { get; set; }
         public ConfigBottomLeft BottomLeft { get; set; }
         public ConfigORTHO ORTHO { get; set; }
         public string OSM { get; set; }
@@ -58,8 +59,6 @@ namespace ArmaRealMap
 
         public string Libraries { get; set; }
 
-
         public TargetConfig Target { get; set; }
-        public string OsmXml { get; internal set; }
     }
 }
