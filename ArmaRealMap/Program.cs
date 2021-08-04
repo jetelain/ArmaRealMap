@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using ArmaRealMap.Buildings;
 using ArmaRealMap.DataSources.S2C;
 using ArmaRealMap.ElevationModel;
@@ -121,7 +122,7 @@ namespace ArmaRealMap
             Trace.WriteLine("----------------------------------------------------------------------------------------------------");
 
             // 
-            
+
             var olibs = new ObjectLibraries();
             olibs.Load(config);
             /*
@@ -156,7 +157,10 @@ namespace ArmaRealMap
 
         private static Config LoadConfig(string configFilePath)
         {
-            var config = JsonSerializer.Deserialize<Config>(File.ReadAllText(configFilePath));
+            var config = JsonSerializer.Deserialize<Config>(File.ReadAllText(configFilePath), new JsonSerializerOptions()
+            {
+                Converters = { new JsonStringEnumConverter() }
+            });
 
             config.Target.Debug = GetExistingPath(configFilePath, config.Target.Debug);
             config.Target.Terrain = GetExistingPath(configFilePath, config.Target.Terrain);
@@ -241,7 +245,7 @@ namespace ArmaRealMap
             using (var fileStream = File.OpenRead(config.OSM))
             {
                 Console.WriteLine("Load OSM data...");
-                var source =  Path.GetExtension(config.OSM) == ".xml" ? (OsmStreamSource)new XmlOsmStreamSource(fileStream) : new PBFOsmStreamSource(fileStream);
+                var source = Path.GetExtension(config.OSM) == ".xml" ? (OsmStreamSource)new XmlOsmStreamSource(fileStream) : new PBFOsmStreamSource(fileStream);
                 var db = new SnapshotDb(new MemorySnapshotDb(source));
 
                 Console.WriteLine("Crop OSM data...");
@@ -273,7 +277,7 @@ namespace ArmaRealMap
         {
             if (!File.Exists(config.OSM))
             {
-                if ( Path.GetExtension(config.OSM) != ".xml")
+                if (Path.GetExtension(config.OSM) != ".xml")
                 {
                     Console.Error.WriteLine("OSM path extension must be '.xml' if file is not provided.");
                     return false;
@@ -332,7 +336,7 @@ namespace ArmaRealMap
 
         private static string ToArmaKind(string place)
         {
-            switch(place)
+            switch (place)
             {
                 case "city": return "NameCityCapital";
                 case "town": return "NameCity";
@@ -353,11 +357,11 @@ namespace ArmaRealMap
 
         private static void PlaceIsolatedObjects(MapData data, ObjectLibraries olibs, OsmStreamSource filtered)
         {
-            TerrainObjectLayer result = 
+            TerrainObjectLayer result =
                 PlaceObjects(
-                    data, 
-                    filtered, 
-                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.IsolatedTree), 
+                    data,
+                    filtered,
+                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.IsolatedTree),
                     o => OsmCategorizer.Get(o.Tags, "natural") == "tree");
             result.WriteFile(data.Config.Target.GetTerrain("trees.txt"));
 
@@ -406,20 +410,20 @@ namespace ArmaRealMap
             {
                 switch (dir.ToUpperInvariant())
                 {
-                    case "N": return 0f; 
-                    case "NNE": return 22.5f; 
-                    case "NE": return 45f; 
-                    case "ENE": return 67.5f; 
-                    case "E": return 90; 
-                    case "ESE": return 112.5f; 
-                    case "SE": return 135f; 
-                    case "SSE": return 157.5f; 
-                    case "S": return 180; 
-                    case "SSW": return 202.5f; 
-                    case "SW": return 225; 
-                    case "WSW": return 247.5f; 
-                    case "W": return 270; 
-                    case "WNW": return 292.5f; 
+                    case "N": return 0f;
+                    case "NNE": return 22.5f;
+                    case "NE": return 45f;
+                    case "ENE": return 67.5f;
+                    case "E": return 90;
+                    case "ESE": return 112.5f;
+                    case "SE": return 135f;
+                    case "SSE": return 157.5f;
+                    case "S": return 180;
+                    case "SSW": return 202.5f;
+                    case "SW": return 225;
+                    case "WSW": return 247.5f;
+                    case "W": return 270;
+                    case "WNW": return 292.5f;
                     case "NW": return 315;
                     case "NNW": return 337.5f;
                 }
@@ -435,7 +439,7 @@ namespace ArmaRealMap
         private static void DrawShapes(Config config, MapInfos area, MapData data, List<OsmShape> toRender)
         {
             var shapes = toRender.Where(r => r.Category.GroundTexturePriority != 0).ToList();
-            
+
             using (var img = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, TerrainMaterial.GrassShort.Color))
             {
                 var report = new ProgressReport("Shapes", shapes.Count);
@@ -469,7 +473,7 @@ namespace ArmaRealMap
                 img.Save(config.Target.GetTerrain("id.png"));
             }
         }
-        
+
 
     }
 }

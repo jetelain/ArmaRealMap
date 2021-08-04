@@ -27,23 +27,36 @@ namespace ArmaRealMap.GroundTextureDetails
 
             foreach (var gdt in TerrainMaterial.All)
             {
-                var rvmat = Path.Combine(config.Libraries, "gdt", gdt.RvMat);
+                var rvmat = Path.Combine(config.Libraries, "gdt", gdt.RvMat(config.Terrain));
                 if (File.Exists(rvmat))
                 {
-                    File.WriteAllText(
-                        Path.Combine(config.Target.GroundDetailTextures, gdt.RvMat),
-                        File.ReadAllText(rvmat).Replace("$PBOPREFIX$", config.Target.PboPrefix)
-                        );
-
-                    foreach (var texture in Directory.GetFiles(Path.Combine(config.Libraries, "gdt"), Path.GetFileNameWithoutExtension(gdt.RvMat) + "*.paa"))
-                    {
-                        File.Copy(texture, Path.Combine(config.Target.GroundDetailTextures, Path.GetFileName(texture)), true);
-                    }
+                    CopyRvMat(config, gdt, rvmat);
                 }
                 else
                 {
-                    Trace.TraceWarning("Missing rvmat: {0}", rvmat);
+                    var generic = Path.Combine(config.Libraries, "gdt", gdt.RvMatGeneric);
+                    if (File.Exists(generic))
+                    {
+                        CopyRvMat(config, gdt, generic);
+                    }
+                    else
+                    {
+                        Trace.TraceWarning("Missing rvmat: {0} or {1}", rvmat, generic);
+                    }
                 }
+            }
+        }
+
+        private static void CopyRvMat(Config config, TerrainMaterial gdt, string sourceRvMat)
+        {
+            File.WriteAllText(
+                Path.Combine(config.Target.GroundDetailTextures, gdt.RvMat(config.Terrain)),
+                File.ReadAllText(sourceRvMat).Replace("$PBOPREFIX$", config.Target.PboPrefix)
+                );
+
+            foreach (var texture in Directory.GetFiles(Path.Combine(config.Libraries, "gdt"), Path.GetFileNameWithoutExtension(sourceRvMat) + "*.paa"))
+            {
+                File.Copy(texture, Path.Combine(config.Target.GroundDetailTextures, Path.GetFileName(texture)), true);
             }
         }
 
@@ -55,9 +68,9 @@ namespace ArmaRealMap.GroundTextureDetails
                 writer.WriteLine("{");
                 foreach (var gdt in TerrainMaterial.All)
                 {
-                    writer.WriteLine($"  class gtd_{gdt.ClassName}");
+                    writer.WriteLine($"  class gtd_{gdt.ClassName(config.Terrain)}");
                     writer.WriteLine("  {");
-                    writer.WriteLine($@"    material=""{Path.Combine(config.Target.PboPrefix, "data", "gdt", gdt.RvMat)}"";");
+                    writer.WriteLine($@"    material=""{Path.Combine(config.Target.PboPrefix, "data", "gdt", gdt.RvMat(config.Terrain))}"";");
                     writer.WriteLine("  };");
                 }
                 writer.WriteLine("};");
@@ -69,7 +82,7 @@ namespace ArmaRealMap.GroundTextureDetails
                 foreach (var gtd in TerrainMaterial.All)
                 {
                     var rgb = gtd.Color.ToPixel<Rgb24>();
-                    writer.WriteLine($@"    gtd_{gtd.ClassName}[]={{{{{rgb.R},{rgb.G},{rgb.B}}}}};");
+                    writer.WriteLine($@"    gtd_{gtd.ClassName(config.Terrain)}[]={{{{{rgb.R},{rgb.G},{rgb.B}}}}};");
                 }
                 writer.WriteLine("  };");
                 writer.WriteLine("};");

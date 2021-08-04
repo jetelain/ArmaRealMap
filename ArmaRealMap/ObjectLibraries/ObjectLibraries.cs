@@ -47,7 +47,11 @@ namespace ArmaRealMap.Libraries
             }
             foreach (var json in jsons)
             {
-                Libraries.Add(JsonSerializer.Deserialize<ObjectLibrary>(File.ReadAllText(json), options));
+                var lib = JsonSerializer.Deserialize<ObjectLibrary>(File.ReadAllText(json), options);
+                if (lib.Terrain == null || lib.Terrain == config.Terrain)
+                {
+                    Libraries.Add(lib);
+                }
             }
         }
 

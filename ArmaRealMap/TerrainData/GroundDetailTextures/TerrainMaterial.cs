@@ -32,8 +32,10 @@ namespace ArmaRealMap.GroundTextureDetails
 
         public string Name { get; }
 
-        public string RvMat => $"arm_{Name.ToLowerInvariant()}.rvmat";
+        public string RvMatGeneric => $"arm_{Name.ToLowerInvariant()}.rvmat";
 
-        public string  ClassName => $"arm_{Name.ToLowerInvariant()}";
+        public string RvMat(TerrainRegion terrain) => $"arm_{Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}.rvmat";
+
+        public string ClassName(TerrainRegion terrain) => $"arm_{Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}";
     }
 }

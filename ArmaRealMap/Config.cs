@@ -60,5 +60,7 @@ namespace ArmaRealMap
         public string Libraries { get; set; }
 
         public TargetConfig Target { get; set; }
+
+        public TerrainRegion Terrain { get; set; }
     }
 }

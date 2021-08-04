@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ArmaRealMap.Libraries
 {
@@ -12,6 +10,8 @@ namespace ArmaRealMap.Libraries
         public List<SingleObjetInfos> Objects { get; set; }
 
         public List<CompositionInfos> Compositions { get; set; }
+
+        public TerrainRegion? Terrain { get; set; }
 
         internal SingleObjetInfos GetObject(string name)
         {
