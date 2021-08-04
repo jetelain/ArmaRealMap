@@ -73,6 +73,33 @@ Generated maps MUST includes following credits :
   - RAM : 16 GB minimal, 32 GB recommanded
   - HDD : SSD recommanded, 64 GB free disk
   
-# Belfort Map
+## Maps
 
 It's used to test the tool chain
+
+### Belfort, France
+
+20x20 Km. Complex area with a lot of objects.
+
+Specific tasks : 
+  - [ ] Find appropriate buildings assets
+
+### Gossi, Mali
+
+82x82 Km. Simple but very large area.
+
+Specific tasks :
+  - [ ] Improve OpenStreetMap data : https://www.openstreetmap.org/#map=11/15.5926/-0.9304
+    1. Create an account
+    2. Add data based on satellite image for :
+      - "Forest" / vegetation areas ;
+      - Wet / water areas ;
+      - Roads / trails ;
+      - Buildings.
+  - [ ] Find appropriate buildings assets
+  - [ ] Find appropriate ground textures
+  - [ ] Find appropriate vegetation assets
+    - [ ] Trees
+    - [ ] Edges
+    - [ ] Clutter
+  
