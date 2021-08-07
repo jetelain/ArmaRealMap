@@ -27,7 +27,7 @@ class arm_GrassGreenGroup: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrGrassGreen_group.p3d";
 	affectedByWind=0.60000002;
-	swLighting=0;
+	swLighting=1;
 	scaleMin=0.89999998;
 	scaleMax=1.3;
 };
@@ -35,7 +35,7 @@ class arm_GrassDry: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrGrassDry.p3d";
 	affectedByWind=0.5;
-	swLighting=0;
+	swLighting=1;
 	scaleMin=0.80000001;
 	scaleMax=1.2;
 };
@@ -43,7 +43,7 @@ class arm_GrassDryGroup: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrGrassDry_group.p3d";
 	affectedByWind=0.64999998;
-	swLighting=0;
+	swLighting=1;
 	scaleMin=0.89999998;
 	scaleMax=1.5;
 };
@@ -51,7 +51,7 @@ class arm_GrassDryMediumGroup: Defaultclutter
 {
 	model="A3\plants_f\clutter\c_StrGrassDryMedium_group.p3d";
 	affectedByWind=1;
-	swLighting=0;
+	swLighting=1;
 	scaleMin=0.80000001;
 	scaleMax=1.2;
 };

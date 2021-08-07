@@ -167,5 +167,35 @@ namespace ArmaRealMap
                 p.FillPolygon(brush, outer.ToArray());
             }
         }
+
+        internal const int Chunk = 10240;
+
+        internal static void SavePngChuncked(Image<Rgb24> img, string filename)
+        {
+            img.Save(filename);
+
+            if (img.Width > Chunk) 
+            {
+                // terrain builder as a 32 bits process, does not like too large images. So make chunks of image
+                // => 20480x20480 takes 3 hours to import, 10240x10240 takes 10 minutes, so 40 minutes vs 180 !
+                int num = 2;
+                while(img.Width / num > Chunk)
+                {
+                    num = num * 2;
+                }
+                int chunkSize = img.Width / num;
+                var chunk = new Image<Rgb24>(chunkSize, chunkSize);
+                for(int x = 0; x < num; x ++)
+                {
+                    for (int y = 0; y < num; y++)
+                    {
+                        var pos = new SixLabors.ImageSharp.Point(-x * chunkSize, -y * chunkSize);
+                        chunk.Mutate(c => c.DrawImage(img, pos, 1.0f));
+                        chunk.Save(System.IO.Path.ChangeExtension(filename, $"{x}_{y}.png"));
+                    }
+                }
+
+            }
+        }
     }
 }

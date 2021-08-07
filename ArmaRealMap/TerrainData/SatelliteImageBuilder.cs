@@ -10,9 +10,9 @@ namespace ArmaRealMap
 {
     class SatelliteImageBuilder
     {
-        internal static void BuildSatImage(MapInfos area, string targetFile, ConfigORTHO ortho)
+        internal static void BuildSatImage(MapInfos area, string targetFile, Config config)
         {
-            using (var src = CreateSource(area, ortho))
+            using (var src = CreateSource(area, config))
             {
                 var report = new ProgressReport("BuildSatImage", area.ImageryWidth * area.ImageryHeight);
                 using (var img = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight))
@@ -36,20 +36,20 @@ namespace ArmaRealMap
                         }
                     });
                     report.TaskDone();
-                    img.Save(targetFile);
+                    DrawHelper.SavePngChuncked(img, targetFile);
                 }
             }
         }
 
-        private static ISatImageProvider CreateSource(MapInfos area, ConfigORTHO ortho)
+        private static ISatImageProvider CreateSource(MapInfos area, Config config)
         {
-            if (ortho != null)
+            if (config.ORTHO != null)
             {
                 var bdOrtho = new BdOrtho();
                 bdOrtho.Preload(area);
                 return bdOrtho;
             }
-            return new S2Cloudless();
+            return new S2Cloudless(config.SharedCache);
         }
     }
 }

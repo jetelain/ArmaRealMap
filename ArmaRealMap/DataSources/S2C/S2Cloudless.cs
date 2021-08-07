@@ -12,7 +12,9 @@ namespace ArmaRealMap.DataSources.S2C
 {
     public class S2Cloudless : ISatImageProvider, IDisposable
     {
-        public static double Delta = 20_037_508.342_789;
+        private const double Delta = 20_037_508.342_789;
+
+        private readonly string cacheLocation;
 
         // zoom 16
         // 16_777_216px x 16_777_216px
@@ -20,6 +22,11 @@ namespace ArmaRealMap.DataSources.S2C
         // 65536x65536 tiles
 
         // 
+        public S2Cloudless(string cacheLocation)
+        {
+            this.cacheLocation = cacheLocation;
+        }
+
 
         private readonly ConcurrentDictionary<string, Image<Rgb24>> cache = new ConcurrentDictionary<string, Image<Rgb24>>();
         public static NetTopologySuite.Geometries.Point LatLonToWebMercator(double lat, double lon)
@@ -53,20 +60,48 @@ namespace ArmaRealMap.DataSources.S2C
             return cache.GetOrAdd(tileUri, LoadTile)[pX, pY];
         }
 
-        private static Image<Rgb24> LoadTile(string uri)
+        private Image<Rgb24> LoadTile(string uri)
         {
-            byte[] data;
+            var file = uri.Substring(91).Replace("/", "_");
+            var cacheFile = System.IO.Path.Combine(cacheLocation, file);
+            if (!System.IO.File.Exists(cacheFile))
+            {
+                lock (this)
+                {
+                    if (!System.IO.File.Exists(cacheFile))
+                    {
+
+                        byte[] data;
+                        try
+                        {
+                            Thread.Sleep(100);
+                            data = new WebClient().DownloadData(uri);
+                        }
+                        catch
+                        {
+                            Thread.Sleep(100);
+                            data = new WebClient().DownloadData(uri);
+                        }
+                        System.IO.File.WriteAllBytes(cacheFile, data);
+
+                    }
+
+                }
+            }
+
             try
             {
-                Thread.Sleep(100);
-                data = new WebClient().DownloadData(uri);
+                return Image.Load<Rgb24>(cacheFile, new JpegDecoder());
             }
             catch
             {
-                Thread.Sleep(2000);
-                data = new WebClient().DownloadData(uri);
+                lock (this)
+                {
+                    System.IO.File.Delete(cacheFile);
+                    Thread.Sleep(250);
+                }
+                return LoadTile(uri);
             }
-            return Image.Load<Rgb24>(data, new JpegDecoder());
         }
 
         public void Dispose()

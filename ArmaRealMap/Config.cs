@@ -62,5 +62,6 @@ namespace ArmaRealMap
         public TargetConfig Target { get; set; }
 
         public TerrainRegion Terrain { get; set; }
+        public string SharedCache { get; set; }
     }
 }

@@ -157,5 +157,18 @@ namespace ArmaRealMap
                     (float)(coord.Northing - StartPointUTM.Northing)
                 );
         }
+
+        public string ToCoordinates()
+        {
+            return string.Join(" ", new[] {
+            SouthEast, SouthWest, NorthWest, NorthEast, SouthEast
+
+
+            }.Select(c => FormattableString.Invariant($"{c.Longitude.ToDouble()},{c.Latitude.ToDouble()},0.0"))
+
+            );
+
+
+        }
     }
 }

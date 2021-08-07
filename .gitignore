@@ -363,3 +363,4 @@ healthchecksdb
 *.v4w
 *.vdat
 /AmsUtil/Properties/launchSettings.json
+/Belfort.old

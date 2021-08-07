@@ -113,7 +113,7 @@ namespace ArmaRealMap
 
             Console.Title = "ArmaRealMap";
 
-            var config = LoadConfig(Path.GetFullPath("arm_gossi.json"));
+            var config = LoadConfig(Path.GetFullPath("arm_belfort.json"));
 
             Trace.Listeners.Clear();
 
@@ -128,13 +128,16 @@ namespace ArmaRealMap
             /*
              * File.WriteAllText(config.Target.GetTerrain("library.sqf"), olibs.TerrainBuilder.GetAllSqf());
             */
-            GDTConfigBuilder.PrepareGDT(config);
+
 
             var data = new MapData();
 
             data.Config = config;
 
             var area = MapInfos.Create(config);
+
+
+            GDTConfigBuilder.PrepareGDT(config);
 
             data.MapInfos = area;
 
@@ -159,12 +162,14 @@ namespace ArmaRealMap
         {
             var config = JsonSerializer.Deserialize<Config>(File.ReadAllText(configFilePath), new JsonSerializerOptions()
             {
-                Converters = { new JsonStringEnumConverter() }
+                Converters = { new JsonStringEnumConverter() },
+                ReadCommentHandling = JsonCommentHandling.Skip
             });
 
             config.Target.Debug = GetExistingPath(configFilePath, config.Target.Debug);
             config.Target.Terrain = GetExistingPath(configFilePath, config.Target.Terrain);
             config.Target.Cache = GetExistingPath(configFilePath, config.Target.Cache);
+            config.SharedCache = GetExistingPath(configFilePath, config.SharedCache);
             config.SRTM.Cache = GetExistingPath(configFilePath, config.SRTM.Cache);
             if (config.ORTHO != null)
             {
@@ -182,6 +187,7 @@ namespace ArmaRealMap
             Console.WriteLine($"Target.Cache   = '{config.Target.Cache}'");
             Console.WriteLine($"Target.Config  = '{config.Target.Config}'");
             Console.WriteLine($"SRTM.Cache     = '{config.SRTM.Cache}'");
+            Console.WriteLine($"SharedCache    = '{config.SharedCache}'");
             if (config.ORTHO != null)
             {
                 Console.WriteLine($"ORTHO.Path     = '{config.ORTHO.Path}'");
@@ -231,10 +237,10 @@ namespace ArmaRealMap
 
         private static void SatelliteRawImage(Config config, MapInfos area)
         {
-            var rawSat = Path.Combine(config.Target?.Terrain ?? string.Empty, "sat-raw.png");
+            var rawSat = config.Target.GetTerrain("sat-raw.png");
             if (!File.Exists(rawSat))
             {
-                SatelliteImageBuilder.BuildSatImage(area, rawSat, config.ORTHO);
+                SatelliteImageBuilder.BuildSatImage(area, rawSat, config);
             }
         }
 
@@ -256,6 +262,8 @@ namespace ArmaRealMap
                 var shapes = OsmCategorizer.GetShapes(db, filtered, data.MapInfos);
 
                 RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes);
+
+                LakeGenerator.ProcessLakes(data, area, shapes);
 
                 BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 
@@ -469,8 +477,7 @@ namespace ArmaRealMap
                     report.ReportOneDone();
                 }
                 report.TaskDone();
-                Console.WriteLine("SavePNG");
-                img.Save(config.Target.GetTerrain("id.png"));
+                DrawHelper.SavePngChuncked(img, config.Target.GetTerrain("id.png"));
             }
         }
 
