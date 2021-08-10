@@ -81,7 +81,7 @@ namespace ArmaRealMap.GroundTextureDetails
                 writer.WriteLine("  {");
                 foreach (var gtd in TerrainMaterial.All)
                 {
-                    var rgb = gtd.Color.ToPixel<Rgb24>();
+                    var rgb = gtd.DefaultColor.ToPixel<Rgb24>();
                     writer.WriteLine($@"    gtd_{gtd.ClassName(config.Terrain)}[]={{{{{rgb.R},{rgb.G},{rgb.B}}}}};");
                 }
                 writer.WriteLine("  };");

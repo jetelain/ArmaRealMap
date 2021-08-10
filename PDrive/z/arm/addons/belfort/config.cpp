@@ -26,7 +26,7 @@ class CfgWorlds
 		cutscenes[] = {};
 		description = "BELFORT, France";
 		worldName = "z\arm\addons\belfort\belfort.wrp";
-		author = "GrueArbre";
+		author = "1er GTD";
 		icon = "";
 		previewVideo = "";
 		pictureMap = "";

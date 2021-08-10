@@ -27,10 +27,18 @@ namespace ArmaRealMap
             this.library = library;
         }
 
-        private static List<FillArea> GetFillAreas(List<TerrainPolygon> polygons, double density)
+        private List<FillArea> GetFillAreas(List<TerrainPolygon> polygons)
         {
+            var density = library.Density ?? 0.01d;
             var areas = new List<FillArea>();
-            foreach(var poly in polygons)
+            var itemSurface = library.Objects.Sum(o => o.PlacementProbability.Value * Math.Pow(o.PlacementRadius.Value, 2) * Math.PI);
+            var maxDensity = 1 / itemSurface * 0.8d; 
+            if ( density > maxDensity )
+            {
+                Console.WriteLine($"Density was changed to '{maxDensity:0.00000}' (instead of requested '{density:0.00000}', due to available objects)");
+                density = maxDensity;
+            }
+            foreach (var poly in polygons)
             {
                 var shape = poly.AsPolygon;
                 areas.Add(new FillArea()
@@ -51,14 +59,14 @@ namespace ArmaRealMap
 
         private int generatedItems = 0;
 
-        public TerrainObjectLayer Fill(List<TerrainPolygon> polygons, float density, string cacheFile)
+        public TerrainObjectLayer Fill(List<TerrainPolygon> polygons, string cacheFile)
         {
             var cacheFileFullName = mapData.Config.Target.GetCache(cacheFile);
 
             var objects = new TerrainObjectLayer(area);
             if (!File.Exists(cacheFileFullName))
             {
-                var areas = GetFillAreas(polygons, density);
+                var areas = GetFillAreas(polygons);
 
                 GenerateObjects(objects, areas);
 
@@ -215,7 +223,7 @@ namespace ArmaRealMap
             {
                 return true;
             }
-            return potentialConflits.All(c => c.DistanceTo(candidate) > (c.Object.PlacementRadius + candidate.Object.PlacementRadius) * 0.75);
+            return potentialConflits.All(c => c.DistanceTo(candidate) > (c.Object.PlacementRadius + candidate.Object.PlacementRadius)); // Adds a very little tolerance
         }
     }
 }

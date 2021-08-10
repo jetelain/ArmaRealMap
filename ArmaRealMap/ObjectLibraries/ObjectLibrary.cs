@@ -13,6 +13,8 @@ namespace ArmaRealMap.Libraries
 
         public TerrainRegion? Terrain { get; set; }
 
+        public double? Density { get; set; }
+
         internal SingleObjetInfos GetObject(string name)
         {
             return Objects.First(o => o.Name == name);

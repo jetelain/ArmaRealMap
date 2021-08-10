@@ -26,7 +26,7 @@ class CfgWorlds
 		cutscenes[] = {};
 		description = "GOSSI, Mali";
 		worldName = "z\arm\addons\gossi\gossi.wrp";
-		author = "GrueArbre";
+		author = "1er GTD";
 		icon = "";
 		previewVideo = "";
 		pictureMap = "";

@@ -20,15 +20,32 @@ namespace ArmaRealMap.GroundTextureDetails
 
         internal static readonly TerrainMaterial Concrete = new TerrainMaterial(Color.Gray, nameof(Concrete));
 
+        internal static readonly TerrainMaterial Default = new TerrainMaterial(Color.Black, nameof(Default));
+
         internal static readonly TerrainMaterial[] All = new[] { Dirt, Forest, WetLand, GrassShort, FarmLand, Sand, Rock, Concrete };
 
         public TerrainMaterial(Color color, string name)
         {
-            Color = color;
+            DefaultColor = color;
             Name = name;
         }
 
-        public Color Color { get; }
+        public Color GetColor(TerrainRegion region)
+        {
+            if (this == Default)
+            {
+                switch(region)
+                {
+                    case TerrainRegion.Sahel:
+                        return Dirt.DefaultColor;
+                    case TerrainRegion.CentralEurope:
+                        return GrassShort.DefaultColor;
+                }
+            }
+            return DefaultColor;
+        }
+
+        public Color DefaultColor { get; }
 
         public string Name { get; }
 

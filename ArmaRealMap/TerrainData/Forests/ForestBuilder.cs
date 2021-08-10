@@ -30,7 +30,7 @@ namespace ArmaRealMap.TerrainData.Forests
             //DebugHelper.Polygons(data, forestPolygonsCleaned, "forest-pass3.bmp");
 
             var objects = new FillShapeWithObjects(data, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree))
-                    .Fill(forestPolygonsCleaned, 0.0100f, "forest-pass4.txt");
+                    .Fill(forestPolygonsCleaned, "forest-pass4.txt");
 
             DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass4.bmp");
 

@@ -113,7 +113,7 @@ namespace ArmaRealMap
 
             Console.Title = "ArmaRealMap";
 
-            var config = LoadConfig(Path.GetFullPath("arm_belfort.json"));
+            var config = LoadConfig(Path.GetFullPath("arm_gossi.json"));
 
             Trace.Listeners.Clear();
 
@@ -448,12 +448,12 @@ namespace ArmaRealMap
         {
             var shapes = toRender.Where(r => r.Category.GroundTexturePriority != 0).ToList();
 
-            using (var img = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, TerrainMaterial.GrassShort.Color))
+            using (var img = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, TerrainMaterial.Default.GetColor(config.Terrain)))
             {
                 var report = new ProgressReport("Shapes", shapes.Count);
                 foreach (var item in shapes.OrderByDescending(e => e.Category.GroundTexturePriority))
                 {
-                    OsmDrawHelper.Draw(area, img, new SolidBrush(item.Category.GroundTextureColorCode), item);
+                    OsmDrawHelper.Draw(area, img, new SolidBrush(item.Category.TerrainMaterial.GetColor(data.Config.Terrain)), item);
                     report.ReportOneDone();
                 }
                 report.TaskDone();
@@ -461,7 +461,7 @@ namespace ArmaRealMap
                 report = new ProgressReport("Roads", data.Roads.Count);
                 img.Mutate(d =>
                 {
-                    var brush = new SolidBrush(OsmShapeCategory.Road.GroundTextureColorCode);
+                    var brush = new SolidBrush(OsmShapeCategory.Road.TerrainMaterial.GetColor(data.Config.Terrain));
                     foreach (var road in data.Roads)
                     {
                         DrawHelper.DrawPath(d, road.Path, (float)(road.Width / area.ImageryResolution), brush, data.MapInfos);
@@ -473,7 +473,7 @@ namespace ArmaRealMap
                 report = new ProgressReport("Buildings", data.Buildings.Count);
                 foreach (var item in data.WantedBuildings)
                 {
-                    img.Mutate(x => x.FillPolygon(OsmShapeCategory.Building.GroundTextureColorCode, data.MapInfos.TerrainToPixelsPoints(item.Box.Points).ToArray()));
+                    img.Mutate(x => x.FillPolygon(OsmShapeCategory.Building.TerrainMaterial.GetColor(data.Config.Terrain), data.MapInfos.TerrainToPixelsPoints(item.Box.Points).ToArray()));
                     report.ReportOneDone();
                 }
                 report.TaskDone();

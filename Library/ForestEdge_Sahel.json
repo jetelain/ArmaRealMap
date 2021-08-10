@@ -1,0 +1,31 @@
+{
+  "Category": "ForestEdge",
+  "Terrain": "Sahel",
+  "Objects": [
+    {
+      "Name": "b_NeriumO2d_tanoa_F",
+      "PlacementProbability": 0.5,
+      "PlacementRadius": 10,
+      "Width": 4.69828,
+      "Depth": 4.93478,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0,
+      "Size2D": {}
+    },
+    {
+      "Name": "b_FicusC2d_tanoa_F",
+      "PlacementProbability": 0.5,
+      "PlacementRadius": 10,
+      "Width": 4.82374,
+      "Depth": 4.57384,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0,
+      "Size2D": {}
+    }
+  ],
+  "Compositions": []
+}

@@ -323,11 +323,11 @@ namespace ArmaRealMap.Roads
         private static void PreviewRoads(MapData data, string file = "roads.bmp")
         {
             var report = new ProgressReport("PreviewRoads", data.Roads.Count);
-            using (var img = new Image<Rgb24>(data.MapInfos.ImageryWidth, data.MapInfos.ImageryHeight, TerrainMaterial.GrassShort.Color))
+            using (var img = new Image<Rgb24>(data.MapInfos.ImageryWidth, data.MapInfos.ImageryHeight, TerrainMaterial.GrassShort.GetColor(data.Config.Terrain)))
             {
                 img.Mutate(d =>
                 {
-                    var brush = new SolidBrush(OsmShapeCategory.Road.GroundTextureColorCode);
+                    var brush = new SolidBrush(OsmShapeCategory.Road.TerrainMaterial.GetColor(data.Config.Terrain));
                     foreach (var road in data.Roads)
                     {
                         DrawHelper.DrawPath(d, road.Path, road.Width, brush, data.MapInfos);
