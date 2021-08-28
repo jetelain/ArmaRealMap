@@ -47,6 +47,7 @@ namespace ArmaRealMap
 
         public string ToString(MapInfos mapInfos)
         {
+            var scale = objectInfos.Scale == null ? "1" : objectInfos.Scale.Value.ToString("0.000", CultureInfo.InvariantCulture);
             var point = box.Center;
             if (objectInfos.CX != 0 || objectInfos.CY != 0)
             {
@@ -57,18 +58,20 @@ namespace ArmaRealMap
             }
             if (absoluteElevation != null)
             {
-                return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;{4:0.000};",
+                return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;{4};{5:0.000};",
                                 objectInfos.Name,
                                 point.X + 200000/*+ mapInfos.StartPointUTM.Easting*/,
                                 point.Y /*+ mapInfos.StartPointUTM.Northing*/,
                                 -box.Angle,
+                                scale,
                                 absoluteElevation.Value);
             }
-            return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;0.0;",
+            return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;{4};0.0;",
                             objectInfos.Name,
                             point.X + 200000/*+ mapInfos.StartPointUTM.Easting*/,
                             point.Y /*+ mapInfos.StartPointUTM.Northing*/,
-                            -box.Angle);
+                            -box.Angle,
+                            scale);
         }
     }
 }

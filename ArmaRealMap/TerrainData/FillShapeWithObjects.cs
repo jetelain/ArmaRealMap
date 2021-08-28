@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
-using NetTopologySuite.Geometries;
 
 namespace ArmaRealMap
 {
@@ -35,8 +34,8 @@ namespace ArmaRealMap
             var maxDensity = 1 / itemSurface * 0.8d; 
             if ( density > maxDensity )
             {
-                Console.WriteLine($"Density was changed to '{maxDensity:0.00000}' (instead of requested '{density:0.00000}', due to available objects)");
-                density = maxDensity;
+                Console.WriteLine($"WARNING: Density should be changed to '{maxDensity:0.00000}', instead of '{density:0.00000}', due to available objects");
+                //density = maxDensity;
             }
             foreach (var poly in polygons)
             {
@@ -61,9 +60,13 @@ namespace ArmaRealMap
 
         public TerrainObjectLayer Fill(List<TerrainPolygon> polygons, string cacheFile)
         {
+            return Fill(new TerrainObjectLayer(area), polygons, cacheFile);
+        }
+
+        public TerrainObjectLayer Fill(TerrainObjectLayer objects, List<TerrainPolygon> polygons, string cacheFile)
+        {
             var cacheFileFullName = mapData.Config.Target.GetCache(cacheFile);
 
-            var objects = new TerrainObjectLayer(area);
             if (!File.Exists(cacheFileFullName))
             {
                 var areas = GetFillAreas(polygons);
@@ -71,8 +74,6 @@ namespace ArmaRealMap
                 GenerateObjects(objects, areas);
 
                 objects.WriteFile(cacheFileFullName);
-
-                DebugHelper.ObjectsInPolygons(mapData, objects, areas, Path.ChangeExtension(cacheFile, ".bmp"));
             }
             else
             {

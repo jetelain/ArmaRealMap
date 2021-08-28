@@ -1,0 +1,267 @@
+<?xml version="1.0" ?>
+<Library name="Jbad_Water" shape="rectangle" default_fill="-16744193" default_outline="-16744193" tex="0">
+    <Template>
+        <Name>jbad_river_wide</Name>
+        <File>Jbad_Water\misc_rivers\jbad_river_wide.p3d</File>
+        <Date>08/11/21 18:37:58</Date>
+        <Archive></Archive>
+        <Fill>-16744193</Fill>
+        <Outline>-16744193</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>424607978</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>-1.000000</BBRadius>
+        <BBHScale>1.000000</BBHScale>
+        <AutoCenter>0</AutoCenter>
+        <XShift>0.000000</XShift>
+        <YShift>0.000000</YShift>
+        <ZShift>0.000000</ZShift>
+        <Height>0.000000</Height>
+        <BoundingMin X="999.000000" Y="999.000000" Z="999.000000" />
+        <BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>jbad_stream_sides</Name>
+        <File>Jbad_Water\misc_rivers\jbad_stream_sides.p3d</File>
+        <Date>08/11/21 18:37:58</Date>
+        <Archive></Archive>
+        <Fill>-16744193</Fill>
+        <Outline>-16744193</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-484278975</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>-1.000000</BBRadius>
+        <BBHScale>1.000000</BBHScale>
+        <AutoCenter>0</AutoCenter>
+        <XShift>0.000000</XShift>
+        <YShift>0.000000</YShift>
+        <ZShift>0.000000</ZShift>
+        <Height>0.000000</Height>
+        <BoundingMin X="999.000000" Y="999.000000" Z="999.000000" />
+        <BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>jbad_stream_sides_2</Name>
+        <File>Jbad_Water\misc_rivers\jbad_stream_sides_2.p3d</File>
+        <Date>08/11/21 18:37:58</Date>
+        <Archive></Archive>
+        <Fill>-16744193</Fill>
+        <Outline>-16744193</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>538248276</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>-1.000000</BBRadius>
+        <BBHScale>1.000000</BBHScale>
+        <AutoCenter>0</AutoCenter>
+        <XShift>0.000000</XShift>
+        <YShift>0.000000</YShift>
+        <ZShift>0.000000</ZShift>
+        <Height>0.000000</Height>
+        <BoundingMin X="999.000000" Y="999.000000" Z="999.000000" />
+        <BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>riverwide_6</Name>
+        <File>Jbad_Water\misc_rivers\riverwide_6.p3d</File>
+        <Date>08/11/21 18:37:58</Date>
+        <Archive></Archive>
+        <Fill>-16744193</Fill>
+        <Outline>-16744193</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-118422186</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>-1.000000</BBRadius>
+        <BBHScale>1.000000</BBHScale>
+        <AutoCenter>0</AutoCenter>
+        <XShift>0.000000</XShift>
+        <YShift>0.000000</YShift>
+        <ZShift>0.000000</ZShift>
+        <Height>0.000000</Height>
+        <BoundingMin X="999.000000" Y="999.000000" Z="999.000000" />
+        <BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>riverwide_normal</Name>
+        <File>Jbad_Water\misc_rivers\riverwide_normal.p3d</File>
+        <Date>08/11/21 18:37:58</Date>
+        <Archive></Archive>
+        <Fill>-16744193</Fill>
+        <Outline>-16744193</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>543622311</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>-1.000000</BBRadius>
+        <BBHScale>1.000000</BBHScale>
+        <AutoCenter>0</AutoCenter>
+        <XShift>0.000000</XShift>
+        <YShift>0.000000</YShift>
+        <ZShift>0.000000</ZShift>
+        <Height>0.000000</Height>
+        <BoundingMin X="999.000000" Y="999.000000" Z="999.000000" />
+        <BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>stream6wide</Name>
+        <File>Jbad_Water\misc_rivers\stream6wide.p3d</File>
+        <Date>08/11/21 18:37:58</Date>
+        <Archive></Archive>
+        <Fill>-16744193</Fill>
+        <Outline>-16744193</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-1993383703</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>-1.000000</BBRadius>
+        <BBHScale>1.000000</BBHScale>
+        <AutoCenter>0</AutoCenter>
+        <XShift>0.000000</XShift>
+        <YShift>0.000000</YShift>
+        <ZShift>0.000000</ZShift>
+        <Height>0.000000</Height>
+        <BoundingMin X="999.000000" Y="999.000000" Z="999.000000" />
+        <BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>stream6wide_dirt</Name>
+        <File>Jbad_Water\misc_rivers\stream6wide_dirt.p3d</File>
+        <Date>08/11/21 18:37:58</Date>
+        <Archive></Archive>
+        <Fill>-16744193</Fill>
+        <Outline>-16744193</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-101423427</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>-1.000000</BBRadius>
+        <BBHScale>1.000000</BBHScale>
+        <AutoCenter>0</AutoCenter>
+        <XShift>0.000000</XShift>
+        <YShift>0.000000</YShift>
+        <ZShift>0.000000</ZShift>
+        <Height>0.000000</Height>
+        <BoundingMin X="999.000000" Y="999.000000" Z="999.000000" />
+        <BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <Placement></Placement>
+    </Template>
+    <Template>
+        <Name>stream6wide_noends</Name>
+        <File>Jbad_Water\misc_rivers\stream6wide_noends.p3d</File>
+        <Date>08/11/21 18:37:58</Date>
+        <Archive></Archive>
+        <Fill>-16744193</Fill>
+        <Outline>-16744193</Outline>
+        <Scale>1.000000</Scale>
+        <Hash>-317718257</Hash>
+        <ScaleRandMin>0.000000</ScaleRandMin>
+        <ScaleRandMax>0.000000</ScaleRandMax>
+        <YawRandMin>0.000000</YawRandMin>
+        <YawRandMax>0.000000</YawRandMax>
+        <PitchRandMin>0.000000</PitchRandMin>
+        <PitchRandMax>0.000000</PitchRandMax>
+        <RollRandMin>0.000000</RollRandMin>
+        <RollRandMax>0.000000</RollRandMax>
+        <TexLLU>0.000000</TexLLU>
+        <TexLLV>0.000000</TexLLV>
+        <TexURU>1.000000</TexURU>
+        <TexURV>1.000000</TexURV>
+        <BBRadius>-1.000000</BBRadius>
+        <BBHScale>1.000000</BBHScale>
+        <AutoCenter>0</AutoCenter>
+        <XShift>0.000000</XShift>
+        <YShift>0.000000</YShift>
+        <ZShift>0.000000</ZShift>
+        <Height>0.000000</Height>
+        <BoundingMin X="999.000000" Y="999.000000" Z="999.000000" />
+        <BoundingMax X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <BoundingCenter X="-999.000000" Y="-999.000000" Z="-999.000000" />
+        <Placement></Placement>
+    </Template>
+</Library>

@@ -1,0 +1,32 @@
+{
+  "Category": "Wall",
+  "Objects": [
+    {
+      "Name": "jbad_wallend",
+      "PlacementProbability": null,
+      "PlacementRadius": 5.5,
+      "Width": 5.67183,
+      "Depth": 0.544894,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0,
+      "Size2D": {}
+    },
+	{
+      "Name": "jbad_wallend",
+      "PlacementProbability": null,
+      "PlacementRadius": 5.5,
+      "Width": 5.67183,
+      "Depth": 0.544894,
+      "Height": 0,
+      "CX": 0.03447461,
+      "CY": 0.217285,
+      "CZ": 0,
+      "Size2D": {}
+    }
+  ],
+  "Compositions": [],
+  "Terrain": "Sahel",
+  "Density": null
+}

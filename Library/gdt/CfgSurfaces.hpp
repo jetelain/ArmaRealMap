@@ -18,11 +18,11 @@ class CfgSurfaces
 		impact="hitGroundSoft";
 		surfaceFriction=1.75;
 	};
-	class arm_forest: Default
+	class arm_forest_centraleurope: Default
 	{
 		access=2;
-		files="arm_forest_*";
-		character="arm_forest_clutter";
+		files="arm_forest_centraleurope_*";
+		character="arm_forest_centraleurope_clutter";
 		soundEnviron="grass";
 		soundHit="soft_ground";
 		rough=0.079999998;
@@ -33,11 +33,41 @@ class CfgSurfaces
 		impact="hitGroundSoft";
 		surfaceFriction=1.7;
 	};
-	class arm_wetland: Default
+	class arm_forest_sahel: Default
 	{
 		access=2;
-		files="arm_wetland_*";
-		character="arm_wetland_clutter";
+		files="arm_forest_sahel_*";
+		character="arm_forest_sahel_clutter";
+		soundEnviron="grass";
+		soundHit="soft_ground";
+		rough=0.079999998;
+		maxSpeedCoef=0.89999998;
+		dust=0.75;
+		lucidity=4;
+		grassCover=0.1;
+		impact="hitGroundSoft";
+		surfaceFriction=1.7;
+	};
+	class arm_wetland_centraleurope: Default
+	{
+		access=2;
+		files="arm_wetland_centraleurope_*";
+		character="arm_wetland_centraleurope_clutter";
+		soundEnviron="grass";
+		soundHit="soft_ground";
+		rough=0.079999998;
+		maxSpeedCoef=0.89999998;
+		dust=0.55000001;
+		lucidity=4;
+		grassCover=0.89999998;
+		impact="hitGroundSoft";
+		surfaceFriction=1.7;
+	};
+	class arm_wetland_sahel: Default
+	{
+		access=2;
+		files="arm_wetland_sahel_*";
+		character="empty";
 		soundEnviron="grass";
 		soundHit="soft_ground";
 		rough=0.079999998;
@@ -137,7 +167,7 @@ class CfgSurfaces
 };
 class CfgSurfaceCharacters
 {
-	class arm_forest_clutter
+	class arm_forest_centraleurope_clutter
 	{
 		probability[]={0.2,0.35,0.2,0.09,0.02,0.03,0.07,0.04};
 		names[]=
@@ -152,7 +182,15 @@ class CfgSurfaceCharacters
 			"arm_FernTall"
 		};
 	};
-	class arm_wetland_clutter
+	class arm_forest_sahel_clutter
+	{
+		probability[]={1};
+		names[]=
+		{
+			"arm_GrassGreenGroup"
+		};
+	};
+	class arm_wetland_centraleurope_clutter
 	{
 		probability[]={0.4,0.1};
 		names[]=
@@ -181,12 +219,10 @@ class CfgSurfaceCharacters
 	};
 	class arm_rock_clutter
 	{
-		probability[]={0.2,0.7,0.1};
+		probability[]={1};
 		names[]=
 		{
-			"arm_rock_stones",
-			"arm_GrassGreen",
-			"arm_GrassDead"
+			"arm_rock_stones"
 		};
 	};
 };

@@ -29,10 +29,17 @@ namespace ArmaRealMap.TerrainData.Forests
 
             //DebugHelper.Polygons(data, forestPolygonsCleaned, "forest-pass3.bmp");
 
-            var objects = new FillShapeWithObjects(data, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree))
-                    .Fill(forestPolygonsCleaned, "forest-pass4.txt");
+            var trees = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree);
 
-            DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass4.bmp");
+            var objects = new FillShapeWithObjects(data, trees).Fill(forestPolygonsCleaned, "forest-pass4.txt");
+
+            var extra = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestAdditionalObjects);
+            if (extra != null && extra.Objects.Count > 0)
+            {
+                new FillShapeWithObjects(data, extra).Fill(objects, forestPolygonsCleaned, "forest-additional.txt"); 
+            }
+
+            //DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass4.bmp");
 
             // Remove trees at edge that may be a problem
 
@@ -43,11 +50,11 @@ namespace ArmaRealMap.TerrainData.Forests
             Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
 
             objects.WriteFile(data.Config.Target.GetTerrain("forest.txt"));
-            DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass5.bmp");
+            //DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass5.bmp");
 
             GenerateEdgeObjects(data, olibs, forestPolygonsCleaned);
 
-            DebugHelper.ObjectsInPolygons(data, wasRemoved, forestPolygonsCleaned, "forest-wasRemoved.bmp");
+            //DebugHelper.ObjectsInPolygons(data, wasRemoved, forestPolygonsCleaned, "forest-wasRemoved.bmp");
 
             data.Forests = forestPolygonsCleaned;
 
@@ -245,7 +252,6 @@ namespace ArmaRealMap.TerrainData.Forests
                 report.ReportOneDone();
             }
             report.TaskDone();
-            Console.WriteLine($"Removed => {removed}");
         }
     }
 }

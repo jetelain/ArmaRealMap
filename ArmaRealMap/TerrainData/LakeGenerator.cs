@@ -27,6 +27,10 @@ namespace ArmaRealMap
 
             var waterTile20 = Pond(20);
 
+            var minimalArea = Math.Pow(5 * data.Config.CellSize, 2); // 5 x 5 nodes minimum
+
+            // TODO: substract roads with embankment=yes
+
             //var stats = new StringBuilder("Width\tHeight\r\n");
             var report = new ProgressReport("Lakes", lakes.Count);
             var cellSize = new Vector2(area.CellSize, area.CellSize);
@@ -37,7 +41,7 @@ namespace ArmaRealMap
                 {
                     foreach (var g in geo)
                     {
-                        if (g.Area < 600)
+                        if (g.Area < minimalArea)
                         {
                             continue; // too small
                         }
@@ -68,7 +72,33 @@ namespace ArmaRealMap
                         }
                         lakeElevation.Apply();
 
+                        var w10 = (int)Math.Ceiling((max.X - min.X) / 10);
+                        var h10 = (int)Math.Ceiling((max.Y - min.Y) / 10);
+                        var grid10 = new bool[w10, h10];
 
+                        for(int x = 0; x < w10; ++x)
+                        {
+                            for (int y = 0; y < h10; ++y)
+                            {
+                                var p1 = new Coordinate((x * 10) + min.X, (y * 10) + min.Y);
+                                var p2 = new Coordinate(p1.X + 10, p1.Y);
+                                var p3 = new Coordinate(p1.X, p1.Y + 10);
+                                var p4 = new Coordinate(p1.X + 10, p1.Y + 10);
+                                if (IsPointInPolygon(g, p1) || IsPointInPolygon(g, p2) || IsPointInPolygon(g, p3) || IsPointInPolygon(g, p4))
+                                {
+                                    if (area.IsInside(p1))
+                                    {
+                                        grid10[x, y] = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        Process(objects, grid10, w10, h10, min, 80, ajustedWaterElevation);
+                        Process(objects, grid10, w10, h10, min, 40, ajustedWaterElevation);
+                        Process(objects, grid10, w10, h10, min, 20, ajustedWaterElevation);
+                        Process(objects, grid10, w10, h10, min, 10, ajustedWaterElevation);
+                        /*
                         for (float x = min.X; x < max.X; x += waterTile20.Width)
                         {
                             for (float y = min.Y; y < max.Y; y += waterTile20.Depth)
@@ -86,7 +116,7 @@ namespace ArmaRealMap
                                     }
                                 }
                             }
-                        }
+                        }*/
 
 
                     }
@@ -104,14 +134,60 @@ namespace ArmaRealMap
             }
 
             data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation-lakes.asc"));
-            data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-lakes.png"));
+            //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-lakes.png"));
+        }
+
+        private static void Process(List<TerrainObject> objects, bool[,] grid10, int w10, int h10, TerrainPoint min, int size, float ajustedWaterElevation)
+        {
+            var obj = Pond(size);
+            var objSize = size / 10;
+            var hsize = size / 2;
+            for (int x = 0; x < w10; x += objSize)
+            {
+                for (int y = 0; y < h10; y += objSize)
+                {
+                    if (x + objSize <= w10 && y + objSize < h10 && Match(grid10, x, y, x + objSize, y + objSize))
+                    {
+                        Take(grid10, x, y, x + objSize, y + objSize);
+                        var ax = (x * 10) + hsize;
+                        var ay = (y * 10) + hsize;
+                        objects.Add(new TerrainObject(obj, new TerrainPoint(min.X + ax, min.Y + ay), 0.0f, ajustedWaterElevation));
+                    }
+                }
+            }
+        }
+
+        private static void Take(bool[,] grid10, int minX, int minY, int maxX, int maxY)
+        {
+            for (int x = minX; x < maxX; ++x)
+            {
+                for (int y = minY; y < maxY; ++y)
+                {
+                    grid10[x, y] = false;
+                }
+            }
+        }
+
+        private static bool Match(bool[,] grid10, int minX, int minY, int maxX, int maxY)
+        {
+            for (int x = minX; x < maxX; ++x)
+            {
+                for (int y = minY; y < maxY; ++y)
+                {
+                    if ( !grid10[x, y] )
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         private static SingleObjetInfos Pond(int v)
         {
             return new SingleObjetInfos()
             {
-                Name = "arm_pond_" + v + "_v2",
+                Name = "arm_pond_" + v,
                 Depth = v,
                 Width = v,
                 PlacementRadius = v / 2

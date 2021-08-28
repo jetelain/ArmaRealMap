@@ -1,4 +1,5 @@
-﻿using SixLabors.ImageSharp;
+﻿using System;
+using SixLabors.ImageSharp;
 
 namespace ArmaRealMap.GroundTextureDetails
 {
@@ -54,5 +55,9 @@ namespace ArmaRealMap.GroundTextureDetails
         public string RvMat(TerrainRegion terrain) => $"arm_{Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}.rvmat";
 
         public string ClassName(TerrainRegion terrain) => $"arm_{Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}";
+
+        // TODO: should read rvmat to get texture names
+        internal string NoPx(TerrainRegion terrain) => $"arm_{Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}_nopx.paa";
+        internal string Co(TerrainRegion terrain) => $"arm_{Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}_co.paa";
     }
 }

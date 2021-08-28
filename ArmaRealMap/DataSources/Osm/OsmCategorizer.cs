@@ -129,6 +129,7 @@ namespace ArmaRealMap.Osm
                 case "scree": return OsmShapeCategory.Sand;
                 case "sand": return OsmShapeCategory.Sand;
                 case "beach": return OsmShapeCategory.Sand;
+                case "bare_rock": return OsmShapeCategory.Rocks;
             }
 
             if (Get(tags, "leisure") == "garden")

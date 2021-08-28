@@ -18,6 +18,13 @@
 
         RoadSideWalk,
 
-        RadioTower
+        RadioTower,
+
+        Fence,
+        Wall,
+        WaterWell,
+
+        RandomVegetation,
+        ForestAdditionalObjects
     }
 }

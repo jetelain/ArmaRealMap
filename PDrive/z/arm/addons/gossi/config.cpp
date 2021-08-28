@@ -73,6 +73,8 @@ class CfgWorlds
 		class clutter {
 			#include "data\gdt\Clutter.hpp"
 		};
+		
+		#include"mapinfos.hpp"
 	};
 };
 

@@ -1,0 +1,32 @@
+{
+  "Category": "WaterWell",
+  "Objects": [
+    {
+      "Name": "jbad_misc_well_c",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 2.1596298,
+      "Depth": 2.2827501,
+      "Height": 0,
+      "CX": 0.014365077,
+      "CY": -0.0013350248,
+      "CZ": 0,
+      "Size2D": {}
+    },
+    {
+      "Name": "jbad_misc_well_l",
+      "PlacementProbability": null,
+      "PlacementRadius": null,
+      "Width": 3.76,
+      "Depth": 2.62936,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0,
+      "Size2D": {}
+    }
+  ],
+  "Compositions": [],
+  "Terrain": "Sahel",
+  "Density": null
+}

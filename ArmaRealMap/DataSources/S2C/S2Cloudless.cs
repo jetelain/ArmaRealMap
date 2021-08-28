@@ -97,8 +97,8 @@ namespace ArmaRealMap.DataSources.S2C
             {
                 lock (this)
                 {
-                    System.IO.File.Delete(cacheFile);
                     Thread.Sleep(250);
+                    System.IO.File.Delete(cacheFile);
                 }
                 return LoadTile(uri);
             }

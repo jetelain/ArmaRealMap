@@ -1,0 +1,32 @@
+{
+  "Category": "Fence",
+  "Objects": [
+    {
+      "Name": "jbad_wall_fenw2_6",
+      "PlacementProbability": null,
+      "PlacementRadius": 6.5,
+      "Width": 6.51226,
+      "Depth": 0.557842,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0,
+      "Size2D": {}
+    },
+	{
+      "Name": "jbad_wall_fenw2_6",
+      "PlacementProbability": null,
+      "PlacementRadius": 6.5,
+      "Width": 6.51226,
+      "Depth": 0.557842,
+      "Height": 0,
+      "CX": -2.9502,
+      "CY": 0.030151397,
+      "CZ": 0,
+      "Size2D": {}
+    }
+  ],
+  "Compositions": [],
+  "Terrain": "Sahel",
+  "Density": null
+}

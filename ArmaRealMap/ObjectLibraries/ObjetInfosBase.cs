@@ -15,6 +15,7 @@ namespace ArmaRealMap.Libraries
         public float CY { get; set; }
         public float CZ { get; set; }
 
+        [JsonIgnore]
         public Vector2 Size2D => new Vector2(Width, Depth);
 
         [JsonIgnore]

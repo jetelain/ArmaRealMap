@@ -13,7 +13,7 @@ namespace ArmaRealMap
             {
                 elevation.LoadFromSRTM(data.Config.SRTM);
                 elevation.SaveToAsc(cacheFile);
-                elevation.SavePreview(data.Config.Target.GetDebug("elevation-raw.bmp"));
+                //elevation.SavePreview(data.Config.Target.GetDebug("elevation-raw.bmp"));
             }
             else
             {

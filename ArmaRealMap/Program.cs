@@ -16,8 +16,10 @@ using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
+using ArmaRealMap.TerrainData;
 using ArmaRealMap.TerrainData.Forests;
 using ClipperLib;
+using CoordinateSharp;
 using Microsoft.Win32;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
@@ -125,10 +127,7 @@ namespace ArmaRealMap
 
             var olibs = new ObjectLibraries();
             olibs.Load(config);
-            /*
-             * File.WriteAllText(config.Target.GetTerrain("library.sqf"), olibs.TerrainBuilder.GetAllSqf());
-            */
-
+            File.WriteAllText(config.Target.GetTerrain("library.sqf"), olibs.TerrainBuilder.GetAllSqf());
 
             var data = new MapData();
 
@@ -141,13 +140,18 @@ namespace ArmaRealMap
 
             data.MapInfos = area;
 
+            RenderMapInfos(config, area);
+
+            Console.WriteLine("==== Satellite image ====");
             SatelliteRawImage(config, area);
 
+            Console.WriteLine("==== Download OSM data ====");
             if (!DownloadOsmData(config, area))
             {
                 return;
             }
 
+            Console.WriteLine("==== Raw elevation grid (from SRTM) ====");
             data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(data);
 
             //SatelliteRawImage(config, area);
@@ -250,35 +254,91 @@ namespace ArmaRealMap
 
             using (var fileStream = File.OpenRead(config.OSM))
             {
-                Console.WriteLine("Load OSM data...");
+                Console.WriteLine("==== Prepare OSM data ====");
                 var source = Path.GetExtension(config.OSM) == ".xml" ? (OsmStreamSource)new XmlOsmStreamSource(fileStream) : new PBFOsmStreamSource(fileStream);
                 var db = new SnapshotDb(new MemorySnapshotDb(source));
-
-                Console.WriteLine("Crop OSM data...");
                 OsmStreamSource filtered = CropDataToArea(area, source);
 
                 RenderCitiesNames(config, area, filtered);
 
                 var shapes = OsmCategorizer.GetShapes(db, filtered, data.MapInfos);
 
+                Console.WriteLine("==== Roads ====");
                 RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes);
 
+                Console.WriteLine("==== Lakes ====");
                 LakeGenerator.ProcessLakes(data, area, shapes);
 
+                Console.WriteLine("==== Buildings ====");
                 BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 
+                Console.WriteLine("==== Forests ====");
                 ForestBuilder.Prepare(data, shapes, olibs);
 
+                Console.WriteLine("==== Objects ====");
                 PlaceIsolatedObjects(data, olibs, filtered);
 
-                //MakeLakeDeeper(data, shapes);
+                PlaceBarrierObjects(data, db, olibs, filtered);
 
+                Console.WriteLine("==== GDT Map ====");
                 DrawShapes(config, area, data, shapes);
             }
-
+            /*
+             <tag k="barrier" v="wall"/>
+<tag k="barrier" v="fence"/>
+             */
 
             var libs = olibs.TerrainBuilder.Libraries.Where(l => data.UsedObjects.Any(o => l.Template.Any(t => t.Name == o))).Distinct().ToList();
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
+        }
+
+        private static void PlaceBarrierObjects(MapData data, SnapshotDb db, ObjectLibraries olibs, OsmStreamSource filtered)
+        {
+            TerrainObjectLayer result =
+                PlaceObjectsOnPath(
+                    data,
+                    db,
+                    filtered,
+                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.Wall),
+                    o => OsmCategorizer.Get(o.Tags, "barrier") == "wall" || OsmCategorizer.Get(o.Tags, "barrier") == "city_wall");
+            result.WriteFile(data.Config.Target.GetTerrain("walls.txt"));
+
+            result =
+                PlaceObjectsOnPath(
+                    data,
+                    db,
+                    filtered,
+                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.Fence),
+                    o => OsmCategorizer.Get(o.Tags, "barrier") == "fence");
+            result.WriteFile(data.Config.Target.GetTerrain("fences.txt"));
+        }
+
+        private static TerrainObjectLayer PlaceObjectsOnPath(MapData data, SnapshotDb db, OsmStreamSource filtered, ObjectLibrary lib, Func<Way, bool> filter)
+        {
+            var result = new TerrainObjectLayer(data.MapInfos);
+            if (lib == null || lib.Objects.Count == 0)
+            {
+                return result;
+            }
+            var interpret = new DefaultFeatureInterpreter2();
+            var candidates = lib.Objects;
+            var nodes = filtered.Where(o => o.Type == OsmGeoType.Way && filter((Way)o)).ToList();
+            var cliparea = TerrainPolygon.FromRectangle(data.MapInfos.P1, data.MapInfos.P2);
+            foreach (Way way in nodes)
+            {
+                var complete = way.CreateComplete(db);
+                foreach (var feature in interpret.Interpret(complete))
+                {
+                    foreach (var path in TerrainPath.FromGeometry(feature.Geometry, data.MapInfos.LatLngToTerrainPoint))
+                    {
+                        foreach (var pathSegment in path.ClippedBy(cliparea))
+                        {
+                            FollowPathWithObjects.PlaceOnPath(lib.Objects.First(), result, pathSegment.Points);
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         private static bool DownloadOsmData(Config config, MapInfos area)
@@ -308,6 +368,90 @@ namespace ArmaRealMap
             }
             return true;
         }
+
+
+        private static void RenderMapInfos(Config config, MapInfos area)
+        {
+            var sb = new StringBuilder();
+
+            // latitude = 17.698; //value used by Tanoa
+            // longitude = 178.783; //value used by Tanoa
+
+            var center = UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
+                area.StartPointUTM.LatZone,
+                area.StartPointUTM.LongZone,
+                Math.Round(area.StartPointUTM.Easting) + (area.Width / 2),
+                Math.Round(area.StartPointUTM.Northing) + (area.Height / 2)));
+
+            
+
+
+            sb.Append(FormattableString.Invariant(@$"
+latitude={center.Latitude.ToDouble():0.00000000};
+longitude={center.Longitude.ToDouble():0.0000000};
+
+mapArea[] = {{
+    {area.SouthWest.Latitude.ToDouble():0.00000000}, {area.SouthWest.Longitude.ToDouble():0.0000000}, //Bottom Left => SW
+	{area.NorthEast.Latitude.ToDouble():0.00000000}, {area.NorthEast.Longitude.ToDouble():0.0000000} //Top Right => NE
+}}; 
+mapSize={area.Width};
+mapZone={area.SouthWest.UTM.LongZone};
+
+class OutsideTerrain
+{{
+    colorOutside[] = {{0.227451,0.27451,0.384314,1}};
+	enableTerrainSynth = 0;
+	satellite = ""A3\map_Stratis\data\s_satout_co.paa"";
+    class Layers
+    {{
+		class Layer0
+        {{
+			nopx    = ""{Path.Combine(config.Target.PboPrefix, "data", "gdt", TerrainMaterial.Dirt.NoPx(config.Terrain))}"";
+			texture = ""{Path.Combine(config.Target.PboPrefix, "data", "gdt", TerrainMaterial.Dirt.Co(config.Terrain))}""; 
+		}};
+    }};
+}};
+
+class Grid {{
+    offsetX = 0;
+    offsetY = {area.Height};
+    arm_utm = ""{area.StartPointUTM.LongZone}{area.StartPointUTM.LatZone}"";
+    arm_mgrs[] = {{
+        {{ ""{area.SouthWest.MGRS.LongZone}{area.SouthWest.MGRS.LatZone} {area.SouthWest.MGRS.Digraph}"", {Math.Round(area.SouthWest.MGRS.Easting)}, {Math.Round(area.SouthWest.MGRS.Northing)} }}, // SW
+        {{ ""{area.NorthWest.MGRS.LongZone}{area.NorthWest.MGRS.LatZone} {area.NorthWest.MGRS.Digraph}"", {Math.Round(area.NorthWest.MGRS.Easting)}, {Math.Round(area.NorthWest.MGRS.Northing)} }}, // NW
+        {{ ""{area.NorthEast.MGRS.LongZone}{area.NorthEast.MGRS.LatZone} {area.NorthEast.MGRS.Digraph}"", {Math.Round(area.NorthEast.MGRS.Easting)}, {Math.Round(area.NorthEast.MGRS.Northing)} }}, // NE
+        {{ ""{area.SouthEast.MGRS.LongZone}{area.SouthEast.MGRS.LatZone} {area.SouthEast.MGRS.Digraph}"", {Math.Round(area.SouthEast.MGRS.Easting)}, {Math.Round(area.SouthEast.MGRS.Northing)} }}  // SE
+    }};
+    class Zoom1 {{
+        zoomMax = 0.05;
+        format = ""XY"";
+        formatX = ""000"";
+        formatY = ""000"";
+        stepX = 100;
+        stepY = -100;
+    }};
+    class Zoom2 {{
+        zoomMax = 0.5;
+        format = ""XY"";
+        formatX = ""00"";
+        formatY = ""00"";
+        stepX = 1000;
+        stepY = -1000;
+    }};
+    class Zoom3 {{
+        zoomMax = 1e+030;
+        format = ""XY"";
+        formatX = ""0"";
+        formatY = ""0"";
+        stepX = 10000;
+        stepY = -10000;
+    }};
+}};
+")); 
+
+            File.WriteAllText(Path.Combine(config.Target?.Config ?? string.Empty, "mapinfos.hpp"), sb.ToString());
+        }
+
 
         private static void RenderCitiesNames(Config config, MapInfos area, OsmStreamSource filtered)
         {
@@ -388,6 +532,14 @@ namespace ArmaRealMap
                     olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.PicnicTable),
                     o => OsmCategorizer.Get(o.Tags, "leisure") == "picnic_table");
             result.WriteFile(data.Config.Target.GetTerrain("picnictables.txt"));
+
+            result =
+                PlaceObjects(
+                    data,
+                    filtered,
+                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.WaterWell),
+                    o => OsmCategorizer.Get(o.Tags, "man_made") == "water_well");
+            result.WriteFile(data.Config.Target.GetTerrain("waterwell.txt"));
         }
 
         private static TerrainObjectLayer PlaceObjects(MapData data, OsmStreamSource filtered, ObjectLibrary lib, Func<Node, bool> filter)

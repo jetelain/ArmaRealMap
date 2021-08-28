@@ -178,5 +178,15 @@ namespace ArmaRealMap
         {
             return Values.GetEnumerator();
         }
+
+        public void Clear()
+        {
+            all.Clear();
+            foreach(var list in cells)
+            {
+                list.Clear();
+            }
+            removedCount = 0;
+        }
     }
 }

@@ -11,6 +11,7 @@ using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
+using ArmaRealMap.TerrainData;
 using ArmaRealMap.TerrainData.Forests;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
@@ -53,10 +54,10 @@ namespace ArmaRealMap.Roads
 
                 foreach (var poly in areaRoadsClipped)
                 {
-                    PlaceOnPath(template, layer, poly.Shell);
+                    FollowPathWithObjects.PlaceOnPath(template, layer, poly.Shell);
                     foreach(var hole in poly.Holes)
                     {
-                        PlaceOnPath(template, layer, hole);
+                        FollowPathWithObjects.PlaceOnPath(template, layer, hole);
                     }
                 }
                 report.ReportOneDone();
@@ -70,12 +71,12 @@ namespace ArmaRealMap.Roads
 
 
 
-            DebugHelper.ObjectsInPolygons(data, layer, data.Roads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList(), "sidewalks.bmp");
+            //DebugHelper.ObjectsInPolygons(data, layer, data.Roads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList(), "sidewalks.bmp");
 
 
             SaveRoadsShp(data, config);
 
-            if (data.Elevation != null)
+            if (data.Elevation != null && config.Terrain != TerrainRegion.Sahel)
             {
                 AdjustElevationGrid(data);
             }
@@ -83,18 +84,6 @@ namespace ArmaRealMap.Roads
             // PreviewRoads(data);
 
 
-        }
-
-        private static void PlaceOnPath(SingleObjetInfos template, TerrainObjectLayer layer, List<TerrainPoint> path)
-        {
-            var points = GeometryHelper.PointsOnPathRegular(path, MathF.Floor(template.Width));
-            foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
-            {
-                var delta = Vector2.Normalize(segment.Second.Vector - segment.First.Vector);
-                var center = new TerrainPoint(Vector2.Lerp(segment.First.Vector, segment.Second.Vector, 0.5f));
-                var angle = (180f + (MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI)) % 360f;
-                layer.Insert(new TerrainObject(template, center, angle));
-            }
         }
 
         private static void RoadWalls(MapData data, ObjectLibraries libs)
@@ -276,7 +265,7 @@ namespace ArmaRealMap.Roads
             report.TaskDone();
 
             data.Elevation.SaveToAsc(cacheFile);
-            data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-roads.bmp"));
+            //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-roads.bmp"));
         }
 
         private static void Pass(MapData data, Image<Rgba32> img, Road road, IEnumerable<TerrainPoint> allPoints, ElevationGridArea b, float coef)

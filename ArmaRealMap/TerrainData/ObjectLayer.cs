@@ -45,6 +45,8 @@ namespace ArmaRealMap
 
         public void ReadFile(string sourceFile, Func<string, SingleObjetInfos> resolveObject)
         {
+            Clear();
+
             using (var reader = new StreamReader(new FileStream(sourceFile, FileMode.Open, FileAccess.Read)))
             {
                 var report = new ProgressReport(Path.GetFileName(sourceFile), (int)reader.BaseStream.Length);
