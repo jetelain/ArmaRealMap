@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ArmaRealMap.Geometries;
 using NetTopologySuite.Geometries;
@@ -12,17 +13,17 @@ namespace ArmaRealMap
 {
     internal static class DrawHelper
     {
-        internal static void FillPolygonWithHoles(Image<Rgb24> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush)
+        internal static void FillPolygonWithHoles(Image<Rgb24> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, ShapeGraphicsOptions shapeGraphicsOptions)
         {
-            FillPolygonWithHoles<Rgb24, Rgba32>(img, outer, holes, brush, Color.Transparent);
+            FillPolygonWithHoles<Rgb24, Rgba32>(img, outer, holes, brush, Color.Transparent, shapeGraphicsOptions);
         }
 
-        internal static void FillPolygonWithHoles(Image<Rgba32> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush)
+        internal static void FillPolygonWithHoles(Image<Rgba32> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, ShapeGraphicsOptions shapeGraphicsOptions)
         {
-            FillPolygonWithHoles<Rgba32, Rgba32>(img, outer, holes, brush, Color.Transparent);
+            FillPolygonWithHoles<Rgba32, Rgba32>(img, outer, holes, brush, Color.Transparent, shapeGraphicsOptions);
         }
 
-        internal static void FillPolygonWithHoles<TPixel,TPixelAlpha>(Image<TPixel> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, TPixelAlpha transparent)
+        internal static void FillPolygonWithHoles<TPixel,TPixelAlpha>(Image<TPixel> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, TPixelAlpha transparent, ShapeGraphicsOptions shapeGraphicsOptions)
             where TPixel : unmanaged, IPixel<TPixel>
             where TPixelAlpha : unmanaged, IPixel<TPixelAlpha>
         {
@@ -37,8 +38,8 @@ namespace ArmaRealMap
                 {
                     dimg.Mutate(p =>
                     {
-                        var xor = new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { AlphaCompositionMode = PixelAlphaCompositionMode.Xor } };
-                        p.FillPolygon(brush, outer.Select(p => new PointF(p.X - clip.X, p.Y - clip.Y)).ToArray());
+                        var xor = new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { AlphaCompositionMode = PixelAlphaCompositionMode.Xor, Antialias = shapeGraphicsOptions.GraphicsOptions.Antialias } };
+                        p.FillPolygon(shapeGraphicsOptions, brush, outer.Select(p => new PointF(p.X - clip.X, p.Y - clip.Y)).ToArray());
                         foreach (var hpoints in holes)
                         {
                             p.FillPolygon(xor, brush, hpoints.Select(p => new PointF(p.X - clip.X, p.Y - clip.Y)).ToArray());
@@ -49,21 +50,21 @@ namespace ArmaRealMap
             }
             else
             {
-                img.Mutate(p => p.FillPolygon(brush, outer.ToArray()));
+                img.Mutate(p => p.FillPolygon(shapeGraphicsOptions, brush, outer.ToArray()));
             }
         }
 
         internal static void FillGeometry(Image<Rgb24> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels)
         {
-            FillGeometry<Rgb24, Rgba32>(img, solidBrush, geometry, toPixels, Color.Transparent);
+            FillGeometry<Rgb24, Rgba32>(img, solidBrush, geometry, toPixels, Color.Transparent, new ShapeGraphicsOptions());
         }
 
         internal static void FillGeometry(Image<Rgba32> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels)
         {
-            FillGeometry<Rgba32, Rgba32>(img, solidBrush, geometry, toPixels, Color.Transparent);
+            FillGeometry<Rgba32, Rgba32>(img, solidBrush, geometry, toPixels, Color.Transparent, new ShapeGraphicsOptions());
         }
 
-        internal static void FillGeometry<TPixel, TPixelAlpha>(Image<TPixel> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels, TPixelAlpha transparent)
+        internal static void FillGeometry<TPixel, TPixelAlpha>(Image<TPixel> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels, TPixelAlpha transparent, ShapeGraphicsOptions shapeGraphicsOptions)
             where TPixel : unmanaged, IPixel<TPixel>
             where TPixelAlpha : unmanaged, IPixel<TPixelAlpha>
         {
@@ -71,7 +72,8 @@ namespace ArmaRealMap
             {
                 foreach (var geo in ((GeometryCollection)geometry).Geometries)
                 {
-                    FillGeometry(img, solidBrush, geo, toPixels, transparent);
+                    FillGeometry(img, solidBrush, geo, toPixels, transparent,
+                        shapeGraphicsOptions);
                 }
             }
             else if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
@@ -83,7 +85,8 @@ namespace ArmaRealMap
                         toPixels(poly.Shell.Coordinates).ToList(),
                         poly.Holes.Select(h => toPixels(h.Coordinates).Select(p => new PointF(p.X, p.Y)).ToList()).ToList(),
                         solidBrush,
-                        transparent);
+                        transparent,
+                        shapeGraphicsOptions);
                 }
                 catch
                 {
@@ -116,15 +119,15 @@ namespace ArmaRealMap
             }
         }
 
-        internal static void DrawPath(IImageProcessingContext d, TerrainPath path, float width, SolidBrush brush, MapInfos map)
+        internal static void DrawPath(IImageProcessingContext d, TerrainPath path, float width, SolidBrush brush, MapInfos map, bool antiAlias = true)
         {
-            DrawPath(d, path.Points, width, brush, map.TerrainToPixelsPoint);
+            DrawPath(d, path.Points, width, brush, map.TerrainToPixelsPoint, new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
         }
 
-        internal static void DrawPath<T>(IImageProcessingContext d, IEnumerable<T> points, float width, SolidBrush brush, Func<T, PointF> project)
+        internal static void DrawPath<T>(IImageProcessingContext d, IEnumerable<T> points, float width, SolidBrush brush, Func<T, PointF> project, ShapeGraphicsOptions shapeGraphicsOptions)
         {
             var pixelsPoints = points.Select(project).ToArray();
-            d.DrawLines(brush, width, pixelsPoints);
+            d.DrawLines(shapeGraphicsOptions, brush, width, pixelsPoints);
         }
 
         internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, SolidBrush brush, MapInfos map)
@@ -170,10 +173,9 @@ namespace ArmaRealMap
 
         internal const int Chunk = 10240;
 
-        internal static void SavePngChuncked(Image<Rgb24> img, string filename)
+        internal static int SavePngChuncked(Image<Rgb24> img, string filename)
         {
-            img.Save(filename);
-
+            //img.Save(filename); --> Too expensive
             if (img.Width > Chunk) 
             {
                 // terrain builder as a 32 bits process, does not like too large images. So make chunks of image
@@ -183,6 +185,7 @@ namespace ArmaRealMap
                 {
                     num = num * 2;
                 }
+                var report = new ProgressReport("PngChuncked", num * num);
                 int chunkSize = img.Width / num;
                 var chunk = new Image<Rgb24>(chunkSize, chunkSize);
                 for(int x = 0; x < num; x ++)
@@ -192,10 +195,17 @@ namespace ArmaRealMap
                         var pos = new SixLabors.ImageSharp.Point(-x * chunkSize, -y * chunkSize);
                         chunk.Mutate(c => c.DrawImage(img, pos, 1.0f));
                         chunk.Save(System.IO.Path.ChangeExtension(filename, $"{x}_{y}.png"));
+                        report.ReportOneDone();
                     }
                 }
-
+                report.TaskDone();
+                return num;
             }
+            else
+            {
+                img.Save(System.IO.Path.ChangeExtension(filename, $"0_0.png"));
+            }
+            return 1;
         }
     }
 }

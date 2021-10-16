@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.Core", "..\jetelain\bis
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.WRP", "..\jetelain\bis-file-formats\BIS.WRP\BIS.WRP.csproj", "{4E4CAA11-8159-40AD-9E77-D2B90A12CFDB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.PAA", "..\jetelain\bis-file-formats\BIS.PAA\BIS.PAA.csproj", "{6E2A6C3B-C0C1-4C98-89B7-F0A4FB13DA00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{4E4CAA11-8159-40AD-9E77-D2B90A12CFDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E4CAA11-8159-40AD-9E77-D2B90A12CFDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E4CAA11-8159-40AD-9E77-D2B90A12CFDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E2A6C3B-C0C1-4C98-89B7-F0A4FB13DA00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E2A6C3B-C0C1-4C98-89B7-F0A4FB13DA00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E2A6C3B-C0C1-4C98-89B7-F0A4FB13DA00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E2A6C3B-C0C1-4C98-89B7-F0A4FB13DA00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

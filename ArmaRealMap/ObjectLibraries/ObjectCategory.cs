@@ -25,6 +25,7 @@
         WaterWell,
 
         RandomVegetation,
-        ForestAdditionalObjects
+        ForestAdditionalObjects,
+        Scrub
     }
 }

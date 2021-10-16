@@ -35,8 +35,7 @@
       "CX": 0,
       "CY": 0,
       "CZ": 0,
-      "Size2D": {},
-	  "Scale": 0.5
+      "Size2D": {}
     },
     {
       "Name": "t_Ficus_medium_F",
@@ -72,8 +71,7 @@
       "CX": 0,
       "CY": 0,
       "CZ": 0,
-      "Size2D": {},
-	  "Scale": 0.5
+      "Size2D": {}
     },
     {
       "Name": "str osika",
@@ -199,5 +197,5 @@
   ],
   "Compositions": [],
   "Terrain": "Sahel",
-  "Density": null
+  "Density": 0.00015
 }

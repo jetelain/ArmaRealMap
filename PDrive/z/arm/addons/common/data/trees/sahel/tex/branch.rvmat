@@ -1,0 +1,14 @@
+specular[]={1,1,1,1};
+specularPower=150;
+PixelShaderID = "NormalMapSpecularMap";
+VertexShaderID = "NormalMap";
+class Stage1
+{
+  texture="z\arm\addons\common\data\trees\sahel\tex\branch_nohq.paa";
+  uvSource="tex";
+};
+class Stage2
+{
+  texture="z\arm\addons\common\data\trees\sahel\tex\branch_sm.paa";
+  uvSource="tex";
+};

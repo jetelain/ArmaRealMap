@@ -123,7 +123,7 @@ namespace ArmaRealMap.Osm
                 case "heath": return OsmShapeCategory.Grass;
                 case "meadow": return OsmShapeCategory.Grass;
                 case "grassland": return OsmShapeCategory.Grass;
-                case "scrub": return OsmShapeCategory.Grass;
+                case "scrub": return OsmShapeCategory.Scrub;
                 case "wetland": return OsmShapeCategory.WetLand;
                 case "tree_row": return OsmShapeCategory.Forest;
                 case "scree": return OsmShapeCategory.Sand;

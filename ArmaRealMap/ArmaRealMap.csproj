@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\jetelain\bis-file-formats\BIS.PAA\BIS.PAA.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="arm_belfort.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using SixLabors.ImageSharp;
 
 namespace ArmaRealMap.GroundTextureDetails
@@ -25,6 +27,8 @@ namespace ArmaRealMap.GroundTextureDetails
 
         internal static readonly TerrainMaterial[] All = new[] { Dirt, Forest, WetLand, GrassShort, FarmLand, Sand, Rock, Concrete };
 
+        internal static readonly TerrainMaterial[] AllWithDefault = new[] { Dirt, Forest, WetLand, GrassShort, FarmLand, Sand, Rock, Concrete, Default };
+
         public TerrainMaterial(Color color, string name)
         {
             DefaultColor = color;
@@ -33,31 +37,44 @@ namespace ArmaRealMap.GroundTextureDetails
 
         public Color GetColor(TerrainRegion region)
         {
-            if (this == Default)
-            {
-                switch(region)
-                {
-                    case TerrainRegion.Sahel:
-                        return Dirt.DefaultColor;
-                    case TerrainRegion.CentralEurope:
-                        return GrassShort.DefaultColor;
-                }
-            }
-            return DefaultColor;
+            return GetMaterial(region).DefaultColor;
         }
 
-        public Color DefaultColor { get; }
+        private TerrainMaterial GetMaterial(TerrainRegion region)
+        {
+            if (this == Default)
+            {
+                switch (region)
+                {
+                    case TerrainRegion.Sahel:
+                        return Dirt;
+                    case TerrainRegion.CentralEurope:
+                        return GrassShort;
+                }
+            }
+            return this;
+        }
 
-        public string Name { get; }
+        private Color DefaultColor { get; }
 
-        public string RvMatGeneric => $"arm_{Name.ToLowerInvariant()}.rvmat";
+        private string Name { get; }
 
-        public string RvMat(TerrainRegion terrain) => $"arm_{Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}.rvmat";
 
-        public string ClassName(TerrainRegion terrain) => $"arm_{Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}";
+        private string GetRvMat(TerrainRegion terrain)
+        {
+            return File.ReadAllText(Path.Combine(@"P:\z\arm\addons\common\data\gdt", $"arm_{GetMaterial(terrain).Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}.rvmat"));
+        }
 
-        // TODO: should read rvmat to get texture names
-        internal string NoPx(TerrainRegion terrain) => $"arm_{Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}_nopx.paa";
-        internal string Co(TerrainRegion terrain) => $"arm_{Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}_co.paa";
+        private static readonly Regex Texture = new Regex(@"texture=""([^""]+)"";", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private string GetTexture(TerrainRegion terrain, int index)
+        {
+            var matches = Texture.Matches(GetRvMat(terrain));
+            return matches[index].Groups[1].Value;
+        }
+
+        internal string NoPx(TerrainRegion terrain) => GetTexture(terrain, 0);
+
+        internal string Co(TerrainRegion terrain) => GetTexture(terrain, 1);
     }
 }

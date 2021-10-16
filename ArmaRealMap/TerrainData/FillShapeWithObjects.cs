@@ -18,12 +18,14 @@ namespace ArmaRealMap
         private readonly MapInfos area;
         private readonly MapData mapData;
         private readonly ObjectLibrary library;
+        private readonly ObjectLibraries libraries;
 
-        public FillShapeWithObjects(MapData mapData, ObjectLibrary library)
+        public FillShapeWithObjects(MapData mapData, ObjectLibrary library, ObjectLibraries libraries)
         {
             this.mapData = mapData;
             this.area = mapData.MapInfos;
             this.library = library;
+            this.libraries = libraries;
         }
 
         private List<FillArea> GetFillAreas(List<TerrainPolygon> polygons)
@@ -77,7 +79,7 @@ namespace ArmaRealMap
             }
             else
             {
-                objects.ReadFile(cacheFileFullName, library);
+                objects.ReadFile(cacheFileFullName, libraries);
             }
             return objects;
         }

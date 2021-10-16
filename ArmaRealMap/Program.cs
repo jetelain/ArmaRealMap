@@ -17,7 +17,9 @@ using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
 using ArmaRealMap.TerrainData;
+using ArmaRealMap.TerrainData.DefaultAreas;
 using ArmaRealMap.TerrainData.Forests;
+using BIS.PAA;
 using ClipperLib;
 using CoordinateSharp;
 using Microsoft.Win32;
@@ -134,9 +136,6 @@ namespace ArmaRealMap
             data.Config = config;
 
             var area = MapInfos.Create(config);
-
-
-            GDTConfigBuilder.PrepareGDT(config);
 
             data.MapInfos = area;
 
@@ -258,10 +257,12 @@ namespace ArmaRealMap
                 var source = Path.GetExtension(config.OSM) == ".xml" ? (OsmStreamSource)new XmlOsmStreamSource(fileStream) : new PBFOsmStreamSource(fileStream);
                 var db = new SnapshotDb(new MemorySnapshotDb(source));
                 OsmStreamSource filtered = CropDataToArea(area, source);
-
+                
                 RenderCitiesNames(config, area, filtered);
-
+                
                 var shapes = OsmCategorizer.GetShapes(db, filtered, data.MapInfos);
+                
+                DefaultAreasBuilder.Prepare(data, shapes, olibs);
 
                 Console.WriteLine("==== Roads ====");
                 RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes);
@@ -275,10 +276,16 @@ namespace ArmaRealMap
                 Console.WriteLine("==== Forests ====");
                 ForestBuilder.Prepare(data, shapes, olibs);
 
+                Console.WriteLine("==== Scrub ====");
+                ForestBuilder.PrepareScrub(data, shapes, olibs);
+
                 Console.WriteLine("==== Objects ====");
                 PlaceIsolatedObjects(data, olibs, filtered);
 
                 PlaceBarrierObjects(data, db, olibs, filtered);
+
+                Console.WriteLine("==== Fake Sat ====");
+                DrawFakeSat(config, area, data, shapes);
 
                 Console.WriteLine("==== GDT Map ====");
                 DrawShapes(config, area, data, shapes);
@@ -406,8 +413,8 @@ class OutsideTerrain
     {{
 		class Layer0
         {{
-			nopx    = ""{Path.Combine(config.Target.PboPrefix, "data", "gdt", TerrainMaterial.Dirt.NoPx(config.Terrain))}"";
-			texture = ""{Path.Combine(config.Target.PboPrefix, "data", "gdt", TerrainMaterial.Dirt.Co(config.Terrain))}""; 
+			nopx    = ""{TerrainMaterial.Default.NoPx(config.Terrain)}"";
+			texture = ""{TerrainMaterial.Default.Co(config.Terrain)}""; 
 		}};
     }};
 }};
@@ -595,6 +602,96 @@ class Grid {{
             }
             return defaultValue();
         }
+        private static void DrawFakeSat(Config config, MapInfos area, MapData data, List<OsmShape> toRender)
+        {
+            var brushes = new Dictionary<TerrainMaterial, IBrush>();
+            var shapes = toRender.Where(r => r.Category.GroundTexturePriority != 0).ToList();
+
+            foreach (var mat in TerrainMaterial.All.Concat(new[] { TerrainMaterial.Default }))
+            {
+                brushes.Add(mat, GetBrush(config, mat));
+            }
+
+            int chuncking = 0;
+
+            using (var img = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, Color.Black))
+            {
+                img.Mutate(i => i.Fill(brushes[TerrainMaterial.Default]));
+
+                var report = new ProgressReport("Sat-Shapes", shapes.Count);
+                foreach (var item in shapes.OrderByDescending(e => e.Category.GroundTexturePriority))
+                {
+                    if (item.Category == OsmShapeCategory.Water || item.Category == OsmShapeCategory.Lake)
+                    {
+                        // TODO: sat view will not show ground texture, but water texture !
+                    }
+                    else
+                    {
+                        OsmDrawHelper.Draw(area, img, brushes[item.Category.TerrainMaterial], item);
+                    }
+                    report.ReportOneDone();
+                }
+                report.TaskDone();
+
+                /*
+                report = new ProgressReport("Sat-Roads", data.Roads.Count);
+                img.Mutate(d =>
+                {
+                    var brush = new SolidBrush(OsmShapeCategory.Road.TerrainMaterial.GetColor(data.Config.Terrain));
+                    foreach (var road in data.Roads)
+                    {
+                        if (road.RoadType < RoadType.TwoLanesConcreteRoad)
+                        {
+                            DrawHelper.DrawPath(d, road.Path, (float)(road.Width / area.ImageryResolution), brush, data.MapInfos);
+                        }
+                        report.ReportOneDone();
+                    }
+                });
+                report.TaskDone();
+                */
+
+                chuncking = DrawHelper.SavePngChuncked(img, config.Target.GetTerrain("sat-fake.png"));
+
+            }
+
+            BlendRawAndFake(config, chuncking);
+        }
+
+        private static void BlendRawAndFake(Config config, int chuncking)
+        {
+            var report2 = new ProgressReport("Sat", chuncking * chuncking);
+            for (int x = 0; x < chuncking; x++)
+            {
+                for (int y = 0; y < chuncking; y++)
+                {
+                    var raw = config.Target.GetTerrain($"sat-fake.{x}_{y}.png");
+                    var fake = config.Target.GetTerrain($"sat-raw.{x}_{y}.png");
+                    var sat = config.Target.GetTerrain($"sat.{x}_{y}.png");
+                    using (var rawImg = Image.Load(raw))
+                    {
+                        using (var fakeImg = Image.Load(fake))
+                        {
+                            rawImg.Mutate(p => p.DrawImage(fakeImg, 0.5f));
+                            rawImg.Save(sat);
+                            report2.ReportOneDone();
+                        }
+                    }
+                }
+            }
+            report2.TaskDone();
+        }
+
+        private static IBrush GetBrush(Config config, TerrainMaterial mat)
+        {
+            var texture = Path.Combine("P:", mat.Co(config.Terrain));
+            using (var paaStream = File.OpenRead(texture))
+            {
+                var paa = new PAA(paaStream);
+                var map = paa.Mipmaps.First(m => m.Width == 8);
+                var pixels = PAA.GetARGB32PixelData(paa, paaStream, map);
+                return new ImageBrush(Image.LoadPixelData<Bgra32>(pixels, map.Width, map.Height));
+            }
+        }
 
         private static void DrawShapes(Config config, MapInfos area, MapData data, List<OsmShape> toRender)
         {
@@ -602,26 +699,27 @@ class Grid {{
 
             using (var img = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, TerrainMaterial.Default.GetColor(config.Terrain)))
             {
-                var report = new ProgressReport("Shapes", shapes.Count);
+                var report = new ProgressReport("Tex-Shapes", shapes.Count);
                 foreach (var item in shapes.OrderByDescending(e => e.Category.GroundTexturePriority))
                 {
-                    OsmDrawHelper.Draw(area, img, new SolidBrush(item.Category.TerrainMaterial.GetColor(data.Config.Terrain)), item);
+                    OsmDrawHelper.Draw(area, img, new SolidBrush(item.Category.TerrainMaterial.GetColor(data.Config.Terrain)), item, false);
                     report.ReportOneDone();
                 }
                 report.TaskDone();
 
-                report = new ProgressReport("Roads", data.Roads.Count);
+                report = new ProgressReport("Tex-Roads", data.Roads.Count);
                 img.Mutate(d =>
                 {
                     var brush = new SolidBrush(OsmShapeCategory.Road.TerrainMaterial.GetColor(data.Config.Terrain));
                     foreach (var road in data.Roads)
                     {
-                        DrawHelper.DrawPath(d, road.Path, (float)(road.Width / area.ImageryResolution), brush, data.MapInfos);
+                        DrawHelper.DrawPath(d, road.Path, (float)(road.Width / area.ImageryResolution), brush, data.MapInfos, false);
                         report.ReportOneDone();
                     }
                 });
                 report.TaskDone();
 
+                /*
                 report = new ProgressReport("Buildings", data.Buildings.Count);
                 foreach (var item in data.WantedBuildings)
                 {
@@ -629,6 +727,8 @@ class Grid {{
                     report.ReportOneDone();
                 }
                 report.TaskDone();
+                */
+
                 DrawHelper.SavePngChuncked(img, config.Target.GetTerrain("id.png"));
             }
         }

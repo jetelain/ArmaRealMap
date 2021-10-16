@@ -38,6 +38,7 @@ namespace ArmaRealMap.Osm
         internal static readonly OsmShapeCategory Forest = new OsmShapeCategory(TerrainMaterial.Forest, 4);
         internal static readonly OsmShapeCategory WetLand = new OsmShapeCategory(TerrainMaterial.WetLand, 2);
         internal static readonly OsmShapeCategory Grass = new OsmShapeCategory(TerrainMaterial.GrassShort, 3);
+        internal static readonly OsmShapeCategory Scrub = new OsmShapeCategory(TerrainMaterial.Default, 3);
         internal static readonly OsmShapeCategory Default = new OsmShapeCategory(TerrainMaterial.Default, 3);
         internal static readonly OsmShapeCategory FarmLand = new OsmShapeCategory(TerrainMaterial.FarmLand, 5);
         internal static readonly OsmShapeCategory Sand = new OsmShapeCategory(TerrainMaterial.Sand, 6);

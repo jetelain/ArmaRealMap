@@ -12,19 +12,19 @@ namespace ArmaRealMap.Osm
 {
     internal static class OsmDrawHelper
     {
-        internal static void Draw(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, OsmShape shape)
+        internal static void Draw(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, OsmShape shape, bool antiAlias = true)
         {
-            DrawGeometry(mapInfos, img, solidBrush, shape.Geometry, (float)(6 / mapInfos.ImageryResolution));
+            DrawGeometry(mapInfos, img, solidBrush, shape.Geometry, (float)(6 / mapInfos.ImageryResolution), new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
             //DrawHelper.FillGeometry(img, solidBrush, shape.Geometry, mapInfos.LatLngToPixelsPoints);
         }
 
-        private static void DrawGeometry(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, Geometry geometry, float defaultWidth)
+        private static void DrawGeometry(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, Geometry geometry, float defaultWidth, ShapeGraphicsOptions shapeGraphicsOptions)
         {
             if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
             {
                 foreach (var geo in ((GeometryCollection)geometry).Geometries)
                 {
-                    DrawGeometry(mapInfos, img, solidBrush, geo, defaultWidth);
+                    DrawGeometry(mapInfos, img, solidBrush, geo, defaultWidth, shapeGraphicsOptions);
                 }
             }
             else if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
@@ -35,7 +35,8 @@ namespace ArmaRealMap.Osm
                     DrawHelper.FillPolygonWithHoles(img,
                         mapInfos.LatLngToPixelsPoints(poly.Shell.Coordinates).ToList(),
                         poly.Holes.Select(h => mapInfos.LatLngToPixelsPoints(h.Coordinates).Select(p => new PointF(p.X, p.Y)).ToList()).ToList(),
-                        solidBrush);
+                        solidBrush,
+                        shapeGraphicsOptions);
                 }
                 catch
                 {
@@ -50,11 +51,11 @@ namespace ArmaRealMap.Osm
                 {
                     if (line.IsClosed)
                     {
-                        img.Mutate(p => p.FillPolygon(solidBrush, points));
+                        img.Mutate(p => p.FillPolygon(shapeGraphicsOptions, solidBrush, points));
                     }
                     else
                     {
-                        img.Mutate(p => p.DrawLines(solidBrush, defaultWidth, points));
+                        img.Mutate(p => p.DrawLines(shapeGraphicsOptions, solidBrush, defaultWidth, points));
                     }
                 }
                 catch
