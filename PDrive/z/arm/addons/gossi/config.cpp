@@ -7,7 +7,8 @@ class CfgPatches
 		requiredVersion = 1;
 		requiredAddons[] =
 		{
-			"A3_Map_Stratis"
+			"A3_Map_Stratis",
+			"arm_common"
 		};
 	};
 };
@@ -71,11 +72,9 @@ class CfgWorlds
 		};
 		class DefaultClutter;
 		class clutter {
-			#include "data\gdt\Clutter.hpp"
+			#include "..\common\data\gdt\Clutter.hpp"
 		};
 		
 		#include"mapinfos.hpp"
 	};
 };
-
-#include "data\gdt\CfgSurfaces.hpp"
