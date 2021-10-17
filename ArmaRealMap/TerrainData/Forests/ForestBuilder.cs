@@ -23,7 +23,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             //DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass2.bmp");
 
-            var substractPolygons = GetPriorityPolygons(data, shapes);
+            var substractPolygons = GetPriorityPolygons(data, shapes, OsmShapeCategory.Forest);
 
             var forestPolygonsCleaned = Subtract(forestPolygonsCropped, substractPolygons);
 
@@ -119,7 +119,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             edgeObjects.WriteFile(data.Config.Target.GetTerrain("forest-edge.txt"));
 
-            DebugHelper.ObjectsInPolygons(data, edgeObjects, forestPolygonsCleaned, "forest-edges.bmp");
+            //DebugHelper.ObjectsInPolygons(data, edgeObjects, forestPolygonsCleaned, "forest-edges.bmp");
         }
 
         private static void RemoveOverlaps(List<TerrainPolygon> forest)
@@ -168,7 +168,7 @@ namespace ArmaRealMap.TerrainData.Forests
             return forestPolygonsCleaned;
         }
 
-        private static List<TerrainPolygon> GetPriorityPolygons(MapData data, List<OsmShape> shapes)
+        private static List<TerrainPolygon> GetPriorityPolygons(MapData data, List<OsmShape> shapes, OsmShapeCategory category)
         {
             var substractPolygons = new List<TerrainPolygon>();
 
@@ -184,7 +184,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             // Priority shapes
             substractPolygons.AddRange(shapes
-                .Where(s => s.Category.GroundTexturePriority < OsmShapeCategory.Forest.GroundTexturePriority
+                .Where(s => s.Category.GroundTexturePriority < category.GroundTexturePriority
                     && !s.Category.IsBuilding
                     && s.Category != OsmShapeCategory.Building
                     && s.Category != OsmShapeCategory.Water)
@@ -258,7 +258,7 @@ namespace ArmaRealMap.TerrainData.Forests
         {
             var polygonsCropped = GetCroppedPolygons(data, shapes, OsmShapeCategory.Scrub);
             RemoveOverlaps(polygonsCropped);
-            var polygonsCleaned = Subtract(polygonsCropped, GetPriorityPolygons(data, shapes));
+            var polygonsCleaned = Subtract(polygonsCropped, GetPriorityPolygons(data, shapes, OsmShapeCategory.Scrub));
             var trees = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.Scrub);
             var objects = new FillShapeWithObjects(data, trees, olibs).Fill(polygonsCleaned, "scrub-pass4.txt");
             Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
