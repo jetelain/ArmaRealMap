@@ -1,0 +1,30 @@
+{
+  "Category": "Cliff",
+  "Objects": [
+    {
+      "Name": "W_sharpRock_spike",
+      "PlacementProbability": 0.25,
+      "PlacementRadius": 10,
+      "Width": 20.5946,
+      "Depth": 23.73,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0
+    },
+    {
+      "Name": "W_sharpRock_wallH",
+      "PlacementProbability": 0.75,
+      "PlacementRadius": 30,
+      "Width": 26.1329,
+      "Depth": 70.5316,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0
+    }
+  ],
+  "Compositions": [],
+  "Terrain": "Sahel",
+  "Density": null
+}

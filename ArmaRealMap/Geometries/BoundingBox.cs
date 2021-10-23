@@ -31,6 +31,15 @@ namespace ArmaRealMap.Geometries
             
         }
 
+        public BoundingBox(TerrainPoint center, float width, float height, float angle) 
+            : this(center, width, height, angle, 
+                  GeometryHelper.RotatedRectangleDegrees(center.Vector, new Vector2(width, height), angle)
+                  .Select(v => new TerrainPoint(v))
+                  .ToArray())
+        {
+            
+        }
+
         public TerrainPoint Center { get; }
 
         /// <summary>

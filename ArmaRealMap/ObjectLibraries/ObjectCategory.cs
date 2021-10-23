@@ -26,6 +26,9 @@
 
         RandomVegetation,
         ForestAdditionalObjects,
-        Scrub
+        Scrub,
+
+        Cliff,
+        GroundRock
     }
 }

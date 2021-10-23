@@ -22,21 +22,21 @@ namespace ArmaRealMap.ElevationModel
         public readonly float[,] elevationGrid;
 
         private readonly Vector2 cellSize;
-        private readonly Vector2 cellDelta;
+        //private readonly Vector2 cellDelta;
 
         public ElevationGrid(MapInfos areaInfos)
         {
             area = areaInfos;
             elevationGrid = new float[area.Size, area.Size];
             cellSize = new Vector2(area.CellSize);
-            cellDelta = new Vector2(0.5f); // Elevation is at the center of the cell
+            //cellDelta = new Vector2(0.5f); // Elevation is at the center of the cell
         }
         public ElevationGrid(ElevationGrid other)
         {
             area = other.area;
             elevationGrid = (float[,])other.elevationGrid.Clone();
             cellSize = other.cellSize;
-            cellDelta = other.cellDelta;
+            //cellDelta = other.cellDelta;
         }
 
         public void LoadFromSRTM(ConfigSRTM configSRTM)
@@ -48,8 +48,6 @@ namespace ArmaRealMap.ElevationModel
 
             var done = 0;
 
-            var delta = (double)area.CellSize / 2.0d;
-
             PreloadSRTM(srtmData);
 
             var report = new ProgressReport("LoadFromSRTM", area.Size);
@@ -60,8 +58,8 @@ namespace ArmaRealMap.ElevationModel
                     var point = new UniversalTransverseMercator(
                             startPointUTM.LatZone,
                             startPointUTM.LongZone,
-                            startPointUTM.Easting + (double)(x * area.CellSize) + delta,
-                            startPointUTM.Northing + (double)(y * area.CellSize) + delta);
+                            startPointUTM.Easting + (double)(x * area.CellSize),
+                            startPointUTM.Northing + (double)(y * area.CellSize));
 
                     var latLong = UniversalTransverseMercator.ConvertUTMtoLatLong(point, eager);
 
@@ -236,7 +234,7 @@ namespace ArmaRealMap.ElevationModel
 
         public Vector2 ToGrid(TerrainPoint point)
         {
-            return ((point.Vector - area.P1.Vector) / cellSize) - cellDelta;
+            return ((point.Vector - area.P1.Vector) / cellSize);
         }
 
         public TerrainPoint ToTerrain(int x, int y)
@@ -246,7 +244,7 @@ namespace ArmaRealMap.ElevationModel
 
         public TerrainPoint ToTerrain(Vector2 grid)
         {
-            return new TerrainPoint(((grid + cellDelta) * cellSize)  + area.P1.Vector);
+            return new TerrainPoint(((grid) * cellSize)  + area.P1.Vector);
         }
 
         public ElevationGridArea PrepareToMutate(TerrainPoint min, TerrainPoint max)

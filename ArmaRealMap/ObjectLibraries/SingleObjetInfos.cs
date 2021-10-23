@@ -13,11 +13,21 @@ namespace ArmaRealMap.Libraries
         public float? PlacementRadius { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public float? Scale { get; set; }
+        public float? ReservedRadius { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public float? MaxZ { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public float? MinZ { get; set; }
 
         public float GetPlacementRadius()
         {
             return PlacementRadius ?? Math.Max(Width, Depth);
+        }
+        public float GetReservedRadius()
+        {
+            return ReservedRadius ?? GetPlacementRadius();
         }
     }
 }

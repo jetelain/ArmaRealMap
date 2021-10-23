@@ -7,7 +7,7 @@ using NetTopologySuite.Geometries;
 
 namespace ArmaRealMap.Geometries
 {
-    public class TerrainPolygon : ITerrainGeometry
+    public class TerrainPolygon : ITerrainGeometry, IEquatable<TerrainPolygon>
     {
         private static readonly List<List<TerrainPoint>> NoHoles = new List<List<TerrainPoint>>(0);
 
@@ -42,21 +42,28 @@ namespace ArmaRealMap.Geometries
                 Holes.Select(h => new LinearRing(h.Select(project).ToArray())).ToArray());
         }
 
-        public static IEnumerable<TerrainPolygon> FromGeometry(Geometry geometry, Func<Coordinate, TerrainPoint> project)
+        public static IEnumerable<TerrainPolygon> FromGeometry(Geometry geometry, Func<Coordinate, TerrainPoint> project, float width = 6.0f)
         {
             switch(geometry.OgcGeometryType)
             {
                 case OgcGeometryType.MultiPolygon:
-                    return ((MultiPolygon)geometry).Geometries.SelectMany(p => FromGeometry(p, project));
+                    return ((MultiPolygon)geometry).Geometries.SelectMany(p => FromGeometry(p, project, width));
 
                 case OgcGeometryType.Polygon:
                     return FromPolygon((Polygon)geometry, project);
 
                 case OgcGeometryType.LineString:
                     var line = (LineString)geometry;
-                    if (line.IsClosed && line.Coordinates.Length > 4)
+                    if (line.IsClosed)
                     {
-                        return new[] { new TerrainPolygon(line.Coordinates.Select(project).ToList(), NoHoles) };
+                        if (line.Coordinates.Length > 4)
+                        {
+                            return new[] { new TerrainPolygon(line.Coordinates.Select(project).ToList(), NoHoles) };
+                        }
+                    }
+                    else
+                    {
+                        return FromPath(line.Coordinates.Select(project).ToList(), width);
                     }
                     break;
             }
@@ -119,8 +126,19 @@ namespace ArmaRealMap.Geometries
             var holes = Holes.SelectMany(r => OffsetInternal(r, -offset)).ToList();
             return OffsetInternal(Shell, offset).SelectMany(ext => MakePolygon(ext, holes)).ToList();
         }
+        public IEnumerable<TerrainPolygon> Crown(float width)
+        {
+            return Crown(width/2, Shell).Concat(Holes.SelectMany(h => Crown(width/2f, h))).ToList();
+        }
 
-        public IEnumerable<TerrainPolygon> SubstractAll(List<TerrainPolygon> others)
+        private static IEnumerable<TerrainPolygon> Crown(float offset, List<TerrainPoint> points)
+        {
+            var exterior = FromPath(points, offset);
+            var interior = FromPath(points, -offset);
+            return exterior.SelectMany(e => e.SubstractAll(interior));
+        }
+
+        public IEnumerable<TerrainPolygon> SubstractAll(IEnumerable<TerrainPolygon> others)
         {
             var result = new List<TerrainPolygon>() { this };
             foreach(var other in others.Where(o => GeometryHelper.EnveloppeIntersects(this, o)))
@@ -165,7 +183,7 @@ namespace ArmaRealMap.Geometries
 
             if (noholes.Count > 0)
             {
-                // Polygons with holes can easily merged
+                // Polygons without holes can easily merged
                 if (tomerge.Count == 0 )
                 {
                     return QuickMergeAllWithNoHoles(noholes);
@@ -187,13 +205,9 @@ namespace ArmaRealMap.Geometries
                             {
                                 tomerge.Remove(poly);
                                 tomerge.Remove(other);
-                                tomerge.Add(merged[0]);
+                                tomerge.AddRange(merged);
                                 changed = true;
                                 break;
-                            }
-                            else if (merged.Count != 2)
-                            {
-                                // strange !
                             }
                         }
                         if (changed)
@@ -400,6 +414,31 @@ namespace ArmaRealMap.Geometries
         {
             var transformedBack = points.Select(c => new TerrainPoint(c));
             return transformedBack.Concat(transformedBack.Take(1)).ToList();
+        }
+
+        public bool Equals(TerrainPolygon other)
+        {
+            if (Holes.Count != other.Holes.Count)
+            {
+                return false;
+            }
+            if (!Shell.SequenceEqual(other.Shell))
+            {
+                return false;
+            }
+            for(int i = 0; i < Holes.Count; ++i)
+            {
+                if (!Holes[i].SequenceEqual(other.Holes[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as TerrainPolygon);
         }
     }
 }

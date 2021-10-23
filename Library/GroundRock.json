@@ -1,0 +1,36 @@
+{
+  "Category": "GroundRock",
+  "Objects": [	
+    {
+      "Name": "sharpRock_wallH",
+      "PlacementProbability": 0.75,
+      "PlacementRadius": 17.5,
+      "ReservedRadius": 25,
+      "Width": 26.1329,
+      "Depth": 70.5316,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0,
+	  "MinZ": -21,
+	  "MaxZ": -17
+    },
+	{
+      "Name": "sharpRock_monolith",
+      "PlacementProbability": 0.25,
+      "PlacementRadius": 7,
+      "ReservedRadius": 12,
+      "Width": 16.99,
+      "Depth": 28.37,
+      "Height": 0,
+      "CX": 0,
+      "CY": 0,
+      "CZ": 0,
+	  "MinZ": -16,
+	  "MaxZ": -14.5
+    }
+  ],
+  "Compositions": [],
+  "Terrain": "Sahel",
+  "Density": 0.001
+}

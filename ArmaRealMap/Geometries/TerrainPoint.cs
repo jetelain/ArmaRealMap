@@ -58,9 +58,9 @@ namespace ArmaRealMap.Geometries
 
         public override string ToString() => Vector.ToString();
 
-        public override bool Equals(object obj) => obj is TerrainPoint && Equals((TerrainPoint)obj);
+        public override bool Equals(object obj) => Equals(obj as TerrainPoint);
 
-        public bool Equals(TerrainPoint other) => vector.Equals(other.vector);
+        public bool Equals(TerrainPoint other) => !ReferenceEquals(null, other) && ((vector - other.vector).LengthSquared() < 0.01f);
 
         public static TerrainPoint operator +(TerrainPoint left, Vector2 right)
         {

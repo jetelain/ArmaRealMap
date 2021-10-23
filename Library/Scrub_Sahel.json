@@ -2,79 +2,29 @@
   "Category": "Scrub",
   "Objects": [
     {
-      "Name": "str_osika",
-      "PlacementProbability": 0.15,
-      "PlacementRadius": 4,
-      "Width": 10.14072,
-      "Depth": 9.80081,
-      "Height": 0,
-      "CX": 0,
-      "CY": 0,
-      "CZ": 0,
-      "Size2D": {}
-    },
-    {
-      "Name": "t_PistaciaL2s_EP1",
-      "PlacementProbability": 0.15,
-      "PlacementRadius": 4,
-      "Width": 9.67186,
-      "Depth": 8.51294,
-      "Height": 0,
-      "CX": 0,
-      "CY": 0,
-      "CZ": 0,
-      "Size2D": {}
-    },
-    {
-      "Name": "t_malus1s_summer",
-      "PlacementProbability": 0.20,
-      "PlacementRadius": 2.5,
-      "Width": 6.76361,
-      "Depth": 6.64773,
-      "Height": 0,
-      "CX": 0,
-      "CY": 0,
-      "CZ": 0,
-      "Size2D": {}
-    },
-    {
-      "Name": "t_malus1s",
-      "PlacementProbability": 0.20,
-      "PlacementRadius": 3,
-      "Width": 7.16101,
-      "Depth": 8.45326,
-      "Height": 0,
-      "CX": 0,
-      "CY": 0,
-      "CZ": 0,
-      "Size2D": {}
-    },
-    {
       "Name": "b_NeriumO2d_tanoa_F",
-      "PlacementProbability": 0.15,
-      "PlacementRadius": 2,
+      "PlacementProbability": 0.5,
+      "PlacementRadius": 4,
       "Width": 4.69828,
       "Depth": 4.93478,
       "Height": 0,
       "CX": 0,
       "CY": 0,
-      "CZ": 0,
-      "Size2D": {}
+      "CZ": 0
     },
     {
-      "Name": "b_FicusC2d_tanoa_F",
-      "PlacementProbability": 0.15,
-      "PlacementRadius": 2,
-      "Width": 4.82374,
-      "Depth": 4.57384,
+      "Name": "b_NeriumO2d_F",
+      "PlacementProbability": 0.5,
+      "PlacementRadius": 4,
+      "Width": 3.81742,
+      "Depth": 3.95496,
       "Height": 0,
       "CX": 0,
       "CY": 0,
-      "CZ": 0,
-      "Size2D": {}
+      "CZ": 0
     }
   ],
   "Compositions": [],
   "Terrain": "Sahel",
-  "Density": 0.0075
+  "Density": 0.0035
 }

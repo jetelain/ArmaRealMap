@@ -1,5 +1,6 @@
 ﻿using System;
 using ArmaRealMap.Geometries;
+using ArmaRealMap.Libraries;
 using NetTopologySuite.Geometries;
 
 namespace ArmaRealMap
@@ -15,5 +16,6 @@ namespace ArmaRealMap
         public int Y2 { get; set; }
         public int ItemsToAdd { get; set; }
         public Random Random { get; set; }
+        public ObjectLibrary Library { get; set; }
     }
 }

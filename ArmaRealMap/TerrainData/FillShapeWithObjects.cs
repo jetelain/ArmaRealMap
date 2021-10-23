@@ -11,20 +11,19 @@ using ArmaRealMap.Libraries;
 
 namespace ArmaRealMap
 {
-    class FillShapeWithObjects
+    abstract class FillShapeWithObjects<TSelectData>
     {
-        private static readonly Vector2 searchArea = new Vector2(50, 50);
 
-        private readonly MapInfos area;
-        private readonly MapData mapData;
+        protected readonly MapInfos area;
+        protected readonly MapData mapData;
         private readonly ObjectLibrary library;
-        private readonly ObjectLibraries libraries;
+        protected readonly ObjectLibraries libraries;
 
-        public FillShapeWithObjects(MapData mapData, ObjectLibrary library, ObjectLibraries libraries)
+        public FillShapeWithObjects(MapData mapData, ObjectCategory category, ObjectLibraries libraries)
         {
             this.mapData = mapData;
             this.area = mapData.MapInfos;
-            this.library = library;
+            this.library = libraries.Libraries.FirstOrDefault(l => l.Category == category);
             this.libraries = libraries;
         }
 
@@ -52,7 +51,8 @@ namespace ArmaRealMap
                     Y1 = (int)Math.Floor(shape.ExteriorRing.Coordinates.Min(c => c.Y)),
                     Y2 = (int)Math.Ceiling(shape.ExteriorRing.Coordinates.Max(c => c.Y)),
                     ItemsToAdd = (int)Math.Ceiling(shape.Area * density),
-                    Random = new Random((int)Math.Truncate(shape.Centroid.X + shape.Centroid.Y))
+                    Random = new Random((int)Math.Truncate(shape.Centroid.X + shape.Centroid.Y)),
+                    Library = library
                 });
             }
             return areas;
@@ -67,19 +67,22 @@ namespace ArmaRealMap
 
         public TerrainObjectLayer Fill(TerrainObjectLayer objects, List<TerrainPolygon> polygons, string cacheFile)
         {
-            var cacheFileFullName = mapData.Config.Target.GetCache(cacheFile);
-
-            if (!File.Exists(cacheFileFullName))
+            if (library != null && library.Objects.Count > 0)
             {
-                var areas = GetFillAreas(polygons);
+                var cacheFileFullName = mapData.Config.Target.GetCache(cacheFile);
 
-                GenerateObjects(objects, areas);
+                if (!File.Exists(cacheFileFullName))
+                {
+                    var areas = GetFillAreas(polygons);
 
-                objects.WriteFile(cacheFileFullName);
-            }
-            else
-            {
-                objects.ReadFile(cacheFileFullName, libraries);
+                    GenerateObjects(objects, areas);
+
+                    objects.WriteFile(cacheFileFullName);
+                }
+                else
+                {
+                    objects.ReadFile(cacheFileFullName, libraries);
+                }
             }
             return objects;
         }
@@ -88,12 +91,12 @@ namespace ArmaRealMap
         {
             var report = new ProgressReport("GenerateObjects", areas.Sum(a => a.ItemsToAdd));
             var toprocess = areas.ToList();
-            Parallel.For(0, 6, i =>
+            Parallel.For(0, Environment.ProcessorCount * 3 / 4, i =>
             {
                 Process(toprocess, objects, report);
             });
             Trace.Flush();
-            report.TaskDone();
+            report.TaskDone(); 
         }
 
         private void Process(List<FillArea> areas, SimpleSpacialIndex<TerrainObject> objects, ProgressReport report)
@@ -130,7 +133,7 @@ namespace ArmaRealMap
 
         private void FillArea(SimpleSpacialIndex<TerrainObject> objects, ProgressReport report, FillArea fillarea)
         {
-            var clusters = GenerateClusters(fillarea);
+            var clusters = GenerateAreaSelectData(fillarea);
 
             var rndX1 = fillarea.X1 * 100;
             var rndX2 = fillarea.X2 * 100;
@@ -149,17 +152,25 @@ namespace ArmaRealMap
                     if (fillarea.Polygon.Contains(new TerrainPoint(x, y)))
                     {
                         var point = new TerrainPoint(x, y);
-                        var obj = GetObjectToInsert(fillarea, clusters, point);
+                        var obj = SelectObjectToInsert(fillarea, clusters, point);
                         var candidate = new TerrainObject(obj, point, 0.0f);
-                        var potentialConflits = objects.Search(candidate.MinPoint.Vector, candidate.MaxPoint.Vector);
-                        if (HasRoom(candidate, potentialConflits))
+                        if (WillFit(candidate, fillarea))
                         {
-                            var toinsert = new TerrainObject(obj, point, (float)(fillarea.Random.NextDouble() * 360));
-                            objects.Insert(toinsert.MinPoint.Vector, toinsert.MaxPoint.Vector, toinsert);
-                            wasChanged = true;
-                            remainItems--;
-                            Interlocked.Increment(ref generatedItems);
-                            report.ReportItemsDone(generatedItems);
+                            var potentialConflits = objects.Search(candidate.MinPoint.Vector, candidate.MaxPoint.Vector);
+                            if (HasRoom(candidate, potentialConflits))
+                            {
+                                float? elevation = null;
+                                if (obj.MaxZ != null && obj.MinZ != null)
+                                {
+                                    elevation = (float)(obj.MinZ + ((obj.MaxZ - obj.MinZ) * fillarea.Random.NextDouble()));
+                                }
+                                var toinsert = new TerrainObject(obj, point, (float)(fillarea.Random.NextDouble() * 360), elevation);
+                                objects.Insert(toinsert.MinPoint.Vector, toinsert.MaxPoint.Vector, toinsert);
+                                wasChanged = true;
+                                remainItems--;
+                                Interlocked.Increment(ref generatedItems);
+                                report.ReportItemsDone(generatedItems);
+                            }
                         }
                     }
                 }
@@ -186,39 +197,20 @@ namespace ArmaRealMap
             }
         }
 
-        private SingleObjetInfos GetObjectToInsert(FillArea fillarea, SimpleSpacialIndex<SingleObjetInfos> clusters, TerrainPoint point)
+        public bool MustFullFit { get; set; }
+
+        private bool WillFit(TerrainObject candidate, FillArea fillarea)
         {
-            var potential = clusters.Search(point.Vector - searchArea, point.Vector + searchArea);
-            if (potential.Count == 0)
+            if (MustFullFit)
             {
-                Trace.TraceWarning("No cluster at '{0}'", point);
-                return library.Objects.OrderByDescending(o => o.PlacementProbability).First();
+                return fillarea.Polygon.AsPolygon.Contains(candidate.Poly);
             }
-            if (potential.Count == 1)
-            {
-                return potential[0];
-            }
-            return potential[fillarea.Random.Next(0, potential.Count)];
+            return true;
         }
 
-        private SimpleSpacialIndex<SingleObjetInfos> GenerateClusters(FillArea fillarea)
-        {
-            var clusters = new SimpleSpacialIndex<SingleObjetInfos>(
-                new Vector2(fillarea.X1, fillarea.Y1),
-                new Vector2(fillarea.X2 - fillarea.X1 + 1, fillarea.Y2 - fillarea.Y1 + 1));
-            var clusterCount = Math.Max(fillarea.ItemsToAdd, 100);
-            foreach (var obj in library.Objects)
-            {
-                var count = clusterCount * (obj.PlacementProbability ?? 1);
-                for (int i = 0; i < count; ++i)
-                {
-                    var x = fillarea.Random.Next(fillarea.X1, fillarea.X2);
-                    var y = fillarea.Random.Next(fillarea.Y1, fillarea.Y2);
-                    clusters.Insert(new Vector2(x, y), obj);
-                }
-            }
-            return clusters;
-        }
+        protected abstract SingleObjetInfos SelectObjectToInsert(FillArea fillarea, TSelectData clusters, TerrainPoint point);
+
+        protected abstract TSelectData GenerateAreaSelectData(FillArea fillarea);
 
         private static bool HasRoom(TerrainObject candidate, IReadOnlyList<TerrainObject> potentialConflits)
         {

@@ -129,7 +129,7 @@ namespace ArmaRealMap
             {
                 foreach (var obj in objects)
                 {
-                    writer.WriteLine(obj.ToString(area));
+                    writer.WriteLine(obj.ToTerrainBuilderCSV());
                 }
             }
 

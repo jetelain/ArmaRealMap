@@ -31,13 +31,9 @@ namespace ArmaRealMap.TerrainData.Forests
 
             var trees = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree);
 
-            var objects = new FillShapeWithObjects(data, trees, olibs).Fill(forestPolygonsCleaned, "forest-pass4.txt");
+            var objects = new FillShapeWithObjectsClustered(data, ObjectCategory.ForestTree, olibs).Fill(forestPolygonsCleaned, "forest-pass4.txt");
 
-            var extra = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestAdditionalObjects);
-            if (extra != null && extra.Objects.Count > 0)
-            {
-                new FillShapeWithObjects(data, extra, olibs).Fill(objects, forestPolygonsCleaned, "forest-additional.txt"); 
-            }
+            new FillShapeWithObjectsClustered(data, ObjectCategory.ForestAdditionalObjects, olibs).Fill(objects, forestPolygonsCleaned, "forest-additional.txt"); 
 
             //DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass4.bmp");
 
@@ -259,11 +255,22 @@ namespace ArmaRealMap.TerrainData.Forests
             var polygonsCropped = GetCroppedPolygons(data, shapes, OsmShapeCategory.Scrub);
             RemoveOverlaps(polygonsCropped);
             var polygonsCleaned = Subtract(polygonsCropped, GetPriorityPolygons(data, shapes, OsmShapeCategory.Scrub));
-            var trees = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.Scrub);
-            var objects = new FillShapeWithObjects(data, trees, olibs).Fill(polygonsCleaned, "scrub-pass4.txt");
+            var objects = new FillShapeWithObjectsClustered(data, ObjectCategory.Scrub, olibs).Fill(polygonsCleaned, "scrub-pass4.txt");
             Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
             Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
             objects.WriteFile(data.Config.Target.GetTerrain("scrub.txt"));
+            data.Scrubs = polygonsCleaned;
+        }
+
+        public static void PrepareGroundRock(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
+        {
+            var polygonsCropped = GetCroppedPolygons(data, shapes, OsmShapeCategory.Rocks);
+            RemoveOverlaps(polygonsCropped);
+            var polygonsCleaned = Subtract(polygonsCropped, GetPriorityPolygons(data, shapes, OsmShapeCategory.Rocks));
+            var objects = new FillShapeWithObjectsBasic(data, ObjectCategory.GroundRock, olibs) { MustFullFit = true}.Fill(polygonsCleaned, "rocks-pass4.txt");
+            Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
+            Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
+            objects.WriteFile(data.Config.Target.GetTerrain("rocks.txt"));
             data.Scrubs = polygonsCleaned;
         }
 

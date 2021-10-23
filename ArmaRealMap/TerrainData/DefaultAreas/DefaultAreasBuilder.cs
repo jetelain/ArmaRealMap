@@ -49,7 +49,7 @@ namespace ArmaRealMap.TerrainData.DefaultAreas
                 }
                 report.TaskDone();
 
-                var objects = new FillShapeWithObjects(data, filler, olibs).Fill(list, "defaultfill.txt");
+                var objects = new FillShapeWithObjectsClustered(data, ObjectCategory.RandomVegetation, olibs).Fill(list, "defaultfill.txt");
                 objects.WriteFile(data.Config.Target.GetTerrain("defaultfill.txt"));
             }
         }

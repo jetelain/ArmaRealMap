@@ -12,12 +12,10 @@ namespace ArmaRealMap
 {
     internal class TerrainObjectLayer : TerrainSpacialIndex<TerrainObject>
     {
-        private readonly MapInfos map;
-
         public TerrainObjectLayer(MapInfos map)
             : base(map)
         {
-            this.map = map;
+
         }
 
         public void WriteFile(string targetFile)
@@ -27,7 +25,7 @@ namespace ArmaRealMap
             {
                 foreach (var obj in Values)
                 {
-                    writer.WriteLine(obj.ToString(map));
+                    writer.WriteLine(obj.ToTerrainBuilderCSV());
                     report.ReportOneDone();
                 }
             }
@@ -37,10 +35,6 @@ namespace ArmaRealMap
         public void ReadFile(string sourceFile, ObjectLibraries libs)
         {
             ReadFile(sourceFile, libs.GetObject);
-        }
-        public void ReadFile(string sourceFile, ObjectLibrary lib)
-        {
-            ReadFile(sourceFile, lib.GetObject);
         }
 
         public void ReadFile(string sourceFile, Func<string, SingleObjetInfos> resolveObject)
@@ -57,12 +51,15 @@ namespace ArmaRealMap
                     var name = tokens[0].Trim('"');
                     var obj = resolveObject(name);
                     var point = new TerrainPoint(
-                                (float)(double.Parse(tokens[1], CultureInfo.InvariantCulture) - 200000 /*map.StartPointUTM.Easting*/),
-                                (float)(double.Parse(tokens[2], CultureInfo.InvariantCulture) - 0 /*map.StartPointUTM.Northing*/)
-                                );
-                    var tobj = new TerrainObject(obj,
-                            point,
-                            float.Parse(tokens[3], CultureInfo.InvariantCulture));
+                                (float)(double.Parse(tokens[1], CultureInfo.InvariantCulture) - 200000),
+                                (float)(double.Parse(tokens[2], CultureInfo.InvariantCulture)));
+                    var angle = - float.Parse(tokens[3], CultureInfo.InvariantCulture);
+                    var altitude = float.Parse(tokens[7], CultureInfo.InvariantCulture) - obj.CZ;
+
+                    point = TerrainObject.TransformBack(obj, point, angle);
+
+                    var tobj = new TerrainObject(obj,point,angle,altitude);
+
                     Insert(point.Vector, tobj);
                     report.ReportItemsDone((int)reader.BaseStream.Position);
                 }

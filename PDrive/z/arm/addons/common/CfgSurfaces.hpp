@@ -123,10 +123,25 @@ class CfgSurfaces
 		impact="hitGroundSoft";
 		surfaceFriction=1.7;
 	};
-	class arm_sand: Default
+	class arm_sand_sahel: Default
 	{
 		access=2;
-		files="arm_sand_*";
+		files="arm_sand_sahel_*";
+		character="arm_sand_sahel_clutter";
+		soundEnviron="sand";
+		soundHit="hard_ground";
+		rough=0.88;
+		maxSpeedCoef=0.89999998;
+		dust=0.75;
+		lucidity=2;
+		grassCover=0.1;
+		impact="hitGroundSoft";
+		surfaceFriction=1.75;
+	};
+	class arm_sand_centraleurope: Default
+	{
+		access=2;
+		files="arm_sand_centraleurope_*";
 		character="empty";
 		soundEnviron="sand";
 		soundHit="hard_ground";
@@ -197,7 +212,17 @@ class CfgSurfaceCharacters
 			"arm_FernTall"
 		};
 	};
-	
+	class arm_sand_sahel_clutter
+	{
+		probability[]={0.001,0.001,0.001,0.001};
+		names[]=
+		{
+			"arm_StrThornKhaki",
+			"arm_Thistle_Thorn_Desert",
+			"arm_StrGrassDry",
+			"arm_StrGrassDry_group"
+		};
+	};
 	class arm_dirt_sahel_clutter
 	{
 		probability[]={0.005,0.005,0.005,0.005};
