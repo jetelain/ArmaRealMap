@@ -677,6 +677,37 @@ class arm_rock_stones : DefaultClutter {
 	scaleMax = 1.18;
 };
 
+/*
+class arm_sharpStones_erosion : DefaultClutter {
+	model = "a3\plants_f\clutter\c_sharpStones_erosion.p3d";
+	affectedByWind = 0;
+	swLighting = 0;
+	scaleMin = 0.1;
+	scaleMax = 0.4;
+};
+class arm_sharpStones_erosion_v2 : DefaultClutter {
+	model = "a3\plants_f\clutter\c_sharpStones_erosion_v2.p3d";
+	affectedByWind = 0;
+	swLighting = 0;
+	scaleMin = 0.1;
+	scaleMax = 0.4;
+};
+*/
+
+class arm_sharpStones_erosion : DefaultClutter {
+	model = "z\arm\addons\common\data\clutter\c_sharpStones_erosion_f.p3d";
+	affectedByWind = 0;
+	swLighting = 0;
+	scaleMin = 0.2;
+	scaleMax = 0.8;
+};
+class arm_sharpStones_erosion_v2 : DefaultClutter {
+	model = "z\arm\addons\common\data\clutter\c_sharpStones_erosion_v2_f.p3d";
+	affectedByWind = 0;
+	swLighting = 0;
+	scaleMin = 0.2;
+	scaleMax = 0.8;
+};
 
 // Explicit
 class arm_StrThornKhaki: Defaultclutter

@@ -5,12 +5,11 @@ class CfgPatches
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 1;
-		requiredAddons[] = {"A3_Plants_F"};
+		requiredAddons[] = {"A3_Plants_F", "A3_Map_Stratis"};
 	};
 };
 
 #include "CfgSurfaces.hpp"
-
 
 class CfgEditorSubcategories
 {
@@ -19,6 +18,21 @@ class CfgEditorSubcategories
         displayName="Arbres ARM";
     };
 };
+
+class CfgWorlds
+{
+	class Stratis;
+	
+	class arm_world: Stratis
+	{
+		class DefaultClutter;
+		class clutter {
+			#include "data\gdt\Clutter.hpp"
+		};
+	};
+	
+};
+
 class CfgVehicles
 {
     class NonStrategic;

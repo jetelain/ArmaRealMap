@@ -274,10 +274,13 @@ class CfgSurfaceCharacters
 	};
 	class arm_rock_clutter
 	{
-		probability[]={1};
+		probability[]={0.49,0.49,0.01,0.01};
 		names[]=
 		{
-			"arm_rock_stones"
+			"arm_sharpStones_erosion",
+			"arm_sharpStones_erosion_v2",
+			"arm_StrGrassDry",
+			"arm_StrGrassDry_group"
 		};
 	};
 };

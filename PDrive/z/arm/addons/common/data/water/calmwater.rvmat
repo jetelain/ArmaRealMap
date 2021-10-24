@@ -1,4 +1,5 @@
-ambient[] = {0.25,0.3,0.13,1};
+// ambient[] = {0.25,0.3,0.13,1};
+ambient[] = {0.99,0.73,0.4,1};
 diffuse[] = {0.25,0.25,0.15,0.1};
 forcedDiffuse[] = {0.55,0.55,0.2,0.75};
 emmisive[] = {0.204,0.425,0.75,0.2};
@@ -80,7 +81,8 @@ class Stage6
 };
 class Stage7
 {
-	texture = "a3\data_f\env_land_sea_co.paa";
+	//texture = "a3\data_f\env_land_sea_co.paa";
+	texture = "z\arm\addons\common\data\water\env_sahel_water_co.paa";
 	uvSource = "tex";
 	class uvTransform
 	{

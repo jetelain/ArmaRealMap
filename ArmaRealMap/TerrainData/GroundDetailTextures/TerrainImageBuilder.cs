@@ -167,7 +167,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
         private static void Draw(MapInfos area, IImageProcessingContext d, ProgressReport report, Polygons category, IBrush brush, IBrush edgeBrush)
         {
-            var crown = category.Category.TerrainMaterial != TerrainMaterial.WetLand ? 12f : 4f;
+            var crown = category.Category.TerrainMaterial != TerrainMaterial.WetLand ? 18f : 8f;
 
             foreach (var polygon in category.List)
             {

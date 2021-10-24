@@ -20,9 +20,9 @@ class CfgWorldList
  
 class CfgWorlds
 {
-	class Stratis;
+	class arm_world;
 	
-	class gossi: Stratis
+	class gossi: arm_world
 	{
 		cutscenes[] = {};
 		description = "GOSSI, Mali";
@@ -70,11 +70,12 @@ class CfgWorlds
 		class Names{
 			#include "names.hpp"
 		};
+		/*
 		class DefaultClutter;
 		class clutter {
 			#include "..\common\data\gdt\Clutter.hpp"
 		};
-		
+		*/
 		#include"mapinfos.hpp"
 	};
 };
