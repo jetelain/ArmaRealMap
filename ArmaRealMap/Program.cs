@@ -150,20 +150,27 @@ namespace ArmaRealMap
             if (!Directory.Exists("P:\\"))
             {
                 Console.WriteLine("Mount project drive");
-                string path = "";
-                using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 233800"))
-                {
-                    if (key != null)
-                    {
-                        path = (key.GetValue("InstallLocation") as string) ?? path;
-                    }
-                }
+
+                string path = GetArma3ToolsPath();
                 if (!string.IsNullOrEmpty(path))
                 {
                     var processs = Process.Start(Path.Combine(path, @"WorkDrive\WorkDrive.exe"), "/Mount /y");
                     processs.WaitForExit();
                 }
             }
+        }
+        internal static string GetArma3ToolsPath()
+        {
+            string path = "";
+            using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 233800"))
+            {
+                if (key != null)
+                {
+                    path = (key.GetValue("InstallLocation") as string) ?? path;
+                }
+            }
+
+            return path;
         }
 #pragma warning restore CA1416 // Valider la compatibilité de la plateforme
 
@@ -194,7 +201,7 @@ namespace ArmaRealMap
                 
                 Console.WriteLine("==== Roads ====");
                 RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes);
-                
+                /*
                 Console.WriteLine("==== Lakes ====");
                 LakeGenerator.ProcessLakes(data, area, shapes);
                 
@@ -217,7 +224,7 @@ namespace ArmaRealMap
                 PlaceIsolatedObjects(data, olibs, filtered);
 
                 Console.WriteLine("==== Fences and walls ====");
-                PlaceBarrierObjects(data, db, olibs, filtered);
+                PlaceBarrierObjects(data, db, olibs, filtered);*/
                 
                 Console.WriteLine("==== Terrain images ====");
                 TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);

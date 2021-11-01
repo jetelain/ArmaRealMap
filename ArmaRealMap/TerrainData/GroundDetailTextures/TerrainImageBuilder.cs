@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Osm;
@@ -32,12 +34,12 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             }
 
             int chuncking = 0;
-            using (var img = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, Color.Black))
+            using (var fakeSat = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, Color.Black))
             {
-                img.Mutate(i => i.Fill(brushes[TerrainMaterial.Default]));
+                fakeSat.Mutate(i => i.Fill(brushes[TerrainMaterial.Default]));
 
                 var report = new ProgressReport("Tex-Shapes", polygonsByCategory.Sum(p => p.List.Count));
-                img.Mutate(d =>
+                fakeSat.Mutate(d =>
                 {
                     foreach (var category in polygonsByCategory.OrderByDescending(e => e.Category.GroundTexturePriority))
                     {
@@ -51,10 +53,117 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                     }
                 });
                 report.TaskDone();
-                chuncking = DrawHelper.SavePngChuncked(img, config.Target.GetTerrain("sat-fake.png"));
+                chuncking = DrawHelper.SavePngChuncked(fakeSat, config.Target.GetTerrain("sat-fake.png"));
+                if (config.GenerateSatTiles)
+                {
+                    var realSat = Image.Load<Rgb24>(config.Target.GetTerrain("sat-raw.png"));
+                    SatMapTiling(realSat, fakeSat, config);
+                }
             }
+            /*
+            if (!config.GenerateSatTiles)
+            {
+                BlendRawAndFake(config, 4);
+            }*/
+        }
 
-            BlendRawAndFake(config, 4);
+        private static void SatMapTiling(Image<Rgb24> realSat, Image<Rgb24> fakeSat, Config config)
+        {
+            // Going through TerrainBuilder takes ~4 hours, with a lot of manual operations
+            // Here, for exactly the same result, it takes 4 minutes, all automated ! (but will eat all your CPU)
+
+            var step = config.TileSize - (config.TileOverlap * 4);
+            var num = (int)Math.Ceiling((double)realSat.Width / (double)step);
+            var report2 = new ProgressReport("Tiling", num * num);
+            Parallel.For(0, num, x =>
+            {
+                using (var tile = new Image<Rgb24>(config.TileSize, config.TileSize, Color.Black))
+                {
+                    using (var fake = new Image<Rgb24>(config.TileSize, config.TileSize, Color.Transparent))
+                    {
+                        for (var y = 0; y < num; ++y)
+                        {
+                            var pos = new Point(-x * step + (config.TileOverlap * 2), -y * step + (config.TileOverlap * 2));
+                            fake.Mutate(c => c.DrawImage(fakeSat, pos, 1.0f));
+                            FillEdges(realSat, x, num, fake, y, pos);
+                            fake.Mutate(d => d.GaussianBlur(10f));
+
+                            tile.Mutate(c => c.DrawImage(realSat, pos, 1.0f));
+                            tile.Mutate(p => p.DrawImage(fake, 0.75f));
+                            FillEdges(realSat, x, num, tile, y, pos);
+                            tile.Save(config.Target.GetLayer($"S_{x:000}_{y:000}_lco.png"));
+                            report2.ReportOneDone();
+                        }
+                    }
+                }
+            });
+            report2.TaskDone();
+
+            if ( config.ConvertPAA ) // Use BIS.PAA.Encoder ?
+            {
+                var imageToPaa = Path.Combine(Program.GetArma3ToolsPath(), "ImageToPAA", "ImageToPAA.exe");
+                report2 = new ProgressReport("Png->PAA", num * num);
+                Parallel.For(0, num, x =>
+                {
+                    var proc = Process.Start(new ProcessStartInfo()
+                    {
+                        FileName = imageToPaa,
+                        RedirectStandardOutput = true,
+                        Arguments = config.Target.GetLayer($"S_{x:000}_*_lco.png"),
+                    });
+                    proc.OutputDataReceived += (_, e) => Trace.WriteLine(e.Data);
+                    proc.WaitForExit();
+                });
+                report2.TaskDone();
+            }
+        }
+
+
+
+        private static void FillEdges(Image<Rgb24> realSat, int x, int num, Image<Rgb24> tile, int y, Point pos)
+        {
+            if (x == 0)
+            {
+                FillX(tile, pos.X, -1);
+            }
+            else if (x == num - 1)
+            {
+                FillX(tile, pos.X + realSat.Width - 1, +1);
+            }
+            if (y == 0)
+            {
+                FillY(tile, pos.Y, -1);
+            }
+            else if (y == num - 1)
+            {
+                FillY(tile, pos.Y + realSat.Height - 1, +1);
+            }
+        }
+
+        private static void FillY(Image<Rgb24> tile, int sourceY, int d)
+        {
+            var y = sourceY + d;
+            while (y >= 0 && y < tile.Height)
+            {
+                for (int x = 0; x < tile.Width; ++x)
+                {
+                    tile[x, y] = tile[x, sourceY];
+                }
+                y += d;
+            }
+        }
+
+        private static void FillX(Image<Rgb24> tile, int sourceX, int d)
+        {
+            var x = sourceX + d;
+            while ( x >= 0 && x < tile.Width )
+            {
+                for(int y = 0; y < tile.Height; ++y)
+                {
+                    tile[x, y] = tile[sourceX, y];
+                }
+                x += d;
+            }
         }
 
         private static void BlendRawAndFake(Config config, int chuncking)

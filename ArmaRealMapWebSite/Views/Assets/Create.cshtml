@@ -1,0 +1,127 @@
+﻿@model ArmaRealMapWebSite.Entities.Assets.Asset
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Asset</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassName" class="control-label"></label>
+                <input asp-for="ClassName" class="form-control" />
+                <span asp-validation-for="ClassName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModelPath" class="control-label"></label>
+                <input asp-for="ModelPath" class="form-control" />
+                <span asp-validation-for="ModelPath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Width" class="control-label"></label>
+                <input asp-for="Width" class="form-control" />
+                <span asp-validation-for="Width" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Depth" class="control-label"></label>
+                <input asp-for="Depth" class="form-control" />
+                <span asp-validation-for="Depth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Height" class="control-label"></label>
+                <input asp-for="Height" class="form-control" />
+                <span asp-validation-for="Height" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CX" class="control-label"></label>
+                <input asp-for="CX" class="form-control" />
+                <span asp-validation-for="CX" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CY" class="control-label"></label>
+                <input asp-for="CY" class="form-control" />
+                <span asp-validation-for="CY" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CZ" class="control-label"></label>
+                <input asp-for="CZ" class="form-control" />
+                <span asp-validation-for="CZ" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TerrainRegions" class="control-label"></label>
+                <input asp-for="TerrainRegions" class="form-control" />
+                <span asp-validation-for="TerrainRegions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssetCategory" class="control-label"></label>
+                <select asp-for="AssetCategory" class="form-control"></select>
+                <span asp-validation-for="AssetCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TerrainBuilderTemplateXML" class="control-label"></label>
+                <input asp-for="TerrainBuilderTemplateXML" class="form-control" />
+                <span asp-validation-for="TerrainBuilderTemplateXML" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GameModID" class="control-label"></label>
+                <select asp-for="GameModID" class ="form-control" asp-items="ViewBag.GameModID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxZ" class="control-label"></label>
+                <input asp-for="MaxZ" class="form-control" />
+                <span asp-validation-for="MaxZ" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxY" class="control-label"></label>
+                <input asp-for="MaxY" class="form-control" />
+                <span asp-validation-for="MaxY" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxX" class="control-label"></label>
+                <input asp-for="MaxX" class="form-control" />
+                <span asp-validation-for="MaxX" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinZ" class="control-label"></label>
+                <input asp-for="MinZ" class="form-control" />
+                <span asp-validation-for="MinZ" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinY" class="control-label"></label>
+                <input asp-for="MinY" class="form-control" />
+                <span asp-validation-for="MinY" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinX" class="control-label"></label>
+                <input asp-for="MinX" class="form-control" />
+                <span asp-validation-for="MinX" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BoundingSphereDiameter" class="control-label"></label>
+                <input asp-for="BoundingSphereDiameter" class="form-control" />
+                <span asp-validation-for="BoundingSphereDiameter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

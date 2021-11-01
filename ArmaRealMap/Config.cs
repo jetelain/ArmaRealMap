@@ -35,7 +35,6 @@ namespace ArmaRealMap
         public string Debug { get; set; }
         public string Cache { get; set; }
 
-
         [JsonIgnore]
         public string Roads => Path.Combine(Config ?? string.Empty, "data", "roads");
         [JsonIgnore]
@@ -45,6 +44,7 @@ namespace ArmaRealMap
         public string GetTerrain(string name) => Path.Combine(Terrain ?? string.Empty, name);
         public string GetCache(string name) => Path.Combine(Cache ?? string.Empty, name);
         public string GetDebug(string name) => Path.Combine(Debug ?? string.Empty, name);
+        public string GetLayer(string name) => Path.Combine(Config, "data", "layers", name);
     }
 
     public class Config
@@ -63,5 +63,13 @@ namespace ArmaRealMap
 
         public TerrainRegion Terrain { get; set; }
         public string SharedCache { get; set; }
+
+        public int TileSize { get; set; } = 1024;
+
+        public int TileOverlap { get; set; } = 16;
+
+        public bool GenerateSatTiles { get; set; } = true;
+
+        public bool ConvertPAA { get; set; } = true;
     }
 }

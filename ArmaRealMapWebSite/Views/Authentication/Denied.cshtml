@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+<div class="container">
+    <h1>Accès refusé</h1>
+    @if (User?.Identity?.IsAuthenticated ?? false)
+    {
+        <p>Vous n'avez pas les droits requis pour accéder à cette page.</p>
+    }
+    else
+    {
+        <p>Vous devez vous <a asp-action="SignIn">connecter</a> pour accéder à cette page.</p>
+    }
+
+</div>

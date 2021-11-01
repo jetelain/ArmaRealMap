@@ -356,6 +356,7 @@ healthchecksdb
 /PDrive/z/arm/addons/*/data/roads/roads.shx
 /PDrive/z/arm/addons/*/data/roads/roads.shp
 /PDrive/z/arm/addons/*/data/roads/roads.dbf
+!/PDrive/z/arm/addons/common/*
 /Belfort/belfort.Layers
 /Belfort/TemplateLibs
 *.v4d
@@ -364,3 +365,8 @@ healthchecksdb
 *.vdat
 /AmsUtil/Properties/launchSettings.json
 /Belfort.old
+/ArmaRealMap/arm_gossi.json
+/ArmaRealMap/arm_belfort.json
+/ArmaRealMapWebSite/xdata
+*.db
+/ArmaRealMapWebSite/appsettings.Development.json

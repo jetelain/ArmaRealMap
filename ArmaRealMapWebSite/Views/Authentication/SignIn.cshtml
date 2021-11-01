@@ -1,0 +1,29 @@
+﻿
+@model SignInViewModel
+
+@{
+    ViewData["Title"] = "Se connecter";
+
+}
+
+<div class="container">
+    <div>
+        <h3>Se connecter avec Steam</h3>
+        @foreach (var scheme in Model.Providers.OrderBy(p => p.DisplayName))
+        {
+            <form method="post" asp-action="SignIn">
+                <input type="hidden" name="Provider" value="@scheme.Name" />
+                <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="true" id="isPersistent" name="isPersistent">
+                        <label class="form-check-label" for="isPersistent">
+                            Se rappeler de moi
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-success m-1" type="submit">Se connecter avec @scheme.DisplayName</button>
+            </form>
+        }
+    </div>
+</div>

@@ -1,0 +1,156 @@
+﻿@model ArmaRealMapWebSite.Entities.Assets.Asset
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<h1>@Html.DisplayFor(model => model.Name)</h1>
+
+<div>
+    <div class="p-2">
+        <img src="@Url.Action("Preview", new { id = Model.AssetID, size = 1920 })" style="width:100%;" alt="Aperçu" />
+    </div>
+
+    <h4>Classement</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TerrainRegions)
+        </dt>
+        <dd class="col-sm-10">
+            <form asp-action="AddRegion">
+                @foreach (var value in Enum.GetValues<ArmaRealMapWebSite.Entities.Assets.TerrainRegion>())
+                {
+                    if (value != ArmaRealMapWebSite.Entities.Assets.TerrainRegion.Unknown)
+                    {
+                        var active = (Model.TerrainRegions & value) == value;
+                        if (active)
+                        {
+                            <button class="btn btn-success" asp-action="RemoveRegion" asp-route-id="@Model.AssetID" asp-route-region="@value">@Html.DisplayFor(model => value)</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-outline-secondary" asp-action="AddRegion" asp-route-id="@Model.AssetID" asp-route-region="@value">@Html.DisplayFor(model => value)</button>
+                        }
+                    }
+                }
+            </form>
+        </dd>
+        <dt class="col-sm-2">
+            <label for="AssetCategory">
+                @Html.DisplayNameFor(model => model.AssetCategory)
+            </label>
+        </dt>
+        <dd class="col-sm-10">
+            <form asp-action="SetCategory" asp-route-id="@Model.AssetID" class="form-inline">
+                <select id="AssetCategory" asp-for="AssetCategory" asp-items="@Html.GetEnumSelectList<ArmaRealMapWebSite.Entities.Assets.AssetCategory>()" class="form-control  my-1 mr-2"></select>
+                <button class="btn btn-secondary">Enregistrer</button>
+            </form>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BoundingSphereDiameter)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BoundingSphereDiameter)
+        </dd>
+    </dl>    
+
+    <h4>Informations techniques</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ClassName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClassName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ModelPath)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ModelPath)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Width)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Width)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Depth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Depth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Height)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Height)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CX)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CX)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CY)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CY)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CZ)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CZ)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameMod)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameMod.GameModID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxZ)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaxZ)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxY)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaxY)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxX)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaxX)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MinZ)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MinZ)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MinY)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MinY)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MinX)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MinX)
+        </dd>
+    </dl>
+</div>

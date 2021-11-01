@@ -274,7 +274,7 @@ class CfgSurfaceCharacters
 	};
 	class arm_rock_clutter
 	{
-		probability[]={0.49,0.49,0.01,0.01};
+		probability[]={0.48,0.48,0.02,0.02};
 		names[]=
 		{
 			"arm_sharpStones_erosion",

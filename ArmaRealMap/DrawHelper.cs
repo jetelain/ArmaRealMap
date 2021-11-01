@@ -200,7 +200,8 @@ namespace ArmaRealMap
 
         internal static int SavePngChuncked(Image<Rgb24> img, string filename)
         {
-            //img.Save(filename); --> Too expensive
+            img.Save(filename);
+
             if (img.Width > Chunk) 
             {
                 // terrain builder as a 32 bits process, does not like too large images. So make chunks of image

@@ -37,12 +37,10 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
     - [ ] Historic buildings
     - [ ] Sports buildings
   - [ ] Place natural elements from OpenStreeMap data
-    - [ ] Forest
-	  - [x] Experimental using Terrain Processor
-	  - [ ] Builtin placing
+    - [x] Forest
     - [x] Isolated trees
-    - [ ] Tree rows
-    - [ ] Rocks
+    - [x] Tree rows
+    - [x] Rocks
     - [ ] Adjust using rivers and lakes data
     - [x] Adjust using roads data
     - [ ] Adjust using parkings data
@@ -97,7 +95,7 @@ Specific tasks :
       - Roads / trails ;
       - Buildings.
   - [ ] Find appropriate buildings assets
-  - [ ] Find appropriate ground textures
+  - [x] Find appropriate ground textures
   - [ ] Find appropriate vegetation assets
     - [ ] Trees
     - [ ] Edges
