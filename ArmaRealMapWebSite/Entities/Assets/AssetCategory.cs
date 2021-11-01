@@ -14,6 +14,15 @@ namespace ArmaRealMapWebSite.Entities.Assets
         Clutter,
 
         [Display(Name = "🌿 Plante")]
-        Plant
+        Plant,
+
+        [Display(Name = "🪨 Rocher")]
+        Rock,
+
+        [Display(Name = "🧱 Structure")]
+        Structure,
+
+        [Display(Name = "🏘 Batiment")]
+        Building
     }
 }
