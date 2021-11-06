@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.Geometries;
 using NetTopologySuite.Geometries;
 using OsmSharp;

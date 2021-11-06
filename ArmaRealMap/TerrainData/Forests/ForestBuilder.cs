@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;

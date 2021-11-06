@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ArmaRealMap.Buildings;
+using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.DataSources.S2C;
 using ArmaRealMap.ElevationModel;
 using ArmaRealMap.Geometries;

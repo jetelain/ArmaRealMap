@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ArmaRealMapWebSite.Entities.Assets;
 using ArmaRealMapWebSite.Models;
 using Microsoft.AspNetCore.Authorization;
+using ArmaRealMap.Core.ObjectLibraries;
 
 namespace ArmaRealMapWebSite.Controllers
 {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using ArmaRealMap.Core.ObjectLibraries;
 
 namespace ArmaRealMapWebSite.Entities.Assets
 {

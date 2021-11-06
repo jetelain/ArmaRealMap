@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMapWebSite.Entities.Assets;
 using Microsoft.AspNetCore.Mvc.Rendering;
 

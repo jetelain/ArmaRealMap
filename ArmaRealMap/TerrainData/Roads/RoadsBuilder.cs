@@ -6,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.ElevationModel;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;

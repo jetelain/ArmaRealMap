@@ -1,4 +1,6 @@
-﻿namespace ArmaRealMap
+﻿using ArmaRealMap.Core.ObjectLibraries;
+
+namespace ArmaRealMap
 {
     public class BuildingJson
     {

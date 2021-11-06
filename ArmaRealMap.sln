@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.WRP", "..\jetelain\bis-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.PAA", "..\jetelain\bis-file-formats\BIS.PAA\BIS.PAA.csproj", "{6E2A6C3B-C0C1-4C98-89B7-F0A4FB13DA00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmaRealMapWebSite", "ArmaRealMapWebSite\ArmaRealMapWebSite.csproj", "{8E8931F0-98EE-41EA-ABB2-B96203F71A69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArmaRealMapWebSite", "ArmaRealMapWebSite\ArmaRealMapWebSite.csproj", "{8E8931F0-98EE-41EA-ABB2-B96203F71A69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmaRealMap.Core", "ArmaRealMap.Core\ArmaRealMap.Core.csproj", "{7CDA522C-5A59-4AD6-99C4-6B060A3DDD4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{8E8931F0-98EE-41EA-ABB2-B96203F71A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E8931F0-98EE-41EA-ABB2-B96203F71A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E8931F0-98EE-41EA-ABB2-B96203F71A69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CDA522C-5A59-4AD6-99C4-6B060A3DDD4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CDA522C-5A59-4AD6-99C4-6B060A3DDD4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CDA522C-5A59-4AD6-99C4-6B060A3DDD4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CDA522C-5A59-4AD6-99C4-6B060A3DDD4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

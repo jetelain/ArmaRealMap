@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.TerrainBuilder;
 
 namespace ArmaRealMap.Libraries

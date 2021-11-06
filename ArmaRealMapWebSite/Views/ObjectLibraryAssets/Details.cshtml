@@ -1,0 +1,60 @@
+﻿@model ArmaRealMapWebSite.Entities.Assets.ObjectLibraryAsset
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ObjectLibraryAsset</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ObjectLibrary)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ObjectLibrary.ObjectLibraryID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Asset)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Asset.AssetID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Probability)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Probability)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PlacementRadius)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PlacementRadius)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReservedRadius)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReservedRadius)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaxZ)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaxZ)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MinZ)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MinZ)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ObjectLibraryAssetID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

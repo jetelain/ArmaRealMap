@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ArmaRealMapWebSite.Entities.Assets
+namespace ArmaRealMap.Core.ObjectLibraries
 {
-    //[Flags]
     public enum TerrainRegion
     {
         [Display(Name = "Non précisé")]

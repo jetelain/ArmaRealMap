@@ -7,6 +7,10 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using ArmaRealMapWebSite.Entities.Assets;
+using ArmaRealMap.Core.ObjectLibraries;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ArmaRealMapWebSite.Entities.Assets
 {
@@ -26,46 +30,54 @@ namespace ArmaRealMapWebSite.Entities.Assets
             modelBuilder.Entity<Asset>().ToTable(nameof(Asset));
             modelBuilder.Entity<AssetPreview>().ToTable(nameof(AssetPreview));
             modelBuilder.Entity<GameMod>().ToTable(nameof(GameMod));
+
+            modelBuilder.Entity<ObjectLibrary>().ToTable(nameof(ObjectLibrary));
+            modelBuilder.Entity<ObjectLibraryAsset>().ToTable(nameof(ObjectLibraryAsset));
         }
 
         private static readonly Regex TextLine = new Regex(@"\[([a-zA-Z/0-9\.\-]+),""([^""]+)"",""([^""]+)"",\[\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],([0-9\.\-]+)\]\]", RegexOptions.Compiled);
 
         internal void LoadFromXData()
         {
-            //Load("Base game", "a.txt", TerrainRegion.Mediterranean, AssetCategory.Structure);
-            //Load("Livonia", "c.txt", TerrainRegion.CentralEurope, AssetCategory.Structure);
-            //Load("Tanoa", "b2.txt", TerrainRegion.Tropical, AssetCategory.Structure);
-            //Load("Base game", "b1.txt", TerrainRegion.Mediterranean, AssetCategory.Structure);
-            Load("Base game", "d1.txt", TerrainRegion.Unknown, AssetCategory.Structure);
-            Load("Tanoa", "d2.txt", TerrainRegion.Unknown, AssetCategory.Structure);
-            Load("Base game", "d3.txt", TerrainRegion.Unknown, AssetCategory.Structure);
-            Load("Livonia", "d4.txt", TerrainRegion.Unknown, AssetCategory.Structure);
-            /*
-            var changes = 0;
-            foreach(var img in AssetPreviews.Where(a => a.Width == 1920))
-            {
-                var format = Image.DetectFormat(img.Data);
-                if (format is SixLabors.ImageSharp.Formats.Png.PngFormat)
-                {
-                    using (var thumb = Image.Load(img.Data))
-                    {
-                        using (var stream = new MemoryStream())
-                        {
-                            thumb.SaveAsJpeg(stream);
-                            img.Data = stream.ToArray();
-                        }
-                        Update(img);
-                        changes++;
-                        if (changes % 10 == 9)
-                        {
-                            SaveChanges();
-                        }
-                    }
-                }
-            }
-            SaveChanges();
-            */
+            //Load("JBAD", "e1.txt", TerrainRegion.Sahel | TerrainRegion.NearEast, AssetCategory.Structure);
+            //Load("ARM", "e2.txt", TerrainRegion.Sahel, AssetCategory.Building);
+            //Load("Base game", "e3.txt", TerrainRegion.Unknown, AssetCategory.Rock);
+
+            //var files = Directory.GetFiles(@"xdata", "*.json");
+            //var assets = Assets.ToList();
+            //foreach (var json in files)
+            //{
+            //    var jlib = JsonSerializer.Deserialize<JsonObjectLibrary>(File.ReadAllText(json), options);
+
+            //    Add(new ObjectLibrary()
+            //    {
+            //        Density = jlib.Density,
+            //        ObjectCategory = jlib.Category,
+            //        Probability = 1,
+            //        TerrainRegion = jlib.Terrain ?? TerrainRegion.Unknown,
+            //        Assets = jlib.Objects.Where(o => assets.Any(a => string.Equals(a.Name,o.Name, StringComparison.OrdinalIgnoreCase))).Select(o => new ObjectLibraryAsset()
+            //        {
+            //            Probability = o.PlacementProbability,
+            //            MaxZ = o.MaxZ,
+            //            MinZ = o.MinZ,
+            //            PlacementRadius = o.PlacementRadius,
+            //            ReservedRadius = o.ReservedRadius,
+            //            Asset = assets.OrderBy(a => a.AssetID).Last(a => string.Equals(a.Name, o.Name, StringComparison.OrdinalIgnoreCase))
+            //        }).ToList()
+            //    }); 
+            //}
+            //SaveChanges();
         }
+
+
+
+        private static readonly JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            Converters ={
+                new JsonStringEnumConverter()
+            },
+            WriteIndented = true
+        };
 
         private void Load(string gameModName, string file, TerrainRegion region, AssetCategory def)
         {
@@ -196,5 +208,9 @@ namespace ArmaRealMapWebSite.Entities.Assets
             }
             return def;
         }
+
+        public DbSet<ArmaRealMapWebSite.Entities.Assets.ObjectLibrary> ObjectLibrary { get; set; }
+
+        public DbSet<ArmaRealMapWebSite.Entities.Assets.ObjectLibraryAsset> ObjectLibraryAsset { get; set; }
     }
 }

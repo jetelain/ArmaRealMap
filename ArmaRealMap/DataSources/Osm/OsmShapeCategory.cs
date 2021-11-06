@@ -1,4 +1,5 @@
-﻿using ArmaRealMap.GroundTextureDetails;
+﻿using ArmaRealMap.Core.ObjectLibraries;
+using ArmaRealMap.GroundTextureDetails;
 using SixLabors.ImageSharp;
 
 namespace ArmaRealMap.Osm

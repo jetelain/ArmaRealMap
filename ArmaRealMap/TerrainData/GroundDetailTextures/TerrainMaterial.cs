@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using ArmaRealMap.Core.ObjectLibraries;
 using SixLabors.ImageSharp;
 
 namespace ArmaRealMap.GroundTextureDetails

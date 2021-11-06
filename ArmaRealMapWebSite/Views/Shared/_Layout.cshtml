@@ -21,6 +21,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Assets" asp-action="Index">Objets</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ObjectLibraries" asp-action="Index">Bibliothèques</a>
+                        </li>
                     </ul>
                     <form class="form-inline">
                         @if (User?.Identity?.IsAuthenticated ?? false)

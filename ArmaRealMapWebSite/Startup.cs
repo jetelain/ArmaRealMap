@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,11 @@ namespace ArmaRealMapWebSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRequestLocalization(options =>
+            {
+                options.AddSupportedCultures("en-US");
+            });
+
             services.AddControllersWithViews();
 
             services.AddDbContext<AssetsContext>(options =>
@@ -76,7 +82,7 @@ namespace ArmaRealMapWebSite
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseRequestLocalization();
             app.UseRouting();
 
             app.UseAuthentication();
@@ -89,6 +95,7 @@ namespace ArmaRealMapWebSite
                 MinimumSameSitePolicy = SameSiteMode.Lax
             });
 
+ 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
