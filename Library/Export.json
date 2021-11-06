@@ -2186,5 +2186,193 @@
     "Terrain": "Sahel",
     "Density": null,
     "Probability": 0.25
+  },
+  {
+    "Category": "Hut",
+    "Objects": [
+      {
+        "Name": "arm_hut01",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut01A",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut01B",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut01C",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut02",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 3.7540698,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut02A",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 3.7540698,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut02B",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 3.7540698,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut02C",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 3.7540698,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut03",
+        "Width": 7.21486,
+        "Depth": 7.26152,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut03A",
+        "Width": 7.21486,
+        "Depth": 7.26152,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut03B",
+        "Width": 7.21486,
+        "Depth": 7.26152,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut03C",
+        "Width": 7.21486,
+        "Depth": 7.26152,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut04",
+        "Width": 7.21486,
+        "Depth": 7.26152,
+        "Height": 3.7540698,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut04A",
+        "Width": 7.21486,
+        "Depth": 7.26152,
+        "Height": 3.7540698,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut04B",
+        "Width": 7.21486,
+        "Depth": 7.26152,
+        "Height": 3.7540698,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut04C",
+        "Width": 7.21486,
+        "Depth": 7.26152,
+        "Height": 3.7540698,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut05",
+        "Width": 9.01858,
+        "Depth": 9.0769,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut05A",
+        "Width": 9.01858,
+        "Depth": 9.0769,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut05B",
+        "Width": 9.01858,
+        "Depth": 9.0769,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut05C",
+        "Width": 9.01858,
+        "Depth": 9.0769,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": null,
+    "Probability": null
   }
 ]
