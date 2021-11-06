@@ -370,3 +370,7 @@ healthchecksdb
 /ArmaRealMapWebSite/xdata
 *.db
 /ArmaRealMapWebSite/appsettings.Development.json
+/PDrive/z/arm/addons/common-old
+/PDrive/z/arm/addons/common/data/houses
+/Gossi
+/Belfort

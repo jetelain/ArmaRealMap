@@ -1,0 +1,1 @@
+mklink /J %~dp0PDrive\z\arm\addons\common C:\Users\Julien\source\repos\jetelain\ArmaRealMapAssets\common

@@ -124,7 +124,7 @@ namespace ArmaRealMapWebSite.Controllers
             {
                 return NotFound();
             }
-            return File(asset.Data, "image/png");
+            return File(asset.Data, asset.Width == 1920 ? "image/jpeg" : "image/png");
         }
 
         //// GET: Assets/Create

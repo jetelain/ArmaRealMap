@@ -13,10 +13,6 @@ class CfgPatches
 
 class CfgEditorSubcategories
 {
-    class arm_tree_faction
-    {
-		displayName="Arbres [ARM]";
-    };
 	class arm_huts
     {
         displayName="Huttes [ARM]";
@@ -45,14 +41,15 @@ class CfgWorlds
 class CfgVehicles
 {
     class NonStrategic;
-    class arm_bush_base : NonStrategic
+	
+    /*
+	class arm_bush_base : NonStrategic
     {
         scope=0;
         destrType="DestructTree";
         editorCategory="EdCat_Environment";
         editorSubcategory="arm_tree_faction";
     };
-
 	class Land_arm_acacia_01 : arm_bush_base
 	{
 		scope=2;
@@ -60,6 +57,14 @@ class CfgVehicles
         model="z\arm\addons\common\data\trees\sahel\acacia_1.p3d";
         displayName="Acacia #1";
 	};
+	class Land_arm_eucalyptus_crebra_tree : arm_bush_base
+	{
+		scope=2;
+        scopeCurator=2;
+        model="z\arm\addons\common\data\trees\eucalyptus_crebra_tree.p3d";
+        displayName="Eucalyptus #1";
+	};
+	*/
 	
 	class arm_hut_base : NonStrategic
     {
