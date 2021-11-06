@@ -1,0 +1,2190 @@
+[
+  {
+    "Category": "Industrial",
+    "Objects": [
+      {
+        "Name": "SCF_01_boilerBuilding_F",
+        "Width": 48.009,
+        "Depth": 49.8346,
+        "Height": 41.7402,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SCF_01_warehouse_F",
+        "Width": 34.179802,
+        "Depth": 38.233,
+        "Height": 13.13927,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SCF_01_washer_F",
+        "Width": 14.47263,
+        "Depth": 31.424599,
+        "Height": 12.755381,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SM_01_reservoirTower_F",
+        "Width": 10.65536,
+        "Depth": 10.8701,
+        "Height": 24.9357,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SM_01_shed_F",
+        "Width": 29.9333,
+        "Depth": 15.71608,
+        "Height": 8.99254,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "dp_mainFactory_addon2_F",
+        "Width": 11.69981,
+        "Depth": 29.9164,
+        "Height": 24.7834,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "dp_mainFactory_F",
+        "Width": 46.1033,
+        "Depth": 41.0418,
+        "Height": 24.712502,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "dp_smallFactory_F",
+        "Width": 23.1311,
+        "Depth": 14.62117,
+        "Height": 5.84386,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Factory_Main_F",
+        "Width": 28.455101,
+        "Depth": 37.728,
+        "Height": 17.9818,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "dp_bigTank_F",
+        "Width": 17.085,
+        "Depth": 17.084991,
+        "Height": 8.75675,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SCF_01_storageBin_small_F",
+        "Width": 9.4982605,
+        "Depth": 9.4981,
+        "Height": 16.76802,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SCF_01_storageBin_medium_F",
+        "Width": 20.658901,
+        "Depth": 20.7024,
+        "Height": 15.25554,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SCF_01_storageBin_big_F",
+        "Width": 28.920502,
+        "Depth": 28.7942,
+        "Height": 26.6016,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SCF_01_shed_F",
+        "Width": 21.5675,
+        "Depth": 36.499702,
+        "Height": 18.82258,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Warehouse_02_F",
+        "Width": 45.5854,
+        "Depth": 29.3251,
+        "Height": 11.16051,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Warehouse_01_F",
+        "Width": 17.3337,
+        "Depth": 42.211403,
+        "Height": 6.58349,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "StorageTank_01_small_F",
+        "Width": 37.5834,
+        "Depth": 37.5835,
+        "Height": 26.9732,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "StorageTank_01_large_F",
+        "Width": 46.4958,
+        "Depth": 46.4958,
+        "Height": 18.67136,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "DPP_01_waterCooler_F",
+        "Width": 9.92179,
+        "Depth": 6.60942,
+        "Height": 7.63052,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "DPP_01_transformer_F",
+        "Width": 3.7091699,
+        "Depth": 3.68625,
+        "Height": 4.34325,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "DPP_01_smallFactory_F",
+        "Width": 23.1311,
+        "Depth": 14.62117,
+        "Height": 5.8438597,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "DPP_01_mainFactory_F",
+        "Width": 46.1033,
+        "Depth": 41.0418,
+        "Height": 24.8572,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "dp_smallTank_old_F",
+        "Width": 7.7000003,
+        "Depth": 7.7,
+        "Height": 12.392759,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shed_Ind_old_F",
+        "Width": 29.9333,
+        "Depth": 15.71608,
+        "Height": 8.99254,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Sawmill_01_F",
+        "Width": 25.526299,
+        "Depth": 32.464,
+        "Height": 15.73532,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "PowerStation_01_F",
+        "Width": 11.16528,
+        "Depth": 15.85522,
+        "Height": 6.16039,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "dp_bigTank_old_F",
+        "Width": 17.085,
+        "Depth": 17.084991,
+        "Height": 8.75675,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "DPP_01_mainFactory_old_F",
+        "Width": 46.1033,
+        "Depth": 41.0418,
+        "Height": 24.8572,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "CoalPlant_01_MainBuilding_F",
+        "Width": 45.119102,
+        "Depth": 43.5771,
+        "Height": 27.669102,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "CementWorks_01_grey_F",
+        "Width": 30.8722,
+        "Depth": 49.3964,
+        "Height": 12.70252,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "CementWorks_01_brick_F",
+        "Width": 30.356602,
+        "Depth": 49.3582,
+        "Height": 12.70064,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SCF_01_clarifier_F",
+        "Width": 16.40262,
+        "Depth": 14.65866,
+        "Height": 20.1927,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SCF_01_crystallizer_F",
+        "Width": 19.94768,
+        "Depth": 19.19673,
+        "Height": 21.6972,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SCF_01_diffuser_F",
+        "Width": 19.0243,
+        "Depth": 49.1258,
+        "Height": 20.617,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "SCF_01_generalBuilding_F",
+        "Width": 30.2709,
+        "Depth": 50.2989,
+        "Height": 24.1324,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Unknown",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "Retail",
+    "Objects": [
+      {
+        "Name": "MultistoryBuilding_01_F",
+        "Width": 45.3239,
+        "Depth": 43.198997,
+        "Height": 51.4654,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "MultistoryBuilding_03_F",
+        "Width": 25.5595,
+        "Depth": 34.3441,
+        "Height": 58.307503,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "MultistoryBuilding_04_F",
+        "Width": 29.9134,
+        "Depth": 30.5318,
+        "Height": 79.5338,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_City_01_F",
+        "Width": 23.766,
+        "Depth": 12.89384,
+        "Height": 15.71591,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_City_02_F",
+        "Width": 24.1947,
+        "Depth": 25.521,
+        "Height": 14.79439,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_City_03_F",
+        "Width": 16.944519,
+        "Depth": 25.005001,
+        "Height": 15.71218,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_City_04_F",
+        "Width": 18.48448,
+        "Depth": 26.4653,
+        "Height": 16.60506,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_City_05_F",
+        "Width": 22.3214,
+        "Depth": 34.8513,
+        "Height": 18.5369,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_City_06_F",
+        "Width": 25.8982,
+        "Depth": 22.3598,
+        "Height": 14.76841,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_City_07_F",
+        "Width": 9.88331,
+        "Depth": 19.180729,
+        "Height": 9.93462,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_Town_01_F",
+        "Width": 11.12599,
+        "Depth": 16.682331,
+        "Height": 11.48864,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_Town_02_F",
+        "Width": 12.52563,
+        "Depth": 17.1679,
+        "Height": 9.05345,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_Town_03_F",
+        "Width": 14.92182,
+        "Depth": 21.082298,
+        "Height": 11.942829,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_Town_04_F",
+        "Width": 10.52776,
+        "Depth": 18.643791,
+        "Height": 9.872311,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_Town_05_addon_F",
+        "Width": 8.650499,
+        "Depth": 3.73404,
+        "Height": 6.86007,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Shop_Town_05_F",
+        "Width": 19.09577,
+        "Depth": 19.75099,
+        "Height": 10.480551,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Supermarket_01_F",
+        "Width": 16.88151,
+        "Depth": 28.3508,
+        "Height": 7.3002,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Warehouse_03_F",
+        "Width": 20.387482,
+        "Depth": 15.863501,
+        "Height": 7.46272,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "MetalShelter_02_F",
+        "Width": 9.67412,
+        "Depth": 13.00506,
+        "Height": 6.9253798,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_02_b_blue_F",
+        "Width": 15.93587,
+        "Depth": 10.88086,
+        "Height": 12.45783,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_02_b_brown_F",
+        "Width": 15.93587,
+        "Depth": 10.88086,
+        "Height": 12.45783,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_02_b_pink_F",
+        "Width": 15.93587,
+        "Depth": 10.88086,
+        "Height": 12.45783,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_02_b_white_F",
+        "Width": 15.93587,
+        "Depth": 10.88086,
+        "Height": 12.45783,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_02_b_whiteblue_F",
+        "Width": 15.93587,
+        "Depth": 10.88086,
+        "Height": 12.45783,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_02_b_yellow_F",
+        "Width": 15.93587,
+        "Depth": 10.88086,
+        "Height": 12.45783,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Supermarket_01_malden_F",
+        "Width": 16.88151,
+        "Depth": 28.3508,
+        "Height": 7.3002,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "VillageStore_01_F",
+        "Width": 10.65194,
+        "Depth": 14.27043,
+        "Height": 7.4026403,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Hotel_01_F",
+        "Width": 15.97072,
+        "Depth": 15.976231,
+        "Height": 16.634861,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Hotel_02_F",
+        "Width": 24.2679,
+        "Depth": 33.447502,
+        "Height": 10.64345,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "CentralEurope",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "Residential",
+    "Objects": [
+      {
+        "Name": "i_House_Big_01_V2_F",
+        "Width": 14.11977,
+        "Depth": 16.51146,
+        "Height": 12.81563,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Big_01_V3_F",
+        "Width": 14.11977,
+        "Depth": 16.51146,
+        "Height": 12.81563,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "u_House_Big_01_V1_F",
+        "Width": 13.94849,
+        "Depth": 16.51146,
+        "Height": 12.83562,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Big_02_V1_F",
+        "Width": 10.65746,
+        "Depth": 16.2631,
+        "Height": 12.07011,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Big_02_V2_F",
+        "Width": 10.65746,
+        "Depth": 16.2631,
+        "Height": 12.07011,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Big_02_V3_F",
+        "Width": 10.65746,
+        "Depth": 16.2631,
+        "Height": 12.07011,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "u_House_Big_02_V1_F",
+        "Width": 10.54654,
+        "Depth": 16.26462,
+        "Height": 11.63385,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Small_01_V1_F",
+        "Width": 10.86805,
+        "Depth": 14.117189,
+        "Height": 10.0779705,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Small_01_V2_F",
+        "Width": 10.86805,
+        "Depth": 14.117189,
+        "Height": 10.0779705,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Big_01_V1_F",
+        "Width": 14.11977,
+        "Depth": 16.51146,
+        "Height": 12.81563,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Small_01_V3_F",
+        "Width": 10.86805,
+        "Depth": 14.117189,
+        "Height": 10.0779705,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Small_02_V1_F",
+        "Width": 13.90605,
+        "Depth": 7.6622696,
+        "Height": 9.38674,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Small_02_V2_F",
+        "Width": 13.90605,
+        "Depth": 7.6622696,
+        "Height": 9.38674,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Small_02_V3_F",
+        "Width": 13.90605,
+        "Depth": 7.6622696,
+        "Height": 9.38674,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "u_House_Small_02_V1_F",
+        "Width": 13.88224,
+        "Depth": 7.65592,
+        "Height": 9.38331,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_House_Small_03_V1_F",
+        "Width": 12.40096,
+        "Depth": 14.50411,
+        "Height": 6.80559,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "I_Stone_HouseBig_V1_F",
+        "Width": 11.055639,
+        "Depth": 9.94792,
+        "Height": 11.65176,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "I_Stone_HouseBig_V2_F",
+        "Width": 11.055639,
+        "Depth": 9.94792,
+        "Height": 11.65176,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "I_Stone_HouseBig_V3_F",
+        "Width": 11.055639,
+        "Depth": 9.94792,
+        "Height": 11.65176,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "I_Stone_Shed_V1_F",
+        "Width": 8.29332,
+        "Depth": 8.0966,
+        "Height": 7.48559,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "u_House_Small_01_V1_F",
+        "Width": 11.12107,
+        "Depth": 14.117189,
+        "Height": 9.751619,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Metal_Shed_F",
+        "Width": 10.47763,
+        "Depth": 5.8022003,
+        "Height": 5.4261,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Garage_V2_F",
+        "Width": 14.6741295,
+        "Depth": 6.6000004,
+        "Height": 6.62799,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Garage_V1_F",
+        "Width": 14.6741295,
+        "Depth": 6.6000004,
+        "Height": 6.62799,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "I_Stone_Shed_V2_F",
+        "Width": 8.29332,
+        "Depth": 8.0966,
+        "Height": 7.48559,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "I_Stone_Shed_V3_F",
+        "Width": 8.29332,
+        "Depth": 8.0966,
+        "Height": 7.48559,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "I_Stone_HouseSmall_V1_F",
+        "Width": 20.4124,
+        "Depth": 9.22986,
+        "Height": 8.54368,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "I_Stone_HouseSmall_V2_F",
+        "Width": 20.4124,
+        "Depth": 9.22986,
+        "Height": 8.54368,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "I_Stone_HouseSmall_V3_F",
+        "Width": 20.4124,
+        "Depth": 9.22986,
+        "Height": 8.54368,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Unfinished_Building_01_F",
+        "Width": 10.86256,
+        "Depth": 15.64154,
+        "Height": 9.9032,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Unfinished_Building_02_F",
+        "Width": 17.58232,
+        "Depth": 20.8211,
+        "Height": 10.73525,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_01_V1_F",
+        "Width": 9.361031,
+        "Depth": 15.37432,
+        "Height": 12.8206005,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_01_V2_F",
+        "Width": 9.361031,
+        "Depth": 15.374321,
+        "Height": 12.8206005,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_01_V3_F",
+        "Width": 9.361031,
+        "Depth": 15.37432,
+        "Height": 12.8206005,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "u_Shop_01_V1_F",
+        "Width": 9.357849,
+        "Depth": 15.37432,
+        "Height": 13.0741005,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_02_V1_F",
+        "Width": 15.93587,
+        "Depth": 10.88086,
+        "Height": 12.45783,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_02_V2_F",
+        "Width": 15.93587,
+        "Depth": 10.88086,
+        "Height": 12.45783,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "i_Shop_02_V3_F",
+        "Width": 15.93587,
+        "Depth": 10.88086,
+        "Height": 12.45783,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "u_Shop_02_V1_F",
+        "Width": 15.935869,
+        "Depth": 10.88086,
+        "Height": 12.45783,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "CentralEurope",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "IsolatedTree",
+    "Objects": [
+      {
+        "Name": "t_malusdomestica_3s",
+        "PlacementProbability": 0.2,
+        "Width": 12.0293,
+        "Depth": 12.0293,
+        "Height": 14.00608,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_pyruscommunis_3s",
+        "PlacementProbability": 0.2,
+        "Width": 9.85012,
+        "Depth": 9.68732,
+        "Height": 13.45804,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_fagussylvatica_3s",
+        "PlacementProbability": 0.2,
+        "Width": 19.8321,
+        "Depth": 19.97402,
+        "Height": 26.5402,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_FicusB2s_F",
+        "PlacementProbability": 0.2,
+        "Width": 16.49422,
+        "Depth": 15.67856,
+        "Height": 11.40044,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_PinusS2s_F",
+        "PlacementProbability": 0.2,
+        "Width": 17.71954,
+        "Depth": 14.01576,
+        "Height": 16.14474,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "CentralEurope",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "Church",
+    "Objects": [
+      {
+        "Name": "Chapel_02_yellow_F",
+        "Width": 4.19648,
+        "Depth": 5.58891,
+        "Height": 9.11042,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Church_01_F",
+        "Width": 19.89658,
+        "Depth": 33.7303,
+        "Height": 25.8211,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Church_03_F",
+        "Width": 16.438599,
+        "Depth": 20.4256,
+        "Height": 17.61302,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Church_02_F",
+        "Width": 13.98689,
+        "Depth": 41.7351,
+        "Height": 9.75515,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Cathedral_01_F",
+        "Width": 35.7467,
+        "Depth": 45.0922,
+        "Height": 29.754799,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Church_01_V2_F",
+        "Width": 27.060799,
+        "Depth": 18.40888,
+        "Height": 18.78639,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Chapel_Small_V1_F",
+        "Width": 7.6548405,
+        "Depth": 4.51136,
+        "Height": 5.7937403,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Chapel_Small_V2_F",
+        "Width": 7.6548405,
+        "Depth": 4.51136,
+        "Height": 5.7937403,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Chapel_V1_F",
+        "Width": 20.83333,
+        "Depth": 10.6762295,
+        "Height": 12.229839,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Chapel_V2_F",
+        "Width": 20.83333,
+        "Depth": 10.6762295,
+        "Height": 12.229839,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "CentralEurope",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "ForestEdge",
+    "Objects": [
+      {
+        "Name": "B_Caragana_arborescens",
+        "PlacementProbability": 0.1,
+        "PlacementRadius": 2.5,
+        "Width": 6.89732,
+        "Depth": 6.64512,
+        "Height": 5.57175,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "B_Corylus_heterophylla_1",
+        "PlacementProbability": 0.1,
+        "PlacementRadius": 2,
+        "Width": 2.85536,
+        "Depth": 3.19288,
+        "Height": 3.46308,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "B_Corylus_heterophylla_2",
+        "PlacementProbability": 0.1,
+        "PlacementRadius": 4,
+        "Width": 9.49124,
+        "Depth": 10.00068,
+        "Height": 7.39074,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_prunusSpinosa_1s",
+        "PlacementProbability": 0.1,
+        "PlacementRadius": 1.5,
+        "Width": 4.0647,
+        "Depth": 4.00364,
+        "Height": 3.6024199,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_sambucusNigra_1s",
+        "PlacementProbability": 0.1,
+        "PlacementRadius": 2,
+        "Width": 4.7513,
+        "Depth": 4.53172,
+        "Height": 3.68171,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_sambucusNigra_2s",
+        "PlacementProbability": 0.1,
+        "PlacementRadius": 3,
+        "Width": 6.24986,
+        "Depth": 7.01254,
+        "Height": 5.42282,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "CentralEurope",
+    "Density": 0.01,
+    "Probability": 1
+  },
+  {
+    "Category": "ForestEdge",
+    "Objects": [
+      {
+        "Name": "b_FicusC2d_tanoa_F",
+        "PlacementProbability": 0.25,
+        "PlacementRadius": 10,
+        "Width": 4.82374,
+        "Depth": 4.57384,
+        "Height": 4.0357,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_NeriumO2d_tanoa_F",
+        "PlacementProbability": 0.25,
+        "PlacementRadius": 10,
+        "Width": 4.69828,
+        "Depth": 4.93478,
+        "Height": 2.77376,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_OpuntiaFicusIndica3s_F",
+        "PlacementProbability": 0.25,
+        "PlacementRadius": 10,
+        "Width": 3.13661,
+        "Depth": 2.94523,
+        "Height": 2.17638,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "B_Caragana_arborescens",
+        "PlacementProbability": 0.25,
+        "PlacementRadius": 10,
+        "Width": 6.89732,
+        "Depth": 6.64512,
+        "Height": 5.57175,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "ForestAdditionalObjects",
+    "Objects": [
+      {
+        "Name": "d_fagussylvatica_fallenb",
+        "PlacementProbability": 0.16666667,
+        "PlacementRadius": 2,
+        "Width": 4.3731,
+        "Depth": 2.63934,
+        "Height": 1.737572,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "d_fagussylvatica_fallenc",
+        "PlacementProbability": 0.16666667,
+        "PlacementRadius": 1,
+        "Width": 2.49944,
+        "Depth": 1.270827,
+        "Height": 0.481552,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_Ficus_3D_F",
+        "PlacementProbability": 0.16666667,
+        "PlacementRadius": 7,
+        "Width": 20.3392,
+        "Depth": 16.59622,
+        "Height": 11.89448,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_OpuntiaFicusIndica3s_F",
+        "PlacementProbability": 0.16666667,
+        "PlacementRadius": 1.6,
+        "Width": 3.13661,
+        "Depth": 2.94523,
+        "Height": 2.17638,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_ficusC2d_F",
+        "PlacementProbability": 0.16666667,
+        "PlacementRadius": 2.4,
+        "Width": 4.82374,
+        "Depth": 4.57384,
+        "Height": 4.0357,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "B_Caragana_arborescens",
+        "PlacementProbability": 0.16666667,
+        "PlacementRadius": 3.4,
+        "Width": 6.89732,
+        "Depth": 6.64512,
+        "Height": 5.57175,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": 0.0005,
+    "Probability": 1
+  },
+  {
+    "Category": "Fence",
+    "Objects": [
+      {
+        "Name": "jbad_wall_fenw2_6",
+        "PlacementProbability": 1,
+        "PlacementRadius": 6.5,
+        "Width": 6.51226,
+        "Depth": 0.557842,
+        "Height": 2.28948,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": null,
+    "Probability": 0.5
+  },
+  {
+    "Category": "ForestTree",
+    "Objects": [
+      {
+        "Name": "t_malusdomestica_3s",
+        "PlacementProbability": 0.4,
+        "PlacementRadius": 3.75,
+        "Width": 12.0293,
+        "Depth": 12.0293,
+        "Height": 14.00608,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_fagussylvatica_3s",
+        "PlacementProbability": 0.4,
+        "PlacementRadius": 3.75,
+        "Width": 19.8321,
+        "Depth": 19.97402,
+        "Height": 26.5402,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_PinusS2s_F",
+        "PlacementProbability": 0.2,
+        "PlacementRadius": 3.75,
+        "Width": 17.71954,
+        "Depth": 14.01576,
+        "Height": 16.14474,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "CentralEurope",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "RadioTower",
+    "Objects": [
+      {
+        "Name": "TTowerBig_1_F",
+        "Width": 15.867861,
+        "Depth": 15.864571,
+        "Height": 43.407204,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "TTowerBig_2_F",
+        "Width": 7.89878,
+        "Depth": 8.808189,
+        "Height": 51.398598,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Unknown",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "PicnicTable",
+    "Objects": [],
+    "Terrain": "Unknown",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "Cliff",
+    "Objects": [
+      {
+        "Name": "sharpRock_wallH",
+        "PlacementProbability": 0.75,
+        "PlacementRadius": 30,
+        "Width": 26.1329,
+        "Depth": 70.5316,
+        "Height": 29.3219,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "sharpRock_spike",
+        "PlacementProbability": 0.25,
+        "PlacementRadius": 10,
+        "Width": 20.5946,
+        "Depth": 23.730099,
+        "Height": 28.3162,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "Wall",
+    "Objects": [
+      {
+        "Name": "jbad_wallend",
+        "PlacementProbability": 1,
+        "PlacementRadius": 5.5,
+        "Width": 5.67183,
+        "Depth": 0.544894,
+        "Height": 4.76962,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "GroundRock",
+    "Objects": [
+      {
+        "Name": "sharpRock_monolith",
+        "PlacementProbability": 0.25,
+        "PlacementRadius": 7,
+        "ReservedRadius": 12,
+        "MaxZ": -14.5,
+        "MinZ": -16,
+        "Width": 16.99431,
+        "Depth": 28.377998,
+        "Height": 19.71619,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "sharpRock_wallH",
+        "PlacementProbability": 0.75,
+        "PlacementRadius": 17.5,
+        "ReservedRadius": 25,
+        "MaxZ": -17,
+        "MinZ": -21,
+        "Width": 26.1329,
+        "Depth": 70.5316,
+        "Height": 29.3219,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": 0.001,
+    "Probability": 1
+  },
+  {
+    "Category": "RoadConcreteWall",
+    "Objects": [
+      {
+        "Name": "Mil_ConcreteWall_F",
+        "PlacementProbability": 1,
+        "Width": 4.00349,
+        "Depth": 0.487204,
+        "Height": 0.8,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Unknown",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "ForestTree",
+    "Objects": [
+      {
+        "Name": "t_malus1s_summer",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 2.5,
+        "Width": 6.76361,
+        "Depth": 6.64773,
+        "Height": 8.53734,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_PistaciaL2s_EP1",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 4,
+        "Width": 9.67186,
+        "Depth": 8.51294,
+        "Height": 8.22072,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_Ficus_small_F",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 6,
+        "Width": 14.65312,
+        "Depth": 13.1524,
+        "Height": 12.13736,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_Albizia_F",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 6,
+        "Width": 33.0506,
+        "Depth": 32.5426,
+        "Height": 27.2462,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_t_malus1s",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 3,
+        "Width": 6.76361,
+        "Depth": 6.64773,
+        "Height": 8.53734,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_t_salix2s",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 7,
+        "Width": 16.88345,
+        "Depth": 17.48814,
+        "Height": 14.73236,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_salix2s",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 7,
+        "Width": 16.88345,
+        "Depth": 17.48813,
+        "Height": 14.73236,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": 0.007,
+    "Probability": 1
+  },
+  {
+    "Category": "WaterWell",
+    "Objects": [
+      {
+        "Name": "jbad_misc_well_l",
+        "PlacementProbability": 0.5,
+        "Width": 3.76,
+        "Depth": 2.62936,
+        "Height": 4.06522,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_misc_well_c",
+        "PlacementProbability": 0.5,
+        "Width": 2.1596298,
+        "Depth": 2.2827501,
+        "Height": 2.2859201,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "Bench",
+    "Objects": [
+      {
+        "Name": "bench_05_f",
+        "Width": 2.20725,
+        "Depth": 0.397179,
+        "Height": 0.671746,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "bench_04_f",
+        "Width": 2.11186,
+        "Depth": 0.80894804,
+        "Height": 1.029559,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "bench_03_f",
+        "Width": 1.92712,
+        "Depth": 0.70083106,
+        "Height": 1.29108,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Bench_02_F",
+        "Width": 1.9200001,
+        "Depth": 0.663688,
+        "Height": 1.119638,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Bench_01_F",
+        "Width": 1.9200001,
+        "Depth": 0.663688,
+        "Height": 1.119638,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Unknown",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "RoadSideWalk",
+    "Objects": [
+      {
+        "Name": "Sidewalk_02_8m_F",
+        "PlacementProbability": 0.5,
+        "Width": 10,
+        "Depth": 4,
+        "Height": 0.5,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Sidewalk_02_4m_F",
+        "PlacementProbability": 0.5,
+        "Width": 6,
+        "Depth": 4,
+        "Height": 0.5,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Unknown",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "RandomVegetation",
+    "Objects": [
+      {
+        "Name": "b_NeriumO2d_tanoa_F",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 5,
+        "Width": 4.69828,
+        "Depth": 4.93478,
+        "Height": 2.77376,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_FicusC2d_tanoa_F",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 5,
+        "Width": 4.82374,
+        "Depth": 4.57384,
+        "Height": 4.0357,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_malus1s_summer",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 7,
+        "Width": 6.76361,
+        "Depth": 6.64773,
+        "Height": 8.53734,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_PistaciaL2s_EP1",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 10,
+        "Width": 9.67186,
+        "Depth": 8.51294,
+        "Height": 8.22072,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_corylus",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 6,
+        "Width": 5.5580997,
+        "Depth": 5.53327,
+        "Height": 4.94217,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_Ficus_small_F",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 15,
+        "Width": 14.65312,
+        "Depth": 13.1524,
+        "Height": 12.13736,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_Albizia_F",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 16,
+        "Width": 33.0506,
+        "Depth": 32.5426,
+        "Height": 27.2462,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_t_malus1s",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 5,
+        "Width": 6.76361,
+        "Depth": 6.64773,
+        "Height": 8.53734,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_t_salix2s",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 17,
+        "Width": 16.88345,
+        "Depth": 17.48814,
+        "Height": 14.73236,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "t_salix2s",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 17,
+        "Width": 16.88345,
+        "Depth": 17.48813,
+        "Height": 14.73236,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_OpuntiaFicusIndica3s_F",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 3,
+        "Width": 3.13661,
+        "Depth": 2.94523,
+        "Height": 2.17638,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_NeriumO2d_F",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 3,
+        "Width": 3.81742,
+        "Depth": 3.95496,
+        "Height": 2.64602,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "B_Caragana_arborescens",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 5,
+        "Width": 6.89732,
+        "Depth": 6.64512,
+        "Height": 5.57175,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_Cestrum_F",
+        "PlacementProbability": 0.071428575,
+        "PlacementRadius": 5,
+        "Width": 5.5641203,
+        "Depth": 7.8295097,
+        "Height": 3.21805,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": 0.00015,
+    "Probability": 1
+  },
+  {
+    "Category": "Residential",
+    "Objects": [
+      {
+        "Name": "jbad_house2_basehide",
+        "Width": 10.98238,
+        "Depth": 11.742689,
+        "Height": 10.16741,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house3",
+        "Width": 11.758369,
+        "Depth": 12.98534,
+        "Height": 14.11168,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house5",
+        "Width": 14.99131,
+        "Depth": 9.83729,
+        "Height": 11.62635,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_1",
+        "Width": 10.98238,
+        "Depth": 11.742689,
+        "Height": 10.16741,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_c_5",
+        "Width": 13.84898,
+        "Depth": 12.14784,
+        "Height": 5.51294,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_c_5_v1",
+        "Width": 13.84898,
+        "Depth": 12.14784,
+        "Height": 6.85154,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_c_5_v2",
+        "Width": 13.84898,
+        "Depth": 12.14784,
+        "Height": 6.64238,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_1_old",
+        "Width": 6.04321,
+        "Depth": 6.82312,
+        "Height": 5.82771,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_3_old",
+        "Width": 13.38059,
+        "Depth": 7.07088,
+        "Height": 5.77095,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_3_old_h",
+        "Width": 14.32102,
+        "Depth": 7.07088,
+        "Height": 5.77095,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_4_old",
+        "Width": 16.66754,
+        "Depth": 9.26049,
+        "Height": 7.67448,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_6_old",
+        "Width": 15.122681,
+        "Depth": 8.0142,
+        "Height": 7.65129,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_7_old",
+        "Width": 14.129339,
+        "Depth": 13.99015,
+        "Height": 5.60163,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_8_old",
+        "Width": 13.71816,
+        "Depth": 15.2380905,
+        "Height": 8.75044,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_house_c_5_v3",
+        "Width": 13.84898,
+        "Depth": 12.14784,
+        "Height": 6.85154,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_grainstore",
+        "Width": 10.33226,
+        "Depth": 5.71324,
+        "Height": 4.15635,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_grainstore2",
+        "Width": 10.33226,
+        "Depth": 5.71324,
+        "Height": 4.15635,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_grainstore3",
+        "Width": 10.33227,
+        "Depth": 5.71324,
+        "Height": 4.15635,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut01",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut01A",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut01B",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_hut01C",
+        "Width": 6.01238,
+        "Depth": 6.05126,
+        "Height": 4.41656,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": null,
+    "Probability": 1
+  },
+  {
+    "Category": "Scrub",
+    "Objects": [
+      {
+        "Name": "b_NeriumO2d_tanoa_F",
+        "PlacementProbability": 0.2,
+        "PlacementRadius": 4,
+        "Width": 4.69828,
+        "Depth": 4.93478,
+        "Height": 2.77376,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_NeriumO2d_F",
+        "PlacementProbability": 0.2,
+        "PlacementRadius": 4,
+        "Width": 3.81742,
+        "Depth": 3.95496,
+        "Height": 2.64602,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "B_Caragana_arborescens",
+        "PlacementProbability": 0.2,
+        "PlacementRadius": 4,
+        "Width": 6.89732,
+        "Depth": 6.64512,
+        "Height": 5.57175,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_Cestrum_F",
+        "PlacementProbability": 0.2,
+        "PlacementRadius": 4,
+        "Width": 5.5641203,
+        "Depth": 7.8295097,
+        "Height": 3.21805,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_OpuntiaFicusIndica3s_F",
+        "PlacementProbability": 0.2,
+        "PlacementRadius": 2,
+        "Width": 3.13661,
+        "Depth": 2.94523,
+        "Height": 2.17638,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": 0.0035,
+    "Probability": 1
+  },
+  {
+    "Category": "Fence",
+    "Objects": [
+      {
+        "Name": "Mound01_8m_F",
+        "PlacementProbability": 0.5,
+        "PlacementRadius": 4.7,
+        "Width": 9.38324,
+        "Depth": 1.386033,
+        "Height": 1.415337,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Mound02_8m_F",
+        "PlacementProbability": 0.5,
+        "PlacementRadius": 5.5,
+        "Width": 10.963261,
+        "Depth": 2.55228,
+        "Height": 1.279078,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": null,
+    "Probability": 0.25
+  },
+  {
+    "Category": "Fence",
+    "Objects": [
+      {
+        "Name": "Mound03_8m_F",
+        "PlacementProbability": 0.5,
+        "PlacementRadius": 4.7,
+        "Width": 9.38324,
+        "Depth": 1.386033,
+        "Height": 1.415337,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "Mound04_8m_F",
+        "PlacementProbability": 0.5,
+        "PlacementRadius": 5.5,
+        "Width": 10.963261,
+        "Depth": 2.55228,
+        "Height": 1.279078,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": null,
+    "Probability": 0.25
+  }
+]
