@@ -68,6 +68,9 @@ namespace ArmaRealMap.Core.ObjectLibraries
         Cliff,
 
         [Display(Name = "Nature - Zone rocheuses")]
-        GroundRock
+        GroundRock,
+
+        [Display(Name = "Batiment - Hutte")]
+        Hut
     }
 }

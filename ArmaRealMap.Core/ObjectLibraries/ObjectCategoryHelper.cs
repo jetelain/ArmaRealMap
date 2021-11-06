@@ -39,7 +39,8 @@ namespace ArmaRealMap.Core.ObjectLibraries
             ObjectCategory.Military,
             ObjectCategory.HistoricalFort,
             ObjectCategory.Church,
-            ObjectCategory.RadioTower
+            ObjectCategory.RadioTower,
+            ObjectCategory.Hut
         };
 
         public static bool IsBestFit(this ObjectCategory category)

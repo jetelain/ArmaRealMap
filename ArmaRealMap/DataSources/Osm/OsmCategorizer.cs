@@ -63,6 +63,8 @@ namespace ArmaRealMap.Osm
                 {
                     case "church":
                         return OsmShapeCategory.BuildingChurch;
+                    case "hut":
+                        return OsmShapeCategory.BuildingHut;
                 }
                 if (Get(tags, "historic") == "fort")
                 {

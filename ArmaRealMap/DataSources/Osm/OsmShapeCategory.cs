@@ -59,6 +59,7 @@ namespace ArmaRealMap.Osm
         internal static readonly OsmShapeCategory BuildingRetail = new OsmShapeCategory(Building, ObjectCategory.Retail);
         internal static readonly OsmShapeCategory BuildingChurch = new OsmShapeCategory(Building, ObjectCategory.Church);
         internal static readonly OsmShapeCategory BuildingRadioTower = new OsmShapeCategory(Building, ObjectCategory.RadioTower);
+        internal static readonly OsmShapeCategory BuildingHut = new OsmShapeCategory(Building, ObjectCategory.Hut);
 
         internal static readonly OsmShapeCategory Road = new OsmShapeCategory(TerrainMaterial.Dirt, 0);
 

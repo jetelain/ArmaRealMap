@@ -32,16 +32,16 @@ namespace ArmaRealMap.Buildings
             {
                 var removed = new List<OsmShape>();
                 var pass1 = BuildingPass1(data.MapInfos, toRender.Where(b => b.Category.IsBuilding).ToList(), removed);
-                Preview(data, removed, pass1, "buildings-pass1.bmp");
+                //Preview(data, removed, pass1, "buildings-pass1.bmp");
 
                 var pass2 = BuldingPass2(pass1, removed);
-                Preview(data, removed, pass2, "buildings-pass2.bmp");
+                //Preview(data, removed, pass2, "buildings-pass2.bmp");
 
                 var pass3 = BuildingPass3(removed, pass2);
-                Preview(data, removed, pass3, "buildings-pass3.bmp");
+                //Preview(data, removed, pass3, "buildings-pass3.bmp");
 
                 var pass4 = BuildingPass4(data.MapInfos, toRender, pass3);
-                Preview(data, removed, pass4, "buildings-pass4.bmp");
+                //Preview(data, removed, pass4, "buildings-pass4.bmp");
 
                 File.WriteAllText(pass4File, JsonSerializer.Serialize(pass4.Select(o => o.ToJson())));
 
