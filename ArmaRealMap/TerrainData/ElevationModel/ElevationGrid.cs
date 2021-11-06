@@ -125,6 +125,45 @@ namespace ArmaRealMap.ElevationModel
             }
             report.TaskDone();
         }
+        public void LoadFromBin(string path)
+        {
+            var report = new ProgressReport("LoadFromBin", area.Size);
+            using (var reader = new BinaryReader(File.OpenRead(path)))
+            {
+                var size = reader.ReadInt32();
+                if (size != area.Size)
+                {
+                    throw new IOException("File size does not match");
+                }
+                for (int y = 0; y < area.Size; y++)
+                {
+                    for (int x = 0; x < area.Size; x++)
+                    {
+                        elevationGrid[x, y] = reader.ReadSingle();
+                    }
+                    report.ReportItemsDone(y);
+                }
+            }
+            report.TaskDone();
+        }
+
+        public void SaveToBin(string path)
+        {
+            var report = new ProgressReport("SaveToBin", area.Size);
+            using (var writer = new BinaryWriter(new FileStream(path, FileMode.Create, FileAccess.Write)))
+            {
+                writer.Write(area.Size);
+                for (int y = 0; y < area.Size; y++)
+                {
+                    for (int x = 0; x < area.Size; x++)
+                    {
+                        writer.Write(elevationGrid[x, y]);
+                    }
+                    report.ReportItemsDone(y);
+                }
+            }
+            report.TaskDone();
+        }
 
         public void SaveToAsc(string path)
         {

@@ -10,16 +10,15 @@ namespace ArmaRealMap
         internal static ElevationGrid LoadOrGenerateElevationGrid(MapData data)
         {
             var elevation = new ElevationGrid(data.MapInfos);
-            var cacheFile = data.Config.Target.GetCache("elevation-raw.asc");
+            var cacheFile = data.Config.Target.GetCache("elevation-raw.bin");
             if (!File.Exists(cacheFile))
             {
                 elevation.LoadFromSRTM(data.Config.SRTM);
-                elevation.SaveToAsc(cacheFile);
-                //elevation.SavePreview(data.Config.Target.GetDebug("elevation-raw.bmp"));
+                elevation.SaveToBin(cacheFile);
             }
             else
             {
-                elevation.LoadFromAsc(cacheFile);
+                elevation.LoadFromBin(cacheFile);
             }
             /*
             var x = new[]{
