@@ -69,16 +69,6 @@ namespace ArmaRealMapWebSite.Entities.Assets
             //SaveChanges();
         }
 
-
-
-        private static readonly JsonSerializerOptions options = new JsonSerializerOptions
-        {
-            Converters ={
-                new JsonStringEnumConverter()
-            },
-            WriteIndented = true
-        };
-
         private void Load(string gameModName, string file, TerrainRegion region, AssetCategory def)
         {
             var name = Path.Combine("xdata", file);

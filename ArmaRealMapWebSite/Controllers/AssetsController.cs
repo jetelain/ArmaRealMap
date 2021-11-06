@@ -42,7 +42,7 @@ namespace ArmaRealMapWebSite.Controllers
             {
                 assetsContext = assetsContext.Where(a => (a.TerrainRegions & vm.TerrainRegion) == vm.TerrainRegion);
             }
-            vm.Results = await assetsContext.ToListAsync();
+            vm.Results = await assetsContext.OrderBy(a => a.Name).Take(1000).ToListAsync();
             vm.Mods = new SelectList(_context.GameMods, "GameModID", "Name");
             return View(vm);
         }

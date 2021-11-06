@@ -11,5 +11,7 @@ namespace ArmaRealMap.Core.ObjectLibraries
         public TerrainRegion? Terrain { get; set; }
 
         public double? Density { get; set; }
+
+        public double? Probability { get; set; }
     }
 }

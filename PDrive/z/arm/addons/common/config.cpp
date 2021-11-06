@@ -78,28 +78,28 @@ class CfgVehicles
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut01.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut01.p3d";
         displayName="Hutte #1 (5.5m x 2m)";
 	};
 	class Land_arm_hut01A : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut01A.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut01A.p3d";
         displayName="Hutte #1 (5.5m x 2m) - Variation A";
 	};
 	class Land_arm_hut01B : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut01B.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut01B.p3d";
         displayName="Hutte #1 (5.5m x 2m) - Variation B";
 	};
 	class Land_arm_hut01C : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut01C.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut01C.p3d";
         displayName="Hutte #1 (5.5m x 2m) - Variation C";
 	};
 	
@@ -109,28 +109,28 @@ class CfgVehicles
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut02.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut02.p3d";
         displayName="Hutte #2 (5.5m x 2m)";
 	};
 	class Land_arm_hut02A : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut02A.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut02A.p3d";
         displayName="Hutte #2 (5.5m x 2m) - Variation A";
 	};
 	class Land_arm_hut02B : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut02B.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut02B.p3d";
         displayName="Hutte #2 (5.5m x 2m) - Variation B";
 	};
 	class Land_arm_hut02C : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut02C.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut02C.p3d";
         displayName="Hutte #2 (5.5m x 2m) - Variation C";
 	};
 	
@@ -139,28 +139,28 @@ class CfgVehicles
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut03.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut03.p3d";
         displayName="Hutte #3 (5.5m x 2m)";
 	};
 	class Land_arm_hut03A : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut03A.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut03A.p3d";
         displayName="Hutte #3 (5.5m x 2m) - Variation A";
 	};
 	class Land_arm_hut03B : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut03B.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut03B.p3d";
         displayName="Hutte #3 (5.5m x 2m) - Variation B";
 	};
 	class Land_arm_hut03C : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut03C.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut03C.p3d";
         displayName="Hutte #3 (5.5m x 2m) - Variation C";
 	};
 	
@@ -168,28 +168,28 @@ class CfgVehicles
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut04.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut04.p3d";
         displayName="Hutte #4 (5.5m x 2m)";
 	};
 	class Land_arm_hut04A : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut04A.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut04A.p3d";
         displayName="Hutte #4 (5.5m x 2m) - Variation A";
 	};
 	class Land_arm_hut04B : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut04B.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut04B.p3d";
         displayName="Hutte #4 (5.5m x 2m) - Variation B";
 	};
 	class Land_arm_hut04C : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut04C.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut04C.p3d";
         displayName="Hutte #4 (5.5m x 2m) - Variation C";
 	};
 	
@@ -197,28 +197,28 @@ class CfgVehicles
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut05.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut05.p3d";
         displayName="Hutte #5 (5.5m x 2m)";
 	};
 	class Land_arm_hut05A : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut05A.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut05A.p3d";
         displayName="Hutte #5 (5.5m x 2m) - Variation A";
 	};
 	class Land_arm_hut05B : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut05B.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut05B.p3d";
         displayName="Hutte #5 (5.5m x 2m) - Variation B";
 	};
 	class Land_arm_hut05C : arm_hut_base
 	{
 		scope=2;
         scopeCurator=2;
-        model="z\arm\addons\common\data\houses\hut05C.p3d";
+        model="z\arm\addons\common\data\houses\arm_hut05C.p3d";
         displayName="Hutte #5 (5.5m x 2m) - Variation C";
 	};
 };

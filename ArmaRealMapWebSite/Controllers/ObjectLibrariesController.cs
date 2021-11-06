@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMapWebSite.Entities.Assets;
@@ -36,6 +38,46 @@ namespace ArmaRealMapWebSite.Controllers
             var dict = metadata.EnumGroupedDisplayNamesAndValues.ToDictionary(e => Enum.Parse<ObjectCategory>(e.Value), e => e.Key.Name);
             vm.Libraries = vm.Libraries.OrderBy(l => dict[l.ObjectCategory]).ThenBy(l => l.TerrainRegion).ToList();
             return View(vm);
+        }
+
+        public async Task<IActionResult> Export()
+        {
+            var alldata = await _context.ObjectLibrary
+                .Include(l => l.Assets).ThenInclude(a => a.Asset)
+                .ToListAsync();
+
+            return Json(
+                alldata
+                    .Select(
+                    l => new JsonObjectLibrary()
+                    {
+                        Category = l.ObjectCategory,
+                        Density = l.Density,
+                        Terrain = l.TerrainRegion,
+                        Probability = l.Probability,
+                        Objects = l.Assets.Select(a => new SingleObjet()
+                        {
+                            CX = a.Asset.CX,
+                            CY = a.Asset.CY,
+                            CZ = a.Asset.CZ,
+                            Depth = a.Asset.Depth,
+                            Height = a.Asset.Height,
+                            MaxZ = a.MaxZ,
+                            MinZ = a.MinZ,
+                            Name = a.Asset.Name,
+                            PlacementRadius = a.PlacementRadius,
+                            PlacementProbability = a.Probability,
+                            ReservedRadius = a.ReservedRadius,
+                            Width = a.Asset.Width
+                        }).ToList()
+                    })
+                    .ToList(),
+                    new JsonSerializerOptions
+                    {
+                        Converters = { new JsonStringEnumConverter() },
+                        WriteIndented = true
+                    }
+                );
         }
 
         // GET: ObjectLibraries/Details/5

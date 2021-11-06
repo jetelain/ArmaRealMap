@@ -37,6 +37,37 @@ namespace ArmaRealMap.Libraries
         {
             TerrainBuilder.Load(config);
 
+            var libs = JsonSerializer.Deserialize<JsonObjectLibrary[]>(File.ReadAllText(Path.Combine(config.Libraries, "Export.json")), options);
+
+            foreach(var lib in libs)
+            {
+                if (lib.Terrain == null || lib.Terrain == TerrainRegion.Unknown || lib.Terrain == config.Terrain)
+                {
+                    Libraries.Add(new ObjectLibrary()
+                    {
+                        Category = lib.Category,
+                        Density = lib.Density,
+                        Terrain = lib.Terrain,
+                        Objects = lib.Objects.Select(o => new SingleObjetInfos()
+                        {
+                            CX = o.CX,
+                            CY = o.CY,
+                            CZ = o.CZ,
+                            Depth = o.Depth,
+                            Height = o.Height,
+                            MaxZ = o.MaxZ,
+                            MinZ = o.MinZ,
+                            Name = o.Name,
+                            PlacementProbability = o.PlacementProbability,
+                            PlacementRadius = o.PlacementRadius,
+                            ReservedRadius = o.ReservedRadius,
+                            Width = o.Width
+                        }).ToList()
+                    }); 
+                }
+            }
+
+            /*
             var jsons = new HashSet<string>(Directory.GetFiles(config.Libraries, "*.json"), StringComparer.OrdinalIgnoreCase);
             foreach (var file in Directory.GetFiles(config.Libraries, "*.txt"))
             {
@@ -53,7 +84,7 @@ namespace ArmaRealMap.Libraries
                 {
                     Libraries.Add(lib);
                 }
-            }
+            }*/
         }
 
         internal SingleObjetInfos GetObject(string name)

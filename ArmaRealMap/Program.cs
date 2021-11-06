@@ -202,7 +202,7 @@ namespace ArmaRealMap
                 
                 Console.WriteLine("==== Roads ====");
                 RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes);
-                /*
+                
                 Console.WriteLine("==== Lakes ====");
                 LakeGenerator.ProcessLakes(data, area, shapes);
                 
@@ -225,7 +225,7 @@ namespace ArmaRealMap
                 PlaceIsolatedObjects(data, olibs, filtered);
 
                 Console.WriteLine("==== Fences and walls ====");
-                PlaceBarrierObjects(data, db, olibs, filtered);*/
+                PlaceBarrierObjects(data, db, olibs, filtered);
                 
                 Console.WriteLine("==== Terrain images ====");
                 TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);
@@ -242,7 +242,7 @@ namespace ArmaRealMap
                     data,
                     db,
                     filtered,
-                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.Wall),
+                    olibs.Libraries.Where(l => l.Category == ObjectCategory.Wall).ToList(),
                     o => OsmCategorizer.Get(o.Tags, "barrier") == "wall" || OsmCategorizer.Get(o.Tags, "barrier") == "city_wall");
             result.WriteFile(data.Config.Target.GetTerrain("walls.txt"));
 
@@ -251,20 +251,20 @@ namespace ArmaRealMap
                     data,
                     db,
                     filtered,
-                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.Fence),
+                    olibs.Libraries.Where(l => l.Category == ObjectCategory.Fence).ToList(),
                     o => OsmCategorizer.Get(o.Tags, "barrier") == "fence");
             result.WriteFile(data.Config.Target.GetTerrain("fences.txt"));
         }
 
-        private static TerrainObjectLayer PlaceObjectsOnPath(MapData data, SnapshotDb db, OsmStreamSource filtered, ObjectLibrary lib, Func<Way, bool> filter)
+        private static TerrainObjectLayer PlaceObjectsOnPath(MapData data, SnapshotDb db, OsmStreamSource filtered, List<ObjectLibrary> libs, Func<Way, bool> filter)
         {
             var result = new TerrainObjectLayer(data.MapInfos);
-            if (lib == null || lib.Objects.Count == 0)
+            if (libs.Count == 0)
             {
                 return result;
             }
+            var probLibs = libs.Count == 1 ? libs : libs.SelectMany(l => Enumerable.Repeat(l, (int)((l.Probability ?? 1d) * 100))).ToList();
             var interpret = new DefaultFeatureInterpreter2();
-            var candidates = lib.Objects;
             var nodes = filtered.Where(o => o.Type == OsmGeoType.Way && filter((Way)o)).ToList();
             var cliparea = TerrainPolygon.FromRectangle(data.MapInfos.P1, data.MapInfos.P2);
             foreach (Way way in nodes)
@@ -276,13 +276,17 @@ namespace ArmaRealMap
                     {
                         foreach (var pathSegment in path.ClippedBy(cliparea))
                         {
-                            FollowPathWithObjects.PlaceOnPath(lib.Objects.First(), result, pathSegment.Points);
+                            var random = new Random((int)Math.Truncate(pathSegment.FirstPoint.X + pathSegment.FirstPoint.Y));
+                            var lib = libs.Count == 1 ? libs[0] : libs[random.Next(0, libs.Count)];
+                            FollowPathWithObjects.PlaceOnPath(random, lib, result, pathSegment.Points);
                         }
                     }
                 }
             }
             return result;
         }
+
+
 
         private static bool DownloadOsmData(Config config, MapInfos area)
         {
@@ -482,19 +486,22 @@ class Grid {{
 
         private static void PlaceObjects(TerrainObjectLayer result, MapData data, OsmStreamSource filtered, ObjectLibrary lib, Func<Node, bool> filter)
         {
-            var candidates = lib.Objects;
-            var area = data.MapInfos;
-            var nodes = filtered.Where(o => o.Type == OsmGeoType.Node && filter((Node)o)).ToList();
-            foreach (Node node in nodes)
+            if (lib != null)
             {
-                var pos = area.LatLngToTerrainPoint(node);
-                if (area.IsInside(pos))
+                var candidates = lib.Objects;
+                var area = data.MapInfos;
+                var nodes = filtered.Where(o => o.Type == OsmGeoType.Node && filter((Node)o)).ToList();
+                foreach (Node node in nodes)
                 {
-                    var random = new Random((int)Math.Truncate(pos.X + pos.Y));
-                    var obj = candidates[random.Next(0, candidates.Count)];
-                    var angle = GetAngle(node, () => (float)(random.NextDouble() * 360.0));
-                    result.Insert(new TerrainObject(obj, pos, angle));
-                    data.UsedObjects.Add(obj.Name);
+                    var pos = area.LatLngToTerrainPoint(node);
+                    if (area.IsInside(pos))
+                    {
+                        var random = new Random((int)Math.Truncate(pos.X + pos.Y));
+                        var obj = candidates[random.Next(0, candidates.Count)];
+                        var angle = GetAngle(node, () => (float)(random.NextDouble() * 360.0));
+                        result.Insert(new TerrainObject(obj, pos, angle));
+                        data.UsedObjects.Add(obj.Name);
+                    }
                 }
             }
         }

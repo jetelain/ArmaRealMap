@@ -78,7 +78,7 @@ namespace ArmaRealMap.TerrainData.Forests
                 {
                     var previous = ring.First();
                     var result = new List<TerrainPoint>() { previous };
-                    var previousObj = lib.Objects[rnd.Next(0, lib.Objects.Count - 1)];
+                    var previousObj = lib.GetObject(rnd);
                     var remainLength = previousObj.GetPlacementRadius();
                     edgeObjects.Insert(new TerrainObject(previousObj, previous, (float)rnd.NextDouble() * 360));
                     foreach (var point in ring.Skip(1))
@@ -89,7 +89,7 @@ namespace ArmaRealMap.TerrainData.Forests
                         float positionOnSegment = remainLength;
                         while (positionOnSegment <= length)
                         {
-                            var obj = lib.Objects[rnd.Next(0, lib.Objects.Count - 1)];
+                            var obj = lib.GetObject(rnd);
                             var objPoint = new TerrainPoint(Vector2.Lerp(previous.Vector, point.Vector, positionOnSegment / length));
                             if (obj.GetPlacementRadius() > margin)
                             {

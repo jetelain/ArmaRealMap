@@ -103,7 +103,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             {
                 var imageToPaa = Path.Combine(Program.GetArma3ToolsPath(), "ImageToPAA", "ImageToPAA.exe");
                 report2 = new ProgressReport("Png->PAA", num * num);
-                Parallel.For(0, num, x =>
+                Parallel.For(0, num, new ParallelOptions() { MaxDegreeOfParallelism = 6 }, x =>
                 {
                     var proc = Process.Start(new ProcessStartInfo()
                     {
@@ -112,6 +112,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                         Arguments = config.Target.GetLayer($"S_{x:000}_*_lco.png"),
                     });
                     proc.OutputDataReceived += (_, e) => Trace.WriteLine(e.Data);
+                    proc.BeginOutputReadLine();
                     proc.WaitForExit();
                 });
                 report2.TaskDone();
