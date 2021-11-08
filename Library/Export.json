@@ -1303,7 +1303,7 @@
       }
     ],
     "Terrain": "Sahel",
-    "Density": 0.0005,
+    "Density": 0.001,
     "Probability": 1
   },
   {
@@ -1323,7 +1323,7 @@
     ],
     "Terrain": "Sahel",
     "Density": null,
-    "Probability": 0.5
+    "Probability": 0.75
   },
   {
     "Category": "ForestTree",
@@ -1506,30 +1506,30 @@
     "Category": "ForestTree",
     "Objects": [
       {
-        "Name": "t_malus1s_summer",
-        "PlacementProbability": 0.14285715,
-        "PlacementRadius": 2.5,
-        "Width": 6.76361,
-        "Depth": 6.64773,
-        "Height": 8.53734,
+        "Name": "arm_malus1s_half_c",
+        "PlacementProbability": 0.125,
+        "PlacementRadius": 1.7,
+        "Width": 3.38181,
+        "Depth": 3.32387,
+        "Height": 4.26867,
         "CX": 0,
         "CY": 0,
         "CZ": 0
       },
       {
-        "Name": "t_PistaciaL2s_EP1",
-        "PlacementProbability": 0.14285715,
-        "PlacementRadius": 4,
-        "Width": 9.67186,
-        "Depth": 8.51294,
-        "Height": 8.22072,
+        "Name": "arm_pistacial2s_half_c",
+        "PlacementProbability": 0.125,
+        "PlacementRadius": 2.4,
+        "Width": 4.83594,
+        "Depth": 4.25646,
+        "Height": 4.11036,
         "CX": 0,
         "CY": 0,
         "CZ": 0
       },
       {
         "Name": "t_Ficus_small_F",
-        "PlacementProbability": 0.14285715,
+        "PlacementProbability": 0.125,
         "PlacementRadius": 6,
         "Width": 14.65312,
         "Depth": 13.1524,
@@ -1540,7 +1540,7 @@
       },
       {
         "Name": "t_Albizia_F",
-        "PlacementProbability": 0.14285715,
+        "PlacementProbability": 0.125,
         "PlacementRadius": 6,
         "Width": 33.0506,
         "Depth": 32.5426,
@@ -1550,41 +1550,52 @@
         "CZ": 0
       },
       {
-        "Name": "jbad_t_malus1s",
-        "PlacementProbability": 0.14285715,
-        "PlacementRadius": 3,
-        "Width": 6.76361,
-        "Depth": 6.64773,
-        "Height": 8.53734,
+        "Name": "arm_amygdalusc2s_third_b",
+        "PlacementProbability": 0.125,
+        "PlacementRadius": 1.7,
+        "Width": 3.38374,
+        "Depth": 3.38672,
+        "Height": 4.01772,
         "CX": 0,
         "CY": 0,
         "CZ": 0
       },
       {
-        "Name": "jbad_t_salix2s",
-        "PlacementProbability": 0.14285715,
-        "PlacementRadius": 7,
-        "Width": 16.88345,
-        "Depth": 17.48814,
-        "Height": 14.73236,
+        "Name": "arm_salix2s_half_c",
+        "PlacementProbability": 0.125,
+        "PlacementRadius": 4.4,
+        "Width": 8.44172,
+        "Depth": 8.74407,
+        "Height": 7.36617,
         "CX": 0,
         "CY": 0,
         "CZ": 0
       },
       {
-        "Name": "t_salix2s",
-        "PlacementProbability": 0.14285715,
-        "PlacementRadius": 7,
-        "Width": 16.88345,
-        "Depth": 17.48813,
-        "Height": 14.73236,
+        "Name": "arm_salix2s_quarter_c",
+        "PlacementProbability": 0.125,
+        "PlacementRadius": 2.2,
+        "Width": 4.22087,
+        "Depth": 4.37204,
+        "Height": 3.68309,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_amygdalusc2s_half_b",
+        "PlacementProbability": 0.125,
+        "PlacementRadius": 2.3,
+        "Width": 4.51165,
+        "Depth": 4.51562,
+        "Height": 5.35695,
         "CX": 0,
         "CY": 0,
         "CZ": 0
       }
     ],
     "Terrain": "Sahel",
-    "Density": 0.007,
+    "Density": 0.01,
     "Probability": 1
   },
   {
@@ -1701,7 +1712,7 @@
     "Objects": [
       {
         "Name": "b_NeriumO2d_tanoa_F",
-        "PlacementProbability": 0.071428575,
+        "PlacementProbability": 0.06666667,
         "PlacementRadius": 5,
         "Width": 4.69828,
         "Depth": 4.93478,
@@ -1712,7 +1723,7 @@
       },
       {
         "Name": "b_FicusC2d_tanoa_F",
-        "PlacementProbability": 0.071428575,
+        "PlacementProbability": 0.06666667,
         "PlacementRadius": 5,
         "Width": 4.82374,
         "Depth": 4.57384,
@@ -1722,30 +1733,8 @@
         "CZ": 0
       },
       {
-        "Name": "t_malus1s_summer",
-        "PlacementProbability": 0.071428575,
-        "PlacementRadius": 7,
-        "Width": 6.76361,
-        "Depth": 6.64773,
-        "Height": 8.53734,
-        "CX": 0,
-        "CY": 0,
-        "CZ": 0
-      },
-      {
-        "Name": "t_PistaciaL2s_EP1",
-        "PlacementProbability": 0.071428575,
-        "PlacementRadius": 10,
-        "Width": 9.67186,
-        "Depth": 8.51294,
-        "Height": 8.22072,
-        "CX": 0,
-        "CY": 0,
-        "CZ": 0
-      },
-      {
         "Name": "b_corylus",
-        "PlacementProbability": 0.071428575,
+        "PlacementProbability": 0.06666667,
         "PlacementRadius": 6,
         "Width": 5.5580997,
         "Depth": 5.53327,
@@ -1756,7 +1745,7 @@
       },
       {
         "Name": "t_Ficus_small_F",
-        "PlacementProbability": 0.071428575,
+        "PlacementProbability": 0.06666667,
         "PlacementRadius": 15,
         "Width": 14.65312,
         "Depth": 13.1524,
@@ -1767,7 +1756,7 @@
       },
       {
         "Name": "t_Albizia_F",
-        "PlacementProbability": 0.071428575,
+        "PlacementProbability": 0.06666667,
         "PlacementRadius": 16,
         "Width": 33.0506,
         "Depth": 32.5426,
@@ -1777,41 +1766,8 @@
         "CZ": 0
       },
       {
-        "Name": "jbad_t_malus1s",
-        "PlacementProbability": 0.071428575,
-        "PlacementRadius": 5,
-        "Width": 6.76361,
-        "Depth": 6.64773,
-        "Height": 8.53734,
-        "CX": 0,
-        "CY": 0,
-        "CZ": 0
-      },
-      {
-        "Name": "jbad_t_salix2s",
-        "PlacementProbability": 0.071428575,
-        "PlacementRadius": 17,
-        "Width": 16.88345,
-        "Depth": 17.48814,
-        "Height": 14.73236,
-        "CX": 0,
-        "CY": 0,
-        "CZ": 0
-      },
-      {
-        "Name": "t_salix2s",
-        "PlacementProbability": 0.071428575,
-        "PlacementRadius": 17,
-        "Width": 16.88345,
-        "Depth": 17.48813,
-        "Height": 14.73236,
-        "CX": 0,
-        "CY": 0,
-        "CZ": 0
-      },
-      {
         "Name": "b_OpuntiaFicusIndica3s_F",
-        "PlacementProbability": 0.071428575,
+        "PlacementProbability": 0.06666667,
         "PlacementRadius": 3,
         "Width": 3.13661,
         "Depth": 2.94523,
@@ -1822,7 +1778,7 @@
       },
       {
         "Name": "b_NeriumO2d_F",
-        "PlacementProbability": 0.071428575,
+        "PlacementProbability": 0.06666667,
         "PlacementRadius": 3,
         "Width": 3.81742,
         "Depth": 3.95496,
@@ -1833,7 +1789,7 @@
       },
       {
         "Name": "B_Caragana_arborescens",
-        "PlacementProbability": 0.071428575,
+        "PlacementProbability": 0.06666667,
         "PlacementRadius": 5,
         "Width": 6.89732,
         "Depth": 6.64512,
@@ -1844,11 +1800,77 @@
       },
       {
         "Name": "b_Cestrum_F",
-        "PlacementProbability": 0.071428575,
+        "PlacementProbability": 0.06666667,
         "PlacementRadius": 5,
         "Width": 5.5641203,
         "Depth": 7.8295097,
         "Height": 3.21805,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_amygdalusc2s_half_b",
+        "PlacementProbability": 0.06666667,
+        "PlacementRadius": 2.3,
+        "Width": 4.51165,
+        "Depth": 4.51562,
+        "Height": 5.35695,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_amygdalusc2s_third_b",
+        "PlacementProbability": 0.06666667,
+        "PlacementRadius": 1.7,
+        "Width": 3.38374,
+        "Depth": 3.38672,
+        "Height": 4.01772,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_malus1s_half_c",
+        "PlacementProbability": 0.06666667,
+        "PlacementRadius": 1.7,
+        "Width": 3.38181,
+        "Depth": 3.32387,
+        "Height": 4.26867,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_pistacial2s_half_c",
+        "PlacementProbability": 0.06666667,
+        "PlacementRadius": 2.4,
+        "Width": 4.83594,
+        "Depth": 4.25646,
+        "Height": 4.11036,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_salix2s_half_c",
+        "PlacementProbability": 0.06666667,
+        "PlacementRadius": 4.4,
+        "Width": 8.44172,
+        "Depth": 8.74407,
+        "Height": 7.36617,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_salix2s_quarter_c",
+        "PlacementProbability": 0.06666667,
+        "PlacementRadius": 2.2,
+        "Width": 4.22087,
+        "Depth": 4.37204,
+        "Height": 3.68309,
         "CX": 0,
         "CY": 0,
         "CZ": 0
@@ -2143,36 +2165,6 @@
       },
       {
         "Name": "Mound02_8m_F",
-        "PlacementProbability": 0.5,
-        "PlacementRadius": 5.5,
-        "Width": 10.963261,
-        "Depth": 2.55228,
-        "Height": 1.279078,
-        "CX": 0,
-        "CY": 0,
-        "CZ": 0
-      }
-    ],
-    "Terrain": "Sahel",
-    "Density": null,
-    "Probability": 0.25
-  },
-  {
-    "Category": "Fence",
-    "Objects": [
-      {
-        "Name": "Mound03_8m_F",
-        "PlacementProbability": 0.5,
-        "PlacementRadius": 4.7,
-        "Width": 9.38324,
-        "Depth": 1.386033,
-        "Height": 1.415337,
-        "CX": 0,
-        "CY": 0,
-        "CZ": 0
-      },
-      {
-        "Name": "Mound04_8m_F",
         "PlacementProbability": 0.5,
         "PlacementRadius": 5.5,
         "Width": 10.963261,
