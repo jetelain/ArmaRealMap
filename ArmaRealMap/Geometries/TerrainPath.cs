@@ -13,6 +13,11 @@ namespace ArmaRealMap.Geometries
     {
         private readonly Lazy<LineString> asLineString;
 
+        public TerrainPath(params TerrainPoint[] points)
+            : this(points.ToList())
+        {
+        }
+
         public TerrainPath(List<TerrainPoint> points)
         {
             this.Points = points;

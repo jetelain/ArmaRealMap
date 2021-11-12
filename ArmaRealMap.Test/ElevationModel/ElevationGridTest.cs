@@ -71,7 +71,7 @@ NODATA_value  -9999
 
             var mutate = grid.PrepareToMutate(new TerrainPoint(5, 5), new TerrainPoint(35, 35), -5, +10);
             mutate.Image.Mutate(m => {
-                DrawHelper.DrawPolygon(m, TerrainPolygon.FromRectangle(new TerrainPoint(10, 10), new TerrainPoint(30, 30)), new SolidBrush(mutate.ElevationToColor(5f)), mutate.ToPixels, new ShapeGraphicsOptions() { GraphicsOptions = new SixLabors.ImageSharp.GraphicsOptions() { Antialias = false } });
+                DrawHelper.DrawPolygon(m, TerrainPolygon.FromRectangle(new TerrainPoint(10, 10), new TerrainPoint(30, 30)), new SolidBrush(mutate.ElevationToColor(5f)), mutate.ToPixels);
                 });
             mutate.Apply();
 
@@ -90,7 +90,7 @@ NODATA_value  -9999
 
             mutate = grid.PrepareToMutate(new TerrainPoint(15, 15), new TerrainPoint(45, 45), -5, +10);
             mutate.Image.Mutate(m => {
-                DrawHelper.DrawPolygon(m, TerrainPolygon.FromRectangle(new TerrainPoint(20, 20), new TerrainPoint(40, 40)), new SolidBrush(mutate.ElevationToColor(10f).WithAlpha(0.5f)), mutate.ToPixels, new ShapeGraphicsOptions() { GraphicsOptions = new SixLabors.ImageSharp.GraphicsOptions() { Antialias = false } });
+                DrawHelper.DrawPolygon(m, TerrainPolygon.FromRectangle(new TerrainPoint(20, 20), new TerrainPoint(40, 40)), new SolidBrush(mutate.ElevationToColor(10f).WithAlpha(0.5f)), mutate.ToPixels);
             });
             mutate.Apply();
 
@@ -109,7 +109,7 @@ NODATA_value  -9999
 
             mutate = grid.PrepareToMutate(new TerrainPoint(5, 5), new TerrainPoint(45, 45), -5, +10);
             mutate.Image.Mutate(m => {
-                DrawHelper.DrawPolygon(m, TerrainPolygon.FromRectangle(new TerrainPoint(10, 10), new TerrainPoint(40, 40)), new SolidBrush(mutate.ElevationToColor(7.5f).WithAlpha(0.5f)), mutate.ToPixels, new ShapeGraphicsOptions() { GraphicsOptions = new SixLabors.ImageSharp.GraphicsOptions() { Antialias = false } });
+                DrawHelper.DrawPolygon(m, TerrainPolygon.FromRectangle(new TerrainPoint(10, 10), new TerrainPoint(40, 40)), new SolidBrush(mutate.ElevationToColor(7.5f).WithAlpha(0.5f)), mutate.ToPixels);
             });
             mutate.Apply();
 

@@ -9,118 +9,61 @@ using ArmaRealMap.Osm;
 using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Processing;
 
 namespace ArmaRealMap
 {
     internal static class LakeGenerator
     {
-        private static bool IsPointInPolygon(NetTopologySuite.Geometries.Polygon shape, Coordinate point)
-        {
-            return GeometryHelper.PointInPolygon(shape.ExteriorRing.Coordinates, point) != 0;
-        }
-
         internal static void ProcessLakes(MapData data, MapInfos area, List<OsmShape> shapes)
         {
-            var lakes = shapes.Where(s => s.Category == OsmShapeCategory.Lake).ToList();
+            var initialLakes = shapes.Where(s => s.Category == OsmShapeCategory.Lake).SelectMany(s => s.TerrainPolygons).ToList();
 
             var objects = new List<TerrainObject>();
 
-            var waterTile20 = Pond(20);
-
             var minimalArea = Math.Pow(5 * data.Config.CellSize, 2); // 5 x 5 nodes minimum
 
-            // TODO: substract roads with embankment=yes
+            var embankments = data.RoadsRaw.Where(r => r.SpecialSegment == Roads.RoadSpecialSegment.Embankment).SelectMany(s => s.Path.ToTerrainPolygon(s.Width * 2f )).ToList();
 
-            //var stats = new StringBuilder("Width\tHeight\r\n");
+            var lakes = initialLakes.SelectMany(l => l.SubstractAll(embankments)).ToList();
+
             var report = new ProgressReport("Lakes", lakes.Count);
             var cellSize = new Vector2(area.CellSize, area.CellSize);
-            foreach (var item in lakes)
+            foreach (var g in lakes)
             {
-                var geo = GeometryHelper.LatLngToTerrainPolygon(area, item.Geometry).ToList();
-                if (geo.Count > 0)
+                if (g.Area < minimalArea)
                 {
-                    foreach (var g in geo)
-                    {
-                        if (g.Area < minimalArea)
-                        {
-                            continue; // too small
-                        }
-
-                        var points = g.ExteriorRing.Coordinates.Select(g => new TerrainPoint((float)g.X, (float)g.Y)).ToList();
-
-                        //var box = BoundingBox.Compute(points.ToArray());
-                        var waterElevation = points.Min(p => data.Elevation.ElevationAt(p));
-                        var ajustedWaterElevation = waterElevation - 0.1f;
-
-                        var min = new TerrainPoint(
-                            points.Min(p => p.X),
-                            points.Min(p => p.Y));
-                        var max = new TerrainPoint(
-                            points.Max(p => p.X),
-                            points.Max(p => p.Y));
-                        
-                        
-                        var lakeElevation = data.Elevation.PrepareToMutate(min - cellSize, max + cellSize, waterElevation - 2.5f, waterElevation);
-                        DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(255, 255, 255, 128)), g, lakeElevation.ToPixels);
-                        foreach (var scaled in GeometryHelper.Offset(g, -10))
-                        {
-                            DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(128, 128, 128, 192)), scaled, lakeElevation.ToPixels);
-                        }
-                        foreach (var scaled in GeometryHelper.Offset(g, -20))
-                        {
-                            DrawHelper.FillGeometry(lakeElevation.Image, new SolidBrush(Color.FromRgba(0, 0, 0, 255)), scaled, lakeElevation.ToPixels);
-                        }
-                        lakeElevation.Apply();
-
-                        var w10 = (int)Math.Ceiling((max.X - min.X) / 10);
-                        var h10 = (int)Math.Ceiling((max.Y - min.Y) / 10);
-                        var grid10 = new bool[w10, h10];
-
-                        for(int x = 0; x < w10; ++x)
-                        {
-                            for (int y = 0; y < h10; ++y)
-                            {
-                                var p1 = new Coordinate((x * 10) + min.X, (y * 10) + min.Y);
-                                var p2 = new Coordinate(p1.X + 10, p1.Y);
-                                var p3 = new Coordinate(p1.X, p1.Y + 10);
-                                var p4 = new Coordinate(p1.X + 10, p1.Y + 10);
-                                if (IsPointInPolygon(g, p1) || IsPointInPolygon(g, p2) || IsPointInPolygon(g, p3) || IsPointInPolygon(g, p4))
-                                {
-                                    if (area.IsInside(p1))
-                                    {
-                                        grid10[x, y] = true;
-                                    }
-                                }
-                            }
-                        }
-
-                        Process(objects, grid10, w10, h10, min, 80, ajustedWaterElevation);
-                        Process(objects, grid10, w10, h10, min, 40, ajustedWaterElevation);
-                        Process(objects, grid10, w10, h10, min, 20, ajustedWaterElevation);
-                        Process(objects, grid10, w10, h10, min, 10, ajustedWaterElevation);
-                        /*
-                        for (float x = min.X; x < max.X; x += waterTile20.Width)
-                        {
-                            for (float y = min.Y; y < max.Y; y += waterTile20.Depth)
-                            {
-                                var p1 = new Coordinate(x, y);
-                                var p2 = new Coordinate(x + waterTile20.Width, y);
-                                var p3 = new Coordinate(x, y + waterTile20.Depth);
-                                var p4 = new Coordinate(x + waterTile20.Width, y + waterTile20.Depth);
-
-                                if (IsPointInPolygon(g, p1) || IsPointInPolygon(g, p2) || IsPointInPolygon(g, p3) || IsPointInPolygon(g, p4))
-                                {
-                                    if (area.IsInside(p1))
-                                    {
-                                        objects.Add(new TerrainObject(waterTile20, new TerrainPoint(x, y), 0.0f, ajustedWaterElevation));
-                                    }
-                                }
-                            }
-                        }*/
-
-
-                    }
+                    continue; // too small
                 }
+
+                var points = g.Shell;
+                //var box = BoundingBox.Compute(points.ToArray());
+                var waterElevation = points.Min(p => data.Elevation.ElevationAt(p));
+                var ajustedWaterElevation = waterElevation - 0.1f;
+
+                var min = new TerrainPoint(
+                    points.Min(p => p.X),
+                    points.Min(p => p.Y));
+                var max = new TerrainPoint(
+                    points.Max(p => p.X),
+                    points.Max(p => p.Y));
+
+
+                var lakeElevation = data.Elevation.PrepareToMutate(min - cellSize, max + cellSize, waterElevation - 2.5f, waterElevation);
+                lakeElevation.Image.Mutate(d =>
+                {
+                    DrawHelper.DrawPolygon(d, g, new SolidBrush(Color.FromRgba(255, 255, 255, 128)),  lakeElevation.ToPixels);
+                    foreach (var scaled in g.Offset(-10))
+                    {
+                        DrawHelper.DrawPolygon(d, scaled, new SolidBrush(Color.FromRgba(128, 128, 128, 192)), lakeElevation.ToPixels);
+                    }
+                    foreach (var scaled in g.Offset(-20))
+                    {
+                        DrawHelper.DrawPolygon(d, scaled, new SolidBrush(Color.FromRgba(0, 0, 0, 255)), lakeElevation.ToPixels);
+                    }
+                });
+                lakeElevation.Apply();
+                GenerateTiles(area, objects, g, ajustedWaterElevation, min, max);
                 report.ReportOneDone();
             }
             report.TaskDone();
@@ -135,6 +78,36 @@ namespace ArmaRealMap
 
             data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation-lakes.asc"));
             //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-lakes.png"));
+        }
+
+        private static void GenerateTiles(MapInfos area, List<TerrainObject> objects, TerrainPolygon g, float ajustedWaterElevation, TerrainPoint min, TerrainPoint max)
+        {
+            var w10 = (int)Math.Ceiling((max.X - min.X) / 10);
+            var h10 = (int)Math.Ceiling((max.Y - min.Y) / 10);
+            var grid10 = new bool[w10, h10];
+
+            for (int x = 0; x < w10; ++x)
+            {
+                for (int y = 0; y < h10; ++y)
+                {
+                    var p1 = new TerrainPoint((x * 10) + min.X, (y * 10) + min.Y);
+                    var p2 = new TerrainPoint(p1.X + 10, p1.Y);
+                    var p3 = new TerrainPoint(p1.X, p1.Y + 10);
+                    var p4 = new TerrainPoint(p1.X + 10, p1.Y + 10);
+                    if (g.Contains(p1) || g.Contains(p2) || g.Contains(p3) || g.Contains(p4))
+                    {
+                        if (area.IsInside(p1))
+                        {
+                            grid10[x, y] = true;
+                        }
+                    }
+                }
+            }
+
+            Process(objects, grid10, w10, h10, min, 80, ajustedWaterElevation);
+            Process(objects, grid10, w10, h10, min, 40, ajustedWaterElevation);
+            Process(objects, grid10, w10, h10, min, 20, ajustedWaterElevation);
+            Process(objects, grid10, w10, h10, min, 10, ajustedWaterElevation);
         }
 
         private static void Process(List<TerrainObject> objects, bool[,] grid10, int w10, int h10, TerrainPoint min, int size, float ajustedWaterElevation)

@@ -35,6 +35,8 @@ namespace ArmaRealMap.Geometries
 
         public Polygon AsPolygon => asPolygon.Value;
 
+        public double Area => AsPolygon.Area;
+
         public Polygon ToPolygon(Func<TerrainPoint, Coordinate> project)
         {
             return new Polygon(

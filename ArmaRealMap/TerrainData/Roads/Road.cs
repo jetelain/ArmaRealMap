@@ -11,6 +11,7 @@ namespace ArmaRealMap.Roads
     {
         public RoadType RoadType { get; set; }
 
+        public RoadSpecialSegment SpecialSegment { get; set; }
         public TerrainPath Path { get; set; }
 
         public float Width => RoadTypeToWidth(RoadType);

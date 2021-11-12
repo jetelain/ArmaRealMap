@@ -18,5 +18,6 @@ namespace ArmaRealMap
         public HashSet<string> UsedObjects { get; internal set; }
         public List<TerrainPolygon> Forests { get; internal set; }
         public List<TerrainPolygon> Scrubs { get; internal set; }
+        public List<Road> RoadsRaw { get; internal set; }
     }
 }

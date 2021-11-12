@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using ArmaRealMap.Roads;
 using OsmSharp;
 using OsmSharp.Complete;
 using OsmSharp.Db;
@@ -208,6 +209,19 @@ namespace ArmaRealMap.Osm
                 return value;
             }
             return null;
+        }
+
+        internal static RoadSpecialSegment ToRoadSpecialSegment(TagsCollectionBase tags)
+        {
+            if (Get(tags, "embankment") == "yes")
+            {
+                return RoadSpecialSegment.Embankment;
+            }
+            if (Get(tags, "bridge") == "yes")
+            {
+                return RoadSpecialSegment.Bridge;
+            }
+            return RoadSpecialSegment.Normal;
         }
     }
 }

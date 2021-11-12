@@ -54,71 +54,6 @@ namespace ArmaRealMap
             }
         }
 
-        internal static void FillGeometry(Image<Rgb24> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels)
-        {
-            FillGeometry<Rgb24, Rgba32>(img, solidBrush, geometry, toPixels, Color.Transparent, new ShapeGraphicsOptions());
-        }
-
-        internal static void FillGeometry(Image<Rgba64> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels)
-        {
-            FillGeometry<Rgba64, Rgba64>(img, solidBrush, geometry, toPixels, Color.Transparent, new ShapeGraphicsOptions());
-        }
-
-        internal static void FillGeometry<TPixel, TPixelAlpha>(Image<TPixel> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels, TPixelAlpha transparent, ShapeGraphicsOptions shapeGraphicsOptions)
-            where TPixel : unmanaged, IPixel<TPixel>
-            where TPixelAlpha : unmanaged, IPixel<TPixelAlpha>
-        {
-            if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
-            {
-                foreach (var geo in ((GeometryCollection)geometry).Geometries)
-                {
-                    FillGeometry(img, solidBrush, geo, toPixels, transparent,
-                        shapeGraphicsOptions);
-                }
-            }
-            else if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
-            {
-                var poly = (Polygon)geometry;
-                try
-                {
-                    FillPolygonWithHoles(img,
-                        toPixels(poly.Shell.Coordinates).ToList(),
-                        poly.Holes.Select(h => toPixels(h.Coordinates).Select(p => new PointF(p.X, p.Y)).ToList()).ToList(),
-                        solidBrush,
-                        transparent,
-                        shapeGraphicsOptions);
-                }
-                catch
-                {
-
-                }
-            }
-            else if (geometry.OgcGeometryType == OgcGeometryType.LineString)
-            {
-                var line = (LineString)geometry;
-                var points = toPixels(line.Coordinates).ToArray();
-                try
-                {
-                    if (line.IsClosed)
-                    {
-                        img.Mutate(p => p.FillPolygon(solidBrush, points));
-                    }
-                    else
-                    {
-                        img.Mutate(p => p.DrawLines(solidBrush, 6.0f, points));
-                    }
-                }
-                catch
-                {
-
-                }
-            }
-            else
-            {
-                throw new NotSupportedException(geometry.OgcGeometryType.ToString());
-            }
-        }
-
         internal static void DrawPath(IImageProcessingContext d, TerrainPath path, float width, SolidBrush brush, MapInfos map, bool antiAlias = true)
         {
             DrawPath(d, path.Points, width, brush, map.TerrainToPixelsPoint, new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
@@ -138,6 +73,10 @@ namespace ArmaRealMap
         internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, ShapeGraphicsOptions shapeGraphicsOptions)
         {
             FillPolygonWithHoles(d, polygon.Shell.Select(map.TerrainToPixelsPoint), polygon.Holes.Select(map.TerrainToPixelsPoints).ToList(), brush, shapeGraphicsOptions);
+        }
+        public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels)
+        {
+            FillPolygonWithHoles(d, toPixels(polygon.Shell), polygon.Holes.Select(toPixels).ToList(), brush, new ShapeGraphicsOptions());
         }
 
         public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels, ShapeGraphicsOptions shapeGraphicsOptions)

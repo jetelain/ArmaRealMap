@@ -72,5 +72,9 @@ namespace ArmaRealMap
         public bool GenerateSatTiles { get; set; } = true;
 
         public bool ConvertPAA { get; set; } = true;
+
+        public double? Scale { get; set; }
+
+        public bool IsScaled => Scale != null;
     }
 }

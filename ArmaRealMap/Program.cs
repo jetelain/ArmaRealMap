@@ -50,15 +50,13 @@ namespace ArmaRealMap
 
             Console.Title = "ArmaRealMap";
 
-            var config = LoadConfig(Path.GetFullPath("arm_gossi.json"));
+            var config = LoadConfig(Path.GetFullPath("amf_mali.json"));
 
             Trace.Listeners.Clear();
 
             Trace.Listeners.Add(new TextWriterTraceListener(config.Target.GetDebug("arm.log")));
 
             Trace.WriteLine("----------------------------------------------------------------------------------------------------");
-
-            // 
 
             var olibs = new ObjectLibraries();
             olibs.Load(config);
@@ -198,37 +196,44 @@ namespace ArmaRealMap
                 
                 RenderCitiesNames(config, area, filtered);
                 
-                var shapes = OsmCategorizer.GetShapes(db, filtered, data.MapInfos);
+                var shapes = config.IsScaled ? null : OsmCategorizer.GetShapes(db, filtered, data.MapInfos);
                 
                 Console.WriteLine("==== Roads ====");
                 RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes);
-                
-                Console.WriteLine("==== Lakes ====");
-                LakeGenerator.ProcessLakes(data, area, shapes);
-                
-                Console.WriteLine("==== Buildings ====");
-                BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 
-                Console.WriteLine("==== GroundRocks ====");
-                ForestBuilder.PrepareGroundRock(data, shapes, olibs);
+                if (config.IsScaled)
+                {
+                    data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation.asc"));
+                }
+                else { 
+                    Console.WriteLine("==== Lakes ====");
+                    LakeGenerator.ProcessLakes(data, area, shapes);
 
-                Console.WriteLine("==== Forests ====");
-                ForestBuilder.Prepare(data, shapes, olibs);
+                    Console.WriteLine("==== Buildings ====");
+                    BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 
-                Console.WriteLine("==== Scrub ====");
-                ForestBuilder.PrepareScrub(data, shapes, olibs);
+                    Console.WriteLine("==== GroundRocks ====");
+                    ForestBuilder.PrepareGroundRock(data, shapes, olibs);
 
-                Console.WriteLine("==== DefaultAreas ====");
-                DefaultAreasBuilder.Prepare(data, shapes, olibs);
+                    Console.WriteLine("==== Forests ====");
+                    ForestBuilder.Prepare(data, shapes, olibs);
 
-                Console.WriteLine("==== Objects ====");
-                PlaceIsolatedObjects(data, olibs, filtered);
+                    Console.WriteLine("==== Scrub ====");
+                    ForestBuilder.PrepareScrub(data, shapes, olibs);
 
-                Console.WriteLine("==== Fences and walls ====");
-                PlaceBarrierObjects(data, db, olibs, filtered);
-                
-                Console.WriteLine("==== Terrain images ====");
-                TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);
+                    Console.WriteLine("==== DefaultAreas ====");
+                    DefaultAreasBuilder.Prepare(data, shapes, olibs);
+
+                    Console.WriteLine("==== Objects ====");
+                    PlaceIsolatedObjects(data, olibs, filtered);
+
+                    Console.WriteLine("==== Fences and walls ====");
+                    PlaceBarrierObjects(data, db, olibs, filtered);
+
+
+                    Console.WriteLine("==== Terrain images ====");
+                    TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);
+                }
             }
 
             var libs = olibs.TerrainBuilder.Libraries.Where(l => data.UsedObjects.Any(o => l.Template.Any(t => t.Name == o))).Distinct().ToList();

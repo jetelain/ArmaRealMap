@@ -186,15 +186,15 @@ namespace SRTM
 
             var filePath = Path.Combine(DataDirectory, filename + ".hgt");
             var zipFilePath = Path.Combine(DataDirectory, filename + ".hgt.zip");
-            var txtFilePath = Path.Combine(DataDirectory, filename + ".txt");
+            //r txtFilePath = Path.Combine(DataDirectory, filename + ".txt");
             var count = -1;
 
-            if (!File.Exists(filePath) && !File.Exists(zipFilePath) && !File.Exists(txtFilePath) &&
+            if (!File.Exists(filePath) && !File.Exists(zipFilePath) /*&& !File.Exists(txtFilePath)*/ &&
                 this.GetMissingCell != null)
             {
                 this.GetMissingCell(DataDirectory, filename);
             }
-            else if(File.Exists(txtFilePath) && this.GetMissingCell != null)
+            /*else if(File.Exists(txtFilePath) && this.GetMissingCell != null)
             {
                 var txtFile = File.ReadAllText(txtFilePath);
                 if (!int.TryParse(txtFile, out count))
@@ -209,7 +209,7 @@ namespace SRTM
                         File.Delete(txtFilePath);
                     }
                 }
-            }
+            }*/
             
             if (File.Exists(filePath))
             {
@@ -221,7 +221,7 @@ namespace SRTM
             }
             else
             {
-                if (count < 0)
+                /*if (count < 0)
                 {
                     File.WriteAllText(txtFilePath, "1");
                     return GetDataCell(latitude, longitude);
@@ -235,7 +235,8 @@ namespace SRTM
                 else
                 {
                     return new EmptySRTMDataCell(txtFilePath);
-                }
+                }*/
+                throw new Exception(filePath);
             }
         }
 
