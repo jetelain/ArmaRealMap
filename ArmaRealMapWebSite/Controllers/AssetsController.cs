@@ -205,35 +205,37 @@ namespace ArmaRealMapWebSite.Controllers
         //    return View(asset);
         //}
 
-        //// GET: Assets/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Assets/Delete/5
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var asset = await _context.Assets
-        //        .Include(a => a.GameMod)
-        //        .FirstOrDefaultAsync(m => m.AssetID == id);
-        //    if (asset == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var asset = await _context.Assets
+                .Include(a => a.GameMod)
+                .FirstOrDefaultAsync(m => m.AssetID == id);
+            if (asset == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(asset);
-        //}
+            return View(asset);
+        }
 
-        //// POST: Assets/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var asset = await _context.Assets.FindAsync(id);
-        //    _context.Assets.Remove(asset);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+        // POST: Assets/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var asset = await _context.Assets.FindAsync(id);
+            _context.Assets.Remove(asset);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         //private bool AssetExists(int id)
         //{

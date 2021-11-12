@@ -103,7 +103,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             {
                 var imageToPaa = Path.Combine(Program.GetArma3ToolsPath(), "ImageToPAA", "ImageToPAA.exe");
                 report2 = new ProgressReport("Png->PAA", num * num);
-                Parallel.For(0, num, new ParallelOptions() { MaxDegreeOfParallelism = 6 }, x =>
+                Parallel.For(0, num, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, x =>
                 {
                     var proc = Process.Start(new ProcessStartInfo()
                     {

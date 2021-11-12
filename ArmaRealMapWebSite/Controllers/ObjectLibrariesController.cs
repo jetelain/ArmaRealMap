@@ -65,6 +65,7 @@ namespace ArmaRealMapWebSite.Controllers
                             MaxZ = a.MaxZ,
                             MinZ = a.MinZ,
                             Name = a.Asset.Name,
+                            ClusterName = a.Asset.ClusterName,
                             PlacementRadius = a.PlacementRadius,
                             PlacementProbability = a.Probability,
                             ReservedRadius = a.ReservedRadius,

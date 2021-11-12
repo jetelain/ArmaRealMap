@@ -40,33 +40,9 @@ namespace ArmaRealMapWebSite.Entities.Assets
         internal void LoadFromXData()
         {
             //Load("JBAD", "e1.txt", TerrainRegion.Sahel | TerrainRegion.NearEast, AssetCategory.Structure);
-            //Load("ARM", "e2.txt", TerrainRegion.Sahel, AssetCategory.Building);
+            //Load("ARM", "g.txt", TerrainRegion.Sahel, AssetCategory.Tree);
             //Load("Base game", "e3.txt", TerrainRegion.Unknown, AssetCategory.Rock);
 
-            //var files = Directory.GetFiles(@"xdata", "*.json");
-            //var assets = Assets.ToList();
-            //foreach (var json in files)
-            //{
-            //    var jlib = JsonSerializer.Deserialize<JsonObjectLibrary>(File.ReadAllText(json), options);
-
-            //    Add(new ObjectLibrary()
-            //    {
-            //        Density = jlib.Density,
-            //        ObjectCategory = jlib.Category,
-            //        Probability = 1,
-            //        TerrainRegion = jlib.Terrain ?? TerrainRegion.Unknown,
-            //        Assets = jlib.Objects.Where(o => assets.Any(a => string.Equals(a.Name,o.Name, StringComparison.OrdinalIgnoreCase))).Select(o => new ObjectLibraryAsset()
-            //        {
-            //            Probability = o.PlacementProbability,
-            //            MaxZ = o.MaxZ,
-            //            MinZ = o.MinZ,
-            //            PlacementRadius = o.PlacementRadius,
-            //            ReservedRadius = o.ReservedRadius,
-            //            Asset = assets.OrderBy(a => a.AssetID).Last(a => string.Equals(a.Name, o.Name, StringComparison.OrdinalIgnoreCase))
-            //        }).ToList()
-            //    }); 
-            //}
-            //SaveChanges();
         }
 
         private void Load(string gameModName, string file, TerrainRegion region, AssetCategory def)
@@ -133,6 +109,7 @@ namespace ArmaRealMapWebSite.Entities.Assets
                                 new AssetPreview() { Data = thumbData, Width = 480, Height = 270 }
                             }
                         };
+                        asset.ClusterName = GetClusterName(asset.Name);
                         Assets.Add(asset);
                     }
                     else
@@ -143,6 +120,15 @@ namespace ArmaRealMapWebSite.Entities.Assets
                 }
             }
             SaveChanges();
+        }
+
+        private string GetClusterName(string name)
+        {
+            if (name.StartsWith("arm_s_", StringComparison.OrdinalIgnoreCase))
+            {
+                return name.Substring(0, name.IndexOf('_', 6));
+            }
+            return name;
         }
 
         private void UpdatePreview(byte[] data, int width, Asset existing)

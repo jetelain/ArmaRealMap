@@ -5,6 +5,8 @@ namespace ArmaRealMap.Core.ObjectLibraries
     public class SingleObjet
     {
         public string Name { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string ClusterName { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public float? PlacementProbability { get; set; }

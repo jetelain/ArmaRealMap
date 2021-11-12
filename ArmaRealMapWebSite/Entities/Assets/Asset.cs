@@ -32,18 +32,20 @@ namespace ArmaRealMapWebSite.Entities.Assets
 
 
         [Display(Name = "Mod")]
-        public GameMod GameMod { get; internal set; }
+        public GameMod GameMod { get; set; }
         [Display(Name = "Mod")]
         public int GameModID { get; set; }
 
-        public float MaxZ { get; internal set; }
-        public float MaxY { get; internal set; }
-        public float MaxX { get; internal set; }
-        public float MinZ { get; internal set; }
-        public float MinY { get; internal set; }
-        public float MinX { get; internal set; }
+        public float MaxZ { get; set; }
+        public float MaxY { get; set; }
+        public float MaxX { get; set; }
+        public float MinZ { get; set; }
+        public float MinY { get; set; }
+        public float MinX { get; set; }
 
         [Display(Name = "Taille (m)")]
-        public float BoundingSphereDiameter { get; internal set; }
+        public float BoundingSphereDiameter { get; set; }
+
+        public string ClusterName { get; set; }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using ArmaRealMapWebSite.Entities.Assets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ArmaRealMapWebSite.Migrations
 {
     [DbContext(typeof(AssetsContext))]
-    partial class AssetsContextModelSnapshot : ModelSnapshot
+    [Migration("20211110165235_ClusterName")]
+    partial class ClusterName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
