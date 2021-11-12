@@ -171,24 +171,29 @@ namespace ArmaRealMap.ElevationModel
 
             using (var writer = new StreamWriter(new FileStream(path, FileMode.Create, FileAccess.Write)))
             {
-                writer.WriteLine($"ncols         {area.Size}");
-                writer.WriteLine($"nrows         {area.Size}");
-                writer.WriteLine($"xllcorner     200000");
-                writer.WriteLine($"yllcorner     0");
-                writer.WriteLine($"cellsize      {area.CellSize}");
-                writer.WriteLine($"NODATA_value  -9999");
-                for (int y = 0; y < area.Size; y++)
-                {
-                    report.ReportItemsDone(y);
-                    for (int x = 0; x < area.Size; x++)
-                    {
-                        writer.Write(elevationGrid[x, area.Size - y - 1].ToString("0.00", CultureInfo.InvariantCulture));
-                        writer.Write(" ");
-                    }
-                    writer.WriteLine();
-                }
+                SaveToAsc(report, writer);
             }
             report.TaskDone();
+        }
+
+        public void SaveToAsc(ProgressReport report, TextWriter writer)
+        {
+            writer.WriteLine($"ncols         {area.Size}");
+            writer.WriteLine($"nrows         {area.Size}");
+            writer.WriteLine($"xllcorner     200000");
+            writer.WriteLine($"yllcorner     0");
+            writer.WriteLine($"cellsize      {area.CellSize}");
+            writer.WriteLine($"NODATA_value  -9999");
+            for (int y = 0; y < area.Size; y++)
+            {
+                report?.ReportItemsDone(y);
+                for (int x = 0; x < area.Size; x++)
+                {
+                    writer.Write(elevationGrid[x, area.Size - y - 1].ToString("0.00", CultureInfo.InvariantCulture));
+                    writer.Write(" ");
+                }
+                writer.WriteLine();
+            }
         }
 
         public void SavePreview(string path)
@@ -286,52 +291,6 @@ namespace ArmaRealMap.ElevationModel
             return new TerrainPoint(((grid) * cellSize)  + area.P1.Vector);
         }
 
-        public ElevationGridArea PrepareToMutate(TerrainPoint min, TerrainPoint max)
-        {
-            var posMin = ToGrid(min);
-            var posMax = ToGrid(max);
-            var x1 = (int)Math.Floor(posMin.X);
-            var y1 = (int)Math.Floor(posMin.Y);
-            var x2 = (int)Math.Ceiling(posMax.X);
-            var y2 = (int)Math.Ceiling(posMax.Y);
-
-            float maxElevation = 0.0f;
-            float minElevation = 4000.0f;
-
-            for (int x = x1; x < x2; ++x)
-            {
-                for (int y = y1; y < y2; ++y)
-                {
-                    if (x >= 0 && y >= 0 && x < area.Size && y < area.Size)
-                    {
-                        var elevation = elevationGrid[x, y];
-                        if ( elevation > maxElevation)
-                        {
-                            maxElevation = elevation;
-                        }
-                        if (elevation < minElevation)
-                        {
-                            minElevation = elevation;
-                        }
-                    }
-                }
-            }
-            var delta = maxElevation - minElevation;
-            var grid = new ElevationGridArea(this, x1, y1, x2 - x1 + 1, y2 - y1 + 1, minElevation, delta);
-            /*for (int x = x1; x < x2; ++x)
-            {
-                for (int y = y1; y < y2; ++y)
-                {
-                    if (x >= 0 && y >= 0 && x < area.Size && y < area.Size)
-                    {
-                        var b = (byte)((elevationGrid[x, y] - minElevation) * (float)byte.MaxValue / delta);
-                        grid.Image[x - x1, y - y1] = new Rgba32(b, b, b, byte.MaxValue);
-                    }
-                }
-            }*/
-            return grid;
-        }
-
         public ElevationGridArea PrepareToMutate(TerrainPoint min, TerrainPoint max, float minElevation, float maxElevation)
         {
             var posMin = ToGrid(min);
@@ -344,7 +303,7 @@ namespace ArmaRealMap.ElevationModel
             return new ElevationGridArea(this, x1, y1, x2 - x1 + 1, y2 - y1 + 1, minElevation, delta);
         }
 
-        public void Apply (int startX, int startY, Image<Rgba32> data, float minElevation, float elevationDelta)
+        public void Apply (int startX, int startY, Image<Rgba64> data, float minElevation, float elevationDelta)
         {
             for(int x = 0; x < data.Width; ++x)
             {
@@ -353,23 +312,30 @@ namespace ArmaRealMap.ElevationModel
                     if (x + startX >= 0 && y + startY >= 0 && x + startX < area.Size && y + startY < area.Size)
                     {
                         var pixel = data[x, y];
-                        if (pixel.A != byte.MinValue)
+                        if (pixel.A != ushort.MinValue)
                         {
-                            var pixelElevation = minElevation + (elevationDelta * pixel.B / (float)byte.MaxValue);
-                            if (pixel.A == byte.MaxValue)
+                            var pixelElevation = minElevation + (elevationDelta * pixel.B / (float)ushort.MaxValue);
+                            if (pixel.A == ushort.MaxValue)
                             {
                                 elevationGrid[x + startX, y + startY] = pixelElevation;
                             }
                             else
                             {
                                 var existingElevation = elevationGrid[x + startX, y + startY];
-                                elevationGrid[x + startX, y + startY] = existingElevation + ((pixelElevation - existingElevation) * pixel.A / (float)byte.MaxValue);
+                                elevationGrid[x + startX, y + startY] = existingElevation + ((pixelElevation - existingElevation) * pixel.A / (float)ushort.MaxValue);
                             }
                         }
                     }
                 }
             }
 
+        }
+
+        public string DumpAsc()
+        {
+            var str = new StringWriter();
+            SaveToAsc(null, str);
+            return str.ToString();
         }
     }
 }

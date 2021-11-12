@@ -11,7 +11,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace ArmaRealMap
 {
-    internal static class DrawHelper
+    public static class DrawHelper
     {
         internal static void FillPolygonWithHoles(Image<Rgb24> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, ShapeGraphicsOptions shapeGraphicsOptions)
         {
@@ -59,9 +59,9 @@ namespace ArmaRealMap
             FillGeometry<Rgb24, Rgba32>(img, solidBrush, geometry, toPixels, Color.Transparent, new ShapeGraphicsOptions());
         }
 
-        internal static void FillGeometry(Image<Rgba32> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels)
+        internal static void FillGeometry(Image<Rgba64> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels)
         {
-            FillGeometry<Rgba32, Rgba32>(img, solidBrush, geometry, toPixels, Color.Transparent, new ShapeGraphicsOptions());
+            FillGeometry<Rgba64, Rgba64>(img, solidBrush, geometry, toPixels, Color.Transparent, new ShapeGraphicsOptions());
         }
 
         internal static void FillGeometry<TPixel, TPixelAlpha>(Image<TPixel> img, IBrush solidBrush, Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<PointF>> toPixels, TPixelAlpha transparent, ShapeGraphicsOptions shapeGraphicsOptions)
@@ -138,6 +138,11 @@ namespace ArmaRealMap
         internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, ShapeGraphicsOptions shapeGraphicsOptions)
         {
             FillPolygonWithHoles(d, polygon.Shell.Select(map.TerrainToPixelsPoint), polygon.Holes.Select(map.TerrainToPixelsPoints).ToList(), brush, shapeGraphicsOptions);
+        }
+
+        public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels, ShapeGraphicsOptions shapeGraphicsOptions)
+        {
+            FillPolygonWithHoles(d, toPixels(polygon.Shell), polygon.Holes.Select(toPixels).ToList(), brush, shapeGraphicsOptions);
         }
 
         internal static void FillPolygonWithHoles(IImageProcessingContext p, IEnumerable<PointF> outer, List<IEnumerable<PointF>> holes, IBrush brush, ShapeGraphicsOptions shapeGraphicsOptions)

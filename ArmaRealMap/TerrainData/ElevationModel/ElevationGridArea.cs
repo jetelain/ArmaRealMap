@@ -15,7 +15,7 @@ namespace ArmaRealMap.ElevationModel
         private ElevationGrid elevationGrid;
         private int startX;
         private int startY;
-        private Image<Rgba32> image;
+        private Image<Rgba64> image;
         private float minElevation;
         private float elevationDelta;
 
@@ -24,15 +24,14 @@ namespace ArmaRealMap.ElevationModel
             this.elevationGrid = elevationGrid;
             this.startX = startX;
             this.startY = startY;
-            this.image = new Image<Rgba32>(width, height, Color.Transparent);
+            this.image = new Image<Rgba64>(width, height, Color.Transparent);
             this.minElevation = minElevation;
             this.elevationDelta = elevationDelta;
         }
 
         public Color ElevationToColor(float elevation)
         {
-            var b = (byte)((elevation - minElevation) * 255d / elevationDelta);
-            return Color.FromRgb(b, 0, b);
+            return new Color(new Vector4(0,0, (elevation - minElevation) / elevationDelta, 1f));
         }
 
         public PointF ToPixel(TerrainPoint point)
@@ -57,7 +56,7 @@ namespace ArmaRealMap.ElevationModel
             return points.Select(ToPixel);
         }
 
-        public Image<Rgba32> Image => image;
+        public Image<Rgba64> Image => image;
 
         public void Apply()
         {
