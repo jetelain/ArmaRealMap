@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Net;
 using System.Net.Http;
 using System.Threading;
-using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.PixelFormats;
@@ -14,6 +12,7 @@ namespace ArmaRealMap.DataSources.S2C
     {
         private const double Delta = 20_037_508.342_789;
 
+        private readonly HttpClient client = new HttpClient();
         private readonly string cacheLocation;
 
         // zoom 16
@@ -26,7 +25,6 @@ namespace ArmaRealMap.DataSources.S2C
         {
             this.cacheLocation = cacheLocation;
         }
-
 
         private readonly ConcurrentDictionary<string, Image<Rgb24>> cache = new ConcurrentDictionary<string, Image<Rgb24>>();
         public static NetTopologySuite.Geometries.Point LatLonToWebMercator(double lat, double lon)
@@ -57,6 +55,17 @@ namespace ArmaRealMap.DataSources.S2C
 
             var tileUri = $"https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/GoogleMapsCompatible/16/{tY}/{tX}.jpg";
 
+            if ( cache.Count > 10000)
+            {
+                lock (this)
+                {
+                    if (cache.Count > 10000)
+                    {
+                        cache.Clear();
+                    }
+                }
+            }
+
             return cache.GetOrAdd(tileUri, LoadTile)[pX, pY];
         }
 
@@ -74,13 +83,13 @@ namespace ArmaRealMap.DataSources.S2C
                         byte[] data;
                         try
                         {
-                            Thread.Sleep(100);
-                            data = new WebClient().DownloadData(uri);
+                            Thread.Sleep(5);
+                            data = client.GetByteArrayAsync(uri).ConfigureAwait(false).GetAwaiter().GetResult(); //new WebClient().DownloadData(uri);
                         }
                         catch
                         {
-                            Thread.Sleep(100);
-                            data = new WebClient().DownloadData(uri);
+                            Thread.Sleep(250);
+                            data = client.GetByteArrayAsync(uri).ConfigureAwait(false).GetAwaiter().GetResult(); //new WebClient().DownloadData(uri);
                         }
                         System.IO.File.WriteAllBytes(cacheFile, data);
 
@@ -97,7 +106,7 @@ namespace ArmaRealMap.DataSources.S2C
             {
                 lock (this)
                 {
-                    Thread.Sleep(250);
+                    Thread.Sleep(2000);
                     System.IO.File.Delete(cacheFile);
                 }
                 return LoadTile(uri);
