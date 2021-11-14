@@ -50,7 +50,7 @@ namespace ArmaRealMap
 
             Console.Title = "ArmaRealMap";
 
-            var config = LoadConfig(Path.GetFullPath("amf_mali.json"));
+            var config = LoadConfig(args[0]);
 
             Trace.Listeners.Clear();
 

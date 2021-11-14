@@ -23,7 +23,7 @@ namespace ArmaRealMap
 
             var minimalArea = Math.Pow(5 * data.Config.CellSize, 2); // 5 x 5 nodes minimum
 
-            var embankments = data.RoadsRaw.Where(r => r.SpecialSegment == Roads.RoadSpecialSegment.Embankment).SelectMany(s => s.Path.ToTerrainPolygon(s.Width * 2f )).ToList();
+            var embankments = data.RoadsRaw.Where(r => r.SpecialSegment == Roads.RoadSpecialSegment.Embankment).SelectMany(s => s.Path.ToTerrainPolygon(s.Width + (3f * data.Config.CellSize))).ToList();
 
             var lakes = initialLakes.SelectMany(l => l.SubstractAll(embankments)).ToList();
 

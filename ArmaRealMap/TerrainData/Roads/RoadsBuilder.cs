@@ -190,11 +190,11 @@ namespace ArmaRealMap.Roads
         {
             var cacheFile = data.Config.Target.GetCache("elevation-roads.bin");
 
-            if (File.Exists(cacheFile))
-            {
-                data.Elevation.LoadFromBin(cacheFile);
-                return;
-            }
+            //if (File.Exists(cacheFile))
+            //{
+            //    data.Elevation.LoadFromBin(cacheFile);
+            //    return;
+            //}
 
             ProcessEmbankments(data);
 
@@ -209,7 +209,7 @@ namespace ArmaRealMap.Roads
 
         private static void ProcessEmbankments(MapData data)
         {
-            var margin = new Vector2(15);
+            var margin = new Vector2(4 * data.Config.CellSize);
 
             foreach (var em in data.RoadsRaw.Where(r => r.SpecialSegment == RoadSpecialSegment.Embankment))
             {
@@ -228,7 +228,9 @@ namespace ArmaRealMap.Roads
 
                 x.Image.Mutate(p =>
                 {
-                    foreach(var poly in em.Path.ToTerrainPolygon(em.Width * 3f))
+                    var width = em.Width + (3f * data.Config.CellSize);
+
+                    foreach (var poly in em.Path.ToTerrainPolygon(width))
                     {
                         DrawHelper.DrawPolygon(p, poly, brush, x.ToPixels);
                     }
