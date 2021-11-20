@@ -81,7 +81,7 @@ namespace ArmaRealMap.Roads
                 //DebugHelper.ObjectsInPolygons(data, layer, data.Roads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList(), "sidewalks.bmp");
                 if (data.Elevation != null)
                 {
-                    AdjustElevationGrid(data);
+                    //AdjustElevationGrid(data);
                 }
             }
             SaveRoadsShp(data, config);
@@ -196,7 +196,7 @@ namespace ArmaRealMap.Roads
             //    return;
             //}
 
-            ProcessEmbankments(data);
+            // ProcessEmbankments(data);
 
             if (data.Config.Terrain != TerrainRegion.Sahel)
             {
@@ -343,7 +343,7 @@ namespace ArmaRealMap.Roads
                 // Why x+200000 ? nobody really knows...
                 if (config.IsScaled)
                 {
-                    if (road.RoadType >= RoadType.TwoLanesPrimaryRoad)
+                    if (road.RoadType <= RoadType.TwoLanesPrimaryRoad)
                     {
                         features.Add(new Feature(road.Path.ToLineString(p => new Coordinate((p.X * config.Scale.Value) + 200000, (p.Y * config.Scale.Value))), attributesTable));
                     }

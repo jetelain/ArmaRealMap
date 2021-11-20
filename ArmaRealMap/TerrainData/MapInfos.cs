@@ -9,7 +9,9 @@ namespace ArmaRealMap
 {
     public class MapInfos
     {
-        private static readonly EagerLoad eagerUTM = new EagerLoad(false) { UTM_MGRS = true };
+        private static readonly EagerLoad eagerUTM = new EagerLoad(false) { UTM_MGRS = true, Extensions = new EagerLoad_Extensions() { MGRS = false } };
+
+        private static readonly EagerLoad eagerNONE = new EagerLoad(false);
 
         public MilitaryGridReferenceSystem StartPointMGRS { get; set; }
         public UniversalTransverseMercator StartPointUTM { get; set; }
@@ -53,6 +55,9 @@ namespace ArmaRealMap
             return Create(startPointMGRS, size, cellSize, config.Resolution);
         }
 
+
+
+
         internal static MapInfos Create(MilitaryGridReferenceSystem startPointMGRS, int size, int cellSize, double? resolution)
         {
             var southWest = MilitaryGridReferenceSystem.MGRStoLatLong(startPointMGRS);
@@ -63,23 +68,28 @@ namespace ArmaRealMap
                 Math.Round(southWest.UTM.Easting),
                 Math.Round(southWest.UTM.Northing));
 
-            var southEast = UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
-                southWest.UTM.LatZone,
-                southWest.UTM.LongZone,
-                Math.Round(southWest.UTM.Easting) + (size * cellSize),
-                Math.Round(southWest.UTM.Northing)));
+            int widthInMeters = (size * cellSize);
 
-            var northEast = UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
-                southWest.UTM.LatZone,
-                southWest.UTM.LongZone,
-                Math.Round(southWest.UTM.Easting) + (size * cellSize),
-                Math.Round(southWest.UTM.Northing) + (size * cellSize)));
+            var southEast = TerrainToLatLong(startPointUTM, widthInMeters, 0, null);
+            //UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
+            //    southWest.UTM.LatZone,
+            //    southWest.UTM.LongZone,
+            //    Math.Round(southWest.UTM.Easting) + (size * cellSize),
+            //    Math.Round(southWest.UTM.Northing)));
 
-            var northWest = UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
-                southWest.UTM.LatZone,
-                southWest.UTM.LongZone,
-                Math.Round(southWest.UTM.Easting),
-                Math.Round(southWest.UTM.Northing) + (size * cellSize)));
+            var northEast = TerrainToLatLong(startPointUTM, widthInMeters, widthInMeters, null);
+            //UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
+            //southWest.UTM.LatZone,
+            //southWest.UTM.LongZone,
+            //Math.Round(southWest.UTM.Easting) + (size * cellSize),
+            //Math.Round(southWest.UTM.Northing) + (size * cellSize)));
+
+            var northWest = TerrainToLatLong(startPointUTM, 0, widthInMeters, null);
+            //UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
+            //southWest.UTM.LatZone,
+            //southWest.UTM.LongZone,
+            //Math.Round(southWest.UTM.Easting),
+            //Math.Round(southWest.UTM.Northing) + (size * cellSize)));
 
             return new MapInfos
             {
@@ -92,17 +102,21 @@ namespace ArmaRealMap
                 CellSize = cellSize,
                 Size = size,
                 P1 = new TerrainPoint(0f, 0f),
-                P2 = new TerrainPoint(size * cellSize, size * cellSize),
+                P2 = new TerrainPoint(widthInMeters, widthInMeters),
                 ImageryResolution = resolution ?? 1d
             };
         }
 
         public PointF LatLngToPixelsPoint(NetTopologySuite.Geometries.Coordinate n)
         {
-            var u = new Coordinate(n.Y, n.X, eagerUTM).UTM;
+            var coord = new Coordinate(n.Y, n.X, eagerUTM);
+            if (coord.UTM.LongZone != StartPointUTM.LongZone)
+            {
+                coord.Lock_UTM_MGRS_Zone(StartPointUTM.LongZone);
+            }
             return new PointF(
-                (float)((u.Easting - StartPointUTM.Easting) / ImageryResolution),
-                (float)((Height - (u.Northing - StartPointUTM.Northing)) / ImageryResolution)
+                (float)((coord.UTM.Easting - StartPointUTM.Easting) / ImageryResolution),
+                (float)((Height - (coord.UTM.Northing - StartPointUTM.Northing)) / ImageryResolution)
             );
         }
 
@@ -113,8 +127,12 @@ namespace ArmaRealMap
 
         public TerrainPoint LatLngToTerrainPoint(NetTopologySuite.Geometries.Coordinate n)
         {
-            var u = new Coordinate(n.Y, n.X, eagerUTM).UTM;
-            return new TerrainPoint((float)(u.Easting - StartPointUTM.Easting), (float)(u.Northing - StartPointUTM.Northing));
+            var coord = new Coordinate(n.Y, n.X, eagerUTM);
+            if (coord.UTM.LongZone != StartPointUTM.LongZone)
+            {
+                coord.Lock_UTM_MGRS_Zone(StartPointUTM.LongZone);
+            }
+            return new TerrainPoint((float)(coord.UTM.Easting - StartPointUTM.Easting), (float)(coord.UTM.Northing - StartPointUTM.Northing));
         }
 
         public IEnumerable<TerrainPoint> LatLngToTerrainPoints(IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
@@ -150,12 +168,33 @@ namespace ArmaRealMap
 
         public TerrainPoint LatLngToTerrainPoint(OsmSharp.Node node)
         {
-            var coord = new Coordinate(node.Latitude.Value, node.Longitude.Value, eagerUTM).UTM;
+            var coord = new Coordinate(node.Latitude.Value, node.Longitude.Value, eagerUTM);
+
+            if (coord.UTM.LongZone != StartPointUTM.LongZone)
+            {
+                coord.Lock_UTM_MGRS_Zone(StartPointUTM.LongZone);
+            }
 
             return new TerrainPoint(
-                    (float)(coord.Easting - StartPointUTM.Easting),
-                    (float)(coord.Northing - StartPointUTM.Northing)
+                    (float)(coord.UTM.Easting - StartPointUTM.Easting),
+                    (float)(coord.UTM.Northing - StartPointUTM.Northing)
                 );
+        }
+
+        public Coordinate TerrainToLatLong(double x, double y)
+        {
+            return TerrainToLatLong(StartPointUTM, x, y, eagerNONE);
+        }
+
+        private static Coordinate TerrainToLatLong(UniversalTransverseMercator startPointUTM, double x, double y, EagerLoad eager)
+        {
+            var utm = new UniversalTransverseMercator(
+                                    startPointUTM.LatZone,
+                                    startPointUTM.LongZone,
+                                    startPointUTM.Easting + x,
+                                    startPointUTM.Northing + y);
+
+            return UniversalTransverseMercator.ConvertUTMtoLatLong(utm, eager ?? GlobalSettings.Default_EagerLoad);
         }
 
         public string ToCoordinates()

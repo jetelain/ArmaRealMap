@@ -40,7 +40,7 @@ namespace SRTM.Sources.NASA
         /// <summary>
         /// The source of the data.
         /// </summary>
-        public const string SOURCE = @"http://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL1.003/2000.02.11/";
+        public const string SOURCE = @"https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL1.003/2000.02.11/";
  
         /// <summary>
         /// Gets the missing cell.

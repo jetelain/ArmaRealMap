@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="CoordinateSharp" Version="2.10.1.1" />
     <PackageReference Include="FreeImage-dotnet-core" Version="4.3.6" />
+    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="NetTopologySuite" Version="2.2.0" />
     <PackageReference Include="NetTopologySuite.IO.ShapeFile" Version="2.0.0" />

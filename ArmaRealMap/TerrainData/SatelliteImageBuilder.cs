@@ -24,13 +24,14 @@ namespace ArmaRealMap
                     {
                         for (int x = 0; x < img.Width; x++)
                         {
-                            var point = new UniversalTransverseMercator(
-                                    startPointUTM.LatZone,
-                                    startPointUTM.LongZone,
-                                    startPointUTM.Easting + (x * area.ImageryResolution),
-                                    startPointUTM.Northing + (y * area.ImageryResolution));
+                            //var point = new UniversalTransverseMercator(
+                            //        startPointUTM.LatZone,
+                            //        startPointUTM.LongZone,
+                            //        startPointUTM.Easting + (x * area.ImageryResolution),
+                            //        startPointUTM.Northing + (y * area.ImageryResolution));
+                            //var latLong = UniversalTransverseMercator.ConvertUTMtoLatLong(point, eager);
 
-                            var latLong = UniversalTransverseMercator.ConvertUTMtoLatLong(point, eager);
+                            var latLong = area.TerrainToLatLong(x * area.ImageryResolution, y * area.ImageryResolution);
                             img[x, img.Height - y - 1] = src.GetPixel(latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble());
                             report.ReportItemsDone(Interlocked.Increment(ref done));
                         }

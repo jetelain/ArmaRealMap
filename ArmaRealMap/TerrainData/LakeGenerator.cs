@@ -6,6 +6,7 @@ using System.Numerics;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
+using ArmaRealMap.Roads;
 using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -23,7 +24,11 @@ namespace ArmaRealMap
 
             var minimalArea = Math.Pow(5 * data.Config.CellSize, 2); // 5 x 5 nodes minimum
 
-            var embankments = data.RoadsRaw.Where(r => r.SpecialSegment == Roads.RoadSpecialSegment.Embankment).SelectMany(s => s.Path.ToTerrainPolygon(s.Width + (3f * data.Config.CellSize))).ToList();
+            var embankmentsSegments = data.RoadsRaw.Where(r => r.SpecialSegment == Roads.RoadSpecialSegment.Embankment).ToList();
+
+            ProcessEmbankments(data, embankmentsSegments);
+
+            var embankments = embankmentsSegments.SelectMany(s => s.Path.ToTerrainPolygon(EmbankmentWidth(data, s))).ToList();
 
             var lakes = initialLakes.SelectMany(l => l.SubstractAll(embankments)).ToList();
 
@@ -76,8 +81,46 @@ namespace ArmaRealMap
                 }
             }
 
-            data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation-lakes.asc"));
+            //data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation-lakes.asc"));
             //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-lakes.png"));
+        }
+
+        private static void ProcessEmbankments(MapData data, List<Road> embankmentsSegments)
+        {
+            var margin = new Vector2(4 * data.Config.CellSize);
+
+            foreach (var em in embankmentsSegments)
+            {
+                var elevationA = data.Elevation.ElevationAround(em.Path.FirstPoint, em.Width);
+                var elevationB = data.Elevation.ElevationAround(em.Path.LastPoint, em.Width);
+
+                var x = data.Elevation.PrepareToMutate(em.Path.MinPoint - margin, em.Path.MaxPoint + margin,
+                    Math.Min(elevationA, elevationB), Math.Max(elevationA, elevationB));
+
+                var brush = new LinearGradientBrush(
+                    x.ToPixel(em.Path.FirstPoint),
+                    x.ToPixel(em.Path.LastPoint),
+                    GradientRepetitionMode.None,
+                    new ColorStop(0f, x.ElevationToColor(elevationA)),
+                    new ColorStop(1f, x.ElevationToColor(elevationB)));
+
+                x.Image.Mutate(p =>
+                {
+                    float width = EmbankmentWidth(data, em);
+
+                    foreach (var poly in em.Path.ToTerrainPolygon(width))
+                    {
+                        DrawHelper.DrawPolygon(p, poly, brush, x.ToPixels);
+                    }
+                });
+                x.Apply();
+
+            }
+        }
+
+        private static float EmbankmentWidth(MapData data, Road em)
+        {
+            return em.Width + (2.5f * data.Config.CellSize);
         }
 
         private static void GenerateTiles(MapInfos area, List<TerrainObject> objects, TerrainPolygon g, float ajustedWaterElevation, TerrainPoint min, TerrainPoint max)

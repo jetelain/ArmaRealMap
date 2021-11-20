@@ -18,7 +18,7 @@ namespace ArmaRealMap.ElevationModel
 {
     public class ElevationGrid
     {
-        private readonly MapInfos area;
+        public readonly MapInfos area;
         public readonly float[,] elevationGrid;
 
         private readonly Vector2 cellSize;
@@ -47,7 +47,7 @@ namespace ArmaRealMap.ElevationModel
             var eager = new EagerLoad(false);
 
             var done = 0;
-
+            double delta = 1d / 3600d;
             PreloadSRTM(srtmData);
 
             var report = new ProgressReport("LoadFromSRTM", area.Size);
@@ -55,15 +55,23 @@ namespace ArmaRealMap.ElevationModel
             {
                 for (int x = 0; x < area.Size; x++)
                 {
-                    var point = new UniversalTransverseMercator(
-                            startPointUTM.LatZone,
-                            startPointUTM.LongZone,
-                            startPointUTM.Easting + (double)(x * area.CellSize),
-                            startPointUTM.Northing + (double)(y * area.CellSize));
-
-                    var latLong = UniversalTransverseMercator.ConvertUTMtoLatLong(point, eager);
-
+                    //var point = new UniversalTransverseMercator(
+                    //        startPointUTM.LatZone,
+                    //        startPointUTM.LongZone,
+                    //        startPointUTM.Easting + (double)(x * area.CellSize),
+                    //        startPointUTM.Northing + (double)(y * area.CellSize));
+                    //var latLong = UniversalTransverseMercator.ConvertUTMtoLatLong(point, eager);
+                    var latLong = area.TerrainToLatLong(x * area.CellSize, y * area.CellSize);
                     var elevation = srtmData.GetElevationBilinear(latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble()) ?? double.NaN;
+                    if (area.CellSize > 30) // Smooth cells larger than SRTM resolution
+                    {
+                        elevation = (new[] { elevation,
+                            srtmData.GetElevationBilinear(latLong.Latitude.ToDouble() - delta, latLong.Longitude.ToDouble() - delta) ?? double.NaN,
+                            srtmData.GetElevationBilinear(latLong.Latitude.ToDouble() - delta, latLong.Longitude.ToDouble() + delta) ?? double.NaN,
+                            srtmData.GetElevationBilinear(latLong.Latitude.ToDouble() + delta, latLong.Longitude.ToDouble() - delta) ?? double.NaN,
+                            srtmData.GetElevationBilinear(latLong.Latitude.ToDouble() + delta, latLong.Longitude.ToDouble() + delta) ?? double.NaN
+                        }).Average();
+                    }
                     elevationGrid[x, y] = (float)elevation;
                 }
                 report.ReportItemsDone(Interlocked.Increment(ref done));
@@ -195,6 +203,51 @@ namespace ArmaRealMap.ElevationModel
                 writer.WriteLine();
             }
         }
+
+        public void SaveToObj(string path, int w = -1)
+        {
+            if ( w == -1 )
+            {
+                w = area.Size;
+            }
+            var report = new ProgressReport("SaveToObj", area.Size * 3 - 1);
+            using (var writer = new StreamWriter(new FileStream(path, FileMode.Create, FileAccess.Write)))
+            {
+                var min = 4000f;
+                for (int y = 0; y < w; y++)
+                {
+                    for (int x = 0; x < w; x++)
+                    {
+                        min = MathF.Min(elevationGrid[x, y], min);
+                    }
+                    report.ReportOneDone();
+                }
+
+                for (int y = 0; y < w; y++)
+                {
+                    for (int x = 0; x < w; x++)
+                    {
+                        writer.WriteLine(FormattableString.Invariant($"v {x * area.CellSize:0.00} {elevationGrid[x, y] - min:0.00} {y * area.CellSize:0.00}"));
+                    }
+                    report.ReportOneDone();
+                }
+                int index = 0;
+                for (int y = 0; y < w - 1; y++)
+                {
+                    for (int x = 0; x < w - 1; x++)
+                    {
+                        writer.WriteLine(FormattableString.Invariant($"f {index + 1} {index + 2} {index + w + 1}"));
+                        writer.WriteLine(FormattableString.Invariant($"f {index + 2} {index + w + 1} {index + w + 2}"));
+                        index++;
+                    }
+                    index++; // for the missing X
+                    report.ReportOneDone();
+                }
+            }
+            report.TaskDone();
+        }
+
+
 
         public void SavePreview(string path)
         {

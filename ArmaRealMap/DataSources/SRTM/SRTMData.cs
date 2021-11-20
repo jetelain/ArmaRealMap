@@ -189,54 +189,60 @@ namespace SRTM
             //r txtFilePath = Path.Combine(DataDirectory, filename + ".txt");
             var count = -1;
 
-            if (!File.Exists(filePath) && !File.Exists(zipFilePath) /*&& !File.Exists(txtFilePath)*/ &&
-                this.GetMissingCell != null)
+            lock (this)
             {
-                this.GetMissingCell(DataDirectory, filename);
-            }
-            /*else if(File.Exists(txtFilePath) && this.GetMissingCell != null)
-            {
-                var txtFile = File.ReadAllText(txtFilePath);
-                if (!int.TryParse(txtFile, out count))
+
+
+
+                if (!File.Exists(filePath) && !File.Exists(zipFilePath) /*&& !File.Exists(txtFilePath)*/ &&
+                    this.GetMissingCell != null)
                 {
-                    File.Delete(txtFilePath);
-                    count = -1;
+                    this.GetMissingCell(DataDirectory, filename);
                 }
-                else if(count < RETRIES)
+                /*else if(File.Exists(txtFilePath) && this.GetMissingCell != null)
                 {
-                    if (this.GetMissingCell(DataDirectory, filename))
+                    var txtFile = File.ReadAllText(txtFilePath);
+                    if (!int.TryParse(txtFile, out count))
                     {
                         File.Delete(txtFilePath);
+                        count = -1;
                     }
-                }
-            }*/
-            
-            if (File.Exists(filePath))
-            {
-                return new SRTMDataCell(filePath);
-            }
-            else if(File.Exists(zipFilePath))
-            {
-                return new SRTMDataCell(zipFilePath);
-            }
-            else
-            {
-                /*if (count < 0)
+                    else if(count < RETRIES)
+                    {
+                        if (this.GetMissingCell(DataDirectory, filename))
+                        {
+                            File.Delete(txtFilePath);
+                        }
+                    }
+                }*/
+
+                if (File.Exists(filePath))
                 {
-                    File.WriteAllText(txtFilePath, "1");
-                    return GetDataCell(latitude, longitude);
+                    return new SRTMDataCell(filePath);
                 }
-                else if (count < RETRIES)
+                else if (File.Exists(zipFilePath))
                 {
-                    count++;
-                    File.WriteAllText(txtFilePath, count.ToString());
-                    return GetDataCell(latitude, longitude);
+                    return new SRTMDataCell(zipFilePath);
                 }
                 else
                 {
-                    return new EmptySRTMDataCell(txtFilePath);
-                }*/
-                throw new Exception(filePath);
+                    /*if (count < 0)
+                    {
+                        File.WriteAllText(txtFilePath, "1");
+                        return GetDataCell(latitude, longitude);
+                    }
+                    else if (count < RETRIES)
+                    {
+                        count++;
+                        File.WriteAllText(txtFilePath, count.ToString());
+                        return GetDataCell(latitude, longitude);
+                    }
+                    else
+                    {
+                        return new EmptySRTMDataCell(txtFilePath);
+                    }*/
+                    throw new Exception(filePath);
+                }
             }
         }
 

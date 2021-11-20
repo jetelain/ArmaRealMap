@@ -218,13 +218,13 @@ namespace ArmaRealMap.TerrainData.Forests
         {
             if (r.RoadType < RoadType.TwoLanesPrimaryRoad)
             {
-                return r.Width + 8f;
+                return r.Width + 6f;
             }
             if (r.RoadType < RoadType.SingleLaneDirtPath)
             {
-                return r.Width + 6f;
+                return r.Width + 4f;
             }
-            return r.Width + 3f;
+            return r.Width + 2f;
         }
 
         private static List<TerrainObject> wasRemoved = new List<TerrainObject>();

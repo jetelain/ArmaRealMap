@@ -205,9 +205,13 @@ namespace ArmaRealMap
                 {
                     data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation.asc"));
                 }
-                else { 
+                else
+                {
                     Console.WriteLine("==== Lakes ====");
                     LakeGenerator.ProcessLakes(data, area, shapes);
+
+                    Console.WriteLine("==== Elevation ====");
+                    ElevationGridBuilder.MakeDetailed(data);
 
                     Console.WriteLine("==== Buildings ====");
                     BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
@@ -326,17 +330,7 @@ namespace ArmaRealMap
         {
             var sb = new StringBuilder();
 
-            // latitude = 17.698; //value used by Tanoa
-            // longitude = 178.783; //value used by Tanoa
-
-            var center = UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
-                area.StartPointUTM.LatZone,
-                area.StartPointUTM.LongZone,
-                Math.Round(area.StartPointUTM.Easting) + (area.Width / 2),
-                Math.Round(area.StartPointUTM.Northing) + (area.Height / 2)));
-
-            
-
+            var center = area.TerrainToLatLong(area.Width / 2, area.Height / 2);
 
             sb.Append(FormattableString.Invariant(@$"
 latitude={center.Latitude.ToDouble():0.00000000};
@@ -353,7 +347,7 @@ class OutsideTerrain
 {{
     colorOutside[] = {{0.227451,0.27451,0.384314,1}};
 	enableTerrainSynth = 0;
-	satellite = ""A3\map_Stratis\data\s_satout_co.paa"";
+	satellite = ""{config.Target.PboPrefix}\data\satout_ca.paa"";
     class Layers
     {{
 		class Layer0
@@ -414,13 +408,18 @@ class Grid {{
             foreach (OsmSharp.Node place in places)
             {
                 var kind = ToArmaKind(place.Tags.GetValue("place"));
-                if (kind != null)
+                if (kind != null && (!config.IsScaled || kind.StartsWith("NameCity")))
                 {
                     var name = place.Tags.GetValue("name");
                     var pos = area.LatLngToTerrainPoint(place);
 
                     if (area.IsInside(pos))
                     {
+                        if (config.IsScaled)
+                        {
+                            pos = new TerrainPoint(pos.X * (float)config.Scale.Value, pos.Y * (float)config.Scale.Value);
+                        }
+
                         sb.AppendLine(FormattableString.Invariant($@"class Item{id}
 {{
     name = ""{name}"";
