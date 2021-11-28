@@ -23,8 +23,13 @@ namespace SRTM.Sources
         public static bool DownloadWithCredentials(NetworkCredential credentials, string local, string remote,
             bool logErrors = false)
         {
-            HttpClientHandler handler = new HttpClientHandler {Credentials = credentials};
-            var client = new HttpClient(handler);
+            //HttpClientHandler handler = new HttpClientHandler { Credentials = credentials };
+            var client = new HttpClient();
+
+            var authenticationString = $"{credentials.UserName}:{credentials.Password}";
+            var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(authenticationString));
+            client.DefaultRequestHeaders.Add("Cookie", "DATA=YZGjb3-DxCbXBu5BDnqoNQAAAWc");
+
             return PerformDownload(client, local, remote, logErrors);
         }
 
@@ -34,16 +39,8 @@ namespace SRTM.Sources
 
             try
             {
-                if (File.Exists(local))
-                {
-                    File.Delete(local);
-                }
-
-                using (var stream = client.GetStreamAsync(remote).Result)
-                using (var outputStream = File.OpenWrite(local))
-                {
-                    stream.CopyTo(outputStream);
-                }
+                var data = client.GetByteArrayAsync(remote).ConfigureAwait(false).GetAwaiter().GetResult();
+                File.WriteAllBytes(local, data);
                 return true;
             }
             catch (Exception ex)

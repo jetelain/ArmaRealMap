@@ -85,6 +85,39 @@ namespace ArmaRealMap.Geometries
             return result.Childs.Select(c => new TerrainPath(c.Contour.Select(p => new TerrainPoint(p)).ToList())).ToList();
         }
 
+        public List<TerrainPath> Substract(TerrainPolygon polygon)
+        {
+            var clipper = new Clipper();
+            clipper.AddPath(Points.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, false);
+            clipper.AddPath(polygon.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+            foreach (var hole in polygon.Holes)
+            {
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true); // EvenOdd will do the job
+            }
+            var result = new PolyTree();
+            clipper.Execute(ClipType.ctDifference, result);
+            if (result.Childs.Any(c => c.ChildCount != 0))
+            {
+                throw new NotSupportedException();
+            }
+            return result.Childs.Select(c => new TerrainPath(c.Contour.Select(p => new TerrainPoint(p)).ToList())).ToList();
+        }
+
+        public IEnumerable<TerrainPath> SubstractAll(IEnumerable<TerrainPolygon> others)
+        {
+            var result = new List<TerrainPath>() { this };
+            foreach (var other in others.Where(o => GeometryHelper.EnveloppeIntersects(this, o)))
+            {
+                var previousResult = result.ToList();
+                result.Clear();
+                foreach (var subjet in previousResult)
+                {
+                    result.AddRange(subjet.Substract(other));
+                }
+            }
+            return result;
+        }
+
         public IEnumerable<TerrainPath> ClippedBy(TerrainPolygon polygon)
         {
             return Intersection(polygon);

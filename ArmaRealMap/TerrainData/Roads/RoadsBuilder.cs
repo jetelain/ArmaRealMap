@@ -183,154 +183,7 @@ namespace ArmaRealMap.Roads
 
         private static List<Road> ConnectedAt(Road self, IEnumerable<Road> roads, TerrainPoint point)
         {
-            return roads.Where(r => r != self && r.RoadType == self.RoadType && (r.Path.FirstPoint == point || r.Path.LastPoint == point)).ToList();
-        }
-
-        private static void AdjustElevationGrid(MapData data)
-        {
-            var cacheFile = data.Config.Target.GetCache("elevation-roads.bin");
-
-            //if (File.Exists(cacheFile))
-            //{
-            //    data.Elevation.LoadFromBin(cacheFile);
-            //    return;
-            //}
-
-            // ProcessEmbankments(data);
-
-            if (data.Config.Terrain != TerrainRegion.Sahel)
-            {
-                MakeRoadFlat(data);
-            }
-
-            data.Elevation.SaveToBin(cacheFile);
-            //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-roads.bmp"));
-        }
-
-        private static void ProcessEmbankments(MapData data)
-        {
-            var margin = new Vector2(4 * data.Config.CellSize);
-
-            foreach (var em in data.RoadsRaw.Where(r => r.SpecialSegment == RoadSpecialSegment.Embankment))
-            {
-                var elevationA = data.Elevation.ElevationAt(em.Path.FirstPoint);
-                var elevationB = data.Elevation.ElevationAt(em.Path.LastPoint);
-
-                var x = data.Elevation.PrepareToMutate(em.Path.MinPoint - margin, em.Path.MaxPoint + margin, 
-                    Math.Min(elevationA, elevationB), Math.Max(elevationA, elevationB));
-
-                var brush = new LinearGradientBrush(
-                    x.ToPixel(em.Path.FirstPoint),
-                    x.ToPixel(em.Path.LastPoint), 
-                    GradientRepetitionMode.None, 
-                    new ColorStop(0f, x.ElevationToColor(elevationA)),
-                    new ColorStop(1f, x.ElevationToColor(elevationB)));
-
-                x.Image.Mutate(p =>
-                {
-                    var width = em.Width + (3f * data.Config.CellSize);
-
-                    foreach (var poly in em.Path.ToTerrainPolygon(width))
-                    {
-                        DrawHelper.DrawPolygon(p, poly, brush, x.ToPixels);
-                    }
-                });
-                x.Apply();
-                
-            }
-        }
-
-        private static void MakeRoadFlat(MapData data)
-        {
-            var sortedRoads = data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad)/*.OrderByDescending(r => (int)r.RoadType)*/.ToList();
-            var report = new ProgressReport("ElevationRoads", sortedRoads.Count);
-            var gridConstraints = new int[data.MapInfos.Size, data.MapInfos.Size];
-            var rotate1 = Matrix3x2.CreateRotation(1.570796f);
-            var rotate2 = Matrix3x2.CreateRotation(-1.570796f);
-            var margin = new Vector2(15);
-
-            foreach (var road in sortedRoads)
-            {
-                var points = GeometryHelper.PointsOnPath(road.Path.Points, 5f).ToList();
-
-                var segments = new List<RoadSegment>(); //points.Take(points.Count - 1).Zip(points.Skip(1));
-
-                foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
-                {
-                    var delta = segment.Second.Vector - segment.First.Vector;
-                    var vector = Vector2.Normalize(delta);
-                    var vector1 = Vector2.Transform(vector, rotate1);
-                    var vector2 = Vector2.Transform(vector, rotate2);
-                    var center = new TerrainPoint(Vector2.Lerp(segment.First.Vector, segment.Second.Vector, 0.5f));
-                    var a = center + vector1 * road.Width;
-                    var b = center + vector2 * road.Width;
-                    var elevationA = data.Elevation.ElevationAt(a);
-                    var elevationB = data.Elevation.ElevationAt(b);
-                    segments.Add(new RoadSegment()
-                    {
-                        Length = delta.Length(),
-                        First = segment.First,
-                        Second = segment.Second,
-                        Center = center,
-                        A = a,
-                        B = b,
-                        Elevation = data.Elevation.ElevationAt(center),
-                        Adjust = MathF.Abs(elevationA - elevationB) > 0.75f
-                    });
-                }
-
-                if (segments.Any(s => s.Adjust))
-                {
-                    var medium = new float[segments.Count];
-                    for (int i = 0; i < segments.Count; ++i)
-                    {
-                        medium[i] = segments.Skip(Math.Max(0, i - 2)).Take(5).Average(s => s.Elevation);
-                    }
-                    for (int i = 0; i < segments.Count; ++i)
-                    {
-                        segments[i].Elevation = medium[i];
-                    }
-
-                    foreach (var segment in segments.Where(s => s.Adjust))
-                    {
-                        var x1 = MathF.Min(segment.A.X, segment.B.X);
-                        var x2 = MathF.Max(segment.A.X, segment.B.X);
-                        var y1 = MathF.Min(segment.A.Y, segment.B.Y);
-                        var y2 = MathF.Max(segment.A.Y, segment.B.Y);
-
-                        var x = data.Elevation.PrepareToMutate(new TerrainPoint(x1, y1) - margin, new TerrainPoint(x2, y2) + margin, segment.Elevation - 10, segment.Elevation + 10);
-                        x.Image.Mutate(p =>
-                        {
-                            var pixelLength = ((Vector2)(x.ToPixel(segment.First) - x.ToPixel(segment.Second))).Length();
-                            p.DrawLines(x.ElevationToColor(segment.Elevation).WithAlpha(0.5f), pixelLength * 2.5f, x.ToPixel(segment.A), x.ToPixel(segment.B));
-                            p.DrawLines(x.ElevationToColor(segment.Elevation), pixelLength * 1.5f, x.ToPixel(segment.A), x.ToPixel(segment.B));
-                        });
-                        x.Apply();
-                    }
-                }
-                report.ReportOneDone();
-            }
-
-            report.TaskDone();
-        }
-
-        private static void Pass(MapData data, Image<Rgba32> img, Road road, IEnumerable<TerrainPoint> allPoints, ElevationGridArea b, float coef)
-        {
-            img.Mutate(p =>
-            {
-                var projected =
-                    b.ToPixels(allPoints)
-                    .Zip(allPoints.Select(p => data.Elevation.ElevationAt(p)).Select(p => b.ElevationToColor(p))).ToList();
-                var previous = projected.First();
-                foreach (var point in projected.Skip(1))
-                {
-                    var c1 = previous.Second;
-                    var c2 = point.Second;
-                    var brush = new LinearGradientBrush(previous.First, point.First, GradientRepetitionMode.None, new[] { new ColorStop(0, c1), new ColorStop(1, c2) });
-                    p.DrawLines(brush, road.Width * coef / data.MapInfos.CellSize, previous.First, point.First);
-                    previous = point;
-                }
-            });
+            return roads.Where(r => r != self && r.RoadType == self.RoadType && r.SpecialSegment == self.SpecialSegment && (r.Path.FirstPoint == point || r.Path.LastPoint == point)).ToList();
         }
 
         private static void SaveRoadsShp(MapData data, Config config)
@@ -390,7 +243,7 @@ namespace ArmaRealMap.Roads
             var interpret = new DefaultFeatureInterpreter2();
             var osmRoads = filtered.Where(o => o.Type == OsmGeoType.Way && o.Tags != null && o.Tags.ContainsKey("highway")).ToList();
             var area = TerrainPolygon.FromRectangle(data.MapInfos.P1, data.MapInfos.P2);
-            data.RoadsRaw = data.Roads = new List<Road>();
+            data.Roads = new List<Road>();
             var report = new ProgressReport("PrepareRoads", osmRoads.Count);
             foreach (var road in osmRoads)
             {
@@ -412,7 +265,7 @@ namespace ArmaRealMap.Roads
                                         Path = pathSegment,
                                         RoadType = kind.Value,
                                         SpecialSegment = OsmCategorizer.ToRoadSpecialSegment(road.Tags)
-                                });
+                                    });
                                 }
                             }
                         }

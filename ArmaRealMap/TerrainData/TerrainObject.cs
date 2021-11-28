@@ -11,6 +11,8 @@ namespace ArmaRealMap
         private readonly SingleObjetInfos objectInfos;
         private readonly IBoundingShape box;
         private readonly float? elevation;
+        private readonly float? pitch;
+        private readonly float? roll;
 
         public TerrainObject (SingleObjetInfos objectInfos, IBoundingShape box, float? elevation = null)
         {
@@ -22,10 +24,11 @@ namespace ArmaRealMap
             }
         }
 
-        public TerrainObject(SingleObjetInfos objectInfos, TerrainPoint point, float angle, float? elevation = null)
-            : this(objectInfos, new BoundingCircle(point, objectInfos.GetReservedRadius(), angle), elevation)
+        public TerrainObject(SingleObjetInfos objectInfos, TerrainPoint point, float yaw, float? elevation = null, float? pitch = null, float? roll = null)
+            : this(objectInfos, new BoundingCircle(point, objectInfos.GetReservedRadius(), yaw), elevation)
         {
-
+            this.pitch = pitch;
+            this.roll = roll;
         }
 
         public TerrainPoint MinPoint => box.MinPoint;
@@ -46,6 +49,17 @@ namespace ArmaRealMap
         public string ToTerrainBuilderCSV()
         {
             var point = Transform(objectInfos, box.Center, box.Angle);
+            if (pitch != null || roll != null)
+            {
+                return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};{4:0.000};{5:0.000};1;{6:0.000};",
+                                objectInfos.Name,
+                                point.X + 200000,
+                                point.Y,
+                                -box.Angle,
+                                pitch ?? 0f,
+                                roll ?? 0f,
+                                (elevation ?? 0f) + objectInfos.CZ);
+            }
             if (elevation != null)
             {
                 return string.Format(CultureInfo.InvariantCulture, @"""{0}"";{1:0.000};{2:0.000};{3:0.000};0.0;0.0;1;{4:0.000};",

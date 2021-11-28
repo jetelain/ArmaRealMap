@@ -50,11 +50,19 @@ namespace ArmaRealMap.Osm
 
         private static OsmShapeCategory GetCategory(TagsCollectionBase tags, FeatureInterpreter interpreter)
         {
-            if (tags.ContainsKey("water") || (tags.ContainsKey("waterway") && !tags.IsFalse("waterway")))
+            if ((tags.ContainsKey("waterway") && !tags.IsFalse("waterway")))
+            {
+                return OsmShapeCategory.WaterWay;
+            }
+            if (tags.ContainsKey("water"))
             {
                 if (Get(tags, "water") == "lake")
                 {
                     return OsmShapeCategory.Lake;
+                }
+                if (Get(tags, "water") == "stream")
+                {
+                    return OsmShapeCategory.WaterWay;
                 }
                 return OsmShapeCategory.Water;
             }

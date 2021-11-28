@@ -10,6 +10,7 @@ using ArmaRealMap.Roads;
 using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace ArmaRealMap
@@ -24,13 +25,15 @@ namespace ArmaRealMap
 
             var minimalArea = Math.Pow(5 * data.Config.CellSize, 2); // 5 x 5 nodes minimum
 
-            var embankmentsSegments = data.RoadsRaw.Where(r => r.SpecialSegment == Roads.RoadSpecialSegment.Embankment).ToList();
+            var embankmentsSegments = data.Roads.Where(r => r.SpecialSegment == Roads.RoadSpecialSegment.Embankment).ToList();
 
             ProcessEmbankments(data, embankmentsSegments);
 
             var embankments = embankmentsSegments.SelectMany(s => s.Path.ToTerrainPolygon(EmbankmentWidth(data, s))).ToList();
 
             var lakes = initialLakes.SelectMany(l => l.SubstractAll(embankments)).ToList();
+
+            data.Lakes = new List<Lake>();
 
             var report = new ProgressReport("Lakes", lakes.Count);
             var cellSize = new Vector2(area.CellSize, area.CellSize);
@@ -41,20 +44,14 @@ namespace ArmaRealMap
                     continue; // too small
                 }
 
+                var lake = new Lake();
+
                 var points = g.Shell;
-                //var box = BoundingBox.Compute(points.ToArray());
-                var waterElevation = points.Min(p => data.Elevation.ElevationAt(p));
-                var ajustedWaterElevation = waterElevation - 0.1f;
+                lake.BorderElevation = points.Min(p => data.Elevation.ElevationAt(p));
+                lake.WaterElevation = lake.BorderElevation - 0.1f;
+                lake.TerrainPolygon = g;
 
-                var min = new TerrainPoint(
-                    points.Min(p => p.X),
-                    points.Min(p => p.Y));
-                var max = new TerrainPoint(
-                    points.Max(p => p.X),
-                    points.Max(p => p.Y));
-
-
-                var lakeElevation = data.Elevation.PrepareToMutate(min - cellSize, max + cellSize, waterElevation - 2.5f, waterElevation);
+                var lakeElevation = data.Elevation.PrepareToMutate(g.MinPoint - cellSize, g.MaxPoint + cellSize, lake.BorderElevation - 2.5f, lake.BorderElevation);
                 lakeElevation.Image.Mutate(d =>
                 {
                     DrawHelper.DrawPolygon(d, g, new SolidBrush(Color.FromRgba(255, 255, 255, 128)),  lakeElevation.ToPixels);
@@ -68,8 +65,9 @@ namespace ArmaRealMap
                     }
                 });
                 lakeElevation.Apply();
-                GenerateTiles(area, objects, g, ajustedWaterElevation, min, max);
+                GenerateTiles(area, objects, g, lake.WaterElevation, g.MinPoint, g.MaxPoint);
                 report.ReportOneDone();
+                data.Lakes.Add(lake);
             }
             report.TaskDone();
 
@@ -81,7 +79,7 @@ namespace ArmaRealMap
                 }
             }
 
-            //data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation-lakes.asc"));
+            data.Elevation.SaveToBin(data.Config.Target.GetCache("elevation-lakes.bin"));
             //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-lakes.png"));
         }
 
@@ -129,6 +127,20 @@ namespace ArmaRealMap
             var h10 = (int)Math.Ceiling((max.Y - min.Y) / 10);
             var grid10 = new bool[w10, h10];
 
+
+            using (var img = new Image<Rgba32>(w10, h10, Color.Transparent))
+            {
+                img.Mutate(d => DrawHelper.DrawPolygon(d, g, new SolidBrush(Color.White), l => l.Select(p => new PointF((p.X - min.X) / 10f, (p.Y - min.Y) / 10f))));
+                for (int x = 0; x < w10; ++x)
+                {
+                    for (int y = 0; y < h10; ++y)
+                    {
+                        grid10[x, y] = img[x, y].A > 0;
+                    }
+                }
+            }
+
+            /*
             for (int x = 0; x < w10; ++x)
             {
                 for (int y = 0; y < h10; ++y)
@@ -145,7 +157,7 @@ namespace ArmaRealMap
                         }
                     }
                 }
-            }
+            }*/
 
             Process(objects, grid10, w10, h10, min, 80, ajustedWaterElevation);
             Process(objects, grid10, w10, h10, min, 40, ajustedWaterElevation);

@@ -211,7 +211,7 @@ namespace ArmaRealMap
                     LakeGenerator.ProcessLakes(data, area, shapes);
 
                     Console.WriteLine("==== Elevation ====");
-                    ElevationGridBuilder.MakeDetailed(data);
+                    ElevationGridBuilder.MakeDetailed(data, shapes, olibs);
 
                     Console.WriteLine("==== Buildings ====");
                     BuildingsBuilder.PlaceBuildings(data, olibs, shapes);

@@ -36,6 +36,7 @@ namespace ArmaRealMap.Osm
 
         internal static readonly OsmShapeCategory Lake = new OsmShapeCategory(TerrainMaterial.WetLand, 1);
         internal static readonly OsmShapeCategory Water = new OsmShapeCategory(TerrainMaterial.WetLand, 1);
+        internal static readonly OsmShapeCategory WaterWay = new OsmShapeCategory(TerrainMaterial.WetLand, 1);
         internal static readonly OsmShapeCategory Forest = new OsmShapeCategory(TerrainMaterial.Forest, 4);
         internal static readonly OsmShapeCategory WetLand = new OsmShapeCategory(TerrainMaterial.WetLand, 2);
         internal static readonly OsmShapeCategory Grass = new OsmShapeCategory(TerrainMaterial.GrassShort, 3);

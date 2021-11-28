@@ -232,15 +232,18 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                 {
                     foreach (var category in polygonsByCategory.OrderByDescending(e => e.Category.GroundTexturePriority))
                     {
-                        var color = category.Category.TerrainMaterial.GetColor(data.Config.Terrain);
+                        if (category.Category != OsmShapeCategory.WaterWay)
+                        {
+                            var color = category.Category.TerrainMaterial.GetColor(data.Config.Terrain);
 
-                        var brush = new SolidBrush(color);
+                            var brush = new SolidBrush(color);
 
-                        var edgeBrush = new PatternBrush(color,
-                            Color.Transparent,
-                            Generate(category.Category.GroundTexturePriority, 0.5f));
+                            var edgeBrush = new PatternBrush(color,
+                                Color.Transparent,
+                                Generate(category.Category.GroundTexturePriority, 0.6f));
 
-                        Draw(area, d, report, category, brush, edgeBrush);
+                            Draw(area, d, report, category, brush, edgeBrush);
+                        }
                     }
                 });
                 report.TaskDone();

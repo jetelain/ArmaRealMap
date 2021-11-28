@@ -32,6 +32,8 @@ namespace ArmaRealMap.TerrainData.ElevationModel
 
         public List<ElevationConstraint> Constraints { get; } = new List<ElevationConstraint>();
 
+        public bool IsReferenceOnly { get; set; }
+
         public ElevationConstraintNode PinToInitial()
         {
             if (SameThan.Count > 0)
@@ -59,14 +61,14 @@ namespace ArmaRealMap.TerrainData.ElevationModel
             }
         }
 
-        public void MustBeLowerThan(ElevationConstraintNode other)
+        public void MustBeLowerThan(ElevationConstraintNode other, float shift = 0f, bool optional = false)
         {
-            Constraints.Add(new ElevationConstraint(lowerThan: other));
+            Constraints.Add(new ElevationConstraint(lowerThan: other, lowerShift: shift, optional: optional));
         }
 
         public bool CanSolve
         {
-            get { return Constraints.Concat(SameThan.SelectMany(n => n.Constraints)).All(l => l.IsSolved); }
+            get { return !IsSolved && Constraints.Concat(SameThan.SelectMany(n => n.Constraints)).All(l => l.IsSolved); }
         }
 
         public bool IsSolved
@@ -120,6 +122,11 @@ namespace ArmaRealMap.TerrainData.ElevationModel
         internal void GiveUp()
         {
             SetElevation(ComputeBaseElevation());
+        }
+
+        internal void ClearOptionalConstraints()
+        {
+            Constraints.RemoveAll(c => c.Optional && !c.IsSolved);
         }
     }
 }

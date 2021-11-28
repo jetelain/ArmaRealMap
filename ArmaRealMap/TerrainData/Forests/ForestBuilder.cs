@@ -184,7 +184,8 @@ namespace ArmaRealMap.TerrainData.Forests
                 .Where(s => s.Category.GroundTexturePriority < category.GroundTexturePriority
                     && !s.Category.IsBuilding
                     && s.Category != OsmShapeCategory.Building
-                    && s.Category != OsmShapeCategory.Water)
+                    && s.Category != OsmShapeCategory.Water
+                    && s.Category != OsmShapeCategory.WaterWay)
                 .SelectMany(g => g.TerrainPolygons));
 
             return substractPolygons;

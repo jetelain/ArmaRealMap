@@ -11,6 +11,9 @@ using ArmaRealMap.ElevationModel;
 using ArmaRealMap.Geometries;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearRegression;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace ArmaRealMap.TerrainData.ElevationModel
 {
@@ -36,12 +39,20 @@ namespace ArmaRealMap.TerrainData.ElevationModel
 
         public ElevationConstraintNode Node(TerrainPoint point)
         {
+            return Node(point, false);
+        }
+
+        public ElevationConstraintNode Node(TerrainPoint point, bool isReferenceOnly)
+        {
             var existingList =  Search(point.Vector - MergeRadius, point.Vector + MergeRadius);
             if (existingList.Count > 0 )
             {
-                return existingList.OrderBy(p => (p.Point.Vector - point.Vector).LengthSquared()).First();
+                var enode = existingList.OrderBy(p => (p.Point.Vector - point.Vector).LengthSquared()).First();
+                enode.IsReferenceOnly = enode.IsReferenceOnly && isReferenceOnly;
+                return enode;
             }
             var node = new ElevationConstraintNode(point, initial);
+            node.IsReferenceOnly = isReferenceOnly;
             Insert(point.Vector, point.Vector, node);
             return node;
         }
@@ -82,28 +93,67 @@ namespace ArmaRealMap.TerrainData.ElevationModel
             Node(node.Point + (Vector2.Transform(normalized, rotateM90) * radius)).MustBeSameThan(node);
         }
 
-        public void Solve()
+        public IEnumerable<ElevationConstraintNode> GetReference(ElevationConstraintNode node, Vector2 normalVector, float width)
+        {
+            if (normalVector == Vector2.Zero)
+            {
+                return new ElevationConstraintNode[0];
+            }
+            var radius = width / 2f;
+            var normalized = Vector2.Normalize(normalVector);
+            return new[] 
+            {
+                Node(node.Point + (Vector2.Transform(normalized, rotateP90) * radius), true),
+                Node(node.Point + (Vector2.Transform(normalized, rotateM90) * radius), true)
+            };
+        }
+
+        public void Solve(MapData data)
         {
             var report = new ProgressReport("Solve", Count);
 
-            int attempts = 0;
-            while(Values.Any(v => !v.IsSolved) && attempts < 1000)
+            foreach (var value in Values.Where(v => v.IsReferenceOnly).ToList())
             {
-                foreach(var value in Values.Where(v => v.CanSolve).ToList())
+                value.Solve();
+                report.ReportOneDone();
+            }
+
+            SolveLoop(report);
+
+            var unsolved = Values.Where(v => !v.IsSolved).ToList();
+            if (unsolved.Count > 0)
+            {
+                foreach (var value in unsolved)
+                {
+                    value.ClearOptionalConstraints();
+                }
+                SolveLoop(report);
+                unsolved = Values.Where(v => !v.IsSolved).ToList();
+            }
+
+            foreach (var value in unsolved)
+            {
+                value.GiveUp();
+            }
+            report.TaskDone();
+        }
+
+        private void SolveLoop(ProgressReport report)
+        {
+            bool changed = true;
+            var remain = Values;
+            while (remain.Any() && changed)
+            {
+                changed = false;
+                var canSolve = remain.Where(v => v.CanSolve).ToList();
+                foreach (var value in canSolve)
                 {
                     value.Solve();
                     report.ReportOneDone();
+                    changed = true;
                 }
-                attempts++;
+                remain = remain.Where(v => !v.IsSolved).ToList();
             }
-
-            int giveup = 0;
-            foreach(var value in Values.Where(v => !v.IsSolved))
-            {
-                value.GiveUp();
-                giveup++;
-            }
-            report.TaskDone();
         }
 
         public void Smooth()
@@ -117,9 +167,9 @@ namespace ArmaRealMap.TerrainData.ElevationModel
             report.TaskDone();
         }
 
-        public void SolveAndApplyOnGrid()
+        public void SolveAndApplyOnGrid(MapData data)
         {
-            Solve();
+            Solve(data);
 
             Smooth();
 
@@ -140,7 +190,7 @@ namespace ArmaRealMap.TerrainData.ElevationModel
                 for (int x = 0; x < initial.area.Size; x++)
                 {
                     var point = new Vector2(x * initial.area.CellSize, y * initial.area.CellSize);
-                    var constraints = Search(point - unit, point + unit).Where(c => c.IsSolved).ToList();
+                    var constraints = Search(point - unit, point + unit).Where(c => c.IsSolved && !c.IsReferenceOnly).ToList();
                     if (constraints.Count > 0 )
                     {
                         list.Add(new (x, y, point, constraints));
