@@ -9,14 +9,15 @@ using ArmaRealMapWebSite.Entities.Assets;
 using ArmaRealMapWebSite.Models;
 using Microsoft.AspNetCore.Authorization;
 using ArmaRealMap.Core.ObjectLibraries;
+using ArmaRealMapWebSite.Entities;
 
 namespace ArmaRealMapWebSite.Controllers
 {
     public class AssetsController : Controller
     {
-        private readonly AssetsContext _context;
+        private readonly ArmaRealMapContext _context;
 
-        public AssetsController(AssetsContext context)
+        public AssetsController(ArmaRealMapContext context)
         {
             _context = context;
         }

@@ -1,0 +1,182 @@
+﻿@model ArmaRealMapWebSite.Entities.Maps.Map
+@using System.Globalization
+@{
+    ViewData["Title"] = Model.Label;
+
+    var center = Model.FromGameCoordinates(Model.SizeInMeters.Value / 2, Model.SizeInMeters.Value / 2);
+    var level = 12;
+    if (Model.SizeInKilometers.Value > 80)
+    {
+        level = 11;
+    }
+    var osm = $"https://www.openstreetmap.org/#map={level}/{center.Latitude.ToDouble()}/{center.Longitude.ToDouble()}";
+}
+
+<h1>@Model.Label</h1>
+
+<h4>Carte réelle</h4>
+<p>
+    <a id="osm-btn" class="btn btn-primary" href="#">Vue OSM</a>
+    <a id="s2-btn" class="btn btn-outline-primary" href="#">Vue Satellite</a>
+    <a href="@osm" class="btn btn-outline-secondary"><i class="fas fa-map-marked"></i> Ouvrir dans OpenStreetMap</a>
+</p>
+<div id="osm" style="height:75vh;">
+</div>
+
+<div class="mt-5">
+    <h4 class="text-danger"><i class="fas fa-exclamation-circle"></i> Signaler un problème</h4>
+
+    <h5>Coordonnées du problème connues</h5>
+    <p>Saisir ici les coordonnées du DAGR multipliées par 10 (précision au mètre attendue).</p>
+    <form asp-action="GameIssue" method="get" class="form-inline">
+        <input type="hidden" name="name" value="@Model.Name" />
+        <div class="form-group mb-2 mr-sm-2">
+            <label class="control-label mr-sm-2">Coordonées en jeu</label>
+            <input name="x" class="form-control mr-sm-2" />
+            <input name="y" class="form-control mr-sm-2" />
+        </div>
+        <div class="form-group mb-2 mr-sm-2">
+            <button class="btn btn-primary"><i class="fas fa-map-marked"></i> Signaler avec ces coordonnées</button>
+        </div>
+    </form>
+
+    <h5>Coordonnées inconnues ou sans coordonnées</h5>
+    <p>(pas encore disponible)</p>
+    <p><a href="#" class="btn btn-primary"><i class="fas fa-bug"></i> Signaler un autre problème</a></p>
+</div>
+
+<div class="mt-5">
+    <h4>Informations techniques</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Workshop)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Workshop)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GridSize)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GridSize)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CellSize)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CellSize)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Resolution)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Resolution)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TerrainRegion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TerrainRegion)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MgrsBottomLeft)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MgrsBottomLeft)
+        </dd>
+    </dl>
+</div>
+
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.MapID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+
+
+@section Styles {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin="" />
+}
+@section Scripts {
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+    <script src="~/js/L.Map.Sync.js"></script>
+    <script>
+
+        var center = [@center.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @center.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)];
+
+        @{
+            var SW = Model.FromGameCoordinates(0, 0);
+            var SE = Model.FromGameCoordinates(0, Model.SizeInMeters.Value);
+            var NW = Model.FromGameCoordinates(Model.SizeInMeters.Value, 0);
+            var NE = Model.FromGameCoordinates(Model.SizeInMeters.Value, Model.SizeInMeters.Value);
+        }
+
+        var rect = [
+            [@SW.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @SW.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)],
+            [@SE.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @SE.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)],
+            [@NE.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @NE.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)],
+            [@NW.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @NW.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)]
+            ];
+
+        var mapOSM = L.map('osm').setView(center, 13);
+        var layerOSM = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' });
+        mapOSM.addLayer(layerOSM);
+
+        var layerS2 = new L.TileLayer("https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/GoogleMapsCompatible/{z}/{y}/{x}.jpg",
+            { attribution: '<a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a>' });
+        //mapS2.addLayer(layerS2);
+
+        L.polygon(rect, {fill: false}).addTo(mapOSM);
+
+        mapOSM.fitBounds([rect[0], rect[2]]);
+
+       /* var mapS2 = L.map('s2').setView(center, 13);
+        var layerS2 = new L.TileLayer("https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/GoogleMapsCompatible/{z}/{y}/{x}.jpg",
+            { attribution: '<a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a>' });
+        mapS2.addLayer(layerS2);
+        L.polygon(rect, { fill: false }).addTo(mapS2);
+
+        mapS2.fitBounds([rect[0], rect[2]]);
+
+        mapS2.sync(mapOSM);
+        mapOSM.sync(mapS2);*/
+
+        $('#osm-btn').on('click', _ => {
+            mapOSM.addLayer(layerOSM);
+            mapOSM.removeLayer(layerS2);
+
+            $('#osm-btn').removeClass('btn-outline-primary');
+            $('#osm-btn').addClass('btn-primary');
+
+            $('#s2-btn').removeClass('btn-primary');
+            $('#s2-btn').addClass('btn-outline-primary');
+
+            return false;
+        });
+
+        $('#s2-btn').on('click', _ => {
+            mapOSM.addLayer(layerS2);
+            mapOSM.removeLayer(layerOSM);
+            $('#s2-btn').removeClass('btn-outline-primary');
+            $('#s2-btn').addClass('btn-primary');
+
+            $('#osm-btn').removeClass('btn-primary');
+            $('#osm-btn').addClass('btn-outline-primary');
+            return false;
+        });
+
+    </script>
+}

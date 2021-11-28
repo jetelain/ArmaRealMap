@@ -4,19 +4,18 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using ArmaRealMap.Core.ObjectLibraries;
+using ArmaRealMapWebSite.Entities.Assets;
+using ArmaRealMapWebSite.Entities.Maps;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using ArmaRealMapWebSite.Entities.Assets;
-using ArmaRealMap.Core.ObjectLibraries;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
-namespace ArmaRealMapWebSite.Entities.Assets
+namespace ArmaRealMapWebSite.Entities
 {
-    public class AssetsContext : DbContext
+    public class ArmaRealMapContext : DbContext
     {
-        public AssetsContext(DbContextOptions<AssetsContext> options)
+        public ArmaRealMapContext(DbContextOptions<ArmaRealMapContext> options)
             : base(options)
         {
         }
@@ -30,9 +29,10 @@ namespace ArmaRealMapWebSite.Entities.Assets
             modelBuilder.Entity<Asset>().ToTable(nameof(Asset));
             modelBuilder.Entity<AssetPreview>().ToTable(nameof(AssetPreview));
             modelBuilder.Entity<GameMod>().ToTable(nameof(GameMod));
-
             modelBuilder.Entity<ObjectLibrary>().ToTable(nameof(ObjectLibrary));
             modelBuilder.Entity<ObjectLibraryAsset>().ToTable(nameof(ObjectLibraryAsset));
+            var map = modelBuilder.Entity<Map>().ToTable(nameof(Map));
+            map.HasIndex(m => m.Name).IsUnique();
         }
 
         private static readonly Regex TextLine = new Regex(@"\[([a-zA-Z/0-9\.\-]+),""([^""]+)"",""([^""]+)"",\[\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],([0-9\.\-]+)\]\]", RegexOptions.Compiled);
@@ -185,8 +185,10 @@ namespace ArmaRealMapWebSite.Entities.Assets
             return def;
         }
 
-        public DbSet<ArmaRealMapWebSite.Entities.Assets.ObjectLibrary> ObjectLibrary { get; set; }
+        public DbSet<ArmaRealMapWebSite.Entities.Assets.ObjectLibrary> ObjectLibraries { get; set; }
 
-        public DbSet<ArmaRealMapWebSite.Entities.Assets.ObjectLibraryAsset> ObjectLibraryAsset { get; set; }
+        public DbSet<ArmaRealMapWebSite.Entities.Assets.ObjectLibraryAsset> ObjectLibraryAssets { get; set; }
+
+        public DbSet<ArmaRealMapWebSite.Entities.Maps.Map> Map { get; set; }
     }
 }

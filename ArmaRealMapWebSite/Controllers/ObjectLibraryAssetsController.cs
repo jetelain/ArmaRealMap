@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ArmaRealMapWebSite.Entities.Assets;
 using ArmaRealMap.Core.ObjectLibraries;
+using ArmaRealMapWebSite.Entities;
 
 namespace ArmaRealMapWebSite.Controllers
 {
     public class ObjectLibraryAssetsController : Controller
     {
-        private readonly AssetsContext _context;
+        private readonly ArmaRealMapContext _context;
 
-        public ObjectLibraryAssetsController(AssetsContext context)
+        public ObjectLibraryAssetsController(ArmaRealMapContext context)
         {
             _context = context;
         }
@@ -27,7 +28,7 @@ namespace ArmaRealMapWebSite.Controllers
                 return NotFound();
             }
 
-            var objectLibraryAsset = await _context.ObjectLibraryAsset
+            var objectLibraryAsset = await _context.ObjectLibraryAssets
                 .Include(o => o.Asset)
                 .Include(o => o.ObjectLibrary)
                 .FirstOrDefaultAsync(m => m.ObjectLibraryAssetID == id);
@@ -50,7 +51,7 @@ namespace ArmaRealMapWebSite.Controllers
 
         private async Task Prepare(ObjectLibraryAsset objectLibraryAsset)
         {
-            objectLibraryAsset.ObjectLibrary = await _context.ObjectLibrary.FindAsync(objectLibraryAsset.ObjectLibraryID);
+            objectLibraryAsset.ObjectLibrary = await _context.ObjectLibraries.FindAsync(objectLibraryAsset.ObjectLibraryID);
 
             //ViewData["AssetID"] = new SelectList(await _context.Assets
             //    .Where(a => (a.TerrainRegions & objectLibraryAsset.ObjectLibrary.TerrainRegion) != 0)
@@ -67,7 +68,7 @@ namespace ArmaRealMapWebSite.Controllers
             {
                 ViewData["RegionAssets"] = await _context.Assets.ToListAsync();
             }
-            ViewData["LibraryAssets"] = await _context.ObjectLibraryAsset.Where(a => a.ObjectLibraryID == objectLibraryAsset.ObjectLibraryID && a.ObjectLibraryAssetID != objectLibraryAsset.ObjectLibraryAssetID).Select(a => a.Asset).ToListAsync();
+            ViewData["LibraryAssets"] = await _context.ObjectLibraryAssets.Where(a => a.ObjectLibraryID == objectLibraryAsset.ObjectLibraryID && a.ObjectLibraryAssetID != objectLibraryAsset.ObjectLibraryAssetID).Select(a => a.Asset).ToListAsync();
 
         }
 
@@ -91,7 +92,7 @@ namespace ArmaRealMapWebSite.Controllers
 
         private async Task FillInfos(ObjectLibraryAsset objectLibraryAsset)
         {
-            objectLibraryAsset.ObjectLibrary = await _context.ObjectLibrary.FindAsync(objectLibraryAsset.ObjectLibraryID);
+            objectLibraryAsset.ObjectLibrary = await _context.ObjectLibraries.FindAsync(objectLibraryAsset.ObjectLibraryID);
 
             if (objectLibraryAsset.PlacementRadius == null && objectLibraryAsset.ObjectLibrary.ObjectCategory.HasPlacementRadius())
             {
@@ -107,7 +108,7 @@ namespace ArmaRealMapWebSite.Controllers
             {
                 return NotFound();
             }
-            var objectLibraryAsset = await _context.ObjectLibraryAsset.FindAsync(id);
+            var objectLibraryAsset = await _context.ObjectLibraryAssets.FindAsync(id);
             if (objectLibraryAsset == null)
             {
                 return NotFound();
@@ -162,7 +163,7 @@ namespace ArmaRealMapWebSite.Controllers
                 return NotFound();
             }
 
-            var objectLibraryAsset = await _context.ObjectLibraryAsset
+            var objectLibraryAsset = await _context.ObjectLibraryAssets
                 .Include(o => o.Asset)
                 .Include(o => o.ObjectLibrary)
                 .FirstOrDefaultAsync(m => m.ObjectLibraryAssetID == id);
@@ -179,15 +180,15 @@ namespace ArmaRealMapWebSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var objectLibraryAsset = await _context.ObjectLibraryAsset.FindAsync(id);
-            _context.ObjectLibraryAsset.Remove(objectLibraryAsset);
+            var objectLibraryAsset = await _context.ObjectLibraryAssets.FindAsync(id);
+            _context.ObjectLibraryAssets.Remove(objectLibraryAsset);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(ObjectLibrariesController.Details), "ObjectLibraries", new { id = objectLibraryAsset.ObjectLibraryID });
         }
 
         private bool ObjectLibraryAssetExists(int id)
         {
-            return _context.ObjectLibraryAsset.Any(e => e.ObjectLibraryAssetID == id);
+            return _context.ObjectLibraryAssets.Any(e => e.ObjectLibraryAssetID == id);
         }
     }
 }

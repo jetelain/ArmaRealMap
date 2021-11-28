@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ArmaRealMapWebSite.Entities.Maps.Map>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Label)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SizeInKilometers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TerrainRegion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MgrsBottomLeft)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.MapID">@Html.DisplayFor(modelItem => item.Label)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SizeInKilometers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TerrainRegion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MgrsBottomLeft)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MapID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MapID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MapID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

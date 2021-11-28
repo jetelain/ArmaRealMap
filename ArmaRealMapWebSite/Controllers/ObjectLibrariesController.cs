@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ArmaRealMap.Core.ObjectLibraries;
+using ArmaRealMapWebSite.Entities;
 using ArmaRealMapWebSite.Entities.Assets;
 using ArmaRealMapWebSite.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -14,9 +15,9 @@ namespace ArmaRealMapWebSite.Controllers
 {
     public class ObjectLibrariesController : Controller
     {
-        private readonly AssetsContext _context;
+        private readonly ArmaRealMapContext _context;
 
-        public ObjectLibrariesController(AssetsContext context)
+        public ObjectLibrariesController(ArmaRealMapContext context)
         {
             _context = context;
         }
@@ -28,11 +29,11 @@ namespace ArmaRealMapWebSite.Controllers
             vm.TerrainRegion = terrainRegion;
             if (terrainRegion != null)
             {
-                vm.Libraries = await _context.ObjectLibrary.Where(t => t.TerrainRegion == terrainRegion).ToListAsync();
+                vm.Libraries = await _context.ObjectLibraries.Where(t => t.TerrainRegion == terrainRegion).ToListAsync();
             }
             else
             {
-                vm.Libraries = await _context.ObjectLibrary.ToListAsync();
+                vm.Libraries = await _context.ObjectLibraries.ToListAsync();
             }
             var metadata = MetadataProvider.GetMetadataForType(typeof(ObjectCategory));
             var dict = metadata.EnumGroupedDisplayNamesAndValues.ToDictionary(e => Enum.Parse<ObjectCategory>(e.Value), e => e.Key.Name);
@@ -42,7 +43,7 @@ namespace ArmaRealMapWebSite.Controllers
 
         public async Task<IActionResult> Export()
         {
-            var alldata = await _context.ObjectLibrary
+            var alldata = await _context.ObjectLibraries
                 .Include(l => l.Assets).ThenInclude(a => a.Asset)
                 .ToListAsync();
 
@@ -89,14 +90,14 @@ namespace ArmaRealMapWebSite.Controllers
                 return NotFound();
             }
 
-            var objectLibrary = await _context.ObjectLibrary
+            var objectLibrary = await _context.ObjectLibraries
                 .FirstOrDefaultAsync(m => m.ObjectLibraryID == id);
             if (objectLibrary == null)
             {
                 return NotFound();
             }
 
-            objectLibrary.Assets = await _context.ObjectLibraryAsset
+            objectLibrary.Assets = await _context.ObjectLibraryAssets
                 .Include(a => a.Asset)
                 .Where(a => a.ObjectLibraryID == objectLibrary.ObjectLibraryID)
                 .ToListAsync();
@@ -137,7 +138,7 @@ namespace ArmaRealMapWebSite.Controllers
                 return NotFound();
             }
 
-            var objectLibrary = await _context.ObjectLibrary.FindAsync(id);
+            var objectLibrary = await _context.ObjectLibraries.FindAsync(id);
             if (objectLibrary == null)
             {
                 return NotFound();
@@ -189,7 +190,7 @@ namespace ArmaRealMapWebSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EqualProbability(int id)
         {
-            var assets = await _context.ObjectLibraryAsset.Where(o => o.ObjectLibraryID == id).ToListAsync();
+            var assets = await _context.ObjectLibraryAssets.Where(o => o.ObjectLibraryID == id).ToListAsync();
             foreach(var asset in assets)
             {
                 asset.Probability = 1f / assets.Count;
@@ -208,7 +209,7 @@ namespace ArmaRealMapWebSite.Controllers
                 return NotFound();
             }
 
-            var objectLibrary = await _context.ObjectLibrary
+            var objectLibrary = await _context.ObjectLibraries
                 .FirstOrDefaultAsync(m => m.ObjectLibraryID == id);
             if (objectLibrary == null)
             {
@@ -224,15 +225,15 @@ namespace ArmaRealMapWebSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var objectLibrary = await _context.ObjectLibrary.FindAsync(id);
-            _context.ObjectLibrary.Remove(objectLibrary);
+            var objectLibrary = await _context.ObjectLibraries.FindAsync(id);
+            _context.ObjectLibraries.Remove(objectLibrary);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ObjectLibraryExists(int id)
         {
-            return _context.ObjectLibrary.Any(e => e.ObjectLibraryID == id);
+            return _context.ObjectLibraries.Any(e => e.ObjectLibraryID == id);
         }
     }
 }

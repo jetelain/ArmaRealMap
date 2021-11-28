@@ -20,7 +20,7 @@ namespace ArmaRealMapWebSite.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "Assets");
+            return View();
         }
 
         public IActionResult Privacy()

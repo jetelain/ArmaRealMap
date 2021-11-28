@@ -1,0 +1,120 @@
+﻿@model ArmaRealMapWebSite.Models.GameIssueViewModel
+@using System.Globalization
+@{
+    ViewData["Title"] = Model.Map.Label;
+    //var center = Model.Place;
+    var osmEdit = $"https://www.openstreetmap.org/edit#map=16/{Model.Place.Latitude.ToDouble()}/{Model.Place.Longitude.ToDouble()}";
+    var osm = $"https://www.openstreetmap.org/#map=16/{Model.Place.Latitude.ToDouble()}/{Model.Place.Latitude.ToDouble()}";
+    Model.Place.LoadUTM_MGRS_Info();
+
+//localhost:5000/Maps/GameIssue?name=gossi&x=128&y=128
+}
+
+<h1>@Model.Map.Label</h1>
+
+<h4 class="text-danger"><i class="fas fa-exclamation-circle"></i> Signaler un problème</h4>
+
+<dl class="row">
+    <dt class="col-sm-3">
+        Coordonnées en jeu
+    </dt>
+    <dd class="col-sm-9">
+        @Math.Round(Model.X) - @Math.Round(Model.Y)
+    </dd>
+    <dt class="col-sm-3">
+        Coordonnées réelles (Lat/Long)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.Place.Latitude - @Model.Place.Longitude
+    </dd>
+    <dt class="col-sm-3">
+        Coordonnées réelles (MGRS)
+    </dt>
+    <dd class="col-sm-9">
+        @Model.Place.MGRS
+    </dd>
+</dl>
+
+<p>
+    Vous pouvez
+    <a href="@osmEdit" class="btn btn-primary"><i class="fas fa-tools"></i> Corriger dans OpenStreetMap</a>
+    ou
+    <a href="#" class="btn btn-success"><i class="fas fa-bug"></i> Signaler aux développeurs</a>
+</p>
+
+<h4>Carte réelle</h4>
+<p>
+    <a id="osm-btn" class="btn btn-primary" href="#">Vue OSM</a>
+    <a id="s2-btn" class="btn btn-outline-primary" href="#">Vue Satellite</a>
+    @*<a href="@osm" class="btn btn-outline-secondary"><i class="fas fa-map-marked"></i> Ouvrir dans OpenStreetMap</a>*@
+</p>
+<div id="osm" style="height:75vh;">
+</div>
+
+
+@section Styles {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin="" />
+}
+@section Scripts {
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+    <script src="~/js/L.Map.Sync.js"></script>
+    <script>
+
+        var center = [@Model.Place.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @Model.Place.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)];
+
+        @{
+            var SW = Model.Map.FromGameCoordinates(0, 0);
+            var SE = Model.Map.FromGameCoordinates(0, Model.Map.SizeInMeters.Value);
+            var NW = Model.Map.FromGameCoordinates(Model.Map.SizeInMeters.Value, 0);
+            var NE = Model.Map.FromGameCoordinates(Model.Map.SizeInMeters.Value, Model.Map.SizeInMeters.Value);
+        }
+
+        var rect = [
+            [@SW.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @SW.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)],
+            [@SE.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @SE.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)],
+            [@NE.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @NE.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)],
+            [@NW.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @NW.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)]
+            ];
+
+        var mapOSM = L.map('osm').setView(center, 16);
+        var layerOSM = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' });
+        mapOSM.addLayer(layerOSM);
+
+        var layerS2 = new L.TileLayer("https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/GoogleMapsCompatible/{z}/{y}/{x}.jpg",
+            { attribution: '<a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a>' });
+
+        L.polygon(rect, {fill: false}).addTo(mapOSM);
+
+        $('#osm-btn').on('click', _ => {
+            mapOSM.addLayer(layerOSM);
+            mapOSM.removeLayer(layerS2);
+
+            $('#osm-btn').removeClass('btn-outline-primary');
+            $('#osm-btn').addClass('btn-primary');
+
+            $('#s2-btn').removeClass('btn-primary');
+            $('#s2-btn').addClass('btn-outline-primary');
+
+            return false;
+        });
+
+        $('#s2-btn').on('click', _ => {
+            mapOSM.addLayer(layerS2);
+            mapOSM.removeLayer(layerOSM);
+            $('#s2-btn').removeClass('btn-outline-primary');
+            $('#s2-btn').addClass('btn-primary');
+
+            $('#osm-btn').removeClass('btn-primary');
+            $('#osm-btn').addClass('btn-outline-primary');
+            return false;
+        });
+
+        L.marker(center).addTo(mapOSM);
+
+    </script>
+}

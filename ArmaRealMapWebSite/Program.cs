@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ArmaRealMapWebSite.Entities;
 using ArmaRealMapWebSite.Entities.Assets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,13 @@ namespace ArmaRealMapWebSite
             CreateDbIfNotExists(host);
 
             host.Run();
+
+
+            //var optionsBuilder = new DbContextOptionsBuilder<AssetsContext>();
+            //optionsBuilder.UseSqlite(connectionstring);
+            //using (var x = new AssetsContext(optionsBuilder.Options))
+            //{
+            //}
         }
         private static void CreateDbIfNotExists(IHost host)
         {
@@ -30,7 +38,7 @@ namespace ArmaRealMapWebSite
 
                 try
                 {
-                    var context = services.GetRequiredService<AssetsContext>();
+                    var context = services.GetRequiredService<ArmaRealMapContext>();
                     context.Database.Migrate();
                     context.LoadFromXData();
                 }
