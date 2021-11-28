@@ -71,6 +71,9 @@ namespace ArmaRealMap.Core.ObjectLibraries
         GroundRock,
 
         [Display(Name = "Batiment - Hutte")]
-        Hut
+        Hut,
+
+        [Display(Name = "Infrastructure - Ponts - Routes princpales / RN")]
+        BridgePrimaryRoad
     }
 }
