@@ -9,7 +9,10 @@
     {
         level = 11;
     }
-    var osm = $"https://www.openstreetmap.org/#map={level}/{center.Latitude.ToDouble()}/{center.Longitude.ToDouble()}";
+    var osm = FormattableString.Invariant($"https://www.openstreetmap.org/#map={level}/{center.Latitude.ToDouble():0.0000}/{center.Longitude.ToDouble():0.0000}");
+    var title = $"[{Model.Label}] Signalement de problème";
+    var text = $"Decrivez ici le problème constaté";
+    var github = $"https://github.com/jetelain/ArmaRealMap/issues/new?title={System.Net.WebUtility.UrlEncode(title)}&body={System.Net.WebUtility.UrlEncode(text)}&labels=bug";
 }
 
 <h1>@Model.Label</h1>
@@ -41,8 +44,7 @@
     </form>
 
     <h5>Coordonnées inconnues ou sans coordonnées</h5>
-    <p>(pas encore disponible)</p>
-    <p><a href="#" class="btn btn-primary"><i class="fas fa-bug"></i> Signaler un autre problème</a></p>
+    <p><a href="@github" class="btn btn-primary"><i class="fab fa-github"></i> Signaler un problème sur GitHub</a> ou <a href="https://discord.gg/y3kfUP4" class="btn btn-secondary"><i class="fab fa-discord"></i> Contacter GrueArbre sur Discord</a></p>
 </div>
 
 <div class="mt-5">

@@ -3,11 +3,16 @@
 @{
     ViewData["Title"] = Model.Map.Label;
     //var center = Model.Place;
-    var osmEdit = $"https://www.openstreetmap.org/edit#map=16/{Model.Place.Latitude.ToDouble()}/{Model.Place.Longitude.ToDouble()}";
-    var osm = $"https://www.openstreetmap.org/#map=16/{Model.Place.Latitude.ToDouble()}/{Model.Place.Latitude.ToDouble()}";
+    var osmEdit = FormattableString.Invariant($"https://www.openstreetmap.org/edit#map=16/{Model.Place.Latitude.ToDouble():0.0000}/{Model.Place.Longitude.ToDouble():0.0000}");
+    var osm = FormattableString.Invariant($"https://www.openstreetmap.org/#map=16/{Model.Place.Latitude.ToDouble():0.0000}/{Model.Place.Longitude.ToDouble():0.0000}");
     Model.Place.LoadUTM_MGRS_Info();
 
-//localhost:5000/Maps/GameIssue?name=gossi&x=128&y=128
+    //localhost:5000/Maps/GameIssue?name=gossi&x=128&y=128
+
+    var title = $"[{Model.Map.Label}] Signalement de problème";
+    var text = $"Coordonées: {Math.Round(Model.X)}-{Math.Round(Model.Y)}\nOSM : {osm}\n\nDecrivez ici le problème constaté";
+
+    var github = $"https://github.com/jetelain/ArmaRealMap/issues/new?title={System.Net.WebUtility.UrlEncode(title)}&body={System.Net.WebUtility.UrlEncode(text)}&labels=bug";
 }
 
 <h1>@Model.Map.Label</h1>
@@ -37,10 +42,21 @@
 
 <p>
     Vous pouvez
-    <a href="@osmEdit" class="btn btn-primary"><i class="fas fa-tools"></i> Corriger dans OpenStreetMap</a>
-    ou
-    <a href="#" class="btn btn-success"><i class="fas fa-bug"></i> Signaler aux développeurs</a>
 </p>
+<ul>
+    <li>
+        <a href="@github" class="btn btn-success mb-1 mt-1"><i class="fab fa-github"></i> Signaler le problème sur GitHub</a>,
+    </li>
+    <li>
+        <a href="https://discord.gg/y3kfUP4" class="btn btn-primary mb-1 mt-1"><i class="fab fa-discord"></i> Contacter GrueArbre sur Discord</a> (inclure les coordonnées dans votre message), ou
+    </li>
+    <li>
+        <a href="@osmEdit" class="btn btn-secondary mb-1 mt-1"><i class="fas fa-tools"></i> Corriger dans OpenStreetMap</a>
+    </li>
+</ul>
+
+
+<!--  -->
 
 <h4>Carte réelle</h4>
 <p>
