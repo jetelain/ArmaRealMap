@@ -13,7 +13,7 @@ namespace ArmaRealMap.TerrainData
     {
         public static void PlaceOnPath(Random rnd, ObjectLibrary lib, TerrainObjectLayer layer, List<TerrainPoint> path)
         {
-            var width = lib.Objects.Select(t => t.Width).Average();
+            var width = lib.Objects.Select(t => t.GetPlacementRadius() * 2).Average();
             var points = GeometryHelper.PointsOnPathRegular(path, MathF.Floor(width));
             foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
             {
@@ -26,7 +26,7 @@ namespace ArmaRealMap.TerrainData
 
         public static void PlaceOnPath(SingleObjetInfos template, TerrainObjectLayer layer, List<TerrainPoint> path)
         {
-            var points = GeometryHelper.PointsOnPathRegular(path, MathF.Floor(template.Width));
+            var points = GeometryHelper.PointsOnPathRegular(path, MathF.Floor(template.GetPlacementRadius() * 2));
             foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
             {
                 var delta = Vector2.Normalize(segment.Second.Vector - segment.First.Vector);

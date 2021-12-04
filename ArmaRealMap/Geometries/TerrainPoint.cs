@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Text.Json.Serialization;
 using ClipperLib;
 
 namespace ArmaRealMap.Geometries
@@ -15,6 +16,7 @@ namespace ArmaRealMap.Geometries
 
         private Vector2 vector;
 
+        [JsonConstructor]
         public TerrainPoint(float x, float y)
         {
             vector = new Vector2(x, y);
@@ -24,6 +26,7 @@ namespace ArmaRealMap.Geometries
         {
             this.vector = vector ;
         }
+
         internal TerrainPoint(IntPoint point) : this(
                   (float)(point.X  / GeometryHelper.ScaleForClipper), 
                   (float)(point.Y / GeometryHelper.ScaleForClipper))
@@ -35,8 +38,10 @@ namespace ArmaRealMap.Geometries
 
         public float Y => vector.Y;
 
+        [JsonIgnore]
         public Vector2 Vector => vector;
 
+        [JsonIgnore]
         public bool IsEmpty => Equals(Empty);
 
         public static bool operator ==(TerrainPoint left, TerrainPoint right) => left.Equals(right);

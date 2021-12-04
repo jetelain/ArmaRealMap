@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text.Json.Serialization;
 using ClipperLib;
 using NetTopologySuite.Geometries;
 
@@ -13,6 +14,7 @@ namespace ArmaRealMap.Geometries
 
         private readonly Lazy<Polygon> asPolygon;
 
+        [JsonConstructor]
         public TerrainPolygon(List<TerrainPoint> shell, List<List<TerrainPoint>> holes)
         {
             this.Shell = shell;
@@ -27,14 +29,19 @@ namespace ArmaRealMap.Geometries
 
         public List<List<TerrainPoint>> Holes { get; }
 
+        [JsonIgnore]
         public TerrainPoint MinPoint { get; }
 
+        [JsonIgnore]
         public TerrainPoint MaxPoint { get; }
 
+        [JsonIgnore]
         public Vector2 EnveloppeSize { get; }
 
+        [JsonIgnore]
         public Polygon AsPolygon => asPolygon.Value;
 
+        [JsonIgnore]
         public double Area => AsPolygon.Area;
 
         public Polygon ToPolygon(Func<TerrainPoint, Coordinate> project)
@@ -320,11 +327,11 @@ namespace ArmaRealMap.Geometries
             return false;
         }
 
-        public bool Contains(TerrainPolygon other)
+        public bool ContainsOrSimilar(TerrainPolygon other)
         {
             if (GeometryHelper.EnveloppeIntersects(this, other))
             {
-                return AsPolygon.Contains(other.AsPolygon);
+                return AsPolygon.Contains(other.AsPolygon) || Shell.SequenceEqual(other.Shell);
             }
             return false;
         }

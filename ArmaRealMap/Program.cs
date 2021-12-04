@@ -197,7 +197,7 @@ namespace ArmaRealMap
                 RenderCitiesNames(config, area, filtered);
                 
                 var shapes = config.IsScaled ? null : OsmCategorizer.GetShapes(db, filtered, data.MapInfos);
-                
+
                 Console.WriteLine("==== Roads ====");
                 RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes);
 
@@ -252,7 +252,7 @@ namespace ArmaRealMap
                     db,
                     filtered,
                     olibs.Libraries.Where(l => l.Category == ObjectCategory.Wall).ToList(),
-                    o => OsmCategorizer.Get(o.Tags, "barrier") == "wall" || OsmCategorizer.Get(o.Tags, "barrier") == "city_wall");
+                    o => OsmCategorizer.Get(o.Tags, "barrier") == "wall");
             result.WriteFile(data.Config.Target.GetTerrain("walls.txt"));
 
             result =
@@ -263,6 +263,15 @@ namespace ArmaRealMap
                     olibs.Libraries.Where(l => l.Category == ObjectCategory.Fence).ToList(),
                     o => OsmCategorizer.Get(o.Tags, "barrier") == "fence");
             result.WriteFile(data.Config.Target.GetTerrain("fences.txt"));
+
+            result =
+                PlaceObjectsOnPath(
+                    data,
+                    db,
+                    filtered,
+                    olibs.Libraries.Where(l => l.Category == ObjectCategory.MilitaryWall).ToList(),
+                    o => OsmCategorizer.Get(o.Tags, "barrier") == "city_wall");
+            result.WriteFile(data.Config.Target.GetTerrain("milwalls.txt"));
         }
 
         private static TerrainObjectLayer PlaceObjectsOnPath(MapData data, SnapshotDb db, OsmStreamSource filtered, List<ObjectLibrary> libs, Func<Way, bool> filter)

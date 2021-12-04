@@ -29,7 +29,8 @@ namespace ArmaRealMap.Core.ObjectLibraries
             ObjectCategory.RoadSideWalk,
             ObjectCategory.Fence,
             ObjectCategory.Wall,
-            ObjectCategory.Cliff
+            ObjectCategory.Cliff,
+            ObjectCategory.MilitaryWall
         };
 
         public static ObjectCategory[] Building = new[] { 

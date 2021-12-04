@@ -23,7 +23,7 @@ namespace ArmaRealMap.Libraries
 
         public float GetPlacementRadius()
         {
-            return PlacementRadius ?? Math.Max(Width, Depth);
+            return PlacementRadius ?? (Math.Max(Width, Depth) / 2f);
         }
         public float GetReservedRadius()
         {

@@ -303,22 +303,45 @@ namespace ArmaRealMap.ElevationModel
                 Math.Min(Math.Max(0, y), area.Size - 1)];
         }
 
-        public float ElevationAt(TerrainPoint point)
+
+        public float ElevationAtGrid(Vector2 gridPos)
         {
-            var pos = ToGrid(point);
-            var x1 = (int)Math.Floor(pos.X);
-            var y1 = (int)Math.Floor(pos.Y);
-            var x2 = (int)Math.Ceiling(pos.X);
-            var y2 = (int)Math.Ceiling(pos.Y);
-            return Blerp(
-                ElevationAtCell(x1, y1),
-                ElevationAtCell(x2, y1),
-                ElevationAtCell(x1, y2),
-                ElevationAtCell(x2, y2),
-                x2 - pos.X,
-                y2 - pos.Y);
+            var x = (int)MathF.Floor(gridPos.X);
+            var y = (int)MathF.Floor(gridPos.Y);
+            var xIn = gridPos.X - x;
+            var yIn = gridPos.Y - y;
+            var z10 = ElevationAtCell(x + 1, y);
+            var z01 = ElevationAtCell(x, y + 1);
+            if (xIn <= 1 - yIn)
+            {
+                var z00 = ElevationAtCell(x, y);
+                var d1000 = z10 - z00;
+                var d0100 = z01 - z00;
+                return z00 + d0100 * yIn + d1000 * xIn;
+            }
+            var z11 = ElevationAtCell(x + 1, y + 1);
+            var d1011 = z10 - z11;
+            var d0111 = z01 - z11;
+            return z10 + d0111 - d0111 * xIn - d1011 * yIn;
         }
 
+        public float ElevationAt(TerrainPoint point)
+        {
+            return ElevationAtGrid(ToGrid(point));
+            //var pos = ToGrid(point);
+            //var x1 = (int)Math.Floor(pos.X);
+            //var y1 = (int)Math.Floor(pos.Y);
+            //var x2 = (int)Math.Ceiling(pos.X);
+            //var y2 = (int)Math.Ceiling(pos.Y);
+            //return Blerp(
+            //    ElevationAtCell(x1, y1),
+            //    ElevationAtCell(x2, y1),
+            //    ElevationAtCell(x1, y2),
+            //    ElevationAtCell(x2, y2),
+            //    x2 - pos.X,
+            //    y2 - pos.Y);
+        }
+        /*
         private float Lerp(float start, float end, float delta)
         {
             return start + (end - start) * delta;
@@ -328,7 +351,7 @@ namespace ArmaRealMap.ElevationModel
         {
             return Lerp(Lerp(val11, val01, deltaX), Lerp(val10, val00, deltaX), deltaY);
         }
-
+        */
         public Vector2 ToGrid(TerrainPoint point)
         {
             return ((point.Vector - area.P1.Vector) / cellSize);

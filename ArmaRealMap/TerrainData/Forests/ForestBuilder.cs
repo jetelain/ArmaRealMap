@@ -127,7 +127,7 @@ namespace ArmaRealMap.TerrainData.Forests
             {
                 if (forest.Contains(item))
                 {
-                    var contains = forest.Where(f => f != item && item.Contains(f)).ToList();
+                    var contains = forest.Where(f => f != item && item.ContainsOrSimilar(f)).ToList();
                     if (contains.Count > 0)
                     {
                         foreach (var toremove in contains)

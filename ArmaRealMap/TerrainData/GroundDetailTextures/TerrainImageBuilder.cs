@@ -43,13 +43,16 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                 {
                     foreach (var category in polygonsByCategory.OrderByDescending(e => e.Category.GroundTexturePriority))
                     {
-                        var brush = brushes[category.Category.TerrainMaterial];
+                        if (category.Category != OsmShapeCategory.WaterWay)
+                        {
+                            var brush = brushes[category.Category.TerrainMaterial];
 
-                        var edgeBrush = new PatternBrush(colors[category.Category.TerrainMaterial],
-                            Color.Transparent,
-                            Generate(category.Category.GroundTexturePriority, 0.5f));
+                            var edgeBrush = new PatternBrush(colors[category.Category.TerrainMaterial],
+                                Color.Transparent,
+                                Generate(category.Category.GroundTexturePriority, 0.5f));
 
-                        Draw(area, d, report, category, brush, edgeBrush);
+                            Draw(area, d, report, category, brush, edgeBrush);
+                        }
                     }
                 });
                 report.TaskDone();
@@ -102,7 +105,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             if ( config.ConvertPAA ) // Use BIS.PAA.Encoder ?
             {
                 var imageToPaa = Path.Combine(Program.GetArma3ToolsPath(), "ImageToPAA", "ImageToPAA.exe");
-                report2 = new ProgressReport("Png->PAA", num * num);
+                report2 = new ProgressReport("Png->PAA", num);
                 Parallel.For(0, num, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, x =>
                 {
                     var proc = Process.Start(new ProcessStartInfo()
@@ -114,6 +117,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                     proc.OutputDataReceived += (_, e) => Trace.WriteLine(e.Data);
                     proc.BeginOutputReadLine();
                     proc.WaitForExit();
+                    report2.ReportOneDone();
                 });
                 report2.TaskDone();
             }

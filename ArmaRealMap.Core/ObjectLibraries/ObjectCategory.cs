@@ -49,7 +49,7 @@ namespace ArmaRealMap.Core.ObjectLibraries
         [Display(Name = "Infrastructure - Clotûre")]
         Fence,
 
-        [Display(Name = "Infrastructure - Mur (ville)")]
+        [Display(Name = "Infrastructure - Mur - Ville")]
         Wall,
 
         [Display(Name = "Objet - Puit (eau)")]
@@ -74,6 +74,9 @@ namespace ArmaRealMap.Core.ObjectLibraries
         Hut,
 
         [Display(Name = "Infrastructure - Ponts - Routes princpales / RN")]
-        BridgePrimaryRoad
+        BridgePrimaryRoad,
+
+        [Display(Name = "Infrastructure - Mur - Enceinte militaire")]
+        MilitaryWall
     }
 }

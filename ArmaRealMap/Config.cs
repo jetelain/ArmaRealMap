@@ -76,5 +76,7 @@ namespace ArmaRealMap
         public double? Scale { get; set; }
 
         public bool IsScaled => Scale != null;
+
+        public ReservedArea[] Reserved { get; set; }
     }
 }

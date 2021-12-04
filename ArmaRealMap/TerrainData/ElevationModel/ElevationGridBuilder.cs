@@ -13,6 +13,8 @@ using MathNet.Numerics.LinearRegression;
 using NetTopologySuite.Geometries;
 using OsmSharp;
 using OsmSharp.Streams;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Processing;
 
 namespace ArmaRealMap
 {
@@ -36,6 +38,8 @@ namespace ArmaRealMap
 
         internal static void MakeDetailed(MapData data, List<OsmShape> shapes, ObjectLibraries libs)
         {
+            ProcessReserved(data.Config, data.MapInfos, data.Elevation);
+
             var constraintGrid = new ElevationConstraintGrid(data.MapInfos, data.Elevation);
 
             ProcessRoads(data, constraintGrid, libs);
@@ -43,22 +47,42 @@ namespace ArmaRealMap
             ProcessWaterWays(data, shapes, constraintGrid);
 
             constraintGrid.SolveAndApplyOnGrid(data);
+
+            ProcessBridgeObjects(data, data.Elevation, libs);
+
             //data.Elevation.SaveToObj(data.Config.Target.GetDebug("elevation-after.obj"));
             data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-after.png"));
             data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation.asc"));
+        }
+
+        private static void ProcessReserved(Config config, MapInfos mapInfos, ElevationGrid elevation)
+        {
+            if (config.Reserved != null)
+            {
+                foreach (var area in config.Reserved.Where(r => r.Elevation != null))
+                {
+                    var polyBase = area.Polygon.Offset(mapInfos.CellSize).FirstOrDefault() ?? area.Polygon;
+                    var polyExtened = area.Polygon.Offset(mapInfos.CellSize * 2).FirstOrDefault() ?? area.Polygon;
+                    var mutate = elevation.PrepareToMutate(polyExtened.MinPoint, polyExtened.MaxPoint, area.Elevation.Value - 10f, area.Elevation.Value + 10f);
+                    mutate.Image.Mutate(m => {
+                        DrawHelper.DrawPolygon(m, polyExtened, new SolidBrush(mutate.ElevationToColor(area.Elevation.Value).WithAlpha(0.5f)), mutate.ToPixels);
+                        DrawHelper.DrawPolygon(m, polyBase, new SolidBrush(mutate.ElevationToColor(area.Elevation.Value)), mutate.ToPixels);
+                    });
+                    mutate.Apply();
+                }
+            }
         }
 
         private static void ProcessRoads(MapData data, ElevationConstraintGrid constraintGrid, ObjectLibraries libs)
         {
             var roads = data.Roads.Where(r => r.RoadType <= RoadType.TwoLanesConcreteRoad).ToList();
             var report = new ProgressReport("Roads", roads.Count);
-            var bridgeObjects = new TerrainObjectLayer(data.MapInfos);
 
             foreach (var road in roads)
             {
                 if (road.SpecialSegment == RoadSpecialSegment.Bridge)
                 {
-                    ProcessRoadBridge(bridgeObjects, road, constraintGrid, libs);
+                    ProcessRoadBridge(road, constraintGrid, libs);
                 }
                 else if (road.SpecialSegment == RoadSpecialSegment.Embankment)
                 {
@@ -71,7 +95,18 @@ namespace ArmaRealMap
                 report.ReportOneDone();
             }
             report.TaskDone();
-
+        }
+        private static void ProcessBridgeObjects(MapData data, ElevationGrid grid, ObjectLibraries libs)
+        {
+            var roads = data.Roads.Where(r => r.RoadType <= RoadType.TwoLanesConcreteRoad && r.SpecialSegment == RoadSpecialSegment.Bridge).ToList();
+            var report = new ProgressReport("Roads", roads.Count);
+            var bridgeObjects = new TerrainObjectLayer(data.MapInfos);
+            foreach (var road in roads)
+            {
+                ProcessRoadBridgeObjects(bridgeObjects, road, grid, libs);
+                report.ReportOneDone();
+            }
+            report.TaskDone();
             bridgeObjects.WriteFile(data.Config.Target.GetTerrain("bridges.txt"));
         }
 
@@ -145,7 +180,7 @@ namespace ArmaRealMap
             }
         }
 
-        private static void ProcessRoadBridge(TerrainObjectLayer objects, Road road, ElevationConstraintGrid constraintGrid, ObjectLibraries libs)
+        private static void ProcessRoadBridge(Road road, ElevationConstraintGrid constraintGrid, ObjectLibraries libs)
         {
             var lib = libs.Libraries.FirstOrDefault(l => l.Category == Core.ObjectLibraries.ObjectCategory.BridgePrimaryRoad);
             if (lib == null)
@@ -153,24 +188,81 @@ namespace ArmaRealMap
                 //ProcessNormalRoad(constraintGrid, road);
                 return;
             }
-            var start = constraintGrid.Node(road.Path.FirstPoint).PinToInitial();
-            var stop = constraintGrid.Node(road.Path.LastPoint).PinToInitial();
-            var delta = road.Path.FirstPoint.Vector - road.Path.LastPoint.Vector;
+            constraintGrid.Node(road.Path.FirstPoint).PinToInitial();
+            constraintGrid.Node(road.Path.LastPoint).PinToInitial();
+            /*var delta = road.Path.FirstPoint.Vector - road.Path.LastPoint.Vector;
             var angle = ((MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI) + 90f) % 360f;
-            var pitch = (MathF.Atan2(start.Elevation.Value - stop.Elevation.Value, delta.Length()) * 180 / MathF.PI);
             var obj1 = lib.Objects[0];
             if (road.Path.Length <= obj1.Depth)
             {
+                var pitch = (MathF.Atan2(start.Elevation.Value - stop.Elevation.Value, delta.Length()) * 180 / MathF.PI);
+
                 var center = new TerrainPoint(Vector2.Lerp(road.Path.FirstPoint.Vector, road.Path.LastPoint.Vector, 0.5f));
                 var elevation = (start.Elevation.Value + stop.Elevation.Value) / 2f;
                 objects.Insert(new TerrainObject(obj1, center, angle, elevation, pitch));
             }
             else
             {
+                var pitch = (MathF.Atan2(start.Elevation.Value - stop.Elevation.Value, delta.Length()) * 180 / MathF.PI);
                 var stObj = lib.Objects[1];
                 var ctObj = lib.Objects[2];
                 var endObj = lib.Objects[3];
 
+            }*/
+        }
+
+
+        private static void ProcessRoadBridgeObjects(TerrainObjectLayer objects, Road road, ElevationGrid grid, ObjectLibraries libs)
+        {
+            var lib = libs.Libraries.FirstOrDefault(l => l.Category == Core.ObjectLibraries.ObjectCategory.BridgePrimaryRoad);
+            if (lib == null)
+            {
+                return;
+            }
+            var delta = road.Path.FirstPoint.Vector - road.Path.LastPoint.Vector;
+            var angle = ((MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI) + 90f) % 360f;
+            var bridgeLength = road.Path.Length;
+            var obj1 = lib.Objects[0];
+            if (bridgeLength <= obj1.Depth) // One object fits
+            {
+                var center = new TerrainPoint(Vector2.Lerp(road.Path.FirstPoint.Vector, road.Path.LastPoint.Vector, 0.5f));
+                var vector = Vector2.Normalize(road.Path.LastPoint.Vector - road.Path.FirstPoint.Vector) * obj1.Depth / 2f;
+                var realStart = center - vector;
+                var realEnd = center + vector;
+                var elevationStart = grid.ElevationAt(realStart);
+                var elevationEnd = grid.ElevationAt(realEnd);
+                var pitch = (MathF.Atan2(elevationStart - elevationEnd, (realStart.Vector - realEnd.Vector).Length()) * 180 / MathF.PI);
+                var elevation = (elevationStart + elevationEnd) / 2f;
+                objects.Insert(new TerrainObject(obj1, center, angle, elevation, pitch));
+            }
+            else // Need more
+            {
+                var elevationStart = grid.ElevationAt(road.Path.FirstPoint);
+                var elevationEnd = grid.ElevationAt(road.Path.LastPoint);
+                var pitch = (MathF.Atan2(elevationStart - elevationEnd, delta.Length()) * 180 / MathF.PI);
+
+                var stObj = lib.Objects[1];
+                var ctObj = lib.Objects[2];
+                var endObj = lib.Objects[3];
+
+                var stDelta = stObj.Depth / 2 / bridgeLength;
+                var endDelta = 1f - (endObj.Depth / 2 / bridgeLength);
+
+                objects.Insert(new TerrainObject(stObj, 
+                    new TerrainPoint(Vector2.Lerp(road.Path.FirstPoint.Vector, road.Path.LastPoint.Vector, stDelta)), 
+                    angle,
+                    elevationStart + ((elevationEnd - elevationStart) * (1f-stDelta)),
+                     0f, pitch));
+                objects.Insert(new TerrainObject(ctObj, 
+                    new TerrainPoint(Vector2.Lerp(road.Path.FirstPoint.Vector, road.Path.LastPoint.Vector, 0.5f)), 
+                    angle,
+                    (elevationStart + elevationEnd) / 2f, 
+                    0f, pitch));
+                objects.Insert(new TerrainObject(endObj, 
+                    new TerrainPoint(Vector2.Lerp(road.Path.FirstPoint.Vector, road.Path.LastPoint.Vector, endDelta)), 
+                    angle,
+                    elevationStart + ((elevationEnd - elevationStart) * (1f-endDelta)),
+                     0f, pitch));
             }
         }
     }
