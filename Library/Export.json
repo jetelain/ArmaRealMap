@@ -1324,7 +1324,7 @@
       {
         "Name": "jbad_wall_fenw2_6",
         "PlacementProbability": 1,
-        "PlacementRadius": 6.5,
+        "PlacementRadius": 3.25,
         "Width": 6.51226,
         "Depth": 0.557842,
         "Height": 2.28948,
@@ -2353,7 +2353,7 @@
       {
         "Name": "Mound01_8m_F",
         "PlacementProbability": 0.5,
-        "PlacementRadius": 4.7,
+        "PlacementRadius": 4.5,
         "Width": 9.38324,
         "Depth": 1.386033,
         "Height": 1.415337,
@@ -2364,7 +2364,7 @@
       {
         "Name": "Mound02_8m_F",
         "PlacementProbability": 0.5,
-        "PlacementRadius": 5.5,
+        "PlacementRadius": 4.5,
         "Width": 10.963261,
         "Depth": 2.55228,
         "Height": 1.279078,
@@ -2564,5 +2564,68 @@
     "Terrain": "Sahel",
     "Density": null,
     "Probability": null
+  },
+  {
+    "Category": "BridgePrimaryRoad",
+    "Objects": [
+      {
+        "Name": "Bridge_HighWay_F",
+        "Width": 20.7866,
+        "Depth": 44.2501,
+        "Height": 8.55579,
+        "CX": 0,
+        "CY": 0,
+        "CZ": -6
+      },
+      {
+        "Name": "Bridge_Concrete_02_right_F",
+        "Width": 20.7537,
+        "Depth": 22.1788,
+        "Height": 8.556,
+        "CX": 0,
+        "CY": 0,
+        "CZ": -6
+      },
+      {
+        "Name": "Bridge_Concrete_02_center_F",
+        "Width": 16.99802,
+        "Depth": 40.636,
+        "Height": 9.6096,
+        "CX": 0,
+        "CY": 0,
+        "CZ": -6
+      },
+      {
+        "Name": "Bridge_Concrete_02_left_F",
+        "Width": 20.7866,
+        "Depth": 22.1291,
+        "Height": 8.5542,
+        "CX": 0,
+        "CY": 0,
+        "CZ": -6
+      }
+    ],
+    "Terrain": "Unknown",
+    "Density": null,
+    "Probability": null
+  },
+  {
+    "Category": "MilitaryWall",
+    "Objects": [
+      {
+        "Name": "Hbarrier_Big_F",
+        "PlacementProbability": 1,
+        "PlacementRadius": 4.45,
+        "Width": 9.008739,
+        "Depth": 2.63182,
+        "Height": 2.5541902,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      }
+    ],
+    "Terrain": "Sahel",
+    "Density": null,
+    "Probability": 1
   }
 ]
