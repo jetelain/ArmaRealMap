@@ -16,69 +16,40 @@ namespace ArmaRealMap.TerrainData.Forests
 
         public static void Prepare(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
         {
-            var forestPolygonsCropped = GetCroppedPolygons(data, shapes, OsmShapeCategory.Forest);
-
-            //DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass1.png");
-
-            RemoveOverlaps(forestPolygonsCropped);
-
-            //DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass2.png");
-
-            var substractPolygons = GetPriorityPolygons(data, shapes, OsmShapeCategory.Forest);
-
-            //DebugHelper.Polygons(data, substractPolygons, "forest-substract.png");
-
-            var forestPolygonsCleaned = Subtract(forestPolygonsCropped, substractPolygons);
-
-            //DebugHelper.Polygons(data, forestPolygonsCleaned, "forest-pass3.png");
-
-            var trees = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree);
+            var forestPolygonsCleaned = GetPolygons(data, shapes, OsmShapeCategory.Forest);
 
             var objects = new FillShapeWithObjectsClustered(data, ObjectCategory.ForestTree, olibs).Fill(forestPolygonsCleaned, "forest-pass4.txt");
+            new FillShapeWithObjectsBasic(data, ObjectCategory.ForestAdditionalObjects, olibs).Fill(objects, forestPolygonsCleaned, "forest-additional.txt"); 
 
-            new FillShapeWithObjectsClustered(data, ObjectCategory.ForestAdditionalObjects, olibs).Fill(objects, forestPolygonsCleaned, "forest-additional.txt"); 
-
-            //DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass4.png");
-
-            // Remove trees at edge that may be a problem
-
-            // Too close of building
-            Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
-
-            // Too close of roads
-            Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
+            RemoveOnBuildingsAndRoads(data, objects);
 
             objects.WriteFile(data.Config.Target.GetTerrain("forest.txt"));
-            //DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass5.bmp");
 
             GenerateEdgeObjects(data, olibs, forestPolygonsCleaned);
 
-            GenerateRadialEdgeObjects(data, olibs, shapes, forestPolygonsCleaned);
+            GenerateRadialEdgeObjects(data, olibs, shapes, forestPolygonsCleaned, ObjectCategory.ForestRadialEdge, "forest-radial.txt");
 
             //DebugHelper.ObjectsInPolygons(data, wasRemoved, forestPolygonsCleaned, "forest-wasRemoved.bmp");
 
             data.Forests = forestPolygonsCleaned;
 
         }
-        private static void GenerateRadialEdgeObjects(MapData data, ObjectLibraries olibs, List<OsmShape> shapes, List<TerrainPolygon> forestPolygonsCleaned)
+
+        private static void GenerateRadialEdgeObjects(MapData data, ObjectLibraries olibs, List<OsmShape> shapes, List<TerrainPolygon> polygons, ObjectCategory category, string filename, float width = 25f)
         {
-            var lib = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestRadialEdge);
+            var lib = olibs.Libraries.FirstOrDefault(l => l.Category == category);
             if (lib == null)
             {
                 return;
             }
-
-            var radialEdges = CropPolygonsToTerrain(data, forestPolygonsCleaned.SelectMany(e => e.Crown2(25f)));
+            var radialEdges = CropPolygonsToTerrain(data, polygons.SelectMany(e => e.Crown2(width)));
             var substractPolygons = GetPriorityPolygons(data, shapes, OsmShapeCategory.Dirt);
             var radialCleaned = Subtract(radialEdges, substractPolygons);
             var final = TerrainPolygon.MergeAll(radialCleaned);
-            //DebugHelper.Polygons(data, final, "radial-final.png");
-            //DebugHelper.Polygons(data, radialCleaned, "radial.png");
-
-            var objects = new FillShapeWithObjectsClustered(data, ObjectCategory.ForestRadialEdge, olibs).Fill(final, "forest-radial.txt");
+            var objects = new FillShapeWithObjectsClustered(data, ObjectCategory.ForestRadialEdge, olibs).Fill(final, filename);
             Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
             Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
-            objects.WriteFile(data.Config.Target.GetTerrain("forest-radial.txt"));
+            objects.WriteFile(data.Config.Target.GetTerrain(filename));
         }
 
         private static void GenerateEdgeObjects(MapData data, ObjectLibraries olibs,  List<TerrainPolygon> forestPolygonsCleaned)
@@ -284,27 +255,45 @@ namespace ArmaRealMap.TerrainData.Forests
 
         public static void PrepareScrub(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
         {
-            var polygonsCropped = GetCroppedPolygons(data, shapes, OsmShapeCategory.Scrub);
-            RemoveOverlaps(polygonsCropped);
-            var polygonsCleaned = Subtract(polygonsCropped, GetPriorityPolygons(data, shapes, OsmShapeCategory.Scrub));
+            var polygonsCleaned = GetPolygons(data, shapes, OsmShapeCategory.Scrub);
+
             var objects = new FillShapeWithObjectsClustered(data, ObjectCategory.Scrub, olibs).Fill(polygonsCleaned, "scrub-pass4.txt");
-            Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
-            Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
+            new FillShapeWithObjectsBasic(data, ObjectCategory.ScrubAdditionalObjects, olibs).Fill(objects, polygonsCleaned, "scrub-additional.txt");
+
+            RemoveOnBuildingsAndRoads(data, objects);
+
             objects.WriteFile(data.Config.Target.GetTerrain("scrub.txt"));
+
             data.Scrubs = polygonsCleaned;
+
+            GenerateRadialEdgeObjects(data, olibs, shapes, polygonsCleaned, ObjectCategory.ForestRadialEdge, "scrub-radial.txt", 12.5f);
         }
 
         public static void PrepareGroundRock(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
         {
-            var polygonsCropped = GetCroppedPolygons(data, shapes, OsmShapeCategory.Rocks);
-            RemoveOverlaps(polygonsCropped);
-            var polygonsCleaned = Subtract(polygonsCropped, GetPriorityPolygons(data, shapes, OsmShapeCategory.Rocks));
-            var objects = new FillShapeWithObjectsBasic(data, ObjectCategory.GroundRock, olibs) { MustFullFit = true}.Fill(polygonsCleaned, "rocks-pass4.txt");
-            Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
-            Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
+            var polygonsCleaned = GetPolygons(data, shapes, OsmShapeCategory.Rocks);
+
+            var objects = new FillShapeWithObjectsBasic(data, ObjectCategory.GroundRock, olibs) { MustFullFit = true }.Fill(polygonsCleaned, "rocks-pass4.txt");
+            new FillShapeWithObjectsBasic(data, ObjectCategory.GroundRockAdditionalObjects, olibs).Fill(objects, polygonsCleaned, "rocks-additional.txt");
+
+            RemoveOnBuildingsAndRoads(data, objects);
+
             objects.WriteFile(data.Config.Target.GetTerrain("rocks.txt"));
-            data.Scrubs = polygonsCleaned;
+
+            //data.Rocks = polygonsCleaned;
         }
 
+        private static void RemoveOnBuildingsAndRoads(MapData data, TerrainObjectLayer objects)
+        {
+            Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
+            Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
+        }
+
+        private static List<TerrainPolygon> GetPolygons(MapData data, List<OsmShape> shapes, OsmShapeCategory category)
+        {
+            var polygonsCropped = GetCroppedPolygons(data, shapes, category);
+            RemoveOverlaps(polygonsCropped);
+            return Subtract(polygonsCropped, GetPriorityPolygons(data, shapes, category));
+        }
     }
 }

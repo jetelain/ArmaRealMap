@@ -40,7 +40,7 @@ namespace ArmaRealMap.Roads
 
             if (!config.IsScaled)
             {
-
+                
 
 
                 RoadWalls(data, libs);
@@ -84,7 +84,10 @@ namespace ArmaRealMap.Roads
                     //AdjustElevationGrid(data);
                 }
             }
-            SaveRoadsShp(data, config);
+
+            var ignoreBridges = !config.IsScaled && libs.Libraries.Any(l => l.Category == Core.ObjectLibraries.ObjectCategory.BridgePrimaryRoad);
+
+            SaveRoadsShp(data, config, ignoreBridges);
 
             // PreviewRoads(data);
         }
@@ -186,11 +189,16 @@ namespace ArmaRealMap.Roads
             return roads.Where(r => r != self && r.RoadType == self.RoadType && r.SpecialSegment == self.SpecialSegment && (r.Path.FirstPoint == point || r.Path.LastPoint == point)).ToList();
         }
 
-        private static void SaveRoadsShp(MapData data, Config config)
+        private static void SaveRoadsShp(MapData data, Config config, bool ignoreBridges)
         {
             var features = new List<Feature>();
             foreach (var road in data.Roads)
             {
+                if ( road.SpecialSegment == RoadSpecialSegment.Bridge && ignoreBridges )
+                {
+                    continue;
+                }
+
                 var attributesTable = new AttributesTable();
                 attributesTable.Add("ID", (int)road.RoadType);
                 // Why x+200000 ? nobody really knows...

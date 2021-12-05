@@ -193,7 +193,7 @@ namespace ArmaRealMap
                 }
                 else
                 {
-                    Console.WriteLine("==== Lakes ====");
+                   /* Console.WriteLine("==== Lakes ====");
                     LakeGenerator.ProcessLakes(data, area, shapes);
 
                     Console.WriteLine("==== Elevation ====");
@@ -215,14 +215,14 @@ namespace ArmaRealMap
                     DefaultAreasBuilder.Prepare(data, shapes, olibs);
 
                     Console.WriteLine("==== Objects ====");
-                    PlaceIsolatedObjects(data, olibs, filtered);
+                    PlaceIsolatedObjects(data, olibs, filtered);*/
 
                     Console.WriteLine("==== Fences and walls ====");
                     PlaceBarrierObjects(data, db, olibs, filtered);
-
+                    /*
 
                     Console.WriteLine("==== Terrain images ====");
-                    TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);
+                    TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);*/
                 }
             }
 

@@ -21,7 +21,10 @@ namespace ArmaRealMap.Core.ObjectLibraries
             ObjectCategory.ForestAdditionalObjects,
             ObjectCategory.Scrub,
             ObjectCategory.GroundRock,
-            ObjectCategory.ForestRadialEdge
+            ObjectCategory.ForestRadialEdge,
+            ObjectCategory.ScrubAdditionalObjects,
+            ObjectCategory.ScrubRadialEdge,
+            ObjectCategory.GroundRockAdditionalObjects
         };
 
         public static ObjectCategory[] LineObject = new[] {

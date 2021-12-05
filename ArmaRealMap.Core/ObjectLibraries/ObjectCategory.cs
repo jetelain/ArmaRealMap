@@ -25,7 +25,7 @@ namespace ArmaRealMap.Core.ObjectLibraries
         [Display(Name = "Nature - Arbre isolé")]
         IsolatedTree,
 
-        [Display(Name = "Nature - Bois/forêt - Centre")]
+        [Display(Name = "Nature - Bois/forêt")]
         ForestTree,
 
         [Display(Name = "Objet - Table de pic-nic")]
@@ -79,7 +79,16 @@ namespace ArmaRealMap.Core.ObjectLibraries
         [Display(Name = "Infrastructure - Mur - Enceinte militaire")]
         MilitaryWall,
 
-        [Display(Name = "Nature - Bois/forêt - Végétation radiale")]
-        ForestRadialEdge
+        [Display(Name = "Nature - Bois/forêt - Végétation radiale (25m)")]
+        ForestRadialEdge,
+
+        [Display(Name = "Nature - Brousailles - Objets additionels")]
+        ScrubAdditionalObjects,
+
+        [Display(Name = "Nature - Brousailles - Végétation radiale (12.5m)")]
+        ScrubRadialEdge,
+
+        [Display(Name = "Nature - Zone rocheuses - Objets additionels")]
+        GroundRockAdditionalObjects
     }
 }

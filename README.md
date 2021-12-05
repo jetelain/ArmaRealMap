@@ -21,8 +21,8 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
   - [x] Generate satellite image from Sentinel-2 cloudless
   - [ ] Generate elevation grid from SRTM data
     - [x] Raw eleveation grid
-    - [ ] Adjust using rivers and lakes data
-    - [ ] Adjust using roads data
+    - [x] Adjust using rivers and lakes data
+    - [x] Adjust using roads data
     - [ ] Adjust using buildings data
   - [ ] Generate ground texture details from OpenStreeMap data
     - [x] Baseline from terrain usage
@@ -41,13 +41,13 @@ Tools to generate realistic Arma3 terrain from OpenStreeMap data in an highly au
     - [x] Isolated trees
     - [x] Tree rows
     - [x] Rocks
-    - [ ] Adjust using rivers and lakes data
+    - [x] Adjust using rivers and lakes data
     - [x] Adjust using roads data
     - [ ] Adjust using parkings data
     - [ ] Adjust using buildings data
   - [ ] Place roads from OpenStreeMap data
     - [x] Roads
-    - [ ] Bridges
+    - [x] Bridges
     - [ ] Sidewalk
     - [ ] Road lights
   - [ ] Place infrastrure elements  from OpenStreeMap data
