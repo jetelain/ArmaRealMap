@@ -43,8 +43,14 @@ namespace ArmaRealMapWebSite.Controllers
             {
                 assetsContext = assetsContext.Where(a => (a.TerrainRegions & vm.TerrainRegion) == vm.TerrainRegion);
             }
+            if (vm.Name != null)
+            {
+                var pattern = "%" + vm.Name + "%";
+                assetsContext = assetsContext.Where(a => EF.Functions.Like(a.Name, pattern) || EF.Functions.Like(a.ModelPath, pattern));
+            }
             vm.Results = await assetsContext.OrderBy(a => a.Name).Take(1000).ToListAsync();
             vm.Mods = new SelectList(_context.GameMods, "GameModID", "Name");
+            vm.DbCount = await _context.Assets.CountAsync();
             return View(vm);
         }
 
@@ -154,57 +160,62 @@ namespace ArmaRealMapWebSite.Controllers
         //}
 
         //// GET: Assets/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var asset = await _context.Assets.FindAsync(id);
+            if (asset == null)
+            {
+                return NotFound();
+            }
+            return View(asset);
+        }
 
-        //    var asset = await _context.Assets.FindAsync(id);
-        //    if (asset == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["GameModID"] = new SelectList(_context.GameMods, "GameModID", "GameModID", asset.GameModID);
-        //    return View(asset);
-        //}
-
-        //// POST: Assets/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("AssetID,Name,ClassName,ModelPath,Width,Depth,Height,CX,CY,CZ,TerrainRegions,AssetCategory,TerrainBuilderTemplateXML,GameModID,MaxZ,MaxY,MaxX,MinZ,MinY,MinX,BoundingSphereDiameter")] Asset asset)
-        //{
-        //    if (id != asset.AssetID)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(asset);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!AssetExists(asset.AssetID))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["GameModID"] = new SelectList(_context.GameMods, "GameModID", "GameModID", asset.GameModID);
-        //    return View(asset);
-        //}
+        // POST: Assets/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("AssetID,ClassName,CX,CY,CZ,AssetCategory,ClusterName")] Asset update)
+        {
+            if (id != update.AssetID)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var asset = await _context.Assets.FindAsync(id);
+                    asset.ClassName = update.ClassName;
+                    asset.AssetCategory = update.AssetCategory;
+                    asset.CX = update.CX;
+                    asset.CY = update.CY;
+                    asset.CZ = update.CZ;
+                    asset.ClusterName = update.ClusterName;
+                    _context.Update(asset);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AssetExists(update.AssetID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Details),new { id });
+            }
+            return View(update);
+        }
 
         // GET: Assets/Delete/5
         [Authorize(Policy = "Admin")]
@@ -238,9 +249,9 @@ namespace ArmaRealMapWebSite.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //private bool AssetExists(int id)
-        //{
-        //    return _context.Assets.Any(e => e.AssetID == id);
-        //}
+        private bool AssetExists(int id)
+        {
+            return _context.Assets.Any(e => e.AssetID == id);
+        }
     }
 }

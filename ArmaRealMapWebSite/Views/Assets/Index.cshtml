@@ -5,6 +5,8 @@
 }
 
 <form asp-action="Index" method="get" class="form-inline text-center">
+    <label asp-for="Name" class="my-1 mr-2"></label>
+    <input asp-for="Name" class="form-control my-1 mr-2" />
     <label asp-for="TerrainRegion" class="my-1 mr-2"></label>
     <select asp-for="TerrainRegion" class="form-control my-1 mr-2" asp-items="@Html.GetEnumSelectList<ArmaRealMap.Core.ObjectLibraries.TerrainRegion>()">
         <option value="">Tous</option>
@@ -13,14 +15,14 @@
     <select asp-for="AssetCategory" class="form-control my-1 mr-2" asp-items="@Html.GetEnumSelectList<ArmaRealMapWebSite.Entities.Assets.AssetCategory>()">
         <option value="">Tous</option>
     </select>
-    <label asp-for="GameModID"  class="my-1 mr-2"></label>
+    <label asp-for="GameModID" class="my-1 mr-2"></label>
     <select asp-for="GameModID" class="form-control my-1 mr-2" asp-items="Model.Mods">
         <option value="">Tous</option>
     </select>
     <input type="submit" value="Filtrer" class="btn btn-primary my-1 mr-2" />
 </form>
 
-<p>@Model.Results.Count objet(s)</p>
+<p>@Model.Results.Count objet(s) (limité à 1000), sur @Model.DbCount objets référencés</p>
 
 <table class="table">
     <thead>

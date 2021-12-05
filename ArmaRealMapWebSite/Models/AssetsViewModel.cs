@@ -19,5 +19,9 @@ namespace ArmaRealMapWebSite.Models
 
         [Display(Name = "Mod")]
         public int? GameModID { get; set; }
+
+        [Display(Name = "Nom")]
+        public string Name { get; set; }
+        public int DbCount { get; set; }
     }
 }
