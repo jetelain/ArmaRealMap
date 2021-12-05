@@ -48,10 +48,10 @@ namespace ArmaRealMap.Osm
         internal static readonly OsmShapeCategory Concrete = new OsmShapeCategory(TerrainMaterial.Concrete, 9);
         internal static readonly OsmShapeCategory Dirt = new OsmShapeCategory(TerrainMaterial.Dirt, 8);
         internal static readonly OsmShapeCategory Military = new OsmShapeCategory(Default, 10, ObjectCategory.Military);
-        internal static readonly OsmShapeCategory Residential = new OsmShapeCategory(Default, ObjectCategory.Residential);
-        internal static readonly OsmShapeCategory Commercial = new OsmShapeCategory(Default, ObjectCategory.Residential);
-        internal static readonly OsmShapeCategory Industrial = new OsmShapeCategory(Default, ObjectCategory.Industrial);
-        internal static readonly OsmShapeCategory Retail = new OsmShapeCategory(Default, ObjectCategory.Retail);
+        internal static readonly OsmShapeCategory Residential = new OsmShapeCategory(Default, 10, ObjectCategory.Residential);
+        internal static readonly OsmShapeCategory Commercial = new OsmShapeCategory(Default, 10, ObjectCategory.Residential);
+        internal static readonly OsmShapeCategory Industrial = new OsmShapeCategory(Default, 10, ObjectCategory.Industrial);
+        internal static readonly OsmShapeCategory Retail = new OsmShapeCategory(Default, 10, ObjectCategory.Retail);
 
         internal static readonly OsmShapeCategory[] BuildingCategorizers = new[] { Residential, Industrial, Retail, Military, Commercial };
 

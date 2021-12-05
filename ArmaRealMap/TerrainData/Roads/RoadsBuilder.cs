@@ -242,7 +242,7 @@ namespace ArmaRealMap.Roads
         {
             var interpret = new DefaultFeatureInterpreter2();
             var osmRoads = filtered.Where(o => o.Type == OsmGeoType.Way && o.Tags != null && o.Tags.ContainsKey("highway")).ToList();
-            var area = TerrainPolygon.FromRectangle(data.MapInfos.P1, data.MapInfos.P2);
+            var area = data.MapInfos.Polygon;
             data.Roads = new List<Road>();
             var report = new ProgressReport("PrepareRoads", osmRoads.Count);
             foreach (var road in osmRoads)

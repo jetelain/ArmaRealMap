@@ -77,6 +77,9 @@ namespace ArmaRealMap.Core.ObjectLibraries
         BridgePrimaryRoad,
 
         [Display(Name = "Infrastructure - Mur - Enceinte militaire")]
-        MilitaryWall
+        MilitaryWall,
+
+        [Display(Name = "Nature - Bois/forêt - Végétation radiale")]
+        ForestRadialEdge
     }
 }

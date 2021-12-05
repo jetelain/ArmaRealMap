@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,8 +9,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using ArmaRealMap.Buildings;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.DataSources.S2C;
-using ArmaRealMap.ElevationModel;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
@@ -21,24 +18,13 @@ using ArmaRealMap.TerrainData;
 using ArmaRealMap.TerrainData.DefaultAreas;
 using ArmaRealMap.TerrainData.Forests;
 using ArmaRealMap.TerrainData.GroundDetailTextures;
-using BIS.PAA;
-using ClipperLib;
-using CoordinateSharp;
 using Microsoft.Win32;
-using NetTopologySuite.Features;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using OsmSharp;
 using OsmSharp.Complete;
 using OsmSharp.Db;
 using OsmSharp.Db.Impl;
 using OsmSharp.Geo;
 using OsmSharp.Streams;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Processing.Processors.Filters;
 
 namespace ArmaRealMap
 {
@@ -284,7 +270,7 @@ namespace ArmaRealMap
             var probLibs = libs.Count == 1 ? libs : libs.SelectMany(l => Enumerable.Repeat(l, (int)((l.Probability ?? 1d) * 100))).ToList();
             var interpret = new DefaultFeatureInterpreter2();
             var nodes = filtered.Where(o => o.Type == OsmGeoType.Way && filter((Way)o)).ToList();
-            var cliparea = TerrainPolygon.FromRectangle(data.MapInfos.P1, data.MapInfos.P2);
+            var cliparea = data.MapInfos.Polygon;
             foreach (Way way in nodes)
             {
                 var complete = way.CreateComplete(db);

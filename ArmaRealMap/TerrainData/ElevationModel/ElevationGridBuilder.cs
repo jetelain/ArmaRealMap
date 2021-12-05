@@ -38,20 +38,28 @@ namespace ArmaRealMap
 
         internal static void MakeDetailed(MapData data, List<OsmShape> shapes, ObjectLibraries libs)
         {
-            ProcessReserved(data.Config, data.MapInfos, data.Elevation);
+            var cacheFile = data.Config.Target.GetCache("elevation.bin");
+            if (!File.Exists(cacheFile))
+            {
+                ProcessReserved(data.Config, data.MapInfos, data.Elevation);
 
-            var constraintGrid = new ElevationConstraintGrid(data.MapInfos, data.Elevation);
+                var constraintGrid = new ElevationConstraintGrid(data.MapInfos, data.Elevation);
 
-            ProcessRoads(data, constraintGrid, libs);
+                ProcessRoads(data, constraintGrid, libs);
 
-            ProcessWaterWays(data, shapes, constraintGrid);
+                ProcessWaterWays(data, shapes, constraintGrid);
 
-            constraintGrid.SolveAndApplyOnGrid(data);
+                constraintGrid.SolveAndApplyOnGrid(data);
 
-            ProcessBridgeObjects(data, data.Elevation, libs);
+                ProcessBridgeObjects(data, data.Elevation, libs);
 
-            //data.Elevation.SaveToObj(data.Config.Target.GetDebug("elevation-after.obj"));
-            data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-after.png"));
+                data.Elevation.SaveToBin(data.Config.Target.GetCache("elevation.bin"));
+            }
+            else
+            {
+                data.Elevation.LoadFromBin(data.Config.Target.GetCache("elevation.bin"));
+            }
+
             data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation.asc"));
         }
 

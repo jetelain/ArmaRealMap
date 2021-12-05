@@ -18,17 +18,19 @@ namespace ArmaRealMap.TerrainData.Forests
         {
             var forestPolygonsCropped = GetCroppedPolygons(data, shapes, OsmShapeCategory.Forest);
 
-            //DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass1.bmp");
+            //DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass1.png");
 
             RemoveOverlaps(forestPolygonsCropped);
 
-            //DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass2.bmp");
+            //DebugHelper.Polygons(data, forestPolygonsCropped, "forest-pass2.png");
 
             var substractPolygons = GetPriorityPolygons(data, shapes, OsmShapeCategory.Forest);
 
+            //DebugHelper.Polygons(data, substractPolygons, "forest-substract.png");
+
             var forestPolygonsCleaned = Subtract(forestPolygonsCropped, substractPolygons);
 
-            //DebugHelper.Polygons(data, forestPolygonsCleaned, "forest-pass3.bmp");
+            //DebugHelper.Polygons(data, forestPolygonsCleaned, "forest-pass3.png");
 
             var trees = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestTree);
 
@@ -36,7 +38,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             new FillShapeWithObjectsClustered(data, ObjectCategory.ForestAdditionalObjects, olibs).Fill(objects, forestPolygonsCleaned, "forest-additional.txt"); 
 
-            //DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass4.bmp");
+            //DebugHelper.ObjectsInPolygons(data, objects, forestPolygonsCleaned, "forest-pass4.png");
 
             // Remove trees at edge that may be a problem
 
@@ -51,14 +53,44 @@ namespace ArmaRealMap.TerrainData.Forests
 
             GenerateEdgeObjects(data, olibs, forestPolygonsCleaned);
 
+            GenerateRadialEdgeObjects(data, olibs, shapes, forestPolygonsCleaned);
+
             //DebugHelper.ObjectsInPolygons(data, wasRemoved, forestPolygonsCleaned, "forest-wasRemoved.bmp");
 
             data.Forests = forestPolygonsCleaned;
 
         }
-
-        private static void GenerateEdgeObjects(MapData data, ObjectLibraries olibs, List<TerrainPolygon> forestPolygonsCleaned)
+        private static void GenerateRadialEdgeObjects(MapData data, ObjectLibraries olibs, List<OsmShape> shapes, List<TerrainPolygon> forestPolygonsCleaned)
         {
+            var lib = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestRadialEdge);
+            if (lib == null)
+            {
+                return;
+            }
+
+            var radialEdges = CropPolygonsToTerrain(data, forestPolygonsCleaned.SelectMany(e => e.Crown2(25f)));
+            var substractPolygons = GetPriorityPolygons(data, shapes, OsmShapeCategory.Dirt);
+            var radialCleaned = Subtract(radialEdges, substractPolygons);
+            var final = TerrainPolygon.MergeAll(radialCleaned);
+            //DebugHelper.Polygons(data, final, "radial-final.png");
+            //DebugHelper.Polygons(data, radialCleaned, "radial.png");
+
+            var objects = new FillShapeWithObjectsClustered(data, ObjectCategory.ForestRadialEdge, olibs).Fill(final, "forest-radial.txt");
+            Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
+            Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
+            objects.WriteFile(data.Config.Target.GetTerrain("forest-radial.txt"));
+        }
+
+        private static void GenerateEdgeObjects(MapData data, ObjectLibraries olibs,  List<TerrainPolygon> forestPolygonsCleaned)
+        {
+            var lib = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestEdge);
+
+            if ( lib == null)
+            {
+                return;
+            }
+
+
             var margin = 1f;
 
             var edges = forestPolygonsCleaned.SelectMany(f => f.Offset(-margin)).ToList();
@@ -66,7 +98,6 @@ namespace ArmaRealMap.TerrainData.Forests
             /*var edgeObjects = new FillShapeWithObjects(data, olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestEdge))
                     .Fill(edges, 0.1f, "forest-edge.txt");*/
 
-            var lib = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestEdge);
 
             var edgeObjects = new TerrainObjectLayer(data.MapInfos);
             var rotate = Matrix3x2.CreateRotation(1.570796f);
@@ -193,21 +224,20 @@ namespace ArmaRealMap.TerrainData.Forests
 
         private static List<TerrainPolygon> GetCroppedPolygons(MapData data, List<OsmShape> shapes, OsmShapeCategory category)
         {
-            var area = TerrainPolygon.FromRectangle(data.MapInfos.P1, data.MapInfos.P2);
+            return CropPolygonsToTerrain(data, shapes.Where(s => s.Category == category).SelectMany(s => s.TerrainPolygons));
+        }
 
-            var forestShapes = shapes.Where(s => s.Category == category).ToList();
-
+        private static List<TerrainPolygon> CropPolygonsToTerrain(MapData data, IEnumerable<TerrainPolygon> forestPolygons)
+        {
+            var list = forestPolygons.ToList();
+            var area = data.MapInfos.Polygon;
             var polygonsCropped = new List<TerrainPolygon>();
-
-            var report = new ProgressReport("ForestCrop", forestShapes.Count);
-            foreach (var shape in forestShapes)
+            var report = new ProgressReport("Crop", list.Count);
+            foreach (var poly in list)
             {
-                foreach (var poly in shape.TerrainPolygons)
+                foreach (var cropped in poly.ClippedBy(area))
                 {
-                    foreach (var cropped in poly.ClippedBy(area))
-                    {
-                        polygonsCropped.Add(cropped);
-                    }
+                    polygonsCropped.Add(cropped);
                 }
                 report.ReportOneDone();
             }

@@ -147,6 +147,30 @@ namespace ArmaRealMap.Geometries
             return exterior.SelectMany(e => e.SubstractAll(interior));
         }
 
+        public IEnumerable<TerrainPolygon> Crown2(float width)
+        {
+            var clipper = new Clipper();
+
+            foreach(var poly in Offset(width))
+            {
+                clipper.AddPath(poly.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
+                foreach (var hole in poly.Holes)
+                {
+                    clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true); // EvenOdd will do the job
+                }
+            }
+
+            clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+            foreach (var hole in Holes)
+            {
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true); // EvenOdd will do the job
+            }
+
+            var result = new PolyTree();
+            clipper.Execute(ClipType.ctDifference, result);
+            return ToPolygons(result);
+        }
+
         public IEnumerable<TerrainPolygon> SubstractAll(IEnumerable<TerrainPolygon> others)
         {
             var result = new List<TerrainPolygon>() { this };

@@ -36,6 +36,8 @@ namespace ArmaRealMap
         public int ImageryHeight => (int)(Height / ImageryResolution);
         public int ImageryWidth => (int)(Width / ImageryResolution);
 
+        public TerrainPolygon Polygon { get; private set; }
+
         internal bool IsInside(TerrainPoint p)
         {
             return p.X > P1.X && p.X < P2.X &&
@@ -69,27 +71,11 @@ namespace ArmaRealMap
                 Math.Round(southWest.UTM.Northing));
 
             int widthInMeters = (size * cellSize);
-
             var southEast = TerrainToLatLong(startPointUTM, widthInMeters, 0, null);
-            //UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
-            //    southWest.UTM.LatZone,
-            //    southWest.UTM.LongZone,
-            //    Math.Round(southWest.UTM.Easting) + (size * cellSize),
-            //    Math.Round(southWest.UTM.Northing)));
-
             var northEast = TerrainToLatLong(startPointUTM, widthInMeters, widthInMeters, null);
-            //UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
-            //southWest.UTM.LatZone,
-            //southWest.UTM.LongZone,
-            //Math.Round(southWest.UTM.Easting) + (size * cellSize),
-            //Math.Round(southWest.UTM.Northing) + (size * cellSize)));
-
             var northWest = TerrainToLatLong(startPointUTM, 0, widthInMeters, null);
-            //UniversalTransverseMercator.ConvertUTMtoLatLong(new UniversalTransverseMercator(
-            //southWest.UTM.LatZone,
-            //southWest.UTM.LongZone,
-            //Math.Round(southWest.UTM.Easting),
-            //Math.Round(southWest.UTM.Northing) + (size * cellSize)));
+            var p1 = new TerrainPoint(0f, 0f);
+            var p2 = new TerrainPoint(widthInMeters, widthInMeters);
 
             return new MapInfos
             {
@@ -101,9 +87,10 @@ namespace ArmaRealMap
                 SouthEast = southEast,
                 CellSize = cellSize,
                 Size = size,
-                P1 = new TerrainPoint(0f, 0f),
-                P2 = new TerrainPoint(widthInMeters, widthInMeters),
-                ImageryResolution = resolution ?? 1d
+                P1 = p1,
+                P2 = p2,
+                ImageryResolution = resolution ?? 1d,
+                Polygon = TerrainPolygon.FromRectangle(p1, p2)
             };
         }
 

@@ -20,7 +20,8 @@ namespace ArmaRealMap.Core.ObjectLibraries
             ObjectCategory.RandomVegetation,
             ObjectCategory.ForestAdditionalObjects,
             ObjectCategory.Scrub,
-            ObjectCategory.GroundRock
+            ObjectCategory.GroundRock,
+            ObjectCategory.ForestRadialEdge
         };
 
         public static ObjectCategory[] LineObject = new[] {
