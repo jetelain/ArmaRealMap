@@ -24,7 +24,9 @@ namespace ArmaRealMap.TerrainData.ElevationModel
 
         public float InitialElevation { get; }
 
-        public float? WantedInitialShift { get; set; }
+        public float? WantedInitialRelativeElevation { get; set; }
+
+        public float? LowerLimitRelativeElevation { get; set; }
 
         public float? Elevation { get; private set; }
 
@@ -101,6 +103,15 @@ namespace ArmaRealMap.TerrainData.ElevationModel
                 elevation = constraint.Apply(elevation);
             }
 
+            if (LowerLimitRelativeElevation != null )
+            {
+                var min = LowerLimitRelativeElevation.Value + InitialElevation;
+                if (elevation < min)
+                {
+                    elevation = min;
+                }
+            }
+
             Elevation = elevation;
             foreach (var other in SameThan)
             {
@@ -111,7 +122,7 @@ namespace ArmaRealMap.TerrainData.ElevationModel
         private float ComputeBaseElevation()
         {
             var elevation = new[] { InitialElevation }.Concat(SameThan.Select(e => e.InitialElevation)).Average();
-            var shift = new[] { WantedInitialShift }.Concat(SameThan.Select(e => e.WantedInitialShift)).Where(w => w.HasValue).Select(w => w.Value).ToList();
+            var shift = new[] { WantedInitialRelativeElevation }.Concat(SameThan.Select(e => e.WantedInitialRelativeElevation)).Where(w => w.HasValue).Select(w => w.Value).ToList();
             if (shift.Any())
             {
                 elevation += shift.Average();

@@ -127,18 +127,15 @@ namespace ArmaRealMap
             var report = new ProgressReport("Waterways", waterWays.Count);
             foreach (var waterWay in waterWaysPaths)
             {
-                var points = GeometryHelper.PointsOnPath(waterWay.Points, data.MapInfos.CellSize / 2f).Select(constraintGrid.Node).ToList();
+                var points = GeometryHelper.PointsOnPath(waterWay.Points, 2).Select(constraintGrid.Node).ToList();
                 foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
                 {
                     if (segment.First != segment.Second)
                     {
                         var delta = segment.Second.Point.Vector - segment.First.Point.Vector;
                         segment.Second.MustBeLowerThan(segment.First);
-                        segment.First.WantedInitialShift = -1f;
-                        foreach (var side in constraintGrid.GetReference(segment.First, delta, 15f))
-                        {
-                            segment.First.MustBeLowerThan(side, 1.5f, true);
-                        }
+                        segment.First.WantedInitialRelativeElevation = -1f;
+                        segment.First.LowerLimitRelativeElevation = -4f;
                     }
                 }
                 report.ReportOneDone();
