@@ -30,6 +30,7 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Density)
+            <small class="text-muted">@ArmaRealMap.Core.ObjectLibraries.ObjectCategoryHelper.DensityLabel(Model.ObjectCategory)</small>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Probability)
@@ -59,7 +60,7 @@
         </div>
     }
 }
-@if (Model.ObjectCategory.HasDensity())
+@if (Model.ObjectCategory.HasAreaDensity())
 {
     @if (Model.Density == null)
     {

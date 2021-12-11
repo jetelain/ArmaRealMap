@@ -12,10 +12,12 @@ namespace ArmaRealMap
 {
     internal class TerrainObjectLayer : TerrainSpacialIndex<TerrainObject>
     {
+        public MapInfos MapInfos { get; }
+
         public TerrainObjectLayer(MapInfos map)
             : base(map)
         {
-
+            MapInfos = map;
         }
 
         public void WriteFile(string targetFile)

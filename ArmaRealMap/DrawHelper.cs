@@ -142,7 +142,7 @@ namespace ArmaRealMap
 
         internal const int Chunk = 10240;
 
-        internal static int SavePngChuncked(Image<Rgb24> img, string filename)
+        internal static int SavePngChuncked<TPixel>(Image<TPixel> img, string filename) where TPixel : unmanaged, IPixel<TPixel>
         {
             img.Save(filename);
 
@@ -157,7 +157,7 @@ namespace ArmaRealMap
                 }
                 var report = new ProgressReport("PngChuncked", num * num);
                 int chunkSize = img.Width / num;
-                var chunk = new Image<Rgb24>(chunkSize, chunkSize);
+                var chunk = new Image<TPixel>(chunkSize, chunkSize);
                 for(int x = 0; x < num; x ++)
                 {
                     for (int y = 0; y < num; y++)

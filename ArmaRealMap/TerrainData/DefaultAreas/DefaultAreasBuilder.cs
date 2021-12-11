@@ -13,7 +13,7 @@ namespace ArmaRealMap.TerrainData.DefaultAreas
 {
     class DefaultAreasBuilder
     {
-        public static void Prepare(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
+        public static void PrepareDefaultAreas(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
         {
             var filler = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.RandomVegetation);
             if (filler != null && filler.Objects.Count > 0)
@@ -50,7 +50,11 @@ namespace ArmaRealMap.TerrainData.DefaultAreas
                 }
                 report.TaskDone();
 
-                var objects = new FillShapeWithObjectsClustered(data, ObjectCategory.RandomVegetation, olibs).Fill(list, "defaultfill.txt");
+
+                var objects = new FillShapeWithObjectsBasic(data, ObjectCategory.RandomVegetation, olibs).Fill(list, "defaultfill.txt");
+
+                Forests.ForestBuilder.RemoveOnBuildingsAndRoads(data, objects);
+
                 objects.WriteFile(data.Config.Target.GetTerrain("defaultfill.txt"));
             }
         }

@@ -13,6 +13,42 @@ namespace ArmaRealMap.TerrainData.Forests
 {
     class ForestBuilder
     {
+        public static void PrepareWaterwayEdges(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
+        {
+            var lib = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.WaterwayBorder);
+            if (lib == null)
+            {
+                return;
+            }
+            
+            var layer = new TerrainObjectLayer(data.MapInfos);
+
+            var waterWays = shapes.Where(s => s.Category == OsmShapeCategory.WaterWay && s.IsPath && !s.OsmGeo.Tags.ContainsKey("tunnel")).ToList();
+            var waterWaysPaths = waterWays.SelectMany(w => w.TerrainPaths).ToList();
+            var waterWaysPolys = waterWaysPaths.SelectMany(r => r.ToTerrainPolygon(10f)).ToList();
+
+            waterWaysPolys = TerrainPolygon.MergeAll(waterWaysPolys);
+
+            var rnd = new Random(1);
+            var report = new ProgressReport("WaterWayEdges", waterWaysPolys.Count);
+            foreach (var poly in waterWaysPolys)
+            {
+                FollowPathWithObjects.PlaceOnEdgeRandomOutside(rnd, lib, layer, poly, 0f);
+                report.ReportOneDone();
+            }
+            report.TaskDone();
+
+            Remove(layer, data.Lakes.Select(l => l.TerrainPolygon), (poly, tree) => poly.ContainsRaw(tree.Center));
+            Remove(layer, data.Scrubs, (poly, tree) => poly.ContainsRaw(tree.Center));
+            Remove(layer, data.Forests, (poly, tree) => poly.ContainsRaw(tree.Center));
+
+
+            RemoveOnBuildingsAndRoads(data, layer);
+
+            layer.WriteFile(data.Config.Target.GetTerrain("waterway-edge.v3.txt"));
+
+            //DebugHelper.ObjectsInPolygons(data, layer, waterWaysPolys, "waterway-obj.v3.png");
+        }
 
         public static void Prepare(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
         {
@@ -76,6 +112,8 @@ namespace ArmaRealMap.TerrainData.Forests
             var report = new ProgressReport("EdgeObjects", edges.Count);
             foreach (var edgePoly in edges)
             {
+                FollowPathWithObjects.PlaceOnEdgeRandomInside(rnd, lib, edgeObjects, edgePoly, margin);
+                /*
                 foreach (var ring in edgePoly.Holes.Concat(new[] { edgePoly.Shell }))
                 {
                     var previous = ring.First();
@@ -109,7 +147,8 @@ namespace ArmaRealMap.TerrainData.Forests
                         remainLength = positionOnSegment - length;
                         previous = point;
                     }
-                }
+                }*/
+
                 report.ReportOneDone();
             }
             report.TaskDone();
@@ -266,7 +305,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             data.Scrubs = polygonsCleaned;
 
-            GenerateRadialEdgeObjects(data, olibs, shapes, polygonsCleaned, ObjectCategory.ForestRadialEdge, "scrub-radial.txt", 12.5f);
+            GenerateRadialEdgeObjects(data, olibs, shapes, polygonsCleaned, ObjectCategory.ScrubRadialEdge, "scrub-radial.txt", 12.5f);
         }
 
         public static void PrepareGroundRock(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
@@ -283,7 +322,7 @@ namespace ArmaRealMap.TerrainData.Forests
             //data.Rocks = polygonsCleaned;
         }
 
-        private static void RemoveOnBuildingsAndRoads(MapData data, TerrainObjectLayer objects)
+        internal static void RemoveOnBuildingsAndRoads(MapData data, TerrainObjectLayer objects)
         {
             Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
             Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);

@@ -229,57 +229,54 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
         private static void DrawIdMap(Config config, MapInfos area, MapData data, List<Polygons> polygonsByCategory)
         {
-            using (var img = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, TerrainMaterial.Default.GetColor(config.Terrain)))
+            using (var img = new Image<Rgba32>(area.ImageryWidth, area.ImageryHeight, TerrainMaterial.Default.GetColor(config.Terrain)))
             {
                 var report = new ProgressReport("Tex-Shapes", polygonsByCategory.Sum(p => p.List.Count));
                 img.Mutate(d =>
                 {
+                    d.Fill(GetBrush(data, OsmShapeCategory.Default));
                     foreach (var category in polygonsByCategory.OrderByDescending(e => e.Category.GroundTexturePriority))
                     {
                         if (category.Category != OsmShapeCategory.WaterWay)
                         {
-                            var color = category.Category.TerrainMaterial.GetColor(data.Config.Terrain);
-
-                            var brush = new SolidBrush(color);
-
-                            var edgeBrush = new PatternBrush(color,
-                                Color.Transparent,
-                                Generate(category.Category.GroundTexturePriority, 0.6f));
-
-                            Draw(area, d, report, category, brush, edgeBrush);
+                            Draw(area, d, report, category, GetBrush(data, category.Category), GetEdgeBrush(data, category.Category));
                         }
                     }
                 });
                 report.TaskDone();
 
-
-                // Roads has no effect on terrain material, it will be cover by a specific texture
-                /*
-                report = new ProgressReport("Tex-Roads", data.Roads.Count);
-                img.Mutate(d =>
-                {
-                    var brush = new SolidBrush(OsmShapeCategory.Road.TerrainMaterial.GetColor(data.Config.Terrain));
-                    foreach (var road in data.Roads)
-                    {
-                        DrawHelper.DrawPath(d, road.Path, (float)(road.Width / area.ImageryResolution), brush, data.MapInfos, false);
-                        report.ReportOneDone();
-                    }
-                });
-                report.TaskDone();
-                */
-
-                /*
-                report = new ProgressReport("Buildings", data.Buildings.Count);
-                foreach (var item in data.WantedBuildings)
-                {
-                    img.Mutate(x => x.FillPolygon(OsmShapeCategory.Building.TerrainMaterial.GetColor(data.Config.Terrain), data.MapInfos.TerrainToPixelsPoints(item.Box.Points).ToArray()));
-                    report.ReportOneDone();
-                }
-                report.TaskDone();
-                */
-
                 DrawHelper.SavePngChuncked(img, config.Target.GetTerrain("id.png"));
             }
+        }
+
+        private static IBrush GetBrush(MapData data, OsmShapeCategory category)
+        {
+            var color = category.TerrainMaterial.GetColor(data.Config.Terrain);
+            if (category == OsmShapeCategory.Forest || category == OsmShapeCategory.Rocks)
+            {
+                return new PatternBrush(color, TerrainMaterial.Default.GetColor(data.Config.Terrain), Generate(category.GroundTexturePriority, 0.0025f, 512));
+            }
+            if (category == OsmShapeCategory.Scrub)
+            {
+                return new PatternBrush(color, TerrainMaterial.Forest.GetColor(data.Config.Terrain), Generate(category.GroundTexturePriority, 0.0025f, 512));
+            }
+            if (category == OsmShapeCategory.Default)
+            {
+                var img = new Image<Rgba32>(512, 512, color);
+                img.Mutate(d =>
+                {
+                    d.Fill(new PatternBrush(Color.Transparent, TerrainMaterial.Forest.GetColor(data.Config.Terrain), Generate(category.GroundTexturePriority, 0.0025f, 512)));
+                    d.Fill(new PatternBrush(Color.Transparent, TerrainMaterial.Rock.GetColor(data.Config.Terrain), Generate(category.GroundTexturePriority, 0.0005f, 512)));
+                });
+                return new ImageBrush(img);
+            }
+            return new SolidBrush(color);
+        }
+
+        private static IBrush GetEdgeBrush(MapData data, OsmShapeCategory category)
+        {
+            var color = category.TerrainMaterial.GetColor(data.Config.Terrain);
+            return new PatternBrush(color, Color.Transparent, Generate(category.GroundTexturePriority, 0.6f));
         }
 
         private static void Draw(MapInfos area, IImageProcessingContext d, ProgressReport report, Polygons category, IBrush brush, IBrush edgeBrush)
@@ -298,13 +295,13 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             }
         }
 
-        private static bool[,] Generate(int seed, float coef)
+        private static bool[,] Generate(int seed, float coef, int size = 64)
         {
             var rnd = new Random(seed);
-            var matrix = new bool[64,64];
-            for(var x = 0;x<64;++x)
+            var matrix = new bool[size, size];
+            for(var x = 0;x< size; ++x)
             {
-                for (var y = 0; y < 64; ++y)
+                for (var y = 0; y < size; ++y)
                 {
                     matrix[x, y] = rnd.NextDouble() >= coef;
                 }

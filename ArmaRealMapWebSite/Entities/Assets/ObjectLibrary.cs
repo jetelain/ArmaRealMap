@@ -20,7 +20,7 @@ namespace ArmaRealMapWebSite.Entities.Assets
         [Display(Name = "Type")]
         public ObjectCategory ObjectCategory { get; set; }
 
-        [Display(Name = "Densitée (nombre par m²)")]
+        [Display(Name = "Densitée")]
         public double? Density { get; set; }
 
         [Display(Name = "Probabilité")]

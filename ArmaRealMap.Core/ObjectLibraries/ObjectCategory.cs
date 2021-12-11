@@ -89,6 +89,9 @@ namespace ArmaRealMap.Core.ObjectLibraries
         ScrubRadialEdge,
 
         [Display(Name = "Nature - Zone rocheuses - Objets additionels")]
-        GroundRockAdditionalObjects
+        GroundRockAdditionalObjects,
+
+        [Display(Name = "Nature - Bord des cours d'eau")]
+        WaterwayBorder
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArmaRealMap.Core.ObjectLibraries
 {
@@ -34,7 +31,13 @@ namespace ArmaRealMap.Core.ObjectLibraries
             ObjectCategory.Fence,
             ObjectCategory.Wall,
             ObjectCategory.Cliff,
-            ObjectCategory.MilitaryWall
+            ObjectCategory.MilitaryWall,
+            ObjectCategory.WaterwayBorder
+        };
+
+        public static ObjectCategory[] LineDensityObject = new[] {
+            ObjectCategory.ForestEdge,
+            ObjectCategory.WaterwayBorder
         };
 
         public static ObjectCategory[] Building = new[] { 
@@ -63,9 +66,27 @@ namespace ArmaRealMap.Core.ObjectLibraries
             return AreaFiller.Contains(category) || LineObject.Contains(category);
         }
 
-        public static bool HasDensity(this ObjectCategory category)
+        public static bool HasAreaDensity(this ObjectCategory category)
         {
             return AreaFiller.Contains(category);
+        }
+
+        public static bool HasLineDensity(this ObjectCategory category)
+        {
+            return LineDensityObject.Contains(category);
+        }
+
+        public static string DensityLabel(this ObjectCategory category)
+        {
+            if (HasLineDensity(category))
+            {
+                return "(taux)";
+            }
+            if (HasAreaDensity(category))
+            {
+                return "(nombre par m²)";
+            }
+            return string.Empty;
         }
 
         public static bool HasReservedRadius(this ObjectCategory category)

@@ -195,6 +195,11 @@ namespace ArmaRealMap
             }
             constraintGrid.Node(road.Path.FirstPoint).PinToInitial();
             constraintGrid.Node(road.Path.LastPoint).PinToInitial();
+
+            //var center = new TerrainPoint(Vector2.Lerp(road.Path.FirstPoint.Vector, road.Path.LastPoint.Vector, 0.5f));
+            //constraintGrid.Node(center).WantedInitialRelativeElevation = -1.5f;
+
+
             /*var delta = road.Path.FirstPoint.Vector - road.Path.LastPoint.Vector;
             var angle = ((MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI) + 90f) % 360f;
             var obj1 = lib.Objects[0];

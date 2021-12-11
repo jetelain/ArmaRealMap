@@ -1111,7 +1111,7 @@
     "Objects": [
       {
         "Name": "B_Caragana_arborescens",
-        "PlacementProbability": 0.1,
+        "PlacementProbability": 0.16666667,
         "PlacementRadius": 2.5,
         "Width": 6.89732,
         "Depth": 6.64512,
@@ -1122,7 +1122,7 @@
       },
       {
         "Name": "B_Corylus_heterophylla_1",
-        "PlacementProbability": 0.1,
+        "PlacementProbability": 0.16666667,
         "PlacementRadius": 2,
         "Width": 2.85536,
         "Depth": 3.19288,
@@ -1133,7 +1133,7 @@
       },
       {
         "Name": "B_Corylus_heterophylla_2",
-        "PlacementProbability": 0.1,
+        "PlacementProbability": 0.16666667,
         "PlacementRadius": 4,
         "Width": 9.49124,
         "Depth": 10.00068,
@@ -1144,7 +1144,7 @@
       },
       {
         "Name": "b_prunusSpinosa_1s",
-        "PlacementProbability": 0.1,
+        "PlacementProbability": 0.16666667,
         "PlacementRadius": 1.5,
         "Width": 4.0647,
         "Depth": 4.00364,
@@ -1155,7 +1155,7 @@
       },
       {
         "Name": "b_sambucusNigra_1s",
-        "PlacementProbability": 0.1,
+        "PlacementProbability": 0.16666667,
         "PlacementRadius": 2,
         "Width": 4.7513,
         "Depth": 4.53172,
@@ -1166,7 +1166,7 @@
       },
       {
         "Name": "b_sambucusNigra_2s",
-        "PlacementProbability": 0.1,
+        "PlacementProbability": 0.16666667,
         "PlacementRadius": 3,
         "Width": 6.24986,
         "Depth": 7.01254,
@@ -1177,27 +1177,16 @@
       }
     ],
     "Terrain": "CentralEurope",
-    "Density": 0.01,
+    "Density": 0.8,
     "Probability": 1
   },
   {
-    "Category": "ForestEdge",
+    "Category": "WaterwayBorder",
     "Objects": [
       {
-        "Name": "b_FicusC2d_tanoa_F",
-        "PlacementProbability": 0.25,
-        "PlacementRadius": 10,
-        "Width": 4.82374,
-        "Depth": 4.57384,
-        "Height": 4.0357,
-        "CX": 0,
-        "CY": 0,
-        "CZ": 0
-      },
-      {
         "Name": "b_NeriumO2d_tanoa_F",
-        "PlacementProbability": 0.25,
-        "PlacementRadius": 10,
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 2.5,
         "Width": 4.69828,
         "Depth": 4.93478,
         "Height": 2.77376,
@@ -1206,30 +1195,78 @@
         "CZ": 0
       },
       {
-        "Name": "b_OpuntiaFicusIndica3s_F",
-        "PlacementProbability": 0.25,
-        "PlacementRadius": 10,
-        "Width": 3.13661,
-        "Depth": 2.94523,
-        "Height": 2.17638,
-        "CX": 0,
-        "CY": 0,
-        "CZ": 0
-      },
-      {
         "Name": "B_Caragana_arborescens",
-        "PlacementProbability": 0.25,
-        "PlacementRadius": 10,
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 3.4,
         "Width": 6.89732,
         "Depth": 6.64512,
         "Height": 5.57175,
         "CX": 0,
         "CY": 0,
         "CZ": 0
+      },
+      {
+        "Name": "arm_s_amygdalusc2s_w37_h37",
+        "ClusterName": "arm_s_amygdalusc2s",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 1.7,
+        "Width": 3.38374,
+        "Depth": 3.38672,
+        "Height": 4.01772,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "b_NeriumO2d_F",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 2,
+        "Width": 3.81742,
+        "Depth": 3.95496,
+        "Height": 2.64602,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_s_malus1s_w50_h50",
+        "ClusterName": "arm_s_malus1s",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 1.7,
+        "Width": 3.38181,
+        "Depth": 3.32387,
+        "Height": 4.26867,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_s_pistacial2s_w62_h62",
+        "ClusterName": "arm_s_pistacial2s",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 3,
+        "Width": 6.04492,
+        "Depth": 5.32058,
+        "Height": 5.13794,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "arm_s_amygdalusc2s_w50_h50",
+        "ClusterName": "arm_s_amygdalusc2s",
+        "PlacementProbability": 0.14285715,
+        "PlacementRadius": 2.3,
+        "Width": 4.51165,
+        "Depth": 4.51562,
+        "Height": 5.35695,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
       }
     ],
     "Terrain": "Sahel",
-    "Density": null,
+    "Density": 0.1,
     "Probability": 1
   },
   {

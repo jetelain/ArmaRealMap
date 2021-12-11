@@ -61,10 +61,10 @@ namespace ArmaRealMap.Roads
 
                     foreach (var poly in areaRoadsClipped)
                     {
-                        FollowPathWithObjects.PlaceOnPath(template, layer, poly.Shell);
+                        FollowPathWithObjects.PlaceOnPathRegular(template, layer, poly.Shell);
                         foreach (var hole in poly.Holes)
                         {
-                            FollowPathWithObjects.PlaceOnPath(template, layer, hole);
+                            FollowPathWithObjects.PlaceOnPathRegular(template, layer, hole);
                         }
                     }
                     report.ReportOneDone();

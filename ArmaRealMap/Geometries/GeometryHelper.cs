@@ -219,7 +219,7 @@ namespace ArmaRealMap.Geometries
 
         public static List<TerrainPoint> PointsOnPathRegular(IEnumerable<TerrainPoint> points, float step)
         {
-            var previous = points.First();
+            /*var previous = points.First();
             var result = new List<TerrainPoint>() { previous };
             var remainLength = step;
             foreach (var point in points.Skip(1))
@@ -238,6 +238,13 @@ namespace ArmaRealMap.Geometries
             if (result.Last() != previous)
             {
                 result.Add(previous);
+            }
+            return result;*/
+            var follow = new FollowPath(points);
+            var result = new List<TerrainPoint>() { follow.Current };
+            while(follow.Move(step))
+            {
+                result.Add(follow.Current);
             }
             return result;
         }
