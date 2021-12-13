@@ -5,9 +5,6 @@ namespace ArmaRealMap.Geometries
 {
     public class FollowPath
     {
-        private static readonly Matrix3x2 Rotate90 = Matrix3x2.CreateRotation(1.570796f);
-        private static readonly Matrix3x2 RotateM90 = Matrix3x2.CreateRotation(-1.570796f);
-
         private readonly IEnumerator<TerrainPoint> enumerator;
         private TerrainPoint previous;
         private TerrainPoint point;
@@ -73,9 +70,9 @@ namespace ArmaRealMap.Geometries
 
         public Vector2 Vector => Vector2.Normalize(delta);
 
-        public Vector2 Vector90 => Vector2.Transform(Vector, Rotate90);
+        public Vector2 Vector90 => Vector2.Transform(Vector, GeometryHelper.Rotate90);
 
-        public Vector2 VectorM90 => Vector2.Transform(Vector, RotateM90);
+        public Vector2 VectorM90 => Vector2.Transform(Vector, GeometryHelper.RotateM90);
 
         public bool Move(float step)
         {

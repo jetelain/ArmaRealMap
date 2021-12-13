@@ -28,7 +28,7 @@ namespace SRTM.Sources
 
             var authenticationString = $"{credentials.UserName}:{credentials.Password}";
             var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(authenticationString));
-            client.DefaultRequestHeaders.Add("Cookie", "DATA=YZGjb3-DxCbXBu5BDnqoNQAAAWc");
+            client.DefaultRequestHeaders.Add("Cookie", "DATA=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
             return PerformDownload(client, local, remote, logErrors);
         }

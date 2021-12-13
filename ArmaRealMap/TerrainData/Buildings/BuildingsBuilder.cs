@@ -3,48 +3,54 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text.Json;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.Geometries;
-using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
+using ArmaRealMap.Roads;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 
 namespace ArmaRealMap.Buildings
 {
     class BuildingsBuilder
     {
+        private const float MinFactor = 0.5f;
+        private const float NormalFactor = 1f;
+        private const float MaxFactor = 1.25f;
+
         public static void PlaceBuildings(MapData data, ObjectLibraries olibs, List<OsmShape> toRender)
         {
-            var pass4File = data.Config.Target.GetCache("buildings-pass4.json");
+            var pass5File = data.Config.Target.GetCache("buildings-pass5.json");
 
-            if (File.Exists(pass4File))
+           /* if (File.Exists(pass4File))
             {
                 data.WantedBuildings = JsonSerializer.Deserialize<IEnumerable<BuildingJson>>(File.ReadAllText(pass4File)).Select(b => new Building(b)).ToList();
             }
             else
-            {
+            {*/
                 var removed = new List<OsmShape>();
-                var pass1 = BuildingPass1(data.MapInfos, toRender.Where(b => b.Category.IsBuilding).ToList(), removed);
-                //Preview(data, removed, pass1, "buildings-pass1.bmp");
+                var pass1 = DetectBuildingsBoundingRects(data.MapInfos, toRender.Where(b => b.Category.IsBuilding).ToList(), removed);
+                //Preview(data, removed, pass1, "buildings-pass1.png");
 
-                var pass2 = BuldingPass2(pass1, removed);
-                //Preview(data, removed, pass2, "buildings-pass2.bmp");
+                var pass2 = MergeSmallBuildings(pass1, removed);
+                //Preview(data, removed, pass2, "buildings-pass2.png");
 
-                var pass3 = BuildingPass3(removed, pass2);
-                //Preview(data, removed, pass3, "buildings-pass3.bmp");
+                var pass3 = RemoveCollidingBuildings(removed, pass2);
+                //Preview(data, removed, pass3, "buildings-pass3.png");
 
-                var pass4 = BuildingPass4(data.MapInfos, toRender, pass3);
-                //Preview(data, removed, pass4, "buildings-pass4.bmp");
+                var pass4 = RoadCrop(removed, pass3, data.Roads);
+                //Preview(data, removed, pass4, "buildings-pass4.png");
 
-                File.WriteAllText(pass4File, JsonSerializer.Serialize(pass4.Select(o => o.ToJson())));
+                var pass5 = DetectBuildingCategory(data.MapInfos, toRender, pass4);
+                //Preview(data, removed, pass5, "buildings-pass5.png");
 
-                data.WantedBuildings = pass4;
-            }
+                File.WriteAllText(pass5File, JsonSerializer.Serialize(pass5.Select(o => o.ToJson())));
+
+                data.WantedBuildings = pass5;
+            /*}*/
 
             data.Buildings = new TerrainObjectLayer(data.MapInfos);
 
@@ -52,46 +58,156 @@ namespace ArmaRealMap.Buildings
             var ok = 0;
             foreach (var building in data.WantedBuildings)
             {
-                var candidates = olibs.Libraries
-                    .Where(l => l.Category == building.Category)
-                    .SelectMany(l => l.Objects.Where(o => o.Fits(building.Box, 0.75f, 1.15f)))
-                    .ToList()
-                    .OrderByDescending(c => c.Surface)
-                    .Take(5)
-                    .ToList();
-
+                var candidates = GetBuildings(olibs, building, MinFactor, NormalFactor, -1);
                 if (candidates.Count > 0)
                 {
-                    var random = new Random((int)Math.Truncate(building.Box.Center.X + building.Box.Center.Y));
-                    var obj = candidates[random.Next(0, candidates.Count)];
-
-                    var delta = obj.RotateToFit(building.Box, 0.75f, 1.15f);
-                    TerrainObject terrainObj;
-                    if (delta != 0.0f)
-                    {
-                        terrainObj = new TerrainObject(obj, building.Box.RotateM90());
-                    }
-                    else
-                    {
-                        terrainObj = new TerrainObject(obj, building.Box);
-                    }
-                    data.Buildings.Insert(terrainObj);
-                    ok++;
+                    PlaceBuilding(data, building, candidates, MinFactor, NormalFactor);
                 }
                 else
                 {
-                    Trace.WriteLine($"Nothing fits {building.Category} {building.Box.Width} x {building.Box.Height}");
+                    candidates = GetBuildings(olibs, building, NormalFactor, MaxFactor, 1); 
+                    if (candidates.Count > 0)
+                    {
+                        PlaceBuilding(data, building, candidates, NormalFactor, MaxFactor);
+                    }
+                    else
+                    {
+                        candidates = GetBuildings(olibs, building, MaxFactor, 10, 1);
+                        if (candidates.Count > 0)
+                        {
+                            var obj = PickOne(building, candidates);
+                            var delta = obj.RotateToFit(building.Box, MaxFactor, 10);
+                            var realbox = RealBoxAdjustedToRoad(data, obj, delta != 0.0f ? building.Box.RotateM90() : building.Box);
+                            if (!data.WantedBuildings.Where(b => b != building).Any(b => b.Box.Poly.Intersects(realbox.Poly))
+                                && !data.Buildings.Any(b => b.Poly.Intersects(realbox.Poly)))
+                            {
+                                data.Buildings.Insert(new TerrainObject(obj, realbox));
+                            }
+                            else
+                            {
+                                Trace.WriteLine($"Nothing fits {building.Category} {building.Box.Width} x {building.Box.Height}");
+                            }
+                        }
+                        else
+                        {
+                            Trace.WriteLine($"Nothing fits {building.Category} {building.Box.Width} x {building.Box.Height}");
+                        }
+                    }
                 }
                 report.ReportOneDone();
             }
             report.TaskDone();
 
+            Preview(data, removed, pass5, "buildings-final.png");
+
             data.Buildings.WriteFile(data.Config.Target.GetTerrain("buildings.txt"));
 
-            Console.WriteLine("{0:0.0} % buildings placed", ok * 100.0 / data.WantedBuildings.Count);
+            Console.WriteLine("{0:0.0} % buildings placed", data.Buildings.Count * 100.0 / data.WantedBuildings.Count);
         }
 
-        private static List<Building> BuildingPass4(MapInfos area, List<OsmShape> toRender, List<Building> pass3)
+        private static void PlaceBuilding(MapData data, Building building, List<SingleObjetInfos> candidates, float min, float max)
+        {
+            var obj = PickOne(building, candidates);
+            var delta = obj.RotateToFit(building.Box, min, max);
+            var box = delta != 0.0f ? building.Box.RotateM90() : building.Box;
+            if (box.Width < obj.Width || box.Height < obj.Depth) // Object is larger than wanted box
+            {
+                box = RealBoxAdjustedToRoad(data, obj, box);
+            }
+            data.Buildings.Insert(new TerrainObject(obj, box));
+        }
+
+        private static SingleObjetInfos PickOne(Building building, List<SingleObjetInfos> candidates)
+        {
+            var random = new Random((int)Math.Truncate(building.Box.Center.X + building.Box.Center.Y));
+            var obj = candidates[random.Next(0, candidates.Count)];
+            return obj;
+        }
+
+        private static List<SingleObjetInfos> GetBuildings(ObjectLibraries olibs, Building building, float min, float max, float sort = 1)
+        {
+            return olibs.Libraries
+               .Where(l => l.Category == building.Category)
+               .SelectMany(l => l.Objects.Where(o => o.Fits(building.Box, min, max)))
+               .ToList()
+               .OrderBy(c => c.Surface * sort)
+               .Take(5)
+               .ToList();
+        }
+
+        private static BoundingBox RealBoxAdjustedToRoad(MapData data, SingleObjetInfos obj, BoundingBox box)
+        {
+            // Check if real-box intersects road
+            var realbox = new BoundingBox(box.Center, obj.Width, obj.Depth, box.Angle);
+            var conflicts = data.Roads
+                .Where(r => r.EnveloppeIntersects(realbox))
+                .Where(r => r.Polygons.Any(p => p.AsPolygon.Intersects(realbox.Poly)))
+                .ToList();
+            if (conflicts.Count > 0)
+            {
+                var dw = Math.Max(0, obj.Width - box.Width) / 2;
+                var dh = Math.Max(0, obj.Depth - box.Height) / 2;
+                var rotate = Matrix3x2.CreateRotation(MathF.PI * box.Angle / 180f, Vector2.Zero);
+                var b1 = new BoundingBox(box.Center + Vector2.Transform(new Vector2(dw, dh), rotate), obj.Width, obj.Depth, box.Angle);
+                var b2 = new BoundingBox(box.Center + Vector2.Transform(new Vector2(dw, -dh), rotate), obj.Width, obj.Depth, box.Angle);
+                var b3 = new BoundingBox(box.Center + Vector2.Transform(new Vector2(-dw, -dh), rotate), obj.Width, obj.Depth, box.Angle);
+                var b4 = new BoundingBox(box.Center + Vector2.Transform(new Vector2(-dw, dh), rotate), obj.Width, obj.Depth, box.Angle);
+                realbox = (new[] { b1, b2, b3, b4 })
+                    .Select(b => new { Box = b, Conflits = conflicts.Sum(c => c.Polygons.Sum(p => p.AsPolygon.Intersection(b.Poly).Area)) })
+                    .ToList()
+                    .OrderBy(b => b.Conflits).First().Box;
+            }
+
+            return realbox;
+        }
+
+        private static List<Building> RoadCrop(List<OsmShape> removed, List<Building> pass3, List<Road> roads)
+        {
+            var report = new ProgressReport("RoadCrop", pass3.Count);
+            var pass4 = new List<Building>();
+            foreach (var building in pass3)
+            {
+                var conflicts = roads
+                    .Where(r => r.EnveloppeIntersects(building.Box))
+                    .Where(r => r.Polygons.Any(p => p.AsPolygon.Intersects(building.Box.Poly)))
+                    .ToList();
+                if (conflicts.Count > 0)
+                {
+                    var result = building.Box.Polygon.SubstractAll(conflicts.SelectMany(r => r.Polygons)).ToList();
+                    if (result.Count == 1)
+                    {
+                        var newbox = BoundingBox.ComputeInner(result[0].Shell.Skip(1));
+                        if (newbox != null)
+                        {
+                            if (newbox.Poly.Area < building.Box.Poly.Area / 5 )
+                            {
+
+                            }
+
+                            building.Box = newbox;
+                            pass4.Add(building);
+                        }
+                        else
+                        {
+                            removed.AddRange(building.Shapes);
+                        }
+                    }
+                    else
+                    {
+                        removed.AddRange(building.Shapes);
+                    }
+                }
+                else
+                {
+                    pass4.Add(building);
+                }
+                report.ReportOneDone();
+            }
+            report.TaskDone();
+            return pass4;
+        }
+
+        private static List<Building> DetectBuildingCategory(MapInfos area, List<OsmShape> toRender, List<Building> pass3)
         {
             var pass4 = pass3;
             var metas = toRender
@@ -124,7 +240,7 @@ namespace ArmaRealMap.Buildings
             return pass4;
         }
 
-        private static List<Building> BuildingPass1(MapInfos area, List<OsmShape> buildings, List<OsmShape> removed)
+        private static List<Building> DetectBuildingsBoundingRects(MapInfos area, List<OsmShape> buildings, List<OsmShape> removed)
         {
             var pass1 = new List<Building>();
 
@@ -150,7 +266,7 @@ namespace ArmaRealMap.Buildings
             return pass1;
         }
 
-        private static List<Building> BuldingPass2(List<Building> pass1Builidings, List<OsmShape> removed)
+        private static List<Building> MergeSmallBuildings(List<Building> pass1Builidings, List<OsmShape> removed)
         {
             var pass2 = new List<Building>();
 
@@ -177,6 +293,7 @@ namespace ArmaRealMap.Buildings
 
             foreach (var building in large)
             {
+                if (building.Category == ObjectCategory.Hut) continue;
                 var wasUpdated = true;
                 while (wasUpdated && building.Box.Width < mergeLimit && building.Box.Width < mergeLimit)
                 {
@@ -199,7 +316,7 @@ namespace ArmaRealMap.Buildings
             return pass2;
         }
 
-        private static List<Building> BuildingPass3(List<OsmShape> removed, List<Building> pass2)
+        private static List<Building> RemoveCollidingBuildings(List<OsmShape> removed, List<Building> pass2)
         {
             var pass3 = pass2.OrderByDescending(l => l.Box.Width * l.Box.Height).ToList();
 
@@ -245,22 +362,24 @@ namespace ArmaRealMap.Buildings
             return pass3;
         }
 
-        private static ProgressReport Preview(MapData data, List<OsmShape> removed, List<Building> remainBuildings, string image)
+        private static void Preview(MapData data, List<OsmShape> removed, List<Building> remainBuildings, string image)
         {
-            ProgressReport report;
-            using (var img = new Image<Rgb24>(data.MapInfos.ImageryWidth, data.MapInfos.ImageryHeight, TerrainMaterial.GrassShort.GetColor(data.Config.Terrain)))
+            DebugImage.Image(new TerrainPoint(16000, 61000), new TerrainPoint(22000, 64000), 2, data.Config.Target.GetDebug(image), i =>
             {
                 var kept = remainBuildings.SelectMany(b => b.Shapes).ToList();
-
-                report = new ProgressReport("DrawShapes", removed.Count + kept.Count);
+                var report = new ProgressReport("DrawShapes", removed.Count + kept.Count);
+                foreach (var item in data.Roads.SelectMany(r => r.Polygons))
+                {
+                    i.Fill(item, new SolidBrush(Color.GreenYellow));
+                }
                 foreach (var item in removed)
                 {
-                    OsmDrawHelper.Draw(data.MapInfos, img, new SolidBrush(Color.LightGray), item);
+                    i.Fill(item, new SolidBrush(Color.DarkRed));
                     report.ReportOneDone();
                 }
                 foreach (var item in kept)
                 {
-                    OsmDrawHelper.Draw(data.MapInfos, img, new SolidBrush(Color.DarkGray), item);
+                    i.Fill(item, new SolidBrush(Color.DarkGray));
                     report.ReportOneDone();
                 }
                 report.TaskDone();
@@ -268,31 +387,41 @@ namespace ArmaRealMap.Buildings
                 report = new ProgressReport("DrawRect", remainBuildings.Count);
                 foreach (var item in remainBuildings)
                 {
-                    var color = Color.White;
-                    if (item.Category != null)
-                    {
-                        switch (item.Category)
-                        {
-                            case ObjectCategory.Church: color = Color.Blue; break;
-                            case ObjectCategory.HistoricalFort: color = Color.Maroon; break;
-                            case ObjectCategory.Industrial: color = Color.Black; break;
-                            case ObjectCategory.Military: color = Color.Red; break;
-                            case ObjectCategory.Residential: color = Color.Green; break;
-                            case ObjectCategory.Retail: color = Color.Orange; break;
-                        }
-
-                    }
-
-                    img.Mutate(x => x.DrawPolygon(color, 1, data.MapInfos.TerrainToPixelsPoints(item.Box.Points).ToArray()));
+                    i.Draw(item.Box.Polygon, new SolidBrush(GetColor(item.Category)));
                     report.ReportOneDone();
                 }
                 report.TaskDone();
 
-                Console.WriteLine("Save");
-                img.Save(data.Config.Target.GetDebug(image));
+                if (data.Buildings != null)
+                {
+                    foreach(var building in data.Buildings)
+                    {
+                        var realbox = new BoundingBox(building.Center, building.Object.Width, building.Object.Depth, building.Angle);
+                        i.Fill(realbox.Polygon, new SolidBrush(Color.White.WithAlpha(0.5f)));
+                    }
+                }
+
+            });
+        }
+
+        private static Color GetColor(ObjectCategory? category)
+        {
+            var color = Color.White;
+            if (category != null)
+            {
+                switch (category)
+                {
+                    case ObjectCategory.Church: color = Color.Blue; break;
+                    case ObjectCategory.HistoricalFort: color = Color.Maroon; break;
+                    case ObjectCategory.Industrial: color = Color.Black; break;
+                    case ObjectCategory.Military: color = Color.Red; break;
+                    case ObjectCategory.Residential: color = Color.Green; break;
+                    case ObjectCategory.Retail: color = Color.Orange; break;
+                    case ObjectCategory.Hut: color = Color.Yellow; break;
+                }
             }
 
-            return report;
+            return color;
         }
     }
 }

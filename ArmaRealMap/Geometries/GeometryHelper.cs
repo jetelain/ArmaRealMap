@@ -13,6 +13,8 @@ namespace ArmaRealMap.Geometries
     {
         internal const double ScaleForClipper = 1000d;
 
+        public static readonly Matrix3x2 Rotate90 = Matrix3x2.CreateRotation(1.57079637f);
+        public static readonly Matrix3x2 RotateM90 = Matrix3x2.CreateRotation(-1.57079637f);
         internal static IEnumerable<Polygon> LatLngToTerrainPolygon(MapInfos map, Geometry geometry)
         {
             return ToPolygon(geometry, list => map.LatLngToTerrainPoints(list).Select(p => new Coordinate(p.X, p.Y)));

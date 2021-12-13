@@ -10,7 +10,7 @@ namespace ArmaRealMap.Geometries
 {
     public class TerrainPolygon : ITerrainGeometry, IEquatable<TerrainPolygon>
     {
-        private static readonly List<List<TerrainPoint>> NoHoles = new List<List<TerrainPoint>>(0);
+        internal static readonly List<List<TerrainPoint>> NoHoles = new List<List<TerrainPoint>>(0);
 
         private readonly Lazy<Polygon> asPolygon;
 

@@ -39,6 +39,8 @@ namespace ArmaRealMap
 
         public TerrainPoint Center => box.Center;
 
+        public float Angle => box.Angle;
+
         public SingleObjetInfos Object => objectInfos;
 
         public float DistanceTo(TerrainObject other)

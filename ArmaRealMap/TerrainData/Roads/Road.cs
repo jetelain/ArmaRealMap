@@ -12,6 +12,7 @@ namespace ArmaRealMap.Roads
         public RoadType RoadType { get; set; }
 
         public RoadSpecialSegment SpecialSegment { get; set; }
+
         public TerrainPath Path { get; set; }
 
         public float Width => RoadTypeToWidth(RoadType);
@@ -19,6 +20,8 @@ namespace ArmaRealMap.Roads
         public TerrainPoint MinPoint => Path.MinPoint;
 
         public TerrainPoint MaxPoint => Path.MaxPoint;
+
+        public IEnumerable<TerrainPolygon> Polygons => Path.ToTerrainPolygon(Width);
 
         public static float RoadTypeToWidth(RoadType value)
         {

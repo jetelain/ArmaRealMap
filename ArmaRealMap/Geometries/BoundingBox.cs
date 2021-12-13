@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text.Json.Serialization;
 using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 
 namespace ArmaRealMap.Geometries
 {
-    internal class BoundingBox : IBoundingShape
+    public class BoundingBox : IBoundingShape
     {
         private readonly Lazy<Polygon> polygon;
+        private readonly Lazy<TerrainPolygon> terrainPolygon;
 
         public BoundingBox(float cx, float cy, float cw, float ch, float ca, TerrainPoint[] points)
             : this(new TerrainPoint(cx, cy), cw, ch, ca, points)
@@ -23,21 +26,23 @@ namespace ArmaRealMap.Geometries
             Angle = ca;
             Points = points;
             polygon = new Lazy<Polygon>(() => new Polygon(new LinearRing(Points.Concat(Points.Take(1)).Select(p => new Coordinate(p.X, p.Y)).ToArray())));
+            terrainPolygon = new Lazy<TerrainPolygon>(() => new TerrainPolygon(Points.Concat(Points.Take(1)).ToList(), TerrainPolygon.NoHoles));
         }
 
         public BoundingBox(BoxJson json)
-            : this(new TerrainPoint(json.Center[0], json.Center[1]), json.Width, json.Height, json.Angle, json.Points.Select(p => new TerrainPoint(p[0],p[1])).ToArray())
+            : this(new TerrainPoint(json.Center[0], json.Center[1]), json.Width, json.Height, json.Angle, json.Points.Select(p => new TerrainPoint(p[0], p[1])).ToArray())
         {
-            
+
         }
 
-        public BoundingBox(TerrainPoint center, float width, float height, float angle) 
-            : this(center, width, height, angle, 
+        [JsonConstructor]
+        public BoundingBox(TerrainPoint center, float width, float height, float angle)
+            : this(center, width, height, angle,
                   GeometryHelper.RotatedRectangleDegrees(center.Vector, new Vector2(width, height), angle)
                   .Select(v => new TerrainPoint(v))
                   .ToArray())
         {
-            
+
         }
 
         public TerrainPoint Center { get; }
@@ -60,17 +65,25 @@ namespace ArmaRealMap.Geometries
         /// <summary>
         /// Points of rectangle
         /// </summary>
+        [JsonIgnore]
         public TerrainPoint[] Points { get; }
 
+        [JsonIgnore]
         public Vector2 Size => new Vector2(Width, Height);
 
+        [JsonIgnore]
         public Polygon Poly => polygon.Value;
 
+        [JsonIgnore]
+        public TerrainPolygon Polygon => terrainPolygon.Value;
+
+        [JsonIgnore]
         public TerrainPoint MinPoint => new TerrainPoint(Points.Min(p => p.X), Points.Min(p => p.Y));
 
+        [JsonIgnore]
         public TerrainPoint MaxPoint => new TerrainPoint(Points.Max(p => p.X), Points.Max(p => p.Y));
 
-        public BoundingBox Add (BoundingBox other)
+        public BoundingBox Add(BoundingBox other)
         {
             return Compute(Points.Concat(other.Points).ToArray());
         }
@@ -98,7 +111,7 @@ namespace ArmaRealMap.Geometries
             };
         }
 
-        internal static BoundingBox Compute(TerrainPoint[] points)
+        public static BoundingBox Compute(TerrainPoint[] points)
         {
             int i;
 
@@ -190,11 +203,114 @@ namespace ArmaRealMap.Geometries
                 ay = by;
             }
 
-            return new BoundingBox((float)cx, (float)cy, (float)cw, (float)ch, (float)ca, new[] { 
+            return new BoundingBox((float)cx, (float)cy, (float)cw, (float)ch, (float)ca, new[] {
                 new TerrainPoint((float)c1xp, (float)c1yp),
                 new TerrainPoint((float)c2xp, (float)c2yp),
                 new TerrainPoint((float)c3xp, (float)c3yp),
                 new TerrainPoint((float)c4xp, (float)c4yp)});
         }
+
+
+        private static (TerrainPoint Point, float Distance) ClosestIntersection(IEnumerable<(TerrainPoint First, TerrainPoint Second)> segments, TerrainPoint start, TerrainPoint end)
+        {
+            TerrainPoint result = null;
+            float resultFromStart = float.PositiveInfinity;
+            foreach(var segment in segments)
+            {
+                Vector2 intersection;
+                if (VectorHelper.HasIntersection(start.Vector, end.Vector, segment.First.Vector, segment.Second.Vector, out intersection))
+                {
+                    var intersectionFromStart = (start.Vector - intersection).Length();
+                    if (intersectionFromStart != 0 && (result == null || intersectionFromStart < resultFromStart))
+                    {
+                        result = new TerrainPoint(intersection);
+                        resultFromStart = intersectionFromStart;
+                    }
+                }
+            }
+            return (result, resultFromStart);
+        }
+
+        class InnerCandidate
+        {
+            public InnerCandidate(TerrainPoint a, TerrainPoint b, TerrainPoint c)
+            {
+                var ab = (b.Vector - a.Vector);
+                var ac = (c.Vector - a.Vector);
+                Width = ab.Length();
+                Height = ac.Length();
+                Center = a + ((ab + ac) / 2);
+                Angle = MathF.Atan2(-ab.Y, -ab.X) * 180 / MathF.PI;
+            }
+
+            public float Width { get; }
+            public float Height { get; }
+            public TerrainPoint Center { get; }
+            public float Angle { get; }
+            public float Area => Width * Height;
+
+            internal BoundingBox ToBoundingBox()
+            {
+                return new BoundingBox(Center, Width, Height, Angle);
+            }
+        }
+
+        public static BoundingBox ComputeInner(IEnumerable<TerrainPoint> points)
+        {
+            var outerSegments = points.Zip(points.Skip(1).Concat(points.Take(1))).ToList();
+            var allSegments = points.SelectMany(p1 => points.Where(p2 => p2 != p1).Select(p2 => new { P1 = p1, P2 = p2 })).ToList();
+            InnerCandidate result = null;
+            foreach (var segment in allSegments)
+            {
+                TerrainPoint xp1;
+                TerrainPoint xp2;
+
+                var candidate = Consider(outerSegments, segment.P1, segment.P2, out xp1, out xp2);
+
+                if (candidate == null)
+                {
+                    if (xp1 != null)
+                    {
+                        for (var i = 99; i > 0 && candidate == null; i--)
+                        {
+                            var p2 = new TerrainPoint(Vector2.Lerp(segment.P1.Vector, segment.P2.Vector, i / 100f));
+                            candidate = Consider(outerSegments, segment.P1, p2, out _, out _);
+                        }
+                    }
+                    else if (xp2 != null)
+                    {
+                        for (var i = 1; i < 100 && candidate == null; i++)
+                        {
+                            var p1 = new TerrainPoint(Vector2.Lerp(segment.P1.Vector, segment.P2.Vector, i / 100f));
+                            candidate = Consider(outerSegments, p1, segment.P2, out _, out _);
+                        }
+                    }
+                }
+                 
+                if (candidate != null && (result == null || candidate.Area > result.Area))
+                {
+                    result = candidate;
+                }
+            }
+            return result?.ToBoundingBox();
+        }
+
+        private static InnerCandidate Consider(List<(TerrainPoint First, TerrainPoint Second)> outerSegments, TerrainPoint p1, TerrainPoint p2, out TerrainPoint xp1, out TerrainPoint xp2)
+        {
+            var delta = Vector2.Normalize(p2.Vector - p1.Vector);
+            var normal = Vector2.Transform(delta, GeometryHelper.Rotate90);
+            var x1 = ClosestIntersection(outerSegments, p1, p1 + normal * 1000f);
+            var x2 = ClosestIntersection(outerSegments, p2, p2 + normal * 1000f);
+            xp1 = x1.Point;
+            xp2 = x2.Point;
+            if (x1.Point != null && x2.Point != null)
+            {
+                return (x1.Distance <= x2.Distance) ?
+                    new InnerCandidate(p1, p2, x1.Point) :
+                    new InnerCandidate(p2, p1, x2.Point);
+            }
+            return null;
+        }
     }
+
 }

@@ -14,6 +14,84 @@ namespace ArmaRealMap
 {
     internal static class DebugHelper
     {
+        //public static void Polygons(MapData data, string filename, params TerrainPolygon[] polygons)
+        //{
+        //    Polygons(data, filename, polygons.ToList());
+        //}
+        private static readonly Color[] Colors = new[] {
+        Color.Red,
+        Color.Green,
+        Color.Blue,
+        Color.Yellow,
+        Color.Purple,
+        Color.Cyan
+        };
+
+        public static void Polygons(MapData data, string filename, float scale, params TerrainPolygon[] polygons)
+        {
+            Polygons(data, filename, scale, polygons.ToList(), (_, idx) =>
+            {
+                if (idx == 0)
+                {
+                    return new Tuple<IBrush, IBrush>(null, new SolidBrush(Color.Gray));
+                }
+                return new Tuple<IBrush, IBrush>(new SolidBrush(Colors[(idx + 1) % Colors.Length]), null);
+            });
+        }
+        public static void Polygons(MapData data, string filename, float scale, IEnumerable<TerrainPolygon> polygons)
+        {
+            Polygons(data, filename, scale, polygons.ToList(), (_, idx) =>
+            {
+                if (idx == 0)
+                {
+                    return new Tuple<IBrush, IBrush>(null, new SolidBrush(Color.Gray));
+                }
+                return new Tuple<IBrush, IBrush>(new SolidBrush(Colors[(idx + 1) % Colors.Length]), null);
+            });
+        }
+        //public static void Polygons(MapData data, string filename, List<TerrainPolygon> polygons)
+        //{
+        //    Polygons(data, filename, 1f / (float)data.MapInfos.ImageryResolution, polygons);
+        //}
+
+        public static void Polygons(MapData data, string filename, float scale, List<TerrainPolygon> polygons, Func<TerrainPolygon, int,Tuple<IBrush,IBrush>> getBrush)
+        {
+            var min = new TerrainPoint(MathF.Floor(polygons.Min(p => p.MinPoint.X)), MathF.Floor(polygons.Min(p => p.MinPoint.Y)));
+            var max = new TerrainPoint(MathF.Ceiling(polygons.Max(p => p.MaxPoint.X)), MathF.Ceiling(polygons.Max(p => p.MaxPoint.Y)));
+            var size = max.Vector - min.Vector;
+            Func<TerrainPoint, PointF> projectPoint = (p) => new PointF((p.X - min.X) * scale, (max.Y - p.Y) * scale);
+            using (var img = new Image<Rgb24>((int)MathF.Round(size.X * scale), (int)MathF.Round(size.Y * scale), Color.Black))
+            {
+                img.Mutate(p =>
+                {
+                    var index = 0;
+                    foreach (var polygon in polygons)
+                    {
+                        var brush = getBrush(polygon, index);
+                        if (brush.Item2 != null)
+                        {
+                            DrawHelper.FillPolygonWithHoles(p,
+                                polygon.Shell.Select(projectPoint),
+                                polygon.Holes.Select(l => l.Select(projectPoint)).ToList(),
+                                brush.Item2,
+                                new ShapeGraphicsOptions());
+                        }
+                        else
+                        {
+                            DrawHelper.DrawPolygonEdgesWithHoles(p,
+                                polygon.Shell.Select(projectPoint),
+                                polygon.Holes.Select(l => l.Select(projectPoint)).ToList(),
+                                brush.Item1,
+                                new ShapeGraphicsOptions(), 
+                                1f);
+                        }
+                        index++;
+                    }
+                });
+                img.Save(data.Config.Target.GetDebug(filename));
+            }
+        }
+
         public static void Polygons(MapData data, List<FillArea> areas, string filename)
         {
             Polygons(data, areas.Select(a => a.Polygon), areas.Count, filename, Color.Green);

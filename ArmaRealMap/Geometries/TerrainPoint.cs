@@ -44,9 +44,9 @@ namespace ArmaRealMap.Geometries
         [JsonIgnore]
         public bool IsEmpty => Equals(Empty);
 
-        public static bool operator ==(TerrainPoint left, TerrainPoint right) => left.Equals(right);
+        public static bool operator ==(TerrainPoint left, TerrainPoint right) => left?.Equals(right) ?? false;
 
-        public static bool operator !=(TerrainPoint left, TerrainPoint right) => !left.Equals(right);
+        public static bool operator !=(TerrainPoint left, TerrainPoint right) => !left?.Equals(right) ?? false;
 
         public void Deconstruct(out float x, out float y)
         {

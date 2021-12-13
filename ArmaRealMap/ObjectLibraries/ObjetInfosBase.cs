@@ -21,19 +21,35 @@ namespace ArmaRealMap.Libraries
         [JsonIgnore]
         public float Surface { get { return Width * Depth; } }
 
+        // Width = 10
+        // box.Width = 15
+
+        // Width/box.Width >= minFactor * box.Width
+        //
+        // // && Width/box.Width <= maxFactor
+
+
+
+
         internal bool Fits(BoundingBox box, float minFactor, float maxFactor)
         {
-            if (Width * minFactor <= box.Width &&
-                Width * maxFactor >= box.Width &&
-                Depth * minFactor <= box.Height &&
-                Depth * maxFactor >= box.Height) // 0° rotated
+            var fWidth = Width / box.Width;
+            var fDepth = Depth / box.Height;
+
+            if ( minFactor <= fWidth &&
+                 maxFactor >= fWidth &&
+                 minFactor <= fDepth &&
+                 maxFactor >= fDepth) // 0° rotated
             {
                 return true;
             }
-            if (Depth * minFactor <= box.Width &&
-                Depth * maxFactor >= box.Width &&
-                Width * minFactor <= box.Height &&
-                Width * maxFactor >= box.Height) // 90° rotated
+
+            fWidth = Width / box.Height;
+            fDepth = Depth / box.Width;
+            if (minFactor <= fWidth &&
+                 maxFactor >= fWidth &&
+                 minFactor <= fDepth &&
+                 maxFactor >= fDepth) // 90° rotated
             {
                 return true;
             }
@@ -42,17 +58,22 @@ namespace ArmaRealMap.Libraries
 
         internal float RotateToFit(BoundingBox box, float minFactor, float maxFactor)
         {
-            if (Width * minFactor <= box.Width &&
-                Width * maxFactor >= box.Width &&
-                Depth * minFactor <= box.Height &&
-                Depth * maxFactor >= box.Height) // 0° rotated
+            var fWidth = Width / box.Width;
+            var fDepth = Depth / box.Height;
+
+            if (minFactor <= fWidth &&
+                 maxFactor >= fWidth &&
+                 minFactor <= fDepth &&
+                 maxFactor >= fDepth) // 0° rotated
             {
                 return 0.0f;
             }
-            if (Depth * minFactor <= box.Width &&
-                Depth * maxFactor >= box.Width &&
-                Width * minFactor <= box.Height &&
-                Width * maxFactor >= box.Height) // 90° rotated
+            fWidth = Width / box.Height;
+            fDepth = Depth / box.Width;
+            if (minFactor <= fWidth &&
+                 maxFactor >= fWidth &&
+                 minFactor <= fDepth &&
+                 maxFactor >= fDepth) // 90° rotated
             {
                 return 90.0f ;
             }
