@@ -181,11 +181,11 @@ namespace ArmaRealMap.Osm
                 case "tertiary":
                 case "seconday_link":
                 case "tertiary_link":
-                case "unclassified":
                 case "road":
                     return RoadType.TwoLanesSecondaryRoad;
                 case "living_street":
                 case "residential":
+                case "unclassified":
                     return RoadType.TwoLanesConcreteRoad;
                 case "footway":
                     var footway = Get(tags, "footway");

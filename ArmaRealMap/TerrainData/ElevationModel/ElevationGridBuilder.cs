@@ -60,7 +60,7 @@ namespace ArmaRealMap
                 data.Elevation.LoadFromBin(data.Config.Target.GetCache("elevation.bin"));
             }
 
-            //data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation.asc"));
+            data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation.asc"));
         }
 
         private static void ProcessReserved(Config config, MapInfos mapInfos, ElevationGrid elevation)

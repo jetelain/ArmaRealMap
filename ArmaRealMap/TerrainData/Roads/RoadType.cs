@@ -14,7 +14,7 @@
 
         TwoLanesSecondaryRoad = 3,
 
-        TwoLanesCityRoad = 4,
+        // TwoLanesCityRoad = 4,
 
         TwoLanesConcreteRoad = 5,
 
