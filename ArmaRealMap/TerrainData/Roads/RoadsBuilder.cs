@@ -71,7 +71,7 @@ namespace ArmaRealMap.Roads
                 }
                 report.TaskDone();
 
-                ForestBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
+                NatureBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
 
 
                 layer.WriteFile(data.Config.Target.GetTerrain("sidewalks.txt"));

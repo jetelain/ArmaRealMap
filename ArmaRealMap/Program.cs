@@ -14,6 +14,7 @@ using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
+using ArmaRealMap.TerrainBuilder;
 using ArmaRealMap.TerrainData;
 using ArmaRealMap.TerrainData.DefaultAreas;
 using ArmaRealMap.TerrainData.Forests;
@@ -32,6 +33,8 @@ namespace ArmaRealMap
     {
         static void Main(string[] args)
         {
+
+            //return;
             EnsureProjectDrive();
 
             Console.Title = "ArmaRealMap";
@@ -46,7 +49,6 @@ namespace ArmaRealMap
 
             var olibs = new ObjectLibraries();
             olibs.Load(config);
-            File.WriteAllText(config.Target.GetTerrain("library.sqf"), olibs.TerrainBuilder.GetAllSqf());
 
             var data = new MapData();
 
@@ -203,16 +205,16 @@ namespace ArmaRealMap
                     BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 
                     Console.WriteLine("==== GroundRocks ====");
-                    ForestBuilder.PrepareGroundRock(data, shapes, olibs);
+                    NatureBuilder.PrepareGroundRock(data, shapes, olibs);
 
                     Console.WriteLine("==== Forests ====");
-                    ForestBuilder.Prepare(data, shapes, olibs);
+                    NatureBuilder.Prepare(data, shapes, olibs);
 
                     Console.WriteLine("==== Scrub ====");
-                    ForestBuilder.PrepareScrub(data, shapes, olibs);
+                    NatureBuilder.PrepareScrub(data, shapes, olibs);
 
                     Console.WriteLine("==== WaterwayEdges ====");
-                    ForestBuilder.PrepareWaterwayEdges(data, shapes, olibs);
+                    NatureBuilder.PrepareWaterwayEdges(data, shapes, olibs);
 
                     Console.WriteLine("==== DefaultAreas ====");
                     DefaultAreasBuilder.PrepareDefaultAreas(data, shapes, olibs);
@@ -228,46 +230,45 @@ namespace ArmaRealMap
                 }
             }
 
-            var libs = olibs.TerrainBuilder.Libraries.Where(l => data.UsedObjects.Any(o => l.Template.Any(t => t.Name == o))).Distinct().ToList();
+            var tbLibs = new TBLibraries();
+            tbLibs.Load(config);
+            var libs = tbLibs.Libraries.Where(l => data.UsedObjects.Any(o => l.Template.Any(t => t.Name == o))).Distinct().ToList();
             File.WriteAllLines("required_tml.txt", libs.Select(t => t.Name));
         }
 
         private static void PlaceBarrierObjects(MapData data, SnapshotDb db, ObjectLibraries olibs, OsmStreamSource filtered)
         {
-            TerrainObjectLayer result =
-                PlaceObjectsOnPath(
-                    data,
-                    db,
-                    filtered,
-                    olibs.Libraries.Where(l => l.Category == ObjectCategory.Wall).ToList(),
-                    o => OsmCategorizer.Get(o.Tags, "barrier") == "wall");
-            result.WriteFile(data.Config.Target.GetTerrain("walls.txt"));
+            var result = new TerrainObjectLayer(data.MapInfos);
+            
+            PlaceObjectsOnPath(result,
+                data,
+                db,
+                filtered,
+                olibs.Libraries.Where(l => l.Category == ObjectCategory.Wall).ToList(),
+                o => OsmCategorizer.Get(o.Tags, "barrier") == "wall");
 
-            result =
-                PlaceObjectsOnPath(
-                    data,
-                    db,
-                    filtered,
-                    olibs.Libraries.Where(l => l.Category == ObjectCategory.Fence).ToList(),
-                    o => OsmCategorizer.Get(o.Tags, "barrier") == "fence");
-            result.WriteFile(data.Config.Target.GetTerrain("fences.txt"));
+            PlaceObjectsOnPath(result,
+                data,
+                db,
+                filtered,
+                olibs.Libraries.Where(l => l.Category == ObjectCategory.Fence).ToList(),
+                o => OsmCategorizer.Get(o.Tags, "barrier") == "fence");
 
-            result =
-                PlaceObjectsOnPath(
-                    data,
-                    db,
-                    filtered,
-                    olibs.Libraries.Where(l => l.Category == ObjectCategory.MilitaryWall).ToList(),
-                    o => OsmCategorizer.Get(o.Tags, "barrier") == "city_wall");
-            result.WriteFile(data.Config.Target.GetTerrain("milwalls.txt"));
+            PlaceObjectsOnPath(result,
+                data,
+                db,
+                filtered,
+                olibs.Libraries.Where(l => l.Category == ObjectCategory.MilitaryWall).ToList(),
+                o => OsmCategorizer.Get(o.Tags, "barrier") == "city_wall");
+
+            result.WriteFile(data.Config.Target.GetTerrain("barriers.txt"));
         }
 
-        private static TerrainObjectLayer PlaceObjectsOnPath(MapData data, SnapshotDb db, OsmStreamSource filtered, List<ObjectLibrary> libs, Func<Way, bool> filter)
+        private static void PlaceObjectsOnPath(TerrainObjectLayer result, MapData data, SnapshotDb db, OsmStreamSource filtered, List<ObjectLibrary> libs, Func<Way, bool> filter)
         {
-            var result = new TerrainObjectLayer(data.MapInfos);
             if (libs.Count == 0)
             {
-                return result;
+                return;
             }
             var probLibs = libs.Count == 1 ? libs : libs.SelectMany(l => Enumerable.Repeat(l, (int)((l.Probability ?? 1d) * 100))).ToList();
             var interpret = new DefaultFeatureInterpreter2();
@@ -289,7 +290,6 @@ namespace ArmaRealMap
                     }
                 }
             }
-            return result;
         }
 
 

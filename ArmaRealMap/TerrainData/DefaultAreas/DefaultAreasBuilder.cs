@@ -53,7 +53,7 @@ namespace ArmaRealMap.TerrainData.DefaultAreas
 
                 var objects = new FillShapeWithObjectsBasic(data, ObjectCategory.RandomVegetation, olibs).Fill(list, "defaultfill.txt");
 
-                Forests.ForestBuilder.RemoveOnBuildingsAndRoads(data, objects);
+                Forests.NatureBuilder.RemoveOnBuildingsAndRoads(data, objects);
 
                 objects.WriteFile(data.Config.Target.GetTerrain("defaultfill.txt"));
             }

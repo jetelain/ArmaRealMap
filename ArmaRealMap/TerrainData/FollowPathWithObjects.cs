@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
 
@@ -11,8 +9,6 @@ namespace ArmaRealMap.TerrainData
 {
     class FollowPathWithObjects
     {
-        private static readonly Matrix3x2 rotate90 = Matrix3x2.CreateRotation(1.570796f); // +90°
-
         public static void PlaceOnPathRegular(Random rnd, ObjectLibrary lib, TerrainObjectLayer layer, List<TerrainPoint> path)
         {
             var width = lib.Objects.Select(t => t.GetPlacementRadius() * 2).Average();
@@ -60,42 +56,6 @@ namespace ArmaRealMap.TerrainData
         {
             PlaceOnPathRandomInside(rnd, lib, layer, ring.Reverse(), insideTolerance);
         }
-        /*
-        public static void PlaceOnPathRandomInside(Random rnd, ObjectLibrary lib, TerrainObjectLayer layer, IEnumerable<TerrainPoint> ring, float outsideTolerance = 1f)
-        {
-            var spacingFactor = (1 / (lib.Density ?? 0.8f)) - 1;
-
-            var previous = ring.First();
-            var previousObj = lib.GetObject(rnd);
-            var remainLength = previousObj.GetPlacementRadius();
-            layer.Insert(new TerrainObject(previousObj, previous, (float)rnd.NextDouble() * 360));
-            foreach (var point in ring.Skip(1))
-            {
-                var delta = point.Vector - previous.Vector;
-                var length = delta.Length();
-                var normalDelta = Vector2.Transform(Vector2.Normalize(delta), rotate90);
-                var positionOnSegment = remainLength;
-                while (positionOnSegment <= length)
-                {
-                    var obj = lib.GetObject(rnd);
-                    var objPoint = new TerrainPoint(Vector2.Lerp(previous.Vector, point.Vector, positionOnSegment / length));
-                    if (obj.GetPlacementRadius() > outsideTolerance)
-                    {
-                        var dist = (obj.GetPlacementRadius() - outsideTolerance);
-                        objPoint = objPoint + (normalDelta * (dist + obj.GetPlacementRadius() * (float)rnd.NextDouble()));
-                    }
-                    if (layer.MapInfos.IsInside(objPoint))
-                    {
-                        layer.Insert(new TerrainObject(obj, objPoint, (float)rnd.NextDouble() * 360));
-                    }
-                    var minimalDelta = (obj.GetPlacementRadius() + previousObj.GetPlacementRadius());
-                    positionOnSegment += minimalDelta + (float)(rnd.NextDouble() * minimalDelta * spacingFactor);
-                    previousObj = obj;
-                }
-                remainLength = positionOnSegment - length;
-                previous = point;
-            }
-        }*/
 
         public static void PlaceOnPathRandomInside(Random rnd, ObjectLibrary lib, TerrainObjectLayer layer, IEnumerable<TerrainPoint> ring, float outsideTolerance = 1f)
         {
@@ -125,40 +85,6 @@ namespace ArmaRealMap.TerrainData
                 }
                 previousObj = obj;
             }
-
-
-
-            /*
-            var previous = ring.First();
-            SingleObjetInfos previousObj = null; //lib.GetObject(rnd);
-            var remainLength = 0f; //previousObj.GetPlacementRadius();
-            //layer.Insert(new TerrainObject(previousObj, previous, (float)rnd.NextDouble() * 360));
-            foreach (var point in ring.Skip(1))
-            {
-                var delta = point.Vector - previous.Vector;
-                var length = delta.Length();
-                var normalDelta = Vector2.Transform(Vector2.Normalize(delta), rotate90);
-                var positionOnSegment = remainLength;
-                while (positionOnSegment <= length)
-                {
-                    var obj = lib.GetObject(rnd);
-                    var minimalDelta = obj.GetPlacementRadius() + (previousObj?.GetPlacementRadius() ?? 0f);
-                    positionOnSegment += minimalDelta + (float)(rnd.NextDouble() * minimalDelta * spacingFactor);
-                    var objPoint = new TerrainPoint(Vector2.Lerp(previous.Vector, point.Vector, positionOnSegment / length));
-                    if (obj.GetPlacementRadius() > outsideTolerance)
-                    {
-                        var dist = obj.GetPlacementRadius() - outsideTolerance;
-                        objPoint = objPoint + (normalDelta * (dist + obj.GetPlacementRadius() * (float)rnd.NextDouble()));
-                    }
-                    if (layer.MapInfos.IsInside(objPoint))
-                    {
-                        layer.Insert(new TerrainObject(obj, objPoint, (float)rnd.NextDouble() * 360));
-                    }
-                    previousObj = obj;
-                }
-                remainLength = positionOnSegment - length;
-                previous = point;
-            }*/
         }
 
     }
