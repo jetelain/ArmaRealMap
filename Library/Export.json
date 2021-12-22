@@ -3354,7 +3354,7 @@
       }
     ],
     "Terrain": "Sahel",
-    "Density": 0.002,
+    "Density": 0.0015,
     "Probability": null
   }
 ]
