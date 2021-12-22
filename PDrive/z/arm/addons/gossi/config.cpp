@@ -62,8 +62,8 @@ class CfgWorlds
 			vehicles[] = {};
 		};
  
-		minTreesInForestSquare = 2;
-		minRocksInRockSquare = 2;
+		minTreesInForestSquare = 3;
+		minRocksInRockSquare = 1;
  
 		class Subdivision{};
 		class Names{
