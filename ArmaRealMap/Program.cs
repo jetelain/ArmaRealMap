@@ -366,7 +366,7 @@ class Grid {{
         {{ ""{area.SouthEast.MGRS.LongZone}{area.SouthEast.MGRS.LatZone} {area.SouthEast.MGRS.Digraph}"", {Math.Round(area.SouthEast.MGRS.Easting)}, {Math.Round(area.SouthEast.MGRS.Northing)} }}  // SE
     }};
     class Zoom1 {{
-        zoomMax = 0.05;
+        zoomMax = {1536d / area.Width:0.0000};
         format = ""XY"";
         formatX = ""000"";
         formatY = ""000"";
@@ -374,7 +374,7 @@ class Grid {{
         stepY = -100;
     }};
     class Zoom2 {{
-        zoomMax = 0.5;
+        zoomMax = {15360d / area.Width:0.0000};
         format = ""XY"";
         formatX = ""00"";
         formatY = ""00"";

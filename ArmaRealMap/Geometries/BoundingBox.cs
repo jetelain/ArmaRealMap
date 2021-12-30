@@ -83,6 +83,9 @@ namespace ArmaRealMap.Geometries
         [JsonIgnore]
         public TerrainPoint MaxPoint => new TerrainPoint(Points.Max(p => p.X), Points.Max(p => p.Y));
 
+        [JsonIgnore]
+        public float Surface => Width * Height;
+
         public BoundingBox Add(BoundingBox other)
         {
             return Compute(Points.Concat(other.Points).ToArray());

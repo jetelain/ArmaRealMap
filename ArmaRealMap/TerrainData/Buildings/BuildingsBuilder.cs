@@ -17,21 +17,19 @@ namespace ArmaRealMap.Buildings
 {
     class BuildingsBuilder
     {
-        private const float MinFactor = 0.5f;
-        private const float NormalFactor = 1f;
-        private const float MaxFactor = 1.25f;
-
         public static void PlaceBuildings(MapData data, ObjectLibraries olibs, List<OsmShape> toRender)
         {
             var pass5File = data.Config.Target.GetCache("buildings-pass5.json");
+            var wasFromCache = true;
 
-           /* if (File.Exists(pass4File))
+            var removed = new List<OsmShape>();
+
+            if (false/*File.Exists(pass5File)*/)
             {
-                data.WantedBuildings = JsonSerializer.Deserialize<IEnumerable<BuildingJson>>(File.ReadAllText(pass4File)).Select(b => new Building(b)).ToList();
+                data.WantedBuildings = JsonSerializer.Deserialize<IEnumerable<BuildingJson>>(File.ReadAllText(pass5File)).Select(b => new Building(b)).ToList();
             }
             else
-            {*/
-                var removed = new List<OsmShape>();
+            {
                 var pass1 = DetectBuildingsBoundingRects(data.MapInfos, toRender.Where(b => b.Category.IsBuilding).ToList(), removed);
                 //Preview(data, removed, pass1, "buildings-pass1.png");
 
@@ -50,71 +48,68 @@ namespace ArmaRealMap.Buildings
                 File.WriteAllText(pass5File, JsonSerializer.Serialize(pass5.Select(o => o.ToJson())));
 
                 data.WantedBuildings = pass5;
-            /*}*/
+
+                wasFromCache = false;
+            }
 
             data.Buildings = new TerrainObjectLayer(data.MapInfos);
 
             var report = new ProgressReport("PlaceBuildings", data.WantedBuildings.Count);
-            var ok = 0;
             foreach (var building in data.WantedBuildings)
             {
-                var candidates = GetBuildings(olibs, building, MinFactor, NormalFactor, -1);
-                if (candidates.Count > 0)
+                if (   !TryPlaceBuilding(olibs, data, building, 0.5f, 1.25f)
+                    && !TryPlaceBuildingIfNotOverlapping(olibs, data, building, 1.25f, 10f))
                 {
-                    PlaceBuilding(data, building, candidates, MinFactor, NormalFactor);
-                }
-                else
-                {
-                    candidates = GetBuildings(olibs, building, NormalFactor, MaxFactor, 1); 
-                    if (candidates.Count > 0)
-                    {
-                        PlaceBuilding(data, building, candidates, NormalFactor, MaxFactor);
-                    }
-                    else
-                    {
-                        candidates = GetBuildings(olibs, building, MaxFactor, 10, 1);
-                        if (candidates.Count > 0)
-                        {
-                            var obj = PickOne(building, candidates);
-                            var delta = obj.RotateToFit(building.Box, MaxFactor, 10);
-                            var realbox = RealBoxAdjustedToRoad(data, obj, delta != 0.0f ? building.Box.RotateM90() : building.Box);
-                            if (!data.WantedBuildings.Where(b => b != building).Any(b => b.Box.Poly.Intersects(realbox.Poly))
-                                && !data.Buildings.Any(b => b.Poly.Intersects(realbox.Poly)))
-                            {
-                                data.Buildings.Insert(new TerrainObject(obj, realbox));
-                            }
-                            else
-                            {
-                                Trace.WriteLine($"Nothing fits {building.Category} {building.Box.Width} x {building.Box.Height}");
-                            }
-                        }
-                        else
-                        {
-                            Trace.WriteLine($"Nothing fits {building.Category} {building.Box.Width} x {building.Box.Height}");
-                        }
-                    }
+                    Trace.WriteLine($"Nothing fits {building.Category} {building.Box.Width} x {building.Box.Height}");
                 }
                 report.ReportOneDone();
             }
             report.TaskDone();
 
-            Preview(data, removed, pass5, "buildings-final.png");
-
+            if (!wasFromCache)
+            {
+                Preview(data, removed, data.WantedBuildings, "buildings-final.png");
+            }
             data.Buildings.WriteFile(data.Config.Target.GetTerrain("buildings.txt"));
 
             Console.WriteLine("{0:0.0} % buildings placed", data.Buildings.Count * 100.0 / data.WantedBuildings.Count);
         }
 
-        private static void PlaceBuilding(MapData data, Building building, List<SingleObjetInfos> candidates, float min, float max)
+        private static bool TryPlaceBuildingIfNotOverlapping(ObjectLibraries olibs, MapData data, Building building, float min, float max)
         {
-            var obj = PickOne(building, candidates);
-            var delta = obj.RotateToFit(building.Box, min, max);
-            var box = delta != 0.0f ? building.Box.RotateM90() : building.Box;
-            if (box.Width < obj.Width || box.Height < obj.Depth) // Object is larger than wanted box
+            var candidates = GetBuildings(olibs, building, min, max);
+            if (candidates.Count > 0)
             {
-                box = RealBoxAdjustedToRoad(data, obj, box);
+                var obj = PickOne(building, candidates);
+                var delta = obj.RotateToFit(building.Box, min, max);
+                var realbox = RealBoxAdjustedToRoad(data, obj, delta != 0.0f ? building.Box.RotateM90() : building.Box);
+                if (!data.WantedBuildings.Where(b => b != building).Any(b => b.Box.Poly.Intersects(realbox.Poly))
+                    && !data.Buildings.Any(b => b.Poly.Intersects(realbox.Poly)))
+                {
+                    data.Buildings.Insert(new TerrainObject(obj, realbox));
+                    return true;
+                }
             }
-            data.Buildings.Insert(new TerrainObject(obj, box));
+            return false;
+        }
+
+
+        private static bool TryPlaceBuilding(ObjectLibraries olibs, MapData data, Building building, float min, float max)
+        {
+            var candidates = GetBuildings(olibs, building, min, max);
+            if (candidates.Count > 0)
+            {
+                var obj = PickOne(building, candidates);
+                var delta = obj.RotateToFit(building.Box, min, max);
+                var box = delta != 0.0f ? building.Box.RotateM90() : building.Box;
+                if (box.Width < obj.Width || box.Height < obj.Depth) // Object is larger than wanted box
+                {
+                    box = RealBoxAdjustedToRoad(data, obj, box);
+                }
+                data.Buildings.Insert(new TerrainObject(obj, box));
+                return true;
+            }
+            return false;
         }
 
         private static SingleObjetInfos PickOne(Building building, List<SingleObjetInfos> candidates)
@@ -124,15 +119,21 @@ namespace ArmaRealMap.Buildings
             return obj;
         }
 
-        private static List<SingleObjetInfos> GetBuildings(ObjectLibraries olibs, Building building, float min, float max, float sort = 1)
+        private static List<SingleObjetInfos> GetBuildings(ObjectLibraries olibs, Building building, float min, float max)
         {
-            return olibs.Libraries
+            var match = olibs.Libraries
                .Where(l => l.Category == building.Category)
                .SelectMany(l => l.Objects.Where(o => o.Fits(building.Box, min, max)))
                .ToList()
-               .OrderBy(c => c.Surface * sort)
-               .Take(5)
+               .OrderBy(c => Math.Abs(c.Surface - building.Box.Surface))
                .ToList();
+            if (match.Count > 0)
+            {
+                var first = match[0];
+                var tolerance = first.Surface * 0.1f; // up to 10% from best match to have a bit of random
+                return match.Where(m => Math.Abs(m.Surface - first.Surface) < tolerance).ToList();
+            }
+            return match;
         }
 
         private static BoundingBox RealBoxAdjustedToRoad(MapData data, SingleObjetInfos obj, BoundingBox box)
@@ -179,7 +180,7 @@ namespace ArmaRealMap.Buildings
                         var newbox = BoundingBox.ComputeInner(result[0].Shell.Skip(1));
                         if (newbox != null)
                         {
-                            if (newbox.Poly.Area < building.Box.Poly.Area / 5 )
+                            if (newbox.Poly.Area < building.Box.Poly.Area / 5)
                             {
 
                             }
@@ -394,7 +395,7 @@ namespace ArmaRealMap.Buildings
 
                 if (data.Buildings != null)
                 {
-                    foreach(var building in data.Buildings)
+                    foreach (var building in data.Buildings)
                     {
                         var realbox = new BoundingBox(building.Center, building.Object.Width, building.Object.Depth, building.Angle);
                         i.Fill(realbox.Polygon, new SolidBrush(Color.White.WithAlpha(0.5f)));
