@@ -46,6 +46,7 @@ namespace ArmaRealMapWebSite.Controllers
         }
 
         // GET: Maps/Create
+        [Authorize(Policy = "Admin")]
         public IActionResult Create()
         {
             return View();

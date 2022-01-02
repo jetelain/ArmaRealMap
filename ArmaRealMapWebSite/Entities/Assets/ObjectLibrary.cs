@@ -28,5 +28,6 @@ namespace ArmaRealMapWebSite.Entities.Assets
         public double? Probability { get; set; }
 
         public List<ObjectLibraryAsset> Assets { get; set; }
+        public List<ObjectLibraryComposition> Compositions { get; set; }
     }
 }

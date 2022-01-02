@@ -20,6 +20,8 @@ namespace ArmaRealMap.Libraries
 
         public List<CompositionInfos> Compositions { get; set; }
 
+        public IEnumerable<ObjetInfosBase> All => Enumerable.Concat(Objects ?? Enumerable.Empty<ObjetInfosBase>(), Compositions ?? Enumerable.Empty<ObjetInfosBase>());
+
         public TerrainRegion? Terrain { get; set; }
 
         public double? Density { get; set; }

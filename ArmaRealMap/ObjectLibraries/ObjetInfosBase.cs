@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using ArmaRealMap.Geometries;
@@ -11,8 +12,19 @@ namespace ArmaRealMap.Libraries
         public float Depth { get; set; }
         public float Height { get; set; }
 
+        /// <summary>
+        /// Shift from asked center on X
+        /// </summary>
         public float CX { get; set; }
+
+        /// <summary>
+        /// Shift from asked center on Y
+        /// </summary>
         public float CY { get; set; }
+
+        /// <summary>
+        /// Shift from asked center on Z
+        /// </summary>
         public float CZ { get; set; }
 
         [JsonIgnore]
@@ -28,8 +40,7 @@ namespace ArmaRealMap.Libraries
         //
         // // && Width/box.Width <= maxFactor
 
-
-
+        internal abstract IEnumerable<TerrainObject> ToObjects(IBoundingShape box);
 
         internal bool Fits(BoundingBox box, float minFactor, float maxFactor)
         {

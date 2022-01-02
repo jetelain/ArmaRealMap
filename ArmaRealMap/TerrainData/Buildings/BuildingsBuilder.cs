@@ -86,7 +86,10 @@ namespace ArmaRealMap.Buildings
                 if (!data.WantedBuildings.Where(b => b != building).Any(b => b.Box.Poly.Intersects(realbox.Poly))
                     && !data.Buildings.Any(b => b.Poly.Intersects(realbox.Poly)))
                 {
-                    data.Buildings.Insert(new TerrainObject(obj, realbox));
+                    foreach(var o in obj.ToObjects(realbox))
+                    {
+                        data.Buildings.Insert(o);
+                    }
                     return true;
                 }
             }
@@ -106,24 +109,27 @@ namespace ArmaRealMap.Buildings
                 {
                     box = RealBoxAdjustedToRoad(data, obj, box);
                 }
-                data.Buildings.Insert(new TerrainObject(obj, box));
+                foreach (var o in obj.ToObjects(box))
+                {
+                    data.Buildings.Insert(o);
+                }
                 return true;
             }
             return false;
         }
 
-        private static SingleObjetInfos PickOne(Building building, List<SingleObjetInfos> candidates)
+        private static ObjetInfosBase PickOne(Building building, List<ObjetInfosBase> candidates)
         {
             var random = new Random((int)Math.Truncate(building.Box.Center.X + building.Box.Center.Y));
             var obj = candidates[random.Next(0, candidates.Count)];
             return obj;
         }
 
-        private static List<SingleObjetInfos> GetBuildings(ObjectLibraries olibs, Building building, float min, float max)
+        private static List<ObjetInfosBase> GetBuildings(ObjectLibraries olibs, Building building, float min, float max)
         {
             var match = olibs.Libraries
                .Where(l => l.Category == building.Category)
-               .SelectMany(l => l.Objects.Where(o => o.Fits(building.Box, min, max)))
+               .SelectMany(l => l.All.Where(o => o.Fits(building.Box, min, max)))
                .ToList()
                .OrderBy(c => Math.Abs(c.Surface - building.Box.Surface))
                .ToList();
@@ -136,7 +142,7 @@ namespace ArmaRealMap.Buildings
             return match;
         }
 
-        private static BoundingBox RealBoxAdjustedToRoad(MapData data, SingleObjetInfos obj, BoundingBox box)
+        private static BoundingBox RealBoxAdjustedToRoad(MapData data, ObjetInfosBase obj, BoundingBox box)
         {
             // Check if real-box intersects road
             var realbox = new BoundingBox(box.Center, obj.Width, obj.Depth, box.Angle);

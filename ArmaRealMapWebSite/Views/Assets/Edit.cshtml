@@ -32,6 +32,21 @@
                 <span asp-validation-for="CZ" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Width" class="control-label"></label>
+                <input asp-for="Width" class="form-control" />
+                <span asp-validation-for="Width" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Depth" class="control-label"></label>
+                <input asp-for="Depth" class="form-control" />
+                <span asp-validation-for="Depth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Height" class="control-label"></label>
+                <input asp-for="Height" class="form-control" />
+                <span asp-validation-for="Height" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="AssetCategory" class="control-label"></label>
                 <select asp-for="AssetCategory" class="form-control" asp-items="@Html.GetEnumSelectList<ArmaRealMapWebSite.Entities.Assets.AssetCategory>()"></select>
                 <span asp-validation-for="AssetCategory" class="text-danger"></span>

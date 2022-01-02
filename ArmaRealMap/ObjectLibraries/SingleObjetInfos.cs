@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using ArmaRealMap.Geometries;
 
@@ -25,9 +26,15 @@ namespace ArmaRealMap.Libraries
         {
             return PlacementRadius ?? (Math.Max(Width, Depth) / 2f);
         }
+
         public float GetReservedRadius()
         {
             return ReservedRadius ?? GetPlacementRadius();
+        }
+
+        internal override IEnumerable<TerrainObject> ToObjects(IBoundingShape box)
+        {
+            yield return new TerrainObject(this, box);
         }
     }
 }

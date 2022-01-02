@@ -7,6 +7,7 @@ namespace ArmaRealMap.Core.ObjectLibraries
         public ObjectCategory Category { get; set; }
 
         public List<SingleObjet> Objects { get; set; }
+        public List<Composition> Compositions { get; set; }
 
         public TerrainRegion? Terrain { get; set; }
 

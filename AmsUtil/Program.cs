@@ -57,13 +57,41 @@ namespace TerrainBuilderUtil
             public string Target { get; set; }
         }
 
+        [Verb("export", HelpText = "Simple EXPORT test.")]
+        class ExportOptions
+        {
+            [Value(0, MetaName = "SourceWrp", HelpText = "Source WRP file.", Required = true)]
+            public string Source { get; set; }
+
+            [Value(1, MetaName = "targetTxt", HelpText = "Target TXT file.", Required = true)]
+            public string Target { get; set; }
+        }
+
         static int Main(string[] args)
         {
-            return CommandLine.Parser.Default.ParseArguments<ConvertOptions, EditWrpOptions>(args)
+            return CommandLine.Parser.Default.ParseArguments<ConvertOptions, EditWrpOptions, ExportOptions>(args)
               .MapResult(
                 (ConvertOptions opts) => Convert(opts),
                 (EditWrpOptions opts) => Edit(opts),
+                (ExportOptions opts) => Export(opts),
                 errs => 1);
+        }
+
+        private static int Export(ExportOptions opts)
+        {
+            var source = StreamHelper.Read<AnyWrp>(opts.Source).GetEditableWrp();
+
+            using (var writer = new StreamWriter(opts.Target, false))
+            {
+                foreach (var add in source.GetNonDummyObjects().Take(10000))
+                {
+                    var yaw = (float)System.Math.Atan2(add.Transform.Matrix.M13, add.Transform.Matrix.M33) * 180 / Math.PI;
+                    var pitch = (float)System.Math.Asin(-add.Transform.Matrix.M23) * 180 / Math.PI;
+                    var roll = (float)System.Math.Atan2(add.Transform.Matrix.M21, add.Transform.Matrix.M22) * 180 / Math.PI;
+                    writer.WriteLine(FormattableString.Invariant(@$"""{Path.GetFileNameWithoutExtension(add.Model)}"";{add.Transform.Matrix.M41};{add.Transform.Matrix.M43};{-yaw};{pitch};{roll};1;{add.Transform.Matrix.M42};"));
+                }
+            }
+            return 0;
         }
 
         private static int Edit(EditWrpOptions opts)

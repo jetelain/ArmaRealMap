@@ -58,7 +58,24 @@ namespace ArmaRealMap.Libraries
                             PlacementRadius = o.PlacementRadius,
                             ReservedRadius = o.ReservedRadius,
                             Width = o.Width
-                        }).ToList()
+                        }).ToList(),
+                        Compositions = lib.Compositions?.Select(c => new CompositionInfos()
+                        {
+                            Height = c.Height,
+                            Depth = c.Depth,
+                            Width = c.Width,
+                            Objects = c.Objects.Select(o => new CompositionObjetInfos()
+                            {
+                                Angle = o.Angle,
+                                Width = o.Width,
+                                Depth = o.Depth,
+                                Height = o.Height,
+                                Name = o.Name,
+                                X = o.X,
+                                Y = o.Y,
+                                Z = o .Z
+                            }).ToList()
+                        })?.ToList()
                     }); 
                 }
             }

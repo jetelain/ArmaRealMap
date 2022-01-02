@@ -44,6 +44,7 @@
 
 <form asp-action="EqualProbability" asp-route-id="@Model.ObjectLibraryID" class="mb-2">
     <a class="btn btn-primary" asp-controller="ObjectLibraryAssets" asp-action="Create" asp-route-objectLibraryID="@Model.ObjectLibraryID">Ajouter un objet</a>
+    <a class="btn btn-primary" asp-controller="ObjectLibraryCompositions" asp-action="Create" asp-route-objectLibraryID="@Model.ObjectLibraryID">Ajouter une composition</a>
     @if (Model.ObjectCategory.HasProbability())
     {
         <button class="btn btn-outline-secondary">Rendre tous les modèles équiprobable</button>
@@ -124,7 +125,26 @@
             <th></th>
         </tr>
     </thead>
+
     <tbody>
+        @if (Model.ObjectCategory.IsBestFit())
+        {
+            @foreach (var item in Model.Compositions)
+            {
+                <tr>
+                    <td colspan="2">
+                        Composition #@Html.DisplayFor(modelItem => item.ObjectLibraryCompositionID)
+                    </td>
+                    <th>
+                        @Math.Round(item.Width, 1)&nbsp;x&nbsp;@Math.Round(item.Depth, 1)&nbsp;m
+                    </th>
+                    <td>
+                        <a asp-action="Edit" asp-controller="ObjectLibraryCompositions" asp-route-id="@item.ObjectLibraryCompositionID">Modifier</a> |
+                        <a asp-action="Delete" asp-controller="ObjectLibraryCompositions" asp-route-id="@item.ObjectLibraryCompositionID">Supprimer</a>
+                    </td>
+                </tr>
+            }
+        }
         @foreach (var item in Model.Assets)
         {
             <tr>
@@ -187,5 +207,6 @@
                 </td>
             </tr>
         }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ArmaRealMapWebSite.Entities.Assets;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMapWebSite.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArmaRealMapWebSite.Controllers
 {
@@ -41,6 +42,8 @@ namespace ArmaRealMapWebSite.Controllers
         }
 
         // GET: ObjectLibraryAssets/Create
+
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create(int objectLibraryID)
         {
             var objectLibraryAsset = new ObjectLibraryAsset();
@@ -77,6 +80,7 @@ namespace ArmaRealMapWebSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create([Bind("ObjectLibraryAssetID,ObjectLibraryID,AssetID,Probability,PlacementRadius,ReservedRadius,MaxZ,MinZ")] ObjectLibraryAsset objectLibraryAsset)
         {
             if (ModelState.IsValid)
@@ -102,6 +106,8 @@ namespace ArmaRealMapWebSite.Controllers
         }
 
         // GET: ObjectLibraryAssets/Edit/5
+
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -123,6 +129,7 @@ namespace ArmaRealMapWebSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ObjectLibraryAssetID,ObjectLibraryID,AssetID,Probability,PlacementRadius,ReservedRadius,MaxZ,MinZ")] ObjectLibraryAsset objectLibraryAsset)
         {
             if (id != objectLibraryAsset.ObjectLibraryAssetID)
@@ -156,6 +163,7 @@ namespace ArmaRealMapWebSite.Controllers
         }
 
         // GET: ObjectLibraryAssets/Delete/5
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -178,6 +186,7 @@ namespace ArmaRealMapWebSite.Controllers
         // POST: ObjectLibraryAssets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var objectLibraryAsset = await _context.ObjectLibraryAssets.FindAsync(id);

@@ -181,7 +181,7 @@ namespace ArmaRealMapWebSite.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("AssetID,ClassName,CX,CY,CZ,AssetCategory,ClusterName")] Asset update)
+        public async Task<IActionResult> Edit(int id, [Bind("AssetID,ClassName,CX,CY,CZ,Width,Depth,Height,AssetCategory,ClusterName")] Asset update)
         {
             if (id != update.AssetID)
             {
@@ -197,6 +197,9 @@ namespace ArmaRealMapWebSite.Controllers
                     asset.CX = update.CX;
                     asset.CY = update.CY;
                     asset.CZ = update.CZ;
+                    asset.Width = update.Width;
+                    asset.Depth = update.Depth;
+                    asset.Height = update.Height;
                     asset.ClusterName = update.ClusterName;
                     _context.Update(asset);
                     await _context.SaveChangesAsync();

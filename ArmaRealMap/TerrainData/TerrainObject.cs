@@ -6,7 +6,7 @@ using ArmaRealMap.Libraries;
 
 namespace ArmaRealMap
 {
-    internal class TerrainObject : ITerrainGeometry
+    public class TerrainObject : ITerrainGeometry
     {
         private readonly SingleObjetInfos objectInfos;
         private readonly IBoundingShape box;

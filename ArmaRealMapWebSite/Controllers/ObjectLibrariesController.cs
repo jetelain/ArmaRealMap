@@ -45,6 +45,7 @@ namespace ArmaRealMapWebSite.Controllers
         {
             var alldata = await _context.ObjectLibraries
                 .Include(l => l.Assets).ThenInclude(a => a.Asset)
+                .Include(l => l.Compositions).ThenInclude(a => a.Assets).ThenInclude(a => a.Asset)
                 .ToListAsync();
 
             return Json(
@@ -71,6 +72,23 @@ namespace ArmaRealMapWebSite.Controllers
                             PlacementProbability = a.Probability,
                             ReservedRadius = a.ReservedRadius,
                             Width = a.Asset.Width
+                        }).ToList(),
+                        Compositions = l.Compositions.Select(c => new Composition()
+                        {
+                            Depth = c.Depth,
+                            Height = c.Height,
+                            Objects = c.Assets.Select(a => new CompositionObject()
+                            {
+                                Angle = a.Angle,
+                                Depth = a.Asset.Depth,
+                                Height = a.Asset.Height,
+                                Name = a.Asset.Name,
+                                Width = a.Asset.Width,
+                                X = a.X,
+                                Y = a.Y,
+                                Z = a.Z
+                            }).ToList(),
+                            Width = c.Width
                         }).ToList()
                     })
                     .ToList(),
@@ -101,7 +119,9 @@ namespace ArmaRealMapWebSite.Controllers
                 .Include(a => a.Asset)
                 .Where(a => a.ObjectLibraryID == objectLibrary.ObjectLibraryID)
                 .ToListAsync();
-
+            objectLibrary.Compositions = await _context.ObjectLibraryComposition
+    .Where(a => a.ObjectLibraryID == objectLibrary.ObjectLibraryID)
+    .ToListAsync();
             return View(objectLibrary);
         }
 

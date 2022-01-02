@@ -31,6 +31,8 @@ namespace ArmaRealMapWebSite.Entities
             modelBuilder.Entity<GameMod>().ToTable(nameof(GameMod));
             modelBuilder.Entity<ObjectLibrary>().ToTable(nameof(ObjectLibrary));
             modelBuilder.Entity<ObjectLibraryAsset>().ToTable(nameof(ObjectLibraryAsset));
+            modelBuilder.Entity<ObjectLibraryComposition>().ToTable(nameof(ObjectLibraryComposition));
+            modelBuilder.Entity<ObjectLibraryCompositionAsset>().ToTable(nameof(ObjectLibraryCompositionAsset));
             var map = modelBuilder.Entity<Map>().ToTable(nameof(Map));
             map.HasIndex(m => m.Name).IsUnique();
         }
@@ -190,5 +192,8 @@ namespace ArmaRealMapWebSite.Entities
         public DbSet<ArmaRealMapWebSite.Entities.Assets.ObjectLibraryAsset> ObjectLibraryAssets { get; set; }
 
         public DbSet<ArmaRealMapWebSite.Entities.Maps.Map> Map { get; set; }
+
+        public DbSet<ArmaRealMapWebSite.Entities.Assets.ObjectLibraryComposition> ObjectLibraryComposition { get; set; }
+        public DbSet<ArmaRealMapWebSite.Entities.Assets.ObjectLibraryCompositionAsset> ObjectLibraryCompositionAssets { get; set; }
     }
 }
