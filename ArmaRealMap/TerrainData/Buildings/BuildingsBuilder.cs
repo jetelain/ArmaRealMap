@@ -54,6 +54,7 @@ namespace ArmaRealMap.Buildings
 
             data.Buildings = new TerrainObjectLayer(data.MapInfos);
 
+            var nonefits = 0;
             var report = new ProgressReport("PlaceBuildings", data.WantedBuildings.Count);
             foreach (var building in data.WantedBuildings)
             {
@@ -61,6 +62,7 @@ namespace ArmaRealMap.Buildings
                     && !TryPlaceBuildingIfNotOverlapping(olibs, data, building, 1.25f, 10f))
                 {
                     Trace.WriteLine($"Nothing fits {building.Category} {building.Box.Width} x {building.Box.Height}");
+                    nonefits++;
                 }
                 report.ReportOneDone();
             }
@@ -72,7 +74,7 @@ namespace ArmaRealMap.Buildings
             }
             data.Buildings.WriteFile(data.Config.Target.GetTerrain("buildings.txt"));
 
-            Console.WriteLine("{0:0.0} % buildings placed", data.Buildings.Count * 100.0 / data.WantedBuildings.Count);
+            Console.WriteLine("{0:0.0} % buildings placed", (data.WantedBuildings.Count - nonefits) * 100.0 / data.WantedBuildings.Count);
         }
 
         private static bool TryPlaceBuildingIfNotOverlapping(ObjectLibraries olibs, MapData data, Building building, float min, float max)

@@ -239,8 +239,8 @@ namespace ArmaRealMap
         private static void PlaceBarrierObjects(MapData data, SnapshotDb db, ObjectLibraries olibs, OsmStreamSource filtered)
         {
             var result = new TerrainObjectLayer(data.MapInfos);
-            
-            PlaceObjectsOnPath(result,
+
+            PlaceObjectsOnPathRightAngle(result,
                 data,
                 db,
                 filtered,
@@ -293,6 +293,33 @@ namespace ArmaRealMap
         }
 
 
+        private static void PlaceObjectsOnPathRightAngle(TerrainObjectLayer result, MapData data, SnapshotDb db, OsmStreamSource filtered, List<ObjectLibrary> libs, Func<Way, bool> filter)
+        {
+            if (libs.Count == 0)
+            {
+                return;
+            }
+            var probLibs = libs.Count == 1 ? libs : libs.SelectMany(l => Enumerable.Repeat(l, (int)((l.Probability ?? 1d) * 100))).ToList();
+            var interpret = new DefaultFeatureInterpreter2();
+            var nodes = filtered.Where(o => o.Type == OsmGeoType.Way && filter((Way)o)).ToList();
+            var cliparea = data.MapInfos.Polygon;
+            foreach (Way way in nodes)
+            {
+                var complete = way.CreateComplete(db);
+                foreach (var feature in interpret.Interpret(complete))
+                {
+                    foreach (var path in TerrainPath.FromGeometry(feature.Geometry, data.MapInfos.LatLngToTerrainPoint))
+                    {
+                        foreach (var pathSegment in path.ClippedBy(cliparea))
+                        {
+                            var random = new Random((int)Math.Truncate(pathSegment.FirstPoint.X + pathSegment.FirstPoint.Y));
+                            var lib = libs.Count == 1 ? libs[0] : libs[random.Next(0, libs.Count)];
+                            FollowPathWithObjects.PlaceOnPathRightAngle(lib, result, pathSegment.Points);
+                        }
+                    }
+                }
+            }
+        }
 
         private static bool DownloadOsmData(Config config, MapInfos area)
         {

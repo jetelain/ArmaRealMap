@@ -94,10 +94,10 @@ namespace ArmaRealMapWebSite.Controllers
                     var angle = float.Parse(tokens[3], CultureInfo.InvariantCulture);
                     var z = float.Parse(tokens[7], CultureInfo.InvariantCulture) - 5f;
                     // TODO: Take into account angle on max/min
-                    maxX = Math.Max(maxX, x + asset.CX + (asset.Width / 2));
-                    maxY = Math.Max(maxY, y + asset.CY + (asset.Depth / 2));
-                    minX = Math.Min(minX, x + asset.CX - (asset.Width / 2));
-                    minY = Math.Min(minY, y + asset.CY - (asset.Depth / 2));
+                    maxX = Math.Max(maxX, x - asset.CX + (asset.Width / 2));
+                    maxY = Math.Max(maxY, y - asset.CY + (asset.Depth / 2));
+                    minX = Math.Min(minX, x - asset.CX - (asset.Width / 2));
+                    minY = Math.Min(minY, y - asset.CY - (asset.Depth / 2));
                     assets.Add(new ObjectLibraryCompositionAsset() { Angle = angle, Asset = asset, AssetID = asset.AssetID, Composition = objectLibraryComposition, X = x, Y = y, Z = z });
                 }
             }

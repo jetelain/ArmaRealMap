@@ -73,5 +73,59 @@ namespace ArmaRealMap.Test.Geometries
             Assert.Equal(new TerrainPoint(0, 4), follow.Current);
             Assert.False(follow.Move(2f));
         }
+
+        [Fact]
+        public void FollowPath_KeepRightAngles()
+        {
+            var follow = new FollowPath(
+                new TerrainPoint(0, 0),
+                new TerrainPoint(0, 4),
+                new TerrainPoint(4, 4),
+                new TerrainPoint(4, 0));
+            follow.KeepRightAngles = true;
+
+            Assert.Null(follow.Previous);
+            Assert.Equal(new TerrainPoint(0, 0), follow.Current);
+            Assert.False(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+
+            Assert.True(follow.Move(3f));
+            Assert.Equal(new TerrainPoint(0, 0), follow.Previous);
+            Assert.Equal(new TerrainPoint(0, 3), follow.Current);
+            Assert.False(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+
+            Assert.True(follow.Move(3f));
+            Assert.Equal(new TerrainPoint(0, 3), follow.Previous);
+            Assert.Equal(new TerrainPoint(0, 4), follow.Current);
+            Assert.True(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+
+            Assert.True(follow.Move(3f));
+            Assert.Equal(new TerrainPoint(0, 4), follow.Previous);
+            Assert.Equal(new TerrainPoint(3, 4), follow.Current);
+            Assert.False(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+
+            Assert.True(follow.Move(3f));
+            Assert.Equal(new TerrainPoint(3, 4), follow.Previous);
+            Assert.Equal(new TerrainPoint(4, 4), follow.Current);
+            Assert.True(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+
+            Assert.True(follow.Move(3f));
+            Assert.Equal(new TerrainPoint(4, 4), follow.Previous);
+            Assert.Equal(new TerrainPoint(4, 1), follow.Current);
+            Assert.False(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+
+            Assert.True(follow.Move(3f));
+            Assert.Equal(new TerrainPoint(4, 1), follow.Previous);
+            Assert.Equal(new TerrainPoint(4, 0), follow.Current);
+            Assert.False(follow.IsAfterRightAngle);
+            Assert.True(follow.IsLast);
+
+            Assert.False(follow.Move(3f));
+        }
     }
 }

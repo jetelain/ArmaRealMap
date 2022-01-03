@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace ArmaRealMap.Geometries
@@ -6,8 +7,9 @@ namespace ArmaRealMap.Geometries
     public class FollowPath
     {
         private readonly IEnumerator<TerrainPoint> enumerator;
-        private TerrainPoint previous;
+        private TerrainPoint previousPoint;
         private TerrainPoint point;
+        private TerrainPoint previousPosition;
         private TerrainPoint position;
         private Vector2 delta;
         private float length;
@@ -33,9 +35,11 @@ namespace ArmaRealMap.Geometries
         }
         private void Init()
         {
+            IsAfterRightAngle = false;
+            previousPosition = null;
             length = 0f;
             positionOnSegment = 0f;
-            previous = null;
+            previousPoint = null;
             if (enumerator.MoveNext())
             {
                 position = point = enumerator.Current;
@@ -51,7 +55,7 @@ namespace ArmaRealMap.Geometries
 
         private bool MoveNextPoint()
         {
-            previous = point;
+            previousPoint = point;
             if (!enumerator.MoveNext())
             {
                 point = null;
@@ -60,7 +64,7 @@ namespace ArmaRealMap.Geometries
                 return false;
             }
             point = enumerator.Current;
-            delta = point.Vector - previous.Vector;
+            delta = point.Vector - previousPoint.Vector;
             length = delta.Length();
             positionOnSegment = 0f;
             return true;
@@ -68,14 +72,23 @@ namespace ArmaRealMap.Geometries
 
         public TerrainPoint Current => position;
 
+        public TerrainPoint Previous => previousPosition;
+
         public Vector2 Vector => Vector2.Normalize(delta);
 
         public Vector2 Vector90 => Vector2.Transform(Vector, GeometryHelper.Rotate90);
 
         public Vector2 VectorM90 => Vector2.Transform(Vector, GeometryHelper.RotateM90);
 
+        public bool KeepRightAngles { get; set; }
+
+        public bool IsAfterRightAngle { get; private set; }
+
+        public bool IsLast => hasReachedEnd;
+
         public bool Move(float step)
         {
+            IsAfterRightAngle = false;
             if (hasReachedEnd)
             {
                 return false;
@@ -84,19 +97,34 @@ namespace ArmaRealMap.Geometries
             while (remainLength + positionOnSegment > length)
             {
                 remainLength -= length - positionOnSegment;
+                var previousDelta = delta;
                 if (!MoveNextPoint())
                 {
                     hasReachedEnd = true;
-                    if (position != previous)
+                    if (position != previousPoint)
                     {
-                        position = previous;
+                        previousPosition = position;
+                        position = previousPoint;
                         return true;
                     }
                     return false;
                 }
+                if (KeepRightAngles)
+                {
+                    var angle = Math.Abs(Math.Abs(Math.Acos(Vector2.Dot(Vector2.Normalize(delta), Vector2.Normalize(previousDelta)))) - (MathF.PI/2)); 
+                    if ( angle < 0.1d )
+                    {
+                        previousPosition = position;
+                        position = previousPoint;
+                        positionOnSegment = 0;
+                        IsAfterRightAngle = true;
+                        return true;
+                    }
+                }
             }
             positionOnSegment += remainLength;
-            position = new TerrainPoint(Vector2.Lerp(previous.Vector, point.Vector, positionOnSegment / length));
+            previousPosition = position;
+            position = new TerrainPoint(Vector2.Lerp(previousPoint.Vector, point.Vector, positionOnSegment / length));
             return true;
         }
 
