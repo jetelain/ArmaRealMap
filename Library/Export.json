@@ -1497,7 +1497,7 @@
       {
         "Name": "jbad_wallend",
         "PlacementProbability": 1,
-        "PlacementRadius": 2.6,
+        "PlacementRadius": 2.5,
         "Width": 5.66,
         "Depth": 0.544894,
         "Height": 4.76962,
