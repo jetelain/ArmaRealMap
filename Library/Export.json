@@ -318,6 +318,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Unknown",
     "Density": null,
     "Probability": 1
@@ -587,6 +588,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "CentralEurope",
     "Density": null,
     "Probability": 1
@@ -946,6 +948,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "CentralEurope",
     "Density": null,
     "Probability": 1
@@ -1004,6 +1007,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "CentralEurope",
     "Density": null,
     "Probability": 1
@@ -1102,6 +1106,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "CentralEurope",
     "Density": null,
     "Probability": 1
@@ -1176,6 +1181,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "CentralEurope",
     "Density": 0.8,
     "Probability": 1
@@ -1265,6 +1271,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": 0.1,
     "Probability": 1
@@ -1351,6 +1358,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": 0.001,
     "Probability": 1
@@ -1370,6 +1378,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": null,
     "Probability": 0.75
@@ -1411,6 +1420,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "CentralEurope",
     "Density": null,
     "Probability": 1
@@ -1437,6 +1447,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Unknown",
     "Density": null,
     "Probability": 1
@@ -1444,6 +1455,7 @@
   {
     "Category": "PicnicTable",
     "Objects": [],
+    "Compositions": [],
     "Terrain": "Unknown",
     "Density": null,
     "Probability": 1
@@ -1474,6 +1486,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": null,
     "Probability": 1
@@ -1484,15 +1497,26 @@
       {
         "Name": "jbad_wallend",
         "PlacementProbability": 1,
-        "PlacementRadius": 2.75,
-        "Width": 5.67183,
+        "PlacementRadius": 2.6,
+        "Width": 5.66,
         "Depth": 0.544894,
+        "Height": 4.76962,
+        "CX": 0,
+        "CY": 0,
+        "CZ": 0
+      },
+      {
+        "Name": "jbad_wall_l_2m5",
+        "PlacementRadius": 1.25,
+        "Width": 3.86,
+        "Depth": 0.516646,
         "Height": 4.76962,
         "CX": 0,
         "CY": 0,
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": null,
     "Probability": 1
@@ -1529,6 +1553,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": 0.001,
     "Probability": 1
@@ -1547,6 +1572,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Unknown",
     "Density": null,
     "Probability": 1
@@ -1890,6 +1916,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": 0.015,
     "Probability": 1
@@ -1918,6 +1945,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": null,
     "Probability": 1
@@ -1971,6 +1999,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Unknown",
     "Density": null,
     "Probability": 1
@@ -1999,6 +2028,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Unknown",
     "Density": null,
     "Probability": 1
@@ -2133,6 +2163,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": 0.00015,
     "Probability": 1
@@ -2142,165 +2173,359 @@
     "Objects": [
       {
         "Name": "jbad_house2_basehide",
-        "Width": 10.98238,
-        "Depth": 11.742689,
+        "Width": 10.3,
+        "Depth": 6.6,
         "Height": 10.16741,
         "CX": 0,
-        "CY": 0,
+        "CY": -3.6,
         "CZ": 0
       },
       {
         "Name": "jbad_house3",
-        "Width": 11.758369,
-        "Depth": 12.98534,
+        "Width": 9.7,
+        "Depth": 10.7,
         "Height": 14.11168,
-        "CX": 0,
-        "CY": 0,
+        "CX": 1.7,
+        "CY": -1.5,
         "CZ": 0
       },
       {
         "Name": "jbad_house5",
-        "Width": 14.99131,
-        "Depth": 9.83729,
+        "Width": 14.3,
+        "Depth": 8.9,
         "Height": 11.62635,
-        "CX": 0,
-        "CY": 0,
+        "CX": 0.8,
+        "CY": -0.9,
         "CZ": 0
       },
       {
         "Name": "jbad_house_1",
-        "Width": 10.98238,
-        "Depth": 11.742689,
+        "Width": 9.7,
+        "Depth": 6.3,
         "Height": 10.16741,
-        "CX": 0,
-        "CY": 0,
+        "CX": -0.15,
+        "CY": -3.5,
         "CZ": 0
       },
       {
         "Name": "jbad_house_c_5",
-        "Width": 13.84898,
-        "Depth": 12.14784,
+        "Width": 11.2,
+        "Depth": 11.6,
         "Height": 5.51294,
-        "CX": 0,
+        "CX": 0.6,
         "CY": 0,
         "CZ": 0
       },
       {
         "Name": "jbad_house_c_5_v1",
-        "Width": 13.84898,
-        "Depth": 12.14784,
+        "Width": 11.2,
+        "Depth": 11.6,
         "Height": 6.85154,
-        "CX": 0,
+        "CX": 0.6,
         "CY": 0,
         "CZ": 0
       },
       {
         "Name": "jbad_house_c_5_v2",
-        "Width": 13.84898,
-        "Depth": 12.14784,
+        "Width": 11.2,
+        "Depth": 11.6,
         "Height": 6.64238,
-        "CX": 0,
+        "CX": 0.6,
         "CY": 0,
         "CZ": 0
       },
       {
         "Name": "jbad_house_1_old",
-        "Width": 6.04321,
-        "Depth": 6.82312,
+        "Width": 5.8,
+        "Depth": 5.4,
         "Height": 5.82771,
-        "CX": 0,
-        "CY": 0,
+        "CX": -0.4,
+        "CY": 1.4,
         "CZ": 0
       },
       {
         "Name": "jbad_house_3_old",
-        "Width": 13.38059,
-        "Depth": 7.07088,
+        "Width": 11,
+        "Depth": 5,
         "Height": 5.77095,
-        "CX": 0,
-        "CY": 0,
+        "CX": 1.8,
+        "CY": -1.3,
         "CZ": 0
       },
       {
         "Name": "jbad_house_3_old_h",
-        "Width": 14.32102,
-        "Depth": 7.07088,
+        "Width": 11,
+        "Depth": 5,
         "Height": 5.77095,
-        "CX": 0,
-        "CY": 0,
+        "CX": 1.8,
+        "CY": -1.3,
         "CZ": 0
       },
       {
         "Name": "jbad_house_4_old",
-        "Width": 16.66754,
-        "Depth": 9.26049,
+        "Width": 15.7,
+        "Depth": 6.9,
         "Height": 7.67448,
-        "CX": 0,
-        "CY": 0,
+        "CX": 0.1,
+        "CY": -1.5,
         "CZ": 0
       },
       {
         "Name": "jbad_house_6_old",
-        "Width": 15.122681,
-        "Depth": 8.0142,
+        "Width": 13.2,
+        "Depth": 7,
         "Height": 7.65129,
-        "CX": 0,
+        "CX": -1.6,
         "CY": 0,
         "CZ": 0
       },
       {
         "Name": "jbad_house_7_old",
-        "Width": 14.129339,
-        "Depth": 13.99015,
+        "Width": 13.5,
+        "Depth": 13.4,
         "Height": 5.60163,
         "CX": 0,
-        "CY": 0,
+        "CY": 0.9,
         "CZ": 0
       },
       {
         "Name": "jbad_house_8_old",
-        "Width": 13.71816,
-        "Depth": 15.2380905,
+        "Width": 12.4,
+        "Depth": 14.7,
         "Height": 8.75044,
-        "CX": 0,
+        "CX": -0.7,
         "CY": 0,
         "CZ": 0
       },
       {
         "Name": "jbad_house_c_5_v3",
-        "Width": 13.84898,
-        "Depth": 12.14784,
+        "Width": 11.2,
+        "Depth": 11.6,
         "Height": 6.85154,
-        "CX": 0,
+        "CX": 0.6,
         "CY": 0,
         "CZ": 0
       },
       {
         "Name": "jbad_grainstore",
-        "Width": 10.33226,
-        "Depth": 5.71324,
+        "Width": 10.2,
+        "Depth": 5.2,
         "Height": 4.15635,
-        "CX": 0,
-        "CY": 0,
+        "CX": 0.6,
+        "CY": -0.1,
         "CZ": 0
       },
       {
         "Name": "jbad_grainstore2",
-        "Width": 10.33226,
-        "Depth": 5.71324,
+        "Width": 10.2,
+        "Depth": 5.2,
         "Height": 4.15635,
-        "CX": 0,
-        "CY": 0,
+        "CX": 0.6,
+        "CY": -0.1,
         "CZ": 0
       },
       {
         "Name": "jbad_grainstore3",
-        "Width": 10.33227,
-        "Depth": 5.71324,
+        "Width": 10.2,
+        "Depth": 5.2,
         "Height": 4.15635,
-        "CX": 0,
-        "CY": 0,
+        "CX": 0.6,
+        "CY": -0.1,
         "CZ": 0
+      }
+    ],
+    "Compositions": [
+      {
+        "Width": 25.484375,
+        "Depth": 9.899902,
+        "Height": 12.021938,
+        "Objects": [
+          {
+            "Width": 9.8,
+            "Depth": 9.9,
+            "Height": 12.7218895,
+            "X": -7.625,
+            "Y": -0.6999512,
+            "Z": -7.291747,
+            "Angle": 0,
+            "Name": "jbad_house8"
+          },
+          {
+            "Width": 11,
+            "Depth": 5,
+            "Height": 5.77095,
+            "X": 9.046875,
+            "Y": -0.32788086,
+            "Z": 0,
+            "Angle": 0,
+            "Name": "jbad_house_3_old"
+          },
+          {
+            "Width": 5.8,
+            "Depth": 5.4,
+            "Height": 5.82771,
+            "X": -1.40625,
+            "Y": 2.4606934,
+            "Z": 0,
+            "Angle": 359.109,
+            "Name": "jbad_house_1_old"
+          }
+        ]
+      },
+      {
+        "Width": 21.828125,
+        "Depth": 8.75415,
+        "Height": 7.101604,
+        "Objects": [
+          {
+            "Width": 5.8,
+            "Depth": 5.4,
+            "Height": 5.82771,
+            "X": 7.59375,
+            "Y": -0.2770996,
+            "Z": 0,
+            "Angle": 180,
+            "Name": "jbad_house_1_old"
+          },
+          {
+            "Width": 15.7,
+            "Depth": 6.9,
+            "Height": 7.67448,
+            "X": -2.984375,
+            "Y": -0.572876,
+            "Z": 0,
+            "Angle": 0,
+            "Name": "jbad_house_4_old"
+          }
+        ]
+      },
+      {
+        "Width": 15.75,
+        "Depth": 7.797119,
+        "Height": 6.029126,
+        "Objects": [
+          {
+            "Width": 11,
+            "Depth": 5,
+            "Height": 5.77095,
+            "X": 4.171875,
+            "Y": 0.09851074,
+            "Z": 0,
+            "Angle": 0,
+            "Name": "jbad_house_3_old"
+          },
+          {
+            "Width": 5.8,
+            "Depth": 5.4,
+            "Height": 5.82771,
+            "X": -5.375,
+            "Y": 0.20141602,
+            "Z": 0,
+            "Angle": 180,
+            "Name": "jbad_house_1_old"
+          }
+        ]
+      },
+      {
+        "Width": 26.703125,
+        "Depth": 7.086792,
+        "Height": 6.267986,
+        "Objects": [
+          {
+            "Width": 15.7,
+            "Depth": 6.9,
+            "Height": 7.67448,
+            "X": -5.40625,
+            "Y": -1.4064941,
+            "Z": 0,
+            "Angle": 0,
+            "Name": "jbad_house_4_old"
+          },
+          {
+            "Width": 11,
+            "Depth": 5,
+            "Height": 5.77095,
+            "X": 9.65625,
+            "Y": -2.3433838,
+            "Z": 0,
+            "Angle": 0,
+            "Name": "jbad_house_3_old"
+          }
+        ]
+      },
+      {
+        "Width": 29.796875,
+        "Depth": 9.899902,
+        "Height": 12.021938,
+        "Objects": [
+          {
+            "Width": 15.7,
+            "Depth": 6.9,
+            "Height": 7.67448,
+            "X": 7.140625,
+            "Y": -0.88830566,
+            "Z": 0,
+            "Angle": 0,
+            "Name": "jbad_house_4_old"
+          },
+          {
+            "Width": 9.8,
+            "Depth": 9.9,
+            "Height": 12.7218895,
+            "X": -4.734375,
+            "Y": -0.6999512,
+            "Z": -3.3746061,
+            "Angle": 0,
+            "Name": "jbad_house8"
+          },
+          {
+            "Width": 5.8,
+            "Depth": 5.4,
+            "Height": 5.82771,
+            "X": -12.40625,
+            "Y": -0.43969727,
+            "Z": 0,
+            "Angle": 180,
+            "Name": "jbad_house_1_old"
+          }
+        ]
+      },
+      {
+        "Width": 28.75,
+        "Depth": 10.597168,
+        "Height": 12.370571,
+        "Objects": [
+          {
+            "Width": 11,
+            "Depth": 5,
+            "Height": 5.77095,
+            "X": -7.078125,
+            "Y": 1.0870361,
+            "Z": 0,
+            "Angle": 179.874,
+            "Name": "jbad_house_3_old"
+          },
+          {
+            "Width": 9.8,
+            "Depth": 9.9,
+            "Height": 12.7218895,
+            "X": 3.984375,
+            "Y": -0.35131836,
+            "Z": -7.289896,
+            "Angle": 0,
+            "Name": "jbad_house8"
+          },
+          {
+            "Width": 5.8,
+            "Depth": 5.4,
+            "Height": 5.82771,
+            "X": 11.0625,
+            "Y": -1.1986084,
+            "Z": 0,
+            "Angle": 180,
+            "Name": "jbad_house_1_old"
+          }
+        ]
       }
     ],
     "Terrain": "Sahel",
@@ -2403,6 +2628,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": 0.0035,
     "Probability": 1
@@ -2433,6 +2659,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": null,
     "Probability": 0.25
@@ -2621,6 +2848,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": null,
     "Probability": null
@@ -2665,6 +2893,7 @@
         "CZ": -6
       }
     ],
+    "Compositions": [],
     "Terrain": "Unknown",
     "Density": null,
     "Probability": null
@@ -2675,7 +2904,7 @@
       {
         "Name": "Hbarrier_Big_F",
         "PlacementProbability": 1,
-        "PlacementRadius": 4.45,
+        "PlacementRadius": 4,
         "Width": 9.008739,
         "Depth": 2.63182,
         "Height": 2.5541902,
@@ -2684,6 +2913,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": null,
     "Probability": 1
@@ -2998,6 +3228,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": null,
     "Probability": null
@@ -3171,6 +3402,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": 0.0075,
     "Probability": 1
@@ -3301,6 +3533,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": 0.0001,
     "Probability": null
@@ -3353,6 +3586,7 @@
         "CZ": 0
       }
     ],
+    "Compositions": [],
     "Terrain": "Sahel",
     "Density": 0.0015,
     "Probability": null
