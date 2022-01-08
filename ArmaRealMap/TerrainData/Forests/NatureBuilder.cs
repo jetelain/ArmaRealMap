@@ -74,7 +74,7 @@ namespace ArmaRealMap.TerrainData.Forests
             var substractPolygons = GetPriorityPolygons(data, shapes, OsmShapeCategory.Dirt);
             var radialCleaned = Subtract(radialEdges, substractPolygons);
             var final = TerrainPolygon.MergeAll(radialCleaned);
-            var objects = new FillShapeWithObjectsClustered(data, ObjectCategory.ForestRadialEdge, olibs).Fill(final, filename);
+            var objects = new FillShapeWithObjectsClustered(data, category, olibs).Fill(final, filename);
             Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
             Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
             objects.WriteFile(data.Config.Target.GetTerrain(filename));
@@ -245,7 +245,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             data.Scrubs = polygonsCleaned;
 
-            GenerateRadialEdgeObjects(data, olibs, shapes, polygonsCleaned, ObjectCategory.ScrubRadialEdge, "scrub-radial.txt", 12.5f);
+            GenerateRadialEdgeObjects(data, olibs, shapes, polygonsCleaned, ObjectCategory.ScrubRadialEdge, "scrub-radial.txt");
         }
 
         public static void PrepareGroundRock(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
