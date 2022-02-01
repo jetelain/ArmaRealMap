@@ -41,11 +41,11 @@ namespace ArmaRealMap
 
             var config = LoadConfig(args[0]);
 
+            File.WriteAllText(config.Target.GetDebug("arm.log"), "");
             Trace.Listeners.Clear();
-
             Trace.Listeners.Add(new TextWriterTraceListener(config.Target.GetDebug("arm.log")));
-
-            Trace.WriteLine("----------------------------------------------------------------------------------------------------");
+            Trace.WriteLine(JsonSerializer.Serialize(config, new JsonSerializerOptions() { WriteIndented = true }));
+            Trace.Flush();
 
             var olibs = new ObjectLibraries();
             olibs.Load(config);
@@ -74,7 +74,6 @@ namespace ArmaRealMap
 
             BuildLand(config, data, area, olibs);
 
-            Trace.WriteLine("----------------------------------------------------------------------------------------------------");
             Trace.Flush();
         }
 
@@ -197,10 +196,10 @@ namespace ArmaRealMap
                 {
                     Console.WriteLine("==== Lakes ====");
                     LakeGenerator.ProcessLakes(data, area, shapes);
-
+                    
                     Console.WriteLine("==== Elevation ====");
                     ElevationGridBuilder.MakeDetailed(data, shapes, olibs);
-
+                    /*
                     Console.WriteLine("==== Buildings ====");
                     BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 
@@ -224,10 +223,10 @@ namespace ArmaRealMap
 
                     Console.WriteLine("==== Fences and walls ====");
                     PlaceBarrierObjects(data, db, olibs, filtered);
-                    
+                    */
                     Console.WriteLine("==== Terrain images ====");
                     TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);
-                }
+               }
             }
 
             var tbLibs = new TBLibraries();
@@ -349,12 +348,23 @@ namespace ArmaRealMap
             return true;
         }
 
+        private static string GetGridZone(CoordinateSharp.Coordinate coordinate)
+        {
+            return $"{coordinate.MGRS.LongZone}{coordinate.MGRS.LatZone} {coordinate.MGRS.Digraph}";
+        }
+
 
         private static void RenderMapInfos(Config config, MapInfos area)
         {
             var sb = new StringBuilder();
 
             var center = area.TerrainToLatLong(area.Width / 2, area.Height / 2);
+            /*
+            var sw = GetGridZone(area.SouthWest);
+            var se = GetGridZone(area.SouthEast);
+            var nw = GetGridZone(area.NorthWest);
+            var ne = GetGridZone(area.NorthEast);
+            */
 
             sb.Append(FormattableString.Invariant(@$"
 latitude={center.Latitude.ToDouble():0.00000000};

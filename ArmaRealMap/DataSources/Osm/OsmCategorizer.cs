@@ -167,7 +167,8 @@ namespace ArmaRealMap.Osm
 
         internal static RoadType? ToRoadType(TagsCollectionBase tags)
         {
-            switch (tags.GetValue("highway"))
+            var type = tags.GetValue("highway");
+            switch (type)
             {
                 case "motorway":
                     return RoadType.TwoLanesMotorway;
@@ -205,7 +206,10 @@ namespace ArmaRealMap.Osm
                 case "track":
                     return RoadType.SingleLaneDirtPath;
             }
-            Trace.WriteLine($"Unknown highway='{tags.GetValue("highway")}'");
+            if ( !string.IsNullOrEmpty(type))
+            {
+                Trace.WriteLine($"Unknown highway='{type}'");
+            }
             return null;
         }
 

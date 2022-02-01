@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -7,7 +8,7 @@ using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
-using NetTopologySuite.Geometries;
+using ArmaRealMap.TerrainData.Forests;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -21,9 +22,12 @@ namespace ArmaRealMap
         {
             var initialLakes = shapes.Where(s => s.Category == OsmShapeCategory.Lake).SelectMany(s => s.TerrainPolygons).ToList();
 
+            var cropped = NatureBuilder.CropPolygonsToTerrain(data, initialLakes);
+
             var objects = new List<TerrainObject>();
 
             var minimalArea = Math.Pow(5 * data.Config.CellSize, 2); // 5 x 5 nodes minimum
+            var minimalOffsetArea = data.Config.CellSize * data.Config.CellSize;
 
             var embankmentsSegments = data.Roads.Where(r => r.SpecialSegment == Roads.RoadSpecialSegment.Embankment).ToList();
 
@@ -31,7 +35,7 @@ namespace ArmaRealMap
 
             var embankments = embankmentsSegments.SelectMany(s => s.Path.ToTerrainPolygon(EmbankmentWidth(data, s))).ToList();
 
-            var lakes = initialLakes.SelectMany(l => l.SubstractAll(embankments)).ToList();
+            var lakes = cropped.SelectMany(l => l.SubstractAll(embankments)).ToList();
 
             data.Lakes = new List<Lake>();
 
@@ -44,17 +48,25 @@ namespace ArmaRealMap
                     continue; // too small
                 }
 
-                var lake = new Lake();
+                var offsetArea = g.Offset(data.Config.CellSize * -2f).Sum(a => a.Area);
+                if (offsetArea < minimalOffsetArea)
+                {
+                    Trace.WriteLine($"Lake {g}");
+                    Trace.WriteLine($"is in fact too small, {offsetArea} offseted -- {Math.Round(g.Area)} area");
+                    continue; // too small
+                }
 
-                var points = g.Shell;
-                lake.BorderElevation = points.Min(p => data.Elevation.ElevationAt(p));
+                var lake = new Lake();
+                var oldBorderElevation = g.Shell.Min(p => data.Elevation.ElevationAt(p));
+
+                lake.BorderElevation = GeometryHelper.PointsOnPath(g.Shell).Min(p => data.Elevation.ElevationAt(p));
                 lake.WaterElevation = lake.BorderElevation - 0.1f;
                 lake.TerrainPolygon = g;
 
                 var lakeElevation = data.Elevation.PrepareToMutate(g.MinPoint - cellSize, g.MaxPoint + cellSize, lake.BorderElevation - 2.5f, lake.BorderElevation);
                 lakeElevation.Image.Mutate(d =>
                 {
-                    DrawHelper.DrawPolygon(d, g, new SolidBrush(Color.FromRgba(255, 255, 255, 128)),  lakeElevation.ToPixels);
+                    DrawHelper.DrawPolygon(d, g, new SolidBrush(Color.FromRgba(255, 255, 255, 128)), lakeElevation.ToPixels);
                     foreach (var scaled in g.Offset(-10))
                     {
                         DrawHelper.DrawPolygon(d, scaled, new SolidBrush(Color.FromRgba(128, 128, 128, 192)), lakeElevation.ToPixels);
@@ -78,9 +90,9 @@ namespace ArmaRealMap
                     writer.WriteLine(obj.ToTerrainBuilderCSV());
                 }
             }
-
             data.Elevation.SaveToBin(data.Config.Target.GetCache("elevation-lakes.bin"));
-            //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-lakes.png"));
+            //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-lakes-v2.png"));
+            Trace.Flush();
         }
 
         private static void ProcessEmbankments(MapData data, List<Road> embankmentsSegments)
@@ -202,7 +214,7 @@ namespace ArmaRealMap
             {
                 for (int y = minY; y < maxY; ++y)
                 {
-                    if ( !grid10[x, y] )
+                    if (!grid10[x, y])
                     {
                         return false;
                     }

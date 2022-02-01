@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using ArmaRealMap.ElevationModel;
@@ -26,7 +27,20 @@ namespace ArmaRealMap.TerrainData.ElevationModel
 
         public float? WantedInitialRelativeElevation { get; set; }
 
-        public float? LowerLimitRelativeElevation { get; set; }
+        public float? LowerLimitRelativeElevation
+        {
+            get 
+            {
+                if (LowerLimitAbsoluteElevation.HasValue)
+                {
+                    return LowerLimitAbsoluteElevation - InitialElevation;
+                }
+                return null;
+            }
+            set { LowerLimitAbsoluteElevation = value + InitialElevation; }
+        }
+
+        public float? LowerLimitAbsoluteElevation { get; private set; }
 
         public float? Elevation { get; private set; }
 
@@ -63,9 +77,9 @@ namespace ArmaRealMap.TerrainData.ElevationModel
             }
         }
 
-        public void MustBeLowerThan(ElevationConstraintNode other, float shift = 0f, bool optional = false)
+        public void MustBeLowerThan(ElevationConstraintNode other)
         {
-            Constraints.Add(new ElevationConstraint(lowerThan: other, lowerShift: shift, optional: optional));
+            Constraints.Add(new ElevationConstraint(lowerThan: other));
         }
 
         public bool CanSolve
@@ -103,9 +117,9 @@ namespace ArmaRealMap.TerrainData.ElevationModel
                 elevation = constraint.Apply(elevation);
             }
 
-            if (LowerLimitRelativeElevation != null )
+            if (LowerLimitAbsoluteElevation != null)
             {
-                var min = LowerLimitRelativeElevation.Value + InitialElevation;
+                var min = LowerLimitAbsoluteElevation.Value;
                 if (elevation < min)
                 {
                     elevation = min;
@@ -135,9 +149,17 @@ namespace ArmaRealMap.TerrainData.ElevationModel
             SetElevation(ComputeBaseElevation());
         }
 
-        internal void ClearOptionalConstraints()
+        internal void SetNotBelow(float minimalElevation)
         {
-            Constraints.RemoveAll(c => c.Optional && !c.IsSolved);
+            if (LowerLimitAbsoluteElevation.HasValue && LowerLimitAbsoluteElevation.Value >= minimalElevation)
+            {
+                return;
+            }
+            LowerLimitAbsoluteElevation = minimalElevation;
+            foreach(var constraint in Constraints)
+            {
+                constraint.LowerThan?.SetNotBelow(minimalElevation);
+            }
         }
     }
 }

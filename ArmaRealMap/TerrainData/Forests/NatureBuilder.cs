@@ -179,7 +179,7 @@ namespace ArmaRealMap.TerrainData.Forests
             return CropPolygonsToTerrain(data, shapes.Where(s => s.Category == category).SelectMany(s => s.TerrainPolygons));
         }
 
-        private static List<TerrainPolygon> CropPolygonsToTerrain(MapData data, IEnumerable<TerrainPolygon> forestPolygons)
+        public static List<TerrainPolygon> CropPolygonsToTerrain(MapData data, IEnumerable<TerrainPolygon> forestPolygons)
         {
             var list = forestPolygons.ToList();
             var area = data.MapInfos.Polygon;

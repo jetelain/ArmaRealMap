@@ -9,10 +9,6 @@ using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
 using ArmaRealMap.TerrainData.ElevationModel;
-using MathNet.Numerics.LinearRegression;
-using NetTopologySuite.Geometries;
-using OsmSharp;
-using OsmSharp.Streams;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
 
@@ -49,6 +45,8 @@ namespace ArmaRealMap
 
                 ProcessWaterWays(data, shapes, constraintGrid);
 
+                ProtectLakes(data, constraintGrid);
+
                 constraintGrid.SolveAndApplyOnGrid(data);
 
                 ProcessBridgeObjects(data, data.Elevation, libs);
@@ -61,6 +59,7 @@ namespace ArmaRealMap
             }
 
             data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation.asc"));
+            //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation.png"));
         }
 
         private static void ProcessReserved(Config config, MapInfos mapInfos, ElevationGrid elevation)
@@ -124,7 +123,7 @@ namespace ArmaRealMap
             var lakes = data.Lakes.Select(l => l.TerrainPolygon);
             var waterWaysPaths = waterWays.SelectMany(w => w.TerrainPaths).SelectMany(p => p.SubstractAll(lakes)).Where(w => w.Length > 10f).ToList();
 
-            var report = new ProgressReport("Waterways", waterWays.Count);
+            var report = new ProgressReport("Waterways", waterWaysPaths.Count);
             foreach (var waterWay in waterWaysPaths)
             {
                 var points = GeometryHelper.PointsOnPath(waterWay.Points, 2).Select(constraintGrid.Node).ToList();
@@ -132,10 +131,27 @@ namespace ArmaRealMap
                 {
                     if (segment.First != segment.Second)
                     {
-                        var delta = segment.Second.Point.Vector - segment.First.Point.Vector;
                         segment.Second.MustBeLowerThan(segment.First);
                         segment.First.WantedInitialRelativeElevation = -1f;
                         segment.First.LowerLimitRelativeElevation = -4f;
+                    }
+                }
+                report.ReportOneDone();
+            }
+            report.TaskDone();
+
+        }
+
+        private static void ProtectLakes(MapData data, ElevationConstraintGrid constraintGrid)
+        {
+            var report = new ProgressReport("LakeLimit", data.Lakes.Count);
+            foreach (var lake in data.Lakes)
+            {
+                foreach (var extended in lake.TerrainPolygon.Offset(2 * data.Config.CellSize))
+                {
+                    foreach (var node in constraintGrid.Search(extended.MinPoint.Vector, extended.MaxPoint.Vector).Where(p => extended.Contains(p.Point)))
+                    {
+                        node.SetNotBelow(lake.BorderElevation);
                     }
                 }
                 report.ReportOneDone();

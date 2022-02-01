@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Osm;
+using ArmaRealMap.Roads;
 using BIS.PAA;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
@@ -34,7 +35,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             }
 
             int chuncking = 0;
-            using (var fakeSat = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, Color.Black))
+            using (var fakeSat = new Image<Rgba32>(area.ImageryWidth, area.ImageryHeight, Color.Black))
             {
                 fakeSat.Mutate(i => i.Fill(brushes[TerrainMaterial.Default]));
 
@@ -56,11 +57,14 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                     }
                 });
                 report.TaskDone();
-                chuncking = DrawHelper.SavePngChuncked(fakeSat, config.Target.GetTerrain("sat-fake.png"));
+
+                var roads = data.Roads.Where(r => r.RoadType <= RoadType.SingleLaneDirtRoad).ToList();
+
+                //chuncking = DrawHelper.SavePngChuncked(fakeSat, config.Target.GetTerrain("sat-fake.png"));
                 if (config.GenerateSatTiles)
                 {
                     var realSat = Image.Load<Rgb24>(config.Target.GetTerrain("sat-raw.png"));
-                    SatMapTiling(realSat, fakeSat, config);
+                    SatMapTiling(realSat, fakeSat, config, area, roads);
                 }
             }
             /*
@@ -70,7 +74,16 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             }*/
         }
 
-        private static void SatMapTiling(Image<Rgb24> realSat, Image<Rgb24> fakeSat, Config config)
+        private static IBrush GetBrush(RoadType roadType)
+        {
+            if (roadType >= RoadType.TwoLanesConcreteRoad)
+            {
+                return new SolidBrush(Color.ParseHex("5A4936"));
+            }
+            return new SolidBrush(Color.ParseHex("4D4D4D"));
+        }
+
+        private static void SatMapTiling(Image<Rgb24> realSat, Image<Rgba32> fakeSat, Config config, MapInfos area, List<Road> roads)
         {
             // Going through TerrainBuilder takes ~4 hours, with a lot of manual operations
             // Here, for exactly the same result, it takes 4 minutes, all automated ! (but will eat all your CPU)
@@ -93,6 +106,18 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
                             tile.Mutate(c => c.DrawImage(realSat, pos, 1.0f));
                             tile.Mutate(p => p.DrawImage(fake, 0.75f));
+
+                            tile.Mutate(d =>
+                            {
+                                foreach (var road in roads)
+                                {
+                                    foreach (var polygon in road.Polygons)
+                                    {
+                                        DrawHelper.DrawPolygon(d, polygon, GetBrush(road.RoadType), l => l.Select(p => area.TerrainToPixelsPoint(p) + pos));
+                                    }
+                                }
+                            });
+
                             FillEdges(realSat, x, num, tile, y, pos);
                             tile.Save(config.Target.GetLayer($"S_{x:000}_{y:000}_lco.png"));
                             report2.ReportOneDone();

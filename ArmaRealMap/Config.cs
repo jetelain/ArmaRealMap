@@ -45,7 +45,7 @@ namespace ArmaRealMap
         public string GetTerrain(string name) => Path.Combine(Terrain ?? string.Empty, name);
         public string GetCache(string name) => Path.Combine(Cache ?? string.Empty, name);
         public string GetDebug(string name) => Path.Combine(Debug ?? string.Empty, name);
-        public string GetLayer(string name) => Path.Combine(Config, "data", "layers", name);
+        public string GetLayer(string name) => Path.Combine(Config, "data", "layers", name).Replace("P:", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive");
     }
 
     public class Config

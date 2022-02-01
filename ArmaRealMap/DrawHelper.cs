@@ -108,7 +108,7 @@ namespace ArmaRealMap
                     {
                         p.DrawImage(dimg, clip.Location, 1);
                     }
-                    catch
+                    catch(ImageProcessingException)
                     {
 
                     }
@@ -116,7 +116,14 @@ namespace ArmaRealMap
             }
             else
             {
-                p.FillPolygon(shapeGraphicsOptions, brush, outer.ToArray());
+                try
+                {
+                    p.FillPolygon(shapeGraphicsOptions, brush, outer.ToArray());
+                }
+                catch(ImageProcessingException)
+                {
+
+                }
             }
         }
 

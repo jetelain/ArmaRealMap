@@ -3,18 +3,11 @@
     class ElevationConstraint
     {
         private readonly ElevationConstraintNode lowerThan;
-        private readonly float lowerShift;
 
-        public ElevationConstraint(ElevationConstraintNode lowerThan = null, float lowerShift = 0f, bool optional = false)
+        public ElevationConstraint(ElevationConstraintNode lowerThan)
         {
             this.lowerThan = lowerThan;
-            this.lowerShift = lowerShift;
-            this.Optional = optional;
         }
-
-        public ElevationConstraintNode Node => lowerThan;
-
-        public bool Optional { get; }
 
         public bool IsSolved
         {
@@ -28,14 +21,16 @@
             }
         }
 
+        public ElevationConstraintNode LowerThan => lowerThan;
+
         internal float Apply(float elevation)
         {
             if (lowerThan != null)
             {
-                var minimalElevation = lowerThan.Elevation.Value - lowerShift;
-                if (elevation > minimalElevation)
+                var shouldBeLowerThan = lowerThan.Elevation.Value;
+                if (elevation > shouldBeLowerThan)
                 {
-                    elevation = minimalElevation;
+                    elevation = shouldBeLowerThan;
                 }
             }
             return elevation;

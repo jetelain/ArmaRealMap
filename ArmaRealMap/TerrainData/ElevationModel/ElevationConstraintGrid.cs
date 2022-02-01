@@ -4,16 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ArmaRealMap.ElevationModel;
 using ArmaRealMap.Geometries;
-using MathNet.Numerics;
 using MathNet.Numerics.LinearRegression;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 
 namespace ArmaRealMap.TerrainData.ElevationModel
 {
@@ -119,9 +114,10 @@ namespace ArmaRealMap.TerrainData.ElevationModel
             }
 
             SolveLoop(report);
+            report.TaskDone();
 
             var unsolved = Values.Where(v => !v.IsSolved).ToList();
-            if (unsolved.Count > 0)
+            /*if (unsolved.Count > 0)
             {
                 foreach (var value in unsolved)
                 {
@@ -129,13 +125,13 @@ namespace ArmaRealMap.TerrainData.ElevationModel
                 }
                 SolveLoop(report);
                 unsolved = Values.Where(v => !v.IsSolved).ToList();
-            }
-
+            }*/
+            Console.WriteLine($"Unsolved: {unsolved.Count}");
             foreach (var value in unsolved)
             {
                 value.GiveUp();
             }
-            report.TaskDone();
+
         }
 
         private void SolveLoop(ProgressReport report)

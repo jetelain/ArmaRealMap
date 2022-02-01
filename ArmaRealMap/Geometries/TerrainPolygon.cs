@@ -473,5 +473,15 @@ namespace ArmaRealMap.Geometries
         {
             return Equals(obj as TerrainPolygon);
         }
+
+        public override int GetHashCode()
+        {
+            return (Holes.Count, Shell.Count, Shell.First()).GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return AsPolygon.ToString();
+        }
     }
 }
