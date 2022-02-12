@@ -90,8 +90,6 @@ namespace ArmaRealMap
                     writer.WriteLine(obj.ToTerrainBuilderCSV());
                 }
             }
-            data.Elevation.SaveToBin(data.Config.Target.GetCache("elevation-lakes.bin"));
-            //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation-lakes-v2.png"));
             Trace.Flush();
         }
 

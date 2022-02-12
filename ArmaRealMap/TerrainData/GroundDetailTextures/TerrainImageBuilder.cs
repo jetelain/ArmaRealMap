@@ -109,7 +109,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
                             tile.Mutate(d =>
                             {
-                                foreach (var road in roads)
+                                foreach (var road in roads.Where(r => r.SpecialSegment != RoadSpecialSegment.Bridge))
                                 {
                                     foreach (var polygon in road.Polygons)
                                     {
