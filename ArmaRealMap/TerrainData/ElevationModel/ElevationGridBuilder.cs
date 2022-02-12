@@ -51,15 +51,15 @@ namespace ArmaRealMap
 
                 ProcessBridgeObjects(data, data.Elevation, libs);
 
-                data.Elevation.SaveToBin(data.Config.Target.GetCache("elevation.bin"));
+                data.Elevation.SaveToBin(cacheFile);
             }
             else
             {
-                data.Elevation.LoadFromBin(data.Config.Target.GetCache("elevation.bin"));
+                data.Elevation.LoadFromBin(cacheFile);
             }
 
+            data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation.png"));
             data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation.asc"));
-            //data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation.png"));
         }
 
         private static void ProcessReserved(Config config, MapInfos mapInfos, ElevationGrid elevation)
@@ -126,7 +126,7 @@ namespace ArmaRealMap
             var report = new ProgressReport("Waterways", waterWaysPaths.Count);
             foreach (var waterWay in waterWaysPaths)
             {
-                var points = GeometryHelper.PointsOnPath(waterWay.Points, 2).Select(constraintGrid.Node).ToList();
+                var points = GeometryHelper.PointsOnPath(waterWay.Points, 2).Select(constraintGrid.NodeSoft).ToList();
                 foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
                 {
                     if (segment.First != segment.Second)
@@ -152,6 +152,7 @@ namespace ArmaRealMap
                     foreach (var node in constraintGrid.Search(extended.MinPoint.Vector, extended.MaxPoint.Vector).Where(p => extended.Contains(p.Point)))
                     {
                         node.SetNotBelow(lake.BorderElevation);
+                        node.IsProtected = true;
                     }
                 }
                 report.ReportOneDone();
@@ -162,10 +163,10 @@ namespace ArmaRealMap
         private static void ProcessRoadEmbankment(ElevationConstraintGrid constraintGrid, Road road)
         {
             // pin start/stop, imposed smoothing as SRTM precision is too low for this kind of elevation detail
-            var start = constraintGrid.Node(road.Path.FirstPoint).PinToInitial();
-            var stop = constraintGrid.Node(road.Path.LastPoint).PinToInitial();
+            var start = constraintGrid.NodeHard(road.Path.FirstPoint).PinToInitial();
+            var stop = constraintGrid.NodeHard(road.Path.LastPoint).PinToInitial();
             var lengthFromStart = 0f;
-            var points = GeometryHelper.PointsOnPath(road.Path.Points, 2).Select(constraintGrid.Node).ToList();
+            var points = GeometryHelper.PointsOnPath(road.Path.Points, 2).Select(constraintGrid.NodeHard).ToList();
             var totalLength = points.Take(points.Count - 1).Zip(points.Skip(1)).Sum(segment => (segment.Second.Point.Vector - segment.First.Point.Vector).Length());
             var smooth = constraintGrid.CreateSmoothSegment(start, road.Width * 4f);
             foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
@@ -173,7 +174,7 @@ namespace ArmaRealMap
                 if (segment.First != segment.Second)
                 {
                     var delta = segment.Second.Point.Vector - segment.First.Point.Vector;
-                    constraintGrid.AddFlatSegment(segment.First, delta, road.Width);
+                    constraintGrid.AddFlatSegmentHard(segment.First, delta, road.Width);
                     if (segment.First.Elevation == null)
                     {
                         var elevation = start.Elevation.Value + ((stop.Elevation.Value - start.Elevation.Value) * (lengthFromStart / totalLength));
@@ -187,14 +188,14 @@ namespace ArmaRealMap
         private static void ProcessNormalRoad(ElevationConstraintGrid constraintGrid, Road road)
         {
             var lengthFromStart = 0f;
-            var points = GeometryHelper.PointsOnPath(road.Path.Points, 2).Select(constraintGrid.Node).ToList();
-            var smooth = constraintGrid.CreateSmoothSegment(constraintGrid.Node(road.Path.FirstPoint), road.Width * 4f);
+            var points = GeometryHelper.PointsOnPath(road.Path.Points, 2).Select(constraintGrid.NodeHard).ToList();
+            var smooth = constraintGrid.CreateSmoothSegment(constraintGrid.NodeHard(road.Path.FirstPoint), road.Width * 4f);
             foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
             {
                 if (segment.First != segment.Second)
                 {
                     var delta = segment.Second.Point.Vector - segment.First.Point.Vector;
-                    constraintGrid.AddFlatSegment(segment.First, delta, road.Width);
+                    constraintGrid.AddFlatSegmentHard(segment.First, delta, road.Width);
                     lengthFromStart += delta.Length();
                     smooth.Add(lengthFromStart, segment.Second);
                 }
@@ -209,8 +210,8 @@ namespace ArmaRealMap
                 //ProcessNormalRoad(constraintGrid, road);
                 return;
             }
-            constraintGrid.Node(road.Path.FirstPoint).PinToInitial();
-            constraintGrid.Node(road.Path.LastPoint).PinToInitial();
+            constraintGrid.NodeHard(road.Path.FirstPoint).PinToInitial();
+            constraintGrid.NodeHard(road.Path.LastPoint).PinToInitial();
 
             //var center = new TerrainPoint(Vector2.Lerp(road.Path.FirstPoint.Vector, road.Path.LastPoint.Vector, 0.5f));
             //constraintGrid.Node(center).WantedInitialRelativeElevation = -1.5f;
