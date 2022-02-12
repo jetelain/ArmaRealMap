@@ -62,8 +62,8 @@ class CfgWorlds
 			vehicles[] = {};
 		};
  
-		minTreesInForestSquare = 3;
-		minRocksInRockSquare = 1;
+		minTreesInForestSquare = 5;
+		minRocksInRockSquare = 10;
  
 		class Subdivision{};
 		class Names{
@@ -76,6 +76,7 @@ class CfgWorlds
 		};
 		*/
 		#include"mapinfos.hpp"
+		#include"weather.hpp"
 		
 		loadingTexts[]={
 			"Gossi est une ville et une commune du Mali, dans le cercle de Gourma-Rharous et la région de Tombouctou, située à 160 km au sud-ouest de Gao.",
@@ -89,4 +90,5 @@ class CfgWorlds
 		
 		pictureMap = "z\arm\addons\gossi\data\pictureMap_ca.paa";
 	};
+	
 };
