@@ -37,7 +37,7 @@ namespace ArmaRealMap
             var cacheFile = data.Config.Target.GetCache("elevation.bin");
             if (!File.Exists(cacheFile))
             {
-                ProcessReserved(data.Config, data.MapInfos, data.Elevation);
+                ProcessForced(data.Config, data.MapInfos, data.Elevation);
 
                 var constraintGrid = new ElevationConstraintGrid(data.MapInfos, data.Elevation);
 
@@ -62,18 +62,18 @@ namespace ArmaRealMap
             data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation.asc"));
         }
 
-        private static void ProcessReserved(Config config, MapInfos mapInfos, ElevationGrid elevation)
+        private static void ProcessForced(Config config, MapInfos mapInfos, ElevationGrid elevation)
         {
-            if (config.Reserved != null)
+            if (config.ForcedElevation != null)
             {
-                foreach (var area in config.Reserved.Where(r => r.Elevation != null))
+                foreach (var area in config.ForcedElevation)
                 {
                     var polyBase = area.Polygon.Offset(mapInfos.CellSize).FirstOrDefault() ?? area.Polygon;
                     var polyExtened = area.Polygon.Offset(mapInfos.CellSize * 2).FirstOrDefault() ?? area.Polygon;
-                    var mutate = elevation.PrepareToMutate(polyExtened.MinPoint, polyExtened.MaxPoint, area.Elevation.Value - 10f, area.Elevation.Value + 10f);
+                    var mutate = elevation.PrepareToMutate(polyExtened.MinPoint, polyExtened.MaxPoint, area.Elevation - 10f, area.Elevation + 10f);
                     mutate.Image.Mutate(m => {
-                        DrawHelper.DrawPolygon(m, polyExtened, new SolidBrush(mutate.ElevationToColor(area.Elevation.Value).WithAlpha(0.5f)), mutate.ToPixels);
-                        DrawHelper.DrawPolygon(m, polyBase, new SolidBrush(mutate.ElevationToColor(area.Elevation.Value)), mutate.ToPixels);
+                        DrawHelper.DrawPolygon(m, polyExtened, new SolidBrush(mutate.ElevationToColor(area.Elevation).WithAlpha(0.5f)), mutate.ToPixels);
+                        DrawHelper.DrawPolygon(m, polyBase, new SolidBrush(mutate.ElevationToColor(area.Elevation)), mutate.ToPixels);
                     });
                     mutate.Apply();
                 }

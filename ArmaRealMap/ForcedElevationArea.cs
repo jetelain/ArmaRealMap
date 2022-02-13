@@ -2,10 +2,10 @@
 
 namespace ArmaRealMap
 {
-    public class ReservedArea
+    public class ForcedElevationArea
     {
         public TerrainPolygon Polygon { get; set; }
 
-        public float? Elevation { get; set; }
+        public float Elevation { get; set; }
     }
 }

@@ -199,7 +199,7 @@ namespace ArmaRealMap
                     
                     Console.WriteLine("==== Elevation ====");
                     ElevationGridBuilder.MakeDetailed(data, shapes, olibs);
-                    /*
+                    
                     Console.WriteLine("==== Buildings ====");
                     BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 
@@ -223,7 +223,7 @@ namespace ArmaRealMap
 
                     Console.WriteLine("==== Fences and walls ====");
                     PlaceBarrierObjects(data, db, olibs, filtered);
-                    */
+                    
                     Console.WriteLine("==== Terrain images ====");
                     TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);
                }

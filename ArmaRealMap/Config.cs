@@ -77,6 +77,6 @@ namespace ArmaRealMap
 
         public bool IsScaled => Scale != null;
 
-        public ReservedArea[] Reserved { get; set; }
+        public ForcedElevationArea[] ForcedElevation { get; set; }
     }
 }
