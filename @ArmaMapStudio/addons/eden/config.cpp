@@ -13,6 +13,7 @@ class CfgPatches {
 };
 
 class ctrlMenuStrip;
+class ctrlMenu;
 class display3DEN
 {
 	class Controls
@@ -33,6 +34,22 @@ class display3DEN
 			};
 		};
 	};
+	
+	class ContextMenu : ctrlMenu
+    {
+        class Items
+        {
+            items[]+={"AMS_Transform"};
+            class AMS_Transform
+            {
+                action=QUOTE([] spawn FUNC(transform););
+                text="Re-créer les objets cachés";
+                conditionShow="selectedLogic";
+                value=0;
+                opensNewWindow=0;
+            };
+        };
+    };
 };
 
 
@@ -59,6 +76,7 @@ class Cfg3DEN
 		};
 	};
 };
+
 
 class CfgVehicles {
 	
@@ -112,6 +130,15 @@ class CfgVehicles {
 		class AmsEden
 		{
 			canexport = -1;
+		};
+    };
+
+	class Shelter_base_F;
+	class CamoNet_BLUFOR_F: Shelter_base_F 
+	{
+		class AmsEden
+		{
+			canexport = 1;
 		};
     };
 };
