@@ -37,6 +37,8 @@ namespace ArmaRealMap
 
         public NetTopologySuite.Geometries.Polygon Poly => box.Poly;
 
+        public IBoundingShape Box => box;
+
         public TerrainPoint Center => box.Center;
 
         public float Angle => box.Angle;

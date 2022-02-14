@@ -202,7 +202,7 @@ namespace ArmaRealMap
                     
                     Console.WriteLine("==== Buildings ====");
                     BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
-
+                    
                     Console.WriteLine("==== GroundRocks ====");
                     NatureBuilder.PrepareGroundRock(data, shapes, olibs);
 
@@ -220,7 +220,7 @@ namespace ArmaRealMap
 
                     Console.WriteLine("==== Objects ====");
                     PlaceIsolatedObjects(data, olibs, filtered);
-
+                    
                     Console.WriteLine("==== Fences and walls ====");
                     PlaceBarrierObjects(data, db, olibs, filtered);
                     
@@ -298,6 +298,9 @@ namespace ArmaRealMap
             {
                 return;
             }
+            // Avoid walls within buildings, but tolerate 25cm collision
+            var buildingsExclusionZone = data.Buildings.Select(b => b.Box).OfType<BoundingBox>().SelectMany(c => c.Polygon.Offset(-0.25f)).ToList();
+
             var probLibs = libs.Count == 1 ? libs : libs.SelectMany(l => Enumerable.Repeat(l, (int)((l.Probability ?? 1d) * 100))).ToList();
             var interpret = new DefaultFeatureInterpreter2();
             var nodes = filtered.Where(o => o.Type == OsmGeoType.Way && filter((Way)o)).ToList();
@@ -309,7 +312,7 @@ namespace ArmaRealMap
                 {
                     foreach (var path in TerrainPath.FromGeometry(feature.Geometry, data.MapInfos.LatLngToTerrainPoint))
                     {
-                        foreach (var pathSegment in path.ClippedBy(cliparea))
+                        foreach (var pathSegment in path.ClippedBy(cliparea).SelectMany(s => s.SubstractAll(buildingsExclusionZone)))
                         {
                             var random = new Random((int)Math.Truncate(pathSegment.FirstPoint.X + pathSegment.FirstPoint.Y));
                             var lib = libs.Count == 1 ? libs[0] : libs[random.Next(0, libs.Count)];
