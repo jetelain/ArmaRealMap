@@ -224,6 +224,11 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
         private static Image<Bgra32> GetImage(Config config, TerrainMaterial mat)
         {
             var texture = Path.Combine("P:", mat.Co(config.Terrain));
+            var pngFake = Path.Combine(Path.GetDirectoryName(texture), "fakesat", Path.GetFileNameWithoutExtension(texture) + ".png");
+            if (File.Exists(pngFake))
+            {
+                return Image.Load(pngFake).CloneAs<Bgra32>();
+            }
             using (var paaStream = File.OpenRead(texture))
             {
                 var paa = new PAA(paaStream);
