@@ -320,7 +320,7 @@ namespace TerrainBuilderUtil
                     var yaw = (float)System.Math.Atan2(add.Transform.Matrix.M13, add.Transform.Matrix.M33) * 180 / Math.PI;
                     var pitch = (float)System.Math.Asin(-add.Transform.Matrix.M23) * 180 / Math.PI;
                     var roll = (float)System.Math.Atan2(add.Transform.Matrix.M21, add.Transform.Matrix.M22) * 180 / Math.PI;
-                    writer.WriteLine(FormattableString.Invariant(@$"""{libs.FindByModel(add.Model).Name}"";{add.Transform.Matrix.M41};{add.Transform.Matrix.M43};{-yaw};{pitch};{roll};1;{add.Transform.Matrix.M42};"));
+                    writer.WriteLine(FormattableString.Invariant(@$"""{libs.FindByModel(add.Model).Name}"";{200000+add.Transform.Matrix.M41};{add.Transform.Matrix.M43};{-yaw};{pitch};{roll};1;{add.Transform.Matrix.M42};"));
                 }
             }
 
