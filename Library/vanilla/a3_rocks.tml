@@ -100,7 +100,7 @@
 		<Placement></Placement>
 	</Template>
 	<Template>
-		<Name>sharpRock_apart</Name>
+		<Name>sharpRock_apart_FUZZ</Name>
 		<File>a3\rocks_f\sharpRock_apart.p3d</File>
 		<Date>2020-07-02 14:55:16.628765</Date>
 		<Archive></Archive>
@@ -133,7 +133,7 @@
 		<Placement></Placement>
 	</Template>
 	<Template>
-		<Name>sharpRock_monolith</Name>
+		<Name>sharpRock_monolith_FUZZ</Name>
 		<File>a3\rocks_f\sharpRock_monolith.p3d</File>
 		<Date>2020-07-02 14:55:16.628765</Date>
 		<Archive></Archive>
@@ -166,7 +166,7 @@
 		<Placement></Placement>
 	</Template>
 	<Template>
-		<Name>sharpRock_spike</Name>
+		<Name>sharpRock_spike_FUZZ</Name>
 		<File>a3\rocks_f\sharpRock_spike.p3d</File>
 		<Date>2020-07-02 14:55:16.628765</Date>
 		<Archive></Archive>
@@ -199,7 +199,7 @@
 		<Placement></Placement>
 	</Template>
 	<Template>
-		<Name>sharpRock_wallH</Name>
+		<Name>sharpRock_wallH_FUZZ</Name>
 		<File>a3\rocks_f\sharpRock_wallH.p3d</File>
 		<Date>2020-07-02 14:55:16.628765</Date>
 		<Archive></Archive>
@@ -232,7 +232,7 @@
 		<Placement></Placement>
 	</Template>
 	<Template>
-		<Name>sharpRock_wallV</Name>
+		<Name>sharpRock_wallV_FUZZ</Name>
 		<File>a3\rocks_f\sharpRock_wallV.p3d</File>
 		<Date>2020-07-02 14:55:16.628765</Date>
 		<Archive></Archive>
@@ -265,7 +265,7 @@
 		<Placement></Placement>
 	</Template>
 	<Template>
-		<Name>sharpStones_erosion</Name>
+		<Name>sharpStones_erosion_FUZZ</Name>
 		<File>a3\rocks_f\sharpStones_erosion.p3d</File>
 		<Date>2020-07-02 14:55:16.628765</Date>
 		<Archive></Archive>
@@ -298,7 +298,7 @@
 		<Placement></Placement>
 	</Template>
 	<Template>
-		<Name>sharpStone_01</Name>
+		<Name>sharpStone_01_FUZZ</Name>
 		<File>a3\rocks_f\sharpStone_01.p3d</File>
 		<Date>2020-07-02 14:55:16.628765</Date>
 		<Archive></Archive>
@@ -331,7 +331,7 @@
 		<Placement></Placement>
 	</Template>
 	<Template>
-		<Name>sharpStone_02</Name>
+		<Name>sharpStone_02_FUZZ</Name>
 		<File>a3\rocks_f\sharpStone_02.p3d</File>
 		<Date>2020-07-02 14:55:16.628765</Date>
 		<Archive></Archive>
@@ -364,7 +364,7 @@
 		<Placement></Placement>
 	</Template>
 	<Template>
-		<Name>sharpStone_03</Name>
+		<Name>sharpStone_03_FUZZ</Name>
 		<File>a3\rocks_f\sharpStone_03.p3d</File>
 		<Date>2020-07-02 14:55:16.628765</Date>
 		<Archive></Archive>

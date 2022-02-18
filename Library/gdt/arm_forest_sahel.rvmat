@@ -12,8 +12,8 @@ class Stage1
 	uvSource="tex";
 	class uvTransform
 	{
-		aside[]={7,0,0};
-		up[]={0,7,0};
+		aside[]={40,0,0};
+		up[]={0,40,0};
 		dir[]={0,0,0};
 		pos[]={0,0,0};
 	};
@@ -24,8 +24,8 @@ class Stage2
 	uvSource="tex";
 	class uvTransform
 	{
-		aside[]={7,0,0};
-		up[]={0,7,0};
+		aside[]={40,0,0};
+		up[]={0,40,0};
 		dir[]={0,0,0};
 		pos[]={0,0,0};
 	};

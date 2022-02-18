@@ -1,5 +1,5 @@
-ambient[]={0.89999998,0.89999998,0.89999998,1};
-diffuse[]={0.89999998,0.89999998,0.89999998,1};
+ambient[]={1,1,1,1};
+diffuse[]={1,1,1,1};
 forcedDiffuse[]={0.02,0.02,0.02,1};
 emmisive[]={0,0,0,0};
 specular[]={0,0,0,0};
@@ -12,8 +12,8 @@ class Stage1
 	uvSource="tex";
 	class uvTransform
 	{
-		aside[]={5,0,0};
-		up[]={0,5,0};
+		aside[]={40,0,0};
+		up[]={0,40,0};
 		dir[]={0,0,0};
 		pos[]={0,0,0};
 	};
@@ -24,8 +24,8 @@ class Stage2
 	uvSource="tex";
 	class uvTransform
 	{
-		aside[]={5,0,0};
-		up[]={0,5,0};
+		aside[]={40,0,0};
+		up[]={0,40,0};
 		dir[]={0,0,0};
 		pos[]={0,0,0};
 	};
