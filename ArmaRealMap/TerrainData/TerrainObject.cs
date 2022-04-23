@@ -42,6 +42,10 @@ namespace ArmaRealMap
         public TerrainPoint Center => box.Center;
 
         public float Angle => box.Angle;
+        public float? Pitch => pitch;
+        public float? Roll => roll;
+        public float? Elevation => elevation;
+
 
         public SingleObjetInfos Object => objectInfos;
 

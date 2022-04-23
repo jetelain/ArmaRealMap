@@ -41,7 +41,7 @@ namespace ArmaRealMap.GroundTextureDetails
             return GetMaterial(region).DefaultColor;
         }
 
-        private TerrainMaterial GetMaterial(TerrainRegion region)
+        public TerrainMaterial GetMaterial(TerrainRegion region)
         {
             if (this == Default)
             {

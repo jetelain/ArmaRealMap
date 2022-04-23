@@ -215,11 +215,11 @@ namespace ArmaRealMap.Roads
                 }
             }
             var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
-            if (config.Target?.Roads != null && !Directory.Exists(config.Target?.Roads))
+            if (config.Target?.RoadsPhyicalPath != null && !Directory.Exists(config.Target?.RoadsPhyicalPath))
             {
-                Directory.CreateDirectory(config.Target?.Roads);
+                Directory.CreateDirectory(config.Target?.RoadsPhyicalPath);
             }
-            var shapeWriter = new ShapefileDataWriter(Path.Combine(config.Target?.Roads ?? string.Empty, "roads.shp"), new GeometryFactory())
+            var shapeWriter = new ShapefileDataWriter(Path.Combine(config.Target?.RoadsPhyicalPath ?? string.Empty, "roads.shp"), new GeometryFactory())
             {
                 Header = header
             };

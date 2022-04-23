@@ -31,21 +31,21 @@ namespace ArmaRealMap
 
     public class TargetConfig
     {
+        public string WorldName { get; set; }
         public string PboPrefix { get; set; }
         public string Terrain { get; set; }
         public string Debug { get; set; }
         public string Cache { get; set; }
 
         [JsonIgnore]
-        public string Roads => Path.Combine(Config ?? string.Empty, "data", "roads");
+        public string RoadsPhyicalPath => Path.Combine(WorldPhysicalPath ?? string.Empty, "data", "roads");
         [JsonIgnore]
-        public string GroundDetailTextures => Path.Combine(Config ?? string.Empty, "data", "gdt");
-        [JsonIgnore]
-        public string Config => PboPrefix != null ? Path.Combine("P:\\", PboPrefix) : string.Empty;
+        public string WorldPhysicalPath => PboPrefix != null ? Path.Combine("P:\\", PboPrefix) : string.Empty;
         public string GetTerrain(string name) => Path.Combine(Terrain ?? string.Empty, name);
         public string GetCache(string name) => Path.Combine(Cache ?? string.Empty, name);
         public string GetDebug(string name) => Path.Combine(Debug ?? string.Empty, name);
-        public string GetLayer(string name) => Path.Combine(Config, "data", "layers", name).Replace("P:", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive");
+        public string GetLayerPhysicalPath(string name) => Path.Combine(WorldPhysicalPath, "data", "layers", name).Replace("P:", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive");
+        public string GetLayerLogicalPath(string name) => PboPrefix + "\\data\\layers\\" + name;
     }
 
     public class Config
@@ -67,7 +67,7 @@ namespace ArmaRealMap
 
         public int TileSize { get; set; } = 1024;
 
-        public int TileOverlap { get; set; } = 16;
+        public int RealTileOverlap => TileSize / 32;
 
         public bool GenerateSatTiles { get; set; } = true;
 
