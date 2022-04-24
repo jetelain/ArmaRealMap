@@ -11,15 +11,21 @@ namespace ArmaRealMap
 
         public string Path { get; set; }
 
-        public float CenterToElevation { get; set; }
+        public Vector3 BoundingCenter { get; set; }  
 
         public Vector2 MinPoint { get; set; } = new Vector2(-1, -1);
 
         public Vector2 MaxPoint { get; set; } = new Vector2(1, 1);
 
-        internal float GetElevation(ElevationGrid grid, TerrainPoint point)
+        internal float GetRelativeElevation(ElevationGrid grid, TerrainPoint point, Matrix4x4 matrix)
         {
-            return grid.ElevationAt(point) + CenterToElevation;
+            var pointToCenter = Vector3.Transform(BoundingCenter, matrix);
+            return grid.ElevationAt(new TerrainPoint(point.X - pointToCenter.X, point.Y - pointToCenter.Z)) + pointToCenter.Y;
+        }
+        internal float GetAbsoluteElevation(Matrix4x4 matrix)
+        {
+            var pointToCenter = Vector3.Transform(BoundingCenter, matrix);
+            return pointToCenter.Y;
         }
     }
 }

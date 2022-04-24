@@ -71,7 +71,7 @@ namespace ArmaRealMap
             yaw = FromRadians(-Math.Atan2(wrpObject.Transform.Matrix.M13, wrpObject.Transform.Matrix.M33));
             pitch = FromRadians(Math.Asin(-wrpObject.Transform.Matrix.M23));
             roll = FromRadians(Math.Atan2(wrpObject.Transform.Matrix.M21, wrpObject.Transform.Matrix.M22));
-            elevation = wrpObject.Transform.Matrix.M42;
+            elevation = wrpObject.Transform.Matrix.M42 - model.GetAbsoluteElevation(GetRotateAndScaleOnly(wrpObject.Transform.Matrix));
             elevationMode = ElevationMode.Absolute;
             if (Matrix4x4.Decompose(wrpObject.Transform.Matrix, out Vector3 cscale, out Quaternion q, out Vector3 _))
             {
@@ -81,6 +81,14 @@ namespace ArmaRealMap
             {
                 scale = 1;
             }
+        }
+
+        private static Matrix4x4 GetRotateAndScaleOnly(Matrix4x4 rotateMatrix)
+        {
+            rotateMatrix.M41 = 0;
+            rotateMatrix.M42 = 0;
+            rotateMatrix.M43 = 0;
+            return rotateMatrix;
         }
 
         public ModelInfo Model => model;
@@ -103,28 +111,31 @@ namespace ArmaRealMap
 
         public EditableWrpObject ToWrpObject(int id, ElevationGrid grid = null)
         {
-            var centerElevation = elevation;
-            if (elevationMode == ElevationMode.Relative)
-            {
-                centerElevation = model.GetElevation(grid, point) + elevation;
-            }
-
             var matrix = Matrix4x4.CreateRotationY(ToRadians(yaw)) * Matrix4x4.CreateRotationX(ToRadians(-pitch)) * Matrix4x4.CreateRotationZ(ToRadians(-roll));
             if (scale != 1f)
             {
                 matrix = matrix * Matrix4x4.CreateScale(scale);
             }
+            matrix.M42 = GetZ(grid, matrix);
             matrix.M41 = point.X;
-            matrix.M42 = centerElevation;
             matrix.M43 = point.Y;
             matrix.M44 = 1f;
 
             return new EditableWrpObject()
             {
-                ObjectID = id, 
+                ObjectID = id,
                 Model = model.Path,
                 Transform = new BIS.Core.Math.Matrix4P(matrix)
             };
+        }
+
+        private float GetZ(ElevationGrid grid, Matrix4x4 matrix)
+        {
+            if (elevationMode == ElevationMode.Relative)
+            {
+                return model.GetRelativeElevation(grid, point, matrix) + elevation;
+            }
+            return model.GetAbsoluteElevation(matrix) + elevation;
         }
 
         private static float ToRadians(float angle)
