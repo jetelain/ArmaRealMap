@@ -29,12 +29,12 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             // new Rgba32(???, ???, ???, 0) // Stage13 (need additional processing)
         };
 
-        public static void Compile(MapInfos area, Config config)
+        public static void Compile(MapInfos area, MapConfig config)
         {
-            Directory.CreateDirectory(config.Target.GetLayerPhysicalPath(""));
+            Directory.CreateDirectory(LayersHelper.GetLocalPath(config));
 
             var tiler = new TerrainTiler(area, config);
-            var idmap = Image.Load<Rgb24>(config.Target.GetTerrain("id.png"));
+            var idmap = Image.Load<Rgb24>(Path.Combine(config.Target.Terrain, "idmap", "idmap.png"));
             var report2 = new ProgressReport("Tiling", tiler.Segments.Length);
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
             {
@@ -47,15 +47,15 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                             var seg = tiler.Segments[x, y];
                             var pos = -seg.ImageTopLeft;
                             tile.Mutate(c => c.DrawImage(idmap, pos, 1.0f));
-                            TerrainTileHelper.FillEdges(idmap, x, tiler.Segments.GetLength(0), tile, y, pos);
+                            LayersHelper.FillEdges(idmap, x, tiler.Segments.GetLength(0), tile, y, pos);
 
                             var tex = ReduceColors(tile, output, config.Terrain);
                             var rvmat = MakeRvMat(seg, 40, tex, config.Terrain, config);
 
 
-                            output.Save(config.Target.GetLayerPhysicalPath($"M_{x:000}_{y:000}_lca.png"));
-                            //tile.Save(config.Target.GetLayerPhysicalPath($"M_{x:000}-{y:000}_ori.png"));
-                            File.WriteAllText(config.Target.GetLayerPhysicalPath($"P_{x:000}-{y:000}.rvmat"), rvmat);
+                            output.Save(LayersHelper.GetLocalPath(config,$"M_{x:000}_{y:000}_lca.png"));
+                            //tile.Save(LayersHelper.GetPath(config,$"M_{x:000}-{y:000}_ori.png"));
+                            File.WriteAllText(LayersHelper.GetLocalPath(config, $"P_{x:000}-{y:000}.rvmat"), rvmat);
                             report2.ReportOneDone();
                         }
                     }
@@ -63,10 +63,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             });
             report2.TaskDone(); 
             
-            if (config.ConvertPAA)
-            {
-                TerrainTileHelper.ImageToPAA(tiler.Segments.GetLength(0), x => config.Target.GetLayerPhysicalPath($"M_{x:000}_*_lca.png"));
-            }
+            LayersHelper.ImageToPAA(tiler.Segments.GetLength(0), x => LayersHelper.GetLocalPath(config, $"M_{x:000}_*_lca.png"));
         }
 
         private static List<TextureInfo> ReduceColors(Image<Rgb24> tile, Image<Rgba32> output, TerrainRegion region)
@@ -117,7 +114,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             return colors;
         }
 
-        private static string MakeRvMat(LandSegment segment, double textureScale, List<TextureInfo> textures, TerrainRegion terrain, Config config)
+        private static string MakeRvMat(LandSegment segment, double textureScale, List<TextureInfo> textures, TerrainRegion terrain, MapConfig config)
         {
             var lco = $"s_{segment.X:000}_{segment.Y:000}_lco.png";
             var lca = $"m_{segment.X:000}_{segment.Y:000}_lca.png";
@@ -131,12 +128,12 @@ specular[]={{0,0,0,0}};
 specularPower=0;
 class Stage0
 {{
-	texture=""{config.Target.GetLayerLogicalPath(lco)}"";
+	texture=""{LayersHelper.GetLogicalPath(config, lco)}"";
 	texGen=3;
 }};
 class Stage1
 {{
-	texture=""{config.Target.GetLayerLogicalPath(lca)}"";
+	texture=""{LayersHelper.GetLogicalPath(config, lca)}"";
 	texGen=4;
 }};
 class TexGen3

@@ -49,16 +49,13 @@ namespace ArmaRealMap
                    p.Y > P1.Y && p.Y < P2.Y;
         }
 
-        internal static MapInfos Create(Config config)
+        internal static MapInfos Create(MapConfig config)
         {
             var size = config.GridSize;
             var cellSize = config.CellSize;
-            var startPointMGRS = new MilitaryGridReferenceSystem(config.BottomLeft.GridZone, config.BottomLeft.D, config.BottomLeft.E, config.BottomLeft.N);
+            var startPointMGRS = MilitaryGridReferenceSystem.Parse(config.BottomLeft);
             return Create(startPointMGRS, size, cellSize, config.Resolution);
         }
-
-
-
 
         internal static MapInfos Create(MilitaryGridReferenceSystem startPointMGRS, int size, int cellSize, double? resolution)
         {

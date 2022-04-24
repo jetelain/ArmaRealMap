@@ -20,16 +20,11 @@ namespace SRTM.Sources
         /// <summary>
         /// Downloads a remote file and stores the data in the local one. The given credentials are used for authorization.
         /// </summary>
-        public static bool DownloadWithCredentials(NetworkCredential credentials, string local, string remote,
+        public static bool DownloadWithCredentials(string cookie, string local, string remote,
             bool logErrors = false)
         {
-            //HttpClientHandler handler = new HttpClientHandler { Credentials = credentials };
             var client = new HttpClient();
-
-            var authenticationString = $"{credentials.UserName}:{credentials.Password}";
-            var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(authenticationString));
-            client.DefaultRequestHeaders.Add("Cookie", "DATA=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-
+            client.DefaultRequestHeaders.Add("Cookie", cookie);
             return PerformDownload(client, local, remote, logErrors);
         }
 

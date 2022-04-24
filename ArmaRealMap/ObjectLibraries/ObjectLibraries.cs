@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.TerrainBuilder;
 
 namespace ArmaRealMap.Libraries
 {
@@ -22,8 +17,6 @@ namespace ArmaRealMap.Libraries
             WriteIndented = true
         };
 
-
-        private static readonly Regex TextLine = new Regex(@"\[""([^""]+)"",\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],\[\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],[0-9\.\-]+\]\]", RegexOptions.Compiled);
         public List<ObjectLibrary> Libraries { get; } = new List<ObjectLibrary>();
 
         public ObjectLibraries()
@@ -31,9 +24,9 @@ namespace ArmaRealMap.Libraries
             
         }
 
-        public void Load(Config config)
+        public void Load(MapConfig config, GlobalConfig global)
         {
-            var libs = JsonSerializer.Deserialize<JsonObjectLibrary[]>(File.ReadAllText(Path.Combine(config.Libraries, "Export.json")), options);
+            var libs = JsonSerializer.Deserialize<JsonObjectLibrary[]>(File.ReadAllText(global.LibrariesFile), options);
 
             foreach(var lib in libs)
             {

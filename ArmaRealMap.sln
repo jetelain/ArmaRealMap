@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30104.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArmaRealMap", "ArmaRealMap\ArmaRealMap.csproj", "{967B62E0-F4DF-44DA-BFEA-FB8D71477B07}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArmaRealMap.Core", "ArmaRealMap.Core\ArmaRealMap.Core.csproj", "{7CDA522C-5A59-4AD6-99C4-6B060A3DDD4A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.ALB", "..\jetelain\bis-file-formats\BIS.ALB\BIS.ALB.csproj", "{6E82EE4B-A3ED-4D11-A66D-3A1559920A31}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.P3D", "..\jetelain\bis-file-formats\BIS.P3D\BIS.P3D.csproj", "{CBCFD74B-21DA-4F39-A18E-391E449927CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{6E82EE4B-A3ED-4D11-A66D-3A1559920A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E82EE4B-A3ED-4D11-A66D-3A1559920A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E82EE4B-A3ED-4D11-A66D-3A1559920A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBCFD74B-21DA-4F39-A18E-391E449927CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBCFD74B-21DA-4F39-A18E-391E449927CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBCFD74B-21DA-4F39-A18E-391E449927CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBCFD74B-21DA-4F39-A18E-391E449927CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

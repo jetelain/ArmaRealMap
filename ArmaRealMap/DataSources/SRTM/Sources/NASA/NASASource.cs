@@ -30,11 +30,11 @@ namespace SRTM.Sources.NASA
     /// </summary>
     public class NASASource : ISRTMSource
     {
-        private NetworkCredential _credentials;
+        private string _cookie;
 
-        public NASASource(NetworkCredential credentials)
+        public NASASource(string cookie)
         {
-            _credentials = credentials;
+            _cookie = cookie;
         }
         
         /// <summary>
@@ -53,7 +53,7 @@ namespace SRTM.Sources.NASA
             var Logger = LogProvider.For<SRTMData>();
             Logger.Info("Downloading {0} ...", name);
 
-            return SourceHelpers.DownloadWithCredentials(_credentials, local, SOURCE + filename);
+            return SourceHelpers.DownloadWithCredentials(_cookie, local, SOURCE + filename);
         }
     }
 }

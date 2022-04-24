@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace ArmaRealMap.TerrainBuilder
@@ -12,11 +11,6 @@ namespace ArmaRealMap.TerrainBuilder
         public static readonly XmlSerializer Serializer = new XmlSerializer(typeof(TBLibrary));
 
         public List<TBLibrary> Libraries { get; } = new List<TBLibrary>();
-
-        public void Load(Config config)
-        {
-            LoadAllFrom(config.Libraries);
-        }
 
         public void LoadAllFrom(string path)
         {

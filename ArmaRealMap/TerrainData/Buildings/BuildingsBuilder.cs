@@ -19,12 +19,12 @@ namespace ArmaRealMap.Buildings
     {
         public static void PlaceBuildings(MapData data, ObjectLibraries olibs, List<OsmShape> toRender)
         {
-            var pass5File = data.Config.Target.GetCache("buildings-pass5.json");
+            var pass5File = Path.Combine(data.Config.Target.InternalCache, "buildings-pass5.json");
             var wasFromCache = true;
 
             var removed = new List<OsmShape>();
 
-            if (false/*File.Exists(pass5File)*/)
+            if (File.Exists(pass5File))
             {
                 data.WantedBuildings = JsonSerializer.Deserialize<IEnumerable<BuildingJson>>(File.ReadAllText(pass5File)).Select(b => new Building(b)).ToList();
             }
@@ -72,7 +72,7 @@ namespace ArmaRealMap.Buildings
             {
                 Preview(data, removed, data.WantedBuildings, "buildings-final.png");
             }
-            data.Buildings.WriteFile(data.Config.Target.GetTerrain("buildings.txt"));
+            data.Buildings.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "buildings.rel.txt"));
 
             Console.WriteLine("{0:0.0} % buildings placed", (data.WantedBuildings.Count - nonefits) * 100.0 / data.WantedBuildings.Count);
         }
@@ -373,7 +373,7 @@ namespace ArmaRealMap.Buildings
 
         private static void Preview(MapData data, List<OsmShape> removed, List<Building> remainBuildings, string image)
         {
-            DebugImage.Image(new TerrainPoint(16000, 61000), new TerrainPoint(22000, 64000), 2, data.Config.Target.GetDebug(image), i =>
+            DebugImage.Image(new TerrainPoint(16000, 61000), new TerrainPoint(22000, 64000), 2, System.IO.Path.Combine(data.Config.Target.Debug, image), i =>
             {
                 var kept = remainBuildings.SelectMany(b => b.Shapes).ToList();
                 var report = new ProgressReport("DrawShapes", removed.Count + kept.Count);

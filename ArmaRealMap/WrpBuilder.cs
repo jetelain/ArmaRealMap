@@ -15,7 +15,7 @@ namespace ArmaRealMap
     internal class WrpBuilder
     {
 
-        public static void Build(Config config, ElevationGrid elevationGrid, TerrainTiler terrainTiler)
+        public static void Build(MapConfig config, ElevationGrid elevationGrid, TerrainTiler terrainTiler)
         {
             
             var wrp = new EditableWrp();
@@ -33,13 +33,10 @@ namespace ArmaRealMap
 
             wrp.Objects.Add(EditableWrpObject.Dummy);
 
-
-            Directory.CreateDirectory(config.Target.WorldPhysicalPath);
-            StreamHelper.Write(wrp, Path.Combine(config.Target.WorldPhysicalPath, config.Target.WorldName + ".wrp"));
-
+            StreamHelper.Write(wrp, Path.Combine(config.Target.Cooked, config.WorldName + ".wrp"));
         }
 
-        private static void SetMaterials(Config config, TerrainTiler terrainTiler, EditableWrp wrp)
+        private static void SetMaterials(MapConfig config, TerrainTiler terrainTiler, EditableWrp wrp)
         {
             wrp.MatNames = new string[terrainTiler.Segments.Length + 1];
             var w = terrainTiler.Segments.GetLength(0);
@@ -49,7 +46,7 @@ namespace ArmaRealMap
             {
                 for (int y = 0; y < h; y++)
                 {
-                    wrp.MatNames[x + (y * h) + 1] = config.Target.GetLayerLogicalPath($"p_{x:000}-{y:000}.rvmat");
+                    wrp.MatNames[x + (y * h) + 1] = LayersHelper.GetLogicalPath(config, $"p_{x:000}-{y:000}.rvmat");
                 }
             }
 
@@ -68,7 +65,7 @@ namespace ArmaRealMap
             var dbg = string.Join("\r\n", wrp.MaterialIndex.Select(m => wrp.MatNames[m]));
         }
 
-        private static void SetElevation(Config config, ElevationGrid elevationGrid, EditableWrp wrp)
+        private static void SetElevation(MapConfig config, ElevationGrid elevationGrid, EditableWrp wrp)
         {
             wrp.Elevation = new float[config.GridSize * config.GridSize];
             for (int x = 0; x < config.GridSize; x++)

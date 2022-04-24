@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
@@ -13,17 +9,15 @@ using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
 using BIS.PAA;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Processing.Processors;
 
 namespace ArmaRealMap.TerrainData.GroundDetailTextures
 {
     class TerrainImageBuilder
     {
-        private static void DrawFakeSat(Config config, MapInfos area, MapData data, List<Polygons> polygonsByCategory)
+        private static void DrawFakeSat(MapConfig config, MapInfos area, MapData data, List<Polygons> polygonsByCategory)
         {
             var brushes = new Dictionary<TerrainMaterial, ImageBrush>();
             var colors = new Dictionary<TerrainMaterial, Color>();
@@ -34,7 +28,6 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                 colors.Add(mat, new Color(img[2,2]));
             }
 
-            int chuncking = 0;
             using (var fakeSat = new Image<Rgba32>(area.ImageryWidth, area.ImageryHeight, Color.Black))
             {
                 fakeSat.Mutate(i => i.Fill(brushes[TerrainMaterial.Default]));
@@ -61,11 +54,10 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                 var roads = data.Roads.Where(r => r.RoadType <= RoadType.SingleLaneDirtRoad).ToList();
 
                 //chuncking = DrawHelper.SavePngChuncked(fakeSat, config.Target.GetTerrain("sat-fake.png"));
-                if (config.GenerateSatTiles)
-                {
-                    var realSat = Image.Load<Rgb24>(config.Target.GetTerrain("sat-raw.png"));
-                    SatMapTiling(realSat, fakeSat, config, area, roads);
-                }
+
+                var realSat = Image.Load<Rgb24>(Path.Combine(config.Target.InputCache, "sat-raw.png"));
+                SatMapTiling(realSat, fakeSat, config, area, roads);
+                
             }
             /*
             if (!config.GenerateSatTiles)
@@ -83,7 +75,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             return new SolidBrush(Color.ParseHex("4D4D4D"));
         }
 
-        private static void SatMapTiling(Image<Rgb24> realSat, Image<Rgba32> fakeSat, Config config, MapInfos area, List<Road> roads)
+        private static void SatMapTiling(Image<Rgb24> realSat, Image<Rgba32> fakeSat, MapConfig config, MapInfos area, List<Road> roads)
         {
             // Going through TerrainBuilder takes ~4 hours, with a lot of manual operations
             // Here, for exactly the same result, it takes 4 minutes, all automated ! (but will eat all your CPU)
@@ -101,7 +93,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                         {
                             var pos = new Point(-x * step + config.RealTileOverlap, -y * step + config.RealTileOverlap);
                             fake.Mutate(c => c.DrawImage(fakeSat, pos, 1.0f));
-                            TerrainTileHelper.FillEdges(realSat, x, num, fake, y, pos);
+                            LayersHelper.FillEdges(realSat, x, num, fake, y, pos);
                             fake.Mutate(d => d.GaussianBlur(10f));
 
                             tile.Mutate(c => c.DrawImage(realSat, pos, 1.0f));
@@ -118,8 +110,8 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                                 }
                             });
 
-                            TerrainTileHelper.FillEdges(realSat, x, num, tile, y, pos);
-                            tile.Save(config.Target.GetLayerPhysicalPath($"S_{x:000}_{y:000}_lco.png"));
+                            LayersHelper.FillEdges(realSat, x, num, tile, y, pos);
+                            tile.Save(LayersHelper.GetLocalPath(config, $"S_{x:000}_{y:000}_lco.png"));
                             report2.ReportOneDone();
                         }
                     }
@@ -127,40 +119,10 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             });
             report2.TaskDone();
 
-            if ( config.ConvertPAA )
-            {
-                TerrainTileHelper.ImageToPAA(num, x => config.Target.GetLayerPhysicalPath($"S_{x:000}_*_lco.png"));
-            }
+            LayersHelper.ImageToPAA(num, x => LayersHelper.GetLocalPath(config, $"S_{x:000}_*_lco.png"));
         }
 
-
-
-        private static void BlendRawAndFake(Config config, int chuncking)
-        {
-            var report2 = new ProgressReport("Sat", chuncking * chuncking);
-            for (int x = 0; x < chuncking; x++)
-            {
-                for (int y = 0; y < chuncking; y++)
-                {
-                    var fake = config.Target.GetTerrain($"sat-fake.{x}_{y}.png");
-                    var raw = config.Target.GetTerrain($"sat-raw.{x}_{y}.png");
-                    var sat = config.Target.GetTerrain($"sat.{x}_{y}.png");
-                    using (var rawImg = Image.Load(raw))
-                    {
-                        using (var fakeImg = Image.Load(fake))
-                        {
-                            fakeImg.Mutate(d => d.GaussianBlur(10f));
-                            rawImg.Mutate(p => p.DrawImage(fakeImg, 0.3f));
-                            rawImg.Save(sat);
-                            report2.ReportOneDone();
-                        }
-                    }
-                }
-            }
-            report2.TaskDone();
-        }
-
-        private static Image<Bgra32> GetImage(Config config, TerrainMaterial mat)
+        private static Image<Bgra32> GetImage(MapConfig config, TerrainMaterial mat)
         {
             var texture = Path.Combine("P:", mat.Co(config.Terrain));
             var pngFake = Path.Combine(Path.GetDirectoryName(texture), "fakesat", Path.GetFileNameWithoutExtension(texture) + ".png");
@@ -176,9 +138,6 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                 return Image.LoadPixelData<Bgra32>(pixels, map.Width, map.Height);
             }
         }
-
-
-
         private class Polygons
         {
             internal List<TerrainPolygon> List;
@@ -187,7 +146,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             public List<TerrainPolygon> MergeAttempt { get; internal set; }
         }
 
-        internal static void GenerateTerrainImages(Config config, MapInfos area, MapData data, List<OsmShape> toRender)
+        internal static void GenerateTerrainImages(MapConfig config, MapInfos area, MapData data, List<OsmShape> toRender)
         {
             var polygonsByCategory = GetPolygonsByCategory(toRender);
 
@@ -196,7 +155,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             DrawIdMap(config, area, data, polygonsByCategory);
         }
 
-        private static void DrawIdMap(Config config, MapInfos area, MapData data, List<Polygons> polygonsByCategory)
+        private static void DrawIdMap(MapConfig config, MapInfos area, MapData data, List<Polygons> polygonsByCategory)
         {
             using (var img = new Image<Rgba32>(area.ImageryWidth, area.ImageryHeight, TerrainMaterial.Default.GetColor(config.Terrain)))
             {
@@ -214,7 +173,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                 });
                 report.TaskDone();
 
-                DrawHelper.SavePngChuncked(img, config.Target.GetTerrain("id.png"));
+                DrawHelper.SavePngChuncked(img, Path.Combine(config.Target.Terrain, "idmap", "idmap.png"));
             }
         }
 

@@ -31,61 +31,48 @@ namespace ArmaRealMap.Roads
 {
     internal static class RoadsBuilder
     {
-        internal static void Roads(MapData data, OsmStreamSource filtered, SnapshotDb db, Config config, ObjectLibraries libs, List<OsmShape> osmShapes)
+        internal static void Roads(MapData data, OsmStreamSource filtered, SnapshotDb db, MapConfig config, ObjectLibraries libs, List<OsmShape> osmShapes)
         {
             PrepareRoads(data, filtered, db);
 
             MergeRoads(data);
 
 
-            if (!config.IsScaled)
+            RoadWalls(data, libs);
+
+            var residentials = TerrainPolygon.MergeAll(osmShapes.Where(s => s.Category == OsmShapeCategory.Residential || s.Category == OsmShapeCategory.Retail || s.Category == OsmShapeCategory.Commercial).SelectMany(s => s.TerrainPolygons).ToList());
+
+            var template = libs.Libraries.Where(l => l.Category == ObjectCategory.RoadSideWalk).SelectMany(l => l.Objects).FirstOrDefault();
+            data.UsedObjects.Add(template.Name);
+            var layer = new TerrainObjectLayer(data.MapInfos);
+            var report = new ProgressReport("SideWalks", residentials.Count);
+
+            foreach (var residential in residentials)
             {
-                
+                var areaRoads = data.Roads.Where(r => r.RoadType > RoadType.TwoLanesMotorway && r.RoadType < RoadType.SingleLaneDirtRoad && r.Path.EnveloppeIntersects(residential)).ToList();
+                var areaRoadsPolys = areaRoads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width + template.Depth)).ToList();
+                var areaRoadsMerged = TerrainPolygon.MergeAll(areaRoadsPolys);
+                var areaRoadsClipped = areaRoadsMerged.SelectMany(r => r.Intersection(residential)).ToList();
 
-
-                RoadWalls(data, libs);
-
-                var residentials = TerrainPolygon.MergeAll(osmShapes.Where(s => s.Category == OsmShapeCategory.Residential || s.Category == OsmShapeCategory.Retail || s.Category == OsmShapeCategory.Commercial).SelectMany(s => s.TerrainPolygons).ToList());
-
-                var template = libs.Libraries.Where(l => l.Category == ObjectCategory.RoadSideWalk).SelectMany(l => l.Objects).FirstOrDefault();
-                data.UsedObjects.Add(template.Name);
-                var layer = new TerrainObjectLayer(data.MapInfos);
-                var report = new ProgressReport("SideWalks", residentials.Count);
-
-                foreach (var residential in residentials)
+                foreach (var poly in areaRoadsClipped)
                 {
-                    var areaRoads = data.Roads.Where(r => r.RoadType > RoadType.TwoLanesMotorway && r.RoadType < RoadType.SingleLaneDirtRoad && r.Path.EnveloppeIntersects(residential)).ToList();
-                    var areaRoadsPolys = areaRoads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width + template.Depth)).ToList();
-                    var areaRoadsMerged = TerrainPolygon.MergeAll(areaRoadsPolys);
-                    var areaRoadsClipped = areaRoadsMerged.SelectMany(r => r.Intersection(residential)).ToList();
-
-                    foreach (var poly in areaRoadsClipped)
+                    FollowPathWithObjects.PlaceOnPathRegular(template, layer, poly.Shell);
+                    foreach (var hole in poly.Holes)
                     {
-                        FollowPathWithObjects.PlaceOnPathRegular(template, layer, poly.Shell);
-                        foreach (var hole in poly.Holes)
-                        {
-                            FollowPathWithObjects.PlaceOnPathRegular(template, layer, hole);
-                        }
+                        FollowPathWithObjects.PlaceOnPathRegular(template, layer, hole);
                     }
-                    report.ReportOneDone();
                 }
-                report.TaskDone();
-
-                NatureBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
-
-
-                layer.WriteFile(data.Config.Target.GetTerrain("sidewalks.txt"));
-
-
-
-                //DebugHelper.ObjectsInPolygons(data, layer, data.Roads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList(), "sidewalks.bmp");
-                if (data.Elevation != null)
-                {
-                    //AdjustElevationGrid(data);
-                }
+                report.ReportOneDone();
             }
+            report.TaskDone();
 
-            var ignoreBridges = !config.IsScaled && libs.Libraries.Any(l => l.Category == Core.ObjectLibraries.ObjectCategory.BridgePrimaryRoad);
+            NatureBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
+
+            layer.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "sidewalks.rel.txt"));
+
+            //DebugHelper.ObjectsInPolygons(data, layer, data.Roads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList(), "sidewalks.bmp");
+            
+            var ignoreBridges = libs.Libraries.Any(l => l.Category == ObjectCategory.BridgePrimaryRoad);
 
             SaveRoadsShp(data, config, ignoreBridges);
 
@@ -116,7 +103,7 @@ namespace ArmaRealMap.Roads
                     }
                 }
 
-                layer.WriteFile(data.Config.Target.GetTerrain("roadwalls.txt"));
+                layer.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "roadwalls.rel.txt"));
             }
         }
 
@@ -189,7 +176,7 @@ namespace ArmaRealMap.Roads
             return roads.Where(r => r != self && r.RoadType == self.RoadType && r.SpecialSegment == self.SpecialSegment && (r.Path.FirstPoint == point || r.Path.LastPoint == point)).ToList();
         }
 
-        private static void SaveRoadsShp(MapData data, Config config, bool ignoreBridges)
+        private static void SaveRoadsShp(MapData data, MapConfig config, bool ignoreBridges)
         {
             var features = new List<Feature>();
             foreach (var road in data.Roads)
@@ -201,25 +188,13 @@ namespace ArmaRealMap.Roads
 
                 var attributesTable = new AttributesTable();
                 attributesTable.Add("ID", (int)road.RoadType);
-                // Why x+200000 ? nobody really knows...
-                if (config.IsScaled)
-                {
-                    if (road.RoadType <= RoadType.TwoLanesPrimaryRoad)
-                    {
-                        features.Add(new Feature(road.Path.ToLineString(p => new Coordinate((p.X * config.Scale.Value) + 200000, (p.Y * config.Scale.Value))), attributesTable));
-                    }
-                }
-                else
-                {
-                    features.Add(new Feature(road.Path.ToLineString(p => new Coordinate(p.X + 200000, p.Y)), attributesTable));
-                }
+                features.Add(new Feature(road.Path.ToLineString(p => new Coordinate(p.X + 200000, p.Y)), attributesTable));
             }
             var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
-            if (config.Target?.RoadsPhyicalPath != null && !Directory.Exists(config.Target?.RoadsPhyicalPath))
-            {
-                Directory.CreateDirectory(config.Target?.RoadsPhyicalPath);
-            }
-            var shapeWriter = new ShapefileDataWriter(Path.Combine(config.Target?.RoadsPhyicalPath ?? string.Empty, "roads.shp"), new GeometryFactory())
+
+            var roads = Path.Combine(config.Target.Cooked, "data", "roads");
+            Directory.CreateDirectory(roads);
+            var shapeWriter = new ShapefileDataWriter(Path.Combine(roads, "roads.shp"), new GeometryFactory())
             {
                 Header = header
             };
@@ -288,19 +263,6 @@ namespace ArmaRealMap.Roads
                 report.ReportOneDone();
             }
             report.TaskDone();
-        }
-
-        private class RoadSegment
-        {
-            internal bool Adjust;
-
-            public float Length { get; set; }
-            public TerrainPoint First { get; set; }
-            public TerrainPoint Second { get; set; }
-            public TerrainPoint Center { get; set; }
-            public TerrainPoint A { get; set; }
-            public TerrainPoint B { get; set; }
-            public float Elevation { get; set; }
         }
     }
 }

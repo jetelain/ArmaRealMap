@@ -22,13 +22,13 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             }
         }
 
-        public TerrainTiler(Config config) 
+        public TerrainTiler(MapConfig config) 
             : this(MapInfos.Create(config), config)
         {
 
         }
 
-        public TerrainTiler(MapInfos area, Config config)
+        public TerrainTiler(MapInfos area, MapConfig config)
         {
             var step = config.TileSize - (config.RealTileOverlap * 2);
             var num = (int)Math.Ceiling((double)area.ImageryWidth / (double)step);

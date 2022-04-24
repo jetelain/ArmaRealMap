@@ -186,35 +186,14 @@ namespace SRTM
 
             var filePath = Path.Combine(DataDirectory, filename + ".hgt");
             var zipFilePath = Path.Combine(DataDirectory, filename + ".hgt.zip");
-            //r txtFilePath = Path.Combine(DataDirectory, filename + ".txt");
-            var count = -1;
 
             lock (this)
             {
-
-
-
-                if (!File.Exists(filePath) && !File.Exists(zipFilePath) /*&& !File.Exists(txtFilePath)*/ &&
+                if (!File.Exists(filePath) && !File.Exists(zipFilePath) &&
                     this.GetMissingCell != null)
                 {
                     this.GetMissingCell(DataDirectory, filename);
                 }
-                /*else if(File.Exists(txtFilePath) && this.GetMissingCell != null)
-                {
-                    var txtFile = File.ReadAllText(txtFilePath);
-                    if (!int.TryParse(txtFile, out count))
-                    {
-                        File.Delete(txtFilePath);
-                        count = -1;
-                    }
-                    else if(count < RETRIES)
-                    {
-                        if (this.GetMissingCell(DataDirectory, filename))
-                        {
-                            File.Delete(txtFilePath);
-                        }
-                    }
-                }*/
 
                 if (File.Exists(filePath))
                 {
@@ -226,21 +205,6 @@ namespace SRTM
                 }
                 else
                 {
-                    /*if (count < 0)
-                    {
-                        File.WriteAllText(txtFilePath, "1");
-                        return GetDataCell(latitude, longitude);
-                    }
-                    else if (count < RETRIES)
-                    {
-                        count++;
-                        File.WriteAllText(txtFilePath, count.ToString());
-                        return GetDataCell(latitude, longitude);
-                    }
-                    else
-                    {
-                        return new EmptySRTMDataCell(txtFilePath);
-                    }*/
                     throw new Exception(filePath);
                 }
             }

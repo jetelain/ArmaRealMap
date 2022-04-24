@@ -39,10 +39,9 @@ namespace ArmaRealMap.ElevationModel
             //cellDelta = other.cellDelta;
         }
 
-        public void LoadFromSRTM(ConfigSRTM configSRTM)
+        public void LoadFromSRTM(SRTMConfig configSRTM)
         {
-            var credentials = new NetworkCredential(configSRTM.Login, configSRTM.Password);
-            var srtmData = new SRTMData(configSRTM.Cache, new NASASource(credentials));
+            var srtmData = new SRTMData(configSRTM.CacheLocation, new NASASource(configSRTM.Cookie));
             var startPointUTM = area.StartPointUTM;
             var eager = new EagerLoad(false);
 

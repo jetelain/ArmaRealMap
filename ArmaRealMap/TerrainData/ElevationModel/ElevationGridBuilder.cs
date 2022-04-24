@@ -19,10 +19,10 @@ namespace ArmaRealMap
         internal static ElevationGrid LoadOrGenerateElevationGrid(MapData data)
         {
             var elevation = new ElevationGrid(data.MapInfos);
-            var cacheFile = data.Config.Target.GetCache("elevation-raw.bin");
+            var cacheFile = Path.Combine(data.Config.Target.InputCache, "elevation-raw.bin");
             if (!File.Exists(cacheFile))
             {
-                elevation.LoadFromSRTM(data.Config.SRTM);
+                elevation.LoadFromSRTM(data.GlobalConfig.SRTM);
                 elevation.SaveToBin(cacheFile);
             }
             else
@@ -34,7 +34,7 @@ namespace ArmaRealMap
 
         internal static void MakeDetailed(MapData data, List<OsmShape> shapes, ObjectLibraries libs)
         {
-            var cacheFile = data.Config.Target.GetCache("elevation.bin");
+            var cacheFile = Path.Combine(data.Config.Target.InternalCache, "elevation.bin");
             if (!File.Exists(cacheFile))
             {
                 ProcessForced(data.Config, data.MapInfos, data.Elevation);
@@ -58,11 +58,11 @@ namespace ArmaRealMap
                 data.Elevation.LoadFromBin(cacheFile);
             }
 
-            data.Elevation.SavePreview(data.Config.Target.GetDebug("elevation.png"));
-            data.Elevation.SaveToAsc(data.Config.Target.GetTerrain("elevation.asc"));
+            data.Elevation.SavePreview(System.IO.Path.Combine(data.Config.Target.Debug, "elevation.png"));
+            data.Elevation.SaveToAsc(Path.Combine(data.Config.Target.Terrain, "elevation.asc"));
         }
 
-        private static void ProcessForced(Config config, MapInfos mapInfos, ElevationGrid elevation)
+        private static void ProcessForced(MapConfig config, MapInfos mapInfos, ElevationGrid elevation)
         {
             if (config.ForcedElevation != null)
             {
@@ -114,7 +114,7 @@ namespace ArmaRealMap
                 report.ReportOneDone();
             }
             report.TaskDone();
-            bridgeObjects.WriteFile(data.Config.Target.GetTerrain("bridges.txt"));
+            bridgeObjects.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "bridges.abs.txt"));
         }
 
         private static void ProcessWaterWays(MapData data, List<OsmShape> shapes, ElevationConstraintGrid constraintGrid)

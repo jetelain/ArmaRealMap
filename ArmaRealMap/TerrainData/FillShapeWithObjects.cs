@@ -70,7 +70,7 @@ namespace ArmaRealMap
         {
             if (library != null && library.Objects.Count > 0)
             {
-                var cacheFileFullName = mapData.Config.Target.GetCache(cacheFile);
+                var cacheFileFullName = Path.Combine(mapData.Config.Target.InternalCache, cacheFile);
 
                 if (!File.Exists(cacheFileFullName))
                 {

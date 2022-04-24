@@ -7,8 +7,23 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace ArmaRealMap.TerrainData.GroundDetailTextures
 {
-    internal static class TerrainTileHelper
+    internal static class LayersHelper
     {
+        internal static string GetLocalPath(MapConfig config)
+        {
+            return Path.Combine(config.Target.Cooked, "data", "layers");
+        }
+
+        internal static string GetLocalPath(MapConfig config, string name)
+        {
+            return Path.Combine(config.Target.Cooked, "data", "layers", name);
+        }
+
+        internal static string GetLogicalPath(MapConfig config, string name)
+        {
+            return config.PboPrefix + "\\data\\layers\\" + name;
+        }
+
         internal static void ImageToPAA(int num, Func<int, string> pattern)
         {
             string imageToPaaExe;

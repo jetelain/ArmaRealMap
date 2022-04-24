@@ -82,8 +82,7 @@ namespace ArmaRealMap
                 data.Lakes.Add(lake);
             }
             report.TaskDone();
-
-            using (var writer = new StreamWriter(new FileStream(data.Config.Target.GetTerrain("watertiles.txt"), FileMode.Create, FileAccess.Write)))
+            using (var writer = new StreamWriter(new FileStream(Path.Combine(data.Config.Target.Terrain, "objects", "watertiles.abs.txt"), FileMode.Create, FileAccess.Write)))
             {
                 foreach (var obj in objects)
                 {

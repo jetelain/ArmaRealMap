@@ -88,7 +88,7 @@ namespace ArmaRealMap
                         index++;
                     }
                 });
-                img.Save(data.Config.Target.GetDebug(filename));
+                img.Save(System.IO.Path.Combine(data.Config.Target.Debug, filename));
             }
         }
 
@@ -106,7 +106,7 @@ namespace ArmaRealMap
             using (var img = new Image<Rgb24>(data.MapInfos.ImageryWidth, data.MapInfos.ImageryHeight, Color.Black))
             {
                 DrawPolygons(data.MapInfos, polygons, count, areasColor, img);
-                img.Save(data.Config.Target.GetDebug(filename));
+                img.Save(System.IO.Path.Combine(data.Config.Target.Debug, filename));
             }
         }
 
@@ -152,7 +152,7 @@ namespace ArmaRealMap
                     }
                     report.TaskDone();
                 });
-                img.Save(data.Config.Target.GetDebug(filename));
+                img.Save(System.IO.Path.Combine(data.Config.Target.Debug, filename));
             }
         }
 

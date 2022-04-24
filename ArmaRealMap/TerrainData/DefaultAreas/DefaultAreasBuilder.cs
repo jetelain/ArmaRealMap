@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -55,7 +56,7 @@ namespace ArmaRealMap.TerrainData.DefaultAreas
 
                 Forests.NatureBuilder.RemoveOnBuildingsAndRoads(data, objects);
 
-                objects.WriteFile(data.Config.Target.GetTerrain("defaultfill.txt"));
+                objects.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "defaultfill.rel.txt"));
             }
         }
 
