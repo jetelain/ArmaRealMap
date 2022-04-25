@@ -14,6 +14,18 @@ namespace ArmaRealMap
     {
         [Value(0, MetaName = "config", HelpText = "JSON configuration file.", Required = true)]
         public string Source { get; set; }
+
+        [Option("no-elevation", Required = false, HelpText = "Do not generate elevation files, keep existing.")]
+        public bool DoNotGenerateElevation { get; set; }
+
+        [Option("no-objects", Required = false, HelpText = "Do not generate (most) objects files, keep existing.")]
+        public bool DoNotGenerateObjects { get; set; }
+
+        [Option("no-imagery", Required = false, HelpText = "Do not generate imagery files, keep existing.")]
+        public bool DoNotGenerateImagery { get; set; }
+
+        [Option("no-overpass", Required = false, HelpText = "Do not update OpenStreeMap data from overpass, keep existing.")]
+        public bool DoNotUpdateOSM { get; set; }
     }
 
     [Verb("update", HelpText = "Download and update libraries (must be re-uploaded).")]

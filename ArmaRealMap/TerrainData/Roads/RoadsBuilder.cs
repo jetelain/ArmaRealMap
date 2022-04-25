@@ -31,52 +31,54 @@ namespace ArmaRealMap.Roads
 {
     internal static class RoadsBuilder
     {
-        internal static void Roads(MapData data, OsmStreamSource filtered, SnapshotDb db, MapConfig config, ObjectLibraries libs, List<OsmShape> osmShapes)
+        internal static void Roads(MapData data, OsmStreamSource filtered, SnapshotDb db, MapConfig config, ObjectLibraries libs, List<OsmShape> osmShapes, GenerateOptions options)
         {
             PrepareRoads(data, filtered, db);
 
             MergeRoads(data);
 
-
-            RoadWalls(data, libs);
-
-            var residentials = TerrainPolygon.MergeAll(osmShapes.Where(s => s.Category == OsmShapeCategory.Residential || s.Category == OsmShapeCategory.Retail || s.Category == OsmShapeCategory.Commercial).SelectMany(s => s.TerrainPolygons).ToList());
-
-            var template = libs.Libraries.Where(l => l.Category == ObjectCategory.RoadSideWalk).SelectMany(l => l.Objects).FirstOrDefault();
-            data.UsedObjects.Add(template.Name);
-            var layer = new TerrainObjectLayer(data.MapInfos);
-            var report = new ProgressReport("SideWalks", residentials.Count);
-
-            foreach (var residential in residentials)
+            if (!options.DoNotGenerateObjects)
             {
-                var areaRoads = data.Roads.Where(r => r.RoadType > RoadType.TwoLanesMotorway && r.RoadType < RoadType.SingleLaneDirtRoad && r.Path.EnveloppeIntersects(residential)).ToList();
-                var areaRoadsPolys = areaRoads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width + template.Depth)).ToList();
-                var areaRoadsMerged = TerrainPolygon.MergeAll(areaRoadsPolys);
-                var areaRoadsClipped = areaRoadsMerged.SelectMany(r => r.Intersection(residential)).ToList();
+                RoadWalls(data, libs);
 
-                foreach (var poly in areaRoadsClipped)
-                {
-                    FollowPathWithObjects.PlaceOnPathRegular(template, layer, poly.Shell);
-                    foreach (var hole in poly.Holes)
-                    {
-                        FollowPathWithObjects.PlaceOnPathRegular(template, layer, hole);
-                    }
-                }
-                report.ReportOneDone();
+                SideWalks(data, libs, osmShapes);
             }
-            report.TaskDone();
 
-            NatureBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
-
-            layer.WriteFile(Path.Combine(data.Config.Target.Objects, "sidewalks.rel.txt"));
-
-            //DebugHelper.ObjectsInPolygons(data, layer, data.Roads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList(), "sidewalks.bmp");
-            
             var ignoreBridges = libs.Libraries.Any(l => l.Category == ObjectCategory.BridgePrimaryRoad);
 
             SaveRoadsShp(data, config, ignoreBridges);
+        }
 
-            // PreviewRoads(data);
+        private static void SideWalks(MapData data, ObjectLibraries libs, List<OsmShape> osmShapes)
+        {
+            var template = libs.Libraries.Where(l => l.Category == ObjectCategory.RoadSideWalk).SelectMany(l => l.Objects).FirstOrDefault();
+            if (template != null)
+            {
+                var residentials = TerrainPolygon.MergeAll(osmShapes.Where(s => s.Category == OsmShapeCategory.Residential || s.Category == OsmShapeCategory.Retail || s.Category == OsmShapeCategory.Commercial).SelectMany(s => s.TerrainPolygons).ToList());
+                data.UsedObjects.Add(template.Name);
+                var layer = new TerrainObjectLayer(data.MapInfos);
+                var report = new ProgressReport("SideWalks", residentials.Count);
+                foreach (var residential in residentials)
+                {
+                    var areaRoads = data.Roads.Where(r => r.RoadType > RoadType.TwoLanesMotorway && r.RoadType < RoadType.SingleLaneDirtRoad && r.Path.EnveloppeIntersects(residential)).ToList();
+                    var areaRoadsPolys = areaRoads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width + template.Depth)).ToList();
+                    var areaRoadsMerged = TerrainPolygon.MergeAll(areaRoadsPolys);
+                    var areaRoadsClipped = areaRoadsMerged.SelectMany(r => r.Intersection(residential)).ToList();
+
+                    foreach (var poly in areaRoadsClipped)
+                    {
+                        FollowPathWithObjects.PlaceOnPathRegular(template, layer, poly.Shell);
+                        foreach (var hole in poly.Holes)
+                        {
+                            FollowPathWithObjects.PlaceOnPathRegular(template, layer, hole);
+                        }
+                    }
+                    report.ReportOneDone();
+                }
+                report.TaskDone();
+                NatureBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
+                layer.WriteFile(Path.Combine(data.Config.Target.Objects, "sidewalks.rel.txt"));
+            }
         }
 
         private static void RoadWalls(MapData data, ObjectLibraries libs)

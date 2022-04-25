@@ -94,6 +94,8 @@ namespace ArmaRealMap
 
         public TerrainPoint Point => point;
 
+        public bool IsValid => !float.IsNaN(yaw);
+
         public string ToTerrainBuilderCSV()
         {
             return FormattableString.Invariant(@$"""{model.Name}"";{point.X + 200000:0.000};{point.Y:0.000};{yaw:0.000};{pitch:0.000};{roll:0.000};{scale:0.000};{elevation:0.000};");
@@ -116,7 +118,6 @@ namespace ArmaRealMap
             matrix.M41 = point.X;
             matrix.M43 = point.Y;
             matrix.M44 = 1f;
-
             return new EditableWrpObject()
             {
                 ObjectID = id,

@@ -23,6 +23,9 @@ namespace ArmaRealMapWebSite.Entities.Assets
         Structure,
 
         [Display(Name = "🏘 Batiment")]
-        Building
+        Building,
+
+        [Display(Name = "Eau")]
+        Water
     }
 }

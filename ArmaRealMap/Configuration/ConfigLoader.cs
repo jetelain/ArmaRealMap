@@ -37,6 +37,7 @@ namespace ArmaRealMap.Configuration
             Console.WriteLine($"SRTM.CacheLocation = '{config.SRTM.CacheLocation}'");
             Console.WriteLine($"LibrariesFile      = '{config.LibrariesFile}'");
             Console.WriteLine($"ModelsInfoFile     = '{config.ModelsInfoFile}'");
+            Console.WriteLine();
             return config;
         }
 
@@ -82,6 +83,7 @@ namespace ArmaRealMap.Configuration
             Console.WriteLine($"Target.Cooked        = '{config.Target.Cooked}'");
             Console.WriteLine($"Target.InternalCache = '{config.Target.InternalCache}'");
             Console.WriteLine($"Target.InputCache    = '{config.Target.InputCache}'");
+            Console.WriteLine();
 
             Directory.CreateDirectory(Path.Combine(config.Target.Objects));
             Directory.CreateDirectory(Path.Combine(config.Target.Terrain, "idmap"));

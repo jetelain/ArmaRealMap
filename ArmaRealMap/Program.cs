@@ -41,12 +41,14 @@ namespace ArmaRealMap
             }
             catch (ApplicationException ex)
             {
+                Trace.Flush();
                 Console.Error.Write("Error: ");
                 Console.Error.WriteLine(ex.Message);
                 return 2;
             }
             catch (Exception ex)
             {
+                Trace.Flush();
                 Console.Error.Write("Unexpected error:");
                 Console.Error.WriteLine(ex.ToString());
                 return 3;
@@ -74,7 +76,7 @@ namespace ArmaRealMap
         private static void SyncLibraries(GlobalConfig global)
         {
             ConfigLoader.UpdateFile(global.LibrariesFile, "https://arm.pmad.net/ObjectLibraries/Export");
-            ConfigLoader.UpdateFile(global.ModelsInfoFile, "http://arm.pmad.net/Assets/ModelsInfo");
+            ConfigLoader.UpdateFile(global.ModelsInfoFile, "https://arm.pmad.net/Assets/ModelsInfo");
         }
 
         private static int Run(GenerateOptions options)
@@ -108,13 +110,12 @@ namespace ArmaRealMap
             Console.WriteLine("==== Raw elevation grid (from SRTM) ====");
             data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(data);
 
-            BuildLand(config, data, area, olibs);
+            BuildLand(config, data, area, olibs, options);
 
             Console.WriteLine("==== Generate WRP ====");
             WrpBuilder.Build(config, data.Elevation, area, global);
 
             Trace.Flush();
-
             return 0;
         }
 
@@ -167,13 +168,13 @@ namespace ArmaRealMap
             }
         }
 
-        private static void BuildLand(MapConfig config, MapData data, MapInfos area, ObjectLibraries olibs)
+        private static void BuildLand(MapConfig config, MapData data, MapInfos area, ObjectLibraries olibs, GenerateOptions options)
         {
             data.UsedObjects = new HashSet<string>();
 
             var osmFile = Path.Combine(config.Target.InputCache, "area.osm.xml");
 
-            DownloadOsmData(area, osmFile);
+            DownloadOsmData(area, osmFile, options);
 
             using (var fileStream = File.OpenRead(osmFile))
             {
@@ -187,41 +188,46 @@ namespace ArmaRealMap
                 var shapes = OsmCategorizer.GetShapes(db, filtered, data.MapInfos);
 
                 Console.WriteLine("==== Roads ====");
-                RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes);
-
+                RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes, options);
+                
                 Console.WriteLine("==== Lakes ====");
                 LakeGenerator.ProcessLakes(data, area, shapes);
                     
                 Console.WriteLine("==== Elevation ====");
-                ElevationGridBuilder.MakeDetailed(data, shapes, olibs);
-                    
-                Console.WriteLine("==== Buildings ====");
-                BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
-                    
-                Console.WriteLine("==== GroundRocks ====");
-                NatureBuilder.PrepareGroundRock(data, shapes, olibs);
+                ElevationGridBuilder.MakeDetailed(data, shapes, olibs, options);
 
-                Console.WriteLine("==== Forests ====");
-                NatureBuilder.Prepare(data, shapes, olibs);
+                if (!options.DoNotGenerateObjects)
+                {
+                    Console.WriteLine("==== Buildings ====");
+                    BuildingsBuilder.PlaceBuildings(data, olibs, shapes);
 
-                Console.WriteLine("==== Scrub ====");
-                NatureBuilder.PrepareScrub(data, shapes, olibs);
+                    Console.WriteLine("==== GroundRocks ====");
+                    NatureBuilder.PrepareGroundRock(data, shapes, olibs);
 
-                Console.WriteLine("==== WaterwayEdges ====");
-                NatureBuilder.PrepareWaterwayEdges(data, shapes, olibs);
+                    Console.WriteLine("==== Forests ====");
+                    NatureBuilder.Prepare(data, shapes, olibs);
 
-                Console.WriteLine("==== DefaultAreas ====");
-                DefaultAreasBuilder.PrepareDefaultAreas(data, shapes, olibs);
+                    Console.WriteLine("==== Scrub ====");
+                    NatureBuilder.PrepareScrub(data, shapes, olibs);
 
-                Console.WriteLine("==== Objects ====");
-                PlaceIsolatedObjects(data, olibs, filtered);
-                    
-                Console.WriteLine("==== Fences and walls ====");
-                PlaceBarrierObjects(data, db, olibs, filtered);
-                    
-                Console.WriteLine("==== Terrain images ====");
-                TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);
-               
+                    Console.WriteLine("==== WaterwayEdges ====");
+                    NatureBuilder.PrepareWaterwayEdges(data, shapes, olibs);
+
+                    Console.WriteLine("==== DefaultAreas ====");
+                    DefaultAreasBuilder.PrepareDefaultAreas(data, shapes, olibs);
+
+                    Console.WriteLine("==== Objects ====");
+                    PlaceIsolatedObjects(data, olibs, filtered);
+
+                    Console.WriteLine("==== Fences and walls ====");
+                    PlaceBarrierObjects(data, db, olibs, filtered);
+                }
+
+                if (!options.DoNotGenerateImagery)
+                {
+                    Console.WriteLine("==== Terrain images ====");
+                    TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);
+                }
             }
         }
 
@@ -313,10 +319,10 @@ namespace ArmaRealMap
             }
         }
 
-        private static void DownloadOsmData(MapInfos area, string cacheFileName)
+        private static void DownloadOsmData(MapInfos area, string cacheFileName, GenerateOptions options)
         {
             Console.WriteLine("==== Download OSM data ====");
-            if (!File.Exists(cacheFileName) || File.GetLastWriteTimeUtc(cacheFileName) < DateTime.UtcNow.AddDays(-1))
+            if (!File.Exists(cacheFileName) || (File.GetLastWriteTimeUtc(cacheFileName) < DateTime.UtcNow.AddDays(-1) && !options.DoNotUpdateOSM))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(cacheFileName));
                 var lonWestern = (float)Math.Min(area.SouthWest.Longitude.ToDouble(), area.NorthWest.Longitude.ToDouble());
@@ -333,7 +339,7 @@ namespace ArmaRealMap
             }
             else
             {
-                Console.WriteLine("File is likely up to date, avoid stressing overpass-api.de.");
+                Console.WriteLine("Keep existing OSM data (data is kept for 1 day by default).");
             }
         }
 

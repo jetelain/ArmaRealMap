@@ -14,10 +14,6 @@ namespace ArmaRealMap
 {
     internal class WrpBuilder
     {
-
-
-
-
         public static void Build(MapConfig config, ElevationGrid elevationGrid, MapInfos area, GlobalConfig global)
         {
             var wrp = new EditableWrp();
@@ -34,19 +30,29 @@ namespace ArmaRealMap
             var library = new ModelInfoLibrary();
             library.Load(global.ModelsInfoFile);
 
+            var files = Directory.GetFiles(config.Target.Objects, "*.txt");
             var id = 1;
-            foreach (var file in Directory.GetFiles(config.Target.Objects, "*.txt"))
+            var done = 0;
+            var report = new ProgressReport("Objects", (int)files.Sum(f => new FileInfo(f).Length));
+            foreach (var file in files)
             {
                 var mode = file.EndsWith(".abs.txt", StringComparison.OrdinalIgnoreCase) ? ElevationMode.Absolute : ElevationMode.Relative;
                 foreach (var line in File.ReadAllLines(file))
                 {
                     if (!string.IsNullOrEmpty(line))
                     {
-                        wrp.Objects.Add(new PlacedTerrainObject(mode, line, library).ToWrpObject(id, elevationGrid));
+                        var o = new PlacedTerrainObject(mode, line, library);
+                        if (o.IsValid)
+                        {
+                            wrp.Objects.Add(o.ToWrpObject(id, elevationGrid));
+                        }
                         id++;
                     }
+                    done += line.Length + Environment.NewLine.Length;
+                    report.ReportItemsDone(done);
                 }
             }
+            report.TaskDone();
             wrp.Objects.Add(EditableWrpObject.Dummy);
 
             StreamHelper.Write(wrp, Path.Combine(config.Target.Cooked, config.WorldName + ".wrp"));
@@ -58,14 +64,18 @@ namespace ArmaRealMap
             var w = terrainTiler.Segments.GetLength(0);
             var h = terrainTiler.Segments.GetLength(1);
             wrp.MatNames[0] = string.Empty;
+            var report = new ProgressReport("MatNames", w);
             for (int x = 0; x < w; x++)
             {
                 for (int y = 0; y < h; y++)
                 {
                     wrp.MatNames[x + (y * h) + 1] = LayersHelper.GetLogicalPath(config, $"p_{x:000}-{y:000}.rvmat");
                 }
+                report.ReportOneDone();
             }
+            report.TaskDone();
 
+            report = new ProgressReport("MaterialIndex", 512);
             int cellPixelSize = (int)(wrp.CellSize / config.Resolution);
             var half = cellPixelSize / 2;
             wrp.MaterialIndex = new ushort[512 * 512];
@@ -77,12 +87,14 @@ namespace ArmaRealMap
                     var segment = terrainTiler.All.First(s => s.ContainsImagePoint(p));
                     wrp.MaterialIndex[x + (y * 512)] = (ushort)(segment.X + (segment.Y * h) + 1);
                 }
+                report.ReportOneDone();
             }
-            var dbg = string.Join("\r\n", wrp.MaterialIndex.Select(m => wrp.MatNames[m]));
+            report.TaskDone();
         }
 
         private static void SetElevation(MapConfig config, ElevationGrid elevationGrid, EditableWrp wrp)
         {
+            var report = new ProgressReport("Elevation", config.GridSize);
             wrp.Elevation = new float[config.GridSize * config.GridSize];
             for (int x = 0; x < config.GridSize; x++)
             {
@@ -90,7 +102,9 @@ namespace ArmaRealMap
                 {
                     wrp.Elevation[x + (y * config.GridSize)] = elevationGrid.elevationGrid[x, y];
                 }
+                report.ReportOneDone();
             }
+            report.TaskDone();
         }
 
     }

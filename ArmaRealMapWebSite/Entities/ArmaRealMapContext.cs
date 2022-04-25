@@ -37,14 +37,13 @@ namespace ArmaRealMapWebSite.Entities
             map.HasIndex(m => m.Name).IsUnique();
         }
 
-        private static readonly Regex TextLine = new Regex(@"\[([a-zA-Z/0-9\.\-]+),""([^""]+)"",""([^""]+)"",\[\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],([0-9\.\-]+)\]\]", RegexOptions.Compiled);
+        private static readonly Regex TextLine = new Regex(@"\[([a-zA-Z/0-9\.\-]+),""([^""]+)"",""([^""]+)"",\[\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\],([0-9\.\-]+)\],\[([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)\]\]", RegexOptions.Compiled);
 
         internal void LoadFromXData()
         {
             //Load("JBAD", "e1.txt", TerrainRegion.Sahel | TerrainRegion.NearEast, AssetCategory.Structure);
             //Load("ARM", "g.txt", TerrainRegion.Sahel, AssetCategory.Tree);
-            //Load("Base game", "e3.txt", TerrainRegion.Unknown, AssetCategory.Rock);
-
+            //Load("ARM", "wa.txt", TerrainRegion.Sahel, AssetCategory.Water);
         }
 
         private void Load(string gameModName, string file, TerrainRegion region, AssetCategory def)
@@ -109,7 +108,10 @@ namespace ArmaRealMapWebSite.Entities
                             {
                                 new AssetPreview() { Data = jpegData, Width = 1920, Height = 1080 },
                                 new AssetPreview() { Data = thumbData, Width = 480, Height = 270 }
-                            }
+                            },
+                            BoundingCenterX = float.Parse(match.Groups[11].Value, CultureInfo.InvariantCulture),
+                            BoundingCenterY = float.Parse(match.Groups[13].Value, CultureInfo.InvariantCulture),
+                            BoundingCenterZ = float.Parse(match.Groups[12].Value, CultureInfo.InvariantCulture)
                         };
                         asset.ClusterName = GetClusterName(asset.Name);
                         Assets.Add(asset);

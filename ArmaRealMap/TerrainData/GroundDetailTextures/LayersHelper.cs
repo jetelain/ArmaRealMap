@@ -51,7 +51,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                 {
                     FileName = imageToPaaExe,
                     RedirectStandardOutput = true,
-                    Arguments = argumentPrefix + pattern(x),
+                    Arguments = argumentPrefix + "\"" + pattern(x) + "\"",
                 });
                 proc.OutputDataReceived += (_, e) => Trace.WriteLine(e.Data);
                 proc.BeginOutputReadLine();

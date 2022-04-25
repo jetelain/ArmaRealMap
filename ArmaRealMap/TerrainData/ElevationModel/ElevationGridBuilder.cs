@@ -32,7 +32,7 @@ namespace ArmaRealMap
             return elevation;
         }
 
-        internal static void MakeDetailed(MapData data, List<OsmShape> shapes, ObjectLibraries libs)
+        internal static void MakeDetailed(MapData data, List<OsmShape> shapes, ObjectLibraries libs, GenerateOptions options)
         {
             var cacheFile = Path.Combine(data.Config.Target.InternalCache, "elevation.bin");
             if (!File.Exists(cacheFile))
@@ -49,8 +49,6 @@ namespace ArmaRealMap
 
                 constraintGrid.SolveAndApplyOnGrid(data);
 
-                ProcessBridgeObjects(data, data.Elevation, libs);
-
                 data.Elevation.SaveToBin(cacheFile);
             }
             else
@@ -58,8 +56,15 @@ namespace ArmaRealMap
                 data.Elevation.LoadFromBin(cacheFile);
             }
 
-            data.Elevation.SavePreview(System.IO.Path.Combine(data.Config.Target.Debug, "elevation.png"));
-            data.Elevation.SaveToAsc(Path.Combine(data.Config.Target.Terrain, "elevation.asc"));
+            if ( !options.DoNotGenerateObjects)
+            {
+                ProcessBridgeObjects(data, data.Elevation, libs);
+            }
+
+            if (!options.DoNotGenerateElevation)
+            {
+                data.Elevation.SaveToAsc(Path.Combine(data.Config.Target.Terrain, "elevation.asc"));
+            }
         }
 
         private static void ProcessForced(MapConfig config, MapInfos mapInfos, ElevationGrid elevation)

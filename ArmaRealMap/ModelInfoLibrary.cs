@@ -24,14 +24,20 @@ namespace ArmaRealMap
 
         public List<ModelInfo> Models { get; } = new List<ModelInfo>();
 
+        private readonly Dictionary<string, ModelInfo> indexByName = new Dictionary<string, ModelInfo>();
+
         internal ModelInfo ResolveByName(string name)
         {
-            var model = Models.FirstOrDefault(m => string.Equals(m.Name,name,StringComparison.OrdinalIgnoreCase));
-            if (model == null)
+            if (!indexByName.TryGetValue(name, out ModelInfo modelInfo))
             {
-                throw new ApplicationException($"Unknown model '{name}'");
+                modelInfo = Models.FirstOrDefault(m => string.Equals(m.Name, name, StringComparison.OrdinalIgnoreCase));
+                if (modelInfo == null)
+                {
+                    throw new ApplicationException($"Unknown model '{name}'");
+                }
+                indexByName.Add(name, modelInfo);
             }
-            return model;
+            return modelInfo;
         }
 
         internal ModelInfo ResolveByPath(string path)
@@ -94,6 +100,7 @@ namespace ArmaRealMap
         {
             Console.WriteLine();
             var updated = 0;
+            var ok = 0;
             if (!string.IsNullOrEmpty(modelsInfoFile) && File.Exists(modelsInfoFile))
             {
                 var data = JsonSerializer.Deserialize<JsonModelInfo[]>(File.ReadAllText(modelsInfoFile), options);
@@ -104,9 +111,13 @@ namespace ArmaRealMap
                     var odol = ReadODOL(model.Path);
                     if (odol != null)
                     {
-                        if (!IsAlmostSame(odol.ModelInfo.BoundingCenter.Vector3, x))
+                        if (model.BoundingCenterX == null || !IsAlmostSame(odol.ModelInfo.BoundingCenter.Vector3, x))
                         {
                             updated++;
+                        }
+                        else
+                        {
+                            ok++;
                         }
                         Models.Add(new ModelInfo() { Name = model.Name, Path = model.Path, BoundingCenter = odol.ModelInfo.BoundingCenter.Vector3 });
                     }
@@ -129,10 +140,7 @@ namespace ArmaRealMap
             {
                 Console.WriteLine($"Warning: {updated} models has been fixed");
             }
-            else
-            {
-                Console.WriteLine($"Info: All existing models were correct");
-            }
+            Console.WriteLine($"Info: {ok} models were up to date.");
             Console.WriteLine();
         }
 
@@ -162,9 +170,9 @@ namespace ArmaRealMap
 
         private static bool IsAlmostSame(Vector3 a, Vector3 b)
         {
-            return MathF.Abs(a.X - b.X) < 0.0001f
-                && MathF.Abs(a.Y - b.Y) < 0.0001f 
-                && MathF.Abs(a.Z - b.Z) < 0.0001f;
+            return MathF.Abs(a.X - b.X) < 0.00001f
+                && MathF.Abs(a.Y - b.Y) < 0.00001f 
+                && MathF.Abs(a.Z - b.Z) < 0.00001f;
         }
     }
 }
