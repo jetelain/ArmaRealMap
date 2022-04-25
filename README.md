@@ -1,6 +1,18 @@
 # Arma Map Studio (AMS)
 
-![Workflow](./docs/workflow.svg)
+## Workflow with Terrain Builder
+
+Traditional terrain making with Arma
+
+![Workflow](./docs/workflow-tb.svg)
+
+## Workflow without Terrain Builder
+
+Importing data in Terrain Builder can be really long, the new "PreCooked" workflow directly generates layers and WRP files.
+
+![Workflow](./docs/workflow-precooked.svg)
+
+Files for terrain builder are still generated and can be used a fallback.
 
 ## Eden Map Editor (@ArmaMapStudio + AmsUtil)
 
@@ -87,17 +99,17 @@ Specific tasks :
 82x82 Km. Simple but very large area.
 
 Specific tasks :
-  - [ ] Improve OpenStreetMap data : https://www.openstreetmap.org/#map=11/15.5926/-0.9304
+  - [x] Improve OpenStreetMap data : https://www.openstreetmap.org/#map=11/15.5926/-0.9304
     1. Create an account
     2. Add data based on satellite image for :
       - "Forest" / vegetation areas ;
       - Wet / water areas ;
       - Roads / trails ;
       - Buildings.
-  - [ ] Find appropriate buildings assets
+  - [x] Find appropriate buildings assets
   - [x] Find appropriate ground textures
-  - [ ] Find appropriate vegetation assets
-    - [ ] Trees
-    - [ ] Edges
-    - [ ] Clutter
+  - [x] Find appropriate vegetation assets
+    - [x] Trees
+    - [x] Edges
+    - [x] Clutter
   
