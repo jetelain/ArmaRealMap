@@ -1,4 +1,7 @@
-﻿@{
+﻿
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
     ViewData["Title"] = "Arma Real Map";
 }
 
@@ -8,3 +11,14 @@
         <p class="lead mb-4">Cartes réalistes pour Arma 3 générées à partir d'OpenStreeMap</p>
     </div>
 </div>
+
+@if ((await AuthorizationService.AuthorizeAsync(User, "Admin")).Succeeded)
+{
+    <p class="text-center">
+        <a class="btn btn-outline-secondary" asp-controller="ObjectLibraries" asp-action="Export"><i class="fas fa-download"></i> Libraries</a>
+        <a class="btn btn-outline-secondary" asp-controller="Assets" asp-action="ModelsInfo"><i class="fas fa-download"></i> ModelsInfo</a>
+    </p>
+    <p class="text-center">
+        <a class="btn btn-outline-secondary" asp-controller="Assets" asp-action="UploadModelsInfo">Mise à jour ModelsInfo</a>
+    </p>
+}

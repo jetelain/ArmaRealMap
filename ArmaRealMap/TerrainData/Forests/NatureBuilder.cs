@@ -43,7 +43,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             RemoveOnBuildingsAndRoads(data, layer);
 
-            layer.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "waterway-edge.rel.txt"));
+            layer.WriteFile(Path.Combine(data.Config.Target.Objects, "waterway-edge.rel.txt"));
         }
 
         public static void Prepare(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
@@ -55,7 +55,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             RemoveOnBuildingsAndRoads(data, objects);
 
-            objects.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "forest.rel.txt"));
+            objects.WriteFile(Path.Combine(data.Config.Target.Objects, "forest.rel.txt"));
 
             GenerateEdgeObjects(data, olibs, forestPolygonsCleaned);
 
@@ -78,7 +78,7 @@ namespace ArmaRealMap.TerrainData.Forests
             var objects = new FillShapeWithObjectsClustered(data, category, olibs).Fill(final, filename);
             Remove(objects, data.Buildings, (building, tree) => tree.Poly.Distance(building.Poly) < 0.25f);
             Remove(objects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= (road.Width / 2) + 1f);
-            objects.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", filename));
+            objects.WriteFile(Path.Combine(data.Config.Target.Objects, filename));
         }
 
         private static void GenerateEdgeObjects(MapData data, ObjectLibraries olibs,  List<TerrainPolygon> forestPolygonsCleaned)
@@ -100,7 +100,7 @@ namespace ArmaRealMap.TerrainData.Forests
             }
             report.TaskDone();
             Remove(edgeObjects, data.Roads, (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
-            edgeObjects.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "forest-edge.rel.txt"));
+            edgeObjects.WriteFile(Path.Combine(data.Config.Target.Objects, "forest-edge.rel.txt"));
         }
 
         private static void RemoveOverlaps(List<TerrainPolygon> forest)
@@ -242,7 +242,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             RemoveOnBuildingsAndRoads(data, objects);
 
-            objects.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "scrub.rel.txt"));
+            objects.WriteFile(Path.Combine(data.Config.Target.Objects, "scrub.rel.txt"));
 
             data.Scrubs = polygonsCleaned;
 
@@ -258,7 +258,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             RemoveOnBuildingsAndRoads(data, objects);
 
-            objects.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "rocks.rel.txt"));
+            objects.WriteFile(Path.Combine(data.Config.Target.Objects, "rocks.rel.txt"));
         }
 
         internal static void RemoveOnBuildingsAndRoads(MapData data, TerrainObjectLayer objects)

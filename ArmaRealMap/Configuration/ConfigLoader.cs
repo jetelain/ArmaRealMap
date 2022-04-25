@@ -83,7 +83,7 @@ namespace ArmaRealMap.Configuration
             Console.WriteLine($"Target.InternalCache = '{config.Target.InternalCache}'");
             Console.WriteLine($"Target.InputCache    = '{config.Target.InputCache}'");
 
-            Directory.CreateDirectory(Path.Combine(config.Target.Terrain, "objects"));
+            Directory.CreateDirectory(Path.Combine(config.Target.Objects));
             Directory.CreateDirectory(Path.Combine(config.Target.Terrain, "idmap"));
             Directory.CreateDirectory(Path.Combine(config.Target.Terrain, "sat"));
             return config;
@@ -118,8 +118,7 @@ namespace ArmaRealMap.Configuration
                 Trace.TraceError($"Failed: {ex}");
                 if (!File.Exists(target))
                 {
-                    Console.Error.WriteLine($"Error: No previously downloaded file '{target}' exists. Unable to proceed.");
-                    throw new ApplicationException();
+                    throw new ApplicationException($"No previously downloaded file '{target}' exists. Unable to proceed.");
                 }
             }
         }

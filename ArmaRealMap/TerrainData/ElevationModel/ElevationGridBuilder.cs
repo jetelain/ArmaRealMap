@@ -114,7 +114,7 @@ namespace ArmaRealMap
                 report.ReportOneDone();
             }
             report.TaskDone();
-            bridgeObjects.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "bridges.abs.txt"));
+            bridgeObjects.WriteFile(Path.Combine(data.Config.Target.Objects, "bridges.abs.txt"));
         }
 
         private static void ProcessWaterWays(MapData data, List<OsmShape> shapes, ElevationConstraintGrid constraintGrid)

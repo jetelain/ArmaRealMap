@@ -68,7 +68,7 @@ namespace ArmaRealMap.Roads
 
             NatureBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
 
-            layer.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "sidewalks.rel.txt"));
+            layer.WriteFile(Path.Combine(data.Config.Target.Objects, "sidewalks.rel.txt"));
 
             //DebugHelper.ObjectsInPolygons(data, layer, data.Roads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList(), "sidewalks.bmp");
             
@@ -103,7 +103,7 @@ namespace ArmaRealMap.Roads
                     }
                 }
 
-                layer.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "roadwalls.rel.txt"));
+                layer.WriteFile(Path.Combine(data.Config.Target.Objects, "roadwalls.rel.txt"));
             }
         }
 

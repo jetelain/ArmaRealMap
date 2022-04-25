@@ -24,13 +24,13 @@ namespace ArmaRealMap.Libraries
             
         }
 
-        public void Load(MapConfig config, GlobalConfig global)
+        public void Load(string filename, TerrainRegion terrainFilter)
         {
-            var libs = JsonSerializer.Deserialize<JsonObjectLibrary[]>(File.ReadAllText(global.LibrariesFile), options);
+            var libs = JsonSerializer.Deserialize<JsonObjectLibrary[]>(File.ReadAllText(filename), options);
 
             foreach(var lib in libs)
             {
-                if (lib.Terrain == null || lib.Terrain == TerrainRegion.Unknown || lib.Terrain == config.Terrain)
+                if (lib.Terrain == null || lib.Terrain == TerrainRegion.Unknown || lib.Terrain == terrainFilter)
                 {
                     Libraries.Add(new ObjectLibrary()
                     {

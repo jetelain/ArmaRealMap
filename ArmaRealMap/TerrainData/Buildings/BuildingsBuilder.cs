@@ -72,7 +72,7 @@ namespace ArmaRealMap.Buildings
             {
                 Preview(data, removed, data.WantedBuildings, "buildings-final.png");
             }
-            data.Buildings.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "buildings.rel.txt"));
+            data.Buildings.WriteFile(Path.Combine(data.Config.Target.Objects, "buildings.rel.txt"));
 
             Console.WriteLine("{0:0.0} % buildings placed", (data.WantedBuildings.Count - nonefits) * 100.0 / data.WantedBuildings.Count);
         }

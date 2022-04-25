@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Numerics;
 using ArmaRealMap.Core.ObjectLibraries;
 
 namespace ArmaRealMapWebSite.Entities.Assets
@@ -47,5 +49,9 @@ namespace ArmaRealMapWebSite.Entities.Assets
         public float BoundingSphereDiameter { get; set; }
 
         public string ClusterName { get; set; }
+
+        public float? BoundingCenterX { get; set; }
+        public float? BoundingCenterY { get; set; }
+        public float? BoundingCenterZ { get; set; }
     }
 }

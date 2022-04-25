@@ -11,7 +11,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace ArmaRealMap.TerrainData.GroundDetailTextures
 {
-    internal class IdMapCompiler
+    internal static class IdMapCompiler
     {
         class TextureInfo
         {
@@ -31,10 +31,16 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
         public static void Compile(MapInfos area, MapConfig config)
         {
-            Directory.CreateDirectory(LayersHelper.GetLocalPath(config));
+            using (var idmap = Image.Load<Rgb24>(Path.Combine(config.Target.Terrain, "idmap", "idmap.png")))
+            {
+                Compile(area, config, idmap);
+            }
+        }
 
+        public static void Compile(MapInfos area, MapConfig config, Image idmap)
+        {
+            Directory.CreateDirectory(LayersHelper.GetLocalPath(config));
             var tiler = new TerrainTiler(area, config);
-            var idmap = Image.Load<Rgb24>(Path.Combine(config.Target.Terrain, "idmap", "idmap.png"));
             var report2 = new ProgressReport("Tiling", tiler.Segments.Length);
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
             {
@@ -53,7 +59,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                             var rvmat = MakeRvMat(seg, 40, tex, config.Terrain, config);
 
 
-                            output.Save(LayersHelper.GetLocalPath(config,$"M_{x:000}_{y:000}_lca.png"));
+                            output.Save(LayersHelper.GetLocalPath(config, $"M_{x:000}_{y:000}_lca.png"));
                             //tile.Save(LayersHelper.GetPath(config,$"M_{x:000}-{y:000}_ori.png"));
                             File.WriteAllText(LayersHelper.GetLocalPath(config, $"P_{x:000}-{y:000}.rvmat"), rvmat);
                             report2.ReportOneDone();
@@ -61,8 +67,8 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                     }
                 }
             });
-            report2.TaskDone(); 
-            
+            report2.TaskDone();
+
             LayersHelper.ImageToPAA(tiler.Segments.GetLength(0), x => LayersHelper.GetLocalPath(config, $"M_{x:000}_*_lca.png"));
         }
 

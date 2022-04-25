@@ -1,4 +1,6 @@
-﻿namespace ArmaRealMap
+﻿using System.IO;
+
+namespace ArmaRealMap
 {
     public class TargetConfig
     {
@@ -7,5 +9,7 @@
         public string InternalCache { get; set; }
         public string InputCache { get; set; }
         public string Cooked { get; set; }
+
+        public string Objects => Path.Combine(Terrain, "objects");
     }
 }

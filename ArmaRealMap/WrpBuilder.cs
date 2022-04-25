@@ -15,9 +15,11 @@ namespace ArmaRealMap
     internal class WrpBuilder
     {
 
-        public static void Build(MapConfig config, ElevationGrid elevationGrid, TerrainTiler terrainTiler)
+
+
+
+        public static void Build(MapConfig config, ElevationGrid elevationGrid, MapInfos area, GlobalConfig global)
         {
-            
             var wrp = new EditableWrp();
             wrp.LandRangeX = 512;
             wrp.LandRangeY = 512;
@@ -27,10 +29,24 @@ namespace ArmaRealMap
 
             SetElevation(config, elevationGrid, wrp);
 
-            SetMaterials(config, terrainTiler, wrp);
+            SetMaterials(config, new TerrainTiler(area, config), wrp);
 
-            // NEXT STEP: Process objects !
+            var library = new ModelInfoLibrary();
+            library.Load(global.ModelsInfoFile);
 
+            var id = 1;
+            foreach (var file in Directory.GetFiles(config.Target.Objects, "*.txt"))
+            {
+                var mode = file.EndsWith(".abs.txt", StringComparison.OrdinalIgnoreCase) ? ElevationMode.Absolute : ElevationMode.Relative;
+                foreach (var line in File.ReadAllLines(file))
+                {
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        wrp.Objects.Add(new PlacedTerrainObject(mode, line, library).ToWrpObject(id, elevationGrid));
+                        id++;
+                    }
+                }
+            }
             wrp.Objects.Add(EditableWrpObject.Dummy);
 
             StreamHelper.Write(wrp, Path.Combine(config.Target.Cooked, config.WorldName + ".wrp"));

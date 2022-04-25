@@ -61,7 +61,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             report.TaskDone();
         }
 
-        internal static void FillEdges(Image<Rgb24> realSat, int x, int num, Image<Rgb24> tile, int y, Point pos)
+        internal static void FillEdges(Image realSat, int x, int num, Image<Rgb24> tile, int y, Point pos)
         {
             if (x == 0)
             {

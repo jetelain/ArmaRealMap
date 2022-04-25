@@ -56,7 +56,7 @@ namespace ArmaRealMap.TerrainData.DefaultAreas
 
                 Forests.NatureBuilder.RemoveOnBuildingsAndRoads(data, objects);
 
-                objects.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "defaultfill.rel.txt"));
+                objects.WriteFile(Path.Combine(data.Config.Target.Objects, "defaultfill.rel.txt"));
             }
         }
 

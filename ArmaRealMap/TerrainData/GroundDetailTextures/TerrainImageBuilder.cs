@@ -174,6 +174,8 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                 report.TaskDone();
 
                 DrawHelper.SavePngChuncked(img, Path.Combine(config.Target.Terrain, "idmap", "idmap.png"));
+
+                IdMapCompiler.Compile(area, config, img);
             }
         }
 

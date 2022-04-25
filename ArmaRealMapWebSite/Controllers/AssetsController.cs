@@ -1,15 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using ArmaRealMap.Core.ObjectLibraries;
+using ArmaRealMapWebSite.Entities;
 using ArmaRealMapWebSite.Entities.Assets;
 using ArmaRealMapWebSite.Models;
 using Microsoft.AspNetCore.Authorization;
-using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMapWebSite.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArmaRealMapWebSite.Controllers
 {
@@ -52,6 +55,31 @@ namespace ArmaRealMapWebSite.Controllers
             vm.Mods = new SelectList(_context.GameMods, "GameModID", "Name");
             vm.DbCount = await _context.Assets.CountAsync();
             return View(vm);
+        }
+
+        public async Task<IActionResult> ModelsInfo()
+        {
+            var alldata = await _context.Assets
+                .ToListAsync();
+
+            return Json(
+                alldata
+                    .Select(
+                    l => new JsonModelInfo()
+                    {
+                        Name = l.Name,
+                        Path = l.ModelPath,
+                        BoundingCenterX = l.BoundingCenterX,
+                        BoundingCenterY = l.BoundingCenterY,
+                        BoundingCenterZ = l.BoundingCenterZ
+                    })
+                    .ToList(),
+                    new JsonSerializerOptions
+                    {
+                        Converters = { new JsonStringEnumConverter() },
+                        WriteIndented = true
+                    }
+                );
         }
 
 
@@ -255,6 +283,39 @@ namespace ArmaRealMapWebSite.Controllers
         private bool AssetExists(int id)
         {
             return _context.Assets.Any(e => e.AssetID == id);
+        }
+
+
+        [Authorize(Policy = "Admin")]
+        public IActionResult UploadModelsInfo()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> UploadModelsInfo(IFormFile file)
+        {
+            JsonModelInfo[] models;
+            using (var reader = new StreamReader(file.OpenReadStream()))
+            {
+                models = JsonSerializer.Deserialize<JsonModelInfo[]>(reader.ReadToEnd());
+            }
+            var alldata = await _context.Assets.ToListAsync();
+            foreach(var model in models)
+            {
+                var data = alldata.FirstOrDefault(m => string.Equals(m.ModelPath,model.Path, StringComparison.OrdinalIgnoreCase));
+                if (data != null)
+                {
+                    data.BoundingCenterX = model.BoundingCenterX;
+                    data.BoundingCenterY = model.BoundingCenterY;
+                    data.BoundingCenterZ = model.BoundingCenterZ;
+                    _context.Update(data);
+                }
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

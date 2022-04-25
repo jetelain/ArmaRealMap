@@ -2,7 +2,7 @@
 
 
 
-- `~/.config/share/ArmaRealMap` or `%USERPROFILE%\AppData\Local\ArmaRealMap`
+- `~/.config/share/ArmaRealMap` or `%USERPROFILE%\AppData\Local\ArmaRealMap` : Global data
   - `srtm`
 	- SRTM files cache
   - `s2c`
@@ -14,9 +14,9 @@
   - `mapname.json` : Map config
   - `mapname`
     - `cache`    
-      - `internal` : Internal data cache
+      - `internal` : Internal data cache, can be safely cleared
         - Misc files to make re-run faster
-      - `input`               : Input data cache
+      - `input`               : Input data cache. Be careful, clearing data here can be very costly
   	    - `area.osm.xml`      : OpenStreeMap data for terrain coordinates
         - `sat-raw.png`       : S2 Cloudless Satellite image for terrain coordinates   (MGRS projected)
   	    - `elevation-raw.bin` : SRTM elevation data for terrain coordinates (MGRS   projected)

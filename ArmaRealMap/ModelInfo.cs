@@ -13,10 +13,6 @@ namespace ArmaRealMap
 
         public Vector3 BoundingCenter { get; set; }  
 
-        public Vector2 MinPoint { get; set; } = new Vector2(-1, -1);
-
-        public Vector2 MaxPoint { get; set; } = new Vector2(1, 1);
-
         internal float GetRelativeElevation(ElevationGrid grid, TerrainPoint point, Matrix4x4 matrix)
         {
             var pointToCenter = Vector3.Transform(BoundingCenter, matrix);

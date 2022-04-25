@@ -25,34 +25,79 @@ using OsmSharp.Db;
 using OsmSharp.Db.Impl;
 using OsmSharp.Geo;
 using OsmSharp.Streams;
+using CommandLine;
 
 namespace ArmaRealMap
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
+        {
+            try
+            {
+                return Parser.Default
+                    .ParseArguments<GenerateOptions,UpdateOptions>(args)
+                    .MapResult<GenerateOptions, UpdateOptions, int>(Run, Update, _ => 1);
+            }
+            catch (ApplicationException ex)
+            {
+                Console.Error.Write("Error: ");
+                Console.Error.WriteLine(ex.Message);
+                return 2;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.Write("Unexpected error:");
+                Console.Error.WriteLine(ex.ToString());
+                return 3;
+            }
+        }
+
+        private static int Update(UpdateOptions options)
+        {
+            EnsureProjectDrive();
+
+            var global = ConfigLoader.LoadGlobal(options.Global);
+
+            SyncLibraries(global);
+
+            var library = new ModelInfoLibrary();
+            library.LoadAndUpdate(global.ModelsInfoFile);
+            library.Save(global.ModelsInfoFile);
+
+            Console.WriteLine($"File '{global.ModelsInfoFile}' was updated.");
+            Console.WriteLine("Please upload it to https://arm.pmad.net/Assets/UploadModelsInfo");
+
+            return 0;
+        }
+
+        private static void SyncLibraries(GlobalConfig global)
+        {
+            ConfigLoader.UpdateFile(global.LibrariesFile, "https://arm.pmad.net/ObjectLibraries/Export");
+            ConfigLoader.UpdateFile(global.ModelsInfoFile, "http://arm.pmad.net/Assets/ModelsInfo");
+        }
+
+        private static int Run(GenerateOptions options)
         {
             EnsureProjectDrive();
 
             Console.Title = "ArmaRealMap";
 
-            var global = ConfigLoader.LoadGlobal(null);
-            var config = ConfigLoader.LoadConfig(args[0]);
+            var global = ConfigLoader.LoadGlobal(options.Global);
+            var config = ConfigLoader.LoadConfig(options.Source);
 
             SetupLogging(config);
 
-            ConfigLoader.UpdateFile(global.LibrariesFile, "https://arm.pmad.net/ObjectLibraries/Export");
+            SyncLibraries(global);
 
             var area = MapInfos.Create(config);
 
             var olibs = new ObjectLibraries();
-            olibs.Load(config, global);
+            olibs.Load(global.LibrariesFile, config.Terrain);
 
             var data = new MapData();
-
             data.Config = config;
             data.GlobalConfig = global;
-
             data.MapInfos = area;
 
             RenderMapInfos(config, area);
@@ -65,7 +110,12 @@ namespace ArmaRealMap
 
             BuildLand(config, data, area, olibs);
 
+            Console.WriteLine("==== Generate WRP ====");
+            WrpBuilder.Build(config, data.Elevation, area, global);
+
             Trace.Flush();
+
+            return 0;
         }
 
         private static void SetupLogging(MapConfig config)
@@ -200,7 +250,7 @@ namespace ArmaRealMap
                 olibs.Libraries.Where(l => l.Category == ObjectCategory.MilitaryWall).ToList(),
                 o => OsmCategorizer.Get(o.Tags, "barrier") == "city_wall");
 
-            result.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "barriers.rel.txt"));
+            result.WriteFile(Path.Combine(data.Config.Target.Objects, "barriers.rel.txt"));
         }
 
         private static void PlaceObjectsOnPath(TerrainObjectLayer result, MapData data, SnapshotDb db, OsmStreamSource filtered, List<ObjectLibrary> libs, Func<Way, bool> filter)
@@ -453,7 +503,7 @@ class Grid {{
                     olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.WaterWell),
                     o => OsmCategorizer.Get(o.Tags, "man_made") == "water_well");
 
-            result.WriteFile(Path.Combine(data.Config.Target.Terrain, "objects", "objects.rel.txt"));
+            result.WriteFile(Path.Combine(data.Config.Target.Objects, "objects.rel.txt"));
         }
 
         private static void PlaceObjects(TerrainObjectLayer result, MapData data, OsmStreamSource filtered, ObjectLibrary lib, Func<Node, bool> filter)

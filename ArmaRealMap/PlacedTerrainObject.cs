@@ -8,9 +8,8 @@ using BIS.WRP;
 
 namespace ArmaRealMap
 {
-    public sealed class PlacedTerrainObject : ITerrainGeometry
+    public sealed class PlacedTerrainObject
     {
-
         private readonly TerrainPoint point;
         private readonly float elevation;
         private readonly float yaw;
@@ -92,11 +91,8 @@ namespace ArmaRealMap
         }
 
         public ModelInfo Model => model;
+
         public TerrainPoint Point => point;
-
-        public TerrainPoint MinPoint => new TerrainPoint(point.Vector + model.MinPoint);
-
-        public TerrainPoint MaxPoint => new TerrainPoint(point.Vector + model.MaxPoint);
 
         public string ToTerrainBuilderCSV()
         {
