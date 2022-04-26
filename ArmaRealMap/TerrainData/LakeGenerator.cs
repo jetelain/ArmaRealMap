@@ -18,7 +18,7 @@ namespace ArmaRealMap
 {
     internal static class LakeGenerator
     {
-        internal static void ProcessLakes(MapData data, MapInfos area, List<OsmShape> shapes)
+        internal static void ProcessLakes(MapData data, MapInfos area, List<OsmShape> shapes, GenerateOptions options)
         {
             var initialLakes = shapes.Where(s => s.Category == OsmShapeCategory.Lake).SelectMany(s => s.TerrainPolygons).ToList();
 
@@ -82,11 +82,14 @@ namespace ArmaRealMap
                 data.Lakes.Add(lake);
             }
             report.TaskDone();
-            using (var writer = new StreamWriter(new FileStream(Path.Combine(data.Config.Target.Objects, "watertiles.abs.txt"), FileMode.Create, FileAccess.Write)))
+            if (!options.DoNotGenerateObjects)
             {
-                foreach (var obj in objects)
+                using (var writer = new StreamWriter(new FileStream(Path.Combine(data.Config.Target.Objects, "watertiles.abs.txt"), FileMode.Create, FileAccess.Write)))
                 {
-                    writer.WriteLine(obj.ToTerrainBuilderCSV());
+                    foreach (var obj in objects)
+                    {
+                        writer.WriteLine(obj.ToTerrainBuilderCSV());
+                    }
                 }
             }
             Trace.Flush();

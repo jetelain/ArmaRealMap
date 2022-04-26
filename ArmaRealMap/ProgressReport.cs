@@ -20,6 +20,8 @@ namespace ArmaRealMap
             this.sw = Stopwatch.StartNew();
             this.lastReport = Stopwatch.StartNew();
 
+            Trace.WriteLine(string.Empty);
+            Trace.WriteLine($"Begin task {taskName}");
             Console.Write(taskName);
             this.top = Console.CursorTop;
             WritePercent(0);
@@ -89,6 +91,8 @@ namespace ArmaRealMap
             WritePercent(100d);
             Console.Write($"Done in {Math.Ceiling(sw.ElapsedMilliseconds / 1000d)} sec");
             CleanEndOfLine();
+            Trace.WriteLine($"Task {taskName} took {sw.ElapsedMilliseconds} msec");
+            Trace.Flush();
         }
 
         private static void CleanEndOfLine()

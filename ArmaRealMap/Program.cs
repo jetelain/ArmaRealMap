@@ -131,7 +131,7 @@ namespace ArmaRealMap
 #pragma warning disable CA1416 // Valider la compatibilité de la plateforme
         private static void EnsureProjectDrive()
         {
-            if (!Directory.Exists("P:\\"))
+            if (Environment.OSVersion.Platform != PlatformID.Unix && !Directory.Exists("P:\\"))
             {
                 Console.WriteLine("Mount project drive");
 
@@ -191,7 +191,7 @@ namespace ArmaRealMap
                 RoadsBuilder.Roads(data, filtered, db, config, olibs, shapes, options);
                 
                 Console.WriteLine("==== Lakes ====");
-                LakeGenerator.ProcessLakes(data, area, shapes);
+                LakeGenerator.ProcessLakes(data, area, shapes, options);
                     
                 Console.WriteLine("==== Elevation ====");
                 ElevationGridBuilder.MakeDetailed(data, shapes, olibs, options);
