@@ -29,15 +29,15 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             // new Rgba32(???, ???, ???, 0) // Stage13 (need additional processing)
         };
 
-        public static void Compile(MapInfos area, MapConfig config)
+        public static void Compile(MapInfos area, MapConfig config, TerrainMaterialLibrary terrainMaterialLibrary)
         {
             using (var idmap = Image.Load<Rgb24>(Path.Combine(config.Target.Terrain, "idmap", "idmap.png")))
             {
-                Compile(area, config, idmap);
+                Compile(area, config, idmap, terrainMaterialLibrary);
             }
         }
 
-        public static void Compile(MapInfos area, MapConfig config, Image idmap)
+        public static void Compile(MapInfos area, MapConfig config, Image idmap, TerrainMaterialLibrary terrainMaterialLibrary)
         {
             Directory.CreateDirectory(LayersHelper.GetLocalPath(config));
             var tiler = new TerrainTiler(area, config);
@@ -56,7 +56,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                             LayersHelper.FillEdges(idmap, x, tiler.Segments.GetLength(0), tile, y, pos);
 
                             var tex = ReduceColors(tile, output, config.Terrain);
-                            var rvmat = MakeRvMat(seg, 40, tex, config.Terrain, config);
+                            var rvmat = MakeRvMat(seg, 40, tex, config.Terrain, config, terrainMaterialLibrary);
 
 
                             output.Save(LayersHelper.GetLocalPath(config, $"M_{x:000}_{y:000}_lca.png"));
@@ -120,7 +120,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             return colors;
         }
 
-        private static string MakeRvMat(LandSegment segment, double textureScale, List<TextureInfo> textures, TerrainRegion terrain, MapConfig config)
+        private static string MakeRvMat(LandSegment segment, double textureScale, List<TextureInfo> textures, TerrainRegion terrain, MapConfig config, TerrainMaterialLibrary terrainMaterialLibrary)
         {
             var lco = $"s_{segment.X:000}_{segment.Y:000}_lco.png";
             var lca = $"m_{segment.X:000}_{segment.Y:000}_lca.png";
@@ -209,14 +209,16 @@ class Stage2
             int stage = 3; 
             foreach(var texture in textures)
             {
+                var material = terrainMaterialLibrary.GetInfo(texture.Material, terrain);
+
                 sw.WriteLine(FormattableString.Invariant($@"class Stage{stage}
 {{
-	texture=""{texture.Material.NoPx(terrain)}"";
+	texture=""{material.NormalTexture}"";
 	texGen=1;
 }};
 class Stage{stage+1}
 {{
-	texture=""{texture.Material.Co(terrain)}"";
+	texture=""{material.ColorTexture}"";
 	texGen=2;
 }};"));
                 stage += 2;

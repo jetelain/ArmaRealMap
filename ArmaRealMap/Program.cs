@@ -83,6 +83,13 @@ namespace ArmaRealMap
             Console.WriteLine($"File '{global.ModelsInfoFile}' was updated.");
             Console.WriteLine("Please upload it to https://arm.pmad.net/Assets/UploadModelsInfo");
 
+            var terrainMaterialLibrary = new TerrainMaterialLibrary();
+            terrainMaterialLibrary.LoadFromProjectDrive();
+            terrainMaterialLibrary.Save(global.TerrainMaterialFile);
+
+            Console.WriteLine();
+            Console.WriteLine($"File '{global.TerrainMaterialFile}' was updated.");
+
             return 0;
         }
 
@@ -115,7 +122,10 @@ namespace ArmaRealMap
             data.GlobalConfig = global;
             data.MapInfos = area;
 
-            RenderMapInfos(config, area);
+            var terrainMaterialLibrary = new TerrainMaterialLibrary();
+            terrainMaterialLibrary.LoadFromFile(global.TerrainMaterialFile, config.Terrain);
+
+            RenderMapInfos(config, area, terrainMaterialLibrary);
 
             Console.WriteLine("==== Satellite image ====");
             SatelliteRawImage(config, global, area);
@@ -123,7 +133,7 @@ namespace ArmaRealMap
             Console.WriteLine("==== Raw elevation grid (from SRTM) ====");
             data.Elevation = ElevationGridBuilder.LoadOrGenerateElevationGrid(data);
 
-            BuildLand(config, data, area, olibs, options);
+            BuildLand(config, data, area, olibs, options, terrainMaterialLibrary);
 
             Console.WriteLine("==== Generate WRP ====");
             WrpBuilder.Build(config, data.Elevation, area, global);
@@ -181,7 +191,7 @@ namespace ArmaRealMap
             }
         }
 
-        private static void BuildLand(MapConfig config, MapData data, MapInfos area, ObjectLibraries olibs, GenerateOptions options)
+        private static void BuildLand(MapConfig config, MapData data, MapInfos area, ObjectLibraries olibs, GenerateOptions options, TerrainMaterialLibrary terrainMaterialLibrary)
         {
             data.UsedObjects = new HashSet<string>();
 
@@ -239,7 +249,7 @@ namespace ArmaRealMap
                 if (!options.DoNotGenerateImagery)
                 {
                     Console.WriteLine("==== Terrain images ====");
-                    TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes);
+                    TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes, terrainMaterialLibrary);
                 }
             }
         }
@@ -362,7 +372,7 @@ namespace ArmaRealMap
         }
 
 
-        private static void RenderMapInfos(MapConfig config, MapInfos area)
+        private static void RenderMapInfos(MapConfig config, MapInfos area, TerrainMaterialLibrary terrainMaterialLibrary)
         {
             var sb = new StringBuilder();
 
@@ -373,6 +383,8 @@ namespace ArmaRealMap
             var nw = GetGridZone(area.NorthWest);
             var ne = GetGridZone(area.NorthEast);
             */
+
+            var material = terrainMaterialLibrary.GetInfo(TerrainMaterial.Default, config.Terrain);
 
             sb.Append(FormattableString.Invariant(@$"
 latitude={center.Latitude.ToDouble():0.00000000};
@@ -394,8 +406,8 @@ class OutsideTerrain
     {{
 		class Layer0
         {{
-			nopx    = ""{TerrainMaterial.Default.NoPx(config.Terrain)}"";
-			texture = ""{TerrainMaterial.Default.Co(config.Terrain)}""; 
+			nopx    = ""{material.NormalTexture}"";
+			texture = ""{material.ColorTexture}""; 
 		}};
     }};
 }};

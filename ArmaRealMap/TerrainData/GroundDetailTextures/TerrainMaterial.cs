@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text.RegularExpressions;
-using ArmaRealMap.Core.ObjectLibraries;
+﻿using ArmaRealMap.Core.ObjectLibraries;
 using SixLabors.ImageSharp;
 
 namespace ArmaRealMap.GroundTextureDetails
@@ -58,24 +55,7 @@ namespace ArmaRealMap.GroundTextureDetails
 
         private Color DefaultColor { get; }
 
-        private string Name { get; }
+        public string Name { get; }
 
-
-        private string GetRvMat(TerrainRegion terrain)
-        {
-            return File.ReadAllText(Path.Combine(@"P:\z\arm\addons\common\data\gdt", $"arm_{GetMaterial(terrain).Name.ToLowerInvariant()}_{terrain.ToString().ToLowerInvariant()}.rvmat"));
-        }
-
-        private static readonly Regex Texture = new Regex(@"texture=""([^""]+)"";", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private string GetTexture(TerrainRegion terrain, int index)
-        {
-            var matches = Texture.Matches(GetRvMat(terrain));
-            return matches[index].Groups[1].Value;
-        }
-
-        internal string NoPx(TerrainRegion terrain) => GetTexture(terrain, 0);
-
-        internal string Co(TerrainRegion terrain) => GetTexture(terrain, 1);
     }
 }

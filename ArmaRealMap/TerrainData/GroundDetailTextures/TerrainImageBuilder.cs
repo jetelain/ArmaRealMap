@@ -10,6 +10,7 @@ using ArmaRealMap.Roads;
 using BIS.PAA;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
@@ -17,13 +18,13 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 {
     class TerrainImageBuilder
     {
-        private static void DrawFakeSat(MapConfig config, MapInfos area, MapData data, List<Polygons> polygonsByCategory)
+        private static void DrawFakeSat(MapConfig config, MapInfos area, MapData data, List<Polygons> polygonsByCategory, TerrainMaterialLibrary terrainMaterialLibrary)
         {
             var brushes = new Dictionary<TerrainMaterial, ImageBrush>();
             var colors = new Dictionary<TerrainMaterial, Color>();
             foreach (var mat in TerrainMaterial.All.Concat(new[] { TerrainMaterial.Default }))
             {
-                var img = GetImage(config, mat);
+                var img = GetImage(config, mat, terrainMaterialLibrary);
                 brushes.Add(mat, new ImageBrush(img));
                 colors.Add(mat, new Color(img[2,2]));
             }
@@ -122,22 +123,11 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             LayersHelper.ImageToPAA(num, x => LayersHelper.GetLocalPath(config, $"S_{x:000}_*_lco.png"));
         }
 
-        private static Image<Bgra32> GetImage(MapConfig config, TerrainMaterial mat)
+        private static Image<Bgra32> GetImage(MapConfig config, TerrainMaterial mat, TerrainMaterialLibrary terrainMaterialLibrary)
         {
-            var texture = Path.Combine("P:", mat.Co(config.Terrain));
-            var pngFake = Path.Combine(Path.GetDirectoryName(texture), "fakesat", Path.GetFileNameWithoutExtension(texture) + ".png");
-            if (File.Exists(pngFake))
-            {
-                return Image.Load(pngFake).CloneAs<Bgra32>();
-            }
-            using (var paaStream = File.OpenRead(texture))
-            {
-                var paa = new PAA(paaStream);
-                var map = paa.Mipmaps.First(m => m.Width == 8);
-                var pixels = PAA.GetARGB32PixelData(paa, paaStream, map);
-                return Image.LoadPixelData<Bgra32>(pixels, map.Width, map.Height);
-            }
+            return Image.Load(terrainMaterialLibrary.GetInfo(mat, config.Terrain).FakeSatPngImage, new PngDecoder()).CloneAs<Bgra32>();
         }
+
         private class Polygons
         {
             internal List<TerrainPolygon> List;
@@ -146,16 +136,16 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             public List<TerrainPolygon> MergeAttempt { get; internal set; }
         }
 
-        internal static void GenerateTerrainImages(MapConfig config, MapInfos area, MapData data, List<OsmShape> toRender)
+        internal static void GenerateTerrainImages(MapConfig config, MapInfos area, MapData data, List<OsmShape> toRender, TerrainMaterialLibrary terrainMaterialLibrary)
         {
             var polygonsByCategory = GetPolygonsByCategory(toRender);
 
-            DrawFakeSat(config, area, data, polygonsByCategory);
+            DrawFakeSat(config, area, data, polygonsByCategory, terrainMaterialLibrary);
 
-            DrawIdMap(config, area, data, polygonsByCategory);
+            DrawIdMap(config, area, data, polygonsByCategory, terrainMaterialLibrary);
         }
 
-        private static void DrawIdMap(MapConfig config, MapInfos area, MapData data, List<Polygons> polygonsByCategory)
+        private static void DrawIdMap(MapConfig config, MapInfos area, MapData data, List<Polygons> polygonsByCategory, TerrainMaterialLibrary terrainMaterialLibrary)
         {
             using (var img = new Image<Rgba32>(area.ImageryWidth, area.ImageryHeight, TerrainMaterial.Default.GetColor(config.Terrain)))
             {
@@ -175,7 +165,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
                 DrawHelper.SavePngChuncked(img, Path.Combine(config.Target.Terrain, "idmap", "idmap.png"));
 
-                IdMapCompiler.Compile(area, config, img);
+                IdMapCompiler.Compile(area, config, img, terrainMaterialLibrary);
             }
         }
 

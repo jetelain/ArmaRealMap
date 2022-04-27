@@ -29,14 +29,16 @@ namespace ArmaRealMap.Configuration
             }
             config.S2C = config.S2C ?? new S2CConfig();
             config.SRTM = config.SRTM ?? new SRTMConfig();
-            config.S2C.CacheLocation = GetExistingPath(globalConfigFile, config.S2C.CacheLocation ?? Path.Combine(config.CacheLocationBase ?? basePath, "S2C"));
-            config.SRTM.CacheLocation = GetExistingPath(globalConfigFile, config.SRTM.CacheLocation ?? Path.Combine(config.CacheLocationBase ?? basePath, "SRTM"));
-            config.LibrariesFile = GetPath(globalConfigFile, config.LibrariesFile ?? Path.Combine(config.CacheLocationBase ?? basePath, "libraries.json"));
-            config.ModelsInfoFile = GetPath(globalConfigFile, config.ModelsInfoFile ?? Path.Combine(config.CacheLocationBase ?? basePath, "models.json"));
-            Console.WriteLine($"S2C.CacheLocation  = '{config.S2C.CacheLocation}'");
-            Console.WriteLine($"SRTM.CacheLocation = '{config.SRTM.CacheLocation}'");
-            Console.WriteLine($"LibrariesFile      = '{config.LibrariesFile}'");
-            Console.WriteLine($"ModelsInfoFile     = '{config.ModelsInfoFile}'");
+            config.S2C.CacheLocation   = GetExistingPath(globalConfigFile, config.S2C.CacheLocation ?? Path.Combine(config.CacheLocationBase ?? basePath, "S2C"));
+            config.SRTM.CacheLocation  = GetExistingPath(globalConfigFile, config.SRTM.CacheLocation ?? Path.Combine(config.CacheLocationBase ?? basePath, "SRTM"));
+            config.LibrariesFile       = GetPath(globalConfigFile, config.LibrariesFile ?? Path.Combine(config.CacheLocationBase ?? basePath, "libraries.json"));
+            config.ModelsInfoFile      = GetPath(globalConfigFile, config.ModelsInfoFile ?? Path.Combine(config.CacheLocationBase ?? basePath, "models.json"));
+            config.TerrainMaterialFile = GetPath(globalConfigFile, config.TerrainMaterialFile ?? Path.Combine(config.CacheLocationBase ?? basePath, "terrain.json"));
+            Console.WriteLine($"S2C.CacheLocation   = '{config.S2C.CacheLocation}'");
+            Console.WriteLine($"SRTM.CacheLocation  = '{config.SRTM.CacheLocation}'");
+            Console.WriteLine($"LibrariesFile       = '{config.LibrariesFile}'");
+            Console.WriteLine($"ModelsInfoFile      = '{config.ModelsInfoFile}'");
+            Console.WriteLine($"TerrainMaterialFile = '{config.TerrainMaterialFile}'");
             Console.WriteLine();
             return config;
         }
