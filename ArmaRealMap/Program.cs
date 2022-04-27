@@ -18,6 +18,7 @@ using ArmaRealMap.TerrainData;
 using ArmaRealMap.TerrainData.DefaultAreas;
 using ArmaRealMap.TerrainData.Forests;
 using ArmaRealMap.TerrainData.GroundDetailTextures;
+using CommandLine;
 using Microsoft.Win32;
 using OsmSharp;
 using OsmSharp.Complete;
@@ -25,7 +26,6 @@ using OsmSharp.Db;
 using OsmSharp.Db.Impl;
 using OsmSharp.Geo;
 using OsmSharp.Streams;
-using CommandLine;
 
 namespace ArmaRealMap
 {
@@ -36,8 +36,8 @@ namespace ArmaRealMap
             try
             {
                 return Parser.Default
-                    .ParseArguments<GenerateOptions,UpdateOptions>(args)
-                    .MapResult<GenerateOptions, UpdateOptions, int>(Run, Update, _ => 1);
+                    .ParseArguments<GenerateOptions,UpdateOptions, WrpExportOptions>(args)
+                    .MapResult<GenerateOptions, UpdateOptions, WrpExportOptions, int>(Run, Update, WrpExport, _ => 1);
             }
             catch (ApplicationException ex)
             {
@@ -53,6 +53,19 @@ namespace ArmaRealMap
                 Console.Error.WriteLine(ex.ToString());
                 return 3;
             }
+        }
+
+        private static int WrpExport(WrpExportOptions options)
+        {
+            EnsureProjectDrive();
+
+            var global = ConfigLoader.LoadGlobal(options.Global);
+
+            SyncLibraries(global);
+
+            WrpBuilder.WrpExport(options, global);
+
+            return 0;
         }
 
         private static int Update(UpdateOptions options)

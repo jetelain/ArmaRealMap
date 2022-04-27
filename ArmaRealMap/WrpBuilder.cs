@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ArmaRealMap.ElevationModel;
 using ArmaRealMap.TerrainData.GroundDetailTextures;
 using BIS.Core.Streams;
@@ -12,7 +9,7 @@ using SixLabors.ImageSharp;
 
 namespace ArmaRealMap
 {
-    internal class WrpBuilder
+    internal static class WrpBuilder
     {
         public static void Build(MapConfig config, ElevationGrid elevationGrid, MapInfos area, GlobalConfig global)
         {
@@ -106,6 +103,33 @@ namespace ArmaRealMap
             }
             report.TaskDone();
         }
-
+        internal static void WrpExport(WrpExportOptions options, GlobalConfig global)
+        {
+            var library = new ModelInfoLibrary();
+            library.Load(global.ModelsInfoFile);
+            var wrp = StreamHelper.Read<EditableWrp>(options.Source);
+            Directory.CreateDirectory(options.Target);
+            foreach (var group in wrp.GetNonDummyObjects().GroupBy(o => o.Model))
+            {
+                var model = library.ResolveByPath(group.Key);
+                var entries = group.OrderBy(o => o.Transform.Matrix.M41).ThenBy(o => o.Transform.Matrix.M43).ThenBy(o => o.Transform.Matrix.M42).ToList();
+                using (var f = File.CreateText(Path.Combine(options.Target, model.Name + ".csv")))
+                {
+                    f.WriteLine($"Model;M11;M12;M13;M21;M22;M23;M31;M32;M33;M41;M42;M43");
+                    foreach (var entry in entries)
+                    {
+                        var m = entry.Transform.Matrix;
+                        f.WriteLine($"{model.Name};{m.M11:0.0000};{m.M12:0.0000};{m.M13:0.0000};{m.M21:0.0000};{m.M22:0.0000};{m.M23:0.0000};{m.M31:0.0000};{m.M32:0.0000};{m.M33:0.0000};{m.M41:0.000};{m.M42:0.000};{m.M43:0.000}");
+                    }
+                }
+                using (var f = File.CreateText(Path.Combine(options.Target, model.Name + ".abs.txt")))
+                {
+                    foreach (var entry in entries)
+                    {
+                        f.WriteLine(new PlacedTerrainObject(model, entry).ToTerrainBuilderCSV());
+                    }
+                }
+            }
+        }
     }
 }

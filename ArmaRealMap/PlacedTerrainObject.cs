@@ -63,9 +63,15 @@ namespace ArmaRealMap
             this.elevationMode = elevationMode;
         }
 
-        public PlacedTerrainObject(EditableWrpObject wrpObject, ModelInfoLibrary library)
+        public PlacedTerrainObject( EditableWrpObject wrpObject, ModelInfoLibrary library)
+            : this(library.ResolveByPath(wrpObject.Model), wrpObject)
         {
-            model = library.ResolveByPath(wrpObject.Model);
+
+        }
+
+        public PlacedTerrainObject(ModelInfo model, EditableWrpObject wrpObject)
+        {
+            this.model = model;
             point = new TerrainPoint(wrpObject.Transform.Matrix.M41, wrpObject.Transform.Matrix.M43);
             yaw = FromRadians(-Math.Atan2(wrpObject.Transform.Matrix.M13, wrpObject.Transform.Matrix.M33));
             pitch = FromRadians(Math.Asin(-wrpObject.Transform.Matrix.M23));
