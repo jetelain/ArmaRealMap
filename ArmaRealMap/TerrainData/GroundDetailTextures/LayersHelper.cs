@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -22,43 +19,6 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
         internal static string GetLogicalPath(MapConfig config, string name)
         {
             return config.PboPrefix + "\\data\\layers\\" + name;
-        }
-
-        internal static void ImageToPAA(int num, Func<int, string> pattern)
-        {
-            string imageToPaaExe;
-            string argumentPrefix;
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                imageToPaaExe = "wine";
-                var location = Environment.GetEnvironmentVariable("ARMA3_IMAGETOPAA") ?? "ImageToPAA.exe";
-                if ( !File.Exists(location) )
-                {
-                    throw new Exception($"'{location}' was not found. Please set variable ARMA3_IMAGETOPAA to set location.");
-                }
-                argumentPrefix = location + " ";
-            }
-            else
-            {
-                imageToPaaExe = Path.Combine(Program.GetArma3ToolsPath(), "ImageToPAA", "ImageToPAA.exe");
-                argumentPrefix = string.Empty;
-            }
-
-            var report = new ProgressReport("Png->PAA", num);
-            Parallel.For(0, num, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, x =>
-            {
-                var proc = Process.Start(new ProcessStartInfo()
-                {
-                    FileName = imageToPaaExe,
-                    RedirectStandardOutput = true,
-                    Arguments = argumentPrefix + "\"" + pattern(x) + "\"",
-                });
-                proc.OutputDataReceived += (_, e) => Trace.WriteLine(e.Data);
-                proc.BeginOutputReadLine();
-                proc.WaitForExit();
-                report.ReportOneDone();
-            });
-            report.TaskDone();
         }
 
         internal static void FillEdges(Image realSat, int x, int num, Image<Rgb24> tile, int y, Point pos)

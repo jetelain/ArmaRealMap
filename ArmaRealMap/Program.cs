@@ -19,7 +19,6 @@ using ArmaRealMap.TerrainData.DefaultAreas;
 using ArmaRealMap.TerrainData.Forests;
 using ArmaRealMap.TerrainData.GroundDetailTextures;
 using CommandLine;
-using Microsoft.Win32;
 using OsmSharp;
 using OsmSharp.Complete;
 using OsmSharp.Db;
@@ -36,8 +35,8 @@ namespace ArmaRealMap
             try
             {
                 return Parser.Default
-                    .ParseArguments<GenerateOptions,UpdateOptions, WrpExportOptions>(args)
-                    .MapResult<GenerateOptions, UpdateOptions, WrpExportOptions, int>(Run, Update, WrpExport, _ => 1);
+                    .ParseArguments<GenerateOptions,UpdateOptions, WrpExportOptions, ShowConfigOptions, ConvertToPaaOptions>(args)
+                    .MapResult<GenerateOptions, UpdateOptions, WrpExportOptions, ShowConfigOptions, ConvertToPaaOptions, int>(Run, Update, WrpExport, ShowConfig, ConvertToPaa, _ => 1);
             }
             catch (ApplicationException ex)
             {
@@ -55,9 +54,28 @@ namespace ArmaRealMap
             }
         }
 
+        private static int ConvertToPaa(ConvertToPaaOptions arg)
+        {
+            var files = Directory.GetFiles(arg.Directory, "*.png", SearchOption.AllDirectories);
+
+            Arma3ToolsHelper.ImageToPAA(files.ToList());
+
+            return 0;
+        }
+
+        private static int ShowConfig(ShowConfigOptions options)
+        {
+            ConfigLoader.LoadGlobal(options.Global);
+            if (!string.IsNullOrEmpty(options.Source))
+            {
+                ConfigLoader.LoadConfig(options.Source);
+            }
+            return 0;
+        }
+
         private static int WrpExport(WrpExportOptions options)
         {
-            EnsureProjectDrive();
+            Arma3ToolsHelper.EnsureProjectDrive();
 
             var global = ConfigLoader.LoadGlobal(options.Global);
 
@@ -70,7 +88,7 @@ namespace ArmaRealMap
 
         private static int Update(UpdateOptions options)
         {
-            EnsureProjectDrive();
+            Arma3ToolsHelper.EnsureProjectDrive();
 
             var global = ConfigLoader.LoadGlobal(options.Global);
 
@@ -101,7 +119,7 @@ namespace ArmaRealMap
 
         private static int Run(GenerateOptions options)
         {
-            EnsureProjectDrive();
+            Arma3ToolsHelper.EnsureProjectDrive();
 
             Console.Title = "ArmaRealMap";
 
@@ -151,35 +169,6 @@ namespace ArmaRealMap
             Trace.Flush();
         }
 
-#pragma warning disable CA1416 // Valider la compatibilité de la plateforme
-        private static void EnsureProjectDrive()
-        {
-            if (Environment.OSVersion.Platform != PlatformID.Unix && !Directory.Exists("P:\\"))
-            {
-                Console.WriteLine("Mount project drive");
-
-                string path = GetArma3ToolsPath();
-                if (!string.IsNullOrEmpty(path))
-                {
-                    var processs = Process.Start(Path.Combine(path, @"WorkDrive\WorkDrive.exe"), "/Mount /y");
-                    processs.WaitForExit();
-                }
-            }
-        }
-        internal static string GetArma3ToolsPath()
-        {
-            string path = "";
-            using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 233800"))
-            {
-                if (key != null)
-                {
-                    path = (key.GetValue("InstallLocation") as string) ?? path;
-                }
-            }
-
-            return path;
-        }
-#pragma warning restore CA1416 // Valider la compatibilité de la plateforme
 
 
         private static void SatelliteRawImage(MapConfig config, GlobalConfig global, MapInfos area)

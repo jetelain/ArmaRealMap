@@ -69,7 +69,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             });
             report2.TaskDone();
 
-            LayersHelper.ImageToPAA(tiler.Segments.GetLength(0), x => LayersHelper.GetLocalPath(config, $"M_{x:000}_*_lca.png"));
+            Arma3ToolsHelper.ImageToPAA(tiler.Segments.GetLength(0), x => LayersHelper.GetLocalPath(config, $"M_{x:000}_*_lca.png"));
         }
 
         private static List<TextureInfo> ReduceColors(Image<Rgb24> tile, Image<Rgba32> output, TerrainRegion region)

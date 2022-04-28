@@ -78,6 +78,8 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
         private static void SatMapTiling(Image<Rgb24> realSat, Image<Rgba32> fakeSat, MapConfig config, MapInfos area, List<Road> roads)
         {
+            Directory.CreateDirectory(LayersHelper.GetLocalPath(config));
+
             // Going through TerrainBuilder takes ~4 hours, with a lot of manual operations
             // Here, for exactly the same result, it takes 4 minutes, all automated ! (but will eat all your CPU)
 
@@ -120,7 +122,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             });
             report2.TaskDone();
 
-            LayersHelper.ImageToPAA(num, x => LayersHelper.GetLocalPath(config, $"S_{x:000}_*_lco.png"));
+            Arma3ToolsHelper.ImageToPAA(num, x => LayersHelper.GetLocalPath(config, $"S_{x:000}_*_lco.png"));
         }
 
         private static Image<Bgra32> GetImage(MapConfig config, TerrainMaterial mat, TerrainMaterialLibrary terrainMaterialLibrary)

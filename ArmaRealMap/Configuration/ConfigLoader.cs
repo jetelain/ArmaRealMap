@@ -54,6 +54,8 @@ namespace ArmaRealMap.Configuration
 
         internal static MapConfig LoadConfig(string configFilePath)
         {
+            configFilePath = Path.GetFullPath(configFilePath);
+
             Console.WriteLine($"Read map config from '{configFilePath}':");
 
             var config = JsonSerializer.Deserialize<MapConfig>(File.ReadAllText(configFilePath), new JsonSerializerOptions()
@@ -73,6 +75,11 @@ namespace ArmaRealMap.Configuration
             }
 
             var basePath = Path.Combine(Path.GetDirectoryName(configFilePath), config.WorldName);
+
+            if (config.Target == null)
+            {
+                config.Target = new TargetConfig();
+            }
 
             config.Target.Debug         = GetExistingPath(configFilePath, config.Target.Debug         ?? Path.Combine(basePath, "debug"));
             config.Target.Terrain       = GetExistingPath(configFilePath, config.Target.Terrain       ?? Path.Combine(basePath, "output", "terrain"));

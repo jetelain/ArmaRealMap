@@ -33,4 +33,18 @@ namespace ArmaRealMap
     {
 
     }
+
+    [Verb("show-config", HelpText = "Show configuration.")]
+    internal class ShowConfigOptions : OptionsBase
+    {
+        [Value(0, MetaName = "config", HelpText = "JSON configuration file.", Required = false)]
+        public string Source { get; set; }
+    }
+
+    [Verb("topaa", HelpText = "Mass convert files to PAA.")]
+    internal class ConvertToPaaOptions : OptionsBase
+    {
+        [Value(0, MetaName = "dir", HelpText = "Directory containing files to convert.", Required = true)]
+        public string Directory { get; set; }
+    }
 }

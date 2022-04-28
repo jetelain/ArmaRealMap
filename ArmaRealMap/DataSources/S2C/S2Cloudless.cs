@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using SixLabors.ImageSharp;
@@ -71,14 +72,15 @@ namespace ArmaRealMap.DataSources.S2C
 
         private Image<Rgb24> LoadTile(string uri)
         {
-            var file = uri.Substring(91).Replace("/", "_");
+            var file = uri.Substring(91);
             var cacheFile = System.IO.Path.Combine(cacheLocation, file);
-            if (!System.IO.File.Exists(cacheFile))
+            if (!File.Exists(cacheFile))
             {
                 lock (this)
                 {
-                    if (!System.IO.File.Exists(cacheFile))
+                    if (!File.Exists(cacheFile))
                     {
+                        Directory.CreateDirectory(Path.GetDirectoryName(cacheFile));
 
                         byte[] data;
                         try

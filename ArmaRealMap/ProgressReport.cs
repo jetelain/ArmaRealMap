@@ -9,7 +9,6 @@ namespace ArmaRealMap
         private readonly int itemsToDo;
         private readonly Stopwatch sw;
         private readonly Stopwatch lastReport;
-        private readonly int top;
         private readonly object locker = new object();
         private int lastDone = 0;
 
@@ -23,7 +22,6 @@ namespace ArmaRealMap
             Trace.WriteLine(string.Empty);
             Trace.WriteLine($"Begin task {taskName}");
             Console.Write(taskName);
-            this.top = Console.CursorTop;
             WritePercent(0);
         }
 
@@ -76,7 +74,7 @@ namespace ArmaRealMap
         private void WritePercent(double percent)
         {
             var cols = Math.Max(0,Math.Min(20,(int)(percent / 5)));
-            Console.SetCursorPosition(20, top);
+            Console.CursorLeft = 20;
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write(new string('#', cols));
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -91,13 +89,14 @@ namespace ArmaRealMap
             WritePercent(100d);
             Console.Write($"Done in {Math.Ceiling(sw.ElapsedMilliseconds / 1000d)} sec");
             CleanEndOfLine();
+            Console.WriteLine();
             Trace.WriteLine($"Task {taskName} took {sw.ElapsedMilliseconds} msec");
             Trace.Flush();
         }
 
         private static void CleanEndOfLine()
         {
-            Console.WriteLine(new string(' ', Console.BufferWidth - Console.CursorLeft - 1));
+            Console.Write(new string(' ', Console.BufferWidth - Console.CursorLeft - 1));
         }
     }
 }
