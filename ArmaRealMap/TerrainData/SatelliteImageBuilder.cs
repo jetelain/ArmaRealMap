@@ -20,22 +20,33 @@ namespace ArmaRealMap
                     var startPointUTM = area.StartPointUTM;
                     var eager = new EagerLoad(false);
                     var done = 0;
-                    Parallel.For(0, img.Height, y =>
-                    {
-                        for (int x = 0; x < img.Width; x++)
-                        {
-                            //var point = new UniversalTransverseMercator(
-                            //        startPointUTM.LatZone,
-                            //        startPointUTM.LongZone,
-                            //        startPointUTM.Easting + (x * area.ImageryResolution),
-                            //        startPointUTM.Northing + (y * area.ImageryResolution));
-                            //var latLong = UniversalTransverseMercator.ConvertUTMtoLatLong(point, eager);
+                    var dh = img.Height / 128;
 
-                            var latLong = area.TerrainToLatLong(x * area.ImageryResolution, y * area.ImageryResolution);
-                            img[x, img.Height - y - 1] = src.GetPixel(latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble());
-                            report.ReportItemsDone(Interlocked.Increment(ref done));
+                    Parallel.For(0, 128, dy =>
+                    {
+                        var y1 = dy * dh;
+                        var y2 = (dy + 1) * dh;
+                        for (int y = y1; y < y2; y++)
+                        {
+                            for (int x = 0; x < img.Width; x++)
+                            {
+                                var latLong = area.TerrainToLatLong(x * area.ImageryResolution, y * area.ImageryResolution);
+                                img[x, img.Height - y - 1] = src.GetPixel(latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble());
+                                report.ReportItemsDone(Interlocked.Increment(ref done));
+                            }
                         }
                     });
+
+                    //Parallel.For(0, img.Height, y =>
+                    //{
+                    //    for (int x = 0; x < img.Width; x++)
+                    //    {
+                    //        var latLong = area.TerrainToLatLong(x * area.ImageryResolution, y * area.ImageryResolution);
+                    //        img[x, img.Height - y - 1] = src.GetPixel(latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble());
+                    //        report.ReportItemsDone(Interlocked.Increment(ref done));
+                    //    }
+                    //});
+
                     report.TaskDone();
                     DrawHelper.SavePngChuncked(img, targetFile);
                 }
