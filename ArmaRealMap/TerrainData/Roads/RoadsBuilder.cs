@@ -4,10 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.ElevationModel;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
@@ -79,6 +76,10 @@ namespace ArmaRealMap.Roads
                 NatureBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
                 layer.WriteFile(Path.Combine(data.Config.Target.Objects, "sidewalks.rel.txt"));
             }
+            else
+            {
+                File.Delete(Path.Combine(data.Config.Target.Objects, "sidewalks.rel.txt"));
+            }
         }
 
         private static void RoadWalls(MapData data, ObjectLibraries libs)
@@ -106,6 +107,10 @@ namespace ArmaRealMap.Roads
                 }
 
                 layer.WriteFile(Path.Combine(data.Config.Target.Objects, "roadwalls.rel.txt"));
+            }
+            else
+            {
+                File.Delete(Path.Combine(data.Config.Target.Objects, "roadwalls.rel.txt"));
             }
         }
 
