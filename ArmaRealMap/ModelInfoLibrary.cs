@@ -28,16 +28,25 @@ namespace ArmaRealMap
 
         internal ModelInfo ResolveByName(string name)
         {
-            if (!indexByName.TryGetValue(name, out ModelInfo modelInfo))
+            if (!TryResolveByName(name, out ModelInfo modelInfo))
             {
-                modelInfo = Models.FirstOrDefault(m => string.Equals(m.Name, name, StringComparison.OrdinalIgnoreCase));
-                if (modelInfo == null)
-                {
-                    throw new ApplicationException($"Unknown model '{name}'");
-                }
-                indexByName.Add(name, modelInfo);
+                throw new ApplicationException($"Unknown model '{name}'");
             }
             return modelInfo;
+        }
+
+        internal bool TryResolveByName(string name, out ModelInfo model)
+        {
+            if (!indexByName.TryGetValue(name, out model))
+            {
+                model = Models.FirstOrDefault(m => string.Equals(m.Name, name, StringComparison.OrdinalIgnoreCase));
+                if (model == null)
+                {
+                    return false;
+                }
+                indexByName.Add(name, model);
+            }
+            return true;
         }
 
         internal ModelInfo ResolveByPath(string path)
@@ -54,7 +63,8 @@ namespace ArmaRealMap
                 {
                     Path = path,
                     Name = Path.GetFileNameWithoutExtension(path),
-                    BoundingCenter = odol.ModelInfo.BoundingCenter.Vector3
+                    BoundingCenter = odol.ModelInfo.BoundingCenter.Vector3,
+                    Bundle = "unknown"
                 };
                 Models.Add(model);
             }
@@ -87,6 +97,7 @@ namespace ArmaRealMap
                     {
                         Name = m.Name,
                         Path = m.Path,
+                        Bundle = m.Bundle,
                         BoundingCenter = new Vector3(m.BoundingCenterX ?? 0, m.BoundingCenterY ?? 0, m.BoundingCenterZ ?? 0)
                     }).ToList();
 
@@ -119,7 +130,7 @@ namespace ArmaRealMap
                         {
                             ok++;
                         }
-                        Models.Add(new ModelInfo() { Name = model.Name, Path = model.Path, BoundingCenter = odol.ModelInfo.BoundingCenter.Vector3 });
+                        Models.Add(new ModelInfo() { Name = model.Name, Path = model.Path, BoundingCenter = odol.ModelInfo.BoundingCenter.Vector3, Bundle = model.Bundle });
                     }
                     else if (model.BoundingCenterX != null)
                     {
@@ -127,6 +138,7 @@ namespace ArmaRealMap
                         {
                             Name = model.Name,
                             Path = model.Path,
+                            Bundle = model.Bundle,
                             BoundingCenter = x
                         });
                     }
@@ -150,6 +162,7 @@ namespace ArmaRealMap
             {
                 Name = m.Name,
                 Path = m.Path,
+                Bundle = m.Bundle,
                 BoundingCenterX = m.BoundingCenter.X,
                 BoundingCenterY = m.BoundingCenter.Y,
                 BoundingCenterZ = m.BoundingCenter.Z

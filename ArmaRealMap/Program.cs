@@ -12,6 +12,7 @@ using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
+using ArmaRealMap.TerrainBuilder;
 using ArmaRealMap.TerrainData;
 using ArmaRealMap.TerrainData.DefaultAreas;
 using ArmaRealMap.TerrainData.Forests;
@@ -176,8 +177,18 @@ namespace ArmaRealMap
 
             BuildLand(config, data, area, olibs, options, terrainMaterialLibrary);
 
+            Console.WriteLine("==== Check used objects ====");
+            var library = new ModelInfoLibrary();
+            library.Load(global.ModelsInfoFile);
+
+            if (LookForModelsAndMakeTML(config, library) > 0)
+            {
+                Console.WriteLine("Cannot generate WRP file due to missing model.");
+                return 5;
+            }
+
             Console.WriteLine("==== Generate WRP ====");
-            WrpBuilder.Build(config, data.Elevation, area, global);
+            WrpBuilder.Build(config, data.Elevation, area, global, library);
 
             if (!string.IsNullOrEmpty(options.Pack))
             {
@@ -187,6 +198,69 @@ namespace ArmaRealMap
             Trace.Flush();
             return 0;
         }
+
+        private static int LookForModelsAndMakeTML(MapConfig config, ModelInfoLibrary library)
+        {
+            var files = Directory.GetFiles(config.Target.Objects, "*.txt");
+            var done = 0;
+            var report = new ProgressReport("Objects", (int)files.Sum(f => new FileInfo(f).Length));
+            var models = new HashSet<string>();
+            foreach (var file in files)
+            {
+                foreach (var line in File.ReadAllLines(file))
+                {
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        models.Add(line.Split(';')[0].Trim('"'));
+                    }
+                    done += line.Length + Environment.NewLine.Length;
+                    report.ReportItemsDone(done);
+                }
+            }
+            report.TaskDone();
+
+            var list = new List<ModelInfo>();
+            var fail = 0;
+
+            foreach (var model in models)
+            {
+                if (!library.TryResolveByName(model, out var modelInfo))
+                {
+                    Console.WriteLine($"Error: Unknown model: '{model}'");
+                    fail++;
+                }
+                else
+                {
+                    list.Add(modelInfo);
+                }
+            }
+
+            foreach (var bundle in list.GroupBy(a => a.Bundle))
+            {
+                var lib = new TBLibrary()
+                {
+                    Name = bundle.Key,
+                    Template =
+                        bundle.Select(m => new TBTemplate()
+                        {
+                            Name = m.Name,
+                            File = m.Path,
+                            BoundingCenter = new TBVector() { X = -999.0000f, Y = -999.0000f, Z = -999.0000f },
+                            BoundingMax = new TBVector() { X = -999.0000f, Y = -999.0000f, Z = -999.0000f },
+                            BoundingMin = new TBVector() { X = 999.0000f, Y = 999.0000f, Z = 999.0000f },
+                            Height = 0,
+                            Hash = TBTemplate.GenerateHash(m.Name)
+                        }).ToList()
+                };
+                using (var output = new StreamWriter(Path.Combine(config.Target.Terrain, "libraries", lib.Name + ".tml"), false))
+                {
+                    TBLibraries.Serializer.Serialize(output, lib);
+                }
+            }
+
+            return fail;
+        }
+
         private static void SetupLogging(MapConfig config)
         {
             var logfile = Path.Combine(config.Target.Debug, $"{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.log");
@@ -211,8 +285,6 @@ namespace ArmaRealMap
 
         private static void BuildLand(MapConfig config, MapData data, MapInfos area, ObjectLibraries olibs, GenerateOptions options, TerrainMaterialLibrary terrainMaterialLibrary)
         {
-            data.UsedObjects = new HashSet<string>();
-
             var osmFile = Path.Combine(config.Target.InputCache, "area.osm.xml");
 
             DownloadOsmData(area, osmFile, options, config);
@@ -455,7 +527,6 @@ namespace ArmaRealMap
                         var obj = candidates[random.Next(0, candidates.Count)];
                         var angle = GetAngle(node, () => (float)(random.NextDouble() * 360.0));
                         result.Insert(new TerrainObject(obj, pos, angle));
-                        data.UsedObjects.Add(obj.Name);
                     }
                 }
             }

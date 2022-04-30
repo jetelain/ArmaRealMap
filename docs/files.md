@@ -21,16 +21,18 @@
     - `output`
       - `terrain`           : Files for TerrainBuilder (if you need additional editing in   that tool)
   	    - `idmap`           : ID Map
-  	      - `idmap.csv`     : Coordinate of each tile
+  	      - `idmap.csv`     : Coordinates of each tile
   	      - `idmap.png`     : Full image
   		  - `idmap.N_N.png` : Tiles for easier import
   	    - `sat`
-  	      - `sat.csv`       : Coordinate of each tile
+  	      - `sat.csv`       : Coordinates of each tile
   		  - `sat.N_N.png`   : Tiles for easier import / Full image would be too massive
   	    - `objects`
   	      - `*.abs.txt`     : Objects with absolute elevation
   	      - `*.rel.txt`     : Objects with relative elevation
-		- `elevation.asc`   : Elevatio data
+  	    - `libraries`
+  	      - `*.tml`         : Objects libraries
+		- `elevation.asc`   : Elevation data
       - `precooked`         : Files ready for binarization with PboProject from Mikero
   	    - `data`
   	      - `layers`

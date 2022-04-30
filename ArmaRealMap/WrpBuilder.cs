@@ -11,7 +11,7 @@ namespace ArmaRealMap
 {
     internal static class WrpBuilder
     {
-        public static void Build(MapConfig config, ElevationGrid elevationGrid, MapInfos area, GlobalConfig global)
+        public static void Build(MapConfig config, ElevationGrid elevationGrid, MapInfos area, GlobalConfig global, ModelInfoLibrary library)
         {
             var wrp = new EditableWrp();
             wrp.LandRangeX = 512;
@@ -23,9 +23,6 @@ namespace ArmaRealMap
             SetElevation(config, elevationGrid, wrp);
 
             SetMaterials(config, new TerrainTiler(area, config), wrp);
-
-            var library = new ModelInfoLibrary();
-            library.Load(global.ModelsInfoFile);
 
             var files = Directory.GetFiles(config.Target.Objects, "*.txt");
             var id = 1;

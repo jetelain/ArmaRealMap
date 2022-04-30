@@ -11,6 +11,8 @@ namespace ArmaRealMap
 
         public string Path { get; set; }
 
+        public string Bundle { get; set; }
+
         public Vector3 BoundingCenter { get; set; }  
 
         internal float GetRelativeElevation(ElevationGrid grid, TerrainPoint point, Matrix4x4 matrix)

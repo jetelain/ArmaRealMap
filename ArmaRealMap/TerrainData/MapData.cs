@@ -16,7 +16,6 @@ namespace ArmaRealMap
         public List<Road> Roads { get; internal set; }
         public List<Building> WantedBuildings { get; internal set; }
         public TerrainObjectLayer Buildings { get; internal set; }
-        public HashSet<string> UsedObjects { get; internal set; }
         public List<TerrainPolygon> Forests { get; internal set; }
         public List<TerrainPolygon> Scrubs { get; internal set; }
         public List<Lake> Lakes { get; internal set; }

@@ -59,7 +59,7 @@ namespace ArmaRealMapWebSite.Controllers
 
         public async Task<IActionResult> ModelsInfo()
         {
-            var alldata = await _context.Assets
+            var alldata = await _context.Assets.Include(a => a.GameMod)
                 .ToListAsync();
 
             return Json(
@@ -71,7 +71,8 @@ namespace ArmaRealMapWebSite.Controllers
                         Path = l.ModelPath,
                         BoundingCenterX = l.BoundingCenterX,
                         BoundingCenterY = l.BoundingCenterY,
-                        BoundingCenterZ = l.BoundingCenterZ
+                        BoundingCenterZ = l.BoundingCenterZ,
+                        Bundle = l.GameMod.Name.Replace("Base game", "a3").ToLowerInvariant() + "_" + l.AssetCategory.ToString().ToLowerInvariant()
                     })
                     .ToList(),
                     new JsonSerializerOptions

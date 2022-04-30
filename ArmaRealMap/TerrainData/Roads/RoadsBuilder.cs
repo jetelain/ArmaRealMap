@@ -52,7 +52,6 @@ namespace ArmaRealMap.Roads
             if (template != null)
             {
                 var residentials = TerrainPolygon.MergeAll(osmShapes.Where(s => s.Category == OsmShapeCategory.Residential || s.Category == OsmShapeCategory.Retail || s.Category == OsmShapeCategory.Commercial).SelectMany(s => s.TerrainPolygons).ToList());
-                data.UsedObjects.Add(template.Name);
                 var layer = new TerrainObjectLayer(data.MapInfos);
                 var report = new ProgressReport("SideWalks", residentials.Count);
                 foreach (var residential in residentials)
@@ -87,7 +86,6 @@ namespace ArmaRealMap.Roads
             var template = libs.Libraries.Where(l => l.Category == ObjectCategory.RoadConcreteWall).SelectMany(l => l.Objects).FirstOrDefault();
             if (template != null)
             {
-                data.UsedObjects.Add(template.Name);
                 var layer = new TerrainObjectLayer(data.MapInfos);
 
                 var polys = data.Roads.Where(r => r.RoadType == RoadType.TwoLanesMotorway).SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList();

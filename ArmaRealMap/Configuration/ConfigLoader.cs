@@ -100,6 +100,7 @@ namespace ArmaRealMap.Configuration
             Directory.CreateDirectory(Path.Combine(config.Target.Objects));
             Directory.CreateDirectory(Path.Combine(config.Target.Terrain, "idmap"));
             Directory.CreateDirectory(Path.Combine(config.Target.Terrain, "sat"));
+            Directory.CreateDirectory(Path.Combine(config.Target.Terrain, "libraries"));
             return config;
         }
 
