@@ -4,13 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 using ArmaRealMap.Buildings;
 using ArmaRealMap.Configuration;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.Geometries;
-using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
@@ -35,8 +33,8 @@ namespace ArmaRealMap
             try
             {
                 return Parser.Default
-                    .ParseArguments<GenerateOptions,UpdateOptions, WrpExportOptions, ShowConfigOptions, ConvertToPaaOptions>(args)
-                    .MapResult<GenerateOptions, UpdateOptions, WrpExportOptions, ShowConfigOptions, ConvertToPaaOptions, int>(Run, Update, WrpExport, ShowConfig, ConvertToPaa, _ => 1);
+                    .ParseArguments<GenerateOptions,UpdateOptions, WrpExportOptions, ShowConfigOptions, ConvertToPaaOptions, CookOptions>(args)
+                    .MapResult<GenerateOptions, UpdateOptions, WrpExportOptions, ShowConfigOptions, ConvertToPaaOptions, CookOptions, int>(Run, Update, WrpExport, ShowConfig, ConvertToPaa, Cook, _ => 1);
             }
             catch (ApplicationException ex)
             {
@@ -54,11 +52,36 @@ namespace ArmaRealMap
             }
         }
 
+        private static int Cook(CookOptions arg)
+        {
+            Arma3ToolsHelper.EnsureProjectDrive();
+
+            var global = ConfigLoader.LoadGlobal(arg.Global);
+
+            Console.WriteLine("==== Unpack to project drive ====");
+            var config = PackageHelper.Unpack(arg);
+            var target = Path.Combine("P:", config.PboPrefix);
+
+            Console.WriteLine("==== Check for missing files ====");
+            ArmaMapConfigHelper.GenerateConfigCppIfMissing(config, target);
+            TerrainImageBuilder.GenerateSatoutIfMissing(config, target);
+
+            Console.WriteLine("==== Generate PAA files ====");
+            var files = Directory.GetFiles(target, "*.png", SearchOption.AllDirectories);
+            Arma3ToolsHelper.ImageToPAA(files.ToList(), arg.MaxThreads);
+
+            Console.WriteLine("==== Mikero's tool ====");
+            // TODO !
+
+            return 0;
+        }
+
+
         private static int ConvertToPaa(ConvertToPaaOptions arg)
         {
             var files = Directory.GetFiles(arg.Directory, "*.png", SearchOption.AllDirectories);
 
-            Arma3ToolsHelper.ImageToPAA(files.ToList());
+            Arma3ToolsHelper.ImageToPAA(files.ToList(), arg.MaxThreads);
 
             return 0;
         }
@@ -143,7 +166,7 @@ namespace ArmaRealMap
             var terrainMaterialLibrary = new TerrainMaterialLibrary();
             terrainMaterialLibrary.LoadFromFile(global.TerrainMaterialFile, config.Terrain);
 
-            RenderMapInfos(config, area, terrainMaterialLibrary);
+            ArmaMapConfigHelper.RenderMapInfos(config, area, terrainMaterialLibrary);
 
             Console.WriteLine("==== Satellite image ====");
             SatelliteRawImage(config, global, area);
@@ -156,10 +179,14 @@ namespace ArmaRealMap
             Console.WriteLine("==== Generate WRP ====");
             WrpBuilder.Build(config, data.Elevation, area, global);
 
+            if (!string.IsNullOrEmpty(options.Pack))
+            {
+                PackageHelper.Pack(options, config);
+            }
+
             Trace.Flush();
             return 0;
         }
-
         private static void SetupLogging(MapConfig config)
         {
             var logfile = Path.Combine(config.Target.Debug, $"{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.log");
@@ -169,14 +196,16 @@ namespace ArmaRealMap
             Trace.Flush();
         }
 
-
-
         private static void SatelliteRawImage(MapConfig config, GlobalConfig global, MapInfos area)
         {
             var rawSat = Path.Combine(config.Target.InputCache, "sat-raw.png");
             if (!File.Exists(rawSat))
             {
                 SatelliteImageBuilder.BuildSatImage(area, rawSat, global);
+            }
+            else
+            {
+                Console.WriteLine("File already generated.");
             }
         }
 
@@ -186,7 +215,7 @@ namespace ArmaRealMap
 
             var osmFile = Path.Combine(config.Target.InputCache, "area.osm.xml");
 
-            DownloadOsmData(area, osmFile, options);
+            DownloadOsmData(area, osmFile, options, config);
 
             using (var fileStream = File.OpenRead(osmFile))
             {
@@ -194,8 +223,8 @@ namespace ArmaRealMap
                 var source = new XmlOsmStreamSource(fileStream);
                 var db = new SnapshotDb(new MemorySnapshotDb(source));
                 var filtered = CropDataToArea(area, source);
-                
-                RenderCitiesNames(config, area, filtered);
+
+                ArmaMapConfigHelper.RenderCitiesNames(config, area, filtered);
                 
                 var shapes = OsmCategorizer.GetShapes(db, filtered, data.MapInfos);
 
@@ -239,6 +268,10 @@ namespace ArmaRealMap
                 {
                     Console.WriteLine("==== Terrain images ====");
                     TerrainImageBuilder.GenerateTerrainImages(config, area, data, shapes, terrainMaterialLibrary);
+                }
+                else
+                {
+                    TerrainImageBuilder.GeneratePictureMapIfMissing(config);
                 }
             }
         }
@@ -331,7 +364,7 @@ namespace ArmaRealMap
             }
         }
 
-        private static void DownloadOsmData(MapInfos area, string cacheFileName, GenerateOptions options)
+        private static void DownloadOsmData(MapInfos area, string cacheFileName, GenerateOptions options, MapConfig config)
         {
             Console.WriteLine("==== Download OSM data ====");
             if (!File.Exists(cacheFileName) || (File.GetLastWriteTimeUtc(cacheFileName) < DateTime.UtcNow.AddDays(-1) && !options.DoNotUpdateOSM))
@@ -348,6 +381,7 @@ namespace ArmaRealMap
                     client.DownloadFile(uri, cacheFileName);
                 }
                 Console.WriteLine($"Done.");
+                ClearInternalCache(config);
             }
             else
             {
@@ -355,136 +389,15 @@ namespace ArmaRealMap
             }
         }
 
-        private static string GetGridZone(CoordinateSharp.Coordinate coordinate)
+        private static void ClearInternalCache(MapConfig config)
         {
-            return $"{coordinate.MGRS.LongZone}{coordinate.MGRS.LatZone} {coordinate.MGRS.Digraph}";
-        }
-
-
-        private static void RenderMapInfos(MapConfig config, MapInfos area, TerrainMaterialLibrary terrainMaterialLibrary)
-        {
-            var sb = new StringBuilder();
-
-            var center = area.TerrainToLatLong(area.Width / 2, area.Height / 2);
-            /*
-            var sw = GetGridZone(area.SouthWest);
-            var se = GetGridZone(area.SouthEast);
-            var nw = GetGridZone(area.NorthWest);
-            var ne = GetGridZone(area.NorthEast);
-            */
-
-            var material = terrainMaterialLibrary.GetInfo(TerrainMaterial.Default, config.Terrain);
-
-            sb.Append(FormattableString.Invariant(@$"
-latitude={center.Latitude.ToDouble():0.00000000};
-longitude={center.Longitude.ToDouble():0.0000000};
-
-mapArea[] = {{
-    {area.SouthWest.Latitude.ToDouble():0.00000000}, {area.SouthWest.Longitude.ToDouble():0.0000000}, //Bottom Left => SW
-	{area.NorthEast.Latitude.ToDouble():0.00000000}, {area.NorthEast.Longitude.ToDouble():0.0000000} //Top Right => NE
-}}; 
-mapSize={area.Width};
-mapZone={area.SouthWest.UTM.LongZone};
-
-class OutsideTerrain
-{{
-    colorOutside[] = {{0.227451,0.27451,0.384314,1}};
-	enableTerrainSynth = 0;
-	satellite = ""{config.PboPrefix}\data\satout_ca.paa"";
-    class Layers
-    {{
-		class Layer0
-        {{
-			nopx    = ""{material.NormalTexture}"";
-			texture = ""{material.ColorTexture}""; 
-		}};
-    }};
-}};
-
-class Grid {{
-    offsetX = 0;
-    offsetY = {area.Height};
-    arm_utm = ""{area.StartPointUTM.LongZone}{area.StartPointUTM.LatZone}"";
-    arm_mgrs[] = {{
-        {{ ""{area.SouthWest.MGRS.LongZone}{area.SouthWest.MGRS.LatZone} {area.SouthWest.MGRS.Digraph}"", {Math.Round(area.SouthWest.MGRS.Easting)}, {Math.Round(area.SouthWest.MGRS.Northing)} }}, // SW
-        {{ ""{area.NorthWest.MGRS.LongZone}{area.NorthWest.MGRS.LatZone} {area.NorthWest.MGRS.Digraph}"", {Math.Round(area.NorthWest.MGRS.Easting)}, {Math.Round(area.NorthWest.MGRS.Northing)} }}, // NW
-        {{ ""{area.NorthEast.MGRS.LongZone}{area.NorthEast.MGRS.LatZone} {area.NorthEast.MGRS.Digraph}"", {Math.Round(area.NorthEast.MGRS.Easting)}, {Math.Round(area.NorthEast.MGRS.Northing)} }}, // NE
-        {{ ""{area.SouthEast.MGRS.LongZone}{area.SouthEast.MGRS.LatZone} {area.SouthEast.MGRS.Digraph}"", {Math.Round(area.SouthEast.MGRS.Easting)}, {Math.Round(area.SouthEast.MGRS.Northing)} }}  // SE
-    }};
-    class Zoom1 {{
-        zoomMax = {1536d / area.Width:0.0000};
-        format = ""XY"";
-        formatX = ""000"";
-        formatY = ""000"";
-        stepX = 100;
-        stepY = -100;
-    }};
-    class Zoom2 {{
-        zoomMax = {15360d / area.Width:0.0000};
-        format = ""XY"";
-        formatX = ""00"";
-        formatY = ""00"";
-        stepX = 1000;
-        stepY = -1000;
-    }};
-    class Zoom3 {{
-        zoomMax = 1e+030;
-        format = ""XY"";
-        formatX = ""0"";
-        formatY = ""0"";
-        stepX = 10000;
-        stepY = -10000;
-    }};
-}};
-")); 
-
-            File.WriteAllText(Path.Combine(config.Target.Cooked, "mapinfos.hpp"), sb.ToString());
-        }
-
-
-        private static void RenderCitiesNames(MapConfig config, MapInfos area, OsmStreamSource filtered)
-        {
-            var places = filtered.Where(o => o.Type == OsmGeoType.Node && o.Tags != null && o.Tags.ContainsKey("place")).ToList();
-
-            var id = 0;
-            var sb = new StringBuilder();
-            foreach (OsmSharp.Node place in places)
+            Trace.TraceInformation("OSM data has been updated, clear internal cache");
+            foreach(var file in Directory.GetFiles(config.Target.InternalCache, "*.*"))
             {
-                var kind = ToArmaKind(place.Tags.GetValue("place"));
-                if (kind != null)
-                {
-                    var name = place.Tags.GetValue("name");
-                    var pos = area.LatLngToTerrainPoint(place);
-
-                    if (area.IsInside(pos))
-                    {
-                        sb.AppendLine(FormattableString.Invariant($@"class Item{id}
-{{
-    name = ""{name}"";
-	position[]={{{pos.X:0.00},{pos.Y:0.00}}};
-	type=""{kind}"";
-	radiusA=500;
-	radiusB=500;
-	angle=0;
-}};"));
-                        id++;
-                    }
-                }
+                Trace.WriteLine($"Delete '{file}'");
+                File.Delete(file);
             }
-
-            File.WriteAllText(Path.Combine(config.Target.Cooked, "names.hpp"), sb.ToString());
-        }
-
-        private static string ToArmaKind(string place)
-        {
-            switch (place)
-            {
-                case "city": return "NameCityCapital";
-                case "town": return "NameCity";
-                case "village": return "NameVillage";
-                case "hamlet": return "NameLocal";
-            }
-            return null;
+            Trace.Flush();
         }
 
         private static OsmStreamSource CropDataToArea(MapInfos area, OsmStreamSource source)
@@ -528,7 +441,7 @@ class Grid {{
 
         private static void PlaceObjects(TerrainObjectLayer result, MapData data, OsmStreamSource filtered, ObjectLibrary lib, Func<Node, bool> filter)
         {
-            if (lib != null)
+            if (lib != null && lib.Objects.Count > 0)
             {
                 var candidates = lib.Objects;
                 var area = data.MapInfos;

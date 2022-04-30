@@ -9,6 +9,13 @@ namespace ArmaRealMap.Configuration
 {
     internal class ConfigLoader
     {
+        internal static JsonSerializerOptions SerializerOptions = new JsonSerializerOptions()
+        {
+            Converters = { new JsonStringEnumConverter() },
+            ReadCommentHandling = JsonCommentHandling.Skip,
+            WriteIndented = true
+        };
+
         internal static GlobalConfig LoadGlobal(string globalConfigFile)
         {
             var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ArmaRealMap");
@@ -45,11 +52,7 @@ namespace ArmaRealMap.Configuration
 
         private static T ReadConfigFile<T>(string filename)
         {
-            return JsonSerializer.Deserialize<T>(File.ReadAllText(filename), new JsonSerializerOptions()
-            {
-                Converters = { new JsonStringEnumConverter() },
-                ReadCommentHandling = JsonCommentHandling.Skip
-            });
+            return JsonSerializer.Deserialize<T>(File.ReadAllText(filename), SerializerOptions);
         }
 
         internal static MapConfig LoadConfig(string configFilePath)

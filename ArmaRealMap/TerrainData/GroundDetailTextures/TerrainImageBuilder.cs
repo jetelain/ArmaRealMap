@@ -7,7 +7,6 @@ using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
-using BIS.PAA;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Png;
@@ -18,7 +17,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 {
     class TerrainImageBuilder
     {
-        private static void DrawFakeSat(MapConfig config, MapInfos area, MapData data, List<Polygons> polygonsByCategory, TerrainMaterialLibrary terrainMaterialLibrary)
+        private static void DrawSat(MapConfig config, MapInfos area, MapData data, List<Polygons> polygonsByCategory, TerrainMaterialLibrary terrainMaterialLibrary)
         {
             var brushes = new Dictionary<TerrainMaterial, ImageBrush>();
             var colors = new Dictionary<TerrainMaterial, Color>();
@@ -31,49 +30,122 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
             using (var fakeSat = new Image<Rgba32>(area.ImageryWidth, area.ImageryHeight, Color.Black))
             {
-                fakeSat.Mutate(i => i.Fill(brushes[TerrainMaterial.Default]));
-
-                var report = new ProgressReport("Tex-Shapes", polygonsByCategory.Sum(p => p.List.Count));
-                fakeSat.Mutate(d =>
-                {
-                    foreach (var category in polygonsByCategory.OrderByDescending(e => e.Category.GroundTexturePriority))
-                    {
-                        if (category.Category != OsmShapeCategory.WaterWay)
-                        {
-                            var brush = brushes[category.Category.TerrainMaterial];
-
-                            var edgeBrush = new PatternBrush(colors[category.Category.TerrainMaterial],
-                                Color.Transparent,
-                                Generate(category.Category.GroundTexturePriority, 0.5f));
-
-                            Draw(area, d, report, category, brush, edgeBrush);
-                        }
-                    }
-                });
-                report.TaskDone();
+                DrawFakeSat(area, polygonsByCategory, brushes, colors, fakeSat);
 
                 var roads = data.Roads.Where(r => r.RoadType <= RoadType.SingleLaneDirtRoad).ToList();
 
-                //chuncking = DrawHelper.SavePngChuncked(fakeSat, config.Target.GetTerrain("sat-fake.png"));
+                using (var realSat = Image.Load<Rgb24>(Path.Combine(config.Target.InputCache, "sat-raw.png")))
+                {
+                    SatMapTiling(realSat, fakeSat, config, area, roads);
 
-                var realSat = Image.Load<Rgb24>(Path.Combine(config.Target.InputCache, "sat-raw.png"));
-                SatMapTiling(realSat, fakeSat, config, area, roads);
-                
+                    using (new ProgressReport("picturemap_ca.png"))
+                    {
+                        GeneratePictureMap(realSat, config);
+                    }
+                    Arma3ToolsHelper.ImageToPAA(new List<string>() { Path.Combine(config.Target.Cooked, "data", "picturemap_ca.png") });
+                }
             }
-            /*
-            if (!config.GenerateSatTiles)
-            {
-                BlendRawAndFake(config, 4);
-            }*/
+
+            GenerateTerrainBuilderSat(area, config);
         }
 
+        private static void DrawFakeSat(MapInfos area, List<Polygons> polygonsByCategory, Dictionary<TerrainMaterial, ImageBrush> brushes, Dictionary<TerrainMaterial, Color> colors, Image<Rgba32> fakeSat)
+        {
+            fakeSat.Mutate(i => i.Fill(brushes[TerrainMaterial.Default]));
+
+            var report = new ProgressReport("Tex-Shapes", polygonsByCategory.Sum(p => p.List.Count));
+            fakeSat.Mutate(d =>
+            {
+                foreach (var category in polygonsByCategory.OrderByDescending(e => e.Category.GroundTexturePriority))
+                {
+                    if (category.Category != OsmShapeCategory.WaterWay)
+                    {
+                        var brush = brushes[category.Category.TerrainMaterial];
+
+                        var edgeBrush = new PatternBrush(colors[category.Category.TerrainMaterial],
+                            Color.Transparent,
+                            Generate(category.Category.GroundTexturePriority, 0.5f));
+
+                        Draw(area, d, report, category, brush, edgeBrush);
+                    }
+                }
+            });
+            report.TaskDone();
+        }
+
+        internal static void GeneratePictureMapIfMissing(MapConfig config)
+        {
+            if (!File.Exists(Path.Combine(config.Target.Cooked, "data", "picturemap_ca.png")))
+            {
+                using (new ProgressReport("picturemap_ca.png"))
+                {
+                    using (var realSat = Image.Load<Rgb24>(Path.Combine(config.Target.InputCache, "sat-raw.png")))
+                    {
+                        GeneratePictureMap(realSat, config);
+                    }
+                }
+            }
+        }
+
+        private static void GeneratePictureMap(Image<Rgb24> realSat, MapConfig config)
+        {
+            realSat.Mutate(r => r.Resize(2048, 2048));
+            realSat.SaveAsPng(Path.Combine(config.Target.Cooked, "data", "picturemap_ca.png"));
+        }
+
+        internal static void GenerateSatoutIfMissing(MapConfig config, string target)
+        {
+            var paa = Path.Combine(target, "data", "satout_ca.paa");
+            if (!File.Exists(paa))
+            {
+                var png = Path.Combine(target, "data", "satout_ca.png");
+                Console.WriteLine($"Generate '{png}'.");
+                using (var source = Image.Load(Path.Combine(target, "data", "layers", "S_000_000_lco.png")))
+                {
+                    using (var satout = new Image<Rgb24>(config.TileSize / 2, config.TileSize / 2, Color.Black))
+                    {
+                        satout.Mutate(c => c.DrawImage(source, new Point(-config.RealTileOverlap, -config.RealTileOverlap), 1.0f));
+                        satout.SaveAsPng(png);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"File '{paa}' exists.");
+            }
+        }
+
+        internal static void GenerateTerrainBuilderSat(MapInfos area, MapConfig config)
+        {
+            var step = config.TileSize - (config.RealTileOverlap * 2);
+            var num = (int)Math.Ceiling((double)area.ImageryWidth / (double)step);
+            using (var sat = new Image<Rgb24>(area.ImageryWidth, area.ImageryHeight, Color.Black))
+            {
+                var report2 = new ProgressReport("Sat", num * num);
+                Parallel.For(0, num, x =>
+                {
+                    for (var y = 0; y < num; ++y)
+                    {
+                        using (var tile = Image.Load(LayersHelper.GetLocalPath(config, $"S_{x:000}_{y:000}_lco.png"), new PngDecoder()))
+                        {
+                            tile.Mutate(t => t.Crop(new Rectangle(config.RealTileOverlap, config.RealTileOverlap, step, step)));
+                            sat.Mutate(s => s.DrawImage(tile, new Point(x * step, y * step), 1f));
+                        }
+                        report2.ReportOneDone();
+                    }
+                });
+                report2.TaskDone();
+                DrawHelper.SavePngChuncked(sat, Path.Combine(config.Target.Terrain, "sat", "sat.png"), area, false);
+            }
+        }
+        
         private static IBrush GetBrush(RoadType roadType)
         {
             if (roadType >= RoadType.TwoLanesConcreteRoad)
             {
-                return new SolidBrush(Color.ParseHex("5A4936"));
+                return new SolidBrush(Color.ParseHex("5A4936")); // TODO: make config for that
             }
-            return new SolidBrush(Color.ParseHex("4D4D4D"));
+            return new SolidBrush(Color.ParseHex("4D4D4D")); // TODO: make config for that
         }
 
         private static void SatMapTiling(Image<Rgb24> realSat, Image<Rgba32> fakeSat, MapConfig config, MapInfos area, List<Road> roads)
@@ -142,7 +214,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
         {
             var polygonsByCategory = GetPolygonsByCategory(toRender);
 
-            DrawFakeSat(config, area, data, polygonsByCategory, terrainMaterialLibrary);
+            DrawSat(config, area, data, polygonsByCategory, terrainMaterialLibrary);
 
             DrawIdMap(config, area, data, polygonsByCategory, terrainMaterialLibrary);
         }
@@ -165,7 +237,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                 });
                 report.TaskDone();
 
-                DrawHelper.SavePngChuncked(img, Path.Combine(config.Target.Terrain, "idmap", "idmap.png"));
+                DrawHelper.SavePngChuncked(img, Path.Combine(config.Target.Terrain, "idmap", "idmap.png"), area, true);
 
                 IdMapCompiler.Compile(area, config, img, terrainMaterialLibrary);
             }

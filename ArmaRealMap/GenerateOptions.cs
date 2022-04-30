@@ -26,6 +26,9 @@ namespace ArmaRealMap
 
         [Option("no-overpass", Required = false, HelpText = "Do not update OpenStreeMap data from overpass, keep existing.")]
         public bool DoNotUpdateOSM { get; set; }
+
+        [Option("pack", Required = false, HelpText = "Generate a ZIP file with pre-cooked data.")]
+        public string Pack { get; set; }
     }
 
     [Verb("update", HelpText = "Download and update libraries (must be re-uploaded).")]
@@ -46,5 +49,8 @@ namespace ArmaRealMap
     {
         [Value(0, MetaName = "dir", HelpText = "Directory containing files to convert.", Required = true)]
         public string Directory { get; set; }
+
+        [Option("max-threads", Required = false, HelpText = "Maximum number of threads used.")]
+        public int? MaxThreads { get; set; }
     }
 }

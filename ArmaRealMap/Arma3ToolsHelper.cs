@@ -46,7 +46,7 @@ namespace ArmaRealMap
             ImageToPAA(Enumerable.Range(0, num).Select(pattern).ToList());
         }
 
-        internal static void ImageToPAA(List<string> pattern)
+        internal static void ImageToPAA(List<string> pattern, int? maxDegreeOfParallelism = null )
         {
             if (isLinux)
             {
@@ -54,7 +54,7 @@ namespace ArmaRealMap
             }
             string imageToPaaExe = Path.Combine(GetArma3ToolsPath(), "ImageToPAA", "ImageToPAA.exe");
             var report = new ProgressReport("Png->PAA", pattern.Count);
-            Parallel.ForEach(pattern, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount * 5 / 8 }, x =>
+            Parallel.ForEach(pattern, new ParallelOptions() { MaxDegreeOfParallelism = maxDegreeOfParallelism ?? (Environment.ProcessorCount * 5 / 8) }, x =>
             {
                 var proc = Process.Start(new ProcessStartInfo()
                 {

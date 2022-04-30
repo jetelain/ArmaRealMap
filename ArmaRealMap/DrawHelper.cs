@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using ArmaRealMap.Geometries;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -147,40 +149,59 @@ namespace ArmaRealMap
 
         internal const int Chunk = 10240;
 
-        internal static int SavePngChuncked<TPixel>(Image<TPixel> img, string filename) where TPixel : unmanaged, IPixel<TPixel>
+        internal static void SavePngChuncked<TPixel>(Image<TPixel> img, string filename, MapInfos area, bool needUniqueFile) where TPixel : unmanaged, IPixel<TPixel>
         {
-            img.Save(filename);
+            if (img.Width <= Chunk || needUniqueFile)
+            {
+                using (var report = new ProgressReport(Path.GetFileName(filename)))
+                {
+                    img.Save(filename);
+                }
+            }
 
-            if (img.Width > Chunk) 
+
+            if (img.Width > Chunk)
             {
                 // terrain builder as a 32 bits process, does not like too large images. So make chunks of image
                 // => 20480x20480 takes 3 hours to import, 10240x10240 takes 10 minutes, so 40 minutes vs 180 !
                 int num = 2;
-                while(img.Width / num > Chunk)
+                while (img.Width / num > Chunk)
                 {
                     num = num * 2;
                 }
-                var report = new ProgressReport("PngChuncked", num * num);
-                int chunkSize = img.Width / num;
-                var chunk = new Image<TPixel>(chunkSize, chunkSize);
-                for(int x = 0; x < num; x ++)
+
+                var iw = area.Width / num;
+
+                var sw = new StringWriter();
+                sw.WriteLine($"File;Easting;Northing;Width;Height");
+                for (int x = 0; x < num; x++)
                 {
                     for (int y = 0; y < num; y++)
                     {
-                        var pos = new SixLabors.ImageSharp.Point(-x * chunkSize, -y * chunkSize);
-                        chunk.Mutate(c => c.DrawImage(img, pos, 1.0f));
-                        chunk.Save(System.IO.Path.ChangeExtension(filename, $"{x}_{y}.png"));
-                        report.ReportOneDone();
+                        sw.WriteLine($"{x}_{y}.png;{200000 + (x * iw)};{area.Height - ((y + 1) * iw)};{iw};{iw}");
                     }
                 }
-                report.TaskDone();
-                return num;
+                File.WriteAllText(Path.ChangeExtension(filename, $".csv"), sw.ToString());
+
+                using (var report = new ProgressReport("PngChuncked", num * num))
+                {
+                    int chunkSize = img.Width / num;
+                    Parallel.For(0, num, x =>
+                    {
+                        using (var chunk = new Image<TPixel>(chunkSize, chunkSize))
+                        {
+                            for (int y = 0; y < num; y++)
+                            {
+                                var pos = new SixLabors.ImageSharp.Point(-x * chunkSize, -y * chunkSize);
+                                chunk.Mutate(c => c.DrawImage(img, pos, 1.0f));
+                                chunk.Save(Path.ChangeExtension(filename, $"{x}_{y}.png"));
+                                report.ReportOneDone();
+                            }
+                        }
+                    });
+                }
+
             }
-            else
-            {
-                img.Save(System.IO.Path.ChangeExtension(filename, $"0_0.png"));
-            }
-            return 1;
         }
     }
 }

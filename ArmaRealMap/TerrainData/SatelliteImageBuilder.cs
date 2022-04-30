@@ -1,6 +1,6 @@
-﻿using System.Threading;
+﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
-using ArmaRealMap.DataSources;
 using ArmaRealMap.DataSources.S2C;
 using CoordinateSharp;
 using SixLabors.ImageSharp;
@@ -48,7 +48,11 @@ namespace ArmaRealMap
                     //});
 
                     report.TaskDone();
-                    DrawHelper.SavePngChuncked(img, targetFile);
+
+                    using (new ProgressReport(Path.GetFileName(targetFile)))
+                    {
+                        img.Save(targetFile);
+                    }
                 }
             }
         }

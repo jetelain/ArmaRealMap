@@ -1,4 +1,5 @@
-﻿using ArmaRealMap.Core.ObjectLibraries;
+﻿using System;
+using ArmaRealMap.Core.ObjectLibraries;
 
 namespace ArmaRealMap
 {
@@ -25,5 +26,13 @@ namespace ArmaRealMap
         public int RealTileOverlap => TileSize / 32;
 
         public ForcedElevationArea[] ForcedElevation { get; set; }
+
+        internal MapConfig ToCook()
+        {
+            var config = (MapConfig)MemberwiseClone();
+            config.ForcedElevation = null;
+            config.Target = null;
+            return config;
+        }
     }
 }

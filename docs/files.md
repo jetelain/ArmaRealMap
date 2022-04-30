@@ -1,6 +1,4 @@
-# Target structure
-
-
+# Generator files structure
 
 - `~/.config/share/ArmaRealMap` or `%USERPROFILE%\AppData\Local\ArmaRealMap` : Global data
   - `srtm`
@@ -14,19 +12,21 @@
   - `mapname.json` : Map config
   - `mapname`
     - `cache`    
-      - `internal` : Internal data cache, can be safely cleared
+      - `internal` : Internal data cache, cleared at each OpenStreeMap update, can be safely manually cleared
         - Misc files to make re-run faster
       - `input`               : Input data cache. Be careful, clearing data here can be very costly
   	    - `area.osm.xml`      : OpenStreeMap data for terrain coordinates
-        - `sat-raw.png`       : S2 Cloudless Satellite image for terrain coordinates   (MGRS projected)
-  	    - `elevation-raw.bin` : SRTM elevation data for terrain coordinates (MGRS   projected)
+        - `sat-raw.png`       : S2 Cloudless Satellite image for terrain coordinates   (MGRS projected) (needs several hours to be generated, make a backup !)
+  	    - `elevation-raw.bin` : SRTM elevation data for terrain coordinates (MGRS projected) (needs hours to be generated, make a backup !)
     - `output`
       - `terrain`           : Files for TerrainBuilder (if you need additional editing in   that tool)
   	    - `idmap`           : ID Map
+  	      - `idmap.csv`     : Coordinate of each tile
   	      - `idmap.png`     : Full image
   		  - `idmap.N_N.png` : Tiles for easier import
   	    - `sat`
-  	      - (nothing generated anymore, everything is generated in `layers` in current version)
+  	      - `sat.csv`       : Coordinate of each tile
+  		  - `sat.N_N.png`   : Tiles for easier import / Full image would be too massive
   	    - `objects`
   	      - `*.abs.txt`     : Objects with absolute elevation
   	      - `*.rel.txt`     : Objects with relative elevation
@@ -37,9 +37,10 @@
   		    - ID Map segments, satellite segments, and materials for map
           - `roads`
   		    - Files for roads
-  	    - `mapname.wrp`     : WRP World file
-  	    - `mapinfos.hpp`    : Map coordinates and basic infos
-  	    - `names.hpp`       : City names
+  	      - `picturemap_ca.png` : Natural color overview of map
+  	    - `mapname.wrp`         : WRP World file
+  	    - `mapinfos.hpp`        : Map coordinates and basic infos
+  	    - `names.hpp`           : City names
     - `debug`    
       - `*.png` : Debugging of some stages
 	  - `*.log` : Log file (one for each launch of generator)

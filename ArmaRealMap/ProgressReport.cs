@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ArmaRealMap
 {
-    public class ProgressReport
+    public class ProgressReport : IDisposable
     {
         private readonly string taskName;
         private readonly int itemsToDo;
@@ -12,7 +12,7 @@ namespace ArmaRealMap
         private readonly object locker = new object();
         private int lastDone = 0;
 
-        public ProgressReport(string taskName, int itemsToDo)
+        public ProgressReport(string taskName, int itemsToDo = 1)
         {
             this.taskName = taskName;
             this.itemsToDo = itemsToDo;
@@ -97,6 +97,11 @@ namespace ArmaRealMap
         private static void CleanEndOfLine()
         {
             Console.Write(new string(' ', Console.BufferWidth - Console.CursorLeft - 1));
+        }
+
+        public void Dispose()
+        {
+            TaskDone();
         }
     }
 }
