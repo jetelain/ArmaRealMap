@@ -60,6 +60,7 @@ namespace ArmaRealMap
             using (var zipStream = new ZipOutputStream(fsOut))
             {
                 AddFile(zipStream, "arm.json", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(config.ToCook(), ConfigLoader.SerializerOptions)));
+                AddFile(zipStream, "data/picturemap_ca.png", File.ReadAllBytes(Path.Combine(config.Target.Cooked, "data", "picturemap_ca.png")));
                 AddDirectory("Layers", zipStream, Path.Combine(config.Target.Cooked, "data", "layers"), "data/layers/");
                 AddDirectory("Roads", zipStream, Path.Combine(config.Target.Cooked, "data", "roads"), "data/roads/");
                 AddDirectory("World", zipStream, config.Target.Cooked, "");

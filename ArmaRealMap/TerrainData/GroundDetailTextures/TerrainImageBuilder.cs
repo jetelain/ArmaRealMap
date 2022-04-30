@@ -158,6 +158,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             var step = config.TileSize - (config.RealTileOverlap * 2);
             var num = (int)Math.Ceiling((double)realSat.Width / (double)step);
             var report2 = new ProgressReport("Tiling", num * num);
+            var fakeBlend = config.FakeSatBlend ?? 0.75f;
             Parallel.For(0, num, x =>
             {
                 using (var tile = new Image<Rgb24>(config.TileSize, config.TileSize, Color.Black))
@@ -172,7 +173,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                             fake.Mutate(d => d.GaussianBlur(10f));
 
                             tile.Mutate(c => c.DrawImage(realSat, pos, 1.0f));
-                            tile.Mutate(p => p.DrawImage(fake, 0.75f));
+                            tile.Mutate(p => p.DrawImage(fake, fakeBlend));
 
                             tile.Mutate(d =>
                             {

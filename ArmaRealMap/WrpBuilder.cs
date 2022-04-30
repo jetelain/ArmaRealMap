@@ -9,16 +9,11 @@ using SixLabors.ImageSharp;
 
 namespace ArmaRealMap
 {
-    internal static class WrpBuilder
+    public static class WrpBuilder
     {
         public static void Build(MapConfig config, ElevationGrid elevationGrid, MapInfos area, GlobalConfig global, ModelInfoLibrary library)
         {
-            var wrp = new EditableWrp();
-            wrp.LandRangeX = 512;
-            wrp.LandRangeY = 512;
-            wrp.TerrainRangeX = config.GridSize;
-            wrp.TerrainRangeY = config.GridSize;
-            wrp.CellSize = config.GridSize / 512 * config.CellSize;
+            var wrp = InitWrp(config);
 
             SetElevation(config, elevationGrid, wrp);
 
@@ -52,7 +47,18 @@ namespace ArmaRealMap
             StreamHelper.Write(wrp, Path.Combine(config.Target.Cooked, config.WorldName + ".wrp"));
         }
 
-        private static void SetMaterials(MapConfig config, TerrainTiler terrainTiler, EditableWrp wrp)
+        public static EditableWrp InitWrp(MapConfig config)
+        {
+            var wrp = new EditableWrp();
+            wrp.LandRangeX = 512;
+            wrp.LandRangeY = 512;
+            wrp.TerrainRangeX = config.GridSize;
+            wrp.TerrainRangeY = config.GridSize;
+            wrp.CellSize = config.GridSize / 512 * config.CellSize;
+            return wrp;
+        }
+
+        public static void SetMaterials(MapConfig config, TerrainTiler terrainTiler, EditableWrp wrp)
         {
             wrp.MatNames = new string[terrainTiler.Segments.Length + 1];
             var w = terrainTiler.Segments.GetLength(0);
@@ -71,13 +77,12 @@ namespace ArmaRealMap
 
             report = new ProgressReport("MaterialIndex", 512);
             int cellPixelSize = (int)(wrp.CellSize / config.Resolution);
-            var half = cellPixelSize / 2;
             wrp.MaterialIndex = new ushort[512 * 512];
             for (int x = 0; x < 512; x++)
             {
                 for (int y = 0; y < 512; y++)
                 {
-                    var p = new Point(x * cellPixelSize + half, (511-y) * cellPixelSize + half);
+                    var p = new Point((x+1) * cellPixelSize -1, (511-y+1) * cellPixelSize -1);
                     var segment = terrainTiler.All.First(s => s.ContainsImagePoint(p));
                     wrp.MaterialIndex[x + (y * 512)] = (ushort)(segment.X + (segment.Y * h) + 1);
                 }
@@ -105,6 +110,15 @@ namespace ArmaRealMap
             var library = new ModelInfoLibrary();
             library.Load(global.ModelsInfoFile);
             var wrp = StreamHelper.Read<EditableWrp>(options.Source);
+
+            using(var w = File.CreateText(Path.Combine(options.Target, "layers.txt")))
+            {
+                foreach(var x in wrp.MaterialIndex)
+                {
+                    w.WriteLine(wrp.MatNames[x]);
+                }
+            }
+
             Directory.CreateDirectory(options.Target);
             foreach (var group in wrp.GetNonDummyObjects().GroupBy(o => o.Model))
             {

@@ -44,6 +44,8 @@ namespace ArmaRealMap.Roads
             var ignoreBridges = libs.Libraries.Any(l => l.Category == ObjectCategory.BridgePrimaryRoad);
 
             SaveRoadsShp(data, config, ignoreBridges);
+
+            // TODO: write roadslib.cfg
         }
 
         private static void SideWalks(MapData data, ObjectLibraries libs, List<OsmShape> osmShapes)

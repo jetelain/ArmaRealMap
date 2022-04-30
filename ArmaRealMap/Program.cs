@@ -59,6 +59,15 @@ namespace ArmaRealMap
 
             var global = ConfigLoader.LoadGlobal(arg.Global);
 
+            if (string.IsNullOrEmpty(arg.TargetMod))
+            {
+                arg.TargetMod = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(arg.Pack), "@" + Path.GetFileNameWithoutExtension(arg.Pack)));
+            }
+            Directory.CreateDirectory(Path.Combine(arg.TargetMod, "addons"));
+            Console.WriteLine($"Pack      = {arg.Pack}");
+            Console.WriteLine($"TargetMod = {arg.TargetMod}");
+            Console.WriteLine();
+
             Console.WriteLine("==== Unpack to project drive ====");
             var config = PackageHelper.Unpack(arg);
             var target = Path.Combine("P:", config.PboPrefix);
@@ -72,8 +81,26 @@ namespace ArmaRealMap
             Arma3ToolsHelper.ImageToPAA(files.ToList(), arg.MaxThreads);
 
             Console.WriteLine("==== Mikero's tool ====");
-            // TODO !
-
+            if (arg.NonInterractive)
+            {
+                Console.WriteLine("Note: PboProject starts in it's own console window.");
+                using (new ProgressReport("pboProject"))
+                {
+                    var proc = Process.Start(new ProcessStartInfo()
+                    {
+                        FileName = @"C:\Program Files (x86)\Mikero\DePboTools\bin\pboProject.exe", // Hard-coded because tool can only work from this location
+                        Arguments = @$"-R -E=""arma3"" -W -P -M=""{arg.TargetMod}"" ""P:\{config.PboPrefix}""",
+                    });
+                    proc.WaitForExit();
+                    return proc.ExitCode;
+                }
+            }
+            Console.WriteLine("Note: PboProject starts in it's own console window. It will pause at the end.");
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = @"C:\Program Files (x86)\Mikero\DePboTools\bin\pboProject.exe", // Hard-coded because tool can only work from this location
+                Arguments = @$"-R -E=""arma3"" -W -M=""{arg.TargetMod}"" ""P:\{config.PboPrefix}""",
+            });
             return 0;
         }
 
@@ -104,6 +131,8 @@ namespace ArmaRealMap
             var global = ConfigLoader.LoadGlobal(options.Global);
 
             SyncLibraries(global);
+
+            Directory.CreateDirectory(options.Target);
 
             WrpBuilder.WrpExport(options, global);
 
@@ -459,6 +488,8 @@ namespace ArmaRealMap
             {
                 Console.WriteLine("Keep existing OSM data (data is kept for 1 day by default).");
             }
+            // https://dev.overpass-api.de/overpass-doc/en/full_data/map_apis.html <- current API used
+            // https://dev.overpass-api.de/overpass-doc/en/full_data/bbox.html -> Alternative to consider
         }
 
         private static void ClearInternalCache(MapConfig config)

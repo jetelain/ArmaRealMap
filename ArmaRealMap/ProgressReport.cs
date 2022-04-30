@@ -73,18 +73,25 @@ namespace ArmaRealMap
 
         private void WritePercent(double percent)
         {
-            var cols = Math.Max(0,Math.Min(20,(int)(percent / 5)));
-            Console.CursorLeft = 20;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(new string('#', cols));
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write(new string('-', 20 - cols));
-            Console.Write(' ');
-            Console.Write($"{percent,6:0.00} % ");
+            if (!Console.IsOutputRedirected)
+            {
+                var cols = Math.Max(0, Math.Min(20, (int)(percent / 5)));
+                Console.CursorLeft = 20;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(new string('#', cols));
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Write(new string('-', 20 - cols));
+                Console.Write(' ');
+                Console.Write($"{percent,6:0.00} % ");
+            }
         }
 
         public void TaskDone()
         {
+            if (Console.IsOutputRedirected)
+            {
+                Console.Write(' ');
+            }
             sw.Stop();
             WritePercent(100d);
             Console.Write($"Done in {Math.Ceiling(sw.ElapsedMilliseconds / 1000d)} sec");
@@ -96,7 +103,10 @@ namespace ArmaRealMap
 
         private static void CleanEndOfLine()
         {
-            Console.Write(new string(' ', Console.BufferWidth - Console.CursorLeft - 1));
+            if (!Console.IsOutputRedirected)
+            {
+                Console.Write(new string(' ', Console.BufferWidth - Console.CursorLeft - 1));
+            }
         }
 
         public void Dispose()

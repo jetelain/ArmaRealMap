@@ -31,6 +31,16 @@ namespace ArmaRealMap.Osm
                 if (category != null)
                 {
                     var complete = osmGeo.CreateComplete(db);
+                    if (complete == null && osmGeo is Relation rel)
+                    {
+                        var exists = rel.Members.Where(m => db.GetWay(m.Id) != null).ToList();
+                        if (exists.Count > 0)
+                        {
+                            Trace.TraceWarning($"GEOMETRY HOT-FIXED {osmGeo.Tags}, Members {rel.Members.Length} -> {exists.Count}");
+                            rel.Members = exists.ToArray();
+                            complete = rel.CreateComplete(db);
+                        }
+                    }
                     var count = 0;
                     foreach (var feature in interpret.Interpret(complete))
                     {

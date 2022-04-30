@@ -25,7 +25,11 @@ namespace ArmaRealMap
 
         public int RealTileOverlap => TileSize / 32;
 
+        public double? TextureScale { get; set; }
+
         public ForcedElevationArea[] ForcedElevation { get; set; }
+
+        public float? FakeSatBlend { get; set; }
 
         internal MapConfig ToCook()
         {

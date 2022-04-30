@@ -77,7 +77,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
         public bool ContainsImagePoint(Point p)
         {
             return p.X >= ImageTopLeft.X && p.Y >= ImageTopLeft.Y 
-                && p.X <= ImageBottomRight.X && p.Y <= ImageBottomRight.Y;
+                && p.X < ImageBottomRight.X && p.Y < ImageBottomRight.Y;
         }
     }
 

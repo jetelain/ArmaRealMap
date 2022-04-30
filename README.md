@@ -8,11 +8,11 @@ Traditional terrain making with Arma
 
 ## Workflow without Terrain Builder
 
-Importing data in Terrain Builder can be really long, the new "PreCooked" workflow directly generates layers and WRP files.
+Importing data in Terrain Builder can be really long, the new "PreCooked" workflow directly generates [layers and WRP files](./docs/files.md).
 
 ![Workflow](./docs/workflow-precooked.svg)
 
-Files for terrain builder are still generated and can be used a fallback.
+[Files for terrain builder](./docs/files.md) are still generated and can be used as a fallback.
 
 ## Eden Map Editor (@ArmaMapStudio + AmsUtil)
 

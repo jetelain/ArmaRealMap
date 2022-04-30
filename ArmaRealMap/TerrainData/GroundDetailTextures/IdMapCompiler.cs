@@ -39,6 +39,8 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
         public static void Compile(MapInfos area, MapConfig config, Image idmap, TerrainMaterialLibrary terrainMaterialLibrary)
         {
+            var textureScale = config.TextureScale ?? (area.Width / 2048);
+
             Directory.CreateDirectory(LayersHelper.GetLocalPath(config));
             var tiler = new TerrainTiler(area, config);
             var report2 = new ProgressReport("Tiling", tiler.Segments.Length);
@@ -56,11 +58,9 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                             LayersHelper.FillEdges(idmap, x, tiler.Segments.GetLength(0), tile, y, pos);
 
                             var tex = ReduceColors(tile, output, config.Terrain);
-                            var rvmat = MakeRvMat(seg, 40, tex, config.Terrain, config, terrainMaterialLibrary);
-
+                            var rvmat = MakeRvMat(seg, textureScale, tex, config.Terrain, config, terrainMaterialLibrary);
 
                             output.Save(LayersHelper.GetLocalPath(config, $"M_{x:000}_{y:000}_lca.png"));
-                            //tile.Save(LayersHelper.GetPath(config,$"M_{x:000}-{y:000}_ori.png"));
                             File.WriteAllText(LayersHelper.GetLocalPath(config, $"P_{x:000}-{y:000}.rvmat"), rvmat);
                             report2.ReportOneDone();
                         }
@@ -105,19 +105,38 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             }
             if (colors.Count > 4)
             {
-                // TODO: Extra Alpha Processing : Protect against texture interpolation 
                 for (var x = 0; x < tile.Width; x++)
                 {
                     for (var y = 0; y < tile.Height; y++)
                     {
                         if (output[x, y] == RuleColors[4])
                         {
-                            // ? Force Alpha 128 at 8px range exept for RuleColors[3]
+                            ForceAlpha(128, output, x, y, RuleColors[3]);
                         }
                     }
                 }
             }
             return colors;
+        }
+
+        private static void ForceAlpha(byte alpha, Image<Rgba32> output, int xc, int yc, Rgba32 ignore)
+        {
+            var x1 = Math.Max(0, xc - 8);
+            var x2 = Math.Min(output.Width, xc + 9);
+            var y1 = Math.Max(0, yc - 8);
+            var y2 = Math.Min(output.Height, yc + 9);
+            for(var x = x1; x < x2; x++)
+            {
+                for (var y = y1; y < y2; y++)
+                {
+                    var c = output[x, y];
+                    if (c != ignore && c.A == 255)
+                    {
+                        c.A = alpha;
+                        output[x, y] = c;
+                    }
+                }
+            }
         }
 
         private static string MakeRvMat(LandSegment segment, double textureScale, List<TextureInfo> textures, TerrainRegion terrain, MapConfig config, TerrainMaterialLibrary terrainMaterialLibrary)
