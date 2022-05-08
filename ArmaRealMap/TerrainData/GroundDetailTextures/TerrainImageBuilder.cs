@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ArmaRealMap.Core.Roads;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Osm;
@@ -32,7 +33,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             {
                 DrawFakeSat(area, polygonsByCategory, brushes, colors, fakeSat);
 
-                var roads = data.Roads.Where(r => r.RoadType <= RoadType.SingleLaneDirtRoad).ToList();
+                var roads = data.Roads.Where(r => r.RoadType <= RoadTypeId.SingleLaneDirtRoad).ToList();
 
                 using (var realSat = Image.Load<Rgb24>(Path.Combine(config.Target.InputCache, "sat-raw.png")))
                 {
@@ -139,13 +140,9 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             }
         }
         
-        private static IBrush GetBrush(RoadType roadType)
+        private static IBrush GetBrush(RoadTypeInfos roadType)
         {
-            if (roadType >= RoadType.TwoLanesConcreteRoad)
-            {
-                return new SolidBrush(Color.ParseHex("5A4936")); // TODO: make config for that
-            }
-            return new SolidBrush(Color.ParseHex("4D4D4D")); // TODO: make config for that
+            return new SolidBrush(Color.ParseHex(roadType.SatelliteColor));
         }
 
         private static void SatMapTiling(Image<Rgb24> realSat, Image<Rgba32> fakeSat, MapConfig config, MapInfos area, List<Road> roads)
@@ -181,7 +178,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                                 {
                                     foreach (var polygon in road.Polygons)
                                     {
-                                        DrawHelper.DrawPolygon(d, polygon, GetBrush(road.RoadType), l => l.Select(p => area.TerrainToPixelsPoint(p) + pos));
+                                        DrawHelper.DrawPolygon(d, polygon, GetBrush(road.RoadTypeInfos), l => l.Select(p => area.TerrainToPixelsPoint(p) + pos));
                                     }
                                 }
                             });

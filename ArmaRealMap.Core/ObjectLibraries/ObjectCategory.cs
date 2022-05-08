@@ -73,7 +73,7 @@ namespace ArmaRealMap.Core.ObjectLibraries
         [Display(Name = "Batiment - Hutte")]
         Hut,
 
-        [Display(Name = "Infrastructure - Ponts - Routes princpales / RN")]
+        [Display(Name = "Infrastructure - Ponts - Routes principales / RN")]
         BridgePrimaryRoad,
 
         [Display(Name = "Infrastructure - Mur - Enceinte militaire")]
@@ -92,6 +92,12 @@ namespace ArmaRealMap.Core.ObjectLibraries
         GroundRockAdditionalObjects,
 
         [Display(Name = "Nature - Bord des cours d'eau")]
-        WaterwayBorder
+        WaterwayBorder,
+
+        [Display(Name = "Infrastructure - Ponts - Routes secondaires / RD")]
+        BridgeSecondaryRoad,
+
+        [Display(Name = "Infrastructure - Ponts - Routes en béton")]
+        BridgeConcreteRoad,
     }
 }

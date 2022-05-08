@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ArmaRealMap.Core;
 using ArmaRealMap.Core.ObjectLibraries;
 
 namespace ArmaRealMap.Libraries

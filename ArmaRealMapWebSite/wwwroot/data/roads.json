@@ -1,0 +1,110 @@
+[
+  /* Generic */
+  {
+    "Id": "TwoLanesMotorway",
+    "Width": 12,
+    "SatelliteColor": "4D4D4D",
+    "TextureWidth": 14,
+    "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_ca.paa",
+    "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_end_ca.paa",
+    "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat"
+
+  },
+  {
+    "Id": "TwoLanesPrimaryRoad",
+    "Width": 12,
+    "SatelliteColor": "4D4D4D",
+    "TextureWidth": 14,
+    "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_ca.paa",
+    "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_end_ca.paa",
+    "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat"
+  },
+  {
+    "Id": "TwoLanesSecondaryRoad",
+    "Width": 7.5,
+    "SatelliteColor": "4D4D4D",
+    "TextureWidth": 10,
+    "Texture": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road_ca.paa",
+    "TextureEnd": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road_end_ca.paa",
+    "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road.rvmat"
+  },
+  {
+    "Id": "TwoLanesConcreteRoad",
+    "Width": 7.5,
+    "SatelliteColor": "625F5B",
+    "TextureWidth": 8,
+    "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_ca.paa",
+    "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_end_ca.paa",
+    "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road.rvmat"
+  },
+  {
+    "Id": "SingleLaneDirtRoad",
+    "Width": 6,
+    "SatelliteColor": "534C43",
+    "TextureWidth": 10,
+    "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_road_ca.paa",
+    "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_road_end_ca.paa",
+    "Material": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_road.rvmat"
+  },
+  {
+    "Id": "SingleLaneDirtPath",
+    "Width": 4.5,
+    "SatelliteColor": "534C43",
+    "TextureWidth": 7,
+    "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_path_ca.paa",
+    "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_path_end_ca.paa",
+    "Material": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_path.rvmat"
+  },
+  {
+    "Id": "Trail",
+    "Width": 1.5,
+    "SatelliteColor": "534C43",
+    "TextureWidth": 1.6,
+    "Texture": "a3\\structures_f_exp\\data\\roads\\surf_exp_traildirt_trail_ca.paa",
+    "TextureEnd": "a3\\structures_f_exp\\data\\roads\\surf_exp_traildirt_trail_end_ca.paa",
+    "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_traildirt_trail.rvmat"
+  },
+
+  /*Sahel*/
+  {
+    "Id": "TwoLanesConcreteRoad",
+    "Width": 7.5,
+    "SatelliteColor": "5A4936",
+    "Terrain": "Sahel",
+    "TextureWidth": 8,
+    "Texture": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_ca.paa",
+    "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_end_ca.paa",
+    "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road.rvmat"
+  },
+  {
+    "Id": "SingleLaneDirtRoad",
+    "Width": 6,
+    "SatelliteColor": "5A4936",
+    "Terrain": "Sahel",
+    "TextureWidth": 10,
+    "Texture": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_ca.paa",
+    "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_end_ca.paa",
+    "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road.rvmat"
+  },
+  {
+    "Id": "SingleLaneDirtPath",
+    "Width": 4.5,
+    "SatelliteColor": "5A4936",
+    "Terrain": "Sahel",
+    "TextureWidth": 7,
+    "Texture": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_roaddirt_path_ca.paa",
+    "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_roaddirt_path_end_ca.paa",
+    "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_roaddirt_path.rvmat"
+  },
+  {
+    "Id": "Trail",
+    "Width": 1.5,
+    "SatelliteColor": "5A4936",
+    "Terrain": "Sahel",
+    "TextureWidth": 1.6,
+    "Texture": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_path_ca.paa",
+    "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_path_end_ca.paa",
+    "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_path.rvmat"
+  }
+
+]

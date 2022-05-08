@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ArmaRealMap.Core.ObjectLibraries;
+using ArmaRealMap.Core.Roads;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
@@ -160,7 +161,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
             // Roads that have an edge effect of forest
             substractPolygons.AddRange(data.Roads
-                .Where(r => r.RoadType != RoadType.Trail)
+                .Where(r => r.RoadType != RoadTypeId.Trail)
                 .SelectMany(r => TerrainPolygon.FromPath(r.Path.Points, RoadClearWidth(r))));
 
             // Priority shapes
@@ -200,11 +201,11 @@ namespace ArmaRealMap.TerrainData.Forests
 
         private static float RoadClearWidth(Road r)
         {
-            if (r.RoadType < RoadType.TwoLanesPrimaryRoad)
+            if (r.RoadType < RoadTypeId.TwoLanesPrimaryRoad)
             {
                 return r.Width + 6f;
             }
-            if (r.RoadType < RoadType.SingleLaneDirtPath)
+            if (r.RoadType < RoadTypeId.SingleLaneDirtPath)
             {
                 return r.Width + 4f;
             }

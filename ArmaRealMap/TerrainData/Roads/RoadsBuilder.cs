@@ -5,12 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using ArmaRealMap.Core.ObjectLibraries;
+using ArmaRealMap.Core.Roads;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.TerrainData;
 using ArmaRealMap.TerrainData.Forests;
+using ArmaRealMap.TerrainData.Roads;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -30,7 +32,10 @@ namespace ArmaRealMap.Roads
     {
         internal static void Roads(MapData data, OsmStreamSource filtered, SnapshotDb db, MapConfig config, ObjectLibraries libs, List<OsmShape> osmShapes, GenerateOptions options)
         {
-            PrepareRoads(data, filtered, db);
+            var rlib = new RoadTypeLibrary();
+            rlib.LoadFromFile(data.GlobalConfig.RoadTypesFile, data.Config.Terrain);
+
+            PrepareRoads(data, filtered, db, rlib);
 
             MergeRoads(data);
 
@@ -41,11 +46,76 @@ namespace ArmaRealMap.Roads
                 SideWalks(data, libs, osmShapes);
             }
 
-            var ignoreBridges = libs.Libraries.Any(l => l.Category == ObjectCategory.BridgePrimaryRoad);
-
-            SaveRoadsShp(data, config, ignoreBridges);
+            SaveRoadsShp(data, config, libs);
 
             // TODO: write roadslib.cfg
+        }
+
+        private static void WriteRoadsLibCgf(MapData data, RoadTypeLibrary rlib)
+        {
+            using(var writer = File.CreateText(Path.Combine(Path.Combine(data.Config.Target.Cooked, "data", "roads"), "roads.shp")))
+            {
+                writer.WriteLine(@"class RoadTypesLibrary
+{");
+                foreach(var id in Enum.GetValues<RoadTypeId>())
+                {
+                    var infos = rlib.GetInfo(id, data.Config.Terrain);
+
+                     
+
+                    writer.WriteLine(FormattableString.Invariant(
+                    $@" class Road{(int)id:0000}
+	{{
+		width = {infos.TextureWidth};
+		mainStrTex      = ""{infos.Texture}""; 
+		mainTerTex      = ""{infos.TextureEnd}"";
+		mainMat         = ""{infos.Material}"";
+		map             = ""{GetMap(id)}"";
+		AIpathOffset 	= {GetAIPathOffset(id)};
+		pedestriansOnly = {(id == RoadTypeId.Trail ? "true" : "false")};
+	}};"));
+                }
+                writer.WriteLine(@"};");
+            }
+        }
+
+        private static float GetAIPathOffset(RoadTypeId id)
+        {
+            switch (id)
+            {
+                case RoadTypeId.TwoLanesMotorway:
+                case RoadTypeId.TwoLanesPrimaryRoad:
+                    return 1;
+                case RoadTypeId.TwoLanesSecondaryRoad:
+                case RoadTypeId.TwoLanesConcreteRoad:
+                    return 1.5f;
+                case RoadTypeId.SingleLaneDirtRoad:
+                    return 2;
+                case RoadTypeId.SingleLaneDirtPath:
+                    return 2.5f;
+                case RoadTypeId.Trail:
+                default:
+                    return 0;
+            }
+        }
+
+        private static string GetMap(RoadTypeId id)
+        {
+            switch (id)
+            {
+                case RoadTypeId.TwoLanesMotorway:
+                case RoadTypeId.TwoLanesPrimaryRoad:
+                    return "main road";
+                case RoadTypeId.TwoLanesSecondaryRoad:
+                    return "road";
+                case RoadTypeId.TwoLanesConcreteRoad:
+                case RoadTypeId.SingleLaneDirtRoad:
+                case RoadTypeId.SingleLaneDirtPath:
+                default:
+                    return "track";
+                case RoadTypeId.Trail:
+                    return "trail";
+            }
         }
 
         private static void SideWalks(MapData data, ObjectLibraries libs, List<OsmShape> osmShapes)
@@ -58,7 +128,7 @@ namespace ArmaRealMap.Roads
                 var report = new ProgressReport("SideWalks", residentials.Count);
                 foreach (var residential in residentials)
                 {
-                    var areaRoads = data.Roads.Where(r => r.RoadType > RoadType.TwoLanesMotorway && r.RoadType < RoadType.SingleLaneDirtRoad && r.Path.EnveloppeIntersects(residential)).ToList();
+                    var areaRoads = data.Roads.Where(r => r.RoadType > RoadTypeId.TwoLanesMotorway && r.RoadType < RoadTypeId.SingleLaneDirtRoad && r.Path.EnveloppeIntersects(residential)).ToList();
                     var areaRoadsPolys = areaRoads.SelectMany(r => r.Path.ToTerrainPolygon(r.Width + template.Depth)).ToList();
                     var areaRoadsMerged = TerrainPolygon.MergeAll(areaRoadsPolys);
                     var areaRoadsClipped = areaRoadsMerged.SelectMany(r => r.Intersection(residential)).ToList();
@@ -74,7 +144,7 @@ namespace ArmaRealMap.Roads
                     report.ReportOneDone();
                 }
                 report.TaskDone();
-                NatureBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadType.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
+                NatureBuilder.Remove(layer, data.Roads.Where(r => r.RoadType < RoadTypeId.SingleLaneDirtRoad), (road, tree) => tree.Poly.Centroid.Distance(road.Path.AsLineString) <= road.Width / 2);
                 layer.WriteFile(Path.Combine(data.Config.Target.Objects, "sidewalks.rel.txt"));
             }
             else
@@ -90,7 +160,7 @@ namespace ArmaRealMap.Roads
             {
                 var layer = new TerrainObjectLayer(data.MapInfos);
 
-                var polys = data.Roads.Where(r => r.RoadType == RoadType.TwoLanesMotorway).SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList();
+                var polys = data.Roads.Where(r => r.RoadType == RoadTypeId.TwoLanesMotorway).SelectMany(r => r.Path.ToTerrainPolygon(r.Width)).ToList();
 
                 var merged = TerrainPolygon.MergeAll(polys);
 
@@ -183,12 +253,12 @@ namespace ArmaRealMap.Roads
             return roads.Where(r => r != self && r.RoadType == self.RoadType && r.SpecialSegment == self.SpecialSegment && (r.Path.FirstPoint == point || r.Path.LastPoint == point)).ToList();
         }
 
-        private static void SaveRoadsShp(MapData data, MapConfig config, bool ignoreBridges)
+        private static void SaveRoadsShp(MapData data, MapConfig config, ObjectLibraries libs)
         {
             var features = new List<Feature>();
             foreach (var road in data.Roads)
             {
-                if ( road.SpecialSegment == RoadSpecialSegment.Bridge && ignoreBridges )
+                if ( road.SpecialSegment == RoadSpecialSegment.Bridge && ElevationGridBuilder.GetBridgeCategory(road.RoadType, libs) != null)
                 {
                     continue;
                 }
@@ -228,7 +298,7 @@ namespace ArmaRealMap.Roads
             }
         }
 
-        private static void PrepareRoads(MapData data, OsmStreamSource filtered, SnapshotDb db)
+        private static void PrepareRoads(MapData data, OsmStreamSource filtered, SnapshotDb db, RoadTypeLibrary library)
         {
             var interpret = new DefaultFeatureInterpreter2();
             var osmRoads = filtered.Where(o => o.Type == OsmGeoType.Way && o.Tags != null && o.Tags.ContainsKey("highway")).ToList();
@@ -240,6 +310,7 @@ namespace ArmaRealMap.Roads
                 var kind = OsmCategorizer.ToRoadType(road.Tags);
                 if (kind != null)
                 {
+                    var type = library.GetInfo(kind.Value, data.Config.Terrain);
                     var complete = road.CreateComplete(db);
                     var count = 0;
                     foreach (var feature in interpret.Interpret(complete))
@@ -254,6 +325,7 @@ namespace ArmaRealMap.Roads
                                     {
                                         Path = pathSegment,
                                         RoadType = kind.Value,
+                                        RoadTypeInfos = type,
                                         SpecialSegment = OsmCategorizer.ToRoadSpecialSegment(road.Tags)
                                     });
                                 }

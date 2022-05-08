@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using ArmaRealMap.Core.Roads;
 using ArmaRealMap.Roads;
 using OsmSharp;
 using OsmSharp.Complete;
@@ -159,7 +160,7 @@ namespace ArmaRealMap.Osm
             }
 
             var road = ToRoadType(tags);
-            if (road != null && road.Value < RoadType.SingleLaneDirtRoad)
+            if (road != null && road.Value < RoadTypeId.SingleLaneDirtRoad)
             {
                 return OsmShapeCategory.Road;
             }
@@ -175,29 +176,29 @@ namespace ArmaRealMap.Osm
             return null;
         }
 
-        internal static RoadType? ToRoadType(TagsCollectionBase tags)
+        internal static RoadTypeId? ToRoadType(TagsCollectionBase tags)
         {
             var type = tags.GetValue("highway");
             switch (type)
             {
                 case "motorway":
-                    return RoadType.TwoLanesMotorway;
+                    return RoadTypeId.TwoLanesMotorway;
                 case "trunk":
                 case "primary":
                 case "primary_link":
                 case "trunk_link":
                 case "motorway_link":
-                    return RoadType.TwoLanesPrimaryRoad;
+                    return RoadTypeId.TwoLanesPrimaryRoad;
                 case "secondary":
                 case "tertiary":
                 case "seconday_link":
                 case "tertiary_link":
                 case "road":
-                    return RoadType.TwoLanesSecondaryRoad;
+                    return RoadTypeId.TwoLanesSecondaryRoad;
                 case "living_street":
                 case "residential":
                 case "unclassified":
-                    return RoadType.TwoLanesConcreteRoad;
+                    return RoadTypeId.TwoLanesConcreteRoad;
                 case "footway":
                     var footway = Get(tags, "footway");
                     if (footway == "sidewalk" || footway == "crossing")
@@ -209,12 +210,12 @@ namespace ArmaRealMap.Osm
                     {
                         return null;
                     }
-                    return RoadType.Trail;
+                    return RoadTypeId.Trail;
                 case "pedestrian":
                 case "path":
-                    return RoadType.Trail;
+                    return RoadTypeId.Trail;
                 case "track":
-                    return RoadType.SingleLaneDirtPath;
+                    return RoadTypeId.SingleLaneDirtPath;
             }
             if ( !string.IsNullOrEmpty(type))
             {

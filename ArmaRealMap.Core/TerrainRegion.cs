@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ArmaRealMap.Core.ObjectLibraries
+namespace ArmaRealMap.Core
 {
     public enum TerrainRegion
     {

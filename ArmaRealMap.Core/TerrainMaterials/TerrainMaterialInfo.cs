@@ -1,4 +1,4 @@
-﻿namespace ArmaRealMap.Core.ObjectLibraries
+﻿namespace ArmaRealMap.Core.TerrainMaterials
 {
     public class TerrainMaterialInfo
     {

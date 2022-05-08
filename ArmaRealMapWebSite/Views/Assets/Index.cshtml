@@ -7,7 +7,7 @@
     <label asp-for="Name" class="my-1 mr-2"></label>
     <input asp-for="Name" class="form-control my-1 mr-2" />
     <label asp-for="TerrainRegion" class="my-1 mr-2"></label>
-    <select asp-for="TerrainRegion" class="form-control my-1 mr-2" asp-items="@Html.GetEnumSelectList<ArmaRealMap.Core.ObjectLibraries.TerrainRegion>()">
+    <select asp-for="TerrainRegion" class="form-control my-1 mr-2" asp-items="@Html.GetEnumSelectList<ArmaRealMap.Core.TerrainRegion>()">
         <option value="">Tous</option>
     </select>
     <label asp-for="AssetCategory" class="my-1 mr-2"></label>
@@ -47,7 +47,7 @@
         </tr>
     </thead>
     <tbody>
-        @{ var regions = Enum.GetValues<ArmaRealMap.Core.ObjectLibraries.TerrainRegion>().Skip(1).ToArray();
+        @{ var regions = Enum.GetValues<ArmaRealMap.Core.TerrainRegion>().Skip(1).ToArray();
             }
 @foreach (var item in Model.Results) {
         <tr>

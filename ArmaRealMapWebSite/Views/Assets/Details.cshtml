@@ -24,9 +24,9 @@
         </dt>
         <dd class="col-sm-10">
             <form asp-action="AddRegion">
-                @foreach (var value in Enum.GetValues<ArmaRealMap.Core.ObjectLibraries.TerrainRegion>())
+                @foreach (var value in Enum.GetValues<ArmaRealMap.Core.TerrainRegion>())
                 {
-                    if (value != ArmaRealMap.Core.ObjectLibraries.TerrainRegion.Unknown)
+                    if (value != ArmaRealMap.Core.TerrainRegion.Unknown)
                     {
                         var active = (Model.TerrainRegions & value) == value;
                         if (active)

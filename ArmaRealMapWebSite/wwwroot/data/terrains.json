@@ -1,0 +1,114 @@
+[
+  {
+    "Id": "Dirt",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_dirt_centraleurope_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_dirt_centraleurope_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAY0lEQVR4nGVOiQ2AQAirQJjTDVzCqS/BE+5BT5uQBtq0yHnsFdXQhhSAM7OTs0NAvoCRuCzFMEo7TIRZPaWUntISIpoVaTRLsRs2fsRg4oUFX1jpiaPyb6i2rAKe3aOXXv84bufTJ3fzpb4XAAAAAElFTkSuQmCC",
+    "Terrain": "CentralEurope"
+  },
+  {
+    "Id": "Dirt",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_dirt_sahel_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_dirt_sahel_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAaUlEQVR4nF2PgQ3AIAgEX6TTdIdO0f0XacTyCqb1EwwInK/e19lrqWi9wboBRTwq4DWlPNjkEGX4yO90bO2yZ5J8UcUTDjFk4W09Mwly/PGsSRkeuEWFKYSXXNKBS/eZR5MU3b+V5hDmX7OBNtHPTy7zAAAAAElFTkSuQmCC",
+    "Terrain": "Sahel"
+  },
+  {
+    "Id": "Forest",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_forest_centraleurope_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_forest_centraleurope_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAa0lEQVR4nFWO0Q2AIAwFn9A2ruMIuv9ARqBqSzF4CeHjjhfo2LcbrcGPKpASnJz9kItSAOYuRhSPyKVhtwkLTQb0mxzYSoTUwnN4SYJzhP6HoNQ+q8uFGWLKLkvVHkKxvvMrSw8kAqb0RTMPfHcw1LwnidIAAAAASUVORK5CYII=",
+    "Terrain": "CentralEurope"
+  },
+  {
+    "Id": "Forest",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_forest_sahel_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_forest_sahel_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAaUlEQVR4nF2PgQ3AIAgEX6TTdIdO0f0XacTyCqb1EwwInK/e19lrqWi9wboBRTwq4DWlPNjkEGX4yO90bO2yZ5J8UcUTDjFk4W09Mwly/PGsSRkeuEWFKYSXXNKBS/eZR5MU3b+V5hDmX7OBNtHPTy7zAAAAAElFTkSuQmCC",
+    "Terrain": "Sahel"
+  },
+  {
+    "Id": "WetLand",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_wetland_centraleurope_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_wetland_centraleurope_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAdElEQVR4nF2OSw6DMAxEh9ig3qX7rnr/MyHo4HryIWqfFNnKvDj29+sZm20Y8NrBAGxBrW6L9YCw0nqFVvJk7wyCzHCI+eqKJuyfPqFKXRQP10RgTSnbs46crDXUdwcPCQ3LS5apaSdxCz9hzJ0cf4xQVXwBLKw3nYFeYMoAAAAASUVORK5CYII=",
+    "Terrain": "CentralEurope"
+  },
+  {
+    "Id": "WetLand",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_wetland_sahel_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_wetland_sahel_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAa0lEQVR4nHWOQQrAMAgEBW3ooQ/tC/qCPrmHIDGpmka8dCFscBZXuq9zQFIbGP9jByD4UVHy1BwQAUB0YOI2Q+RgSQMGsoi7zmn2SmUoG8a2zgK04PJ5QNEOdveANPEXt3x1XmEgKnLItqi/ucosivci4SIAAAAASUVORK5CYII=",
+    "Terrain": "Sahel"
+  },
+  {
+    "Id": "GrassShort",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_grassshort_centraleurope_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_grassshort_centraleurope_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAbElEQVR4nFWOgQnAIAwEnyQG5+oCHaD77yBCYjWirQ+i4e5VuZ+rMSFSDVDBlz7LgiPecIa7EK1+MAcSne0QjsJf8LlktA/YnyEiuHiM+wYzAzMHHAnJfQoDrn2BlNIUSinIOW9BVVFr3V95AYNxLB7ChShIAAAAAElFTkSuQmCC",
+    "Terrain": "CentralEurope"
+  },
+  {
+    "Id": "GrassShort",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_grassshort_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_grassshort_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAbElEQVR4nFWOgQnAIAwEnyQG5+oCHaD77yBCYjWirQ+i4e5VuZ+rMSFSDVDBlz7LgiPecIa7EK1+MAcSne0QjsJf8LlktA/YnyEiuHiM+wYzAzMHHAnJfQoDrn2BlNIUSinIOW9BVVFr3V95AYNxLB7ChShIAAAAAElFTkSuQmCC",
+    "Terrain": "Sahel"
+  },
+  {
+    "Id": "FarmLand",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_farmland_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_farmland_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAeElEQVR4nFWOAQ7DMAgDXUKi/nV/2BP23qoRZCa02YoUkDjjWD/v12iKWeZsA6vMAPVrcfScVfAolS0vawG6/UA/AeFOizxB2LolbI2CgHvd6WLzFfEpLBScdNF1SejDUbaE4RSTGYQBj/XFP5yCG4QwM/jKYRR8Aa5xN2waz7JaAAAAAElFTkSuQmCC",
+    "Terrain": "CentralEurope"
+  },
+  {
+    "Id": "FarmLand",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_farmland_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_farmland_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAeElEQVR4nFWOAQ7DMAgDXUKi/nV/2BP23qoRZCa02YoUkDjjWD/v12iKWeZsA6vMAPVrcfScVfAolS0vawG6/UA/AeFOizxB2LolbI2CgHvd6WLzFfEpLBScdNF1SejDUbaE4RSTGYQBj/XFP5yCG4QwM/jKYRR8Aa5xN2waz7JaAAAAAElFTkSuQmCC",
+    "Terrain": "Sahel"
+  },
+  {
+    "Id": "Sand",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_sand_centraleurope_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_sand_centraleurope_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAO0lEQVR4nGPprC39zwAEfxmYgfAvEKICFpAEDEDYqEpYILoguhkwpIEKQAS6IjQrEBZgSkNNwAcoVwAASYMSiQJnGDYAAAAASUVORK5CYII=",
+    "Terrain": "CentralEurope"
+  },
+  {
+    "Id": "Sand",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_sand_sahel_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_sand_sahel_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAFklEQVR4nGOpSHX/z4AHsDAQAMNDAQBBuwJEQhYxTgAAAABJRU5ErkJggg==",
+    "Terrain": "Sahel"
+  },
+  {
+    "Id": "Rock",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_rock_centraleurope_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_rock_centraleurope_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAApklEQVR4nE2O3QqCQBCFD7h6YyZLIUWLVDdBbys9YBCJshjqbmrRRe2MCQ7sD/N9cxiRZZcv/tU9G0D47rVTC4KuMJLobM2NZKvc30CXOZLNDmIOKUEXd04IFxFLgiBJuri6iT10VfIkQZKEHwSo9A3p4QzTVpBS4vPu4XnAa7AQpn3AukNwGa/RD+OCxtSwthmXjOIVQ5IIzIsFlZ5G6JKmUurI8g+qR1g8or6NNgAAAABJRU5ErkJggg==",
+    "Terrain": "CentralEurope"
+  },
+  {
+    "Id": "Rock",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_rock_sahel_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_rock_sahel_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAcUlEQVR4nF1PQQ6AIAxbZBASfY4v8BP+/wWejEQylILgdAmsod1aeF3mi3LFuNMwWEAyxpHIWTo3YO3YCV2MSz/+MWu1JrENtkXg3NQ9RQ6qmSRn8lUQwtYD1mlsezKkFAuJjkPkPyJuk/gFPGuWN9cNufU6sqAaqKwAAAAASUVORK5CYII=",
+    "Terrain": "Sahel"
+  },
+  {
+    "Id": "Concrete",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_concrete_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_concrete_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAh0lEQVR4nG2OwQ4CIQxER2iRZDcm/v/Vb9ibf+RFsweklJWCGk12OEzCe4XSdblsWhSSBBwZnmZoya0DLGTQk4fYaRJixic5rSCDJjlyqKX26VoESkOktCb8xqAj7l+YTNiJSTiM3hUctxf4vSSH+Ad10y+0Jj5GyHPsMZ3OeNxvUMkI09zvXsJZQQh0MtTyAAAAAElFTkSuQmCC",
+    "Terrain": "CentralEurope"
+  },
+  {
+    "Id": "Concrete",
+    "ColorTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_concrete_co.paa",
+    "NormalTexture": "z\\arm\\addons\\common\\data\\gdt\\arm_concrete_nopx.paa",
+    "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAh0lEQVR4nG2OwQ4CIQxER2iRZDcm/v/Vb9ibf+RFsweklJWCGk12OEzCe4XSdblsWhSSBBwZnmZoya0DLGTQk4fYaRJixic5rSCDJjlyqKX26VoESkOktCb8xqAj7l+YTNiJSTiM3hUctxf4vSSH+Ad10y+0Jj5GyHPsMZ3OeNxvUMkI09zvXsJZQQh0MtTyAAAAAElFTkSuQmCC",
+    "Terrain": "Sahel"
+  }
+]

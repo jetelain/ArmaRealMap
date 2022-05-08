@@ -40,12 +40,14 @@ namespace ArmaRealMap.Configuration
             config.SRTM.CacheLocation  = GetExistingPath(globalConfigFile, config.SRTM.CacheLocation ?? Path.Combine(config.CacheLocationBase ?? basePath, "SRTM"));
             config.LibrariesFile       = GetPath(globalConfigFile, config.LibrariesFile ?? Path.Combine(config.CacheLocationBase ?? basePath, "libraries.json"));
             config.ModelsInfoFile      = GetPath(globalConfigFile, config.ModelsInfoFile ?? Path.Combine(config.CacheLocationBase ?? basePath, "models.json"));
-            config.TerrainMaterialFile = GetPath(globalConfigFile, config.TerrainMaterialFile ?? Path.Combine(config.CacheLocationBase ?? basePath, "terrain.json"));
+            config.TerrainMaterialFile = GetPath(globalConfigFile, config.TerrainMaterialFile ?? Path.Combine(config.CacheLocationBase ?? basePath, "terrains.json"));
+            config.RoadTypesFile       = GetPath(globalConfigFile, config.RoadTypesFile ?? Path.Combine(config.CacheLocationBase ?? basePath, "roads.json"));
             Console.WriteLine($"S2C.CacheLocation   = '{config.S2C.CacheLocation}'");
             Console.WriteLine($"SRTM.CacheLocation  = '{config.SRTM.CacheLocation}'");
             Console.WriteLine($"LibrariesFile       = '{config.LibrariesFile}'");
             Console.WriteLine($"ModelsInfoFile      = '{config.ModelsInfoFile}'");
             Console.WriteLine($"TerrainMaterialFile = '{config.TerrainMaterialFile}'");
+            Console.WriteLine($"RoadTypesFile       = '{config.RoadTypesFile}'");
             Console.WriteLine();
             return config;
         }

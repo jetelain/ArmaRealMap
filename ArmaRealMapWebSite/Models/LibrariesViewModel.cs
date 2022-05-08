@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ArmaRealMap.Core;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMapWebSite.Entities.Assets;
 

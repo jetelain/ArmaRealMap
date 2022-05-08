@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
+using ArmaRealMap.Core;
 using ArmaRealMap.Core.ObjectLibraries;
 
 namespace ArmaRealMapWebSite.Entities.Assets

@@ -1,4 +1,5 @@
 ﻿using System;
+using ArmaRealMap.Core;
 using ArmaRealMap.Core.ObjectLibraries;
 
 namespace ArmaRealMap

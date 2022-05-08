@@ -168,6 +168,8 @@ namespace ArmaRealMap
         {
             ConfigLoader.UpdateFile(global.LibrariesFile, "https://arm.pmad.net/ObjectLibraries/Export");
             ConfigLoader.UpdateFile(global.ModelsInfoFile, "https://arm.pmad.net/Assets/ModelsInfo");
+            ConfigLoader.UpdateFile(global.TerrainMaterialFile, "https://arm.pmad.net/data/terrains.json");
+            ConfigLoader.UpdateFile(global.RoadTypesFile, "https://arm.pmad.net/data/roads.json");
         }
 
         private static int Run(GenerateOptions options)

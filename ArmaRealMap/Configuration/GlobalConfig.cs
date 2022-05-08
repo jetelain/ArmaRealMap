@@ -7,6 +7,7 @@
         public string LibrariesFile { get; set; }
         public string ModelsInfoFile { get; set; }
         public string TerrainMaterialFile { get; set; }
+        public string RoadTypesFile { get; set; }
 
         public SRTMConfig SRTM { get; set; }
 

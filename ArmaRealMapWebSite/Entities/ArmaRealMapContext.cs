@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using ArmaRealMap.Core;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMapWebSite.Entities.Assets;
 using ArmaRealMapWebSite.Entities.Maps;

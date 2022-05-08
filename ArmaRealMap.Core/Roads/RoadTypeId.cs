@@ -1,6 +1,6 @@
-﻿namespace ArmaRealMap
+﻿namespace ArmaRealMap.Core.Roads
 {
-    public enum RoadType
+    public enum RoadTypeId
     {
         /// <summary>
         /// 2x1 designed to be side by side

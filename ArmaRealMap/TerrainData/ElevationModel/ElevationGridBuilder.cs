@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using ArmaRealMap.Core.ObjectLibraries;
+using ArmaRealMap.Core.Roads;
 using ArmaRealMap.ElevationModel;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Libraries;
@@ -87,7 +89,7 @@ namespace ArmaRealMap
 
         private static void ProcessRoads(MapData data, ElevationConstraintGrid constraintGrid, ObjectLibraries libs)
         {
-            var roads = data.Roads.Where(r => r.RoadType <= RoadType.TwoLanesConcreteRoad).ToList();
+            var roads = data.Roads.Where(r => r.RoadType <= RoadTypeId.TwoLanesConcreteRoad).ToList();
             var report = new ProgressReport("Roads", roads.Count);
 
             foreach (var road in roads)
@@ -110,7 +112,7 @@ namespace ArmaRealMap
         }
         private static void ProcessBridgeObjects(MapData data, ElevationGrid grid, ObjectLibraries libs)
         {
-            var roads = data.Roads.Where(r => r.RoadType <= RoadType.TwoLanesConcreteRoad && r.SpecialSegment == RoadSpecialSegment.Bridge).ToList();
+            var roads = data.Roads.Where(r => r.RoadType <= RoadTypeId.TwoLanesConcreteRoad && r.SpecialSegment == RoadSpecialSegment.Bridge).ToList();
             var report = new ProgressReport("Roads", roads.Count);
             var bridgeObjects = new TerrainObjectLayer(data.MapInfos);
             foreach (var road in roads)
@@ -207,9 +209,30 @@ namespace ArmaRealMap
             }
         }
 
+        internal static ObjectLibrary GetBridgeCategory(RoadTypeId type, ObjectLibraries libs)
+        {
+            ObjectCategory category;
+            switch (type)
+            {
+                case RoadTypeId.TwoLanesMotorway:
+                case RoadTypeId.TwoLanesPrimaryRoad:
+                    category = ObjectCategory.BridgePrimaryRoad;
+                    break;
+                case RoadTypeId.TwoLanesSecondaryRoad:
+                    category = ObjectCategory.BridgeSecondaryRoad;
+                    break;
+                case RoadTypeId.TwoLanesConcreteRoad:
+                    category = ObjectCategory.BridgeConcreteRoad;
+                    break;
+                default:
+                    return null;
+            }
+            return libs.Libraries.FirstOrDefault(c => c.Category == category);
+        }
+
         private static void ProcessRoadBridge(Road road, ElevationConstraintGrid constraintGrid, ObjectLibraries libs)
         {
-            var lib = libs.Libraries.FirstOrDefault(l => l.Category == Core.ObjectLibraries.ObjectCategory.BridgePrimaryRoad);
+            var lib = GetBridgeCategory(road.RoadType, libs);
             if (lib == null)
             {
                 //ProcessNormalRoad(constraintGrid, road);
@@ -217,36 +240,12 @@ namespace ArmaRealMap
             }
             constraintGrid.NodeHard(road.Path.FirstPoint).PinToInitial();
             constraintGrid.NodeHard(road.Path.LastPoint).PinToInitial();
-
-            //var center = new TerrainPoint(Vector2.Lerp(road.Path.FirstPoint.Vector, road.Path.LastPoint.Vector, 0.5f));
-            //constraintGrid.Node(center).WantedInitialRelativeElevation = -1.5f;
-
-
-            /*var delta = road.Path.FirstPoint.Vector - road.Path.LastPoint.Vector;
-            var angle = ((MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI) + 90f) % 360f;
-            var obj1 = lib.Objects[0];
-            if (road.Path.Length <= obj1.Depth)
-            {
-                var pitch = (MathF.Atan2(start.Elevation.Value - stop.Elevation.Value, delta.Length()) * 180 / MathF.PI);
-
-                var center = new TerrainPoint(Vector2.Lerp(road.Path.FirstPoint.Vector, road.Path.LastPoint.Vector, 0.5f));
-                var elevation = (start.Elevation.Value + stop.Elevation.Value) / 2f;
-                objects.Insert(new TerrainObject(obj1, center, angle, elevation, pitch));
-            }
-            else
-            {
-                var pitch = (MathF.Atan2(start.Elevation.Value - stop.Elevation.Value, delta.Length()) * 180 / MathF.PI);
-                var stObj = lib.Objects[1];
-                var ctObj = lib.Objects[2];
-                var endObj = lib.Objects[3];
-
-            }*/
         }
 
 
         private static void ProcessRoadBridgeObjects(TerrainObjectLayer objects, Road road, ElevationGrid grid, ObjectLibraries libs)
         {
-            var lib = libs.Libraries.FirstOrDefault(l => l.Category == Core.ObjectLibraries.ObjectCategory.BridgePrimaryRoad);
+            var lib = GetBridgeCategory(road.RoadType, libs);
             if (lib == null)
             {
                 return;

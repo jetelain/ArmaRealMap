@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ArmaRealMap.Core;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.GroundTextureDetails;
 using SixLabors.ImageSharp;

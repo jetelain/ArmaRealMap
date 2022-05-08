@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using ArmaRealMap.Core;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMapWebSite.Entities.Assets;
 using Microsoft.AspNetCore.Mvc.Rendering;
