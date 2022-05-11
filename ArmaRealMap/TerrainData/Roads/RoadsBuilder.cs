@@ -48,12 +48,12 @@ namespace ArmaRealMap.Roads
 
             SaveRoadsShp(data, config, libs);
 
-            // TODO: write roadslib.cfg
+            WriteRoadsLibCgf(data, rlib);
         }
 
         private static void WriteRoadsLibCgf(MapData data, RoadTypeLibrary rlib)
         {
-            using(var writer = File.CreateText(Path.Combine(Path.Combine(data.Config.Target.Cooked, "data", "roads"), "roads.shp")))
+            using(var writer = File.CreateText(Path.Combine(Path.Combine(data.Config.Target.Cooked, "data", "roads"), "roadslib.cfg")))
             {
                 writer.WriteLine(@"class RoadTypesLibrary
 {");

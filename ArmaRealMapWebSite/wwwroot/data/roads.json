@@ -1,5 +1,4 @@
 [
-  /* Generic */
   {
     "Id": "TwoLanesMotorway",
     "Width": 12,
@@ -8,7 +7,6 @@
     "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_ca.paa",
     "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_end_ca.paa",
     "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat"
-
   },
   {
     "Id": "TwoLanesPrimaryRoad",
@@ -64,8 +62,6 @@
     "TextureEnd": "a3\\structures_f_exp\\data\\roads\\surf_exp_traildirt_trail_end_ca.paa",
     "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_traildirt_trail.rvmat"
   },
-
-  /*Sahel*/
   {
     "Id": "TwoLanesConcreteRoad",
     "Width": 7.5,
@@ -106,5 +102,4 @@
     "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_path_end_ca.paa",
     "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_path.rvmat"
   }
-
 ]

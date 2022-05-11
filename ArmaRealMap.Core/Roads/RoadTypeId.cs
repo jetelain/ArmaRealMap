@@ -14,14 +14,12 @@
 
         TwoLanesSecondaryRoad = 3,
 
-        // TwoLanesCityRoad = 4,
+        TwoLanesConcreteRoad = 4,
 
-        TwoLanesConcreteRoad = 5,
+        SingleLaneDirtRoad = 5,
 
-        SingleLaneDirtRoad = 6,
+        SingleLaneDirtPath = 6,
 
-        SingleLaneDirtPath = 7,
-
-        Trail = 8
+        Trail = 7
     }
 }
