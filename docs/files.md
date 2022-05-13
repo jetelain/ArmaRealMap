@@ -7,6 +7,9 @@
     - S2 Cloudless files cache
   - `config.json`         : Global config
   - `libraries.json`      : Terrain objects database (Cache of https://arm.pmad.net/ObjectLibraries/Export)
+  - `models.json`         : Models database (Cache of https://arm.pmad.net/Assets/ModelsInfo)
+  - `terrains.json`       : Terrain texture database (Cache of https://arm.pmad.net/data/terrains.json)
+  - `roads.json`          : Roads configuration database (Cache of https://arm.pmad.net/data/roads.json)
 
 - Work directory
   - `mapname.json` : Map config

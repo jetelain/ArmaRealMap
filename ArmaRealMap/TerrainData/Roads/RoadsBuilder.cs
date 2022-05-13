@@ -28,7 +28,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace ArmaRealMap.Roads
 {
-    internal static class RoadsBuilder
+    public static class RoadsBuilder
     {
         internal static void Roads(MapData data, OsmStreamSource filtered, SnapshotDb db, MapConfig config, ObjectLibraries libs, List<OsmShape> osmShapes, GenerateOptions options)
         {
@@ -53,15 +53,15 @@ namespace ArmaRealMap.Roads
 
         private static void WriteRoadsLibCgf(MapData data, RoadTypeLibrary rlib)
         {
-            using(var writer = File.CreateText(Path.Combine(Path.Combine(data.Config.Target.Cooked, "data", "roads"), "roadslib.cfg")))
+            using (var writer = File.CreateText(Path.Combine(Path.Combine(data.Config.Target.Cooked, "data", "roads"), "roadslib.cfg")))
             {
                 writer.WriteLine(@"class RoadTypesLibrary
 {");
-                foreach(var id in Enum.GetValues<RoadTypeId>())
+                foreach (var id in Enum.GetValues<RoadTypeId>())
                 {
                     var infos = rlib.GetInfo(id, data.Config.Terrain);
 
-                     
+
 
                     writer.WriteLine(FormattableString.Invariant(
                     $@" class Road{(int)id:0000}
@@ -258,14 +258,18 @@ namespace ArmaRealMap.Roads
             var features = new List<Feature>();
             foreach (var road in data.Roads)
             {
-                if ( road.SpecialSegment == RoadSpecialSegment.Bridge && ElevationGridBuilder.GetBridgeCategory(road.RoadType, libs) != null)
+                if (road.SpecialSegment == RoadSpecialSegment.Bridge && ElevationGridBuilder.GetBridgeCategory(road.RoadType, libs) != null)
                 {
                     continue;
                 }
-
                 var attributesTable = new AttributesTable();
                 attributesTable.Add("ID", (int)road.RoadType);
-                features.Add(new Feature(road.Path.ToLineString(p => new Coordinate(p.X + 200000, p.Y)), attributesTable));
+                var path = road.Path;
+                if (road.RoadType < RoadTypeId.SingleLaneDirtPath)
+                {
+                    path = PreventSplines(road.Path, road.Width);
+                }
+                features.Add(new Feature(path.ToLineString(p => new Coordinate(p.X + 200000, p.Y)), attributesTable));
             }
             var header = ShapefileDataWriter.GetHeader(features.First(), features.Count);
 
@@ -342,6 +346,48 @@ namespace ArmaRealMap.Roads
                 report.ReportOneDone();
             }
             report.TaskDone();
+        }
+
+        public static TerrainPath PreventSplines(TerrainPath source, float threshold)
+        {
+            return new TerrainPath(PreventSplines(source.Points, threshold));
+        }
+
+        public static List<TerrainPoint> PreventSplines(List<TerrainPoint> source, float threshold)
+        {
+            if (source.Count <= 2)
+            {
+                return source;
+            }
+            var points = new List<TerrainPoint>() { source[0], source[1] };
+            foreach (var point in source.Skip(2))
+            {
+                // A -> B -> C
+                var prevPoint = points[points.Count - 1];
+                var next = point.Vector - prevPoint.Vector; // C - B
+                var prev = prevPoint.Vector - points[points.Count - 2].Vector; // B - A
+                var nextImpacted = next.Length() > threshold;
+                var prevImpacted = prev.Length() > threshold;
+                if (nextImpacted || prevImpacted)
+                {
+                    var angle = Math.Abs(Math.Atan2(next.Y, next.X) - Math.Atan2(prev.Y, prev.X));
+                    if (angle > Math.PI / 4)
+                    {
+                        if (prevImpacted)
+                        {
+                            points.RemoveAt(points.Count - 1);
+                            points.Add(prevPoint - (prev * threshold / prev.Length()));
+                            points.Add(prevPoint);
+                        }
+                        if (nextImpacted)
+                        {
+                            points.Add(prevPoint + (next * threshold / next.Length()));
+                        }
+                    }
+                }
+                points.Add(point);
+            }
+            return points;
         }
     }
 }
