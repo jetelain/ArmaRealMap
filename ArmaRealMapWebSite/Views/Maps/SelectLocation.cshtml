@@ -1,0 +1,101 @@
+﻿@model ArmaRealMapWebSite.Entities.Maps.Map
+@using System.Globalization
+@{
+    ViewData["Title"] = "Compute Map Parameters";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Click on two positions to draw a rectangle around wanted location</p>
+<p>
+    <a id="osm-btn" class="btn btn-primary" href="#">OpenStreeMap View</a>
+    <a id="s2-btn" class="btn btn-outline-primary" href="#">Satellite View</a>
+</p>
+<div id="osm" style="height:75vh;">
+</div>
+
+<form asp-action="SelectLocation" method="get" id="reload">
+    <input type="hidden" name="lat1" id="lat1" />
+    <input type="hidden" name="lon1" id="lon1" />
+    <input type="hidden" name="lat2" id="lat2" />
+    <input type="hidden" name="lon2" id="lon2" />
+</form>
+
+@if (Model != null)
+{
+    <div class="mt-5">
+        <h4>Computed parameters</h4>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.GridSize)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.GridSize)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CellSize)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CellSize)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Resolution)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Resolution)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SizeInMeters)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SizeInMeters)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.MgrsBottomLeft)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MgrsBottomLeft)
+            </dd>
+        </dl>
+    </div>
+
+    <form asp-action="SelectLocation" method="post" >
+        <input type="hidden" asp-for="GridSize" />
+        <input type="hidden" asp-for="CellSize" />
+        <input type="hidden" asp-for="Resolution" />
+        <input type="hidden" asp-for="MgrsBottomLeft" />
+        <button class="btn btn-primary">Create a map with those parameters</button>
+    </form>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin="" />
+}
+@section Scripts {
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+    @if (Model != null)
+    {
+        var center = Model.FromGameCoordinates(Model.SizeInMeters.Value / 2, Model.SizeInMeters.Value / 2);
+        <script type="text/javascript">
+            var center = [@center.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @center.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)];
+            var rect = @Json.Serialize(Model.ToLeafletRectangle());
+            var mapOSM = L.map('osm').setView(center, 13);
+            setupToggleMap(mapOSM);
+            L.polygon(rect, {fill: false}).addTo(mapOSM);
+            mapOSM.fitBounds([rect[0], rect[2]]);
+            setupSelectMap(mapOSM);
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            var mapOSM = L.map('osm').setView([0,0], 2);
+            setupToggleMap(mapOSM);
+            setupSelectMap(mapOSM);
+        </script>
+    }
+}

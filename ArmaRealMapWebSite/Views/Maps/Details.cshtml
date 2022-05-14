@@ -19,36 +19,36 @@
 
 <h4>Carte réelle</h4>
 <p>
-    <a id="osm-btn" class="btn btn-primary" href="#">Vue OSM</a>
-    <a id="s2-btn" class="btn btn-outline-primary" href="#">Vue Satellite</a>
-    <a href="@osm" class="btn btn-outline-secondary"><i class="fas fa-map-marked"></i> Ouvrir dans OpenStreetMap</a>
+    <a id="osm-btn" class="btn btn-primary" href="#">OpenStreetMap View</a>
+    <a id="s2-btn" class="btn btn-outline-primary" href="#">Satellite View</a>
+    <a href="@osm" class="btn btn-outline-secondary"><i class="fas fa-map-marked"></i> Open in OpenStreetMap</a>
 </p>
 <div id="osm" style="height:75vh;">
 </div>
 
 <div class="mt-5">
-    <h4 class="text-danger"><i class="fas fa-exclamation-circle"></i> Signaler un problème</h4>
+    <h4 class="text-danger"><i class="fas fa-exclamation-circle"></i> Report an issue</h4>
 
-    <h5>Coordonnées du problème connues</h5>
-    <p>Saisir ici les coordonnées du DAGR multipliées par 10 (précision au mètre attendue).</p>
+    <h5>Kown Coordinates</h5>
+    <p>Write here coordinates from DAGR multiplicated by 10 (meter precision expected).</p>
     <form asp-action="GameIssue" method="get" class="form-inline">
         <input type="hidden" name="name" value="@Model.Name" />
         <div class="form-group mb-2 mr-sm-2">
-            <label class="control-label mr-sm-2">Coordonées en jeu</label>
+            <label class="control-label mr-sm-2">In game coordinates</label>
             <input name="x" class="form-control mr-sm-2" />
             <input name="y" class="form-control mr-sm-2" />
         </div>
         <div class="form-group mb-2 mr-sm-2">
-            <button class="btn btn-primary"><i class="fas fa-map-marked"></i> Signaler avec ces coordonnées</button>
+            <button class="btn btn-primary"><i class="fas fa-map-marked"></i> Report with those coordinates</button>
         </div>
     </form>
 
-    <h5>Coordonnées inconnues ou sans coordonnées</h5>
-    <p><a href="@github" class="btn btn-primary"><i class="fab fa-github"></i> Signaler un problème sur GitHub</a> ou <a href="https://discord.gg/y3kfUP4" class="btn btn-secondary"><i class="fab fa-discord"></i> Contacter GrueArbre sur Discord</a></p>
+    <h5>Unknown or Without Coordinates</h5>
+    <p><a href="@github" class="btn btn-primary"><i class="fab fa-github"></i> Report an issue on GitHub</a> or <a href="https://discord.gg/y3kfUP4" class="btn btn-secondary"><i class="fab fa-discord"></i> Contact GrueArbre on Discord</a></p>
 </div>
 
 <div class="mt-5">
-    <h4>Informations techniques</h4>
+    <h4>Technical parameters</h4>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -118,67 +118,16 @@
 
         var center = [@center.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @center.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)];
 
-        @{
-            var SW = Model.FromGameCoordinates(0, 0);
-            var SE = Model.FromGameCoordinates(0, Model.SizeInMeters.Value);
-            var NW = Model.FromGameCoordinates(Model.SizeInMeters.Value, 0);
-            var NE = Model.FromGameCoordinates(Model.SizeInMeters.Value, Model.SizeInMeters.Value);
-        }
-
-        var rect = [
-            [@SW.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @SW.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)],
-            [@SE.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @SE.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)],
-            [@NE.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @NE.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)],
-            [@NW.Latitude.ToDouble().ToString(CultureInfo.InvariantCulture), @NW.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture)]
-            ];
+        var rect = @Json.Serialize(Model.ToLeafletRectangle());
 
         var mapOSM = L.map('osm').setView(center, 13);
-        var layerOSM = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' });
-        mapOSM.addLayer(layerOSM);
-
-        var layerS2 = new L.TileLayer("https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/GoogleMapsCompatible/{z}/{y}/{x}.jpg",
-            { attribution: '<a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a>' });
-        //mapS2.addLayer(layerS2);
+        
+        setupToggleMap(mapOSM);
 
         L.polygon(rect, {fill: false}).addTo(mapOSM);
 
         mapOSM.fitBounds([rect[0], rect[2]]);
 
-       /* var mapS2 = L.map('s2').setView(center, 13);
-        var layerS2 = new L.TileLayer("https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/GoogleMapsCompatible/{z}/{y}/{x}.jpg",
-            { attribution: '<a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a>' });
-        mapS2.addLayer(layerS2);
-        L.polygon(rect, { fill: false }).addTo(mapS2);
-
-        mapS2.fitBounds([rect[0], rect[2]]);
-
-        mapS2.sync(mapOSM);
-        mapOSM.sync(mapS2);*/
-
-        $('#osm-btn').on('click', _ => {
-            mapOSM.addLayer(layerOSM);
-            mapOSM.removeLayer(layerS2);
-
-            $('#osm-btn').removeClass('btn-outline-primary');
-            $('#osm-btn').addClass('btn-primary');
-
-            $('#s2-btn').removeClass('btn-primary');
-            $('#s2-btn').addClass('btn-outline-primary');
-
-            return false;
-        });
-
-        $('#s2-btn').on('click', _ => {
-            mapOSM.addLayer(layerS2);
-            mapOSM.removeLayer(layerOSM);
-            $('#s2-btn').removeClass('btn-outline-primary');
-            $('#s2-btn').addClass('btn-primary');
-
-            $('#osm-btn').removeClass('btn-primary');
-            $('#osm-btn').addClass('btn-outline-primary');
-            return false;
-        });
 
     </script>
 }

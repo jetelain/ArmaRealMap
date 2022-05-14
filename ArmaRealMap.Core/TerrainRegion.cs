@@ -5,22 +5,22 @@ namespace ArmaRealMap.Core
 {
     public enum TerrainRegion
     {
-        [Display(Name = "Non précisé")]
+        [Display(Name = "Not specified")]
         Unknown       = 0x00,
 
-        [Display(Name = "Europe centrale")]
+        [Display(Name = "Central Europe")]
         CentralEurope = 0x01,
 
         [Display(Name = "Sahel")]
         Sahel         = 0x02,
 
-        [Display(Name = "Méditerranéen")]
+        [Display(Name = "Mediterranean")]
         Mediterranean = 0x04,
 
         [Display(Name = "Tropical")]
         Tropical      = 0x08,
 
-        [Display(Name = "Proche orient")]
+        [Display(Name = "Near east")]
         NearEast      = 0x10
     }
 }

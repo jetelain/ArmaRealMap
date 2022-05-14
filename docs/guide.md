@@ -13,6 +13,9 @@ Generation process uses a lot of memory + CPU and may last for hours. If you hav
 
 ## 2. Find a location
 
+You have first to create configuration for wanted location.
+
+[Create map configuration](map-config.md)
 
 ## 3. (Optionnal) Prepare assets
 
@@ -20,10 +23,10 @@ Generation process uses a lot of memory + CPU and may last for hours. If you hav
 ## 4. Improve OpenStreeMap
 
 
-## 5. (Optionnal) Improve ArmaRealMap
+## 5. Generate 
 
 
-## 6. Generate 
+## 6. (Optionnal) Improve ArmaRealMap
 
 
 ## 7. (Optionnal) Improve result with Eden

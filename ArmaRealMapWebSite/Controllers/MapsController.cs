@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using ArmaRealMapWebSite.Entities;
 using ArmaRealMapWebSite.Entities.Maps;
-using Microsoft.AspNetCore.Authorization;
 using ArmaRealMapWebSite.Models;
+using CoordinateSharp;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArmaRealMapWebSite.Controllers
 {
@@ -25,6 +24,66 @@ namespace ArmaRealMapWebSite.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Map.ToListAsync());
+        }
+
+        private static int[] GridSizes = new[] { 2048, 4096, 8192 };
+
+        public IActionResult SelectLocation(double? lat1, double? lon1, double? lat2, double? lon2)
+        {
+            if ( lat1 != null && lon2 != null && lat2 != null && lon2 != null)
+            {
+                var p1 = new CoordinateSharp.Coordinate(lat1.Value, lon1.Value);
+                var p2 = new CoordinateSharp.Coordinate(lat2.Value, lon2.Value);
+                
+                var distance = p1.Get_Distance_From_Coordinate(p2, Shape.Ellipsoid);
+                
+                var center = new CoordinateSharp.Coordinate(lat1.Value, lon1.Value);
+                center.Move(p2, distance.Meters / 2, Shape.Ellipsoid);
+                
+                var bearing = distance.Bearing * Math.PI / 180;
+                var width = Math.Cos(bearing) * distance.Meters;
+                var height = Math.Sin(bearing) * distance.Meters;
+                
+                var size = Math.Max(width, height);
+                var nsize = Math.Floor(size / 1024d) * 1024;
+                var rsize = Math.Max(Math.Min(81_920, nsize), 10_204);
+
+                var sw = new Coordinate(center.Latitude.ToDouble(), center.Longitude.ToDouble());
+                sw.Move(rsize * Math.Sqrt(2) / 2, 180 + 45, Shape.Ellipsoid);
+
+                var map = new Map();
+                map.MgrsBottomLeft = sw.MGRS.ToString();
+                
+                foreach(var gridSize in GridSizes)
+                {
+                    map.GridSize = gridSize;
+                    map.CellSize = rsize / gridSize;
+                    if (map.CellSize < 8)
+                    {
+                        break;
+                    }
+                }
+
+                if ( map.SizeInMeters > 40960 )
+                {
+                    map.Resolution = 2;
+                }
+                else
+                {
+                    map.Resolution = 1;
+                }
+                return View(map);
+            }
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
+        public IActionResult SelectLocation([Bind("GridSize,CellSize,Resolution,MgrsBottomLeft")] Map map)
+        {
+            return View("Create", map);
         }
 
         // GET: Maps/Details/5
@@ -45,8 +104,10 @@ namespace ArmaRealMapWebSite.Controllers
             return View(map);
         }
 
-        // GET: Maps/Create
-        [Authorize(Policy = "Admin")]
+
+
+            // GET: Maps/Create
+            [Authorize(Policy = "Admin")]
         public IActionResult Create()
         {
             return View();

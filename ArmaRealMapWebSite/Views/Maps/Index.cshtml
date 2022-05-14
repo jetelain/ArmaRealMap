@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<ArmaRealMapWebSite.Entities.Maps.Map>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Maps";
 }
 
-<h1>Index</h1>
+<h1>Maps</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Create New Map</a>
+    <a class="btn btn-secondary" asp-action="SelectLocation">Compute Map Parameters</a>
+
 </p>
 <table class="table">
     <thead>

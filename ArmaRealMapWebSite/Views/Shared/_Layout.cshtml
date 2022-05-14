@@ -21,24 +21,24 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Maps" asp-action="Index">Cartes</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Maps" asp-action="Index">Maps</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Assets" asp-action="Index">Objets</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Assets" asp-action="Index">Objects</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ObjectLibraries" asp-action="Index">Bibliothèques</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ObjectLibraries" asp-action="Index">Libraries</a>
                         </li>
                     </ul>
                     <form class="form-inline">
                         @if (User?.Identity?.IsAuthenticated ?? false)
                         {
                             <span class="mr-sm-2" style="font-size:80%">@User.Identity.Name</span>
-                            <a asp-controller="Authentication" asp-action="SignOut" class="btn btn-sm btn-secondary" title="@User.Identity.Name">Se déconnecter</a>
+                            <a asp-controller="Authentication" asp-action="SignOut" class="btn btn-sm btn-secondary" title="@User.Identity.Name">Disconnect</a>
                         }
                         else
                         {
-                            <a asp-controller="Authentication" asp-action="SignIn" class="btn btn-sm btn-secondary">Se connecter</a>
+                            <a asp-controller="Authentication" asp-action="SignIn" class="btn btn-sm btn-secondary">Connect</a>
                         }
                     </form>
                 </div>
