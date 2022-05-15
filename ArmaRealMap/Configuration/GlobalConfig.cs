@@ -12,5 +12,7 @@
         public SRTMConfig SRTM { get; set; }
 
         public S2CConfig S2C { get; set; }
+        public bool SyncWithAssetManager { get; set; } = true;
+        public string AssetManager { get; set; } = "https://arm.pmad.net/";
     }
 }

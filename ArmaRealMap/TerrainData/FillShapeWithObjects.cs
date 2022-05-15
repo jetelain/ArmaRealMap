@@ -24,7 +24,7 @@ namespace ArmaRealMap
         {
             this.mapData = mapData;
             this.area = mapData.MapInfos;
-            this.library = libraries.Libraries.FirstOrDefault(l => l.Category == category);
+            this.library = libraries.GetSingleLibrary(category);
             this.libraries = libraries;
         }
 

@@ -15,7 +15,7 @@ namespace ArmaRealMap.TerrainData.Forests
     {
         public static void PrepareWaterwayEdges(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
         {
-            var lib = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.WaterwayBorder);
+            var lib = olibs.GetSingleLibrary(ObjectCategory.WaterwayBorder);
             if (lib == null)
             {
                 return;
@@ -67,7 +67,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
         private static void GenerateRadialEdgeObjects(MapData data, ObjectLibraries olibs, List<OsmShape> shapes, List<TerrainPolygon> polygons, ObjectCategory category, string filename, float width = 25f)
         {
-            var lib = olibs.Libraries.FirstOrDefault(l => l.Category == category);
+            var lib = olibs.GetSingleLibrary(category);
             if (lib == null)
             {
                 return;
@@ -84,7 +84,7 @@ namespace ArmaRealMap.TerrainData.Forests
 
         private static void GenerateEdgeObjects(MapData data, ObjectLibraries olibs,  List<TerrainPolygon> forestPolygonsCleaned)
         {
-            var lib = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.ForestEdge);
+            var lib = olibs.GetSingleLibrary(ObjectCategory.ForestEdge);
             if ( lib == null)
             {
                 return;

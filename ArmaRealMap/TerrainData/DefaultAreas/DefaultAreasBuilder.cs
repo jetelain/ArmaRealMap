@@ -16,7 +16,7 @@ namespace ArmaRealMap.TerrainData.DefaultAreas
     {
         public static void PrepareDefaultAreas(MapData data, List<OsmShape> shapes, ObjectLibraries olibs)
         {
-            var filler = olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.RandomVegetation);
+            var filler = olibs.GetSingleLibrary(ObjectCategory.RandomVegetation);
             if (filler != null && filler.Objects.Count > 0)
             {
                 var allPolys = shapes.Where(s => !s.Category.IsBuilding).SelectMany(s => s.TerrainPolygons).ToList();

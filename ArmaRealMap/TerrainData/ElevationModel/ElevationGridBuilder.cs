@@ -227,7 +227,7 @@ namespace ArmaRealMap
                 default:
                     return null;
             }
-            return libs.Libraries.FirstOrDefault(c => c.Category == category);
+            return libs.GetSingleLibrary(category);
         }
 
         private static void ProcessRoadBridge(Road road, ElevationConstraintGrid constraintGrid, ObjectLibraries libs)

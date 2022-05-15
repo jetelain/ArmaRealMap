@@ -120,7 +120,7 @@ namespace ArmaRealMap.Roads
 
         private static void SideWalks(MapData data, ObjectLibraries libs, List<OsmShape> osmShapes)
         {
-            var template = libs.Libraries.Where(l => l.Category == ObjectCategory.RoadSideWalk).SelectMany(l => l.Objects).FirstOrDefault();
+            var template = libs.GetSingleLibrary(ObjectCategory.RoadSideWalk)?.Objects?.FirstOrDefault();
             if (template != null)
             {
                 var residentials = TerrainPolygon.MergeAll(osmShapes.Where(s => s.Category == OsmShapeCategory.Residential || s.Category == OsmShapeCategory.Retail || s.Category == OsmShapeCategory.Commercial).SelectMany(s => s.TerrainPolygons).ToList());
@@ -155,7 +155,7 @@ namespace ArmaRealMap.Roads
 
         private static void RoadWalls(MapData data, ObjectLibraries libs)
         {
-            var template = libs.Libraries.Where(l => l.Category == ObjectCategory.RoadConcreteWall).SelectMany(l => l.Objects).FirstOrDefault();
+            var template = libs.GetSingleLibrary(ObjectCategory.RoadConcreteWall)?.Objects?.FirstOrDefault();
             if (template != null)
             {
                 var layer = new TerrainObjectLayer(data.MapInfos);
@@ -267,7 +267,7 @@ namespace ArmaRealMap.Roads
                 var path = road.Path;
                 if (road.RoadType < RoadTypeId.SingleLaneDirtPath)
                 {
-                    path = PreventSplines(road.Path, road.Width);
+                    path = PreventSplines(road.Path, road.Width * 1.5f);
                 }
                 features.Add(new Feature(path.ToLineString(p => new Coordinate(p.X + 200000, p.Y)), attributesTable));
             }

@@ -166,10 +166,13 @@ namespace ArmaRealMap
 
         private static void SyncLibraries(GlobalConfig global)
         {
-            ConfigLoader.UpdateFile(global.LibrariesFile, "https://arm.pmad.net/ObjectLibraries/Export");
-            ConfigLoader.UpdateFile(global.ModelsInfoFile, "https://arm.pmad.net/Assets/ModelsInfo");
-            ConfigLoader.UpdateFile(global.TerrainMaterialFile, "https://arm.pmad.net/data/terrains.json");
-            ConfigLoader.UpdateFile(global.RoadTypesFile, "https://arm.pmad.net/data/roads.json");
+            if (global.SyncWithAssetManager)
+            {
+                ConfigLoader.UpdateFile(global.LibrariesFile, global.AssetManager + "ObjectLibraries/Export");
+                ConfigLoader.UpdateFile(global.ModelsInfoFile, global.AssetManager + "Assets/ModelsInfo");
+                ConfigLoader.UpdateFile(global.TerrainMaterialFile, global.AssetManager + "data/terrains.json");
+                ConfigLoader.UpdateFile(global.RoadTypesFile, global.AssetManager + "data/roads.json");
+            }
         }
 
         private static int Run(GenerateOptions options)
@@ -187,8 +190,8 @@ namespace ArmaRealMap
 
             var area = MapInfos.Create(config);
 
-            var olibs = new ObjectLibraries();
-            olibs.Load(global.LibrariesFile, config.Terrain);
+            var olibs = new ObjectLibraries(config.Terrain);
+            olibs.Load(global.LibrariesFile);
 
             var data = new MapData();
             data.Config = config;
@@ -387,21 +390,21 @@ namespace ArmaRealMap
                 data,
                 db,
                 filtered,
-                olibs.Libraries.Where(l => l.Category == ObjectCategory.Wall).ToList(),
+                olibs.GetLibraries(ObjectCategory.Wall),
                 o => OsmCategorizer.Get(o.Tags, "barrier") == "wall");
 
             PlaceObjectsOnPath(result,
                 data,
                 db,
                 filtered,
-                olibs.Libraries.Where(l => l.Category == ObjectCategory.Fence).ToList(),
+                olibs.GetLibraries(ObjectCategory.Fence),
                 o => OsmCategorizer.Get(o.Tags, "barrier") == "fence");
 
             PlaceObjectsOnPath(result,
                 data,
                 db,
                 filtered,
-                olibs.Libraries.Where(l => l.Category == ObjectCategory.MilitaryWall).ToList(),
+                olibs.GetLibraries(ObjectCategory.MilitaryWall),
                 o => OsmCategorizer.Get(o.Tags, "barrier") == "city_wall");
 
             result.WriteFile(Path.Combine(data.Config.Target.Objects, "barriers.rel.txt"));
@@ -521,24 +524,24 @@ namespace ArmaRealMap
             PlaceObjects(result,
                     data,
                     filtered,
-                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.IsolatedTree),
+                    olibs.GetSingleLibrary(ObjectCategory.IsolatedTree),
                     o => OsmCategorizer.Get(o.Tags, "natural") == "tree");
             PlaceObjects(result,
                     data,
                     filtered,
-                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.Bench),
+                    olibs.GetSingleLibrary(ObjectCategory.Bench),
                     o => OsmCategorizer.Get(o.Tags, "amenity") == "bench");
 
             PlaceObjects(result,
                     data,
                     filtered,
-                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.PicnicTable),
+                    olibs.GetSingleLibrary(ObjectCategory.PicnicTable),
                     o => OsmCategorizer.Get(o.Tags, "leisure") == "picnic_table");
 
             PlaceObjects(result,
                     data,
                     filtered,
-                    olibs.Libraries.FirstOrDefault(l => l.Category == ObjectCategory.WaterWell),
+                    olibs.GetSingleLibrary(ObjectCategory.WaterWell),
                     o => OsmCategorizer.Get(o.Tags, "man_made") == "water_well");
 
             result.WriteFile(Path.Combine(data.Config.Target.Objects, "objects.rel.txt"));

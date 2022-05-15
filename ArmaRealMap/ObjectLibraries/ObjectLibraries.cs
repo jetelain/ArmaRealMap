@@ -18,22 +18,46 @@ namespace ArmaRealMap.Libraries
             WriteIndented = true
         };
 
-        public List<ObjectLibrary> Libraries { get; } = new List<ObjectLibrary>();
+        private readonly List<ObjectLibrary> libraries = new List<ObjectLibrary>();
+        private readonly TerrainRegion region;
 
-        public ObjectLibraries()
+        public ObjectLibraries(TerrainRegion region)
         {
-            
+            this.region = region;
         }
 
-        public void Load(string filename, TerrainRegion terrainFilter)
+        public bool HasLibrary(ObjectCategory objectCategory)
+        {
+            return libraries.Any(l => l.Category == objectCategory);
+        }
+
+        public ObjectLibrary GetSingleLibrary(ObjectCategory objectCategory)
+        {
+            var libs = libraries.Where(l => l.Category == objectCategory);
+            return libs.FirstOrDefault(l => l.Terrain == region) ??
+                libs.FirstOrDefault(l => l.Terrain == null || l.Terrain == TerrainRegion.Unknown);
+        }
+
+        public List<ObjectLibrary> GetLibraries(ObjectCategory objectCategory)
+        {
+            var libs = libraries.Where(l => l.Category == objectCategory);
+            var result = libs.Where(l => l.Terrain == region).ToList();
+            if (result.Count > 0)
+            {
+                return result;
+            }
+            return libs.Where(l => l.Terrain == null || l.Terrain == TerrainRegion.Unknown).ToList();
+        }
+
+        public void Load(string filename)
         {
             var libs = JsonSerializer.Deserialize<JsonObjectLibrary[]>(File.ReadAllText(filename), options);
 
             foreach(var lib in libs)
             {
-                if (lib.Terrain == null || lib.Terrain == TerrainRegion.Unknown || lib.Terrain == terrainFilter)
+                if (lib.Terrain == null || lib.Terrain == TerrainRegion.Unknown || lib.Terrain == region)
                 {
-                    Libraries.Add(new ObjectLibrary()
+                    libraries.Add(new ObjectLibrary()
                     {
                         Category = lib.Category,
                         Density = lib.Density,
@@ -77,7 +101,7 @@ namespace ArmaRealMap.Libraries
 
         internal SingleObjetInfos GetObject(string name)
         {
-            return Libraries.SelectMany(l => l.Objects).First(o => o.Name == name);
+            return libraries.SelectMany(l => l.Objects).First(o => o.Name == name);
         }
     }
 }

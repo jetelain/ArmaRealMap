@@ -129,8 +129,7 @@ namespace ArmaRealMap.Buildings
 
         private static List<ObjetInfosBase> GetBuildings(ObjectLibraries olibs, Building building, float min, float max)
         {
-            var match = olibs.Libraries
-               .Where(l => l.Category == building.Category)
+            var match = olibs.GetLibraries(building.Category ?? ObjectCategory.Residential)
                .SelectMany(l => l.All.Where(o => o.Fits(building.Box, min, max)))
                .ToList()
                .OrderBy(c => Math.Abs(c.Surface - building.Box.Surface))
