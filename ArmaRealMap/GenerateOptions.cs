@@ -29,6 +29,12 @@ namespace ArmaRealMap
 
         [Option("pack", Required = false, HelpText = "Generate a ZIP file with pre-cooked data.")]
         public string Pack { get; set; }
+
+        [Option("mod", Required = false, HelpText = "Generate PBO to specified mod.")]
+        public string TargetMod { get; set; }
+
+        [Option("non-interactive", Required = false, HelpText = "Mikero's tool will not pause, preventing reading errors, but allowing scripting.")]
+        public bool NonInterractive { get; set; }
     }
 
     [Verb("update", HelpText = "Download and update libraries (must be re-uploaded).")]

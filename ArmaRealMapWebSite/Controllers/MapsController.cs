@@ -46,7 +46,7 @@ namespace ArmaRealMapWebSite.Controllers
                 
                 var size = Math.Max(width, height);
                 var nsize = Math.Floor(size / 1024d) * 1024;
-                var rsize = Math.Max(Math.Min(81_920, nsize), 10_204);
+                var rsize = Math.Max(Math.Min(81_920, nsize), 10_240);
 
                 var sw = new Coordinate(center.Latitude.ToDouble(), center.Longitude.ToDouble());
                 sw.Move(rsize * Math.Sqrt(2) / 2, 180 + 45, Shape.Ellipsoid);

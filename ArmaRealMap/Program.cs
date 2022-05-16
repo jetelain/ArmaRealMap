@@ -72,16 +72,19 @@ namespace ArmaRealMap
             var config = PackageHelper.Unpack(arg);
             var target = Path.Combine("P:", config.PboPrefix);
 
-            Console.WriteLine("==== Check for missing files ====");
-            ArmaMapConfigHelper.GenerateConfigCppIfMissing(config, target);
-            TerrainImageBuilder.GenerateSatoutIfMissing(config, target);
+            CreateEssentialFilesIfMissing(config, target);
 
             Console.WriteLine("==== Generate PAA files ====");
             var files = Directory.GetFiles(target, "*.png", SearchOption.AllDirectories);
             Arma3ToolsHelper.ImageToPAA(files.ToList(), arg.MaxThreads);
 
+            return BuildMod(arg.NonInterractive, config, arg.TargetMod);
+        }
+
+        private static int BuildMod(bool nonInterractive, MapConfig config, string targetMod)
+        {
             Console.WriteLine("==== Mikero's tool ====");
-            if (arg.NonInterractive)
+            if (nonInterractive)
             {
                 Console.WriteLine("Note: PboProject starts in it's own console window.");
                 using (new ProgressReport("pboProject"))
@@ -89,7 +92,7 @@ namespace ArmaRealMap
                     var proc = Process.Start(new ProcessStartInfo()
                     {
                         FileName = @"C:\Program Files (x86)\Mikero\DePboTools\bin\pboProject.exe", // Hard-coded because tool can only work from this location
-                        Arguments = @$"-R -E=""arma3"" -W -P -M=""{arg.TargetMod}"" ""P:\{config.PboPrefix}""",
+                        Arguments = @$"-R -E=""arma3"" -W -P -M=""{targetMod}"" ""P:\{config.PboPrefix}""",
                     });
                     proc.WaitForExit();
                     return proc.ExitCode;
@@ -99,18 +102,22 @@ namespace ArmaRealMap
             Process.Start(new ProcessStartInfo()
             {
                 FileName = @"C:\Program Files (x86)\Mikero\DePboTools\bin\pboProject.exe", // Hard-coded because tool can only work from this location
-                Arguments = @$"-R -E=""arma3"" -W -M=""{arg.TargetMod}"" ""P:\{config.PboPrefix}""",
+                Arguments = @$"-R -E=""arma3"" -W -M=""{targetMod}"" ""P:\{config.PboPrefix}""",
             });
             return 0;
         }
 
+        private static void CreateEssentialFilesIfMissing(MapConfig config, string target)
+        {
+            Console.WriteLine("==== Check for missing files ====");
+            ArmaMapConfigHelper.GenerateConfigCppIfMissing(config, target);
+            TerrainImageBuilder.GenerateSatoutIfMissing(config, target);
+        }
 
         private static int ConvertToPaa(ConvertToPaaOptions arg)
         {
             var files = Directory.GetFiles(arg.Directory, "*.png", SearchOption.AllDirectories);
-
             Arma3ToolsHelper.ImageToPAA(files.ToList(), arg.MaxThreads);
-
             return 0;
         }
 
@@ -152,7 +159,7 @@ namespace ArmaRealMap
             library.Save(global.ModelsInfoFile);
 
             Console.WriteLine($"File '{global.ModelsInfoFile}' was updated.");
-            Console.WriteLine("Please upload it to https://arm.pmad.net/Assets/UploadModelsInfo");
+            Console.WriteLine($"Please upload it to {global.AssetManager}Assets/UploadModelsInfo");
 
             var terrainMaterialLibrary = new TerrainMaterialLibrary();
             terrainMaterialLibrary.LoadFromProjectDrive();
@@ -230,6 +237,14 @@ namespace ArmaRealMap
             }
 
             Trace.Flush();
+
+            if (!string.IsNullOrEmpty(options.TargetMod))
+            {
+                CreateEssentialFilesIfMissing(config, Path.Combine("P:", config.PboPrefix));
+
+                return BuildMod(options.NonInterractive, config, options.TargetMod);
+            }
+
             return 0;
         }
 
