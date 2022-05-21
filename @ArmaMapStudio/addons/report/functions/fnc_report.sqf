@@ -13,5 +13,5 @@ else {
 	_ctrl ctrlCommit 0; 
 	_ctrl ctrlAddEventHandler ["ButtonClick", { params ["_ctrl"]; (ctrlParent _ctrl) closeDisplay 1; }];
 };
-private _pattern = "<t align='center' size='2'>Cliquer sur</t><br /><a align='center' colorLink='#ff0000' size='3' href='https://arm.pmad.net/Maps/GameIssue?name=%1&amp;x=%2&amp;y=%3'>Signaler le problème</a><br /><br /><t align='center'>Puis décrire le problème sur le site.</t>";
+private _pattern = "<t align='center' size='2'>Click below to open your web browser:</t><br /><a align='center' colorLink='#ff0000' size='3' href='https://arm.pmad.net/Maps/GameIssue?name=%1&amp;x=%2&amp;y=%3'>Report an issue</a><br /><br /><t align='center'>Then describe the issue on the web site.</t>";
 _ctrl ctrlSetStructuredText parseText format [_pattern, worldName, _pos select 0, _pos select 1];

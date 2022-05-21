@@ -54,13 +54,12 @@ private _progressTotal = count _objects + count _systems;
 				if ( isClass _classConfig ) then {
 					private _textures = getarray (_classConfig >> "hiddenselectionstextures");
 					private _simpleEden = getnumber (_classConfig >> "SimpleObject" >> "eden");
-					private _surfacenormal = getnumber (_classConfig >> "AmsEden" >> "surfacenormal");
 					private _ams_canexport = getnumber (_classConfig >> "AmsEden" >> "canexport");
 					private _model = gettext (_classConfig >> "model");
 					private _realModel = (getModelInfo _x) select 1;
 					if ( (count _textures == 0 || _simpleEden == 1 || _ams_canexport == 1) && (_model != "\A3\Weapons_f\dummyweapon.p3d") && (_ams_canexport != -1)) then {
-						_classData = [true, _surfacenormal];
-						_data pushBack [".class", _class, _model, boundingBoxReal _x, boundingCenter _x, _realModel, _surfacenormal];
+						_classData = [true, 1];
+						_data pushBack [".class", _class, _model, boundingBoxReal _x, boundingCenter _x, _realModel, 1];
 					} else {
 						_classData = [false, 0];
 						WARNING_5("%1 cannot be exported: textures=%2, model=%3, simpleEden=%4, realModel=%5", _class, _textures, _model, _simpleEden, _realModel);
@@ -84,11 +83,8 @@ private _progressTotal = count _objects + count _systems;
 				private _zfix = (_pos2 select 2) - (_pos select 2);
 				_wpos set [2, (_wpos select 2) - _zfix];
 
-				if ( _classData select 1 == 1 ) then { // when object follow _surfacenormal, extra processing is required
-					_data pushBack [_class, _pos, _wpos, _up, _dir, surfaceNormal _pos];
-				} else {
-					_data pushBack [_class, _pos, _wpos, _up, _dir];
-				};
+				_data pushBack [_class, _pos, _wpos, _up, _dir, surfaceNormal _pos];
+				
 				_x set3DENLayer _toRemoveLayer;
 			};
 		};

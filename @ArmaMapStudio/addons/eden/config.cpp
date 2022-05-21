@@ -7,7 +7,7 @@ class CfgPatches {
         weapons[] = {};
         requiredVersion = REQUIRED_VERSION;
         requiredAddons[] = {"ams_main", "A3_3DEN"};
-        author = "AUTHOR";
+        author = "GrueArbre";
         VERSION_CONFIG;
     };
 };
@@ -43,7 +43,7 @@ class display3DEN
             class AMS_Transform
             {
                 action=QUOTE([] spawn FUNC(transform););
-                text="Re-créer les objets cachés";
+                text="Re-create hidden objects";
                 conditionShow="selectedLogic";
                 value=0;
                 opensNewWindow=0;

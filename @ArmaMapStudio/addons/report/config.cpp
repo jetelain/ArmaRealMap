@@ -7,7 +7,7 @@ class CfgPatches {
         weapons[] = {};
         requiredVersion = REQUIRED_VERSION;
         requiredAddons[] = {"ams_main", "A3_3DEN"};
-        author = "AUTHOR";
+        author = "GrueArbre";
         VERSION_CONFIG;
     };
 };
@@ -26,7 +26,7 @@ class Display3DEN
             class AMS_Report
             {
                 action=QUOTE([screenToWorld getMousePosition] call FUNC(report););
-                text="Signaler un problème";
+                text="Report an issue";
                 conditionShow="1";
                 value=0;
                 opensNewWindow=1;
