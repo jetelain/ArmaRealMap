@@ -98,18 +98,5 @@ Specific tasks :
 
 82x82 Km. Simple but very large area.
 
-Specific tasks :
-  - [x] Improve OpenStreetMap data : https://www.openstreetmap.org/#map=11/15.5926/-0.9304
-    1. Create an account
-    2. Add data based on satellite image for :
-      - "Forest" / vegetation areas ;
-      - Wet / water areas ;
-      - Roads / trails ;
-      - Buildings.
-  - [x] Find appropriate buildings assets
-  - [x] Find appropriate ground textures
-  - [x] Find appropriate vegetation assets
-    - [x] Trees
-    - [x] Edges
-    - [x] Clutter
+Available on Steam Workshop : https://steamcommunity.com/sharedfiles/filedetails/?id=2565771890
   
