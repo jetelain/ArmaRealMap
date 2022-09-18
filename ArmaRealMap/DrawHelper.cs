@@ -13,17 +13,17 @@ namespace ArmaRealMap
 {
     public static class DrawHelper
     {
-        internal static void FillPolygonWithHoles(Image<Rgb24> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, ShapeGraphicsOptions shapeGraphicsOptions)
+        internal static void FillPolygonWithHoles(Image<Rgb24> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, DrawingOptions shapeGraphicsOptions)
         {
             FillPolygonWithHoles<Rgb24, Rgba32>(img, outer, holes, brush, Color.Transparent, shapeGraphicsOptions);
         }
 
-        internal static void FillPolygonWithHoles(Image<Rgba32> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, ShapeGraphicsOptions shapeGraphicsOptions)
+        internal static void FillPolygonWithHoles(Image<Rgba32> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, DrawingOptions shapeGraphicsOptions)
         {
             FillPolygonWithHoles<Rgba32, Rgba32>(img, outer, holes, brush, Color.Transparent, shapeGraphicsOptions);
         }
 
-        internal static void FillPolygonWithHoles<TPixel,TPixelAlpha>(Image<TPixel> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, TPixelAlpha transparent, ShapeGraphicsOptions shapeGraphicsOptions)
+        internal static void FillPolygonWithHoles<TPixel,TPixelAlpha>(Image<TPixel> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, TPixelAlpha transparent, DrawingOptions shapeGraphicsOptions)
             where TPixel : unmanaged, IPixel<TPixel>
             where TPixelAlpha : unmanaged, IPixel<TPixelAlpha>
         {
@@ -38,7 +38,7 @@ namespace ArmaRealMap
                 {
                     dimg.Mutate(p =>
                     {
-                        var xor = new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { AlphaCompositionMode = PixelAlphaCompositionMode.Xor, Antialias = shapeGraphicsOptions.GraphicsOptions.Antialias } };
+                        var xor = new DrawingOptions() { GraphicsOptions = new GraphicsOptions() { AlphaCompositionMode = PixelAlphaCompositionMode.Xor, Antialias = shapeGraphicsOptions.GraphicsOptions.Antialias } };
                         p.FillPolygon(shapeGraphicsOptions, brush, outer.Select(p => new PointF(p.X - clip.X, p.Y - clip.Y)).ToArray());
                         foreach (var hpoints in holes)
                         {
@@ -56,10 +56,10 @@ namespace ArmaRealMap
 
         internal static void DrawPath(IImageProcessingContext d, TerrainPath path, float width, SolidBrush brush, MapInfos map, bool antiAlias = true)
         {
-            DrawPath(d, path.Points, width, brush, map.TerrainToPixelsPoint, new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
+            DrawPath(d, path.Points, width, brush, map.TerrainToPixelsPoint, new DrawingOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
         }
 
-        internal static void DrawPath<T>(IImageProcessingContext d, IEnumerable<T> points, float width, SolidBrush brush, Func<T, PointF> project, ShapeGraphicsOptions shapeGraphicsOptions)
+        internal static void DrawPath<T>(IImageProcessingContext d, IEnumerable<T> points, float width, SolidBrush brush, Func<T, PointF> project, DrawingOptions shapeGraphicsOptions)
         {
             var pixelsPoints = points.Select(project).ToArray();
             d.DrawLines(shapeGraphicsOptions, brush, width, pixelsPoints);
@@ -67,24 +67,24 @@ namespace ArmaRealMap
 
         internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, bool antiAlias = true)
         {
-            DrawPolygon(d, polygon, brush,map, new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
+            DrawPolygon(d, polygon, brush,map, new DrawingOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
         }
 
-        internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, ShapeGraphicsOptions shapeGraphicsOptions)
+        internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, DrawingOptions shapeGraphicsOptions)
         {
             FillPolygonWithHoles(d, polygon.Shell.Select(map.TerrainToPixelsPoint), polygon.Holes.Select(map.TerrainToPixelsPoints).ToList(), brush, shapeGraphicsOptions);
         }
         public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels)
         {
-            FillPolygonWithHoles(d, toPixels(polygon.Shell), polygon.Holes.Select(toPixels).ToList(), brush, new ShapeGraphicsOptions());
+            FillPolygonWithHoles(d, toPixels(polygon.Shell), polygon.Holes.Select(toPixels).ToList(), brush, new DrawingOptions());
         }
 
-        public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels, ShapeGraphicsOptions shapeGraphicsOptions)
+        public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels, DrawingOptions shapeGraphicsOptions)
         {
             FillPolygonWithHoles(d, toPixels(polygon.Shell), polygon.Holes.Select(toPixels).ToList(), brush, shapeGraphicsOptions);
         }
 
-        internal static void FillPolygonWithHoles(IImageProcessingContext p, IEnumerable<PointF> outer, List<IEnumerable<PointF>> holes, IBrush brush, ShapeGraphicsOptions shapeGraphicsOptions)
+        internal static void FillPolygonWithHoles(IImageProcessingContext p, IEnumerable<PointF> outer, List<IEnumerable<PointF>> holes, IBrush brush, DrawingOptions shapeGraphicsOptions)
         {
             if (holes.Any())
             {
@@ -97,7 +97,7 @@ namespace ArmaRealMap
                 {
                     dimg.Mutate(p =>
                     {
-                        var xor = new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { AlphaCompositionMode = PixelAlphaCompositionMode.Xor, Antialias = shapeGraphicsOptions.GraphicsOptions.Antialias } };
+                        var xor = new DrawingOptions() { GraphicsOptions = new GraphicsOptions() { AlphaCompositionMode = PixelAlphaCompositionMode.Xor, Antialias = shapeGraphicsOptions.GraphicsOptions.Antialias } };
                         p.FillPolygon(shapeGraphicsOptions, brush, outer.Select(p => new PointF(p.X - clip.X, p.Y - clip.Y)).ToArray());
                         foreach (var hpoints in holes)
                         {
@@ -129,15 +129,15 @@ namespace ArmaRealMap
 
         internal static void DrawPolygonEdges(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, float width, bool antiAlias = true)
         {
-            DrawPolygonEdges(d, polygon, brush, map, new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } }, width);
+            DrawPolygonEdges(d, polygon, brush, map, new DrawingOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } }, width);
         }
 
-        internal static void DrawPolygonEdges(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, ShapeGraphicsOptions shapeGraphicsOptions, float width)
+        internal static void DrawPolygonEdges(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, DrawingOptions shapeGraphicsOptions, float width)
         {
             DrawPolygonEdgesWithHoles(d, polygon.Shell.Select(map.TerrainToPixelsPoint), polygon.Holes.Select(map.TerrainToPixelsPoints).ToList(), brush, shapeGraphicsOptions, width);
         }
 
-        internal static void DrawPolygonEdgesWithHoles(IImageProcessingContext p, IEnumerable<PointF> outer, List<IEnumerable<PointF>> holes, IBrush brush, ShapeGraphicsOptions shapeGraphicsOptions, float width)
+        internal static void DrawPolygonEdgesWithHoles(IImageProcessingContext p, IEnumerable<PointF> outer, List<IEnumerable<PointF>> holes, IBrush brush, DrawingOptions shapeGraphicsOptions, float width)
         {
             p.DrawPolygon(shapeGraphicsOptions, brush, width, outer.ToArray());
 

@@ -74,7 +74,7 @@ namespace ArmaRealMap
                                 polygon.Shell.Select(projectPoint),
                                 polygon.Holes.Select(l => l.Select(projectPoint)).ToList(),
                                 brush.Item2,
-                                new ShapeGraphicsOptions());
+                                new DrawingOptions());
                         }
                         else
                         {
@@ -82,7 +82,7 @@ namespace ArmaRealMap
                                 polygon.Shell.Select(projectPoint),
                                 polygon.Holes.Select(l => l.Select(projectPoint)).ToList(),
                                 brush.Item1,
-                                new ShapeGraphicsOptions(), 
+                                new DrawingOptions(), 
                                 1f);
                         }
                         index++;

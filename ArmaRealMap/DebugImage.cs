@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ArmaRealMap.Geometries;
 using ArmaRealMap.Osm;
 using SixLabors.ImageSharp;
@@ -49,7 +47,7 @@ namespace ArmaRealMap
         {
             try
             {
-                DrawHelper.FillPolygonWithHoles(p, polygon.Shell.Select(Project), polygon.Holes.Select(Project).ToList(), brush, new ShapeGraphicsOptions());
+                DrawHelper.FillPolygonWithHoles(p, polygon.Shell.Select(Project), polygon.Holes.Select(Project).ToList(), brush, new DrawingOptions());
             }
             catch
             {
@@ -61,7 +59,7 @@ namespace ArmaRealMap
         {
             try
             {
-                DrawHelper.DrawPolygonEdgesWithHoles(p, polygon.Shell.Select(Project), polygon.Holes.Select(Project).ToList(), brush, new ShapeGraphicsOptions(), width);
+                DrawHelper.DrawPolygonEdgesWithHoles(p, polygon.Shell.Select(Project), polygon.Holes.Select(Project).ToList(), brush, new DrawingOptions(), width);
             }
             catch
             {

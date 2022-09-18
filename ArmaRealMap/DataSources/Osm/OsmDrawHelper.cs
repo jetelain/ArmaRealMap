@@ -14,11 +14,11 @@ namespace ArmaRealMap.Osm
     {
         internal static void Draw(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, OsmShape shape, bool antiAlias = true)
         {
-            DrawGeometry(mapInfos, img, solidBrush, shape.Geometry, (float)(6 / mapInfos.ImageryResolution), new ShapeGraphicsOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
+            DrawGeometry(mapInfos, img, solidBrush, shape.Geometry, (float)(6 / mapInfos.ImageryResolution), new DrawingOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
             //DrawHelper.FillGeometry(img, solidBrush, shape.Geometry, mapInfos.LatLngToPixelsPoints);
         }
 
-        private static void DrawGeometry(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, Geometry geometry, float defaultWidth, ShapeGraphicsOptions shapeGraphicsOptions)
+        private static void DrawGeometry(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, Geometry geometry, float defaultWidth, DrawingOptions shapeGraphicsOptions)
         {
             if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
             {

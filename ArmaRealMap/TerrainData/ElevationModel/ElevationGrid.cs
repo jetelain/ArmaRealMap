@@ -2,17 +2,16 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using ArmaRealMap.Geometries;
 using CoordinateSharp;
+using MapToolkit;
+using MapToolkit.Databases;
+using MapToolkit.DataCells;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using SRTM;
-using SRTM.Sources.NASA;
 
 namespace ArmaRealMap.ElevationModel
 {
@@ -41,34 +40,37 @@ namespace ArmaRealMap.ElevationModel
 
         public void LoadFromSRTM(SRTMConfig configSRTM)
         {
-            var srtmData = new SRTMData(configSRTM.CacheLocation, new NASASource(configSRTM.Cookie));
+            var db = new DemDatabase(new DemHttpStorage(configSRTM.CacheLocation, new Uri("https://dem.pmad.net/SRTM1/")));
+
             var startPointUTM = area.StartPointUTM;
             var eager = new EagerLoad(false);
 
             var done = 0;
             double delta = 1d / 3600d;
-            PreloadSRTM(srtmData);
+
+            var points = new[] { area.SouthWest, area.NorthEast, area.NorthWest, area.SouthEast };
+
+            var view = db.CreateView<ushort>(
+                new Coordinates(points.Min(p => p.Latitude.ToDouble()) - 0.001, points.Min(p => p.Longitude.ToDouble()) - 0.001),
+                new Coordinates(points.Max(p => p.Latitude.ToDouble()) + 0.001, points.Max(p => p.Longitude.ToDouble()) + 0.001))
+                .GetAwaiter()
+                .GetResult()
+                .ToDataCell();
 
             var report = new ProgressReport("LoadFromSRTM", area.Size);
             Parallel.For(0, area.Size, y =>
             {
                 for (int x = 0; x < area.Size; x++)
                 {
-                    //var point = new UniversalTransverseMercator(
-                    //        startPointUTM.LatZone,
-                    //        startPointUTM.LongZone,
-                    //        startPointUTM.Easting + (double)(x * area.CellSize),
-                    //        startPointUTM.Northing + (double)(y * area.CellSize));
-                    //var latLong = UniversalTransverseMercator.ConvertUTMtoLatLong(point, eager);
                     var latLong = area.TerrainToLatLong(x * area.CellSize, y * area.CellSize);
-                    var elevation = srtmData.GetElevationBilinear(latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble()) ?? double.NaN;
+                    var elevation = GetElevationBilinear(view, latLong.Latitude.ToDouble(), latLong.Longitude.ToDouble());
                     if (area.CellSize > 30) // Smooth cells larger than SRTM resolution
                     {
                         elevation = (new[] { elevation,
-                            srtmData.GetElevationBilinear(latLong.Latitude.ToDouble() - delta, latLong.Longitude.ToDouble() - delta) ?? double.NaN,
-                            srtmData.GetElevationBilinear(latLong.Latitude.ToDouble() - delta, latLong.Longitude.ToDouble() + delta) ?? double.NaN,
-                            srtmData.GetElevationBilinear(latLong.Latitude.ToDouble() + delta, latLong.Longitude.ToDouble() - delta) ?? double.NaN,
-                            srtmData.GetElevationBilinear(latLong.Latitude.ToDouble() + delta, latLong.Longitude.ToDouble() + delta) ?? double.NaN
+                            GetElevationBilinear(view, latLong.Latitude.ToDouble() - delta, latLong.Longitude.ToDouble() - delta),
+                            GetElevationBilinear(view, latLong.Latitude.ToDouble() - delta, latLong.Longitude.ToDouble() + delta),
+                            GetElevationBilinear(view, latLong.Latitude.ToDouble() + delta, latLong.Longitude.ToDouble() - delta),
+                            GetElevationBilinear(view, latLong.Latitude.ToDouble() + delta, latLong.Longitude.ToDouble() + delta)
                         }).Average();
                     }
                     elevationGrid[x, y] = (float)elevation;
@@ -78,6 +80,12 @@ namespace ArmaRealMap.ElevationModel
 
             report.TaskDone();
         }
+
+        private double GetElevationBilinear(DemDataCellBase<ushort> view, double lat, double lon)
+        {
+            return view.GetLocalElevation(new Coordinates(lat, lon), DefaultInterpolation.Instance);
+        }
+
         internal float ElevationAround(TerrainPoint p)
         {
             return ElevationAround(p, cellSize.X / 2);
@@ -91,19 +99,6 @@ namespace ArmaRealMap.ElevationModel
                 ElevationAt(p + new Vector2(radius, -radius)) +
                 ElevationAt(p + new Vector2(-radius, radius)) +
                 ElevationAt(p + new Vector2(radius, radius))) / 5f;
-        }
-
-        private void PreloadSRTM(SRTMData srtmData)
-        {
-            var report = new ProgressReport("PreloadSRTM", 4);
-            srtmData.PreloadCell(area.NorthEast);
-            report.ReportOneDone();
-            srtmData.PreloadCell(area.SouthEast);
-            report.ReportOneDone();
-            srtmData.PreloadCell(area.NorthWest);
-            report.ReportOneDone();
-            srtmData.PreloadCell(area.NorthWest);
-            report.TaskDone();
         }
 
         public void LoadFromAsc(string path)
