@@ -9,21 +9,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArmaRealMap.Test", "ArmaRea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmsUtil", "AmsUtil\AmsUtil.csproj", "{19FE9AD0-E02F-455A-8265-60C9FC420DA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.PBO", "..\jetelain\bis-file-formats\BIS.PBO\BIS.PBO.csproj", "{DBB57DEC-FA2D-465E-A7DF-EF3D9EA8E0C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.PBO", "bis-file-formats\BIS.PBO\BIS.PBO.csproj", "{DBB57DEC-FA2D-465E-A7DF-EF3D9EA8E0C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.Core", "..\jetelain\bis-file-formats\BIS.Core\BIS.Core.csproj", "{11FD2B02-1D5B-4257-BEEB-83DC47CF62F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.Core", "bis-file-formats\BIS.Core\BIS.Core.csproj", "{11FD2B02-1D5B-4257-BEEB-83DC47CF62F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.WRP", "..\jetelain\bis-file-formats\BIS.WRP\BIS.WRP.csproj", "{4E4CAA11-8159-40AD-9E77-D2B90A12CFDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.WRP", "bis-file-formats\BIS.WRP\BIS.WRP.csproj", "{4E4CAA11-8159-40AD-9E77-D2B90A12CFDB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.PAA", "..\jetelain\bis-file-formats\BIS.PAA\BIS.PAA.csproj", "{6E2A6C3B-C0C1-4C98-89B7-F0A4FB13DA00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.PAA", "bis-file-formats\BIS.PAA\BIS.PAA.csproj", "{6E2A6C3B-C0C1-4C98-89B7-F0A4FB13DA00}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArmaRealMapWebSite", "ArmaRealMapWebSite\ArmaRealMapWebSite.csproj", "{8E8931F0-98EE-41EA-ABB2-B96203F71A69}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArmaRealMap.Core", "ArmaRealMap.Core\ArmaRealMap.Core.csproj", "{7CDA522C-5A59-4AD6-99C4-6B060A3DDD4A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.ALB", "..\jetelain\bis-file-formats\BIS.ALB\BIS.ALB.csproj", "{6E82EE4B-A3ED-4D11-A66D-3A1559920A31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.ALB", "bis-file-formats\BIS.ALB\BIS.ALB.csproj", "{6E82EE4B-A3ED-4D11-A66D-3A1559920A31}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.P3D", "..\jetelain\bis-file-formats\BIS.P3D\BIS.P3D.csproj", "{CBCFD74B-21DA-4F39-A18E-391E449927CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.P3D", "bis-file-formats\BIS.P3D\BIS.P3D.csproj", "{CBCFD74B-21DA-4F39-A18E-391E449927CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapToolkit", "mapkit\MapToolkit\MapToolkit.csproj", "{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{CBCFD74B-21DA-4F39-A18E-391E449927CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBCFD74B-21DA-4F39-A18E-391E449927CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBCFD74B-21DA-4F39-A18E-391E449927CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

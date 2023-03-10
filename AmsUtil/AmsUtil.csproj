@@ -10,9 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\jetelain\bis-file-formats\BIS.Core\BIS.Core.csproj" />
-    <ProjectReference Include="..\..\jetelain\bis-file-formats\BIS.PBO\BIS.PBO.csproj" />
-    <ProjectReference Include="..\..\jetelain\bis-file-formats\BIS.WRP\BIS.WRP.csproj" />
+    <ProjectReference Include="..\bis-file-formats\BIS.Core\BIS.Core.csproj" />
+    <ProjectReference Include="..\bis-file-formats\BIS.PBO\BIS.PBO.csproj" />
+    <ProjectReference Include="..\bis-file-formats\BIS.WRP\BIS.WRP.csproj" />
     <ProjectReference Include="..\ArmaRealMap\ArmaRealMap.csproj" />
   </ItemGroup>
 

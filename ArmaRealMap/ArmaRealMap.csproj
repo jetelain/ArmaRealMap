@@ -28,10 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\jetelain\bis-file-formats\BIS.P3D\BIS.P3D.csproj" />
-    <ProjectReference Include="..\..\jetelain\bis-file-formats\BIS.PAA\BIS.PAA.csproj" />
-    <ProjectReference Include="..\..\jetelain\bis-file-formats\BIS.WRP\BIS.WRP.csproj" />
-    <ProjectReference Include="..\..\jetelain\mapkit\MapToolkit\MapToolkit.csproj" />
+    <ProjectReference Include="..\bis-file-formats\BIS.P3D\BIS.P3D.csproj" />
+    <ProjectReference Include="..\bis-file-formats\BIS.PAA\BIS.PAA.csproj" />
+    <ProjectReference Include="..\bis-file-formats\BIS.WRP\BIS.WRP.csproj" />
+    <ProjectReference Include="..\mapkit\MapToolkit\MapToolkit.csproj" />
     <ProjectReference Include="..\ArmaRealMap.Core\ArmaRealMap.Core.csproj" />
   </ItemGroup>
 
