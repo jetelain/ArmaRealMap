@@ -11,7 +11,7 @@
         <option value="">Tous</option>
     </select>
     <label asp-for="AssetCategory" class="my-1 mr-2"></label>
-    <select asp-for="AssetCategory" class="form-control my-1 mr-2" asp-items="@Html.GetEnumSelectList<ArmaRealMapWebSite.Entities.Assets.AssetCategory>()">
+    <select asp-for="AssetCategory" class="form-control my-1 mr-2" asp-items="@Html.GetEnumSelectList<ArmaRealMapWebSite.Entities.Assets.AssetCategory>().OrderBy(e => e.Text)">
         <option value="">Tous</option>
     </select>
     <label asp-for="GameModID" class="my-1 mr-2"></label>

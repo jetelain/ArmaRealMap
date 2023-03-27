@@ -48,7 +48,7 @@
         </dt>
         <dd class="col-sm-10">
             <form asp-action="SetCategory" asp-route-id="@Model.AssetID" class="form-inline">
-                <select id="AssetCategory" asp-for="AssetCategory" asp-items="@Html.GetEnumSelectList<ArmaRealMapWebSite.Entities.Assets.AssetCategory>()" class="form-control  my-1 mr-2"></select>
+                <select id="AssetCategory" asp-for="AssetCategory" asp-items="@Html.GetEnumSelectList<ArmaRealMapWebSite.Entities.Assets.AssetCategory>().OrderBy(e => e.Text)" class="form-control  my-1 mr-2"></select>
                 <button class="btn btn-secondary">Enregistrer</button>
             </form>
         </dd>

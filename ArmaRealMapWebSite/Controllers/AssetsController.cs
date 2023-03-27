@@ -50,7 +50,7 @@ namespace ArmaRealMapWebSite.Controllers
             if (vm.Name != null)
             {
                 var pattern = "%" + vm.Name + "%";
-                assetsContext = assetsContext.Where(a => EF.Functions.Like(a.Name, pattern) || EF.Functions.Like(a.ModelPath, pattern));
+                assetsContext = assetsContext.Where(a => EF.Functions.Like(a.Name, pattern) || EF.Functions.Like(a.ModelPath, pattern) || EF.Functions.Like(a.ClassName, pattern));
             }
             vm.Results = await assetsContext.OrderBy(a => a.Name).Take(1000).ToListAsync();
             vm.Mods = new SelectList(_context.GameMods, "GameModID", "Name");
