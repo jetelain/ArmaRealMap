@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Numerics;
 using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
+using GeoAPI.Geometries;
 
 namespace ArmaRealMap
 {
@@ -35,7 +36,7 @@ namespace ArmaRealMap
 
         public TerrainPoint MaxPoint => box.MaxPoint;
 
-        public NetTopologySuite.Geometries.Polygon Poly => box.Poly;
+        public IPolygon Poly => box.Poly;
 
         public IBoundingShape Box => box;
 

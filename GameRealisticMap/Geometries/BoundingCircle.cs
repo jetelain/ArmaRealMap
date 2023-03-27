@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace GameRealisticMap.Geometries
@@ -26,7 +27,7 @@ namespace GameRealisticMap.Geometries
 
         public float Angle { get; }
 
-        public Polygon Poly => polygon.Value;
+        public IPolygon Poly => polygon.Value;
 
         public TerrainPoint MinPoint => Center - new Vector2(Radius, Radius);
 

@@ -13,6 +13,8 @@ using ArmaRealMap.Roads;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using NetTopologySuite.Geometries;
+using GeoAPI.Geometries;
+using GameRealisticMap.Roads;
 
 namespace ArmaRealMap.Buildings
 {
@@ -216,7 +218,7 @@ namespace ArmaRealMap.Buildings
             return pass4;
         }
 
-        internal static IEnumerable<Polygon> LatLngToTerrainPolygon(MapInfos map, Geometry geometry)
+        internal static IEnumerable<Polygon> LatLngToTerrainPolygon(MapInfos map, IGeometry geometry)
         {
             return GeometryHelper.ToPolygon(geometry, list => map.LatLngToTerrainPoints(list).Select(p => new Coordinate(p.X, p.Y)));
         }

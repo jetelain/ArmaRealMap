@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
+using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 
@@ -63,7 +64,7 @@ namespace GameRealisticMap.Geometries
         public Vector2 Size => new Vector2(Width, Height);
 
         [JsonIgnore]
-        public Polygon Poly => polygon.Value;
+        public IPolygon Poly => polygon.Value;
 
         [JsonIgnore]
         public TerrainPolygon Polygon => terrainPolygon.Value;

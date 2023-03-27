@@ -13,6 +13,7 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using GameRealisticMap.Roads;
 
 namespace ArmaRealMap.TerrainData.GroundDetailTextures
 {
@@ -178,7 +179,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                                 {
                                     foreach (var polygon in road.Polygons)
                                     {
-                                        DrawHelper.DrawPolygon(d, polygon, GetBrush(road.RoadTypeInfos), l => l.Select(p => area.TerrainToPixelsPoint(p) + pos));
+                                        DrawHelper.DrawPolygon(d, polygon, GetBrush((RoadTypeInfos)road.RoadTypeInfos), l => l.Select(p => area.TerrainToPixelsPoint(p) + pos));
                                     }
                                 }
                             });

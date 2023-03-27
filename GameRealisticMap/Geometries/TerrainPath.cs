@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using ClipperLib;
+using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace GameRealisticMap.Geometries
@@ -52,7 +53,7 @@ namespace GameRealisticMap.Geometries
         {
             return TerrainPolygon.FromPath(Points, width);
         }
-        public static IEnumerable<TerrainPath> FromGeometry(Geometry geometry, Func<Coordinate, TerrainPoint> project)
+        public static IEnumerable<TerrainPath> FromGeometry(IGeometry geometry, Func<Coordinate, TerrainPoint> project)
         {
             switch (geometry.OgcGeometryType)
             {

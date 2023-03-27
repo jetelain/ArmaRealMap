@@ -1,4 +1,4 @@
-﻿using NetTopologySuite.Geometries;
+﻿using GeoAPI.Geometries;
 
 namespace GameRealisticMap.Geometries
 {
@@ -8,6 +8,6 @@ namespace GameRealisticMap.Geometries
 
         float Angle { get; }
 
-        Polygon Poly { get; }
+        IPolygon Poly { get; }
     }
 }

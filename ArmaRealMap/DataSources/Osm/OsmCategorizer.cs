@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using ArmaRealMap.Core.Roads;
 using ArmaRealMap.Roads;
+using GameRealisticMap.Geo;
+using GameRealisticMap.Roads;
 using OsmSharp;
 using OsmSharp.Complete;
 using OsmSharp.Db;
@@ -43,7 +45,7 @@ namespace ArmaRealMap.Osm
                         }
                     }
                     var count = 0;
-                    foreach (var feature in interpret.Interpret(complete))
+                    foreach (var feature in interpret.Interpret(complete).Features)
                     {
                         toRender.Add(new OsmShape(category, osmGeo, feature.Geometry, mapInfos));
                         count++;

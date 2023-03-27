@@ -25,6 +25,9 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using GameRealisticMap.Roads;
+using GeoAPI.Geometries;
+using GameRealisticMap.Geo;
 
 namespace ArmaRealMap.Roads
 {
@@ -317,7 +320,7 @@ namespace ArmaRealMap.Roads
                     var type = library.GetInfo(kind.Value, data.Config.Terrain);
                     var complete = road.CreateComplete(db);
                     var count = 0;
-                    foreach (var feature in interpret.Interpret(complete))
+                    foreach (var feature in interpret.Interpret(complete).Features)
                     {
                         foreach (var path in TerrainPath.FromGeometry(feature.Geometry, data.MapInfos.LatLngToTerrainPoint))
                         {
@@ -325,13 +328,7 @@ namespace ArmaRealMap.Roads
                             {
                                 foreach (var pathSegment in path.ClippedBy(area))
                                 {
-                                    data.Roads.Add(new Road()
-                                    {
-                                        Path = pathSegment,
-                                        RoadType = kind.Value,
-                                        RoadTypeInfos = type,
-                                        SpecialSegment = OsmCategorizer.ToRoadSpecialSegment(road.Tags)
-                                    });
+                                    data.Roads.Add(new Road(OsmCategorizer.ToRoadSpecialSegment(road.Tags), pathSegment, type));
                                 }
                             }
                         }

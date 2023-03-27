@@ -1,4 +1,4 @@
-﻿namespace ArmaRealMap.Roads
+﻿namespace GameRealisticMap.Roads
 {
     public enum RoadSpecialSegment
     {

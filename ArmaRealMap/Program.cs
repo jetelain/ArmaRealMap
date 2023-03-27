@@ -24,6 +24,7 @@ using OsmSharp.Db;
 using OsmSharp.Db.Impl;
 using OsmSharp.Geo;
 using OsmSharp.Streams;
+using GameRealisticMap.Geo;
 
 namespace ArmaRealMap
 {
@@ -438,7 +439,7 @@ namespace ArmaRealMap
             foreach (Way way in nodes)
             {
                 var complete = way.CreateComplete(db);
-                foreach (var feature in interpret.Interpret(complete))
+                foreach (var feature in interpret.Interpret(complete).Features)
                 {
                     foreach (var path in TerrainPath.FromGeometry(feature.Geometry, data.MapInfos.LatLngToTerrainPoint))
                     {
@@ -470,7 +471,7 @@ namespace ArmaRealMap
             foreach (Way way in nodes)
             {
                 var complete = way.CreateComplete(db);
-                foreach (var feature in interpret.Interpret(complete))
+                foreach (var feature in interpret.Interpret(complete).Features)
                 {
                     foreach (var path in TerrainPath.FromGeometry(feature.Geometry, data.MapInfos.LatLngToTerrainPoint))
                     {

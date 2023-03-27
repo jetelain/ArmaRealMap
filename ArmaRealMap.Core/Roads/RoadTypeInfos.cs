@@ -1,6 +1,8 @@
-﻿namespace ArmaRealMap.Core.Roads
+﻿using GameRealisticMap.Roads;
+
+namespace ArmaRealMap.Core.Roads
 {
-    public class RoadTypeInfos
+    public class RoadTypeInfos : IRoadTypeInfos
     {
         public RoadTypeId Id { get; set; }
         public TerrainRegion? Terrain { get; set; }

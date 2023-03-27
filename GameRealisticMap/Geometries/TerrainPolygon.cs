@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using ClipperLib;
+using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace GameRealisticMap.Geometries
@@ -48,15 +49,15 @@ namespace GameRealisticMap.Geometries
                 Holes.Select(h => new LinearRing(h.Select(project).ToArray())).ToArray());
         }
 
-        public static IEnumerable<TerrainPolygon> FromGeometry(Geometry geometry, Func<Coordinate, TerrainPoint> project, float width = 6.0f)
+        public static IEnumerable<TerrainPolygon> FromGeometry(IGeometry geometry, Func<Coordinate, TerrainPoint> project, float width = 6.0f)
         {
             switch(geometry.OgcGeometryType)
             {
                 case OgcGeometryType.MultiPolygon:
-                    return ((MultiPolygon)geometry).Geometries.SelectMany(p => FromGeometry(p, project, width));
+                    return ((IMultiPolygon)geometry).Geometries.SelectMany(p => FromGeometry(p, project, width));
 
                 case OgcGeometryType.Polygon:
-                    return FromPolygon((Polygon)geometry, project);
+                    return FromPolygon((IPolygon)geometry, project);
 
                 case OgcGeometryType.LineString:
                     var line = (LineString)geometry;
@@ -76,7 +77,7 @@ namespace GameRealisticMap.Geometries
             return new TerrainPolygon[0];
         }
 
-        public static IEnumerable<TerrainPolygon> FromPolygon(Polygon polygon, Func<Coordinate,TerrainPoint> project)
+        public static IEnumerable<TerrainPolygon> FromPolygon(IPolygon polygon, Func<Coordinate,TerrainPoint> project)
         {
             if (!polygon.IsValid)
             {

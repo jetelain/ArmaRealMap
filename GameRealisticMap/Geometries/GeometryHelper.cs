@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using ClipperLib;
+using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace GameRealisticMap.Geometries
@@ -19,7 +20,7 @@ namespace GameRealisticMap.Geometries
             return OffsetInternal(p.ExteriorRing, delta).SelectMany(ext => MakePolygon(ext, interiors)).ToList();
         }
 
-        private static IEnumerable<List<IntPoint>> OffsetInternal(LineString p, double delta)
+        private static IEnumerable<List<IntPoint>> OffsetInternal(ILineString p, double delta)
         {
             var clipper = new ClipperOffset();
             clipper.AddPath(p.Coordinates.Select(c => new IntPoint(c.X * ScaleForClipper, c.Y * ScaleForClipper)).ToList(), JoinType.jtSquare, EndType.etClosedPolygon);
@@ -51,15 +52,15 @@ namespace GameRealisticMap.Geometries
             return new[] { new Polygon(ToRing(ext), holes.Select(ToRing).ToArray()) };
         }
 
-        public static IEnumerable<Polygon> ToPolygon(Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<Coordinate>> transform)
+        public static IEnumerable<Polygon> ToPolygon(IGeometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<Coordinate>> transform)
         {
             if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
             {
-                return ((MultiPolygon)geometry).Geometries.SelectMany(p => ToPolygon(p, transform));
+                return ((IMultiPolygon)geometry).Geometries.SelectMany(p => ToPolygon(p, transform));
             }
             if (geometry.OgcGeometryType == OgcGeometryType.Polygon)
             {
-                var poly = (Polygon)geometry;
+                var poly = (IPolygon)geometry;
                 return new[]
                 {
                     new Polygon(
@@ -69,7 +70,7 @@ namespace GameRealisticMap.Geometries
             }
             if (geometry.OgcGeometryType == OgcGeometryType.LineString)
             {
-                var line = (LineString)geometry;
+                var line = (ILineString)geometry;
                 if (line.IsClosed && line.Coordinates.Length > 4)
                 {
                     return new[]
@@ -81,7 +82,7 @@ namespace GameRealisticMap.Geometries
             return new Polygon[0];
         }
 
-        private static LinearRing ToLinearRing(LineString line, Func<IEnumerable<Coordinate>, IEnumerable<Coordinate>> transform)
+        private static LinearRing ToLinearRing(ILineString line, Func<IEnumerable<Coordinate>, IEnumerable<Coordinate>> transform)
         {
             return new LinearRing(transform(line.Coordinates).ToArray());
         }

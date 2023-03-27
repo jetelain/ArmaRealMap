@@ -5,6 +5,7 @@ using ArmaRealMap.Core.ObjectLibraries;
 using GameRealisticMap.Geometries;
 using ArmaRealMap.Osm;
 using NetTopologySuite.Geometries;
+using GeoAPI.Geometries;
 
 namespace ArmaRealMap
 {
@@ -38,7 +39,7 @@ namespace ArmaRealMap
         public ObjectCategory? Category { get; set; }
 
         [JsonIgnore]
-        public Polygon Poly => Box.Poly;
+        public IPolygon Poly => Box.Poly;
 
         [JsonIgnore]
         public TerrainPoint MinPoint => Box.MinPoint;

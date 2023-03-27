@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using GameRealisticMap.Geometries;
+using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;

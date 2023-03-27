@@ -1,4 +1,4 @@
-﻿namespace ArmaRealMap.Core.Roads
+﻿namespace GameRealisticMap.Roads
 {
     public enum RoadTypeId
     {

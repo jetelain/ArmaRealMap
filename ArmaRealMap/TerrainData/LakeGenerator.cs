@@ -13,6 +13,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using GameRealisticMap.Roads;
 
 namespace ArmaRealMap
 {
@@ -29,7 +30,7 @@ namespace ArmaRealMap
             var minimalArea = Math.Pow(5 * data.Config.CellSize, 2); // 5 x 5 nodes minimum
             var minimalOffsetArea = data.Config.CellSize * data.Config.CellSize;
 
-            var embankmentsSegments = data.Roads.Where(r => r.SpecialSegment == Roads.RoadSpecialSegment.Embankment).ToList();
+            var embankmentsSegments = data.Roads.Where(r => r.SpecialSegment == RoadSpecialSegment.Embankment).ToList();
 
             ProcessEmbankments(data, embankmentsSegments);
 

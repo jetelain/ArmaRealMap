@@ -20,17 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
+using System.Diagnostics;
+using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
+using OsmSharp;
 using OsmSharp.Complete;
-using OsmSharp.Logging;
+using OsmSharp.Geo;
 using OsmSharp.Tags;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
 
-namespace OsmSharp.Geo
+namespace GameRealisticMap.Geo
 {
     /// <summary>
     /// The default feature interpreter.
