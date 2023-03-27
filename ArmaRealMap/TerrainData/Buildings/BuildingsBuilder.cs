@@ -6,12 +6,13 @@ using System.Linq;
 using System.Numerics;
 using System.Text.Json;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
+using NetTopologySuite.Geometries;
 
 namespace ArmaRealMap.Buildings
 {
@@ -215,6 +216,11 @@ namespace ArmaRealMap.Buildings
             return pass4;
         }
 
+        internal static IEnumerable<Polygon> LatLngToTerrainPolygon(MapInfos map, Geometry geometry)
+        {
+            return GeometryHelper.ToPolygon(geometry, list => map.LatLngToTerrainPoints(list).Select(p => new Coordinate(p.X, p.Y)));
+        }
+
         private static List<Building> DetectBuildingCategory(MapInfos area, List<OsmShape> toRender, List<Building> pass3)
         {
             var pass4 = pass3;
@@ -223,7 +229,7 @@ namespace ArmaRealMap.Buildings
                 .Select(b => new
                 {
                     BuildingType = b.Category.BuildingType,
-                    Poly = GeometryHelper.LatLngToTerrainPolygon(area, b.Geometry)
+                    Poly = LatLngToTerrainPolygon(area, b.Geometry)
                 })
                 .ToList();
 

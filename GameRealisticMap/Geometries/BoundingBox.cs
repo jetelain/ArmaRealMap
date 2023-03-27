@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 
-namespace ArmaRealMap.Geometries
+namespace GameRealisticMap.Geometries
 {
     public class BoundingBox : IBoundingShape
     {
@@ -27,12 +24,6 @@ namespace ArmaRealMap.Geometries
             Points = points;
             polygon = new Lazy<Polygon>(() => new Polygon(new LinearRing(Points.Concat(Points.Take(1)).Select(p => new Coordinate(p.X, p.Y)).ToArray())));
             terrainPolygon = new Lazy<TerrainPolygon>(() => new TerrainPolygon(Points.Concat(Points.Take(1)).ToList(), TerrainPolygon.NoHoles));
-        }
-
-        public BoundingBox(BoxJson json)
-            : this(new TerrainPoint(json.Center[0], json.Center[1]), json.Width, json.Height, json.Angle, json.Points.Select(p => new TerrainPoint(p[0], p[1])).ToArray())
-        {
-
         }
 
         [JsonConstructor]
@@ -101,18 +92,6 @@ namespace ArmaRealMap.Geometries
         //    var delta = Math.Max(Width, Height) + Math.Max(other.Width, other.Height);
         //    return Math.Pow(other.Center.X - Center.X, 2) + Math.Pow(other.Center.Y - Center.Y, 2) < Math.Pow(delta, 2);
         //}
-
-        public BoxJson ToJson()
-        {
-            return new BoxJson()
-            {
-                Center = new[] { Center.X, Center.Y },
-                Width = Width,
-                Height = Height,
-                Points = Points.Select(p => new[] { p.X, p.Y }).ToArray(),
-                Angle = Angle
-            };
-        }
 
         public static BoundingBox Compute(TerrainPoint[] points)
         {
@@ -214,9 +193,9 @@ namespace ArmaRealMap.Geometries
         }
 
 
-        private static (TerrainPoint Point, float Distance) ClosestIntersection(IEnumerable<(TerrainPoint First, TerrainPoint Second)> segments, TerrainPoint start, TerrainPoint end)
+        private static (TerrainPoint? Point, float Distance) ClosestIntersection(IEnumerable<(TerrainPoint First, TerrainPoint Second)> segments, TerrainPoint start, TerrainPoint end)
         {
-            TerrainPoint result = null;
+            TerrainPoint? result = null;
             float resultFromStart = float.PositiveInfinity;
             foreach(var segment in segments)
             {
@@ -258,15 +237,15 @@ namespace ArmaRealMap.Geometries
             }
         }
 
-        public static BoundingBox ComputeInner(IEnumerable<TerrainPoint> points)
+        public static BoundingBox? ComputeInner(IEnumerable<TerrainPoint> points)
         {
             var outerSegments = points.Zip(points.Skip(1).Concat(points.Take(1))).ToList();
             var allSegments = points.SelectMany(p1 => points.Where(p2 => p2 != p1).Select(p2 => new { P1 = p1, P2 = p2 })).ToList();
-            InnerCandidate result = null;
+            InnerCandidate? result = null;
             foreach (var segment in allSegments)
             {
-                TerrainPoint xp1;
-                TerrainPoint xp2;
+                TerrainPoint? xp1;
+                TerrainPoint? xp2;
 
                 var candidate = Consider(outerSegments, segment.P1, segment.P2, out xp1, out xp2);
 
@@ -298,7 +277,7 @@ namespace ArmaRealMap.Geometries
             return result?.ToBoundingBox();
         }
 
-        private static InnerCandidate Consider(List<(TerrainPoint First, TerrainPoint Second)> outerSegments, TerrainPoint p1, TerrainPoint p2, out TerrainPoint xp1, out TerrainPoint xp2)
+        private static InnerCandidate? Consider(List<(TerrainPoint First, TerrainPoint Second)> outerSegments, TerrainPoint p1, TerrainPoint p2, out TerrainPoint? xp1, out TerrainPoint? xp2)
         {
             var delta = Vector2.Normalize(p2.Vector - p1.Vector);
             var normal = Vector2.Transform(delta, GeometryHelper.Rotate90);

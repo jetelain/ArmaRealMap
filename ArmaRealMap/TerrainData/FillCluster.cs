@@ -1,4 +1,4 @@
-﻿using ArmaRealMap.Geometries;
+﻿using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
 
 namespace ArmaRealMap

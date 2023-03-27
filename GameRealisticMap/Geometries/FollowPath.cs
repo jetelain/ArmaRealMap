@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 
-namespace ArmaRealMap.Geometries
+namespace GameRealisticMap.Geometries
 {
     public class FollowPath
     {
         private readonly IEnumerator<TerrainPoint> enumerator;
-        private TerrainPoint previousPoint;
-        private TerrainPoint point;
-        private TerrainPoint previousPosition;
-        private TerrainPoint position;
+        private TerrainPoint? previousPoint;
+        private TerrainPoint? point;
+        private TerrainPoint? previousPosition;
+        private TerrainPoint? position;
         private Vector2 delta;
         private float length;
         private float positionOnSegment;

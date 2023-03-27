@@ -8,7 +8,7 @@ using System.Text.Json;
 using ArmaRealMap.Buildings;
 using ArmaRealMap.Configuration;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;

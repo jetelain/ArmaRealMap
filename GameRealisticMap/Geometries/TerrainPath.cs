@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 using ClipperLib;
 using NetTopologySuite.Geometries;
 
-namespace ArmaRealMap.Geometries
+namespace GameRealisticMap.Geometries
 {
     public class TerrainPath : ITerrainGeometry
     {

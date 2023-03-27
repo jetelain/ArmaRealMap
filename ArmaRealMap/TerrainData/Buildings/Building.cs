@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.Json.Serialization;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using ArmaRealMap.Osm;
 using NetTopologySuite.Geometries;
 
@@ -19,7 +19,7 @@ namespace ArmaRealMap
 
         public Building(BuildingJson json)
         {
-            Box = new BoundingBox(json.Box);
+            Box = json.Box;
             Category = json.Category;
         }
 
@@ -58,7 +58,7 @@ namespace ArmaRealMap
             return new BuildingJson()
             {
                 Category = Category,
-                Box = Box.ToJson()
+                Box = Box
             };
         }
     }

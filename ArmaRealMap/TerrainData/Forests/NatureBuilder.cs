@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.Core.Roads;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;

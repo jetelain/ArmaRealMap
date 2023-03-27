@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ArmaRealMap.ElevationModel;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
 using Xunit;

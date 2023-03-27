@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using NetTopologySuite.Geometries;
 
-namespace ArmaRealMap.Geometries
+namespace GameRealisticMap.Geometries
 {
-    internal class BoundingCircle : IBoundingShape
+    public class BoundingCircle : IBoundingShape
     {
         private readonly Lazy<Polygon> polygon;
 

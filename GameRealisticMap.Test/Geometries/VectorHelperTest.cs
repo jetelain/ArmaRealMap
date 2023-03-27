@@ -1,7 +1,8 @@
 ﻿using System.Numerics;
+using GameRealisticMap.Geometries;
 using Xunit;
 
-namespace ArmaRealMap.Test
+namespace GameRealisticMap.Test.Geometries
 {
     public class VectorHelperTest
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Text.Json.Serialization;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 
 namespace ArmaRealMap.Libraries
 {

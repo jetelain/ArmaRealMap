@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using NetTopologySuite.Geometries;
 using OsmSharp;
 

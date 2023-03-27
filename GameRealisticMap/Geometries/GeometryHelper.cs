@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using ClipperLib;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation.Polygonize;
-using NetTopologySuite.Operation.Union;
 
-namespace ArmaRealMap.Geometries
+namespace GameRealisticMap.Geometries
 {
     public static class GeometryHelper
     {
@@ -15,10 +10,8 @@ namespace ArmaRealMap.Geometries
 
         public static readonly Matrix3x2 Rotate90 = Matrix3x2.CreateRotation(1.57079637f);
         public static readonly Matrix3x2 RotateM90 = Matrix3x2.CreateRotation(-1.57079637f);
-        internal static IEnumerable<Polygon> LatLngToTerrainPolygon(MapInfos map, Geometry geometry)
-        {
-            return ToPolygon(geometry, list => map.LatLngToTerrainPoints(list).Select(p => new Coordinate(p.X, p.Y)));
-        }
+
+
 
         internal static IEnumerable<Polygon> Offset(Polygon p, double delta)
         {
@@ -58,7 +51,7 @@ namespace ArmaRealMap.Geometries
             return new[] { new Polygon(ToRing(ext), holes.Select(ToRing).ToArray()) };
         }
 
-        internal static IEnumerable<Polygon> ToPolygon(Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<Coordinate>> transform)
+        public static IEnumerable<Polygon> ToPolygon(Geometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<Coordinate>> transform)
         {
             if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
             {
@@ -93,7 +86,7 @@ namespace ArmaRealMap.Geometries
             return new LinearRing(transform(line.Coordinates).ToArray());
         }
 
-        internal static bool EnveloppeIntersects(this ITerrainGeometry a, ITerrainGeometry b)
+        public static bool EnveloppeIntersects(this ITerrainGeometry a, ITerrainGeometry b)
         {
             return b.MinPoint.X <= a.MaxPoint.X &&
                 b.MinPoint.Y <= a.MaxPoint.Y &&

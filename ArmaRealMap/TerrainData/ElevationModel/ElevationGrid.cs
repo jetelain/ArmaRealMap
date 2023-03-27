@@ -5,7 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using CoordinateSharp;
 using MapToolkit;
 using MapToolkit.Databases;

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using Xunit;
 
-namespace ArmaRealMap.Test.Geometries
+namespace GameRealisticMap.Test.Geometries
 {
     public class FollowPathTest
     {

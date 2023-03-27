@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
 
 namespace ArmaRealMap.TerrainData

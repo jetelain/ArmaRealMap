@@ -1,4 +1,4 @@
-﻿namespace ArmaRealMap.Geometries
+﻿namespace GameRealisticMap.Geometries
 {
     public interface ITerrainGeometry
     {

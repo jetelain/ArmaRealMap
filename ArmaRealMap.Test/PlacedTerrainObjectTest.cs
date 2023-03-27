@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Numerics;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using Xunit;
 
 namespace ArmaRealMap.Test

@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using ArmaRealMap.ElevationModel;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using MathNet.Numerics.LinearRegression;
 
 namespace ArmaRealMap.TerrainData.ElevationModel

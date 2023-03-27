@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 
-namespace ArmaRealMap.Geometries
+namespace GameRealisticMap.Geometries
 {
     public interface IBoundingShape : ITerrainGeometry
     {

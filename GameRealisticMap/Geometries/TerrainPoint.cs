@@ -1,18 +1,17 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using ClipperLib;
 
-namespace ArmaRealMap.Geometries
+namespace GameRealisticMap.Geometries
 {
     /// <summary>
-    /// Coordinates for Terrain Builder (but not for road.shp, or imagery)
+    /// Coordinates 
     /// 
     /// Good for up to 83 Km with 1 cm precision
     /// </summary>
     public class TerrainPoint : IEquatable<TerrainPoint>
     {
-        public static readonly TerrainPoint Empty = default;
+        public static readonly TerrainPoint Empty = new TerrainPoint(Vector2.Zero);
 
         private Vector2 vector;
 
@@ -44,9 +43,9 @@ namespace ArmaRealMap.Geometries
         [JsonIgnore]
         public bool IsEmpty => Equals(Empty);
 
-        public static bool operator ==(TerrainPoint left, TerrainPoint right) => left?.Equals(right) ?? false;
+        public static bool operator ==(TerrainPoint? left, TerrainPoint? right) => left?.Equals(right) ?? false;
 
-        public static bool operator !=(TerrainPoint left, TerrainPoint right) => !left?.Equals(right) ?? false;
+        public static bool operator !=(TerrainPoint? left, TerrainPoint? right) => !left?.Equals(right) ?? false;
 
         public void Deconstruct(out float x, out float y)
         {
@@ -63,9 +62,9 @@ namespace ArmaRealMap.Geometries
 
         public override string ToString() => Vector.ToString();
 
-        public override bool Equals(object obj) => Equals(obj as TerrainPoint);
+        public override bool Equals(object? obj) => Equals(obj as TerrainPoint);
 
-        public bool Equals(TerrainPoint other) => !ReferenceEquals(null, other) && ((vector - other.vector).LengthSquared() < 0.01f);
+        public bool Equals(TerrainPoint? other) => !ReferenceEquals(null, other) && ((vector - other.vector).LengthSquared() < 0.01f);
 
         public static TerrainPoint operator +(TerrainPoint left, Vector2 right)
         {
