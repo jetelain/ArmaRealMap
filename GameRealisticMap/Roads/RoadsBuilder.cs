@@ -8,9 +8,18 @@ using OsmSharp.Complete;
 
 namespace GameRealisticMap.Roads
 {
-    public static class RoadsBuilder
+    public class RoadsBuilder : IDataBuilder<RoadsData>
     {
-        internal static List<Road> MergeRoads(IProgressSystem progress, List<Road> roads)
+        private readonly IProgressSystem progress;
+        private readonly IRoadTypeLibrary library;
+
+        public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary library)
+        {
+            this.progress = progress;
+            this.library = library;
+        }
+
+        internal List<Road> MergeRoads(List<Road> roads)
         {
             using var report = progress.CreateStep("MergeRoads", roads.Count);
             var todo = new HashSet<Road>(roads);
@@ -78,12 +87,7 @@ namespace GameRealisticMap.Roads
             return roads.Where(r => r != self && r.RoadType == self.RoadType && r.SpecialSegment == self.SpecialSegment && (r.Path.FirstPoint == point || r.Path.LastPoint == point)).ToList();
         }
 
-        public static List<Road> PrepareMergedRoads(IProgressSystem progress, IOsmDataSource osm, IRoadTypeLibrary library, ITerrainArea area)
-        {
-            return MergeRoads(progress, PrepareRoads(progress, osm, library, area));
-        }
-
-        internal static List<Road> PrepareRoads(IProgressSystem progress, IOsmDataSource osm, IRoadTypeLibrary library, ITerrainArea area)
+        internal List<Road> PrepareRoads(IOsmDataSource osm, ITerrainArea area)
         {
             var interpret = new DefaultFeatureInterpreter2();
             var osmRoads = osm.Stream.Where(o => o.Type == OsmGeoType.Way && o.Tags != null && o.Tags.ContainsKey("highway")).ToList();
@@ -121,5 +125,9 @@ namespace GameRealisticMap.Roads
             return roads;
         }
 
+        public RoadsData Build(IBuildContext context)
+        {
+            return new RoadsData(MergeRoads(PrepareRoads(context.OsmSource, context.Area)));
+        }
     }
 }

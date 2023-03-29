@@ -47,7 +47,7 @@ namespace GameRealisticMap.Geo
             var collection = new FeatureCollection();
             if (osmObject == null) return collection;
 
-            TagsCollectionBase tags;
+            TagsCollectionBase? tags;
             switch (osmObject.Type)
             {
                 case OsmGeoType.Node:
@@ -141,7 +141,7 @@ namespace GameRealisticMap.Geo
                     break;
                 case OsmGeoType.Relation:
                     var relation = (osmObject as CompleteRelation);
-                    tags = relation.Tags;
+                    tags = relation?.Tags;
 
                     if (tags == null)
                     {
