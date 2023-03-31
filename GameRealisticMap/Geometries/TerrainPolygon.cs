@@ -447,8 +447,12 @@ namespace GameRealisticMap.Geometries
             return transformedBack.Concat(transformedBack.Take(1)).ToList();
         }
 
-        public bool Equals(TerrainPolygon other)
+        public bool Equals(TerrainPolygon? other)
         {
+            if (other == null)
+            {
+                return false;
+            }
             if (Holes.Count != other.Holes.Count)
             {
                 return false;
@@ -467,7 +471,7 @@ namespace GameRealisticMap.Geometries
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as TerrainPolygon);
         }

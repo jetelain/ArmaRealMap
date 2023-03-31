@@ -107,7 +107,7 @@ namespace GameRealisticMap.Roads
                         {
                             if (path.Length >= 3)
                             {
-                                foreach (var pathSegment in path.ClippedBy(area.ClipArea))
+                                foreach (var pathSegment in path.ClippedBy(area.TerrainBounds))
                                 {
                                     roads.Add(new Road(OsmRoadCategorizer.ToRoadSpecialSegment(road.Tags), pathSegment, type));
                                 }

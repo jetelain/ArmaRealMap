@@ -18,6 +18,8 @@ namespace GameRealisticMap.Buildings
 
         public IPolygon Poly => Box.Poly;
 
+        public TerrainPolygon Polygon => Box.Polygon;
+
         public BuildingTypeId? Category { get; set; }
 
         public void Add(BuildingCandidate other)

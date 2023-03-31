@@ -7,6 +7,14 @@ namespace GameRealisticMap
     {
         TerrainPoint LatLngToTerrainPoint(Coordinate latLng);
 
-        TerrainPolygon ClipArea { get; }
+        Coordinate TerrainPointToLatLng(TerrainPoint point);
+
+        IEnumerable<Coordinate> GetLatLngBounds();
+
+        TerrainPolygon TerrainBounds { get; }
+
+        float GridCellSize { get; }
+
+        int GridSize { get; }
     }
 }

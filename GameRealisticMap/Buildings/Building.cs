@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Geometries;
+﻿using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Buildings
 {
-    public class Building
+    public class Building : ITerrainGeometry
     {
         public Building(BoundingBox box, BuildingTypeId value, List<TerrainPolygon> polygons)
         {
@@ -17,7 +12,13 @@ namespace GameRealisticMap.Buildings
         }
 
         public BoundingBox Box { get; }
+
         public BuildingTypeId Value { get; }
+
         public List<TerrainPolygon> Polygons { get; }
+
+        public TerrainPoint MinPoint => Box.MinPoint;
+
+        public TerrainPoint MaxPoint => Box.MaxPoint;
     }
 }

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using GameRealisticMap.Buildings;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Osm;
+using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
 
 namespace GameRealisticMap
@@ -13,6 +10,20 @@ namespace GameRealisticMap
     {
         private readonly Dictionary<Type, ITerrainData> datas = new Dictionary<Type, ITerrainData>();
         private readonly Dictionary<Type, object> builders = new Dictionary<Type, object>();
+
+        public BuildContext(ITerrainArea area, IOsmDataSource source)
+        {
+            Area = area;
+            OsmSource = source;
+        }
+
+        public void RegisterAll(IProgressSystem progress, IRoadTypeLibrary library)
+        {
+            Register<RawElevationData, RawElevationBuilder>(new RawElevationBuilder(progress));
+            Register<CategoryAreaData, CategoryAreaBuilder>(new CategoryAreaBuilder(progress));
+            Register<RoadsData, RoadsBuilder>(new RoadsBuilder(progress, library));
+            Register<BuildingsData, BuildingsBuilder>(new BuildingsBuilder(progress));
+        }
 
         public void Register<TData, TBuidler>(TBuidler builder)
             where TData : class, ITerrainData
