@@ -58,7 +58,7 @@ namespace GameRealisticMap.Geometries
             switch (geometry.OgcGeometryType)
             {
                 case OgcGeometryType.LineString:
-                    return new[] { new TerrainPath(((LineString)geometry).Coordinates.Select(project).ToList()) };
+                    return new[] { new TerrainPath(((ILineString)geometry).Coordinates.Select(project).ToList()) };
             }
             return new TerrainPath[0];
         }

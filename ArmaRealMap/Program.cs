@@ -8,7 +8,6 @@ using System.Text.Json;
 using ArmaRealMap.Buildings;
 using ArmaRealMap.Configuration;
 using ArmaRealMap.Core.ObjectLibraries;
-using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
@@ -18,13 +17,13 @@ using ArmaRealMap.TerrainData.DefaultAreas;
 using ArmaRealMap.TerrainData.Forests;
 using ArmaRealMap.TerrainData.GroundDetailTextures;
 using CommandLine;
+using GameRealisticMap.Geometries;
+using GameRealisticMap.Osm;
 using OsmSharp;
 using OsmSharp.Complete;
 using OsmSharp.Db;
 using OsmSharp.Db.Impl;
-using OsmSharp.Geo;
 using OsmSharp.Streams;
-using GameRealisticMap.Geo;
 
 namespace ArmaRealMap
 {

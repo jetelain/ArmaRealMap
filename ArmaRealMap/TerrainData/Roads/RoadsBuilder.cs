@@ -5,29 +5,27 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.Core.Roads;
-using GameRealisticMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.TerrainData;
 using ArmaRealMap.TerrainData.Forests;
 using ArmaRealMap.TerrainData.Roads;
+using GameRealisticMap.Geometries;
+using GameRealisticMap.Osm;
+using GameRealisticMap.Roads;
+using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using OsmSharp;
 using OsmSharp.Complete;
 using OsmSharp.Db;
-using OsmSharp.Geo;
 using OsmSharp.Streams;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using GameRealisticMap.Roads;
-using GeoAPI.Geometries;
-using GameRealisticMap.Geo;
 
 namespace ArmaRealMap.Roads
 {

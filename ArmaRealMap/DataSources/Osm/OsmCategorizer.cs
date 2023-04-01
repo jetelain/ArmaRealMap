@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using ArmaRealMap.Core.Roads;
-using ArmaRealMap.Roads;
-using GameRealisticMap.Geo;
+using GameRealisticMap.Osm;
 using GameRealisticMap.Roads;
 using OsmSharp;
 using OsmSharp.Complete;

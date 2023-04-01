@@ -1,8 +1,6 @@
 ﻿using GameRealisticMap.Buildings;
-using GameRealisticMap.Geo;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
-using OsmSharp.Complete;
 
 namespace GameRealisticMap.Osm
 {
@@ -17,8 +15,7 @@ namespace GameRealisticMap.Osm
 
         public CategoryAreaData Build(IBuildContext context)
         {
-            var interpret = new DefaultFeatureInterpreter2();
-            var osmAreas = context.OsmSource.Stream.Where(o => o.Tags != null && o.Tags.ContainsKey("landuse")).ToList();
+            var osmAreas = context.OsmSource.All.Where(o => o.Tags != null && o.Tags.ContainsKey("landuse")).ToList();
             var areas = new List<CategoryArea>();
             using var report = progress.CreateStep("CategoryArea", osmAreas.Count);
             foreach (var area in osmAreas)
@@ -26,8 +23,7 @@ namespace GameRealisticMap.Osm
                 var buildingType = GetBuildingType(area.Tags.GetValue("landuse"));
                 if (buildingType != null)
                 {
-                    var complete = area.CreateComplete(context.OsmSource.Snapshot);
-                    var polygons = interpret.Interpret(complete).Features.SelectMany(feature => TerrainPolygon.FromGeometry(feature.Geometry, context.Area.LatLngToTerrainPoint)).ToList();
+                    var polygons = context.OsmSource.Interpret(area).SelectMany(geometry => TerrainPolygon.FromGeometry(geometry, context.Area.LatLngToTerrainPoint)).ToList();
                     areas.Add(new CategoryArea(buildingType.Value, polygons));
                 }
                 report.ReportOneDone();

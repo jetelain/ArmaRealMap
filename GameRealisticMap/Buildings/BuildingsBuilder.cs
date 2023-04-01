@@ -1,9 +1,7 @@
-﻿using GameRealisticMap.Geo;
-using GameRealisticMap.Geometries;
+﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
-using OsmSharp.Complete;
 
 namespace GameRealisticMap.Buildings
 {
@@ -211,19 +209,15 @@ namespace GameRealisticMap.Buildings
 
         private List<BuildingCandidate> DetectBuildingsBoundingRects(IOsmDataSource osm, ITerrainArea area)
         {
-            var interpret = new DefaultFeatureInterpreter2();
-
-            var buildings = osm.Stream.Where(o => o.Tags != null && o.Tags.ContainsKey("building")).ToList();
+            var buildings = osm.All.Where(o => o.Tags != null && o.Tags.ContainsKey("building")).ToList();
 
             var pass1 = new List<BuildingCandidate>();
             using var report1 = progress.CreateStep("BoudingRect", buildings.Count);
             foreach (var building in buildings)
             {
-                var complete = building.CreateComplete(osm.Snapshot);
-
-                foreach (var feature in interpret.Interpret(complete).Features)
+                foreach (var geometry in osm.Interpret(building))
                 {
-                    foreach(var poly in TerrainPolygon.FromGeometry(feature.Geometry, area.LatLngToTerrainPoint))
+                    foreach(var poly in TerrainPolygon.FromGeometry(geometry, area.LatLngToTerrainPoint))
                     {
                         pass1.Add(new BuildingCandidate(poly, OsmBuildingCategorizer.ToBuildingType(building.Tags)));
                     }

@@ -1,11 +1,14 @@
-﻿using OsmSharp.Db;
-using OsmSharp.Streams;
+﻿using GeoAPI.Geometries;
+using OsmSharp;
 
 namespace GameRealisticMap.Osm
 {
     public interface IOsmDataSource
     {
-        OsmStreamSource Stream { get; }
-        SnapshotDb Snapshot { get; }
+        IEnumerable<OsmGeo> All { get; }
+
+        IEnumerable<Way> Ways { get; }
+
+        IEnumerable<IGeometry> Interpret(OsmGeo osmGeo);
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics;
-using GameRealisticMap.Geo;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
-using OsmSharp;
-using OsmSharp.Complete;
 
 namespace GameRealisticMap.Roads
 {
@@ -89,8 +86,7 @@ namespace GameRealisticMap.Roads
 
         internal List<Road> PrepareRoads(IOsmDataSource osm, ITerrainArea area)
         {
-            var interpret = new DefaultFeatureInterpreter2();
-            var osmRoads = osm.Stream.Where(o => o.Type == OsmGeoType.Way && o.Tags != null && o.Tags.ContainsKey("highway")).ToList();
+            var osmRoads = osm.Ways.Where(o => o.Tags != null && o.Tags.ContainsKey("highway")).ToList();
             var roads = new List<Road>();
             var report = progress.CreateStep("PrepareRoads", osmRoads.Count);
             foreach (var road in osmRoads)
@@ -99,11 +95,10 @@ namespace GameRealisticMap.Roads
                 if (kind != null)
                 {
                     var type = library.GetInfo(kind.Value);
-                    var complete = road.CreateComplete(osm.Snapshot);
                     var count = 0;
-                    foreach (var feature in interpret.Interpret(complete).Features)
+                    foreach (var geometry in osm.Interpret(road))
                     {
-                        foreach (var path in TerrainPath.FromGeometry(feature.Geometry, area.LatLngToTerrainPoint))
+                        foreach (var path in TerrainPath.FromGeometry(geometry, area.LatLngToTerrainPoint))
                         {
                             if (path.Length >= 3)
                             {

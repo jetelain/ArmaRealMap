@@ -3,6 +3,7 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
+using GameRealisticMap.Water;
 
 namespace GameRealisticMap
 {
@@ -23,6 +24,7 @@ namespace GameRealisticMap
             Register<CategoryAreaData, CategoryAreaBuilder>(new CategoryAreaBuilder(progress));
             Register<RoadsData, RoadsBuilder>(new RoadsBuilder(progress, library));
             Register<BuildingsData, BuildingsBuilder>(new BuildingsBuilder(progress));
+            Register<WaterData, WaterBuilder>(new WaterBuilder(progress));
         }
 
         public void Register<TData, TBuidler>(TBuidler builder)

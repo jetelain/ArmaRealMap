@@ -29,7 +29,7 @@ using OsmSharp.Complete;
 using OsmSharp.Geo;
 using OsmSharp.Tags;
 
-namespace GameRealisticMap.Geo
+namespace GameRealisticMap.Osm
 {
     /// <summary>
     /// The default feature interpreter.
