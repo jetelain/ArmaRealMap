@@ -184,6 +184,15 @@ namespace GameRealisticMap.Geometries
             return result;
         }
 
+        public IEnumerable<TerrainPolygon> SubstractAll(IEnumerable<TerrainPolygon> others, float sizeFilter)
+        {
+            if (EnveloppeSize.X > sizeFilter || EnveloppeSize.Y > sizeFilter)
+            {
+                return SubstractAll(others);
+            }
+            return new[] { this };
+        }
+
         public IEnumerable<TerrainPolygon> Substract(TerrainPolygon other)
         {
             if (!GeometryHelper.EnveloppeIntersects(this, other))

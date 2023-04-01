@@ -1,5 +1,6 @@
 ﻿using GameRealisticMap.Buildings;
 using GameRealisticMap.ElevationModel;
+using GameRealisticMap.Nature;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
@@ -25,6 +26,8 @@ namespace GameRealisticMap
             Register<RoadsData, RoadsBuilder>(new RoadsBuilder(progress, library));
             Register<BuildingsData, BuildingsBuilder>(new BuildingsBuilder(progress));
             Register<WaterData, WaterBuilder>(new WaterBuilder(progress));
+            Register<ForestData, ForestBuilder>(new ForestBuilder(progress));
+            Register<ScrubData, ScrubBuilder>(new ScrubBuilder(progress));
         }
 
         public void Register<TData, TBuidler>(TBuidler builder)
