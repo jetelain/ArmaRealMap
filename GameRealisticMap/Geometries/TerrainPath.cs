@@ -125,5 +125,10 @@ namespace GameRealisticMap.Geometries
                 other.MaxPoint.X >= MinPoint.X &&
                 other.MaxPoint.Y >= MinPoint.Y;
         }
+
+        internal GeoJSON.Text.Geometry.LineString ToGeoJson()
+        {
+            return new GeoJSON.Text.Geometry.LineString(Points);
+        }
     }
 }

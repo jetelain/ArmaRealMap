@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using ClipperLib;
+using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Geometries
 {
@@ -9,7 +10,7 @@ namespace GameRealisticMap.Geometries
     /// 
     /// Good for up to 83 Km with 1 cm precision
     /// </summary>
-    public class TerrainPoint : IEquatable<TerrainPoint>
+    public class TerrainPoint : IEquatable<TerrainPoint>, IPosition
     {
         public static readonly TerrainPoint Empty = new TerrainPoint(Vector2.Zero);
 
@@ -42,6 +43,12 @@ namespace GameRealisticMap.Geometries
 
         [JsonIgnore]
         public bool IsEmpty => Equals(Empty);
+
+        double? IPosition.Altitude => null;
+
+        double IPosition.Latitude => Math.Round(Y, 3);
+
+        double IPosition.Longitude => Math.Round(X, 3);
 
         public static bool operator ==(TerrainPoint? left, TerrainPoint? right) => left?.Equals(right) ?? false;
 

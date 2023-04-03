@@ -4,20 +4,46 @@ using Coordinate = GeoAPI.Geometries.Coordinate;
 
 namespace GameRealisticMap
 {
-    internal class TerrainArea : ITerrainArea
+    public class TerrainAreaUTM : ITerrainArea
     {
         private static readonly EagerLoad eagerUTM = new EagerLoad(false) { UTM_MGRS = true, Extensions = new EagerLoad_Extensions() { MGRS = false } };
         private static readonly EagerLoad eagerNONE = new EagerLoad(false);
 
         private readonly UniversalTransverseMercator startPointUTM;
 
-        public TerrainArea(UniversalTransverseMercator startPointUTM, float gridCellSize, int gridSize)
+        public TerrainAreaUTM(UniversalTransverseMercator startPointUTM, float gridCellSize, int gridSize)
         {
             this.startPointUTM = startPointUTM;
             GridCellSize = gridCellSize;
             GridSize = gridSize;
             SizeInMeters = gridCellSize * gridSize;
             TerrainBounds = TerrainPolygon.FromRectangle(TerrainPoint.Empty, new TerrainPoint(SizeInMeters, SizeInMeters));
+        }
+
+        public static TerrainAreaUTM CreateFromSouthWest(string southWest, float gridCellSize, int gridSize)
+        {
+            return CreateFromSouthWest(CoordinateSharp.Coordinate.Parse(southWest), gridCellSize, gridSize);
+        }
+
+        public static TerrainAreaUTM CreateFromSouthWest(CoordinateSharp.Coordinate southWest, float gridCellSize, int gridSize)
+        {
+            return new TerrainAreaUTM(southWest.UTM, gridCellSize, gridSize);
+        }
+
+        public static TerrainAreaUTM CreateFromCenter(string center, float gridCellSize, int gridSize)
+        {
+            return CreateFromCenter(CoordinateSharp.Coordinate.Parse(center), gridCellSize, gridSize);
+        }
+
+        public static TerrainAreaUTM CreateFromCenter(CoordinateSharp.Coordinate center, float gridCellSize, int gridSize)
+        {
+            var halfSize = gridCellSize * gridSize / 2;
+            var southWest = new UniversalTransverseMercator(
+                center.UTM.LatZone,
+                center.UTM.LongZone,
+                center.UTM.Easting - halfSize,
+                center.UTM.Northing - halfSize);
+            return new TerrainAreaUTM(southWest, gridCellSize, gridSize);
         }
 
         public TerrainPolygon TerrainBounds { get; }

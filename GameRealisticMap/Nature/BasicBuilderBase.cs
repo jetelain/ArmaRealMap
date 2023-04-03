@@ -17,7 +17,7 @@ namespace GameRealisticMap.Nature
         public BasicBuilderBase(IProgressSystem progress)
         {
             this.progress = progress;
-            this.name = GetType().Name.Replace("Data", "");
+            this.name = GetType().Name.Replace("Builder", "");
         }
 
         protected abstract bool IsTargeted(TagsCollectionBase tags);
@@ -31,7 +31,7 @@ namespace GameRealisticMap.Nature
             var buildings = context.GetData<BuildingsData>();
 
             return buildings.Buildings.Select(b => b.Box.Polygon)
-                .Concat(roads.Roads.SelectMany(r => r.Polygons))
+                .Concat(roads.Roads.Where(r => r.RoadType != RoadTypeId.Trail).SelectMany(r => r.Polygons))
                 .Concat(water.LakesPolygons);
         }
 
@@ -52,7 +52,7 @@ namespace GameRealisticMap.Nature
                 .RemoveOverlaps(progress, name + ".Overlaps")
 
                 .ProgressStep(progress, name + ".Priority")
-                .SelectMany(l => l.SubstractAll(priority, 100))
+                .SelectMany(l => l.SubstractAll(priority))
                 .ToList();
 
             return CreateWrapper(polygons);

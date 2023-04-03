@@ -7,13 +7,13 @@ namespace GameRealisticMap.Buildings
         public Building(BoundingBox box, BuildingTypeId value, List<TerrainPolygon> polygons)
         {
             Box = box;
-            Value = value;
+            TypeId = value;
             Polygons = polygons;
         }
 
         public BoundingBox Box { get; }
 
-        public BuildingTypeId Value { get; }
+        public BuildingTypeId TypeId { get; }
 
         public List<TerrainPolygon> Polygons { get; }
 

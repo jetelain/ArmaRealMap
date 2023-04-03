@@ -1,8 +1,9 @@
 ﻿using GameRealisticMap.Geometries;
+using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Water
 {
-    internal class WaterData : ITerrainData
+    public class WaterData : ITerrainData
     {
         public WaterData(List<TerrainPolygon> lakesPolygons, List<TerrainPath> waterWaysPaths)
         {
@@ -13,5 +14,13 @@ namespace GameRealisticMap.Water
         public List<TerrainPolygon> LakesPolygons { get; }
 
         public List<TerrainPath> WaterWaysPaths { get; }
+
+        public IEnumerable<Feature> ToGeoJson()
+        {
+            var properties = new Dictionary<string, object>() {
+                {"type", "lake" }
+            };
+            return LakesPolygons.Select(b => new Feature(b.ToGeoJson(), properties));
+        }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Buildings
 {
@@ -14,5 +10,13 @@ namespace GameRealisticMap.Buildings
         }
 
         public List<Building> Buildings { get; }
+
+        public IEnumerable<Feature> ToGeoJson()
+        {
+            return Buildings.Select(b => new Feature(b.Box.Polygon.ToGeoJson(), new Dictionary<string, object>() {
+                {"type", "building" },
+                {"building", b.TypeId.ToString() }
+            }));
+        }
     }
 }

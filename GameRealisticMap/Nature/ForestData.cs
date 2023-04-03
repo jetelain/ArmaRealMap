@@ -1,8 +1,9 @@
 ﻿using GameRealisticMap.Geometries;
+using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature
 {
-    internal class ForestData : IBasicTerrainData
+    public class ForestData : IBasicTerrainData
     {
         public ForestData(List<TerrainPolygon> polygons)
         {
@@ -10,5 +11,12 @@ namespace GameRealisticMap.Nature
         }
 
         public List<TerrainPolygon> Polygons { get; }
+        public IEnumerable<Feature> ToGeoJson()
+        {
+            var properties = new Dictionary<string, object>() {
+                {"type", "forest" }
+            };
+            return Polygons.Select(b => new Feature(b.ToGeoJson(), properties));
+        }
     }
 }

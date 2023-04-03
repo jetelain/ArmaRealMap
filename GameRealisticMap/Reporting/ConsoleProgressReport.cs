@@ -93,7 +93,14 @@ namespace GameRealisticMap.Reporting
             }
             sw.Stop();
             WritePercent(100d);
-            Console.Write($"Done in {Math.Ceiling(sw.ElapsedMilliseconds / 1000d)} sec");
+            if (sw.ElapsedMilliseconds < 1000)
+            {
+                Console.Write($"Done in {sw.ElapsedMilliseconds} msec");
+            }
+            else
+            {
+                Console.Write($"Done in {Math.Ceiling(sw.ElapsedMilliseconds / 1000d)} sec");
+            }
             CleanEndOfLine();
             Console.WriteLine();
             Trace.WriteLine($"Task {taskName} took {sw.ElapsedMilliseconds} msec");

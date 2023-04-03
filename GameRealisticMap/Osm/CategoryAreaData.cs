@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameRealisticMap.Buildings;
+using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Osm
 {
@@ -14,6 +15,11 @@ namespace GameRealisticMap.Osm
             Areas = areas;
         }
 
-        public List<CategoryArea> Areas { get;}
+        public List<CategoryArea> Areas { get; }
+
+        public IEnumerable<Feature> ToGeoJson()
+        {
+            return Enumerable.Empty<Feature>();
+        }
     }
 }

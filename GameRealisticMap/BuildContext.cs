@@ -8,7 +8,7 @@ using GameRealisticMap.Water;
 
 namespace GameRealisticMap
 {
-    internal class BuildContext : IBuildContext
+    public class BuildContext : IBuildContext
     {
         private readonly Dictionary<Type, ITerrainData> datas = new Dictionary<Type, ITerrainData>();
         private readonly Dictionary<Type, object> builders = new Dictionary<Type, object>();
@@ -28,6 +28,7 @@ namespace GameRealisticMap
             Register<WaterData, WaterBuilder>(new WaterBuilder(progress));
             Register<ForestData, ForestBuilder>(new ForestBuilder(progress));
             Register<ScrubData, ScrubBuilder>(new ScrubBuilder(progress));
+            Register<RocksData, RocksBuilder>(new RocksBuilder(progress));
         }
 
         public void Register<TData, TBuidler>(TBuidler builder)
@@ -40,6 +41,8 @@ namespace GameRealisticMap
         public ITerrainArea Area { get; }
 
         public IOsmDataSource OsmSource { get; }
+
+        public IEnumerable<ITerrainData> ComputedData => datas.Values;
 
         public T GetData<T>()
              where T : class, ITerrainData

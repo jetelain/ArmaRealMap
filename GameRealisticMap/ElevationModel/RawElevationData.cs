@@ -1,4 +1,6 @@
-﻿namespace GameRealisticMap.ElevationModel
+﻿using GeoJSON.Text.Feature;
+
+namespace GameRealisticMap.ElevationModel
 {
     internal class RawElevationData : ITerrainData
     {
@@ -8,5 +10,10 @@
         }
 
         public ElevationGrid RawElevation { get; }
+
+        public IEnumerable<Feature> ToGeoJson()
+        {
+            return Enumerable.Empty<Feature>();
+        }
     }
 }

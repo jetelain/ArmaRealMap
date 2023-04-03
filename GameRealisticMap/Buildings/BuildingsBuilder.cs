@@ -51,7 +51,7 @@ namespace GameRealisticMap.Buildings
             var large = pass1Builidings.Where(b => !((b.Box.Width < size && b.Box.Height < size) || b.Box.Width < lsize || b.Box.Height < lsize) && b.Box.Width < mergeLimit && b.Box.Width < mergeLimit).ToList();
             var heavy = pass1Builidings.Where(b => b.Box.Width >= mergeLimit || b.Box.Height >= mergeLimit).ToList();
 
-            using (var report2 = progress.CreateStep("ClearHeavy", large.Count))
+            using (var report2 = progress.CreateStep("Buildings.Heavy", large.Count))
             {
                 foreach (var building in heavy)
                 {
@@ -62,7 +62,7 @@ namespace GameRealisticMap.Buildings
                 }
             }
 
-            using (var report2 = progress.CreateStep("MergeSmalls", large.Count))
+            using (var report2 = progress.CreateStep("Buildings.Small", large.Count))
             {
                 foreach (var building in large)
                 {
@@ -95,7 +95,7 @@ namespace GameRealisticMap.Buildings
             var merged = 0;
             var todo = pass3.ToList();
             var total = todo.Count;
-            using var report = progress.CreateStep("RemoveCollision", total);
+            using var report = progress.CreateStep("Buildings.Collide", total);
             while (todo.Count > 0)
             {
                 var building = todo[0];
@@ -136,7 +136,7 @@ namespace GameRealisticMap.Buildings
 
         private List<BuildingCandidate> RoadCrop(List<TerrainPolygon> removed, List<BuildingCandidate> pass3, List<Road> roads)
         {
-            using var report = progress.CreateStep("RoadCrop", pass3.Count);
+            using var report = progress.CreateStep("Buildings.Roads", pass3.Count);
             var pass4 = new List<BuildingCandidate>();
             foreach (var building in pass3)
             {
@@ -186,7 +186,7 @@ namespace GameRealisticMap.Buildings
                 .Where(b => b.BuildingType != BuildingTypeId.Residential)
                 .ToList();
 
-            using var report4 = progress.CreateStep("SetCategory", pass4.Count);
+            using var report4 = progress.CreateStep("Buildings.Category", pass4.Count);
             foreach (var building in pass3)
             {
                 if (building.Category == null)
@@ -212,7 +212,7 @@ namespace GameRealisticMap.Buildings
             var buildings = osm.All.Where(o => o.Tags != null && o.Tags.ContainsKey("building")).ToList();
 
             var pass1 = new List<BuildingCandidate>();
-            using var report1 = progress.CreateStep("BoudingRect", buildings.Count);
+            using var report1 = progress.CreateStep("Buildings.Interpret", buildings.Count);
             foreach (var building in buildings)
             {
                 foreach (var geometry in osm.Interpret(building))
