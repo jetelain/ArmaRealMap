@@ -269,7 +269,7 @@ namespace GameRealisticMap.Geometries
                 clipper.AddPath(simple.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
             }
             var result = new PolyTree();
-            clipper.Execute(ClipType.ctUnion, result, PolyFillType.pftPositive);
+            clipper.Execute(ClipType.ctUnion, result, PolyFillType.pftNonZero);
             return ToPolygons(result);
         }
 
