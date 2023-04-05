@@ -13,13 +13,11 @@ namespace GameRealisticMap.Nature
     {
         private readonly IProgressSystem progress;
         private readonly float width;
-        private readonly string name;
 
         public BasicEdgeBuilder(IProgressSystem progress, float width)
         {
             this.progress = progress;
             this.width = width;
-            this.name = GetType().Name.Replace("Builder", "");
         }
         protected abstract TEdge CreateWrapper(List<TerrainPolygon> polygons);
 
@@ -48,15 +46,15 @@ namespace GameRealisticMap.Nature
             var priority = GetPriority(context);
 
             var radial = forest.Polygons
-                .ProgressStep(progress, name + ".Crown")
+                .ProgressStep(progress, "Crown")
                 .SelectMany(e => e.Crown2(width))
                 .SelectMany(poly => poly.ClippedBy(context.Area.TerrainBounds))
 
-                .ProgressStep(progress, name + ".Priority")
+                .ProgressStep(progress, "Priority")
                 .SelectMany(l => l.SubstractAll(priority))
                 .ToList();
 
-            using var step = progress.CreateStep(name + ".Merge", 1);
+            using var step = progress.CreateStep("Merge", 1);
 
             var final = TerrainPolygon.MergeAll(radial);
 

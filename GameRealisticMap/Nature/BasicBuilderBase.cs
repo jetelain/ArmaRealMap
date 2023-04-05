@@ -12,12 +12,10 @@ namespace GameRealisticMap.Nature
     {
 
         private readonly IProgressSystem progress;
-        private readonly string name;
 
         public BasicBuilderBase(IProgressSystem progress)
         {
             this.progress = progress;
-            this.name = GetType().Name.Replace("Builder", "");
         }
 
         protected abstract bool IsTargeted(TagsCollectionBase tags);
@@ -42,16 +40,16 @@ namespace GameRealisticMap.Nature
             var polygons = context.OsmSource.All
                 .Where(s => s.Tags != null && IsTargeted(s.Tags))
 
-                .ProgressStep(progress, name + ".Interpret")
+                .ProgressStep(progress, "Interpret")
                 .SelectMany(s => context.OsmSource.Interpret(s))
                 .SelectMany(s => TerrainPolygon.FromGeometry(s, context.Area.LatLngToTerrainPoint))
 
-                .ProgressStep(progress, name + ".Crop")
+                .ProgressStep(progress, "Crop")
                 .SelectMany(poly => poly.ClippedBy(context.Area.TerrainBounds))
 
-                .RemoveOverlaps(progress, name + ".Overlaps")
+                .RemoveOverlaps(progress, "Overlaps")
 
-                .ProgressStep(progress, name + ".Priority")
+                .ProgressStep(progress, "Priority")
                 .SelectMany(l => l.SubstractAll(priority))
                 .ToList();
 

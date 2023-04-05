@@ -75,7 +75,7 @@ namespace GameRealisticMap.Reporting
             if (!Console.IsOutputRedirected)
             {
                 var cols = Math.Max(0, Math.Min(20, (int)(percent / 5)));
-                Console.CursorLeft = 20;
+                Console.CursorLeft = 30;
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write(new string('#', cols));
                 Console.ForegroundColor = ConsoleColor.Gray;

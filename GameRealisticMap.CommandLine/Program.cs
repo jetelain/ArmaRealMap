@@ -21,7 +21,7 @@ namespace GameRealisticMap.CommandLine
 
             var osmSource = await loader.Load(area);
 
-            var context = new BuildContext(area, osmSource);
+            var context = new BuildContext(progress, area, osmSource);
 
             context.RegisterAll(progress, new DefaultRoadTypeLibrary());
 

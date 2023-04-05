@@ -13,8 +13,9 @@ namespace GameRealisticMap
         private readonly Dictionary<Type, ITerrainData> datas = new Dictionary<Type, ITerrainData>();
         private readonly Dictionary<Type, object> builders = new Dictionary<Type, object>();
 
-        public BuildContext(ITerrainArea area, IOsmDataSource source)
+        public BuildContext(IProgressSystem progress, ITerrainArea area, IOsmDataSource source)
         {
+            this.progress = progress;
             Area = area;
             OsmSource = source;
         }
@@ -40,6 +41,8 @@ namespace GameRealisticMap
             builders.Add(typeof(TData), builder);
         }
 
+        private IProgressSystem progress;
+
         public ITerrainArea Area { get; }
 
         public IOsmDataSource OsmSource { get; }
@@ -56,9 +59,12 @@ namespace GameRealisticMap
 
             if (builders.TryGetValue(typeof(T), out var builder))
             {
-                var builtData = ((IDataBuilder<T>)builder).Build(this);
-                datas[typeof(T)] = builtData;
-                return builtData;
+                using (progress.CreateScope(builder.GetType().Name.Replace("Builder","")))
+                {
+                    var builtData = ((IDataBuilder<T>)builder).Build(this);
+                    datas[typeof(T)] = builtData;
+                    return builtData;
+                }
             }
 
             throw new NotImplementedException();

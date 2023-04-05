@@ -23,7 +23,7 @@ namespace GameRealisticMap.Water
 
         private static bool IsLake(TagsCollectionBase tags)
         {
-            return tags.GetValue("water") == "lake" || tags.GetValue("natural") == "lake";
+            return tags.GetValue("water") == "lake" || tags.GetValue("natural") == "water";
         }
 
         public WaterData Build(IBuildContext context)
@@ -42,30 +42,30 @@ namespace GameRealisticMap.Water
             var lakesPolygons = context.OsmSource.All
                 .Where(s => s.Tags != null && IsLake(s.Tags))
 
-                .ProgressStep(progress, "Lakes.Interpret")
+                .ProgressStep(progress, "Interpret")
                 .SelectMany(s => context.OsmSource.Interpret(s))
                 .SelectMany(s => TerrainPolygon.FromGeometry(s, context.Area.LatLngToTerrainPoint))
 
-                .ProgressStep(progress, "Lakes.Crop")
+                .ProgressStep(progress, "Crop")
                 .SelectMany(poly => poly.ClippedBy(context.Area.TerrainBounds))
 
-                .ProgressStep(progress, "Lakes.Embankment")
+                .ProgressStep(progress, "Embankment")
                 .SelectMany(l => l.SubstractAll(embankmentsPolygons))
                 .ToList();
 
             var waterWaysPaths = context.OsmSource.All
                 .Where(s => s.Tags != null && IsWaterWay(s.Tags)) // XXX: Compute width ? (from type)
 
-                .ProgressStep(progress, "WaterWays.Interpret")
+                .ProgressStep(progress, "Interpret")
                 .SelectMany(s => context.OsmSource.Interpret(s))
                 .OfType<ILineString>() // XXX: Include IMultiLineString ?
                 .Where(l => !l.IsClosed)
                 .SelectMany(geometry => TerrainPath.FromGeometry(geometry, context.Area.LatLngToTerrainPoint))
 
-                .ProgressStep(progress, "WaterWays.Crop")
+                .ProgressStep(progress, "Crop")
                 .SelectMany(path => path.ClippedBy(context.Area.TerrainBounds))
 
-                .ProgressStep(progress, "WaterWays.Lakes")
+                .ProgressStep(progress, "Lakes")
                 .SelectMany(p => p.SubstractAll(lakesPolygons)) 
                 .Where(w => w.Length > 10f) // XXX: Merge ? (before the length filter)
                 .ToList();

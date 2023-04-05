@@ -18,7 +18,7 @@ namespace GameRealisticMap.Roads
 
         internal List<Road> MergeRoads(List<Road> roads)
         {
-            using var report = progress.CreateStep("Roads.Merge", roads.Count);
+            using var report = progress.CreateStep("Merge", roads.Count);
             var todo = new HashSet<Road>(roads);
             var roadsPass2 = new List<Road>();
             foreach (var road in todo.ToList())
@@ -88,7 +88,7 @@ namespace GameRealisticMap.Roads
         {
             var osmRoads = osm.Ways.Where(o => o.Tags != null && o.Tags.ContainsKey("highway")).ToList();
             var roads = new List<Road>();
-            using var report = progress.CreateStep("Roads.Interpret", osmRoads.Count);
+            using var report = progress.CreateStep("Interpret", osmRoads.Count);
             foreach (var road in osmRoads)
             {
                 var kind = OsmRoadCategorizer.ToRoadType(road.Tags);
