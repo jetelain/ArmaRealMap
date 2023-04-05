@@ -27,6 +27,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.P3D", "bis-file-formats
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapToolkit", "mapkit\MapToolkit\MapToolkit.csproj", "{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap", "GameRealisticMap\GameRealisticMap.csproj", "{67387AB0-99B8-45BD-8DFB-EC3F5C4C623F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.Test", "GameRealisticMap.Test\GameRealisticMap.Test.csproj", "{96536D55-42E1-4B69-8FED-43ACB72DA175}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameRealisticMap.CommandLine", "GameRealisticMap.CommandLine\GameRealisticMap.CommandLine.csproj", "{2B0249D8-91A5-4B69-811C-300D90FD82EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +87,18 @@ Global
 		{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67387AB0-99B8-45BD-8DFB-EC3F5C4C623F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67387AB0-99B8-45BD-8DFB-EC3F5C4C623F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67387AB0-99B8-45BD-8DFB-EC3F5C4C623F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67387AB0-99B8-45BD-8DFB-EC3F5C4C623F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96536D55-42E1-4B69-8FED-43ACB72DA175}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96536D55-42E1-4B69-8FED-43ACB72DA175}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96536D55-42E1-4B69-8FED-43ACB72DA175}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96536D55-42E1-4B69-8FED-43ACB72DA175}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B0249D8-91A5-4B69-811C-300D90FD82EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B0249D8-91A5-4B69-811C-300D90FD82EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B0249D8-91A5-4B69-811C-300D90FD82EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B0249D8-91A5-4B69-811C-300D90FD82EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

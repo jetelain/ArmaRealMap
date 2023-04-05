@@ -15,7 +15,7 @@ namespace GameRealisticMap.CommandLine
         {
             var progress = new ConsoleProgressSystem();
 
-            var area = TerrainAreaUTM.CreateFromSouthWest("47.6856, 6.8271", 2.5f, 512);
+            var area = TerrainAreaUTM.CreateFromSouthWest("47.6856, 6.8271", 2.5f, 1024);
 
             var loader = new OsmDataOverPassLoader(progress);
 
@@ -31,6 +31,8 @@ namespace GameRealisticMap.CommandLine
             context.GetData<ForestData>();
             context.GetData<ScrubData>();
             context.GetData<RocksData>();
+            context.GetData<ForestEdgeData>();
+            context.GetData<ScrubEdgeData>();
 
             var collection = new FeatureCollection(context.ComputedData.SelectMany(d => d.ToGeoJson()).ToList());
 
