@@ -14,6 +14,7 @@ using ArmaRealMap.Roads;
 using ArmaRealMap.TerrainBuilder;
 using ArmaRealMap.TerrainData;
 using ArmaRealMap.TerrainData.DefaultAreas;
+using ArmaRealMap.TerrainData.ElevationModel;
 using ArmaRealMap.TerrainData.Forests;
 using ArmaRealMap.TerrainData.GroundDetailTextures;
 using CommandLine;

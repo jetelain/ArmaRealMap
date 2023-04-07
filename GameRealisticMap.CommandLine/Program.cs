@@ -29,6 +29,7 @@ namespace GameRealisticMap.CommandLine
             var context = new BuildContext(catalog, progress, area, osmSource);
             
             context.GetData<RawElevationData>();
+            context.GetData<ElevationData>();
             context.GetData<RoadsData>();
             context.GetData<BuildingsData>();
             context.GetData<WaterData>();

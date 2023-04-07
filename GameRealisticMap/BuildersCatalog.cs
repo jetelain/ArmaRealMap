@@ -18,6 +18,7 @@ namespace GameRealisticMap
         {
             Register<RawSatelliteImageData, RawSatelliteImageBuilder>(new RawSatelliteImageBuilder(progress));
             Register<RawElevationData, RawElevationBuilder>(new RawElevationBuilder(progress));
+            Register<ElevationData, ElevationBuilder>(new ElevationBuilder(progress));
             Register<CategoryAreaData, CategoryAreaBuilder>(new CategoryAreaBuilder(progress));
             Register<RoadsData, RoadsBuilder>(new RoadsBuilder(progress, library));
             Register<BuildingsData, BuildingsBuilder>(new BuildingsBuilder(progress));

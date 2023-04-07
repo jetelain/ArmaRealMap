@@ -36,6 +36,8 @@ namespace GameRealisticMap.Buildings
             var pass5 = DetectBuildingCategory(categorizers.Areas, pass4);
             //Preview(data, removed, pass5, "buildings-pass5.png");
 
+            // TODO: Remove out of bounds buildings
+
             return new BuildingsData(pass5);
         }
 

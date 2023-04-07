@@ -1,30 +1,43 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
 
-namespace ArmaRealMap
+namespace GameRealisticMap.Geometries
 {
     public class SimpleSpacialIndex<T> : IEnumerable<T>
         where T : class
     {
         private class DataNode
         {
-            public Vector2 start;
-            public Vector2 end;
-            public T value;
+            public readonly Vector2 start;
+            public readonly Vector2 end;
+            public T? value;
             public bool isRemoved;
+
+            public DataNode(T value, Vector2 start, Vector2 end)
+            {
+                this.value = value;
+                this.start = start;
+                this.end = end;
+            }
         }
         private class LockArea : IDisposable
         {
-            public int x1;
-            public int y1;
-            public int x2;
-            public int y2;
-            public SimpleSpacialIndex<T> owner;
+            public readonly int x1;
+            public readonly int y1;
+            public readonly int x2;
+            public readonly int y2;
+            public readonly SimpleSpacialIndex<T> owner;
+
+            public LockArea(int x1, int x2, int y1, int y2, SimpleSpacialIndex<T> owner)
+            {
+                this.x1 = x1;
+                this.x2 = x2;
+                this.y1 = y1;
+                this.y2 = y2;
+                this.owner = owner;
+            }
+
             public void Dispose()
             {
                 lock (owner.locks)
@@ -39,7 +52,6 @@ namespace ArmaRealMap
         private readonly List<LockArea> locks = new List<LockArea>();
 
         private readonly Vector2 start;
-        private readonly Vector2 end;
         private readonly Vector2 cellSize;
         private readonly Vector2 maxCell;
         private readonly int maxCellIndex;
@@ -48,7 +60,6 @@ namespace ArmaRealMap
         public SimpleSpacialIndex(Vector2 start, Vector2 size, int cellCount = 512)
         {
             this.start = start;
-            this.end = start + size;
             this.cellSize = size / cellCount;
             cells = new List<DataNode>[cellCount, cellCount];
             for(int x = 0; x < cellCount; ++x)
@@ -66,7 +77,7 @@ namespace ArmaRealMap
 
         public int Count => all.Count - removedCount;
 
-        public bool TryLock(Vector2 start, Vector2 end, out IDisposable locker)
+        public bool TryLock(Vector2 start, Vector2 end, out IDisposable? locker)
         {
             var p1 = Vector2.Clamp((start - this.start) / cellSize, Vector2.Zero, maxCell);
             var p2 = Vector2.Clamp((end - this.start) / cellSize, Vector2.Zero, maxCell);
@@ -84,7 +95,7 @@ namespace ArmaRealMap
                     locker = null;
                     return false;
                 }
-                var lockArea = new LockArea() { x1 = x1, x2 = x2, y1 = y1, y2 = y2, owner = this };
+                var lockArea = new LockArea( x1: x1, x2: x2, y1: y1, y2: y2, owner: this );
                 locker = lockArea;
                 locks.Add(lockArea);
             }
@@ -113,12 +124,7 @@ namespace ArmaRealMap
 
         public void Insert(Vector2 start, Vector2 end, T value)
         {
-            var node = new DataNode()
-            {
-                value = value,
-                start = start,
-                end = end,
-            };
+            var node = new DataNode(value, start, end);
             all.Add(node);
             foreach (var cell in GetCells(node.start, node.end))
             {
@@ -138,7 +144,9 @@ namespace ArmaRealMap
                         node.start.Y <= end.Y && 
 
                         node.end.X >= start.X &&
-                        node.end.Y >= start.Y)
+                        node.end.Y >= start.Y &&
+
+                        !node.isRemoved)
                     {
                         result.Add(node);
                     }
@@ -147,9 +155,9 @@ namespace ArmaRealMap
             return result.Select(n => n.value).ToList();
         }
 
-        internal void Remove(Vector2 start, Vector2 end, T obj)
+        public void Remove(Vector2 start, Vector2 end, T obj)
         {
-            DataNode node = null;
+            DataNode? node = null;
             foreach (var cell in GetCells(start, end))
             {
                 if (node == null)

@@ -4,33 +4,32 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.Core.Roads;
-using ArmaRealMap.ElevationModel;
-using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
-using ArmaRealMap.Roads;
-using ArmaRealMap.TerrainData.ElevationModel;
+using GameRealisticMap.ElevationModel;
+using GameRealisticMap.ElevationModel.Constrained;
+using GameRealisticMap.Geometries;
+using GameRealisticMap.Reporting;
+using GameRealisticMap.Roads;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
-using GameRealisticMap.Roads;
 
-namespace ArmaRealMap
+namespace ArmaRealMap.TerrainData.ElevationModel
 {
     class ElevationGridBuilder
     {
         internal static ElevationGrid LoadOrGenerateElevationGrid(MapData data)
         {
-            var elevation = new ElevationGrid(data.MapInfos);
+            var elevation = new ElevationGrid(data.MapInfos.Size, data.MapInfos.CellSize);
             var cacheFile = Path.Combine(data.Config.Target.InputCache, "elevation-raw.bin");
             if (!File.Exists(cacheFile))
             {
-                elevation.LoadFromSRTM(data.GlobalConfig.SRTM);
-                elevation.SaveToBin(cacheFile);
+                elevation.LoadFromSRTM(data.MapInfos, data.GlobalConfig.SRTM);
+                elevation.SaveToBin(data.MapInfos, cacheFile);
             }
             else
             {
-                elevation.LoadFromBin(cacheFile);
+                elevation.LoadFromBin(data.MapInfos, cacheFile);
             }
             return elevation;
         }
@@ -42,7 +41,7 @@ namespace ArmaRealMap
             {
                 ProcessForced(data.Config, data.MapInfos, data.Elevation);
 
-                var constraintGrid = new ElevationConstraintGrid(data.MapInfos, data.Elevation);
+                var constraintGrid = new ElevationConstraintGrid(data.MapInfos, data.Elevation, new ConsoleProgressSystem());
 
                 ProcessRoads(data, constraintGrid, libs);
 
@@ -50,13 +49,13 @@ namespace ArmaRealMap
 
                 ProtectLakes(data, constraintGrid);
 
-                constraintGrid.SolveAndApplyOnGrid(data);
+                constraintGrid.SolveAndApplyOnGrid();
 
-                data.Elevation.SaveToBin(cacheFile);
+                data.Elevation.SaveToBin(data.MapInfos, cacheFile);
             }
             else
             {
-                data.Elevation.LoadFromBin(cacheFile);
+                data.Elevation.LoadFromBin(data.MapInfos, cacheFile);
             }
 
             if ( !options.DoNotGenerateObjects)
@@ -66,7 +65,7 @@ namespace ArmaRealMap
 
             if (!options.DoNotGenerateElevation)
             {
-                data.Elevation.SaveToAsc(Path.Combine(data.Config.Target.Terrain, "elevation.asc"));
+                data.Elevation.SaveToAsc(data.MapInfos, Path.Combine(data.Config.Target.Terrain, "elevation.asc"));
             }
         }
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ArmaRealMap.ElevationModel;
+﻿using System.Collections.Generic;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
-using ArmaRealMap.Roads;
 using GameRealisticMap.Roads;
 
 namespace ArmaRealMap

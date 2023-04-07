@@ -23,7 +23,12 @@ namespace GameRealisticMap.Water
 
         private static bool IsLake(TagsCollectionBase tags)
         {
-            return tags.GetValue("water") == "lake" || tags.GetValue("natural") == "water";
+            var water = tags.GetValue("water");
+            if (!string.IsNullOrEmpty(water))
+            {
+                return water == "lake" || water == "pond";
+            }
+            return tags.GetValue("natural") == "water";
         }
 
         public WaterData Build(IBuildContext context)
@@ -52,6 +57,8 @@ namespace GameRealisticMap.Water
                 .ProgressStep(progress, "Embankment")
                 .SelectMany(l => l.SubstractAll(embankmentsPolygons))
                 .ToList();
+
+            // Split in a specific builder ???
 
             var waterWaysPaths = context.OsmSource.All
                 .Where(s => s.Tags != null && IsWaterWay(s.Tags)) // XXX: Compute width ? (from type)

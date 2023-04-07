@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MathNet.Numerics.LinearRegression;
+﻿using MathNet.Numerics.LinearRegression;
 
-namespace ArmaRealMap.TerrainData.ElevationModel
+namespace GameRealisticMap.ElevationModel.Constrained
 {
-    internal class ElevationSmoothSegment
+    public sealed class ElevationSmoothSegment
     {
         private readonly List<Tuple<float, ElevationConstraintNode>> nodes = new List<Tuple<float, ElevationConstraintNode>>();
         private readonly float sampling;
 
-        public ElevationSmoothSegment(ElevationConstraintNode start, float sampling)
+        internal ElevationSmoothSegment(ElevationConstraintNode start, float sampling)
         {
             this.sampling = sampling;
             nodes.Add(new Tuple<float, ElevationConstraintNode>(0, start));
@@ -21,7 +18,7 @@ namespace ArmaRealMap.TerrainData.ElevationModel
             nodes.Add(new Tuple<float, ElevationConstraintNode>(lengthFromStart, point));
         }
 
-        public void Apply()
+        internal void Apply()
         {
             var until = sampling;
             var samples = new List<Tuple<float, ElevationConstraintNode>>();

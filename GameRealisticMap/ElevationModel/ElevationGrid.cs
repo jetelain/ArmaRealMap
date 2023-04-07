@@ -29,6 +29,10 @@ namespace GameRealisticMap.ElevationModel
 
         public float[,] Data => elevationGrid;
 
+        public int Size => size;
+
+        public float CellSize => cellSize.X;
+
         public float ElevationAround(TerrainPoint p)
         {
             return ElevationAround(p, cellSize.X / 2);

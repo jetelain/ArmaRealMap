@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using ArmaRealMap.ElevationModel;
 using ArmaRealMap.TerrainData.GroundDetailTextures;
 using BIS.Core.Streams;
 using BIS.WRP;
+using GameRealisticMap.ElevationModel;
 using SixLabors.ImageSharp;
 
 namespace ArmaRealMap
@@ -99,7 +99,7 @@ namespace ArmaRealMap
             {
                 for (int y = 0; y < config.GridSize; y++)
                 {
-                    wrp.Elevation[x + (y * config.GridSize)] = elevationGrid.elevationGrid[x, y];
+                    wrp.Elevation[x + (y * config.GridSize)] = elevationGrid.Data[x, y];
                 }
                 report.ReportOneDone();
             }

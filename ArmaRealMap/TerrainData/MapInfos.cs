@@ -4,10 +4,11 @@ using System.Linq;
 using GameRealisticMap.Geometries;
 using CoordinateSharp;
 using SixLabors.ImageSharp;
+using GameRealisticMap;
 
 namespace ArmaRealMap
 {
-    public class MapInfos
+    public class MapInfos : ITerrainArea
     {
         private static readonly EagerLoad eagerUTM = new EagerLoad(false) { UTM_MGRS = true, Extensions = new EagerLoad_Extensions() { MGRS = false } };
 
@@ -37,6 +38,14 @@ namespace ArmaRealMap
         public int ImageryWidth => (int)(Width / ImageryResolution);
 
         public TerrainPolygon Polygon { get; private set; }
+
+        public TerrainPolygon TerrainBounds => Polygon;
+
+        public float GridCellSize => CellSize;
+
+        public int GridSize => Size;
+
+        public float SizeInMeters => Width;
 
         internal bool IsInside(TerrainPoint p)
         {
@@ -192,6 +201,12 @@ namespace ArmaRealMap
             );
 
 
+        }
+
+        public GeoAPI.Geometries.Coordinate TerrainPointToLatLng(TerrainPoint point)
+        {
+            var coord = TerrainToLatLong(StartPointUTM, point.X, point.Y, eagerNONE);
+            return new GeoAPI.Geometries.Coordinate(coord.Longitude.ToDouble(), coord.Latitude.ToDouble());
         }
     }
 }

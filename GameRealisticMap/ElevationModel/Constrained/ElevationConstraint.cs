@@ -1,6 +1,6 @@
-﻿namespace ArmaRealMap.TerrainData.ElevationModel
+﻿namespace GameRealisticMap.ElevationModel.Constrained
 {
-    class ElevationConstraint
+    internal sealed class ElevationConstraint
     {
         private readonly ElevationConstraintNode lowerThan;
 
@@ -9,7 +9,7 @@
             this.lowerThan = lowerThan;
         }
 
-        public bool IsSolved
+        internal bool IsSolved
         {
             get
             {
@@ -21,7 +21,7 @@
             }
         }
 
-        public ElevationConstraintNode LowerThan => lowerThan;
+        internal ElevationConstraintNode LowerThan => lowerThan;
 
         internal float Apply(float elevation)
         {

@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Linq;
 using System.Numerics;
-using System.Threading;
-using System.Threading.Tasks;
-using ArmaRealMap.ElevationModel;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Reporting;
 using MathNet.Numerics.LinearRegression;
 
-namespace ArmaRealMap.TerrainData.ElevationModel
+namespace GameRealisticMap.ElevationModel.Constrained
 {
-    internal class ElevationConstraintGrid : SimpleSpacialIndex<ElevationConstraintNode>
+    public class ElevationConstraintGrid : SimpleSpacialIndex<ElevationConstraintNode>
     {
+        private readonly ITerrainArea area;
         private readonly ElevationGrid initial;
+        private readonly IProgressSystem progress;
         private readonly float planarInitialDela;
         private readonly float flatSegment;
         private readonly Vector2 MergeRadius = new Vector2(0.1f, 0.1f);
@@ -24,13 +21,17 @@ namespace ArmaRealMap.TerrainData.ElevationModel
 
         private readonly List<ElevationSmoothSegment> smoothSegments = new List<ElevationSmoothSegment>();
 
-        public ElevationConstraintGrid(MapInfos map, ElevationGrid initial)
-            : base(map.P1.Vector, new Vector2(map.Width, map.Height), 512)
+        public ElevationConstraintGrid(ITerrainArea area, ElevationGrid initial, IProgressSystem progress)
+            : base(Vector2.Zero, new Vector2(area.SizeInMeters), 512)
         {
+            this.area = area;
             this.initial = initial;
-            this.planarInitialDela = map.CellSize / 2f;
-            this.flatSegment = map.CellSize / 2f;
+            this.progress = progress;
+            planarInitialDela = area.GridCellSize / 2f;
+            flatSegment = area.GridCellSize / 2f;
         }
+
+        public ElevationGrid Grid => initial;
 
         public ElevationConstraintNode NodeHard(TerrainPoint point)
         {
@@ -44,8 +45,8 @@ namespace ArmaRealMap.TerrainData.ElevationModel
 
         private ElevationConstraintNode Node(TerrainPoint point, bool isSoft)
         {
-            var existingList =  Search(point.Vector - MergeRadius, point.Vector + MergeRadius);
-            if (existingList.Count > 0 )
+            var existingList = Search(point.Vector - MergeRadius, point.Vector + MergeRadius);
+            if (existingList.Count > 0)
             {
                 var enode = existingList.OrderBy(p => (p.Point.Vector - point.Vector).LengthSquared()).First();
                 enode.IsSoft = enode.IsSoft && isSoft;
@@ -89,8 +90,8 @@ namespace ArmaRealMap.TerrainData.ElevationModel
 
         private void AddFlatSegmentHard(ElevationConstraintNode node, float radius, Vector2 normalized)
         {
-            NodeHard(node.Point + (Vector2.Transform(normalized, rotateP90) * radius)).MustBeSameThan(node);
-            NodeHard(node.Point + (Vector2.Transform(normalized, rotateM90) * radius)).MustBeSameThan(node);
+            NodeHard(node.Point + Vector2.Transform(normalized, rotateP90) * radius).MustBeSameThan(node);
+            NodeHard(node.Point + Vector2.Transform(normalized, rotateM90) * radius).MustBeSameThan(node);
         }
         /*
         public IEnumerable<ElevationConstraintNode> GetReference(ElevationConstraintNode node, Vector2 normalVector, float width)
@@ -108,39 +109,21 @@ namespace ArmaRealMap.TerrainData.ElevationModel
             };
         }
         */
-        public void Solve(MapData data)
+        private void Solve()
         {
-            var report = new ProgressReport("Solve", Count);
-            /*
-            foreach (var value in Values.Where(v => v.IsReferenceOnly).ToList())
-            {
-                value.Solve();
-                report.ReportOneDone();
-            }*/
-
-            SolveLoop(report);
-            report.TaskDone();
+            SolveLoop();
 
             var unsolved = Values.Where(v => !v.IsSolved).ToList();
-            /*if (unsolved.Count > 0)
-            {
-                foreach (var value in unsolved)
-                {
-                    value.ClearOptionalConstraints();
-                }
-                SolveLoop(report);
-                unsolved = Values.Where(v => !v.IsSolved).ToList();
-            }*/
-            Console.WriteLine($"Unsolved: {unsolved.Count}");
             foreach (var value in unsolved)
             {
                 value.GiveUp();
             }
-
         }
 
-        private void SolveLoop(ProgressReport report)
+        private void SolveLoop()
         {
+            using var report = progress.CreateStep("Solve", Count);
+
             bool changed = true;
             var remain = Values;
             while (remain.Any() && changed)
@@ -157,42 +140,40 @@ namespace ArmaRealMap.TerrainData.ElevationModel
             }
         }
 
-        public void Smooth()
+        private void Smooth()
         {
-            var report = new ProgressReport("Smooth", smoothSegments.Count);
+            using var report = progress.CreateStep("Smooth", smoothSegments.Count);
             foreach (var smooth in smoothSegments)
             {
                 smooth.Apply();
                 report.ReportOneDone();
             }
-            report.TaskDone();
         }
 
-        public void SolveAndApplyOnGrid(MapData data)
+        public void SolveAndApplyOnGrid()
         {
-            Solve(data);
+            Solve();
 
             Smooth();
 
             ApplyOnGrid();
         }
 
-
-        public void ApplyOnGrid()
+        private void ApplyOnGrid()
         {
-            var unit = new Vector2(initial.area.CellSize);
-            var two = new Vector2(initial.area.CellSize * 2);
-            var report = new ProgressReport("ScanGrid", initial.area.Size);
+            var unit = new Vector2(area.GridCellSize);
+            var two = new Vector2(area.GridCellSize * 2);
+            var report = progress.CreateStep("ScanGrid", area.GridSize);
             int done = 0;
             int changes = 0;
-            var listHard = new ConcurrentBag<(int,int,Vector2,List<ElevationConstraintNode>)>();
+            var listHard = new ConcurrentBag<(int, int, Vector2, List<ElevationConstraintNode>)>();
             var listSoft = new ConcurrentBag<(int, int, Vector2, List<ElevationConstraintNode>)>();
 
-            Parallel.For(0, initial.area.Size, y =>
+            Parallel.For(0, area.GridSize, y =>
             {
-                for (int x = 0; x < initial.area.Size; x++)
+                for (int x = 0; x < area.GridSize; x++)
                 {
-                    var point = new Vector2(x * initial.area.CellSize, y * initial.area.CellSize);
+                    var point = new Vector2(x * area.GridCellSize, y * area.GridCellSize);
                     var hard = Search(point - unit, point + unit).Where(c => c.IsSolved).ToList();
                     if (hard.Count > 0)
                     {
@@ -207,40 +188,40 @@ namespace ArmaRealMap.TerrainData.ElevationModel
                         }
                     }
                 }
-                report.ReportItemsDone(Interlocked.Increment(ref done));
+                report.Report(Interlocked.Increment(ref done));
             });
-            report.TaskDone();
+            report.Dispose();
 
-            report = new ProgressReport("ApplyGrid", (listHard.Count + listSoft.Count) * 20);
+            report = progress.CreateStep("ApplyGrid", (listHard.Count + listSoft.Count) * 20);
             for (var i = 0; i < 20; ++i)
             {
                 changes = 0;
                 foreach (var (x, y, point, constraints) in listHard)
                 {
-                    var intialElevation = initial.elevationGrid[x, y];
+                    var intialElevation = initial.Data[x, y];
                     var elevation = Estimate(point, constraints, intialElevation);
                     if (Math.Abs(elevation - intialElevation) > 0.05f)
                     {
                         changes++;
                     }
-                    initial.elevationGrid[x, y] = elevation;
+                    initial.Data[x, y] = elevation;
                     report.ReportOneDone();
                 }
                 // Now that all hard points have been applied, try to smooth around soft points
                 foreach (var (x, y, point, constraints) in listSoft)
                 {
-                    var intialElevation = initial.elevationGrid[x, y];
+                    var intialElevation = initial.Data[x, y];
                     var elevation = SoftAround(intialElevation, point, initial, constraints);
                     if (Math.Abs(elevation - intialElevation) > 0.05f)
                     {
                         changes++;
                     }
-                    initial.elevationGrid[x, y] = elevation;
+                    initial.Data[x, y] = elevation;
                     report.ReportOneDone();
                 }
                 Trace.WriteLine($"{changes} changes on elevation grid");
             }
-            report.TaskDone();
+            report.Dispose();
             Trace.Flush();
         }
 
@@ -251,13 +232,13 @@ namespace ArmaRealMap.TerrainData.ElevationModel
             // -----*------
             //      |  
             //  *   |   *
-            var elevation = (new List<float>() {
+            var elevation = new List<float>() {
                 initialElevation,
                 grid.ElevationAt(new TerrainPoint(point.X + planarInitialDela, point.Y + planarInitialDela)),
                 grid.ElevationAt(new TerrainPoint(point.X + planarInitialDela, point.Y - planarInitialDela)),
                 grid.ElevationAt(new TerrainPoint(point.X - planarInitialDela, point.Y - planarInitialDela)),
                 grid.ElevationAt(new TerrainPoint(point.X - planarInitialDela, point.Y + planarInitialDela))
-            }).Average();
+            }.Average();
             var protect = constraints.Where(c => c.IsProtected).Min(c => c.LowerLimitAbsoluteElevation);
             if (protect != null)
             {

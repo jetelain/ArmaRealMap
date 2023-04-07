@@ -33,7 +33,7 @@ namespace GameRealisticMap.ElevationModel
             var size = context.Area.GridSize;
             var cellSize = context.Area.GridCellSize;
 
-            using var report = progress.CreateStep("RawElevation", size);
+            using var report = progress.CreateStep("SRTM", size);
             var grid = new ElevationGrid(size, cellSize);
             var elevationGrid = grid.Data;
             Parallel.For(0, size, y =>

@@ -1,0 +1,44 @@
+﻿using System.Numerics;
+using GameRealisticMap;
+using GameRealisticMap.Geometries;
+
+namespace ArmaRealMap
+{
+    public class TerrainSpacialIndex<T> : SimpleSpacialIndex<T> where T : class, ITerrainGeometry
+    {
+        public TerrainSpacialIndex(ITerrainArea map, int cellCount = 512)
+            : base(Vector2.Zero, new Vector2(map.SizeInMeters, map.SizeInMeters), cellCount)
+        {
+        }
+
+        public void Insert(T obj)
+        {
+            Insert(obj.MinPoint.Vector, obj.MaxPoint.Vector, obj);
+        }
+
+        public void Remove(T obj)
+        {
+            Remove(obj.MinPoint.Vector, obj.MaxPoint.Vector, obj);
+        }
+
+        public List<T> Search(TerrainPoint start, TerrainPoint end)
+        {
+            return Search(start.Vector, end.Vector);
+        }
+
+        public List<T> Search(ITerrainGeometry area)
+        {
+            return Search(area.MinPoint.Vector, area.MaxPoint.Vector);
+        }
+
+        public bool TryLock(ITerrainGeometry area, out IDisposable? locker)
+        {
+            return TryLock(area.MinPoint.Vector, area.MaxPoint.Vector, out locker);
+        }
+
+        public bool TryLock(ITerrainGeometry area, Vector2 offset, out IDisposable? locker)
+        {
+            return TryLock(area.MinPoint.Vector - offset, area.MaxPoint.Vector + offset, out locker);
+        }
+    }
+}
