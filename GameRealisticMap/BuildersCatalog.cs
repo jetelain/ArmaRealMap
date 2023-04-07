@@ -1,11 +1,14 @@
 ﻿using GameRealisticMap.Buildings;
 using GameRealisticMap.ElevationModel;
-using GameRealisticMap.Nature;
+using GameRealisticMap.Nature.Forests;
+using GameRealisticMap.Nature.Lakes;
+using GameRealisticMap.Nature.RockAreas;
+using GameRealisticMap.Nature.Scrubs;
+using GameRealisticMap.Nature.WaterWays;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
 using GameRealisticMap.Satellite;
-using GameRealisticMap.Water;
 
 namespace GameRealisticMap
 {
@@ -22,12 +25,13 @@ namespace GameRealisticMap
             Register<CategoryAreaData, CategoryAreaBuilder>(new CategoryAreaBuilder(progress));
             Register<RoadsData, RoadsBuilder>(new RoadsBuilder(progress, library));
             Register<BuildingsData, BuildingsBuilder>(new BuildingsBuilder(progress));
-            Register<WaterData, WaterBuilder>(new WaterBuilder(progress));
+            Register<WaterWaysData, WaterWaysBuilder>(new WaterWaysBuilder(progress));
             Register<ForestData, ForestBuilder>(new ForestBuilder(progress));
             Register<ScrubData, ScrubBuilder>(new ScrubBuilder(progress));
             Register<RocksData, RocksBuilder>(new RocksBuilder(progress));
             Register<ForestRadialData, ForestRadialBuilder>(new ForestRadialBuilder(progress));
             Register<ScrubRadialData, ScrubRadialBuilder>(new ScrubRadialBuilder(progress));
+            Register<LakesData, LakesBuilder>(new LakesBuilder(progress));
         }
 
         public void Register<TData, TBuidler>(TBuidler builder)

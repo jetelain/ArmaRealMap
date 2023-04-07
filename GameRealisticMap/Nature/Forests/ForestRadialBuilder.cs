@@ -1,9 +1,9 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 
-namespace GameRealisticMap.Nature
+namespace GameRealisticMap.Nature.Forests
 {
-    internal class ForestRadialBuilder : BasicRadialBuilder<ForestRadialData,ForestData>
+    internal class ForestRadialBuilder : BasicRadialBuilder<ForestRadialData, ForestData>
     {
         public ForestRadialBuilder(IProgressSystem progress) : base(progress, 25f)
         {

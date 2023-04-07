@@ -1,7 +1,8 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Reporting;
 
-namespace GameRealisticMap.Nature
+namespace GameRealisticMap.Nature.Scrubs
 {
     internal class ScrubRadialBuilder : BasicRadialBuilder<ScrubRadialData, ScrubData>
     {

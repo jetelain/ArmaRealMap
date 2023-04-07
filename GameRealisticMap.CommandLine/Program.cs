@@ -1,12 +1,14 @@
 ﻿using System.Text.Json;
 using GameRealisticMap.Buildings;
 using GameRealisticMap.ElevationModel;
-using GameRealisticMap.Nature;
+using GameRealisticMap.Nature.Forests;
+using GameRealisticMap.Nature.RockAreas;
+using GameRealisticMap.Nature.Scrubs;
+using GameRealisticMap.Nature.WaterWays;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
 using GameRealisticMap.Satellite;
-using GameRealisticMap.Water;
 using GeoJSON.Text.Feature;
 using MapToolkit.Drawing;
 
@@ -32,7 +34,7 @@ namespace GameRealisticMap.CommandLine
             context.GetData<ElevationData>();
             context.GetData<RoadsData>();
             context.GetData<BuildingsData>();
-            context.GetData<WaterData>();
+            context.GetData<WaterWaysData>();
             context.GetData<ForestData>();
             context.GetData<ScrubData>();
             context.GetData<RocksData>();

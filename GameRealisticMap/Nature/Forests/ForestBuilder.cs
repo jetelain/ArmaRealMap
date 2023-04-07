@@ -2,7 +2,7 @@
 using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
-namespace GameRealisticMap.Nature
+namespace GameRealisticMap.Nature.Forests
 {
     internal class ForestBuilder : BasicBuilderBase<ForestData>
     {

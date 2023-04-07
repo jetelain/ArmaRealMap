@@ -1,8 +1,10 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.Nature.Forests;
+using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
-namespace GameRealisticMap.Nature
+namespace GameRealisticMap.Nature.RockAreas
 {
     internal class RocksBuilder : BasicBuilderBase<RocksData>
     {

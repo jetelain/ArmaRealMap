@@ -1,8 +1,8 @@
 ﻿using GameRealisticMap.Buildings;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
-using GameRealisticMap.Water;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature
@@ -25,12 +25,12 @@ namespace GameRealisticMap.Nature
         protected virtual IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
         {
             var roads = context.GetData<RoadsData>();
-            var water = context.GetData<WaterData>();
+            var lakes = context.GetData<LakesData>();
             var buildings = context.GetData<BuildingsData>();
 
             return buildings.Buildings.Select(b => b.Box.Polygon)
                 .Concat(roads.Roads.Where(r => r.RoadType != RoadTypeId.Trail).SelectMany(r => r.ClearPolygons))
-                .Concat(water.LakesPolygons);
+                .Concat(lakes.Polygons);
         }
 
         public T Build(IBuildContext context)

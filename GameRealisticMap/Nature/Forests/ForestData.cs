@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Geometries;
+﻿using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
-namespace GameRealisticMap.Nature
+namespace GameRealisticMap.Nature.Forests
 {
-    public class ForestRadialData : IBasicTerrainData
+    public class ForestData : IBasicTerrainData
     {
-        public ForestRadialData(List<TerrainPolygon> polygons)
+        public ForestData(List<TerrainPolygon> polygons)
         {
             Polygons = polygons;
         }
 
         public List<TerrainPolygon> Polygons { get; }
-
         public IEnumerable<Feature> ToGeoJson()
         {
             var properties = new Dictionary<string, object>() {
-                {"type", "forestRadial" }
+                {"type", "forest" }
             };
             return Polygons.Select(b => new Feature(b.ToGeoJson(), properties));
         }

@@ -2,9 +2,10 @@
 using System.Numerics;
 using GameRealisticMap.ElevationModel.Constrained;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Nature.Lakes;
+using GameRealisticMap.Nature.WaterWays;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
-using GameRealisticMap.Water;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
@@ -24,9 +25,10 @@ namespace GameRealisticMap.ElevationModel
         {
             var raw = context.GetData<RawElevationData>();
             var roadsData = context.GetData<RoadsData>();
-            var waterData = context.GetData<WaterData>();
+            var waterData = context.GetData<WaterWaysData>();
+            var lakesData = context.GetData<LakesData>();
 
-            var lakes = DigLakes(raw.RawElevation, waterData, context.Area); // Split in a specific builder ???
+            var lakes = DigLakes(raw.RawElevation, lakesData, context.Area); // Split in a specific builder ???
 
             // Forced elevation by config
 
@@ -45,15 +47,15 @@ namespace GameRealisticMap.ElevationModel
             return new ElevationData(constraintGrid.Grid, lakes);
         }
 
-        private List<LakeWithElevation> DigLakes(ElevationGrid rawElevation, WaterData waterData, ITerrainArea area)
+        private List<LakeWithElevation> DigLakes(ElevationGrid rawElevation, LakesData lakesData, ITerrainArea area)
         {
-            using var report = progress.CreateStep("DigLakes", waterData.LakesPolygons.Count);
+            using var report = progress.CreateStep("DigLakes", lakesData.Polygons.Count);
 
             var minimalArea = Math.Pow(5 * area.GridCellSize, 2); // 5 x 5 nodes minimum
             var minimalOffsetArea = area.GridCellSize * area.GridCellSize;
             var lakes = new List<LakeWithElevation>();
             var cellSize = new Vector2(area.GridCellSize, area.GridCellSize);
-            foreach (var g in waterData.LakesPolygons)
+            foreach (var g in lakesData.Polygons)
             {
                 if (g.Area < minimalArea)
                 {
@@ -112,9 +114,8 @@ namespace GameRealisticMap.ElevationModel
             }
         }
 
-        private void ProcessWaterWays(ElevationConstraintGrid constraintGrid, WaterData waterData)
+        private void ProcessWaterWays(ElevationConstraintGrid constraintGrid, WaterWaysData waterData)
         {
-            var lakes = waterData.LakesPolygons;
             var waterWaysPaths = waterData.WaterWaysPaths.Where(w => w.Length > 10f).ToList();
             using var report = progress.CreateStep("Waterways", waterWaysPaths.Count);
             foreach (var waterWay in waterWaysPaths)
