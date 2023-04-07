@@ -453,11 +453,11 @@ function InitPreview(geoJson)
 		style: function(feature) {
 			switch (feature.properties.type) {
                 case 'forest': return { fillColor: 'ForestGreen', stroke: false, fillOpacity: 0.5 };
-                case 'forestEdge': return { fillColor: 'ForestGreen', stroke: false, fillOpacity: 0.25 };
+                case 'forestRadial': return { fillColor: 'ForestGreen', stroke: false, fillOpacity: 0.25 };
 				case 'building': return { fillColor:'SaddleBrown', stroke: false, fillOpacity: 0.5 };
 				case 'rocks': return { fillColor:'Black', stroke: false, fillOpacity: 0.5 };
                 case 'scrub': return { fillColor: 'SandyBrown', stroke: false, fillOpacity: 0.5 };
-                case 'scrubEdge': return { fillColor: 'SandyBrown', stroke: false, fillOpacity: 0.25 };
+                case 'scrubRadial': return { fillColor: 'SandyBrown', stroke: false, fillOpacity: 0.25 };
 				case 'road': {
 					switch (feature.properties.road) {
 						case 'SingleLaneDirtPath': return { fillColor:'Indigo', stroke: false, fillOpacity: 0.5 };

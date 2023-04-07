@@ -5,5 +5,6 @@
         RoadTypeId Id { get; }
 
         float Width { get; }
+        float ClearWidth { get; }
     }
 }

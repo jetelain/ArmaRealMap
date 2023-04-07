@@ -15,9 +15,9 @@ namespace GameRealisticMap.Osm
 
         public async Task<IOsmDataSource> Load(ITerrainArea area)
         {
-            var box = new OsmBounds(area);
+            var box = new LatLngBounds(area);
 
-            var cacheFileName = Path.Combine(cacheDirectory, FormattableString.Invariant($"{box.Left}_{box.Bottom}_{box.Right}_{box.Top}.xml"));
+            var cacheFileName = Path.Combine(cacheDirectory, FormattableString.Invariant($"{box.Name}.xml"));
 
             using var report = progress.CreateStep("OSM", 2);
 
@@ -28,18 +28,11 @@ namespace GameRealisticMap.Osm
             return OsmDataSource.CreateFromXml(cacheFileName);
         }
 
-        private async Task DownloadFromOverPass(OsmBounds box, string cacheFileName)
+        private async Task DownloadFromOverPass(LatLngBounds box, string cacheFileName)
         {
             if (!File.Exists(cacheFileName) || (File.GetLastWriteTimeUtc(cacheFileName) < DateTime.UtcNow.AddDays(-cacheDays)))
             {
                 Directory.CreateDirectory(cacheDirectory);
-                /*
-                var lonWestern = (float)Math.Min(area.SouthWest.Longitude.ToDouble(), area.NorthWest.Longitude.ToDouble());
-                var latNorther = (float)Math.Max(area.NorthEast.Latitude.ToDouble(), area.NorthWest.Latitude.ToDouble());
-                var lonEastern = (float)Math.Max(area.SouthEast.Longitude.ToDouble(), area.NorthEast.Longitude.ToDouble());
-                var latSouthern = (float)Math.Min(area.SouthEast.Latitude.ToDouble(), area.SouthWest.Latitude.ToDouble());
-                var uri = FormattableString.Invariant($"https://overpass-api.de/api/map?bbox={lonWestern},{latSouthern},{lonEastern},{latNorther}");
-                */
                 var uri = FormattableString.Invariant($"https://overpass-api.de/api/map?bbox={box.Left},{box.Bottom},{box.Right},{box.Top}");
                 using (var client = new HttpClient())
                 {

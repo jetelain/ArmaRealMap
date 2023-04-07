@@ -20,7 +20,7 @@ namespace GameRealisticMap.Nature
         public IEnumerable<Feature> ToGeoJson()
         {
             var properties = new Dictionary<string, object>() {
-                {"type", "forestEdge" }
+                {"type", "forestRadial" }
             };
             return Polygons.Select(b => new Feature(b.ToGeoJson(), properties));
         }

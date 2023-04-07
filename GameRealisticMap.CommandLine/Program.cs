@@ -5,8 +5,10 @@ using GameRealisticMap.Nature;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
+using GameRealisticMap.Satellite;
 using GameRealisticMap.Water;
 using GeoJSON.Text.Feature;
+using MapToolkit.Drawing;
 
 namespace GameRealisticMap.CommandLine
 {
@@ -16,15 +18,16 @@ namespace GameRealisticMap.CommandLine
         {
             var progress = new ConsoleProgressSystem();
 
+            var catalog = new BuildersCatalog(progress, new DefaultRoadTypeLibrary());
+
             var area = TerrainAreaUTM.CreateFromSouthWest("47.6856, 6.8271", 2.5f, 1024);
 
             var loader = new OsmDataOverPassLoader(progress);
 
             var osmSource = await loader.Load(area);
 
-            var context = new BuildContext(progress, area, osmSource);
-
-            context.RegisterAll(progress, new DefaultRoadTypeLibrary());
+            var context = new BuildContext(catalog, progress, area, osmSource);
+            
             context.GetData<RawElevationData>();
             context.GetData<RoadsData>();
             context.GetData<BuildingsData>();
@@ -34,8 +37,10 @@ namespace GameRealisticMap.CommandLine
             context.GetData<RocksData>();
             context.GetData<ForestRadialData>();
             context.GetData<ScrubRadialData>();
+            
+            var all = catalog.GetAll(context);
 
-            var collection = new FeatureCollection(context.ComputedData.SelectMany(d => d.ToGeoJson()).ToList());
+            var collection = new FeatureCollection(all.SelectMany(d => d.ToGeoJson()).ToList());
 
             var json = JsonSerializer.Serialize(collection);
 
@@ -47,6 +52,8 @@ namespace GameRealisticMap.CommandLine
             {
                 File.WriteAllText("preview.js", reader.ReadToEnd());
             }
+
+            //var x = JsonSerializer.Serialize(ImageTiler.DefaultToWebp(context.GetData<RawSatelliteImageData>().Image, "rawsat"));
 
         }
     }

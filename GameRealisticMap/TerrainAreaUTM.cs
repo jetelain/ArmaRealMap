@@ -54,11 +54,6 @@ namespace GameRealisticMap
 
         public float SizeInMeters { get; }
 
-        public IEnumerable<Coordinate> GetLatLngBounds()
-        {
-            return TerrainBounds.Shell.Select(TerrainPointToLatLng);
-        }
-
         public TerrainPoint LatLngToTerrainPoint(Coordinate latLng)
         {
             var coord = new CoordinateSharp.Coordinate(latLng.Y, latLng.X, eagerUTM);

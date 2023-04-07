@@ -20,11 +20,14 @@ namespace GameRealisticMap.Roads
         public RoadTypeId RoadType => RoadTypeInfos.Id;
 
         public float Width => RoadTypeInfos.Width;
+        public float ClearWidth => RoadTypeInfos.ClearWidth;
 
         public TerrainPoint MinPoint => Path.MinPoint;
 
         public TerrainPoint MaxPoint => Path.MaxPoint;
 
         public IEnumerable<TerrainPolygon> Polygons => Path.ToTerrainPolygon(Width);
+
+        public IEnumerable<TerrainPolygon> ClearPolygons => Path.ToTerrainPolygon(ClearWidth);
     }
 }

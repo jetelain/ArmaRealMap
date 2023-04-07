@@ -21,11 +21,11 @@ namespace GameRealisticMap.ElevationModel
 
             var done = 0;
 
-            var points = context.Area.GetLatLngBounds().ToList();
+            var points = new LatLngBounds(context.Area);
 
             var view = db.CreateView<ushort>(
-                new Coordinates(points.Min(p => p.Y) - 0.001, points.Min(p => p.X) - 0.001),
-                new Coordinates(points.Max(p => p.Y) + 0.001, points.Max(p => p.X) + 0.001))
+                new Coordinates(points.Bottom - 0.001, points.Left - 0.001),
+                new Coordinates(points.Top + 0.001, points.Right + 0.001))
                 .GetAwaiter()
                 .GetResult()
                 .ToDataCell();

@@ -29,7 +29,7 @@ namespace GameRealisticMap.Nature
             var buildings = context.GetData<BuildingsData>();
 
             return buildings.Buildings.Select(b => b.Box.Polygon)
-                .Concat(roads.Roads.Where(r => r.RoadType != RoadTypeId.Trail).SelectMany(r => r.Polygons))
+                .Concat(roads.Roads.Where(r => r.RoadType != RoadTypeId.Trail).SelectMany(r => r.ClearPolygons))
                 .Concat(water.LakesPolygons);
         }
 

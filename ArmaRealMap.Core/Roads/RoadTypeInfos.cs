@@ -12,5 +12,21 @@ namespace ArmaRealMap.Core.Roads
         public string TextureEnd { get; set; }
         public string Material { get; set; }
         public string SatelliteColor { get; set; }
+
+        public float ClearWidth
+        {
+            get
+            {
+                if (Id < RoadTypeId.TwoLanesPrimaryRoad)
+                {
+                    return Width + 6f;
+                }
+                if (Id < RoadTypeId.SingleLaneDirtPath)
+                {
+                    return Width + 4f;
+                }
+                return Width + 2f;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.Osm;
 using GeoAPI.Geometries;
 
 namespace GameRealisticMap
@@ -9,12 +10,12 @@ namespace GameRealisticMap
 
         Coordinate TerrainPointToLatLng(TerrainPoint point);
 
-        IEnumerable<Coordinate> GetLatLngBounds();
-
         TerrainPolygon TerrainBounds { get; }
 
         float GridCellSize { get; }
 
         int GridSize { get; }
+
+        float SizeInMeters { get; }
     }
 }
