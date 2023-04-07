@@ -30,8 +30,8 @@ namespace GameRealisticMap
             Register<ForestData, ForestBuilder>(new ForestBuilder(progress));
             Register<ScrubData, ScrubBuilder>(new ScrubBuilder(progress));
             Register<RocksData, RocksBuilder>(new RocksBuilder(progress));
-            Register<ForestEdgeData, ForestEdgeBuilder>(new ForestEdgeBuilder(progress));
-            Register<ScrubEdgeData, ScrubEdgeBuilder>(new ScrubEdgeBuilder(progress));
+            Register<ForestRadialData, ForestRadialBuilder>(new ForestRadialBuilder(progress));
+            Register<ScrubRadialData, ScrubRadialBuilder>(new ScrubRadialBuilder(progress));
         }
 
         public void Register<TData, TBuidler>(TBuidler builder)

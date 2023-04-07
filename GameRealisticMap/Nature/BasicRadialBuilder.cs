@@ -7,14 +7,14 @@ using GameRealisticMap.Water;
 
 namespace GameRealisticMap.Nature
 {
-    internal abstract class BasicEdgeBuilder<TEdge,TSource> : IDataBuilder<TEdge>
+    internal abstract class BasicRadialBuilder<TEdge,TSource> : IDataBuilder<TEdge>
         where TEdge : class, IBasicTerrainData
         where TSource : class, IBasicTerrainData
     {
         private readonly IProgressSystem progress;
         private readonly float width;
 
-        public BasicEdgeBuilder(IProgressSystem progress, float width)
+        public BasicRadialBuilder(IProgressSystem progress, float width)
         {
             this.progress = progress;
             this.width = width;

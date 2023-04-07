@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.ElevationModel
 {
-    internal class RawElevationData : ITerrainData
+    public class RawElevationData : ITerrainData
     {
         public RawElevationData(ElevationGrid rawElevation)
         {

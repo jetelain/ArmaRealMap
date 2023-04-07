@@ -8,9 +8,9 @@ using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature
 {
-    public class ForestEdgeData : IBasicTerrainData
+    public class ScrubRadialData : IBasicTerrainData
     {
-        public ForestEdgeData(List<TerrainPolygon> polygons)
+        public ScrubRadialData(List<TerrainPolygon> polygons)
         {
             Polygons = polygons;
         }
@@ -20,7 +20,7 @@ namespace GameRealisticMap.Nature
         public IEnumerable<Feature> ToGeoJson()
         {
             var properties = new Dictionary<string, object>() {
-                {"type", "forestEdge" }
+                {"type", "scrubEdge" }
             };
             return Polygons.Select(b => new Feature(b.ToGeoJson(), properties));
         }

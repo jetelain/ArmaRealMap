@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using GameRealisticMap.Buildings;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Nature;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
@@ -24,15 +25,15 @@ namespace GameRealisticMap.CommandLine
             var context = new BuildContext(progress, area, osmSource);
 
             context.RegisterAll(progress, new DefaultRoadTypeLibrary());
-
+            context.GetData<RawElevationData>();
             context.GetData<RoadsData>();
             context.GetData<BuildingsData>();
             context.GetData<WaterData>();
             context.GetData<ForestData>();
             context.GetData<ScrubData>();
             context.GetData<RocksData>();
-            context.GetData<ForestEdgeData>();
-            context.GetData<ScrubEdgeData>();
+            context.GetData<ForestRadialData>();
+            context.GetData<ScrubRadialData>();
 
             var collection = new FeatureCollection(context.ComputedData.SelectMany(d => d.ToGeoJson()).ToList());
 

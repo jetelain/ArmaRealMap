@@ -3,9 +3,9 @@ using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Nature
 {
-    internal class ForestEdgeBuilder : BasicEdgeBuilder<ForestEdgeData,ForestData>
+    internal class ForestRadialBuilder : BasicRadialBuilder<ForestRadialData,ForestData>
     {
-        public ForestEdgeBuilder(IProgressSystem progress) : base(progress, 25f)
+        public ForestRadialBuilder(IProgressSystem progress) : base(progress, 25f)
         {
 
         }
@@ -15,9 +15,9 @@ namespace GameRealisticMap.Nature
             return base.GetPriority(context);
         }
 
-        protected override ForestEdgeData CreateWrapper(List<TerrainPolygon> polygons)
+        protected override ForestRadialData CreateWrapper(List<TerrainPolygon> polygons)
         {
-            return new ForestEdgeData(polygons);
+            return new ForestRadialData(polygons);
         }
     }
 }
