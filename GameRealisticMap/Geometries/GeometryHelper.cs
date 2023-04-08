@@ -12,46 +12,6 @@ namespace GameRealisticMap.Geometries
         public static readonly Matrix3x2 Rotate90 = Matrix3x2.CreateRotation(1.57079637f);
         public static readonly Matrix3x2 RotateM90 = Matrix3x2.CreateRotation(-1.57079637f);
 
-
-
-        internal static IEnumerable<Polygon> Offset(Polygon p, double delta)
-        {
-            var interiors = p.InteriorRings.SelectMany(r => OffsetInternal(r, -delta)).ToList();
-            return OffsetInternal(p.ExteriorRing, delta).SelectMany(ext => MakePolygon(ext, interiors)).ToList();
-        }
-
-        private static IEnumerable<List<IntPoint>> OffsetInternal(ILineString p, double delta)
-        {
-            var clipper = new ClipperOffset();
-            clipper.AddPath(p.Coordinates.Select(c => new IntPoint(c.X * ScaleForClipper, c.Y * ScaleForClipper)).ToList(), JoinType.jtSquare, EndType.etClosedPolygon);
-            var tree = new List<List<IntPoint>>();
-            clipper.Execute(ref tree, delta * ScaleForClipper);
-            return tree;
-        }
-
-        private static LinearRing ToRing(List<IntPoint> points)
-        {
-            var transformedBack = points.Select(c => new Coordinate(c.X / ScaleForClipper, c.Y / ScaleForClipper));
-            return new LinearRing(transformedBack.Concat(transformedBack.Take(1)).ToArray());
-        }
-
-        private static IEnumerable<Polygon> MakePolygon(List<IntPoint> ext, List<List<IntPoint>> holes)
-        {
-            if (holes.Any())
-            {
-                var clipper = new Clipper();
-                clipper.AddPath(ext, PolyType.ptSubject, true);
-                foreach (var hole in holes)
-                {
-                    clipper.AddPath(hole, PolyType.ptClip, true);
-                }
-                var result = new PolyTree();
-                clipper.Execute(ClipType.ctDifference, result);
-                return result.Childs.Select(c => new Polygon(ToRing(c.Contour), c.Childs.Select(h => ToRing(h.Contour)).ToArray())).ToList();
-            }
-            return new[] { new Polygon(ToRing(ext), holes.Select(ToRing).ToArray()) };
-        }
-
         public static IEnumerable<Polygon> ToPolygon(IGeometry geometry, Func<IEnumerable<Coordinate>, IEnumerable<Coordinate>> transform)
         {
             if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
@@ -95,54 +55,11 @@ namespace GameRealisticMap.Geometries
                 b.MaxPoint.Y >= a.MinPoint.Y;
         }
 
-
-        public static int PointInPolygon(Coordinate[] path, Coordinate pt)
-        {
-            //returns 0 if false, +1 if true, -1 if pt ON polygon boundary
-            //See "The Point in Polygon Problem for Arbitrary Polygons" by Hormann & Agathos
-            //http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.88.5498&rep=rep1&type=pdf
-            int result = 0, cnt = path.Length;
-            if (cnt < 3) return 0;
-            Coordinate ip = path[0];
-            for (int i = 1; i <= cnt; ++i)
-            {
-                Coordinate ipNext = (i == cnt ? path[0] : path[i]);
-                if (ipNext.Y == pt.Y)
-                {
-                    if ((ipNext.X == pt.X) || (ip.Y == pt.Y && ((ipNext.X > pt.X) == (ip.X < pt.X))))
-                        return -1;
-                }
-                if ((ip.Y < pt.Y) != (ipNext.Y < pt.Y))
-                {
-                    if (ip.X >= pt.X)
-                    {
-                        if (ipNext.X > pt.X) result = 1 - result;
-                        else
-                        {
-                            double d = (double)(ip.X - pt.X) * (ipNext.Y - pt.Y) - (double)(ipNext.X - pt.X) * (ip.Y - pt.Y);
-                            if (d == 0) return -1;
-                            else if ((d > 0) == (ipNext.Y > ip.Y)) result = 1 - result;
-                        }
-                    }
-                    else
-                    {
-                        if (ipNext.X > pt.X)
-                        {
-                            double d = (double)(ip.X - pt.X) * (ipNext.Y - pt.Y) - (double)(ipNext.X - pt.X) * (ip.Y - pt.Y);
-                            if (d == 0) return -1;
-                            else if ((d > 0) == (ipNext.Y > ip.Y)) result = 1 - result;
-                        }
-                    }
-                }
-                ip = ipNext;
-            }
-            return result;
-        }
-
         public static Vector2[] RotatedRectangleDegrees(Vector2 center, Vector2 size, float degrees)
         {
             return RotatedRectangleRadians(center, size, (float)(Math.PI * degrees / 180));
         }
+
         public static Vector2[] RotatedRectangleRadians(Vector2 center, Vector2 size, float radians)
         {
             var matrix = Matrix3x2.CreateRotation(radians, center);
