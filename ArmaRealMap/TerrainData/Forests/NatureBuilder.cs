@@ -73,7 +73,7 @@ namespace ArmaRealMap.TerrainData.Forests
             {
                 return;
             }
-            var radialEdges = CropPolygonsToTerrain(data, polygons.SelectMany(e => e.Crown2(width)));
+            var radialEdges = CropPolygonsToTerrain(data, polygons.SelectMany(e => e.OuterCrown(width)));
             var substractPolygons = GetPriorityPolygons(data, shapes, OsmShapeCategory.Dirt);
             var radialCleaned = Subtract(radialEdges, substractPolygons);
             var final = TerrainPolygon.MergeAll(radialCleaned);

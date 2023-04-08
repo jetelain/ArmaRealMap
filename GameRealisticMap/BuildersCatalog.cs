@@ -32,6 +32,7 @@ namespace GameRealisticMap
             Register<ForestRadialData, ForestRadialBuilder>(new ForestRadialBuilder(progress));
             Register<ScrubRadialData, ScrubRadialBuilder>(new ScrubRadialBuilder(progress));
             Register<LakesData, LakesBuilder>(new LakesBuilder(progress));
+            Register<ForestEdgeData, ForestEdgeBuilder>(new ForestEdgeBuilder(progress));
         }
 
         public void Register<TData, TBuidler>(TBuidler builder)

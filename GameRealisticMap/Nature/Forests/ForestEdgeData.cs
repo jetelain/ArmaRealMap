@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using GameRealisticMap.Geometries;
+using GeoJSON.Text.Feature;
+
+namespace GameRealisticMap.Nature.Forests
+{
+    internal class ForestEdgeData : ITerrainData
+    {
+        public ForestEdgeData(List<TerrainPolygon> edges, List<TerrainPolygon> mergedForests)
+        {
+            Edges = edges;
+            MergedForests = mergedForests;
+        }
+
+        public List<TerrainPolygon> Edges { get; }
+        public List<TerrainPolygon> MergedForests { get; }
+
+        public IEnumerable<Feature> ToGeoJson()
+        {
+            var properties = new Dictionary<string, object>() {
+                {"type", "forestEdge" }
+            };
+            return Edges.Select(b => new Feature(b.ToGeoJson(), properties));
+        }
+    }
+}

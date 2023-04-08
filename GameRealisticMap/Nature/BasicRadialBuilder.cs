@@ -50,7 +50,7 @@ namespace GameRealisticMap.Nature
 
             var radial = forest.Polygons
                 .ProgressStep(progress, "Crown")
-                .SelectMany(e => e.Crown2(width))
+                .SelectMany(e => e.OuterCrown(width))
                 .SelectMany(poly => poly.ClippedBy(context.Area.TerrainBounds))
 
                 .ProgressStep(progress, "Priority")

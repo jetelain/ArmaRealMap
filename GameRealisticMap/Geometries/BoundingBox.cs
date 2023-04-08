@@ -88,6 +88,11 @@ namespace GameRealisticMap.Geometries
             return new BoundingBox(Center, Height, Width, Angle - 90, Points);
         }
 
+        public override string ToString()
+        {
+            return FormattableString.Invariant($"({Center.X};{Center.Y}) ({Width}x{Height}) {Angle}°");
+        }
+
         //public bool MayIntersects(BoundingBox other)
         //{
         //    var delta = Math.Max(Width, Height) + Math.Max(other.Width, other.Height);

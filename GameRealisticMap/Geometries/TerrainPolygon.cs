@@ -145,11 +145,11 @@ namespace GameRealisticMap.Geometries
             return exterior.SelectMany(e => e.SubstractAll(interior));
         }
 
-        public IEnumerable<TerrainPolygon> Crown2(float width)
+        public IEnumerable<TerrainPolygon> OuterCrown(float outerOffset)
         {
             var clipper = new Clipper();
 
-            foreach(var poly in Offset(width))
+            foreach(var poly in Offset(outerOffset))
             {
                 clipper.AddPath(poly.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
                 foreach (var hole in poly.Holes)
@@ -162,6 +162,67 @@ namespace GameRealisticMap.Geometries
             foreach (var hole in Holes)
             {
                 clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true); // EvenOdd will do the job
+            }
+
+            var result = new PolyTree();
+            clipper.Execute(ClipType.ctDifference, result);
+            return ToPolygons(result);
+        }
+
+        public IEnumerable<TerrainPolygon> InnerCrown(float innerOffset)
+        {
+            var clipper = new Clipper();
+
+            clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
+            foreach (var hole in Holes)
+            {
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true); // EvenOdd will do the job
+            }
+
+            foreach (var poly in Offset(-innerOffset))
+            {
+                clipper.AddPath(poly.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+                foreach (var hole in poly.Holes)
+                {
+                    clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true); // EvenOdd will do the job
+                }
+            }
+
+            var result = new PolyTree();
+            clipper.Execute(ClipType.ctDifference, result);
+            return ToPolygons(result);
+        }
+
+        public IEnumerable<TerrainPolygon> Crown(float outerOffset, float innerOffset)
+        {
+            if (outerOffset == 0)
+            {
+                return InnerCrown(innerOffset);
+            }
+
+            if (innerOffset == 0)
+            {
+                return OuterCrown(outerOffset);
+            }
+
+            var clipper = new Clipper();
+
+            foreach (var poly in Offset(outerOffset))
+            {
+                clipper.AddPath(poly.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
+                foreach (var hole in poly.Holes)
+                {
+                    clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true); // EvenOdd will do the job
+                }
+            }
+
+            foreach (var poly in Offset(-innerOffset))
+            {
+                clipper.AddPath(poly.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+                foreach (var hole in poly.Holes)
+                {
+                    clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true); // EvenOdd will do the job
+                }
             }
 
             var result = new PolyTree();
@@ -182,15 +243,6 @@ namespace GameRealisticMap.Geometries
                 }
             }
             return result;
-        }
-
-        public IEnumerable<TerrainPolygon> SubstractAll(IEnumerable<TerrainPolygon> others, float sizeFilter)
-        {
-            if (EnveloppeSize.X > sizeFilter || EnveloppeSize.Y > sizeFilter)
-            {
-                return SubstractAll(others);
-            }
-            return new[] { this };
         }
 
         public IEnumerable<TerrainPolygon> Substract(TerrainPolygon other)

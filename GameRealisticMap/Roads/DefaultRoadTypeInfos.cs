@@ -19,6 +19,10 @@
             {
                 ClearWidth = Width + 2f;
             }
+            else
+            {
+                ClearWidth = width;
+            }
         }
 
         public RoadTypeId Id { get; }
