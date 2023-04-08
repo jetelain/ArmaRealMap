@@ -29,5 +29,7 @@ namespace GameRealisticMap.Roads
         public IEnumerable<TerrainPolygon> Polygons => Path.ToTerrainPolygon(Width);
 
         public IEnumerable<TerrainPolygon> ClearPolygons => Path.ToTerrainPolygon(ClearWidth);
+
+        public IEnumerable<TerrainPolygon> ClearPolygonsButt => Path.ToTerrainPolygon(ClearWidth, true);
     }
 }

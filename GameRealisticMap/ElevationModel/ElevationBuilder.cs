@@ -116,7 +116,7 @@ namespace GameRealisticMap.ElevationModel
 
         private void ProcessWaterWays(ElevationConstraintGrid constraintGrid, WaterWaysData waterData)
         {
-            var waterWaysPaths = waterData.WaterWaysPaths.Where(w => w.Length > 10f).ToList();
+            var waterWaysPaths = waterData.WaterwayPaths.Where(w => !w.IsTunnel).Select(w => w.Path).Where(w => w.Length > 10f).ToList();
             using var report = progress.CreateStep("Waterways", waterWaysPaths.Count);
             foreach (var waterWay in waterWaysPaths)
             {

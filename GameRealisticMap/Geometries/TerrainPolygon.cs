@@ -119,10 +119,10 @@ namespace GameRealisticMap.Geometries
                 NoHoles);
         }
 
-        public static IEnumerable<TerrainPolygon> FromPath(IEnumerable<TerrainPoint> points, float width)
+        public static IEnumerable<TerrainPolygon> FromPath(IEnumerable<TerrainPoint> points, float width, bool butt = false)
         {
             var clipper = new ClipperOffset();
-            clipper.AddPath(points.Select(p => p.ToIntPoint()).ToList(), JoinType.jtSquare, EndType.etOpenSquare);
+            clipper.AddPath(points.Select(p => p.ToIntPoint()).ToList(), JoinType.jtSquare, butt ? EndType.etOpenButt : EndType.etOpenSquare);
             var tree = new PolyTree();
             clipper.Execute(ref tree, width * GeometryHelper.ScaleForClipper / 2);
             return ToPolygons(tree);

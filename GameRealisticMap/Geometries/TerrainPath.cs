@@ -49,9 +49,9 @@ namespace GameRealisticMap.Geometries
             return new LineString(Points.Select(project).ToArray());
         }
 
-        public IEnumerable<TerrainPolygon> ToTerrainPolygon(float width)
+        public IEnumerable<TerrainPolygon> ToTerrainPolygon(float width, bool butt = false)
         {
-            return TerrainPolygon.FromPath(Points, width);
+            return TerrainPolygon.FromPath(Points, width, butt);
         }
         public static IEnumerable<TerrainPath> FromGeometry(IGeometry geometry, Func<Coordinate, TerrainPoint> project)
         {
