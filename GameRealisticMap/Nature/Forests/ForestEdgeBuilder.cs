@@ -40,7 +40,7 @@ namespace GameRealisticMap.Nature.Forests
 
             var edges = 
                 forests.ProgressStep(progress, "Edges")
-                    .SelectMany(f => f.Crown(0, 2)) // 2m width offset
+                    .SelectMany(f => f.InnerCrown(2)) // 2m width offset
 
                     .ProgressStep(progress, "Priority")
                     .SelectMany(l => l.SubstractAll(priority))

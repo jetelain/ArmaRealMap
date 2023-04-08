@@ -33,10 +33,10 @@ namespace GameRealisticMap.Buildings
             var pass4 = RoadCrop(removed, pass3, roads.Roads);
             //Preview(data, removed, pass4, "buildings-pass4.png");
 
+            pass4 = pass4.Where(b => context.Area.IsInside(b.Box.Center)).ToList();
+
             var pass5 = DetectBuildingCategory(categorizers.Areas, pass4);
             //Preview(data, removed, pass5, "buildings-pass5.png");
-
-            // TODO: Remove out of bounds buildings
 
             return new BuildingsData(pass5);
         }

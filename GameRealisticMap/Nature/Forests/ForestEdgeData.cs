@@ -24,7 +24,10 @@ namespace GameRealisticMap.Nature.Forests
             var properties = new Dictionary<string, object>() {
                 {"type", "forestEdge" }
             };
-            return Edges.Select(b => new Feature(b.ToGeoJson(), properties));
+            var properties2 = new Dictionary<string, object>() {
+                {"type", "forestMerged" }
+            };
+            return Edges.Select(b => new Feature(b.ToGeoJson(), properties)).Concat(MergedForests.Select(b => new Feature(b.ToGeoJson(), properties2)));
         }
     }
 }

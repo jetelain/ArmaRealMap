@@ -130,9 +130,14 @@ namespace GameRealisticMap.Geometries
 
         public IEnumerable<TerrainPolygon> Offset(float offset)
         {
+            if (offset==0)
+            {
+                return new[] { this };
+            }
             var holes = Holes.SelectMany(r => OffsetInternal(r, -offset)).ToList();
             return OffsetInternal(Shell, offset).SelectMany(ext => MakePolygon(ext, holes)).ToList();
         }
+
         public IEnumerable<TerrainPolygon> Crown(float width)
         {
             return Crown(width/2, Shell).Concat(Holes.SelectMany(h => Crown(width/2f, h))).ToList();
@@ -373,7 +378,13 @@ namespace GameRealisticMap.Geometries
 
         private static List<TerrainPolygon> ToPolygons(PolyTree result)
         {
-            return result.Childs.Select(c => new TerrainPolygon(ToRing(c.Contour), c.Childs.Select(h => ToRing(h.Contour)).ToList())).ToList();
+            return FromPolyTreeNode(result).ToList();
+        }
+
+        private static IEnumerable<TerrainPolygon> FromPolyTreeNode(PolyNode result)
+        {
+            return result.Childs.Select(c => new TerrainPolygon(ToRing(c.Contour), c.Childs.Select(h => ToRing(h.Contour)).ToList()))
+                .Concat(result.Childs.SelectMany(c => c.Childs).SelectMany(FromPolyTreeNode));
         }
 
         public IEnumerable<TerrainPolygon> ClippedBy(TerrainPolygon other)
@@ -497,7 +508,7 @@ namespace GameRealisticMap.Geometries
                 }
                 var result = new PolyTree();
                 clipper.Execute(ClipType.ctDifference, result);
-                return result.Childs.Select(c => new TerrainPolygon(ToRing(c.Contour), c.Childs.Select(h => ToRing(h.Contour)).ToList())).ToList();
+                return ToPolygons(result);
             }
             return new[] { new TerrainPolygon(ToRing(ext), NoHoles) };
         }

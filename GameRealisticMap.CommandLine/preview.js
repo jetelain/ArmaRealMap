@@ -453,6 +453,7 @@ function InitPreview(geoJson)
 		style: function(feature) {
 			switch (feature.properties.type) {
                 case 'forest': return { fillColor: 'ForestGreen', stroke: false, fillOpacity: 0.5 };
+                case 'forestMerged': return { fillColor: 'ForestGreen', stroke: false, fillOpacity: 0 };
                 case 'forestRadial': return { fillColor: 'ForestGreen', stroke: false, fillOpacity: 0.25 };
                 case 'forestEdge': return { fillColor: 'ForestGreen', stroke: false, fillOpacity: 0.75 };
 				case 'building': return { fillColor:'SaddleBrown', stroke: false, fillOpacity: 0.5 };
