@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
+using GameRealisticMap.Buildings;
 using GameRealisticMap.ElevationModel.Constrained;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Lakes;
@@ -29,12 +30,20 @@ namespace GameRealisticMap.ElevationModel
             var roadsData = context.GetData<RoadsData>();
             var waterData = context.GetData<WatercoursesData>();
             var lakesData = context.GetData<LakesData>();
+            var buildings = context.GetData<BuildingsData>();
 
             var lakes = DigLakes(raw.RawElevation, lakesData, context.Area); // Split in a specific builder ???
 
-            // Forced elevation by config
+            var withElevation = context.OsmSource.Ways.Where(w => w.Tags != null && (w.Tags.ContainsKey("ele") || w.Tags.ContainsKey("ele:wgs84"))).ToList();
 
-            // Forced elevation for airstrip
+            // TODO :
+            // - Forced elevation for airstrip,
+            // - Flat area for sports area, (parking lots ?)
+            // - Forced elevation by config
+
+            var grid = raw.RawElevation;
+
+            FlatAreas(buildings, grid);
 
             var constraintGrid = new ElevationConstraintGrid(context.Area, raw.RawElevation, progress);
 
@@ -53,6 +62,31 @@ namespace GameRealisticMap.ElevationModel
             }
 
             return new ElevationData(constraintGrid.Grid, lakes, contour.Lines.Select(l => new LineString(l.Points)));
+        }
+
+        private void FlatAreas(BuildingsData buildings, ElevationGrid grid)
+        {
+            var largeBuildingArea = 750f;
+
+            var flatAreas = buildings.Buildings
+                .Where(b => b.Box.Width * b.Box.Height >= largeBuildingArea).Select(b => b.Box.Polygon)
+                .ProgressStep(progress, "Flat");
+
+            foreach (var flat in flatAreas)
+            {
+                var avg = GetAverageElevation(grid, flat);
+                var mutate = grid.PrepareToMutate(flat.MinPoint - grid.CellSize, flat.MaxPoint + grid.CellSize, avg - 10, avg);
+                mutate.Image.Mutate(d =>
+                {
+                    foreach (var scaled in flat.Offset(grid.CellSize.X))
+                    {
+                        PolygonDrawHelper.DrawPolygon(d, flat, new SolidBrush(mutate.ElevationToColor(avg).WithAlpha(0.5f)), mutate.ToPixels);
+                    }
+                    PolygonDrawHelper.DrawPolygon(d, flat, new SolidBrush(mutate.ElevationToColor(avg)), mutate.ToPixels);
+
+                });
+                mutate.Apply();
+            }
         }
 
         private List<LakeWithElevation> DigLakes(ElevationGrid rawElevation, LakesData lakesData, ITerrainArea area)
@@ -100,7 +134,7 @@ namespace GameRealisticMap.ElevationModel
 
         private void ProcessRoads(ElevationConstraintGrid constraintGrid, RoadsData roadsData)
         {
-            var roads = roadsData.Roads.Where(r => r.RoadType <= RoadTypeId.TwoLanesConcreteRoad).ToList();
+            var roads = roadsData.Roads.Where(r => r.RoadType < RoadTypeId.Trail).ToList();
 
             using var report = progress.CreateStep("Roads", roads.Count);
 
@@ -207,5 +241,34 @@ namespace GameRealisticMap.ElevationModel
             constraintGrid.NodeHard(road.Path.LastPoint).PinToInitial();
         }
 
+        public float GetAverageElevation(ElevationGrid grid, TerrainPolygon polygon)
+        {
+            var posMin = grid.ToGrid(polygon.MinPoint);
+            var posMax = grid.ToGrid(polygon.MaxPoint);
+            var x1 = (int)Math.Floor(posMin.X);
+            var y1 = (int)Math.Floor(posMin.Y);
+            var x2 = (int)Math.Ceiling(posMax.X);
+            var y2 = (int)Math.Ceiling(posMax.Y);
+
+            var total = 0d;
+            var count = 0;
+            for(var x = x1; x <= x2; x++)
+            {
+                for (var y = y1; y <= y2; y++)
+                {
+                    var point = grid.ToTerrain(x, y);
+                    if (polygon.Contains(point))
+                    {
+                        total += grid.ElevationAt(point);
+                        count++;
+                    }
+                }
+            }
+            if (count == 0) 
+            {
+                return grid.ElevationAround(polygon.Centroid);
+            }
+            return (float)(total / count);
+        }
     }
 }

@@ -470,7 +470,7 @@ function InitPreview(geoJson)
                 case 'lake': return { fillColor: 'RoyalBlue', stroke: false, fillOpacity: 0.5 };
                 case 'watercourseSurface': return { fillColor: 'RoyalBlue', stroke: true, weight: 1, fillOpacity: 0.5 };
                 case 'watercourseRadial': return { fillColor: 'ForestGreen', stroke: true, weight: 1, fillOpacity: 0.25 };
-                case 'contour': return { stroke: true, weight: 1, color: 'black' };
+                case 'contour': return { stroke: true, weight: 1, color: 'gray' };
 			}
 			return { fillColor:'black', stroke: false, fillOpacity: 0.2 };
 		}

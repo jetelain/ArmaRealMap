@@ -35,7 +35,7 @@ namespace GameRealisticMap.ElevationModel
 
         public int Size => size;
 
-        public float CellSize => cellSize.X;
+        public Vector2 CellSize => cellSize;
 
         public float ElevationAround(TerrainPoint p)
         {

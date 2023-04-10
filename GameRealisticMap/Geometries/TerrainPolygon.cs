@@ -42,6 +42,15 @@ namespace GameRealisticMap.Geometries
         [JsonIgnore]
         public double Area => AsPolygon.Area;
 
+        public TerrainPoint Centroid 
+        { 
+            get
+            {
+                var c = AsPolygon.Centroid;
+                return new TerrainPoint((float)c.X, (float)c.Y);
+            }
+        }
+
         public Polygon ToPolygon(Func<TerrainPoint, Coordinate> project)
         {
             return new Polygon(
