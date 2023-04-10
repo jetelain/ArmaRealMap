@@ -1,10 +1,10 @@
 ﻿using GameRealisticMap.Geometries;
 
-namespace GameRealisticMap.Nature.WaterWays
+namespace GameRealisticMap.Nature.Watercourses
 {
-    public class WaterWay
+    public class Watercourse
     {
-        public WaterWay(TerrainPath path, WaterWayId id)
+        public Watercourse(TerrainPath path, WatercourseId id)
         {
             Path = path;
             TypeId = id;
@@ -12,11 +12,11 @@ namespace GameRealisticMap.Nature.WaterWays
 
         public TerrainPath Path { get; }
 
-        public WaterWayId TypeId { get; }
+        public WatercourseId TypeId { get; }
 
         public IEnumerable<TerrainPolygon> Polygons => Path.ToTerrainPolygon(Width);
 
-        public bool IsTunnel => TypeId >= WaterWayId.RiverTunnel;
+        public bool IsTunnel => TypeId >= WatercourseId.RiverTunnel;
 
         public float Width // Create a library for that
         {
@@ -24,10 +24,10 @@ namespace GameRealisticMap.Nature.WaterWays
             {
                 switch (TypeId)
                 {
-                    case WaterWayId.Stream:
+                    case WatercourseId.Stream:
                         return 4;
 
-                    case WaterWayId.River:
+                    case WatercourseId.River:
                         return 10;
                 }
                 return 0;

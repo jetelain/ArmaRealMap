@@ -6,18 +6,18 @@ using GeoAPI.Geometries;
 using OsmSharp;
 using OsmSharp.Tags;
 
-namespace GameRealisticMap.Nature.WaterWays
+namespace GameRealisticMap.Nature.Watercourses
 {
-    internal class WaterWaysBuilder : IDataBuilder<WaterWaysData>
+    internal class WatercoursesBuilder : IDataBuilder<WatercoursesData>
     {
         private readonly IProgressSystem progress;
 
-        public WaterWaysBuilder(IProgressSystem progress)
+        public WatercoursesBuilder(IProgressSystem progress)
         {
             this.progress = progress;
         }
 
-        private static WaterWayId? GetWaterwayPathTypeId(TagsCollectionBase tags)
+        private static WatercourseId? GetWaterwayPathTypeId(TagsCollectionBase tags)
         {
             if (tags.TryGetValue("waterway", out var waterway))
             {
@@ -26,10 +26,10 @@ namespace GameRealisticMap.Nature.WaterWays
                     switch (waterway)
                     {
                         case "river":
-                            return WaterWayId.RiverTunnel;
+                            return WatercourseId.RiverTunnel;
 
                         case "stream":
-                            return WaterWayId.StreamTunnel;
+                            return WatercourseId.StreamTunnel;
                     }
                 }
                 else
@@ -37,10 +37,10 @@ namespace GameRealisticMap.Nature.WaterWays
                     switch (waterway)
                     {
                         case "river":
-                            return WaterWayId.River;
+                            return WatercourseId.River;
 
                         case "stream":
-                            return WaterWayId.Stream;
+                            return WatercourseId.Stream;
                     }
                 }
             }
@@ -61,7 +61,7 @@ namespace GameRealisticMap.Nature.WaterWays
             return false;
         }
 
-        public WaterWaysData Build(IBuildContext context)
+        public WatercoursesData Build(IBuildContext context)
         {
             var lakesPolygons = context.GetData<LakesData>().Polygons;
 
@@ -73,10 +73,10 @@ namespace GameRealisticMap.Nature.WaterWays
 
             var polygons = GetSurface(context, lakesPolygons, waterwaysPaths);
 
-            return new WaterWaysData(waterwaysPaths, polygons);
+            return new WatercoursesData(waterwaysPaths, polygons);
         }
 
-        private List<TerrainPolygon> GetSurface(IBuildContext context, List<TerrainPolygon> lakesPolygons, List<WaterWay> waterwaysPaths)
+        private List<TerrainPolygon> GetSurface(IBuildContext context, List<TerrainPolygon> lakesPolygons, List<Watercourse> waterwaysPaths)
         {
             var priority = lakesPolygons
                 .Concat(context.GetData<RoadsData>().Roads.Where(r => r.RoadType != RoadTypeId.Trail && r.SpecialSegment != RoadSpecialSegment.Bridge).SelectMany(r => r.ClearPolygons))
@@ -89,9 +89,9 @@ namespace GameRealisticMap.Nature.WaterWays
             return TerrainPolygon.MergeAll(builder.GetPolygons(context, surfaceOfWays));
         }
 
-        private List<WaterWay> GetPaths(IBuildContext context, List<TerrainPolygon> lakesPolygons, List<OsmGeo> waterwayNodes)
+        private List<Watercourse> GetPaths(IBuildContext context, List<TerrainPolygon> lakesPolygons, List<OsmGeo> waterwayNodes)
         {
-            var waterwaysPaths = new List<WaterWay>();
+            var waterwaysPaths = new List<Watercourse>();
             using (var report = progress.CreateStep("Paths", waterwayNodes.Count))
             {
                 foreach (var way in waterwayNodes)
@@ -106,7 +106,7 @@ namespace GameRealisticMap.Nature.WaterWays
                                                         .SelectMany(path => path.ClippedBy(context.Area.TerrainBounds))
                                                         .SelectMany(p => p.SubstractAll(lakesPolygons)))
                         {
-                            waterwaysPaths.Add(new WaterWay(segment, kind.Value));
+                            waterwaysPaths.Add(new Watercourse(segment, kind.Value));
                         }
                     }
                     report.ReportOneDone();

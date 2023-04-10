@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Reporting
 {
-    public class ConsoleProgressReport : IProgressInteger
+    public class ConsoleProgressReport : IProgressInteger, IProgressPercent
     {
         private readonly string taskName;
         private readonly int itemsToDo;
@@ -123,6 +123,11 @@ namespace GameRealisticMap.Reporting
         public void Report(int value)
         {
             ReportItemsDone(value);
+        }
+
+        public void Report(double value)
+        {
+            Report((int)(value * 10));
         }
     }
 }

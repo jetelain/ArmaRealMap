@@ -18,5 +18,10 @@
         {
             return new ConsoleProgressReport(Scope.Prefix + name, total);
         }
+
+        public IProgressPercent CreateStepPercent(string name)
+        {
+            return new ConsoleProgressReport(Scope.Prefix + name, 1000);
+        }
     }
 }

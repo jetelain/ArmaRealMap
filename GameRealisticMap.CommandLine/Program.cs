@@ -4,7 +4,7 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
-using GameRealisticMap.Nature.WaterWays;
+using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
@@ -34,7 +34,7 @@ namespace GameRealisticMap.CommandLine
             context.GetData<ElevationData>();
             context.GetData<RoadsData>();
             context.GetData<BuildingsData>();
-            context.GetData<WaterWaysData>();
+            context.GetData<WatercoursesData>();
             context.GetData<ForestData>();
             context.GetData<ScrubData>();
             context.GetData<RocksData>();

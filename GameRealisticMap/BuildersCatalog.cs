@@ -4,7 +4,8 @@ using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
-using GameRealisticMap.Nature.WaterWays;
+using GameRealisticMap.Nature.Surfaces;
+using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
@@ -19,13 +20,14 @@ namespace GameRealisticMap
 
         public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary library)
         {
-            Register<RawSatelliteImageData, RawSatelliteImageBuilder>(new RawSatelliteImageBuilder(progress));
+            // Register<RawSatelliteImageData, RawSatelliteImageBuilder>(new RawSatelliteImageBuilder(progress));
             Register<RawElevationData, RawElevationBuilder>(new RawElevationBuilder(progress));
             Register<ElevationData, ElevationBuilder>(new ElevationBuilder(progress));
             Register<CategoryAreaData, CategoryAreaBuilder>(new CategoryAreaBuilder(progress));
             Register<RoadsData, RoadsBuilder>(new RoadsBuilder(progress, library));
             Register<BuildingsData, BuildingsBuilder>(new BuildingsBuilder(progress));
-            Register<WaterWaysData, WaterWaysBuilder>(new WaterWaysBuilder(progress));
+            Register<WatercoursesData, WatercoursesBuilder>(new WatercoursesBuilder(progress));
+            Register<WatercourseRadialData, WatercourseRadialBuilder>(new WatercourseRadialBuilder(progress));
             Register<ForestData, ForestBuilder>(new ForestBuilder(progress));
             Register<ScrubData, ScrubBuilder>(new ScrubBuilder(progress));
             Register<RocksData, RocksBuilder>(new RocksBuilder(progress));
@@ -33,6 +35,7 @@ namespace GameRealisticMap
             Register<ScrubRadialData, ScrubRadialBuilder>(new ScrubRadialBuilder(progress));
             Register<LakesData, LakesBuilder>(new LakesBuilder(progress));
             Register<ForestEdgeData, ForestEdgeBuilder>(new ForestEdgeBuilder(progress));
+            Register<SandSurfacesData, SandSurfacesBuilder>(new SandSurfacesBuilder(progress));
         }
 
         public void Register<TData, TBuidler>(TBuidler builder)

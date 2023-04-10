@@ -29,6 +29,12 @@ namespace GameRealisticMap.ElevationModel
 
         public float[,] Data => elevationGrid;
 
+        public float this[int x, int y]
+        {
+            get { return elevationGrid[x, y]; }
+            set { elevationGrid[x, y] = value; }
+        }
+
         public int Size => size;
 
         public float CellSize => cellSize.X;

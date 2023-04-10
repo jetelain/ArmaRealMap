@@ -24,7 +24,9 @@ namespace GameRealisticMap.Geometries
         }
 
         public List<TerrainPoint> Points { get; }
+
         public TerrainPoint FirstPoint => Points[0];
+
         public TerrainPoint LastPoint => Points[Points.Count-1];
 
         public TerrainPoint MinPoint { get; }
@@ -39,8 +41,16 @@ namespace GameRealisticMap.Geometries
         { 
             get
             {
-                // TODO: Own algorithm
-                return (float)AsLineString.Length;
+                var length = 0f;
+                var prev = FirstPoint;
+                TerrainPoint point;
+                for(int i = 1; i < Points.Count; ++i)
+                {
+                    point = Points[i];
+                    length += (point.Vector - prev.Vector).Length();
+                    prev = point;
+                }
+                return length;
             }
         }
 

@@ -1,6 +1,6 @@
-﻿namespace GameRealisticMap.Nature.WaterWays
+﻿namespace GameRealisticMap.Nature.Watercourses
 {
-    public enum WaterWayId
+    public enum WatercourseId
     {
         Stream,
 

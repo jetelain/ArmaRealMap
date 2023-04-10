@@ -1,24 +1,21 @@
 ﻿using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
-namespace GameRealisticMap.Nature.WaterWays
+namespace GameRealisticMap.Nature.Watercourses
 {
-    public class WaterWaysData : IBasicTerrainData
+    public class WatercourseRadialData : IBasicTerrainData
     {
-        public WaterWaysData(List<WaterWay> waterwayPaths, List<TerrainPolygon> polygons)
+        public WatercourseRadialData(List<TerrainPolygon> polygons)
         {
-            WaterwayPaths = waterwayPaths;
             Polygons = polygons;
         }
-
-        public List<WaterWay> WaterwayPaths { get; }
 
         public List<TerrainPolygon> Polygons { get; }
 
         public IEnumerable<Feature> ToGeoJson()
         {
             var properties = new Dictionary<string, object>() {
-                {"type", "waterwaySurface" }
+                {"type", "watercourseRadial" }
             };
             return Polygons.Select(b => new Feature(b.ToGeoJson(), properties));
         }

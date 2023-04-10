@@ -3,9 +3,11 @@ using System.Numerics;
 using GameRealisticMap.ElevationModel.Constrained;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Lakes;
-using GameRealisticMap.Nature.WaterWays;
+using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
+using GeoJSON.Text.Geometry;
+using MapToolkit.Contours;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
@@ -25,7 +27,7 @@ namespace GameRealisticMap.ElevationModel
         {
             var raw = context.GetData<RawElevationData>();
             var roadsData = context.GetData<RoadsData>();
-            var waterData = context.GetData<WaterWaysData>();
+            var waterData = context.GetData<WatercoursesData>();
             var lakesData = context.GetData<LakesData>();
 
             var lakes = DigLakes(raw.RawElevation, lakesData, context.Area); // Split in a specific builder ???
@@ -38,13 +40,20 @@ namespace GameRealisticMap.ElevationModel
 
             ProcessRoads(constraintGrid, roadsData);
 
-            ProcessWaterWays(constraintGrid, waterData);
+            ProcessWatercourses(constraintGrid, waterData);
 
             ProtectLakes(constraintGrid, lakes, context.Area);
 
             constraintGrid.SolveAndApplyOnGrid();
 
-            return new ElevationData(constraintGrid.Grid, lakes);
+            var contour = new ContourGraph();
+            using (var report = progress.CreateStepPercent("Contours"))
+            {
+                contour.Add(constraintGrid.Grid.ToDataCell(), new ContourLevelGenerator(1, 1), false, report);
+            }
+
+            // Encoding issue : X/Y are swapped (MapKit and ElevationGrid have different encoding, MapKit is [Y,X] wich is more common, but ElevationGrid is [X,Y])
+            return new ElevationData(constraintGrid.Grid, lakes, contour.Lines.Select(l => new LineString(l.Points.Select(p => new TerrainPoint((float)p.Latitude, (float)p.Longitude)))));
         }
 
         private List<LakeWithElevation> DigLakes(ElevationGrid rawElevation, LakesData lakesData, ITerrainArea area)
@@ -114,9 +123,9 @@ namespace GameRealisticMap.ElevationModel
             }
         }
 
-        private void ProcessWaterWays(ElevationConstraintGrid constraintGrid, WaterWaysData waterData)
+        private void ProcessWatercourses(ElevationConstraintGrid constraintGrid, WatercoursesData waterData)
         {
-            var waterWaysPaths = waterData.WaterwayPaths.Where(w => !w.IsTunnel).Select(w => w.Path).Where(w => w.Length > 10f).ToList();
+            var waterWaysPaths = waterData.Paths.Where(w => !w.IsTunnel).Select(w => w.Path).Where(w => w.Length > 10f).ToList();
             using var report = progress.CreateStep("Waterways", waterWaysPaths.Count);
             foreach (var waterWay in waterWaysPaths)
             {
