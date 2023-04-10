@@ -99,7 +99,7 @@ namespace ArmaRealMap
             {
                 for (int y = 0; y < config.GridSize; y++)
                 {
-                    wrp.Elevation[x + (y * config.GridSize)] = elevationGrid.Data[x, y];
+                    wrp.Elevation[x + (y * config.GridSize)] = elevationGrid[x, y];
                 }
                 report.ReportOneDone();
             }

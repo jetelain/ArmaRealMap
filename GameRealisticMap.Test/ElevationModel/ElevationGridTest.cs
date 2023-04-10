@@ -1,6 +1,7 @@
 ﻿using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using MapToolkit;
+using MapToolkit.DataCells;
 using MapToolkit.DataCells.FileFormats;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
@@ -13,10 +14,10 @@ namespace GameRealisticMap.Test.ElevationModel
         public void ElevationGrid_ElevationAt()
         {
             var grid = new ElevationGrid(2, 10);
-            grid.Data[0, 0] = 100f;
-            grid.Data[1, 0] = 120f;
-            grid.Data[0, 1] = 130f;
-            grid.Data[1, 1] = 140f;
+            grid[0, 0] = 100f;
+            grid[1, 0] = 120f;
+            grid[0, 1] = 130f;
+            grid[1, 1] = 140f;
 
             Assert.Equal(100f, grid.ElevationAt(new TerrainPoint(0, 0)));
             Assert.Equal(120f, grid.ElevationAt(new TerrainPoint(20, 0)));
@@ -33,9 +34,28 @@ namespace GameRealisticMap.Test.ElevationModel
             Assert.Equal(125, grid.ElevationAt(new TerrainPoint(5, 5)));
             Assert.Equal(140, grid.ElevationAt(new TerrainPoint(10, 10)));
 
+        }
 
-            Assert.Equal(107.5f, grid.ToDataCell().GetLocalElevation(new Coordinates(0, 2.5), TriangleNWToSEInterpolation.Instance));
+        [Fact]
+        public void ElevationGrid_ToDataCell()
+        {
+            var grid = new ElevationGrid(2, 10);
+            grid[0, 0] = 100f;
+            grid[1, 0] = 120f;
+            grid[0, 1] = 130f;
+            grid[1, 1] = 140f;
 
+            var cell = grid.ToDataCell();
+
+            Assert.Equal(100f, ElevationAt(cell, 0, 0));
+            Assert.Equal(107.5f, ElevationAt(cell, 0, 2.5f));
+            Assert.Equal(125, ElevationAt(cell, 5, 5));
+            Assert.Equal(140, ElevationAt(cell, 10, 10));
+        }
+
+        private float ElevationAt(DemDataCellPixelIsPoint<float> cell, int x, float y)
+        {
+            return (float)cell.GetLocalElevation(Coordinates.FromXY(x, y), TriangleNWToSEInterpolation.Instance);
         }
 
         [Fact]

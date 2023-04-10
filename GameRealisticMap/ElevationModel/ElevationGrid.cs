@@ -27,12 +27,10 @@ namespace GameRealisticMap.ElevationModel
             cellSize = other.cellSize;
         }
 
-        public float[,] Data => elevationGrid;
-
         public float this[int x, int y]
         {
-            get { return elevationGrid[x, y]; }
-            set { elevationGrid[x, y] = value; }
+            get { return elevationGrid[y, x]; }
+            set { elevationGrid[y, x] = value; }
         }
 
         public int Size => size;
@@ -56,7 +54,7 @@ namespace GameRealisticMap.ElevationModel
 
         private float ElevationAtCell(int x, int y)
         {
-            return elevationGrid[
+            return this[
                 Math.Min(Math.Max(0, x), size - 1),
                 Math.Min(Math.Max(0, y), size - 1)];
         }
@@ -128,12 +126,12 @@ namespace GameRealisticMap.ElevationModel
                             var pixelElevation = minElevation + (elevationDelta * pixel.B / (float)ushort.MaxValue);
                             if (pixel.A == ushort.MaxValue)
                             {
-                                elevationGrid[x + startX, y + startY] = pixelElevation;
+                                this[x + startX, y + startY] = pixelElevation;
                             }
                             else
                             {
-                                var existingElevation = elevationGrid[x + startX, y + startY];
-                                elevationGrid[x + startX, y + startY] = existingElevation + ((pixelElevation - existingElevation) * pixel.A / (float)ushort.MaxValue);
+                                var existingElevation = this[x + startX, y + startY];
+                                this[x + startX, y + startY] = existingElevation + ((pixelElevation - existingElevation) * pixel.A / (float)ushort.MaxValue);
                             }
                         }
                     }

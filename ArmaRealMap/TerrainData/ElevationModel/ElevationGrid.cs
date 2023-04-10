@@ -49,7 +49,7 @@ namespace ArmaRealMap.TerrainData.ElevationModel
                             GetElevationBilinear(view, latLong.Latitude.ToDouble() + delta, latLong.Longitude.ToDouble() + delta)
                         }).Average();
                     }
-                    grid.Data[x, y] = (float)elevation;
+                    grid[x, y] = (float)elevation;
                 }
                 report.ReportItemsDone(Interlocked.Increment(ref done));
             });
@@ -79,7 +79,7 @@ namespace ArmaRealMap.TerrainData.ElevationModel
                     foreach(var item in line.Split(' ').Take(area.Size))
                     {
                         var elevation = double.Parse(item, CultureInfo.InvariantCulture);
-                        grid.Data[x, y] = (float)elevation;
+                        grid[x, y] = (float)elevation;
                         x++;
                     }
                     report.ReportItemsDone(area.Size - y);
@@ -102,7 +102,7 @@ namespace ArmaRealMap.TerrainData.ElevationModel
                 {
                     for (int x = 0; x < area.Size; x++)
                     {
-                        grid.Data[x, y] = reader.ReadSingle();
+                        grid[x, y] = reader.ReadSingle();
                     }
                     report.ReportItemsDone(y);
                 }
@@ -120,7 +120,7 @@ namespace ArmaRealMap.TerrainData.ElevationModel
                 {
                     for (int x = 0; x < area.Size; x++)
                     {
-                        writer.Write(grid.Data[x, y]);
+                        writer.Write(grid[x, y]);
                     }
                     report.ReportItemsDone(y);
                 }
@@ -152,7 +152,7 @@ namespace ArmaRealMap.TerrainData.ElevationModel
                 report?.ReportItemsDone(y);
                 for (int x = 0; x < area.Size; x++)
                 {
-                    writer.Write(grid.Data[x, area.Size - y - 1].ToString("0.00", CultureInfo.InvariantCulture));
+                    writer.Write(grid[x, area.Size - y - 1].ToString("0.00", CultureInfo.InvariantCulture));
                     writer.Write(" ");
                 }
                 writer.WriteLine();

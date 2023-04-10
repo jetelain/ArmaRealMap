@@ -198,25 +198,25 @@ namespace GameRealisticMap.ElevationModel.Constrained
                 changes = 0;
                 foreach (var (x, y, point, constraints) in listHard)
                 {
-                    var intialElevation = initial.Data[x, y];
+                    var intialElevation = initial[x, y];
                     var elevation = Estimate(point, constraints, intialElevation);
                     if (Math.Abs(elevation - intialElevation) > 0.05f)
                     {
                         changes++;
                     }
-                    initial.Data[x, y] = elevation;
+                    initial[x, y] = elevation;
                     report.ReportOneDone();
                 }
                 // Now that all hard points have been applied, try to smooth around soft points
                 foreach (var (x, y, point, constraints) in listSoft)
                 {
-                    var intialElevation = initial.Data[x, y];
+                    var intialElevation = initial[x, y];
                     var elevation = SoftAround(intialElevation, point, initial, constraints);
                     if (Math.Abs(elevation - intialElevation) > 0.05f)
                     {
                         changes++;
                     }
-                    initial.Data[x, y] = elevation;
+                    initial[x, y] = elevation;
                     report.ReportOneDone();
                 }
                 Trace.WriteLine($"{changes} changes on elevation grid");

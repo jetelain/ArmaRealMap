@@ -52,8 +52,7 @@ namespace GameRealisticMap.ElevationModel
                 contour.Add(constraintGrid.Grid.ToDataCell(), new ContourLevelGenerator(1, 1), false, report);
             }
 
-            // Encoding issue : X/Y are swapped (MapKit and ElevationGrid have different encoding, MapKit is [Y,X] wich is more common, but ElevationGrid is [X,Y])
-            return new ElevationData(constraintGrid.Grid, lakes, contour.Lines.Select(l => new LineString(l.Points.Select(p => new TerrainPoint((float)p.Latitude, (float)p.Longitude)))));
+            return new ElevationData(constraintGrid.Grid, lakes, contour.Lines.Select(l => new LineString(l.Points)));
         }
 
         private List<LakeWithElevation> DigLakes(ElevationGrid rawElevation, LakesData lakesData, ITerrainArea area)

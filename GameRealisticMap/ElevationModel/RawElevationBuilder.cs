@@ -35,14 +35,13 @@ namespace GameRealisticMap.ElevationModel
 
             using var report = progress.CreateStep("SRTM", size);
             var grid = new ElevationGrid(size, cellSize);
-            var elevationGrid = grid.Data;
             Parallel.For(0, size, y =>
             {
                 for (int x = 0; x < size; x++)
                 {
                     var latLong = context.Area.TerrainPointToLatLng(new TerrainPoint(x * cellSize, y * cellSize));
                     var elevation = GetElevationBilinear(view, latLong.Y, latLong.X);
-                    elevationGrid[x, y] = (float)elevation;
+                    grid[x, y] = (float)elevation;
                 }
                 report.Report(Interlocked.Increment(ref done));
             });
