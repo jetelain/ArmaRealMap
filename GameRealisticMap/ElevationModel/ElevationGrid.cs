@@ -112,33 +112,6 @@ namespace GameRealisticMap.ElevationModel
             return new ElevationGridArea(this, x1, y1, x2 - x1 + 1, y2 - y1 + 1, minElevation, delta);
         }
 
-        internal void Apply (int startX, int startY, Image<Rgba64> data, float minElevation, float elevationDelta)
-        {
-            for(int x = 0; x < data.Width; ++x)
-            {
-                for (int y = 0; y < data.Height; ++y)
-                {
-                    if (x + startX >= 0 && y + startY >= 0 && x + startX < size && y + startY < size)
-                    {
-                        var pixel = data[x, y];
-                        if (pixel.A != ushort.MinValue)
-                        {
-                            var pixelElevation = minElevation + (elevationDelta * pixel.B / (float)ushort.MaxValue);
-                            if (pixel.A == ushort.MaxValue)
-                            {
-                                this[x + startX, y + startY] = pixelElevation;
-                            }
-                            else
-                            {
-                                var existingElevation = this[x + startX, y + startY];
-                                this[x + startX, y + startY] = existingElevation + ((pixelElevation - existingElevation) * pixel.A / (float)ushort.MaxValue);
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
 
         public DemDataCellPixelIsPoint<float> ToDataCell()
         {

@@ -56,7 +56,56 @@ namespace GameRealisticMap.ElevationModel
 
         public void Apply()
         {
-            elevationGrid.Apply(startX, startY, image, minElevation, elevationDelta);
+            Apply(ApplyAsIs);
+        }
+
+        public void ApplyAsMinimal()
+        {
+            Apply(ApplyAsMinimal);
+        }
+
+        private void Apply(Action<int,int,ushort,float> apply)
+        {
+            for (int x = 0; x < image.Width; ++x)
+            {
+                for (int y = 0; y < image.Height; ++y)
+                {
+                    if (x + startX >= 0 && y + startY >= 0 && x + startX < elevationGrid.Size && y + startY < elevationGrid.Size)
+                    {
+                        var pixel = image[x, y];
+                        var alpha = pixel.A;
+                        if (alpha != ushort.MinValue)
+                        {
+                            var pixelElevation = minElevation + (elevationDelta * pixel.B / (float)ushort.MaxValue);
+                            apply(x, y, alpha, pixelElevation);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ApplyAsIs(int x, int y, ushort alpha, float pixelElevation)
+        {
+            if (alpha == ushort.MaxValue)
+            {
+                elevationGrid[x + startX, y + startY] = pixelElevation;
+            }
+            else
+            {
+                var existingElevation = elevationGrid[x + startX, y + startY];
+                elevationGrid[x + startX, y + startY] = existingElevation + ((pixelElevation - existingElevation) * alpha / (float)ushort.MaxValue);
+            }
+        }
+
+
+        private void ApplyAsMinimal(int x, int y, ushort alpha, float pixelElevation)
+        {
+            var existingElevation = elevationGrid[x + startX, y + startY];
+            if (alpha != ushort.MaxValue)
+            {
+                pixelElevation = existingElevation + ((pixelElevation - existingElevation) * alpha / (float)ushort.MaxValue);
+            }
+            elevationGrid[x + startX, y + startY] = Math.Max(pixelElevation, existingElevation);
         }
     }
 }

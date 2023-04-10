@@ -94,7 +94,7 @@ namespace GameRealisticMap.ElevationModel
                 var min = g.MinPoint - (2 * cellSize);
                 var max = g.MaxPoint + (2 * cellSize);
 
-                var borderElevation = GeometryHelper.PointsOnPath(g.Shell,0.5f).Min(p => rawElevation.ElevationAt(p));
+                var borderElevation = GeometryHelper.PointsOnPath(g.Shell, area.GridCellSize / 10f).Min(p => rawElevation.ElevationAt(p));
                 var lakeElevation = rawElevation.PrepareToMutate(min, max, borderElevation - 2.5f, borderElevation);
                 lakeElevation.Image.Mutate(d =>
                 {
@@ -109,6 +109,16 @@ namespace GameRealisticMap.ElevationModel
                     }
                 });
                 lakeElevation.Apply();
+
+                lakeElevation = rawElevation.PrepareToMutate(min, max, borderElevation - 10f, borderElevation + 10f);
+                lakeElevation.Image.Mutate(d =>
+                {
+                    foreach (var scaled in g.OuterCrown(cellSize.X * 4f))
+                    {
+                        PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(lakeElevation.ElevationToColor(borderElevation)), lakeElevation.ToPixels);
+                    }
+                });
+                lakeElevation.ApplyAsMinimal();
                 report.ReportOneDone();
 
                 float waterElevation = borderElevation - 0.1f;
