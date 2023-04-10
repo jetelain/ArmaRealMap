@@ -7,17 +7,13 @@ namespace GameRealisticMap.ElevationModel
     public class ElevationData : ITerrainData
     {
 
-        public ElevationData(ElevationGrid elevation, List<LakeWithElevation> lakes, IEnumerable<LineString> geoJSON)
+        public ElevationData(ElevationGrid elevation, IEnumerable<LineString> geoJSON)
         {
             Elevation = elevation;
-            Lakes = lakes;
             this.geoJSON = geoJSON;
         }
 
         public ElevationGrid Elevation { get; }
-
-        public List<LakeWithElevation> Lakes { get; }
-
 
         private readonly IEnumerable<LineString> geoJSON;
 
@@ -25,6 +21,7 @@ namespace GameRealisticMap.ElevationModel
         {
             var properties = new Dictionary<string, object>();
             properties.Add("type", "contour");
+
             return geoJSON.Select(g => new Feature(g, properties));
         }
     }

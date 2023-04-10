@@ -4,11 +4,11 @@ namespace GameRealisticMap.ElevationModel
 {
     public class LakeWithElevation
     {
-        public LakeWithElevation(TerrainPolygon terrainPolygon, float borderElevation)
+        public LakeWithElevation(TerrainPolygon terrainPolygon, float borderElevation, float waterElevation)
         {
             BorderElevation = borderElevation;
             TerrainPolygon= terrainPolygon;
-            WaterElevation = borderElevation - 0.1f;
+            WaterElevation = waterElevation;
         }
 
         public float BorderElevation { get; }

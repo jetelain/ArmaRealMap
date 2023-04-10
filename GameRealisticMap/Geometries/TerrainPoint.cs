@@ -73,6 +73,11 @@ namespace GameRealisticMap.Geometries
 
         public bool Equals(TerrainPoint? other) => !ReferenceEquals(null, other) && ((vector - other.vector).LengthSquared() < 0.01f);
 
+        internal static TerrainPoint FromGeoJson(IPosition point)
+        {
+            return new TerrainPoint((float)point.Longitude, (float)point.Latitude);
+        }
+
         public static TerrainPoint operator +(TerrainPoint left, Vector2 right)
         {
             return new TerrainPoint(left.Vector + right);

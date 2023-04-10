@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Buildings;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
@@ -27,7 +28,7 @@ namespace GameRealisticMap.Nature
         protected virtual IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
         {
             var roads = context.GetData<RoadsData>();
-            var lakes = context.GetData<LakesData>();
+            var lakes = context.GetData<ElevationWithLakesData>();
             var buildings = context.GetData<BuildingsData>();
             var forest = context.GetData<ForestData>();
             var scrub = context.GetData<ScrubData>();
@@ -36,7 +37,7 @@ namespace GameRealisticMap.Nature
 
             return buildings.Buildings.Select(b => b.Box.Polygon)
                 .Concat(roads.Roads.Where(r => r.RoadType != RoadTypeId.Trail).SelectMany(r => r.ClearPolygons))
-                .Concat(lakes.Polygons)
+                .Concat(lakes.Lakes.Select(l => l.TerrainPolygon))
                 .Concat(forest.Polygons)
                 .Concat(scrub.Polygons)
                 .Concat(rocks.Polygons)

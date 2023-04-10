@@ -20,7 +20,7 @@ namespace GameRealisticMap
 
         public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary library)
         {
-            // Register<RawSatelliteImageData, RawSatelliteImageBuilder>(new RawSatelliteImageBuilder(progress));
+            Register<RawSatelliteImageData, RawSatelliteImageBuilder>(new RawSatelliteImageBuilder(progress));
             Register<RawElevationData, RawElevationBuilder>(new RawElevationBuilder(progress));
             Register<ElevationData, ElevationBuilder>(new ElevationBuilder(progress));
             Register<CategoryAreaData, CategoryAreaBuilder>(new CategoryAreaBuilder(progress));
@@ -36,6 +36,7 @@ namespace GameRealisticMap
             Register<LakesData, LakesBuilder>(new LakesBuilder(progress));
             Register<ForestEdgeData, ForestEdgeBuilder>(new ForestEdgeBuilder(progress));
             Register<SandSurfacesData, SandSurfacesBuilder>(new SandSurfacesBuilder(progress));
+            Register<ElevationWithLakesData, ElevationWithLakesBuilder>(new ElevationWithLakesBuilder(progress));
         }
 
         public void Register<TData, TBuidler>(TBuidler builder)

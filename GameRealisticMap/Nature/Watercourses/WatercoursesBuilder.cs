@@ -63,7 +63,7 @@ namespace GameRealisticMap.Nature.Watercourses
 
         public WatercoursesData Build(IBuildContext context)
         {
-            var lakesPolygons = context.GetData<LakesData>().Polygons;
+            var lakesPolygons = context.GetData<LakesData>().Polygons; // XXX: With elevation or not ?
 
             var waterwayNodes = context.OsmSource.All
                 .Where(s => s.Tags != null && GetWaterwayPathTypeId(s.Tags) != null)

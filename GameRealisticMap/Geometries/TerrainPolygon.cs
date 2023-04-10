@@ -101,6 +101,15 @@ namespace GameRealisticMap.Geometries
             };
         }
 
+        public static TerrainPolygon FromGeoJson(GeoJSON.Text.Geometry.Polygon polygon)
+        {
+            var shell = polygon.Coordinates.First();
+            var holes = polygon.Coordinates.Skip(1);
+            return new TerrainPolygon(
+                    shell.Coordinates.Select(TerrainPoint.FromGeoJson).ToList(),
+                    holes.Select(r => r.Coordinates.Select(TerrainPoint.FromGeoJson).ToList()).ToList());
+        }
+
         public static TerrainPolygon FromRectangleCentered(TerrainPoint center, Vector2 size, float degrees = 0.0f)
         {
             var points = GeometryHelper.RotatedRectangleDegrees(center.Vector, size, degrees).Select(v => new TerrainPoint(v));

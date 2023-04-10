@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Buildings;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Reporting;
@@ -18,12 +19,12 @@ namespace GameRealisticMap.Nature
         protected override IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
         {
             var roads = context.GetData<RoadsData>();
-            var lakes = context.GetData<LakesData>();
+            var lakes = context.GetData<ElevationWithLakesData>();
             var buildings = context.GetData<BuildingsData>();
 
             return buildings.Buildings.Select(b => b.Box.Polygon)
                 .Concat(roads.Roads.Where(r => r.RoadType != RoadTypeId.Trail).SelectMany(r => r.ClearPolygons))
-                .Concat(lakes.Polygons);
+                .Concat(lakes.Lakes.Select(l => l.TerrainPolygon));
         }
 
         protected abstract T CreateWrapper(List<TerrainPolygon> polygons);
