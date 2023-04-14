@@ -98,22 +98,24 @@ namespace GameRealisticMap.ElevationModel
                 var lakeElevation = rawElevation.PrepareToMutate(min, max, borderElevation - 2.5f, borderElevation);
                 lakeElevation.Image.Mutate(d =>
                 {
-                    PolygonDrawHelper.DrawPolygon(d, g, new SolidBrush(Color.FromRgba(255, 255, 255, 128)), lakeElevation.ToPixels);
+                    PolygonDrawHelper.DrawPolygon(d, g, new SolidBrush(Color.FromRgba(255, 255, 255, 255)), lakeElevation.ToPixels);
                     foreach (var scaled in g.Offset(cellSize.X * -2f))
                     {
-                        PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(Color.FromRgba(128, 128, 128, 192)), lakeElevation.ToPixels);
+                        PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(Color.FromRgba(128, 128, 128, 255)), lakeElevation.ToPixels);
                     }
                     foreach (var scaled in g.Offset(cellSize.X * -4f))
                     {
                         PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(Color.FromRgba(0, 0, 0, 255)), lakeElevation.ToPixels);
                     }
+                    d.BoxBlur(1);
                 });
+                //lakeElevation.Image.SaveAsPng($"lake{lakes.Count}.png");
                 lakeElevation.Apply();
 
                 lakeElevation = rawElevation.PrepareToMutate(min, max, borderElevation - 10f, borderElevation + 10f);
                 lakeElevation.Image.Mutate(d =>
                 {
-                    foreach (var scaled in g.OuterCrown(cellSize.X * 4f))
+                    foreach (var scaled in g.OuterCrown(cellSize.X * 2f))
                     {
                         PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(lakeElevation.ElevationToColor(borderElevation)), lakeElevation.ToPixels);
                     }
@@ -130,7 +132,11 @@ namespace GameRealisticMap.ElevationModel
                 }
                 foreach (var poly in polys)
                 {
-                    lakes.Add(new LakeWithElevation(TerrainPolygon.FromGeoJson(poly), borderElevation, waterElevation));
+                    var tpoly = TerrainPolygon.FromGeoJson(poly);
+                    if (polys.Count == 1 || tpoly.Shell.Any(p => g.ContainsRaw(p)))
+                    {
+                        lakes.Add(new LakeWithElevation(TerrainPolygon.FromGeoJson(poly), borderElevation, waterElevation));
+                    }
                 }
 
             }
