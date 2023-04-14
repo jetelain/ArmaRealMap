@@ -35,25 +35,45 @@ namespace GameRealisticMap.ElevationModel
 
             // TODO :
             // - Forced elevation for airstrip,
-            // - Flat area for sports area, (parking lots ?)
+            // - (Flat area for parking lots ?)
             // - Forced elevation by config
 
             var grid = raw.RawElevation;
 
-            FlatAreas(buildings, grid);
+            FlatAreas(
+                GetLargeBuildings(buildings)
+                .Concat(GetOutdoorPitch(context)), grid);
 
             return new ElevationWithLakesData(grid, lakes);
         }
 
-        private void FlatAreas(BuildingsData buildings, ElevationGrid grid)
+        /// <summary>
+        /// Large buildings will better fit on a flat ground
+        /// </summary>
+        /// <param name="buildings"></param>
+        /// <returns></returns>
+        private IEnumerable<TerrainPolygon> GetLargeBuildings(BuildingsData buildings)
         {
             var largeBuildingArea = 750f;
 
-            var flatAreas = buildings.Buildings
-                .Where(b => b.Box.Width * b.Box.Height >= largeBuildingArea).Select(b => b.Box.Polygon)
-                .ProgressStep(progress, "Flat");
+            return buildings.Buildings.Where(b => b.Box.Width * b.Box.Height >= largeBuildingArea).Select(b => b.Box.Polygon);
+        }
 
-            foreach (var flat in flatAreas)
+        /// <summary>
+        /// Outdoor pitch are always flat
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private static IEnumerable<TerrainPolygon> GetOutdoorPitch(IBuildContext context)
+        {
+            return context.OsmSource.Ways.Where(w => w.Tags != null && (w.Tags.GetValue("leisure") == "pitch" && !w.Tags.ContainsKey("indoor")))
+                .SelectMany(w => context.OsmSource.Interpret(w))
+                .SelectMany(g => TerrainPolygon.FromGeometry(g, context.Area.LatLngToTerrainPoint));
+        }
+
+        private void FlatAreas(IEnumerable<TerrainPolygon> flatAreas, ElevationGrid grid)
+        {
+            foreach (var flat in flatAreas.ProgressStep(progress, "Flat"))
             {
                 var avg = grid.GetAverageElevation(flat);
                 var mutate = grid.PrepareToMutate(flat.MinPoint - grid.CellSize, flat.MaxPoint + grid.CellSize, avg - 10, avg);
@@ -69,6 +89,7 @@ namespace GameRealisticMap.ElevationModel
                 mutate.Apply();
             }
         }
+
 
         private List<LakeWithElevation> DigLakes(ElevationGrid rawElevation, LakesData lakesData, ITerrainArea area)
         {
