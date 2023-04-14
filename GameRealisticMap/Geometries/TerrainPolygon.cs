@@ -348,7 +348,7 @@ namespace GameRealisticMap.Geometries
             return ToPolygons(result);
         }
 
-        public IEnumerable<TerrainPolygon> Merge(TerrainPolygon other)
+        public IEnumerable<TerrainPolygon> Merge(TerrainPolygon other, double artefactFilter = 0.01f)
         {
             if (!GeometryHelper.EnveloppeIntersects(this, other))
             {
@@ -368,7 +368,7 @@ namespace GameRealisticMap.Geometries
             }
             var result = new PolyTree();
             clipper.Execute(ClipType.ctUnion, result);
-            return ToPolygons(result);
+            return ToPolygons(result).Where(p => p.Area > artefactFilter).ToList();
         }
 
         public IEnumerable<TerrainPolygon> Intersection(TerrainPolygon other)
