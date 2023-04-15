@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Numerics;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
@@ -35,10 +36,22 @@ namespace GameRealisticMap.Buildings
 
             pass4 = pass4.Where(b => context.Area.IsInside(b.Box.Center)).ToList();
 
+            DetectEntranceSide(pass4, roads.Roads);
+
             var pass5 = DetectBuildingCategory(categorizers.Areas, pass4);
             //Preview(data, removed, pass5, "buildings-pass5.png");
 
             return new BuildingsData(pass5);
+        }
+
+        private void DetectEntranceSide(List<BuildingCandidate> buildings, List<Road> roads)
+        {
+            using var report = progress.CreateStep("EntranceSide", buildings.Count);
+            foreach (var building in buildings)
+            {
+                building.EntranceSide = BoxSideHelper.GetClosest(building.Box, roads.Select(r => r.Path), 25);
+                report.ReportOneDone();
+            }
         }
 
         private List<BuildingCandidate> MergeSmallBuildings(List<BuildingCandidate> pass1Builidings, List<TerrainPolygon> removed)

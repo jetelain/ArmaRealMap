@@ -140,5 +140,10 @@ namespace GameRealisticMap.Geometries
         {
             return new GeoJSON.Text.Geometry.LineString(Points);
         }
+
+        public float Distance(TerrainPoint p)
+        {
+            return (float)AsLineString.Distance(new Point(p.X, p.Y));
+        }
     }
 }

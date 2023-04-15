@@ -162,5 +162,14 @@ namespace GameRealisticMap.Geometries
             return result;
         }
 
+        public static ITerrainGeometry WithMargin(this ITerrainGeometry geometry, float margin)
+        {
+            return WithMargin(geometry, new Vector2(margin));
+        }
+
+        public static ITerrainGeometry WithMargin(this ITerrainGeometry geometry, Vector2 margin)
+        {
+            return new GameRealisticMap.Geometries.Envelope(geometry.MinPoint - margin, geometry.MaxPoint + margin);
+        }
     }
 }

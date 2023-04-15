@@ -50,9 +50,14 @@ namespace GameRealisticMap.Geometries
         public float Height { get; }
 
         /// <summary>
-        /// Angle in degrees
+        /// Angle in degrees (trigonometric / anti-clockwise)
         /// </summary>
         public float Angle { get; }
+
+        /// <summary>
+        /// Heading in degrees (clockwise)
+        /// </summary>
+        public float Heading => -Angle;
 
         /// <summary>
         /// Points of rectangle

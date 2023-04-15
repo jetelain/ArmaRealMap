@@ -1,4 +1,5 @@
-﻿using GeoJSON.Text.Feature;
+﻿using GameRealisticMap.Geometries;
+using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Buildings
 {
@@ -13,10 +14,17 @@ namespace GameRealisticMap.Buildings
 
         public IEnumerable<Feature> ToGeoJson()
         {
+            var entrance = new Dictionary<string, object>() {
+                    {"type", "buildingEntrance" }
+                };
+
             return Buildings.Select(b => new Feature(b.Box.Polygon.ToGeoJson(), new Dictionary<string, object>() {
                 {"type", "building" },
                 {"building", b.TypeId.ToString() }
-            }));
+            }))
+            .Concat(
+                Buildings.Where(e => e.EntranceSide != BoxSide.None).Select(b => new Feature(BoxSideHelper.GetSide(b.Box, b.EntranceSide).ToGeoJson(), entrance))
+            );
         }
     }
 }

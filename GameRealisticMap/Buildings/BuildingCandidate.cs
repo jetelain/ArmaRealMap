@@ -22,6 +22,8 @@ namespace GameRealisticMap.Buildings
 
         public BuildingTypeId? Category { get; set; }
 
+        public BoxSide EntranceSide { get; set; }
+
         public void Add(BuildingCandidate other)
         {
             Polygons.AddRange(other.Polygons);
@@ -35,7 +37,7 @@ namespace GameRealisticMap.Buildings
             {
                 throw new InvalidOperationException();
             }
-            return new Building(Box, Category.Value, Polygons);
+            return new Building(Box, Category.Value, Polygons, EntranceSide);
         }
     }
 }
