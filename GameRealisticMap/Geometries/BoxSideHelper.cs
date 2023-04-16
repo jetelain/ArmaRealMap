@@ -13,25 +13,66 @@ namespace GameRealisticMap.Geometries
 
         public static BoxSide GetClosest(BoundingBox box, IEnumerable<TerrainPath> allPaths, float maxDistance)
         {
+            return GetClosestList(box, allPaths, maxDistance).FirstOrDefault();
+        }
+
+        public static IEnumerable<BoxSide> GetClosestList(BoundingBox box, IEnumerable<TerrainPath> allPaths, float maxDistance)
+        {
             var envelope = box.WithMargin(maxDistance * 1.5f);
 
-            var path = allPaths.Where(p => p.EnveloppeIntersects(envelope));
+            var paths = allPaths.Where(p => p.EnveloppeIntersects(envelope)).ToList();
 
-            var sidesDistance = GetSidesPoints(box).Select(s => allPaths.Min(p => p.Distance(s))).ToList();
-
-            var distance = maxDistance;
-            var side = BoxSide.None;
-
-            for (int i = 0; i < sides.Length; ++i)
+            if ( paths.Count == 0 )
             {
-                if (sidesDistance[i] < distance)
-                {
-                    side = sides[i];
-                    distance = sidesDistance[i];
-                }
+                return Enumerable.Empty<BoxSide>();
             }
 
-            return side;
+            var sidesDistance = GetSidesPoints(box).Select(s => paths.Min(p => p.Distance(s))).ToList();
+
+            return sides
+                .Select((s, i) => new { Side = s, Distance = sidesDistance[i] })
+                .Where(i => i.Distance < maxDistance)
+                .OrderBy(i => i.Distance)
+                .Select(i => i.Side);
+        }
+
+        public static BoxSide GetFurthest(BoundingBox box, IEnumerable<TerrainPath> allPaths, float minDistance)
+        {
+            return GetFurthestList(box, allPaths, minDistance).FirstOrDefault();
+        }
+
+        public static IEnumerable<BoxSide> GetFurthestList(BoundingBox box, IEnumerable<TerrainPath> allPaths, float minDistance)
+        {
+            var envelope = box.WithMargin(minDistance * 10f);
+
+            var paths = allPaths.Where(p => p.EnveloppeIntersects(envelope));
+
+            return GetFurthestListImpl(box, minDistance, paths.ToList());
+        }
+
+        public static IEnumerable<BoxSide> GetFurthestList(BoundingBox box, IEnumerable<TerrainPolygon> allPaths, float minDistance)
+        {
+            var envelope = box.WithMargin(minDistance * 10f);
+
+            var paths = allPaths.Where(p => p.EnveloppeIntersects(envelope));
+
+            return GetFurthestListImpl(box, minDistance, paths.Select(b => new TerrainPath(b.Shell)).ToList());
+        }
+
+        private static IEnumerable<BoxSide> GetFurthestListImpl(BoundingBox box, float minDistance, List<TerrainPath> paths)
+        {
+            if (paths.Count == 0)
+            {
+                return sides; // All
+            }
+
+            var sidesDistance = GetSidesPoints(box).Select(s => paths.Min(p => p.Distance(s))).ToList();
+
+            return sides
+                .Select((s, i) => new { Side = s, Distance = sidesDistance[i] })
+                .Where(i => i.Distance >= minDistance)
+                .OrderByDescending(i => i.Distance)
+                .Select(i => i.Side);
         }
 
         private static TerrainPoint[] GetSidesPoints(BoundingBox box)
@@ -45,6 +86,24 @@ namespace GameRealisticMap.Geometries
                 box.Center + Vector2.Transform(new Vector2(-box.Width/2, 0), rotate)
             };
         }
+
+        /*
+        private static TerrainPoint GetPoint(BoundingBox box, Matrix3x2 rotate, BoxSide side)
+        {
+            switch (side)
+            {
+                case BoxSide.Top:
+                    return box.Center + Vector2.Transform(new Vector2(0, +box.Height / 2), rotate);
+                case BoxSide.Right:
+                    return box.Center + Vector2.Transform(new Vector2(+box.Width / 2, 0), rotate);
+                case BoxSide.Bottom:
+                    return box.Center + Vector2.Transform(new Vector2(0, -box.Height / 2), rotate);
+                case BoxSide.Left:
+                    return box.Center + Vector2.Transform(new Vector2(-box.Width / 2, 0), rotate);
+            }
+            throw new ArgumentException();
+        }
+        */
 
         public static TerrainPath GetSide(BoundingBox box, BoxSide side)
         {

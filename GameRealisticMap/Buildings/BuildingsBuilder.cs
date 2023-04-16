@@ -49,7 +49,19 @@ namespace GameRealisticMap.Buildings
             using var report = progress.CreateStep("EntranceSide", buildings.Count);
             foreach (var building in buildings)
             {
-                building.EntranceSide = BoxSideHelper.GetClosest(building.Box, roads.Select(r => r.Path), 25);
+                var closestRoads = BoxSideHelper.GetClosestList(building.Box, roads.Select(r => r.Path), 25).ToList();
+
+                var furthestBuildings = BoxSideHelper.GetFurthestList(building.Box, buildings.Where(b => b != building).Select(r => r.Polygon), 2).ToList();
+
+                // TODO: Check that not face fences/wall/etc.
+
+                building.EntranceSide = closestRoads.FirstOrDefault(s => furthestBuildings.Contains(s));
+
+                if (building.EntranceSide == BoxSide.None)
+                {
+                    building.EntranceSide = furthestBuildings.FirstOrDefault();
+                }
+
                 report.ReportOneDone();
             }
         }
