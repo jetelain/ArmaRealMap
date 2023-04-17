@@ -5,6 +5,7 @@ using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
+using GameRealisticMap.Nature.Surfaces;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
@@ -34,6 +35,7 @@ namespace GameRealisticMap.Nature
             var scrub = context.GetData<ScrubData>();
             var rocks = context.GetData<RocksData>();
             var meta = context.GetData<CategoryAreaData>();
+            var meadows = context.GetData<MeadowsData>();
 
             return buildings.Buildings.Select(b => b.Box.Polygon)
                 .Concat(roads.Roads.Where(r => r.RoadType != RoadTypeId.Trail).SelectMany(r => r.ClearPolygons))
@@ -41,6 +43,7 @@ namespace GameRealisticMap.Nature
                 .Concat(forest.Polygons)
                 .Concat(scrub.Polygons)
                 .Concat(rocks.Polygons)
+                .Concat(meadows.Polygons)
                 .Concat(meta.Areas.SelectMany(a => a.PolyList));
         }
 

@@ -37,6 +37,7 @@ namespace GameRealisticMap
             Register<ForestEdgeData, ForestEdgeBuilder>(new ForestEdgeBuilder(progress));
             Register<SandSurfacesData, SandSurfacesBuilder>(new SandSurfacesBuilder(progress));
             Register<ElevationWithLakesData, ElevationWithLakesBuilder>(new ElevationWithLakesBuilder(progress));
+            Register<MeadowsData, MeadowsBuilder>(new MeadowsBuilder(progress));
         }
 
         public void Register<TData, TBuidler>(TBuidler builder)

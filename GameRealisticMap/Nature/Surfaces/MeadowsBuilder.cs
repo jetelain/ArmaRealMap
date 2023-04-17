@@ -28,10 +28,5 @@ namespace GameRealisticMap.Nature.Surfaces
             }
             return tags.GetValue("landuse") == "meadow";
         }
-
-        protected override IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
-        {
-            return Enumerable.Empty<TerrainPolygon>();
-        }
     }
 }
