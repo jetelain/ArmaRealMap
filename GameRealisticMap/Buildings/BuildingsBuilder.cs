@@ -93,16 +93,18 @@ namespace GameRealisticMap.Buildings
             {
                 foreach (var building in large)
                 {
-                    if (building.Category == BuildingTypeId.Hut) continue;
-                    var wasUpdated = true;
-                    while (wasUpdated && building.Box.Width < mergeLimit && building.Box.Width < mergeLimit)
+                    if (BuildingTypeIdHelper.CanMerge(building.Category))
                     {
-                        wasUpdated = false;
-                        foreach (var other in small.Where(b => b.Poly.Intersects(building.Poly)).ToList())
+                        var wasUpdated = true;
+                        while (wasUpdated && building.Box.Width < mergeLimit && building.Box.Width < mergeLimit)
                         {
-                            small.Remove(other);
-                            building.Add(other);
-                            wasUpdated = true;
+                            wasUpdated = false;
+                            foreach (var other in small.Where(b => b.Poly.Intersects(building.Poly)).ToList())
+                            {
+                                small.Remove(other);
+                                building.Add(other);
+                                wasUpdated = true;
+                            }
                         }
                     }
                     report2.ReportOneDone();
@@ -246,7 +248,7 @@ namespace GameRealisticMap.Buildings
                 {
                     foreach(var poly in TerrainPolygon.FromGeometry(geometry, area.LatLngToTerrainPoint))
                     {
-                        pass1.Add(new BuildingCandidate(poly, OsmBuildingCategorizer.ToBuildingType(building.Tags)));
+                        pass1.Add(new BuildingCandidate(poly, BuildingTypeIdHelper.FromOSM(building.Tags)));
                     }
                 }
                 report1.ReportOneDone();

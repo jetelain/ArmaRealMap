@@ -16,6 +16,9 @@ namespace GameRealisticMap.Buildings
         Residential,
         Military,
         Commercial,
-        Industrial
+        Industrial,
+        Shed,
+        Agricultural,
+        WaterTower
     }
 }

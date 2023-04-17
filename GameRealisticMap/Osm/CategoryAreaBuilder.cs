@@ -40,6 +40,7 @@ namespace GameRealisticMap.Osm
                 case "residential": return BuildingTypeId.Residential;
                 case "retail": return BuildingTypeId.Retail;
                 case "military": return BuildingTypeId.Military;
+                case "farmyard": return BuildingTypeId.Agricultural;
             }
             return null;
         }
