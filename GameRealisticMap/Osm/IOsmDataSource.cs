@@ -9,6 +9,8 @@ namespace GameRealisticMap.Osm
 
         IEnumerable<Way> Ways { get; }
 
+        IEnumerable<Node> Nodes { get; }
+
         IEnumerable<IGeometry> Interpret(OsmGeo osmGeo);
     }
 }

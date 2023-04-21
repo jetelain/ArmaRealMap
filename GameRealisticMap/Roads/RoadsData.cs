@@ -3,7 +3,7 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Roads
 {
-    public class RoadsData : ITerrainData
+    public class RoadsData : IGeoJsonData
     {
         public RoadsData(List<Road> roads)
         { 

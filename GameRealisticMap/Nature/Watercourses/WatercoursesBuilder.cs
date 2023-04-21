@@ -17,7 +17,7 @@ namespace GameRealisticMap.Nature.Watercourses
             this.progress = progress;
         }
 
-        private static WatercourseId? GetWaterwayPathTypeId(TagsCollectionBase tags)
+        private static WatercourseTypeId? GetWaterwayPathTypeId(TagsCollectionBase tags)
         {
             if (tags.TryGetValue("waterway", out var waterway))
             {
@@ -26,10 +26,10 @@ namespace GameRealisticMap.Nature.Watercourses
                     switch (waterway)
                     {
                         case "river":
-                            return WatercourseId.RiverTunnel;
+                            return WatercourseTypeId.RiverTunnel;
 
                         case "stream":
-                            return WatercourseId.StreamTunnel;
+                            return WatercourseTypeId.StreamTunnel;
                     }
                 }
                 else
@@ -37,10 +37,10 @@ namespace GameRealisticMap.Nature.Watercourses
                     switch (waterway)
                     {
                         case "river":
-                            return WatercourseId.River;
+                            return WatercourseTypeId.River;
 
                         case "stream":
-                            return WatercourseId.Stream;
+                            return WatercourseTypeId.Stream;
                     }
                 }
             }

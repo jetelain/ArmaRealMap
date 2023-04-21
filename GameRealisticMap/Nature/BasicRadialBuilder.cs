@@ -1,12 +1,12 @@
 ﻿using GameRealisticMap.Buildings;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.Nature.Forests;
-using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
-using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
 
@@ -28,23 +28,15 @@ namespace GameRealisticMap.Nature
 
         protected virtual IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
         {
-            var roads = context.GetData<RoadsData>();
-            var lakes = context.GetData<ElevationWithLakesData>();
-            var buildings = context.GetData<BuildingsData>();
-            var forest = context.GetData<ForestData>();
-            var scrub = context.GetData<ScrubData>();
-            var rocks = context.GetData<RocksData>();
-            var meta = context.GetData<CategoryAreaData>();
-            var meadows = context.GetData<MeadowsData>();
-
-            return buildings.Buildings.Select(b => b.Box.Polygon)
-                .Concat(roads.Roads.Where(r => r.RoadType != RoadTypeId.Trail).SelectMany(r => r.ClearPolygons))
-                .Concat(lakes.Lakes.Select(l => l.TerrainPolygon))
-                .Concat(forest.Polygons)
-                .Concat(scrub.Polygons)
-                .Concat(rocks.Polygons)
-                .Concat(meadows.Polygons)
-                .Concat(meta.Areas.SelectMany(a => a.PolyList));
+            return context.GetData<BuildingsData>().Buildings.Select(b => b.Box.Polygon)
+                .Concat(context.GetData<RoadsData>().Roads.Where(r => r.RoadType != RoadTypeId.Trail).SelectMany(r => r.ClearPolygons))
+                .Concat(context.GetData<ElevationWithLakesData>().Lakes.Select(l => l.TerrainPolygon))
+                .Concat(context.GetData<ForestData>().Polygons)
+                .Concat(context.GetData<ScrubData>().Polygons)
+                .Concat(context.GetData<RocksData>().Polygons)
+                .Concat(context.GetData<MeadowsData>().Polygons)
+                .Concat(context.GetData<FarmlandsData>().Polygons)
+                .Concat(context.GetData<CategoryAreaData>().Areas.SelectMany(a => a.PolyList));
         }
 
         public TEdge Build(IBuildContext context)

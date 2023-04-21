@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Nature
 {
-    internal interface IBasicTerrainData : ITerrainData
+    internal interface IBasicTerrainData : IGeoJsonData
     {
         List<TerrainPolygon> Polygons { get; }
     }

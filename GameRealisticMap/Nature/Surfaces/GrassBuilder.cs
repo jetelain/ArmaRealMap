@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
@@ -43,17 +44,13 @@ namespace GameRealisticMap.Nature.Surfaces
                 case "grass":
                     return true;
             }
-            switch (tags.GetValue("crop")) // XXX: usual with landuse=farmland. Consider as Farmland or Grass ???
-            {
-                case "grass":
-                    return true;
-            }
             return false;
         }
 
         protected override IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
         {
-            return base.GetPriority(context);
+            return base.GetPriority(context)
+                .Concat(context.GetData<ForestData>().Polygons);
         }
     }
 }

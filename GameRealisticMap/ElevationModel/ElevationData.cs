@@ -4,7 +4,7 @@ using MapToolkit.Contours;
 
 namespace GameRealisticMap.ElevationModel
 {
-    public class ElevationData : ITerrainData
+    public class ElevationData : IGeoJsonData
     {
 
         public ElevationData(ElevationGrid elevation, IEnumerable<LineString> geoJSON)

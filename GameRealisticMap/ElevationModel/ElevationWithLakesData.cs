@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.ElevationModel
 {
-    public class ElevationWithLakesData : ITerrainData
+    public class ElevationWithLakesData : IGeoJsonData
     {
 
         public ElevationWithLakesData(ElevationGrid elevation, List<LakeWithElevation> lakes)

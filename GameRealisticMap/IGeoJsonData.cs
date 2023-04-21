@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap
 {
-    public interface ITerrainData
+    public interface IGeoJsonData
     {
         IEnumerable<Feature> ToGeoJson();
     }

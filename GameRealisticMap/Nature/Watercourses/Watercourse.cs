@@ -4,7 +4,7 @@ namespace GameRealisticMap.Nature.Watercourses
 {
     public class Watercourse
     {
-        public Watercourse(TerrainPath path, WatercourseId id)
+        public Watercourse(TerrainPath path, WatercourseTypeId id)
         {
             Path = path;
             TypeId = id;
@@ -12,22 +12,22 @@ namespace GameRealisticMap.Nature.Watercourses
 
         public TerrainPath Path { get; }
 
-        public WatercourseId TypeId { get; }
+        public WatercourseTypeId TypeId { get; }
 
         public IEnumerable<TerrainPolygon> Polygons => Path.ToTerrainPolygon(Width);
 
-        public bool IsTunnel => TypeId >= WatercourseId.RiverTunnel;
+        public bool IsTunnel => TypeId >= WatercourseTypeId.RiverTunnel;
 
-        public float Width // Create a library for that
+        public float Width // Create a library for that ?
         {
             get
             {
                 switch (TypeId)
                 {
-                    case WatercourseId.Stream:
+                    case WatercourseTypeId.Stream:
                         return 4;
 
-                    case WatercourseId.River:
+                    case WatercourseTypeId.River:
                         return 10;
                 }
                 return 0;

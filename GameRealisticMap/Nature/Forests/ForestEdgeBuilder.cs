@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameRealisticMap.Buildings;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
@@ -26,9 +27,11 @@ namespace GameRealisticMap.Nature.Forests
             var forests = context.GetData<ForestData>().Polygons;
 
             // Trails are ignored by BasicBuilderBase, but prevents forest edge effect
+            // Buildings are not surrounded with bushed
             var priority = roads
                 .Where(r => r.RoadType == RoadTypeId.Trail)
-                .SelectMany(r => r.ClearPolygons)
+                .SelectMany(r => r.Path.ToTerrainPolygon(r.Width + 1))
+                .Concat(context.GetData<BuildingsData>().Buildings.SelectMany(b => b.Box.Polygon.Offset(2.5f)))
                 .ToList();
 
             using (var step = progress.CreateStep("Merge", 1))

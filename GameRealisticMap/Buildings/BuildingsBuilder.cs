@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;

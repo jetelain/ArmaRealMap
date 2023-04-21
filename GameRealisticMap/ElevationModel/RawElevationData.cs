@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.ElevationModel
 {
-    public class RawElevationData : ITerrainData
+    public class RawElevationData
     {
         public RawElevationData(ElevationGrid rawElevation)
         {
@@ -10,10 +10,5 @@ namespace GameRealisticMap.ElevationModel
         }
 
         public ElevationGrid RawElevation { get; }
-
-        public IEnumerable<Feature> ToGeoJson()
-        {
-            return Enumerable.Empty<Feature>();
-        }
     }
 }

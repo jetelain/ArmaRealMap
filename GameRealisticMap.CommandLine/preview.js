@@ -448,7 +448,8 @@ function InitPreview(geoJson)
 	L.latlngGraticule().addTo(map);
 	L.control.scale({ maxWidth: 200, imperial: false }).addTo(map);
 	L.control.gridMousePosition().addTo(map);
-	
+
+
 	L.geoJSON(geoJson, {
 		style: function(feature) {
 			switch (feature.properties.type) {
@@ -462,6 +463,7 @@ function InitPreview(geoJson)
                 case 'sand': return { fillColor: 'goldenrod', stroke: false, fillOpacity: 0.5 };
                 case 'scrubRadial': return { fillColor: 'SandyBrown', stroke: false, fillOpacity: 0.25 };
                 case 'meadows': return { fillColor: 'greenyellow', stroke: false, fillOpacity: 0.35 };
+                case 'farmland': return { fillColor: 'greenyellow', stroke: false, fillOpacity: 0.35 };
                 case 'grass': return { fillColor: 'lightgreen', stroke: false, fillOpacity: 0.25 };
 				case 'road': {
 					switch (feature.properties.road) {
@@ -475,8 +477,13 @@ function InitPreview(geoJson)
                 case 'watercourseRadial': return { fillColor: 'ForestGreen', stroke: true, weight: 1, fillOpacity: 0.25 };
                 case 'contour': return { stroke: true, weight: 1, color: 'gray' };
                 case 'buildingEntrance': return { stroke: true, weight: 3, color: 'SaddleBrown' };
+                case 'fence': return { stroke: true, weight: 3, color: 'red' };
+                case 'tree': return { fillColor: "ForestGreen", stroke: false, fillOpacity: 0.8 };
 			}
 			return { fillColor:'black', stroke: false, fillOpacity: 0.2 };
-		}
+        },
+        pointToLayer: function (feature, latlng) {
+            return L.circle(latlng, { radius: 2 });
+        }
 	}).addTo(map);
 }

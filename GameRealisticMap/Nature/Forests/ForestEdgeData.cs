@@ -8,7 +8,7 @@ using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature.Forests
 {
-    internal class ForestEdgeData : ITerrainData
+    internal class ForestEdgeData : IGeoJsonData
     {
         public ForestEdgeData(List<TerrainPolygon> edges, List<TerrainPolygon> mergedForests)
         {

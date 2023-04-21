@@ -1,8 +1,7 @@
 ﻿using GameRealisticMap.Buildings;
 using GameRealisticMap.Geometries;
-using NetTopologySuite.Geometries;
 
-namespace GameRealisticMap.Osm
+namespace GameRealisticMap.ManMade
 {
     internal class CategoryArea : IBuildingCategoryArea
     {

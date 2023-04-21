@@ -2,7 +2,7 @@
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 
-namespace GameRealisticMap.Osm
+namespace GameRealisticMap.ManMade
 {
     internal class CategoryAreaBuilder : IDataBuilder<CategoryAreaData>
     {

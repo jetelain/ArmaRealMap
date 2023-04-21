@@ -8,6 +8,6 @@ namespace GameRealisticMap
 
         IOsmDataSource OsmSource { get; }
 
-        T GetData<T>() where T : class, ITerrainData;
+        T GetData<T>() where T : class;
     }
 }

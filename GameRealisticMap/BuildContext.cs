@@ -5,7 +5,7 @@ namespace GameRealisticMap
 {
     public class BuildContext : IBuildContext
     {
-        private readonly Dictionary<Type, ITerrainData> datas = new Dictionary<Type, ITerrainData>();
+        private readonly Dictionary<Type, object> datas = new Dictionary<Type, object>();
         private readonly IProgressSystem progress;
         private readonly IBuidersCatalog catalog;
 
@@ -21,8 +21,8 @@ namespace GameRealisticMap
 
         public IOsmDataSource OsmSource { get; }
 
-        public T GetData<T>()
-             where T : class, ITerrainData
+        public T GetData<T>() 
+            where T : class
         {
             if (datas.TryGetValue(typeof(T), out var cachedData))
             {

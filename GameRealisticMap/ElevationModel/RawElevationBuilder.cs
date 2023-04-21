@@ -18,6 +18,7 @@ namespace GameRealisticMap.ElevationModel
         public RawElevationData Build(IBuildContext context)
         {
             var db = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/SRTM1/")));
+            //var db = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/AW3D30/")));
 
             var done = 0;
 
@@ -33,7 +34,7 @@ namespace GameRealisticMap.ElevationModel
             var size = context.Area.GridSize;
             var cellSize = context.Area.GridCellSize;
 
-            using var report = progress.CreateStep("SRTM", size);
+            using var report = progress.CreateStep("SRTM1", size);
             var grid = new ElevationGrid(size, cellSize);
             Parallel.For(0, size, y =>
             {

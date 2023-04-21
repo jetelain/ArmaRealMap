@@ -3,7 +3,7 @@ using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Buildings
 {
-    public class BuildingsData : ITerrainData
+    public class BuildingsData : IGeoJsonData
     {
         public BuildingsData(List<Building> buildings)
         {

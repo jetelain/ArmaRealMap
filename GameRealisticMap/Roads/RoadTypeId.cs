@@ -20,6 +20,6 @@
 
         SingleLaneDirtPath = 6,
 
-        Trail = 7
+        Trail = 7 // TODO: Footpath in cities and in the wild does not look the same, make them different
     }
 }

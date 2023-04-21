@@ -41,7 +41,7 @@ namespace GameRealisticMap.CommandLine
             context.GetData<ForestRadialData>();
             context.GetData<ScrubRadialData>();
             
-            var all = catalog.GetAll(context);
+            var all = catalog.GetAll<IGeoJsonData>(context);
 
             var collection = new FeatureCollection(all.SelectMany(d => d.ToGeoJson()).ToList());
 

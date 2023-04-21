@@ -5,7 +5,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Satellite
 {
-    public class RawSatelliteImageData : ITerrainData
+    public class RawSatelliteImageData
     {
         public RawSatelliteImageData(Image<Rgb24> image)
         {
@@ -13,10 +13,5 @@ namespace GameRealisticMap.Satellite
         }
 
         public Image<Rgb24> Image { get; }
-
-        public IEnumerable<Feature> ToGeoJson()
-        {
-            return Enumerable.Empty<Feature>();
-        }
     }
 }

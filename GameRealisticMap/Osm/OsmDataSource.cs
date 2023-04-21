@@ -36,7 +36,10 @@ namespace GameRealisticMap.Osm
 
 
         public IEnumerable<OsmGeo> All => snapshot.Get();
+
         public IEnumerable<Way> Ways => All.OfType<Way>();
+
+        public IEnumerable<Node> Nodes => All.OfType<Node>();
 
         public IEnumerable<IGeometry> Interpret(OsmGeo osmGeo)
         {
