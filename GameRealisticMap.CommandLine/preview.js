@@ -462,6 +462,7 @@ function InitPreview(geoJson)
                 case 'sand': return { fillColor: 'goldenrod', stroke: false, fillOpacity: 0.5 };
                 case 'scrubRadial': return { fillColor: 'SandyBrown', stroke: false, fillOpacity: 0.25 };
                 case 'meadows': return { fillColor: 'greenyellow', stroke: false, fillOpacity: 0.35 };
+                case 'grass': return { fillColor: 'lightgreen', stroke: false, fillOpacity: 0.25 };
 				case 'road': {
 					switch (feature.properties.road) {
 						case 'SingleLaneDirtPath': return { fillColor:'Indigo', stroke: false, fillOpacity: 0.5 };

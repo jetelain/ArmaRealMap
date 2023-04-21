@@ -3,9 +3,9 @@ using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature.Surfaces
 {
-    internal class MeadowsData : IBasicTerrainData
+    internal class GrassData : IBasicTerrainData
     {
-        public MeadowsData(List<TerrainPolygon> polygons)
+        public GrassData(List<TerrainPolygon> polygons)
         {
             Polygons = polygons;
         }
@@ -15,7 +15,7 @@ namespace GameRealisticMap.Nature.Surfaces
         public IEnumerable<Feature> ToGeoJson()
         {
             var properties = new Dictionary<string, object>() {
-                {"type", "meadows" }
+                {"type", "grass" }
             };
             return Polygons.Select(b => new Feature(b.ToGeoJson(), properties));
         }

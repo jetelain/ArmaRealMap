@@ -20,29 +20,29 @@ namespace GameRealisticMap
 
         public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary library)
         {
-            Register<RawSatelliteImageData, RawSatelliteImageBuilder>(new RawSatelliteImageBuilder(progress));
-            Register<RawElevationData, RawElevationBuilder>(new RawElevationBuilder(progress));
-            Register<ElevationData, ElevationBuilder>(new ElevationBuilder(progress));
-            Register<CategoryAreaData, CategoryAreaBuilder>(new CategoryAreaBuilder(progress));
-            Register<RoadsData, RoadsBuilder>(new RoadsBuilder(progress, library));
-            Register<BuildingsData, BuildingsBuilder>(new BuildingsBuilder(progress));
-            Register<WatercoursesData, WatercoursesBuilder>(new WatercoursesBuilder(progress));
-            Register<WatercourseRadialData, WatercourseRadialBuilder>(new WatercourseRadialBuilder(progress));
-            Register<ForestData, ForestBuilder>(new ForestBuilder(progress));
-            Register<ScrubData, ScrubBuilder>(new ScrubBuilder(progress));
-            Register<RocksData, RocksBuilder>(new RocksBuilder(progress));
-            Register<ForestRadialData, ForestRadialBuilder>(new ForestRadialBuilder(progress));
-            Register<ScrubRadialData, ScrubRadialBuilder>(new ScrubRadialBuilder(progress));
-            Register<LakesData, LakesBuilder>(new LakesBuilder(progress));
-            Register<ForestEdgeData, ForestEdgeBuilder>(new ForestEdgeBuilder(progress));
-            Register<SandSurfacesData, SandSurfacesBuilder>(new SandSurfacesBuilder(progress));
-            Register<ElevationWithLakesData, ElevationWithLakesBuilder>(new ElevationWithLakesBuilder(progress));
-            Register<MeadowsData, MeadowsBuilder>(new MeadowsBuilder(progress));
+            Register(new RawSatelliteImageBuilder(progress));
+            Register(new RawElevationBuilder(progress));
+            Register(new ElevationBuilder(progress));
+            Register(new CategoryAreaBuilder(progress));
+            Register(new RoadsBuilder(progress, library));
+            Register(new BuildingsBuilder(progress));
+            Register(new WatercoursesBuilder(progress));
+            Register(new WatercourseRadialBuilder(progress));
+            Register(new ForestBuilder(progress));
+            Register(new ScrubBuilder(progress));
+            Register(new RocksBuilder(progress));
+            Register(new ForestRadialBuilder(progress));
+            Register(new ScrubRadialBuilder(progress));
+            Register(new LakesBuilder(progress));
+            Register(new ForestEdgeBuilder(progress));
+            Register(new SandSurfacesBuilder(progress));
+            Register(new ElevationWithLakesBuilder(progress));
+            Register(new MeadowsBuilder(progress));
+            Register(new GrassBuilder(progress));
         }
 
-        public void Register<TData, TBuidler>(TBuidler builder)
+        public void Register<TData>(IDataBuilder<TData> builder)
             where TData : class, ITerrainData
-            where TBuidler : class, IDataBuilder<TData>
         {
             builders.Add(typeof(TData), builder);
             getters.Add((IBuildContext ctx) => ctx.GetData<TData>());
