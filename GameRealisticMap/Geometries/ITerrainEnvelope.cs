@@ -1,6 +1,6 @@
 ﻿namespace GameRealisticMap.Geometries
 {
-    public interface ITerrainGeometry
+    public interface ITerrainEnvelope
     {
         TerrainPoint MinPoint { get; }
 

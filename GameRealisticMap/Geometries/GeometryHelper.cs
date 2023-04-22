@@ -47,7 +47,7 @@ namespace GameRealisticMap.Geometries
             return new LinearRing(transform(line.Coordinates).ToArray());
         }
 
-        public static bool EnveloppeIntersects(this ITerrainGeometry a, ITerrainGeometry b)
+        public static bool EnveloppeIntersects(this ITerrainEnvelope a, ITerrainEnvelope b)
         {
             return b.MinPoint.X <= a.MaxPoint.X &&
                 b.MinPoint.Y <= a.MaxPoint.Y &&
@@ -162,14 +162,41 @@ namespace GameRealisticMap.Geometries
             return result;
         }
 
-        public static ITerrainGeometry WithMargin(this ITerrainGeometry geometry, float margin)
+        public static ITerrainEnvelope WithMargin(this ITerrainEnvelope geometry, float margin)
         {
             return WithMargin(geometry, new Vector2(margin));
         }
 
-        public static ITerrainGeometry WithMargin(this ITerrainGeometry geometry, Vector2 margin)
+        public static ITerrainEnvelope WithMargin(this ITerrainEnvelope geometry, Vector2 margin)
         {
             return new GameRealisticMap.Geometries.Envelope(geometry.MinPoint - margin, geometry.MaxPoint + margin);
+        }
+
+        public static TerrainPoint KeepAway(TerrainPoint point, IEnumerable<ITerrainGeo> from, float minDistance = 2f)
+        {
+            var envelope = point.WithMargin(minDistance);
+            var near = from.Where(p => p.EnveloppeIntersects(envelope)).ToList();
+            foreach (var polygon in near)
+            {
+                var distance = polygon.Distance(point);
+                if (distance == 0) // Inside
+                {
+                    var nearest = polygon.NearestPointBoundary(point);
+                    var delta = nearest.Vector - point.Vector;
+                    if (delta.X != 0 || delta.Y != 0)
+                    {
+                        var vector = Vector2.Normalize(delta) * minDistance;
+                        point = point + vector;
+                    }
+                }
+                else if (distance < minDistance) // Outside
+                {
+                    var nearest = polygon.NearestPointBoundary(point);
+                    var vector = Vector2.Normalize(nearest.Vector - point.Vector) * (minDistance - distance);
+                    point = point - vector;
+                }
+            }
+            return point;
         }
     }
 }

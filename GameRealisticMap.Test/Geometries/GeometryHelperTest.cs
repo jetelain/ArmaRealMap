@@ -59,7 +59,13 @@ namespace GameRealisticMap.Test.Geometries
         }
 
 
+        [Fact]
+        public void GeometryHelper_KeepAway()
+        {
+            var paths = new[] { new TerrainPath(new(0, 0), new(0, 10)) };
+            Assert.Equal(new(2, 5), GeometryHelper.KeepAway(new TerrainPoint(1, 5), paths, 2f));
+            Assert.Equal(new(-2, 5), GeometryHelper.KeepAway(new TerrainPoint(-1, 5), paths, 2f));
 
-
+        }
     }
 }

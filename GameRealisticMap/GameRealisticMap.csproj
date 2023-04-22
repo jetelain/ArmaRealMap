@@ -17,4 +17,9 @@
     <ProjectReference Include="..\mapkit\MapToolkit\MapToolkit.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ManMade\Railways\" />
+    <Folder Include="ManMade\Powerlines\" />
+  </ItemGroup>
+
 </Project>

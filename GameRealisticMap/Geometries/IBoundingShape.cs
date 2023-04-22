@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Geometries
 {
-    public interface IBoundingShape : ITerrainGeometry
+    public interface IBoundingShape : ITerrainEnvelope
     {
         TerrainPoint Center { get; }
 

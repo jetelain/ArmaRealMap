@@ -3,10 +3,11 @@ using System.Text.Json.Serialization;
 using ClipperLib;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Distance;
 
 namespace GameRealisticMap.Geometries
 {
-    public class TerrainPolygon : ITerrainGeometry, IEquatable<TerrainPolygon>
+    public class TerrainPolygon : ITerrainEnvelope, IEquatable<TerrainPolygon>, ITerrainGeo
     {
         internal static readonly List<List<TerrainPoint>> NoHoles = new List<List<TerrainPoint>>(0);
 
@@ -579,6 +580,23 @@ namespace GameRealisticMap.Geometries
         internal GeoJSON.Text.Geometry.Polygon ToGeoJson()
         {
             return new GeoJSON.Text.Geometry.Polygon(new[] { new GeoJSON.Text.Geometry.LineString(Shell) }.Concat(Holes.Select(h => new GeoJSON.Text.Geometry.LineString(h))));
+        }
+
+        public float Distance(TerrainPoint point)
+        {
+            return (float)AsPolygon.Distance(new Point(point.X, point.Y));
+        }
+
+        public TerrainPoint NearestPointBoundary(TerrainPoint p)
+        {
+            var distance = new DistanceOp(AsPolygon, new Point(p.X, p.Y));
+            var segment = distance.NearestPoints();
+            if (distance.Distance() == 0f)
+            {
+                var shells = new[] { new DistanceOp(AsPolygon.Shell, new Point(p.X, p.Y)) }.Concat(AsPolygon.Holes.Select(h => new DistanceOp(h, new Point(p.X, p.Y))));
+                segment = shells.OrderBy(s => s.Distance()).First().NearestPoints();
+            }
+            return new TerrainPoint((float)segment[0].X, (float)segment[0].Y);
         }
     }
 }

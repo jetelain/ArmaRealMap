@@ -2,7 +2,7 @@
 
 namespace ArmaRealMap
 {
-    internal class Lake : ITerrainGeometry
+    internal class Lake : ITerrainEnvelope
     {
         public float BorderElevation { get; internal set; }
         public float WaterElevation { get; internal set; }

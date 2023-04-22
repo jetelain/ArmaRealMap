@@ -175,5 +175,61 @@ namespace GameRealisticMap.Test.Geometries
                 new TerrainPoint(10,10)
             }, Assert.Single(crown.Holes));
         }
+
+        [Fact]
+        public void TerrainPolygon_NearestPoint()
+        {
+            var polygon = Square100x100();
+
+            // Outside
+            Assert.Equal(new(100, 50), polygon.NearestPointBoundary(new(105, 50)));
+            Assert.Equal(new(0, 50), polygon.NearestPointBoundary(new(-5, 50)));
+
+            // Inside
+            Assert.Equal(new(100, 50), polygon.NearestPointBoundary(new(95, 50)));
+            Assert.Equal(new(0, 50), polygon.NearestPointBoundary(new(5, 50)));
+
+            polygon = Square100x100WithHole();
+
+            // Outside
+            Assert.Equal(new(100, 50), polygon.NearestPointBoundary(new(105, 50)));
+            Assert.Equal(new(0, 50), polygon.NearestPointBoundary(new(-5, 50)));
+
+            // Inside
+            Assert.Equal(new(100, 50), polygon.NearestPointBoundary(new(95, 50)));
+            Assert.Equal(new(0, 50), polygon.NearestPointBoundary(new(5, 50)));
+
+            // In hole
+            Assert.Equal(new(25, 50), polygon.NearestPointBoundary(new(30, 50)));
+            Assert.Equal(new(75, 50), polygon.NearestPointBoundary(new(70, 50)));
+        }
+
+        [Fact]
+        public void TerrainPolygon_Distance()
+        {
+            var polygon = Square100x100();
+
+            // Outside
+            Assert.Equal(5, polygon.Distance(new(105, 50)));
+            Assert.Equal(5, polygon.Distance(new(-5, 50)));
+
+            // Inside
+            Assert.Equal(0, polygon.Distance(new(95, 50)));
+            Assert.Equal(0, polygon.Distance(new(5, 50)));
+
+            polygon = Square100x100WithHole();
+
+            // Outside
+            Assert.Equal(5, polygon.Distance(new(105, 50)));
+            Assert.Equal(5, polygon.Distance(new(-5, 50)));
+
+            // Inside
+            Assert.Equal(0, polygon.Distance(new(95, 50)));
+            Assert.Equal(0, polygon.Distance(new(5, 50)));
+
+            // In hole
+            Assert.Equal(5, polygon.Distance(new(30, 50)));
+            Assert.Equal(5, polygon.Distance(new(70, 50)));
+        }
     }
 }

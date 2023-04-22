@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameRealisticMap.Geometries
+﻿namespace GameRealisticMap.Geometries
 {
-    internal class Envelope : ITerrainGeometry
+    internal class Envelope : ITerrainEnvelope
     {
         public Envelope(TerrainPoint minPoint, TerrainPoint maxPoint)
         {

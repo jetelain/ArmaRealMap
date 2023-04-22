@@ -1,4 +1,7 @@
-﻿using GameRealisticMap.Reporting;
+﻿using GameRealisticMap.Buildings;
+using GameRealisticMap.Geometries;
+using GameRealisticMap.Reporting;
+using GameRealisticMap.Roads;
 using OsmSharp.Geo;
 
 namespace GameRealisticMap.Nature.Trees
@@ -14,15 +17,17 @@ namespace GameRealisticMap.Nature.Trees
 
         public TreesData Build(IBuildContext context)
         {
+            var keepWay =
+                context.GetData<RoadsData>().Roads.SelectMany(b => b.Polygons)
+                .Concat(context.GetData<BuildingsData>().Buildings.Select(p => p.Box.Polygon));
+
             var points = context.OsmSource.Nodes
                 .Where(n => n.Tags != null && n.Tags.GetValue("natural") == "tree")
                 .Select(t => context.Area.LatLngToTerrainPoint(t.GetCoordinate()))
+                .ProgressStep(progress, "Trees")
                 .Where(p => context.Area.IsInside(p))
+                .Select(p => GeometryHelper.KeepAway(p, keepWay, 2))
                 .ToList();
-
-            // TODO : Ensure minimal distance with roads and buildings (1m)
-
-            // XXX : Have distinct collection for natural trees ? (outside cities)
 
             return new TreesData(points);
         }

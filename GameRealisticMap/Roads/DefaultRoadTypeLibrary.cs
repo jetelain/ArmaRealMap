@@ -8,7 +8,7 @@
             new DefaultRoadTypeInfos(RoadTypeId.TwoLanesPrimaryRoad, 12f),
             new DefaultRoadTypeInfos(RoadTypeId.TwoLanesSecondaryRoad, 7.5f),
             new DefaultRoadTypeInfos(RoadTypeId.TwoLanesConcreteRoad, 7.5f),
-            new DefaultRoadTypeInfos(RoadTypeId.SingleLaneDirtRoad, 6f),
+            new DefaultRoadTypeInfos(RoadTypeId.SingleLaneDirtRoad, 5.5f),
             new DefaultRoadTypeInfos(RoadTypeId.SingleLaneDirtPath, 4.5f),
             new DefaultRoadTypeInfos(RoadTypeId.Trail, 1.5f)
         };

@@ -201,7 +201,7 @@ namespace ArmaRealMap.TerrainData.Forests
         }
 
         public static void Remove<T>(TerrainObjectLayer objects, IEnumerable<T> toremoveList, Func<T, TerrainObject, bool> match)
-            where T : ITerrainGeometry
+            where T : ITerrainEnvelope
         {
             var list = toremoveList.ToList();
 

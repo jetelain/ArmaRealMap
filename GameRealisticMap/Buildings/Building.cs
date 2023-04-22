@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Buildings
 {
-    public class Building : ITerrainGeometry
+    public class Building : ITerrainEnvelope
     {
         public Building(BoundingBox box, BuildingTypeId value, List<TerrainPolygon> polygons, BoxSide entranceSide)
         {

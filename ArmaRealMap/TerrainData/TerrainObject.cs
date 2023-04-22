@@ -7,7 +7,7 @@ using GeoAPI.Geometries;
 
 namespace ArmaRealMap
 {
-    public class TerrainObject : ITerrainGeometry
+    public class TerrainObject : ITerrainEnvelope
     {
         private readonly SingleObjetInfos objectInfos;
         private readonly IBoundingShape box;

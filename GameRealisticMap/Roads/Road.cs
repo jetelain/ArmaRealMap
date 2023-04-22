@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Roads
 {
-    public class Road : ITerrainGeometry
+    public class Road : ITerrainEnvelope
     {
         public Road(RoadSpecialSegment specialSegment, TerrainPath path, IRoadTypeInfos roadTypeInfos)
         {

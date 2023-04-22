@@ -2,10 +2,11 @@
 using ClipperLib;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Distance;
 
 namespace GameRealisticMap.Geometries
 {
-    public class TerrainPath : ITerrainGeometry
+    public class TerrainPath : ITerrainEnvelope, ITerrainGeo
     {
         private readonly Lazy<LineString> asLineString;
 
@@ -128,7 +129,7 @@ namespace GameRealisticMap.Geometries
         {
             return Intersection(polygon);
         }
-        public bool EnveloppeIntersects(ITerrainGeometry other)
+        public bool EnveloppeIntersects(ITerrainEnvelope other)
         {
             return other.MinPoint.X <= MaxPoint.X &&
                 other.MinPoint.Y <= MaxPoint.Y &&
@@ -145,5 +146,14 @@ namespace GameRealisticMap.Geometries
         {
             return (float)AsLineString.Distance(new Point(p.X, p.Y));
         }
+
+        public TerrainPoint NearestPointBoundary(TerrainPoint p)
+        {
+            var distance = new DistanceOp(AsLineString, new Point(p.X, p.Y));
+            var segment = distance.NearestPoints();
+            return new TerrainPoint((float)segment[0].X, (float)segment[0].Y);
+        }
+
+
     }
 }

@@ -13,22 +13,26 @@ namespace GameRealisticMap.Osm
             {
                 case "motorway":
                     return RoadTypeId.TwoLanesMotorway;
+
                 case "trunk":
                 case "primary":
                 case "primary_link":
                 case "trunk_link":
                 case "motorway_link":
                     return RoadTypeId.TwoLanesPrimaryRoad;
+
                 case "secondary":
                 case "tertiary":
                 case "seconday_link":
                 case "tertiary_link":
                 case "road":
                     return RoadTypeId.TwoLanesSecondaryRoad;
+
                 case "living_street":
                 case "residential":
                 case "unclassified":
                     return RoadTypeId.TwoLanesConcreteRoad;
+
                 case "footway":
                     var footway = tags.GetValue("footway");
                     if (footway == "sidewalk" || footway == "crossing")
@@ -41,11 +45,27 @@ namespace GameRealisticMap.Osm
                         return null;
                     }
                     return RoadTypeId.Trail;
+
                 case "pedestrian":
                 case "path":
                     return RoadTypeId.Trail;
+
                 case "track":
                     return RoadTypeId.SingleLaneDirtPath;
+
+                case "service":
+                    if (tags.GetValue("access") == "private")
+                    {
+                        // Ignored for optimisation purpose
+                        return null;
+                    }
+                    if (tags.GetValue("service") == "driveway" && tags.GetValue("motor_vehicle") != "permissive" && tags.GetValue("access") != "permit")
+                    {
+                        // Ignored for optimisation purpose
+                        return null;
+                    }
+                    return RoadTypeId.SingleLaneDirtRoad;
+
             }
             if (!string.IsNullOrEmpty(type))
             {

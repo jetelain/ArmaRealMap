@@ -9,7 +9,7 @@ using GeoAPI.Geometries;
 
 namespace ArmaRealMap
 {
-    internal class Building : ITerrainGeometry
+    internal class Building : ITerrainEnvelope
     {
         public Building(OsmShape area, TerrainPoint[] points)
         {

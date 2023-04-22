@@ -10,7 +10,7 @@ namespace GameRealisticMap.Geometries
     /// 
     /// Good for up to 83 Km with 1 cm precision
     /// </summary>
-    public class TerrainPoint : IEquatable<TerrainPoint>, IPosition
+    public class TerrainPoint : IEquatable<TerrainPoint>, IPosition, ITerrainEnvelope
     {
         public static readonly TerrainPoint Empty = new TerrainPoint(Vector2.Zero);
 
@@ -49,6 +49,10 @@ namespace GameRealisticMap.Geometries
         double IPosition.Latitude => Math.Round(Y, 3);
 
         double IPosition.Longitude => Math.Round(X, 3);
+
+        TerrainPoint ITerrainEnvelope.MinPoint => this;
+
+        TerrainPoint ITerrainEnvelope.MaxPoint => this;
 
         public static bool operator ==(TerrainPoint? left, TerrainPoint? right) => left?.Equals(right) ?? false;
 
