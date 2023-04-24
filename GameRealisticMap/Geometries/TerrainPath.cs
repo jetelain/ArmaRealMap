@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Text.Json.Serialization;
 using ClipperLib;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -15,6 +16,7 @@ namespace GameRealisticMap.Geometries
         {
         }
 
+        [JsonConstructor]
         public TerrainPath(List<TerrainPoint> points)
         {
             this.Points = points;
@@ -26,18 +28,25 @@ namespace GameRealisticMap.Geometries
 
         public List<TerrainPoint> Points { get; }
 
+        [JsonIgnore]
         public TerrainPoint FirstPoint => Points[0];
 
+        [JsonIgnore]
         public TerrainPoint LastPoint => Points[Points.Count-1];
 
+        [JsonIgnore]
         public TerrainPoint MinPoint { get; }
 
+        [JsonIgnore]
         public TerrainPoint MaxPoint { get; }
 
+        [JsonIgnore]
         public Vector2 EnveloppeSize { get; }
 
+        [JsonIgnore]
         public LineString AsLineString => asLineString.Value;
 
+        [JsonIgnore]
         public float Length 
         { 
             get

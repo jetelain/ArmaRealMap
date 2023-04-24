@@ -57,6 +57,7 @@ namespace GameRealisticMap.Geometries
         /// <summary>
         /// Heading in degrees (clockwise)
         /// </summary>
+        [JsonIgnore]
         public float Heading => -Angle;
 
         /// <summary>
@@ -251,7 +252,7 @@ namespace GameRealisticMap.Geometries
         public static BoundingBox? ComputeInner(IEnumerable<TerrainPoint> points)
         {
             var outerSegments = points.Zip(points.Skip(1).Concat(points.Take(1))).ToList();
-            var allSegments = points.SelectMany(p1 => points.Where(p2 => p2 != p1).Select(p2 => new { P1 = p1, P2 = p2 })).ToList();
+            var allSegments = points.SelectMany(p1 => points.Where(p2 => !TerrainPoint.Equals(p2, p1)).Select(p2 => new { P1 = p1, P2 = p2 })).ToList();
             InnerCandidate? result = null;
             foreach (var segment in allSegments)
             {

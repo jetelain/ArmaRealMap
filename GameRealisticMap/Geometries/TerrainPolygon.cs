@@ -43,6 +43,7 @@ namespace GameRealisticMap.Geometries
         [JsonIgnore]
         public double Area => AsPolygon.Area;
 
+        [JsonIgnore]
         public TerrainPoint Centroid 
         { 
             get

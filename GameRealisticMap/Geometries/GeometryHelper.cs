@@ -117,12 +117,12 @@ namespace GameRealisticMap.Geometries
             for (float i = step; i < length; i += step)
             {
                 var point = new TerrainPoint(Vector2.Lerp(a.Vector, b.Vector, i / length));
-                if (points.Last() != point)
+                if (!TerrainPoint.Equals(points.Last(),point))
                 {
                     points.Add(point);
                 }
             }
-            if (points.Last() != b)
+            if (!TerrainPoint.Equals(points.Last(),b))
             {
                 points.Add(b);
             }

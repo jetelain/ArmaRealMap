@@ -99,7 +99,7 @@ namespace GameRealisticMap.Geometries
                 if (!MoveNextPoint())
                 {
                     hasReachedEnd = true;
-                    if (position != previousPoint)
+                    if (!TerrainPoint.Equals(position,previousPoint))
                     {
                         previousPosition = position;
                         position = previousPoint;

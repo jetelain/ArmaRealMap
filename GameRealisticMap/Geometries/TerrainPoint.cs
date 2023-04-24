@@ -10,13 +10,13 @@ namespace GameRealisticMap.Geometries
     /// 
     /// Good for up to 83 Km with 1 cm precision
     /// </summary>
+    [JsonConverter(typeof(TerrainPointJsonConverter))]
     public class TerrainPoint : IEquatable<TerrainPoint>, IPosition, ITerrainEnvelope
     {
         public static readonly TerrainPoint Empty = new TerrainPoint(Vector2.Zero);
 
         private Vector2 vector;
 
-        [JsonConstructor]
         public TerrainPoint(float x, float y)
         {
             vector = new Vector2(x, y);
@@ -38,10 +38,8 @@ namespace GameRealisticMap.Geometries
 
         public float Y => vector.Y;
 
-        [JsonIgnore]
         public Vector2 Vector => vector;
 
-        [JsonIgnore]
         public bool IsEmpty => Equals(Empty);
 
         double? IPosition.Altitude => null;
@@ -53,10 +51,6 @@ namespace GameRealisticMap.Geometries
         TerrainPoint ITerrainEnvelope.MinPoint => this;
 
         TerrainPoint ITerrainEnvelope.MaxPoint => this;
-
-        public static bool operator ==(TerrainPoint? left, TerrainPoint? right) => left?.Equals(right) ?? false;
-
-        public static bool operator !=(TerrainPoint? left, TerrainPoint? right) => !left?.Equals(right) ?? false;
 
         public void Deconstruct(out float x, out float y)
         {
@@ -75,7 +69,12 @@ namespace GameRealisticMap.Geometries
 
         public override bool Equals(object? obj) => Equals(obj as TerrainPoint);
 
-        public bool Equals(TerrainPoint? other) => !ReferenceEquals(null, other) && ((vector - other.vector).LengthSquared() < 0.01f);
+        public bool Equals(TerrainPoint? other) => other != null && ((vector - other.vector).LengthSquared() < 0.01f);
+
+        public static bool Equals(TerrainPoint? a, TerrainPoint? b)
+        {
+            return a == b || (a != null && a.Equals(b));
+        }
 
         internal static TerrainPoint FromGeoJson(IPosition point)
         {
