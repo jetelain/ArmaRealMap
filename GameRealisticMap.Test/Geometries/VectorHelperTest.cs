@@ -39,7 +39,31 @@ namespace GameRealisticMap.Test.Geometries
             Assert.False(VectorHelper.HasIntersection(new Vector3(2, 1, 5), new Vector3(1, 2, 5), new Vector3(2, 1, 3), new Vector3(2, 1, 2), out _));
         }
 
-        //(2,1,5), B=(1,2,5) and C=(2,1,3) and D=(2,1,2)
+        [Fact]
+        public void VectorHelper_GetAngleFromXAxisInDegrees()
+        {
+            Assert.Equal(0, VectorHelper.GetAngleFromXAxisInDegrees(new Vector2(10, 0)));
+            Assert.Equal(45, VectorHelper.GetAngleFromXAxisInDegrees(new Vector2(10, 10)));
+            Assert.Equal(90, VectorHelper.GetAngleFromXAxisInDegrees(new Vector2(0, 10)));
+            Assert.Equal(135, VectorHelper.GetAngleFromXAxisInDegrees(new Vector2(-10, 10)));
+            Assert.Equal(180, VectorHelper.GetAngleFromXAxisInDegrees(new Vector2(-10, 0)));
+            Assert.Equal(-135, VectorHelper.GetAngleFromXAxisInDegrees(new Vector2(-10, -10)));
+            Assert.Equal(-90, VectorHelper.GetAngleFromXAxisInDegrees(new Vector2(0, -10)));
+            Assert.Equal(-45, VectorHelper.GetAngleFromXAxisInDegrees(new Vector2(10, -10)));
+        }
 
+
+        [Fact]
+        public void VectorHelper_GetAngleFromYAxisInDegrees()
+        {
+            Assert.Equal(-90, VectorHelper.GetAngleFromYAxisInDegrees(new Vector2(10, 0)));
+            Assert.Equal(-45, VectorHelper.GetAngleFromYAxisInDegrees(new Vector2(10, 10)));
+            Assert.Equal(0, VectorHelper.GetAngleFromYAxisInDegrees(new Vector2(0, 10)));
+            Assert.Equal(45, VectorHelper.GetAngleFromYAxisInDegrees(new Vector2(-10, 10)));
+            Assert.Equal(90, VectorHelper.GetAngleFromYAxisInDegrees(new Vector2(-10, 0)));
+            Assert.Equal(135, VectorHelper.GetAngleFromYAxisInDegrees(new Vector2(-10, -10)));
+            Assert.Equal(-180, VectorHelper.GetAngleFromYAxisInDegrees(new Vector2(0, -10)));
+            Assert.Equal(-135, VectorHelper.GetAngleFromYAxisInDegrees(new Vector2(10, -10)));
+        }
     }
 }

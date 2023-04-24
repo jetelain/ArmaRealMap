@@ -2,6 +2,7 @@
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
+using OsmSharp.API;
 
 namespace GameRealisticMap.Roads
 {
@@ -100,12 +101,9 @@ namespace GameRealisticMap.Roads
                     {
                         foreach (var path in TerrainPath.FromGeometry(geometry, area.LatLngToTerrainPoint))
                         {
-                            if (path.Length >= 3)
+                            foreach (var pathSegment in path.ClippedBy(area.TerrainBounds))
                             {
-                                foreach (var pathSegment in path.ClippedBy(area.TerrainBounds))
-                                {
-                                    roads.Add(new Road(OsmRoadCategorizer.ToRoadSpecialSegment(road.Tags), pathSegment, type));
-                                }
+                                roads.Add(new Road(OsmRoadCategorizer.ToRoadSpecialSegment(road.Tags), pathSegment, type));
                             }
                         }
                         count++;
@@ -122,7 +120,33 @@ namespace GameRealisticMap.Roads
 
         public RoadsData Build(IBuildContext context)
         {
-            return new RoadsData(MergeRoads(PrepareRoads(context.OsmSource, context.Area)));
+            return new RoadsData(
+                IgnoreSmallIsolated(
+                    MergeRoads(
+                        PrepareRoads(context.OsmSource, context.Area)))
+                );
+        }
+
+        private static bool AnyConnected(Road self, IEnumerable<Road> roads)
+        {
+            return roads
+                .Where(o => o != self && GeometryHelper.EnveloppeIntersects(self, o))
+                .Any(o => o.Path.Points.Any(p => self.Path.Points.Contains(p)));
+        }
+
+        private List<Road> IgnoreSmallIsolated(List<Road> roads)
+        {
+            var kept = roads
+                .ProgressStep(progress, "IgnoreSmall")
+                .Where(road => AnyConnected(road, roads) || road.Path.Length > road.Width * 10)
+                .ToList();
+
+            //var rejected = roads
+            //    .ProgressStep(progress, "IgnoreSmall")
+            //    .Where(road => !(AnyConnected(road, roads) || road.Path.Length > road.Width * 10))
+            //    .ToList();
+
+            return kept;
         }
     }
 }

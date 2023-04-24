@@ -110,7 +110,7 @@ namespace GameRealisticMap.Geometries
             return result;
         }
 
-        private static IEnumerable<TerrainPoint> PointsOnPath(List<TerrainPoint>  points, TerrainPoint a, TerrainPoint b, float step = 1f)
+        private static IEnumerable<TerrainPoint> PointsOnPath(List<TerrainPoint> points, TerrainPoint a, TerrainPoint b, float step = 1f)
         {
             var delta = b.Vector - a.Vector;
             var length = delta.Length();
@@ -155,7 +155,7 @@ namespace GameRealisticMap.Geometries
             return result;*/
             var follow = new FollowPath(points);
             var result = new List<TerrainPoint>() { follow.Current };
-            while(follow.Move(step))
+            while (follow.Move(step))
             {
                 result.Add(follow.Current);
             }
@@ -198,5 +198,18 @@ namespace GameRealisticMap.Geometries
             }
             return point;
         }
+
+        public static float? GetFacing(TerrainPoint point, IEnumerable<ITerrainGeo> facing, float maxDistance = 50f)
+        {
+            var envelope = point.WithMargin(maxDistance);
+            var closest = facing.Where(p => p.EnveloppeIntersects(envelope)).MinBy(g => g.Distance(point));
+            if (closest == null)
+            {
+                return null;
+            }
+            var facingPoint = closest.NearestPointBoundary(point);
+            return VectorHelper.GetAngleFromYAxisInDegrees(facingPoint.Vector - point.Vector);
+        }
+
     }
 }

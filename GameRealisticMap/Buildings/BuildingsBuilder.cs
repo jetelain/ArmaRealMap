@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using GameRealisticMap.Geometries;
+﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
@@ -36,6 +35,8 @@ namespace GameRealisticMap.Buildings
             //Preview(data, removed, pass4, "buildings-pass4.png");
 
             pass4 = pass4.Where(b => context.Area.IsInside(b.Box.Center)).ToList();
+
+            // TODO: shrink if collide roads
 
             DetectEntranceSide(pass4, roads.Roads);
 

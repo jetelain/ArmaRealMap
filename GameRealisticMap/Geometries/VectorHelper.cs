@@ -34,5 +34,15 @@ namespace GameRealisticMap.Geometries
             res = default(Vector2);
             return false;
         }
+
+        public static float GetAngleFromYAxisInDegrees(Vector2 vector)
+        {
+            return (float)(Math.Atan2(-vector.X, vector.Y) * 180 / Math.PI);
+        }
+
+        public static float GetAngleFromXAxisInDegrees(Vector2 vector)
+        {
+            return (float)(Math.Atan2(vector.Y, vector.X) * 180 / Math.PI);
+        }
     }
 }

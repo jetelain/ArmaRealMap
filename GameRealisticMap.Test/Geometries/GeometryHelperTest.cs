@@ -67,5 +67,20 @@ namespace GameRealisticMap.Test.Geometries
             Assert.Equal(new(-2, 5), GeometryHelper.KeepAway(new TerrainPoint(-1, 5), paths, 2f));
 
         }
+        [Fact]
+        public void GeometryHelper_GetFacing()
+        {
+            var paths = new[] { new TerrainPath(new(0, 0), new(0, 10)) };
+            Assert.Equal(90, GeometryHelper.GetFacing(new TerrainPoint(1, 5), paths));
+            Assert.Equal(-90, GeometryHelper.GetFacing(new TerrainPoint(-1, 5), paths));
+
+            paths = new[] { new TerrainPath(new(0, 0), new(10, 0)) };
+            Assert.Equal(0, GeometryHelper.GetFacing(new TerrainPoint(5, -1), paths));
+            Assert.Equal(-180, GeometryHelper.GetFacing(new TerrainPoint(5, 1), paths));
+
+            paths = new[] { new TerrainPath(new(0, 0), new(10, 10)) };
+            Assert.Equal(45, GeometryHelper.GetFacing(new TerrainPoint(5, 0), paths));
+            Assert.Equal(-135, GeometryHelper.GetFacing(new TerrainPoint(0, 5), paths));
+        }
     }
 }

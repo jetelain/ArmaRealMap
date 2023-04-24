@@ -3,6 +3,7 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.ManMade.Fences;
+using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.RockAreas;
@@ -45,6 +46,7 @@ namespace GameRealisticMap
             Register(new FencesBuilder(progress));
             Register(new FarmlandsBuilder(progress));
             Register(new TreesBuilder(progress));
+            Register(new OrientedObjectBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)
