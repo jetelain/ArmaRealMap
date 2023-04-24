@@ -51,7 +51,7 @@ namespace GameRealisticMap.Buildings
             using var report = progress.CreateStep("EntranceSide", buildings.Count);
             foreach (var building in buildings)
             {
-                var closestRoads = BoxSideHelper.GetClosestList(building.Box, roads.Select(r => r.Path), 25).ToList();
+                var closestRoads = BoxSideHelper.GetClosestList(building.Box, roads.Select(r => (r.Path, r.Factor)), 20).ToList();
 
                 var furthestBuildings = BoxSideHelper.GetFurthestList(building.Box, buildings.Where(b => b != building).Select(r => r.Polygon), 2).ToList();
 

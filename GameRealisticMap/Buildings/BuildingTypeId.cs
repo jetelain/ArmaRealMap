@@ -13,6 +13,7 @@
         Industrial,
         Shed,
         Agricultural,
-        WaterTower
+        WaterTower,
+        BusStopShelter
     }
 }

@@ -13,21 +13,21 @@ namespace GameRealisticMap.Geometries
 
         public static BoxSide GetClosest(BoundingBox box, IEnumerable<TerrainPath> allPaths, float maxDistance)
         {
-            return GetClosestList(box, allPaths, maxDistance).FirstOrDefault();
+            return GetClosestList(box, allPaths.Select(path => (path, 1f)), maxDistance).FirstOrDefault();
         }
 
-        public static IEnumerable<BoxSide> GetClosestList(BoundingBox box, IEnumerable<TerrainPath> allPaths, float maxDistance)
+        public static IEnumerable<BoxSide> GetClosestList(BoundingBox box, IEnumerable<(TerrainPath,float)> allPaths, float maxDistance)
         {
             var envelope = box.WithMargin(maxDistance * 1.5f);
 
-            var paths = allPaths.Where(p => p.EnveloppeIntersects(envelope)).ToList();
+            var paths = allPaths.Where(p => p.Item1.EnveloppeIntersects(envelope)).ToList();
 
             if ( paths.Count == 0 )
             {
                 return Enumerable.Empty<BoxSide>();
             }
 
-            var sidesDistance = GetSidesPoints(box).Select(s => paths.Min(p => p.Distance(s))).ToList();
+            var sidesDistance = GetSidesPoints(box).Select(s => paths.Min(p => p.Item1.Distance(s) * p.Item2)).ToList();
 
             return sides
                 .Select((s, i) => new { Side = s, Distance = sidesDistance[i] })

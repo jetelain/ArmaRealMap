@@ -30,5 +30,22 @@ namespace GameRealisticMap.Roads
 
         public IEnumerable<TerrainPolygon> ClearPolygons => Path.ToTerrainPolygon(ClearWidth);
 
+        public float Factor
+        {
+            get
+            {
+                switch (RoadType) 
+                {
+                    case RoadTypeId.TwoLanesPrimaryRoad:
+                        return 0.2f;
+                    case RoadTypeId.TwoLanesSecondaryRoad:
+                        return 0.4f;
+                    case RoadTypeId.TwoLanesConcreteRoad:
+                        return 0.6f;
+                    default: 
+                        return 1f;
+                }
+            }
+        }
     }
 }

@@ -18,6 +18,10 @@ namespace GameRealisticMap.Buildings
 
         internal static BuildingTypeId? FromOSM(TagsCollectionBase tags)
         {
+            if (tags.GetValue("shelter_type") == "public_transport")
+            {
+                return BuildingTypeId.BusStopShelter;
+            }
 
             if (tags.ContainsKey("building") && !tags.IsFalse("building"))
             {
@@ -34,6 +38,10 @@ namespace GameRealisticMap.Buildings
                         return BuildingTypeId.Hut;
 
                     case "shed":
+                        if (tags.GetValue("public_transport") == "platform")
+                        {
+                            return BuildingTypeId.BusStopShelter;
+                        }
                         return BuildingTypeId.Shed;
 
                     case "commercial":
