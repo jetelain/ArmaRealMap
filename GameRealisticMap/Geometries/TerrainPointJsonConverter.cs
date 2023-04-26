@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Xml.Linq;
 
 namespace GameRealisticMap.Geometries
 {
@@ -20,16 +19,16 @@ namespace GameRealisticMap.Geometries
                 }
                 return new TerrainPoint(x, y);
             }
-            //if (reader.TokenType == JsonTokenType.StartObject)
-            //{
-            //    // Backward compatibility
-            //    var dict = JsonSerializer.Deserialize<Dictionary<string, float>>(ref reader, options);
-            //    if (dict == null)
-            //    {
-            //        return null;
-            //    }
-            //    return new TerrainPoint(dict["x"], dict["y"]);
-            //}
+            if (reader.TokenType == JsonTokenType.StartObject)
+            {
+                // Backward compatibility
+                var dict = JsonSerializer.Deserialize<Dictionary<string, float>>(ref reader, options);
+                if (dict == null)
+                {
+                    return null;
+                }
+                return new TerrainPoint(dict["x"], dict["y"]);
+            }
             throw new JsonException();
         }
 
