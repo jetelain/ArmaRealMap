@@ -14,6 +14,7 @@
         Shed,
         Agricultural,
         WaterTower,
-        BusStopShelter
+        BusStopShelter,
+        IndividualGarage
     }
 }

@@ -58,6 +58,8 @@ namespace GameRealisticMap.Buildings
                     case "water_tower":
                         return BuildingTypeId.WaterTower;
 
+                    case "garage":
+                        return BuildingTypeId.IndividualGarage;
                 }
                 if (tags.GetValue("historic") == "fort")
                 {
