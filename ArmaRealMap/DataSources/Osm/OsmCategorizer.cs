@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using GameRealisticMap.ManMade;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Roads;
 using OsmSharp;
@@ -233,17 +234,17 @@ namespace ArmaRealMap.Osm
             return null;
         }
 
-        internal static RoadSpecialSegment ToRoadSpecialSegment(TagsCollectionBase tags)
+        internal static WaySpecialSegment ToRoadSpecialSegment(TagsCollectionBase tags)
         {
             if (Get(tags, "embankment") == "yes")
             {
-                return RoadSpecialSegment.Embankment;
+                return WaySpecialSegment.Embankment;
             }
             if (Get(tags, "bridge") == "yes")
             {
-                return RoadSpecialSegment.Bridge;
+                return WaySpecialSegment.Bridge;
             }
-            return RoadSpecialSegment.Normal;
+            return WaySpecialSegment.Normal;
         }
     }
 }

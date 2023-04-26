@@ -78,17 +78,5 @@ namespace GameRealisticMap.Roads
             return null;
         }
 
-        internal static RoadSpecialSegment ToRoadSpecialSegment(TagsCollectionBase tags)
-        {
-            if (tags.GetValue("embankment") == "yes")
-            {
-                return RoadSpecialSegment.Embankment;
-            }
-            if (tags.GetValue("bridge") == "yes")
-            {
-                return RoadSpecialSegment.Bridge;
-            }
-            return RoadSpecialSegment.Normal;
-        }
     }
 }

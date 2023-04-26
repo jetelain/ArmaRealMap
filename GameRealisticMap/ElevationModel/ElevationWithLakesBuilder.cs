@@ -29,6 +29,8 @@ namespace GameRealisticMap.ElevationModel
             var lakesData = context.GetData<LakesData>();
             var buildings = context.GetData<BuildingsData>();
 
+            // TODO: Road/railways embankment + other embankment
+
             var lakes = DigLakes(raw.RawElevation, lakesData, context.Area);
 
             var withElevation = context.OsmSource.Ways.Where(w => w.Tags != null && (w.Tags.ContainsKey("ele") || w.Tags.ContainsKey("ele:wgs84"))).ToList();

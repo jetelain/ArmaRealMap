@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
@@ -79,7 +80,7 @@ namespace GameRealisticMap.Nature.Watercourses
         private List<TerrainPolygon> GetSurface(IBuildContext context, List<TerrainPolygon> lakesPolygons, List<Watercourse> waterwaysPaths)
         {
             var priority = lakesPolygons
-                .Concat(context.GetData<RoadsData>().Roads.Where(r => r.RoadType != RoadTypeId.Trail && r.SpecialSegment != RoadSpecialSegment.Bridge).SelectMany(r => r.ClearPolygons))
+                .Concat(context.GetData<RoadsData>().Roads.Where(r => r.RoadType != RoadTypeId.Trail && r.SpecialSegment != WaySpecialSegment.Bridge).SelectMany(r => r.ClearPolygons))
                 .ToList();
 
             var builder = new PolygonBuilder(progress, IsWaterwaySurface, priority);

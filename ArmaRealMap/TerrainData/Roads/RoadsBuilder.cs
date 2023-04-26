@@ -13,6 +13,7 @@ using ArmaRealMap.TerrainData.ElevationModel;
 using ArmaRealMap.TerrainData.Forests;
 using ArmaRealMap.TerrainData.Roads;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Roads;
 using GeoAPI.Geometries;
@@ -260,7 +261,7 @@ namespace ArmaRealMap.Roads
             var features = new List<Feature>();
             foreach (var road in data.Roads)
             {
-                if (road.SpecialSegment == RoadSpecialSegment.Bridge && ElevationGridBuilder.GetBridgeCategory(road.RoadType, libs) != null)
+                if (road.SpecialSegment == WaySpecialSegment.Bridge && ElevationGridBuilder.GetBridgeCategory(road.RoadType, libs) != null)
                 {
                     continue;
                 }

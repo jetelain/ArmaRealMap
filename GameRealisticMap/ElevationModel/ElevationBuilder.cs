@@ -1,5 +1,7 @@
 ﻿using GameRealisticMap.ElevationModel.Constrained;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
@@ -22,11 +24,14 @@ namespace GameRealisticMap.ElevationModel
         {
             var raw = context.GetData<ElevationWithLakesData>();
             var roadsData = context.GetData<RoadsData>();
+            var railways = context.GetData<RailwaysData>();
             var waterData = context.GetData<WatercoursesData>();
 
             var constraintGrid = new ElevationConstraintGrid(context.Area, raw.Elevation, progress);
 
-            ProcessRoads(constraintGrid, roadsData);
+            ProcessWays(constraintGrid, roadsData.Roads.Where(r => r.RoadType < RoadTypeId.Trail).ProgressStep(progress, "Roads"));
+
+            ProcessWays(constraintGrid, railways.Railways.ProgressStep(progress, "Railways"));
 
             ProcessWatercourses(constraintGrid, waterData);
 
@@ -43,27 +48,22 @@ namespace GameRealisticMap.ElevationModel
             return new ElevationData(constraintGrid.Grid, contour.Lines.Select(l => new LineString(l.Points)));
         }
 
-        private void ProcessRoads(ElevationConstraintGrid constraintGrid, RoadsData roadsData)
+        private void ProcessWays(ElevationConstraintGrid constraintGrid, IEnumerable<IWay> ways)
         {
-            var roads = roadsData.Roads.Where(r => r.RoadType < RoadTypeId.Trail).ToList();
-
-            using var report = progress.CreateStep("Roads", roads.Count);
-
-            foreach (var road in roads)
+            foreach (var way in ways)
             {
-                if (road.SpecialSegment == RoadSpecialSegment.Bridge)
+                if (way.SpecialSegment == WaySpecialSegment.Bridge)
                 {
-                    ProcessRoadBridge(road, constraintGrid);
+                    ProcessRoadBridge(way, constraintGrid);
                 }
-                else if (road.SpecialSegment == RoadSpecialSegment.Embankment)
+                else if (way.SpecialSegment == WaySpecialSegment.Embankment)
                 {
-                    ProcessRoadEmbankment(constraintGrid, road);
+                    ProcessRoadEmbankment(constraintGrid, way);
                 }
                 else
                 {
-                    ProcessNormalRoad(constraintGrid, road);
+                    ProcessNormalRoad(constraintGrid, way);
                 }
-                report.ReportOneDone();
             }
         }
 
@@ -104,7 +104,7 @@ namespace GameRealisticMap.ElevationModel
             }
         }
 
-        private void ProcessRoadEmbankment(ElevationConstraintGrid constraintGrid, Road road)
+        private void ProcessRoadEmbankment(ElevationConstraintGrid constraintGrid, IWay road)
         {
             // pin start/stop, imposed smoothing as SRTM precision is too low for this kind of elevation detail
             var start = constraintGrid.NodeHard(road.Path.FirstPoint).PinToInitial();
@@ -129,7 +129,7 @@ namespace GameRealisticMap.ElevationModel
                 }
             }
         }
-        private void ProcessNormalRoad(ElevationConstraintGrid constraintGrid, Road road)
+        private void ProcessNormalRoad(ElevationConstraintGrid constraintGrid, IWay road)
         {
             var lengthFromStart = 0f;
             var points = GeometryHelper.PointsOnPath(road.Path.Points, 2).Select(constraintGrid.NodeHard).ToList();
@@ -146,7 +146,7 @@ namespace GameRealisticMap.ElevationModel
             }
         }
 
-        private void ProcessRoadBridge(Road road, ElevationConstraintGrid constraintGrid)
+        private void ProcessRoadBridge(IWay road, ElevationConstraintGrid constraintGrid)
         {
             constraintGrid.NodeHard(road.Path.FirstPoint).PinToInitial();
             constraintGrid.NodeHard(road.Path.LastPoint).PinToInitial();

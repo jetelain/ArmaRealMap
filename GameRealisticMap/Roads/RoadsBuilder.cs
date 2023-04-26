@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 
@@ -95,21 +96,15 @@ namespace GameRealisticMap.Roads
                 if (kind != null)
                 {
                     var type = library.GetInfo(kind.Value);
-                    var count = 0;
                     foreach (var geometry in osm.Interpret(road))
                     {
                         foreach (var path in TerrainPath.FromGeometry(geometry, area.LatLngToTerrainPoint))
                         {
                             foreach (var pathSegment in path.ClippedBy(area.TerrainBounds))
                             {
-                                roads.Add(new Road(RoadTypeIdHelper.ToRoadSpecialSegment(road.Tags), pathSegment, type));
+                                roads.Add(new Road(WaySpecialSegmentHelper.FromOSM(road.Tags), pathSegment, type));
                             }
                         }
-                        count++;
-                    }
-                    if (count == 0)
-                    {
-                        Trace.TraceWarning($"NO GEOMETRY FOR {road.Tags}");
                     }
                 }
                 report.ReportOneDone();

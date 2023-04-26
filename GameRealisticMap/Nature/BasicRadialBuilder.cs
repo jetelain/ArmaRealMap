@@ -3,6 +3,7 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Farmlands;
+using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
@@ -30,6 +31,7 @@ namespace GameRealisticMap.Nature
         {
             return context.GetData<BuildingsData>().Buildings.Select(b => b.Box.Polygon)
                 .Concat(context.GetData<RoadsData>().Roads.Where(r => r.RoadType != RoadTypeId.Trail).SelectMany(r => r.ClearPolygons))
+                .Concat(context.GetData<RailwaysData>().Railways.SelectMany(r => r.ClearPolygons))
                 .Concat(context.GetData<ElevationWithLakesData>().Lakes.Select(l => l.TerrainPolygon))
                 .Concat(context.GetData<ForestData>().Polygons)
                 .Concat(context.GetData<ScrubData>().Polygons)

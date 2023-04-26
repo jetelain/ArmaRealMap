@@ -9,6 +9,7 @@ using ArmaRealMap.Osm;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ElevationModel.Constrained;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -94,11 +95,11 @@ namespace ArmaRealMap.TerrainData.ElevationModel
 
             foreach (var road in roads)
             {
-                if (road.SpecialSegment == RoadSpecialSegment.Bridge)
+                if (road.SpecialSegment == WaySpecialSegment.Bridge)
                 {
                     ProcessRoadBridge(road, constraintGrid, libs);
                 }
-                else if (road.SpecialSegment == RoadSpecialSegment.Embankment)
+                else if (road.SpecialSegment == WaySpecialSegment.Embankment)
                 {
                     ProcessRoadEmbankment(constraintGrid, road);
                 }
@@ -112,7 +113,7 @@ namespace ArmaRealMap.TerrainData.ElevationModel
         }
         private static void ProcessBridgeObjects(MapData data, ElevationGrid grid, ObjectLibraries libs)
         {
-            var roads = data.Roads.Where(r => r.RoadType <= RoadTypeId.TwoLanesConcreteRoad && r.SpecialSegment == RoadSpecialSegment.Bridge).ToList();
+            var roads = data.Roads.Where(r => r.RoadType <= RoadTypeId.TwoLanesConcreteRoad && r.SpecialSegment == WaySpecialSegment.Bridge).ToList();
             var report = new ProgressReport("Roads", roads.Count);
             var bridgeObjects = new TerrainObjectLayer(data.MapInfos);
             foreach (var road in roads)

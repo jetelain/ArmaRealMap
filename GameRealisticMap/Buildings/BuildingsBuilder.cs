@@ -36,8 +36,6 @@ namespace GameRealisticMap.Buildings
 
             pass4 = pass4.Where(b => context.Area.IsInside(b.Box.Center)).ToList();
 
-            // TODO: shrink if collide roads
-
             DetectEntranceSide(pass4, roads.Roads);
 
             var pass5 = DetectBuildingCategory(categorizers.Areas, pass4);

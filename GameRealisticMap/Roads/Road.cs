@@ -1,17 +1,21 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Numerics;
+using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade;
 
 namespace GameRealisticMap.Roads
 {
-    public class Road : ITerrainEnvelope
+    public class Road : ITerrainEnvelope, IWay
     {
-        public Road(RoadSpecialSegment specialSegment, TerrainPath path, IRoadTypeInfos roadTypeInfos)
+        public Road(WaySpecialSegment specialSegment, TerrainPath path, IRoadTypeInfos roadTypeInfos)
         {
             SpecialSegment = specialSegment;
             Path = path;
             RoadTypeInfos = roadTypeInfos;
+            MinPoint = path.MinPoint - new Vector2(roadTypeInfos.Width);
+            MaxPoint = path.MaxPoint + new Vector2(roadTypeInfos.Width);
         }
 
-        public RoadSpecialSegment SpecialSegment { get; }
+        public WaySpecialSegment SpecialSegment { get; }
 
         public TerrainPath Path { get; set; }
 
@@ -23,9 +27,9 @@ namespace GameRealisticMap.Roads
 
         public float ClearWidth => RoadTypeInfos.ClearWidth;
 
-        public TerrainPoint MinPoint => Path.MinPoint;
+        public TerrainPoint MinPoint { get; }
 
-        public TerrainPoint MaxPoint => Path.MaxPoint;
+        public TerrainPoint MaxPoint { get; }
 
         public IEnumerable<TerrainPolygon> Polygons => Path.ToTerrainPolygon(Width);
 

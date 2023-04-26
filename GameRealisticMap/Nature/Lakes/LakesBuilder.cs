@@ -1,4 +1,6 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
 using OsmSharp.Tags;
@@ -33,8 +35,8 @@ namespace GameRealisticMap.Nature.Lakes
             var embankmentMargin = 2.5f * context.Area.GridCellSize;
 
             return context.GetData<RoadsData>()
-                .Roads
-                .Where(r => r.SpecialSegment == RoadSpecialSegment.Embankment)
+                .Roads.Cast<IWay>().Concat(context.GetData<RailwaysData>().Railways)
+                .Where(r => r.SpecialSegment == WaySpecialSegment.Embankment)
                 .SelectMany(s => s.Path.ToTerrainPolygon(s.Width + embankmentMargin))
                 .ToList();
         }

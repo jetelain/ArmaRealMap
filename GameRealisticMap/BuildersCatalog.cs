@@ -4,6 +4,7 @@ using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
+using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.RockAreas;
@@ -47,6 +48,7 @@ namespace GameRealisticMap
             Register(new FarmlandsBuilder(progress));
             Register(new TreesBuilder(progress));
             Register(new OrientedObjectBuilder(progress));
+            Register(new RailwaysBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)
