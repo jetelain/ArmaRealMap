@@ -1,12 +1,11 @@
 ﻿using System.Diagnostics;
-using GameRealisticMap.Roads;
 using OsmSharp.Tags;
 
-namespace GameRealisticMap.Osm
+namespace GameRealisticMap.Roads
 {
-    internal static class OsmRoadCategorizer
+    internal static class RoadTypeIdHelper
     {
-        internal static RoadTypeId? ToRoadType(TagsCollectionBase tags)
+        internal static RoadTypeId? FromOSM(TagsCollectionBase tags)
         {
             var type = tags.GetValue("highway");
             switch (type)
@@ -44,10 +43,15 @@ namespace GameRealisticMap.Osm
                     {
                         return null;
                     }
-                    return RoadTypeId.Trail;
+                    return RoadTypeId.ConcreteFootway;
 
                 case "pedestrian":
                 case "path":
+                    var surface = tags.GetValue("surface");
+                    if (surface == "asphalt" || surface == "paved")
+                    {
+                        return RoadTypeId.ConcreteFootway;
+                    }
                     return RoadTypeId.Trail;
 
                 case "track":
@@ -64,7 +68,7 @@ namespace GameRealisticMap.Osm
                         // Ignored for optimisation purpose
                         return null;
                     }
-                    return RoadTypeId.SingleLaneDirtRoad;
+                    return RoadTypeId.SingleLaneConcreteRoad;
 
             }
             if (!string.IsNullOrEmpty(type))

@@ -2,7 +2,6 @@
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
-using OsmSharp.API;
 
 namespace GameRealisticMap.Roads
 {
@@ -92,7 +91,7 @@ namespace GameRealisticMap.Roads
             using var report = progress.CreateStep("Interpret", osmRoads.Count);
             foreach (var road in osmRoads)
             {
-                var kind = OsmRoadCategorizer.ToRoadType(road.Tags);
+                var kind = RoadTypeIdHelper.FromOSM(road.Tags);
                 if (kind != null)
                 {
                     var type = library.GetInfo(kind.Value);
@@ -103,7 +102,7 @@ namespace GameRealisticMap.Roads
                         {
                             foreach (var pathSegment in path.ClippedBy(area.TerrainBounds))
                             {
-                                roads.Add(new Road(OsmRoadCategorizer.ToRoadSpecialSegment(road.Tags), pathSegment, type));
+                                roads.Add(new Road(RoadTypeIdHelper.ToRoadSpecialSegment(road.Tags), pathSegment, type));
                             }
                         }
                         count++;

@@ -20,6 +20,7 @@ namespace GameRealisticMap.Roads
         public RoadTypeId RoadType => RoadTypeInfos.Id;
 
         public float Width => RoadTypeInfos.Width;
+
         public float ClearWidth => RoadTypeInfos.ClearWidth;
 
         public TerrainPoint MinPoint => Path.MinPoint;

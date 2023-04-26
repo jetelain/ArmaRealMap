@@ -5,21 +5,31 @@
         /// <summary>
         /// 2x1 designed to be side by side
         /// </summary>
-        TwoLanesMotorway = 1,
+        TwoLanesMotorway,
 
         /// <summary>
         /// 2x1
         /// </summary>
-        TwoLanesPrimaryRoad = 2,
+        TwoLanesPrimaryRoad,
 
-        TwoLanesSecondaryRoad = 3,
+        TwoLanesSecondaryRoad,
 
-        TwoLanesConcreteRoad = 4,
+        TwoLanesConcreteRoad,
 
-        SingleLaneDirtRoad = 5,
+        SingleLaneConcreteRoad,
 
-        SingleLaneDirtPath = 6,
+        SingleLaneDirtRoad,
 
-        Trail = 7 // TODO: Footpath in cities and in the wild does not look the same, make them different
+        SingleLaneDirtPath,
+
+        /// <summary>
+        /// Urban/concrete footway
+        /// </summary>
+        ConcreteFootway,
+
+        /// <summary>
+        /// Hiking path/trail
+        /// </summary>
+        Trail
     }
 }

@@ -2,27 +2,11 @@
 {
     internal class DefaultRoadTypeInfos : IRoadTypeInfos
     {
-        public DefaultRoadTypeInfos(RoadTypeId id, float width)
+        public DefaultRoadTypeInfos(RoadTypeId id, float width, float clearWidth)
         {
             Id = id;
             Width = width;
-
-            if (Id < RoadTypeId.TwoLanesPrimaryRoad)
-            {
-                ClearWidth = Width + 6f;
-            }
-            else if (Id < RoadTypeId.SingleLaneDirtPath)
-            {
-                ClearWidth = Width + 4f;
-            }
-            else if (Id < RoadTypeId.Trail)
-            {
-                ClearWidth = Width + 2f;
-            }
-            else
-            {
-                ClearWidth = width;
-            }
+            ClearWidth = clearWidth;
         }
 
         public RoadTypeId Id { get; }

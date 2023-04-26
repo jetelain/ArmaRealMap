@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Buildings;
+﻿using GameRealisticMap.Buildings;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
-using NetTopologySuite.Utilities;
 
 namespace GameRealisticMap.Nature.Forests
 {
@@ -39,7 +32,8 @@ namespace GameRealisticMap.Nature.Forests
                 forests = TerrainPolygon.MergeAll(forests); // XXX: Merge in BasicBuilderBase to rely only on clusters ?
             }
 
-            // XXX: Ignore really small "forest" areas ? 
+            // Ignore reallys smalls "forests", as it might have been used to map some isolated trees
+            forests = forests.Where(f => f.Area > 200).ToList();
 
             var edges = 
                 forests.ProgressStep(progress, "Edges")
