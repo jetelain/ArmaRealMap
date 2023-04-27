@@ -15,7 +15,7 @@
 
             new DefaultRoadTypeInfos(RoadTypeId.SingleLaneDirtPath, 4.5f, 6.5f),
 
-            new DefaultRoadTypeInfos(RoadTypeId.ConcreteFootway, 1.5f, 1.5f),
+            new DefaultRoadTypeInfos(RoadTypeId.ConcreteFootway, 2f, 3f),
             new DefaultRoadTypeInfos(RoadTypeId.Trail, 1.5f, 1.5f)
         };
 

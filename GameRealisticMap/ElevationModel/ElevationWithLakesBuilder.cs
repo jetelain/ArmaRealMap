@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
 using GameRealisticMap.Buildings;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.Nature.Lakes;
-using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
 using GeoJSON.Text.Geometry;
@@ -28,10 +29,14 @@ namespace GameRealisticMap.ElevationModel
             var raw = context.GetData<RawElevationData>();
             var lakesData = context.GetData<LakesData>();
             var buildings = context.GetData<BuildingsData>();
+            var roads = context.GetData<RoadsData>();
+            var railways = context.GetData<RailwaysData>();
 
-            // TODO: Road/railways embankment + other embankment
+            var grid = raw.RawElevation;
 
-            var lakes = DigLakes(raw.RawElevation, lakesData, context.Area);
+            MakeWayEmbankmentsSmooth(grid, roads.Roads.Cast<IWay>().Concat(railways.Railways).Where(r => r.SpecialSegment == WaySpecialSegment.Embankment));
+
+            var lakes = DigLakes(grid, lakesData, context.Area);
 
             var withElevation = context.OsmSource.Ways.Where(w => w.Tags != null && (w.Tags.ContainsKey("ele") || w.Tags.ContainsKey("ele:wgs84"))).ToList();
 
@@ -40,13 +45,42 @@ namespace GameRealisticMap.ElevationModel
             // - (Flat area for parking lots ?)
             // - Forced elevation by config
 
-            var grid = raw.RawElevation;
-
             FlatAreas(
                 GetLargeBuildings(buildings)
                 .Concat(GetOutdoorPitch(context)), grid);
 
             return new ElevationWithLakesData(grid, lakes);
+        }
+
+        private void MakeWayEmbankmentsSmooth(ElevationGrid grid, IEnumerable<IWay> embankmentsSegments)
+        {
+            var margin = grid.CellSize * 4;
+
+            foreach (var em in embankmentsSegments.ProgressStep(progress, "Embankments"))
+            {
+                var elevationA = grid.ElevationAround(em.Path.FirstPoint, em.Width);
+                var elevationB = grid.ElevationAround(em.Path.LastPoint, em.Width);
+
+                var mutate = grid.PrepareToMutate(em.Path.MinPoint - margin, em.Path.MaxPoint + margin,
+                    Math.Min(elevationA, elevationB) - 10, Math.Max(elevationA, elevationB) + 10);
+
+                var brush = new LinearGradientBrush(
+                    mutate.ToPixel(em.Path.FirstPoint),
+                    mutate.ToPixel(em.Path.LastPoint),
+                    GradientRepetitionMode.None,
+                    new ColorStop(0f, mutate.ElevationToColor(elevationA)),
+                    new ColorStop(1f, mutate.ElevationToColor(elevationB)));
+
+                mutate.Image.Mutate(p =>
+                {
+                    foreach (var poly in em.ClearPolygons)
+                    {
+                        PolygonDrawHelper.DrawPolygon(p, poly, brush, mutate.ToPixels);
+                    }
+                });
+                mutate.Apply();
+
+            }
         }
 
         /// <summary>
