@@ -22,7 +22,6 @@ namespace GameRealisticMap.Satellite
         {
             var totalSize = (int)Math.Ceiling(context.Area.SizeInMeters * imageryResolution);
 
-            using var src = new S2Cloudless();
 
             /*var tileSize = totalSize;
             var tileCount = 1;
@@ -49,13 +48,14 @@ namespace GameRealisticMap.Satellite
                 }
             }*/
 
-            var image = LoadImage(context, totalSize, src, report, Vector2.Zero, 0);
+            var image = LoadImage(context, totalSize, report, Vector2.Zero, 0);
 
             return new RawSatelliteImageData(image);
         }
 
-        private Image<Rgb24> LoadImage(IBuildContext context, int tileSize, S2Cloudless src, IProgressInteger report, Vector2 start, int done)
+        private Image<Rgb24> LoadImage(IBuildContext context, int tileSize, IProgressInteger report, Vector2 start, int done)
         {
+            using var src = new S2Cloudless();
             var img = new Image<Rgb24>(tileSize, tileSize);
             var parallel = 16;
             var dh = img.Height / parallel;

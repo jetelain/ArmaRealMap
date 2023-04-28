@@ -13,7 +13,11 @@ namespace GameRealisticMap.Satellite
         private readonly string cacheLocation = Path.Combine(Path.GetTempPath(), "GameRealisticMap", "S2Cloudless");
         private readonly HttpClient httpClient;
         private readonly SemaphoreSlim downloadSemaphore = new SemaphoreSlim(1, 1);
-        private readonly ConcurrentDictionary<string, Task<Image<Rgb24>>> cache = new ConcurrentDictionary<string, Task<Image<Rgb24>>>();
+        private readonly ConcurrentDictionary<(int,int), Task<Image<Rgb24>>> cache = new ConcurrentDictionary<(int, int), Task<Image<Rgb24>>>();
+
+        private int estimatedCachePressure = 0;
+
+        private const int MaxCachePressure = 10000; // Arround 2 GiB : 10000 * 197 KB per tile
 
         private static readonly int zoomLevel = 15; // best compromise, almost equal to zoomLevel 16 result, 20% faster to process
         private static readonly int halfTileCount = (int)Math.Pow(2, zoomLevel) / 2;
@@ -54,16 +58,14 @@ namespace GameRealisticMap.Satellite
             var pX = (int)Math.Floor((tileX - tX) * tileSize);
             var pY = (int)Math.Floor((tileY - tY) * tileSize);
 
-            var tilePath = FormattableString.Invariant($"{zoomLevel}/{tY}/{tX}.jpg");
-
-            if (cache.Count > 10000)
+            if (estimatedCachePressure > MaxCachePressure)
             {
                 await downloadSemaphore.WaitAsync();
                 try
                 {
-                    if (cache.Count > 10000)
+                    if (estimatedCachePressure > MaxCachePressure)
                     {
-                        cache.Clear();
+                        ClearCache();
                     }
                 }
                 finally
@@ -72,9 +74,19 @@ namespace GameRealisticMap.Satellite
                 }
             }
 
-            var tile = await cache.GetOrAdd(tilePath, LoadTile).ConfigureAwait(false);
+            var tile = await cache.GetOrAdd(((int)tX,(int)tY), k =>LoadTile(k.Item1,k.Item2)).ConfigureAwait(false);
 
             return tile[pX, pY];
+        }
+
+        private void ClearCache()
+        {
+            foreach (var img in cache.Values)
+            {
+                img.Dispose();
+            }
+            cache.Clear();
+            estimatedCachePressure = 0;
         }
 
         private async Task<byte[]> Load(Uri uri)
@@ -98,8 +110,10 @@ namespace GameRealisticMap.Satellite
         }
 
 
-        private async Task<Image<Rgb24>> LoadTile(string filePath)
+        private async Task<Image<Rgb24>> LoadTile(int tX, int tY)
         {
+            var filePath = FormattableString.Invariant($"{zoomLevel}/{tY}/{tX}.jpg");
+
             var cacheFile = System.IO.Path.Combine(cacheLocation, filePath);
             Trace.WriteLine(cacheFile);
             if (!File.Exists(cacheFile))
@@ -122,7 +136,9 @@ namespace GameRealisticMap.Satellite
 
             try
             {
-                return await Image.LoadAsync<Rgb24>(cacheFile, new JpegDecoder()).ConfigureAwait(false);
+                var image = await Image.LoadAsync<Rgb24>(cacheFile, new JpegDecoder()).ConfigureAwait(false);
+                Interlocked.Increment(ref estimatedCachePressure);
+                return image;
             }
             catch
             {
@@ -136,17 +152,13 @@ namespace GameRealisticMap.Satellite
                 {
                     downloadSemaphore.Release();
                 }
-                return await LoadTile(filePath).ConfigureAwait(false);
+                return await LoadTile(tX, tY).ConfigureAwait(false);
             }
         }
 
         public void Dispose()
         {
-            foreach (var img in cache.Values)
-            {
-                img.Dispose();
-            }
-            cache.Clear();
+            ClearCache();
             httpClient.Dispose();
         }
     }
