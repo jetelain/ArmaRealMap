@@ -1,10 +1,12 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature.Surfaces
 {
     internal class MeadowsData : IBasicTerrainData
     {
+        [JsonConstructor]
         public MeadowsData(List<TerrainPolygon> polygons)
         {
             Polygons = polygons;

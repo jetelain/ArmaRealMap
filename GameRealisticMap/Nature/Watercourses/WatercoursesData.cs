@@ -1,10 +1,12 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature.Watercourses
 {
     public class WatercoursesData : IBasicTerrainData
     {
+        [JsonConstructor]
         public WatercoursesData(List<Watercourse> waterwayPaths, List<TerrainPolygon> polygons)
         {
             Paths = waterwayPaths;

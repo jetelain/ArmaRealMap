@@ -1,10 +1,12 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature.RockAreas
 {
     public class RocksData : IBasicTerrainData
     {
+        [JsonConstructor]
         public RocksData(List<TerrainPolygon> polygons)
         {
             Polygons = polygons;

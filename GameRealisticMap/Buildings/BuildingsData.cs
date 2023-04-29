@@ -1,10 +1,12 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Buildings
 {
     public class BuildingsData : IGeoJsonData
     {
+        [JsonConstructor]
         public BuildingsData(List<Building> buildings)
         {
             Buildings = buildings;

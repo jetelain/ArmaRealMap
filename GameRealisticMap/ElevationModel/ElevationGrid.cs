@@ -2,8 +2,6 @@
 using GameRealisticMap.Geometries;
 using MapToolkit;
 using MapToolkit.DataCells;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.ElevationModel
 {
@@ -25,6 +23,13 @@ namespace GameRealisticMap.ElevationModel
             size = other.size;
             elevationGrid = (float[,])other.elevationGrid.Clone();
             cellSize = other.cellSize;
+        }
+
+        public ElevationGrid(DemDataCellPixelIsPoint<float> demDataCell)
+        {
+            size = demDataCell.PointsLat;
+            cellSize = new Vector2((float)demDataCell.PixelSizeLat);
+            elevationGrid = demDataCell.Data;
         }
 
         public float this[int x, int y]

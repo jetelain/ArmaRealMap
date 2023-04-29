@@ -1,10 +1,12 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature.Forests
 {
     public class ForestRadialData : IBasicTerrainData
     {
+        [JsonConstructor]
         public ForestRadialData(List<TerrainPolygon> polygons)
         {
             Polygons = polygons;

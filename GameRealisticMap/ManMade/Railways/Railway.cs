@@ -1,10 +1,12 @@
 ﻿using System.Numerics;
+using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.ManMade.Railways
 {
     internal class Railway : ITerrainEnvelope, IWay
     {
+        [JsonConstructor]
         public Railway(WaySpecialSegment specialSegment, TerrainPath path)
         {
             SpecialSegment = specialSegment;
@@ -17,16 +19,22 @@ namespace GameRealisticMap.ManMade.Railways
 
         public TerrainPath Path { get; set; }
 
+        [JsonIgnore]
         public float Width => 3.290f; // International Union of Railways (UIC) : Kinematic reference profile ( https://en.wikipedia.org/wiki/Loading_gauge )
 
+        [JsonIgnore]
         public float ClearWidth => 5f; // Width with ~1m margin on each side
 
+        [JsonIgnore]
         public IEnumerable<TerrainPolygon> Polygons => Path.ToTerrainPolygon(Width);
 
+        [JsonIgnore]
         public IEnumerable<TerrainPolygon> ClearPolygons => Path.ToTerrainPolygon(ClearWidth);
 
+        [JsonIgnore]
         public TerrainPoint MinPoint { get; }
 
+        [JsonIgnore]
         public TerrainPoint MaxPoint { get; }
     }
 }

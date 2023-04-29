@@ -1,20 +1,27 @@
-﻿using System.Diagnostics;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.IO;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Roads
 {
-    public class RoadsBuilder : IDataBuilder<RoadsData>
+    public class RoadsBuilder : IDataBuilder<RoadsData>, IDataSerializer<RoadsData>
     {
         private readonly IProgressSystem progress;
         private readonly IRoadTypeLibrary library;
+        private readonly JsonSerializerOptions options;
 
         public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary library)
         {
             this.progress = progress;
             this.library = library;
+
+            this.options = new JsonSerializerOptions();
+            options.Converters.Add(new RoadTypeInfosConverter(library));
+            options.Converters.Add(new JsonStringEnumConverter());
         }
 
         internal List<Road> MergeRoads(List<Road> roads)
@@ -141,6 +148,16 @@ namespace GameRealisticMap.Roads
             //    .ToList();
 
             return kept;
+        }
+
+        public async ValueTask<RoadsData?> Read(IPackageReader package, IContext context)
+        {
+            return await package.ReadJson<RoadsData>("Roads.json", options);
+        }
+
+        public Task Write(IPackageWriter package, RoadsData data)
+        {
+            return package.WriteJson<RoadsData>("Roads.json", data, options);
         }
     }
 }

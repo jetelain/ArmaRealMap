@@ -1,13 +1,16 @@
 ﻿using System.Numerics;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.IO;
 using GameRealisticMap.Reporting;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.Satellite
 {
-    internal class RawSatelliteImageBuilder : IDataBuilder<RawSatelliteImageData>
+    internal class RawSatelliteImageBuilder : IDataBuilder<RawSatelliteImageData>, IDataSerializer<RawSatelliteImageData>
     {
         private readonly IProgressSystem progress;
         private readonly float imageryResolution = 1;
@@ -51,6 +54,20 @@ namespace GameRealisticMap.Satellite
             var image = LoadImage(context, totalSize, report, Vector2.Zero, 0);
 
             return new RawSatelliteImageData(image);
+        }
+
+        public async ValueTask<RawSatelliteImageData?> Read(IPackageReader package, IContext context)
+        {
+            var image = await Image.LoadAsync<Rgb24>(package.ReadFile("RawSatellite.png"), new PngDecoder());
+            return new RawSatelliteImageData(image);
+        }
+
+        public async Task Write(IPackageWriter package, RawSatelliteImageData data)
+        {
+            using(var stream = package.CreateFile("RawSatellite.png"))
+            {
+                await data.Image.SaveAsPngAsync(stream);
+            }
         }
 
         private Image<Rgb24> LoadImage(IBuildContext context, int tileSize, IProgressInteger report, Vector2 start, int done)

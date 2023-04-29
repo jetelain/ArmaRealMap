@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.IO;
 using GameRealisticMap.Reporting;
 using MapToolkit;
 using MapToolkit.Databases;
@@ -6,7 +7,7 @@ using MapToolkit.DataCells;
 
 namespace GameRealisticMap.ElevationModel
 {
-    internal class RawElevationBuilder : IDataBuilder<RawElevationData>
+    internal class RawElevationBuilder : IDataBuilder<RawElevationData>, IDataSerializer<RawElevationData>
     {
         private readonly IProgressSystem progress;
 
@@ -48,6 +49,16 @@ namespace GameRealisticMap.ElevationModel
             });
 
             return new RawElevationData(grid);
+        }
+
+        public ValueTask<RawElevationData?> Read(IPackageReader package, IContext context)
+        {
+            return ValueTask.FromResult<RawElevationData?>(null);
+        }
+
+        public Task Write(IPackageWriter package, RawElevationData data)
+        {
+            return Task.CompletedTask;
         }
 
         private double GetElevationBilinear(DemDataCellBase<ushort> view, double lat, double lon)

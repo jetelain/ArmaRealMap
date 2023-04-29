@@ -1,10 +1,12 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature.Scrubs
 {
     public class ScrubData : IBasicTerrainData
     {
+        [JsonConstructor]
         public ScrubData(List<TerrainPolygon> polygons)
         {
             Polygons = polygons;

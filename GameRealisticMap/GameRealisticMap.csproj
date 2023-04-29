@@ -7,13 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoordinateSharp" Version="2.17.1.1" />
+    <!--<PackageReference Include="CoordinateSharp" Version="2.17.1.1" />-->
     <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
     <PackageReference Include="OsmSharp" Version="6.2.0" />
     <PackageReference Include="OsmSharp.Geo" Version="6.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\jetelain\CoordinateSharp\CoordinateSharp\CoordinateSharp.csproj" />
     <ProjectReference Include="..\mapkit\MapToolkit\MapToolkit.csproj" />
   </ItemGroup>
 

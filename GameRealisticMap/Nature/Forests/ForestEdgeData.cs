@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
@@ -10,6 +11,7 @@ namespace GameRealisticMap.Nature.Forests
 {
     internal class ForestEdgeData : IGeoJsonData
     {
+        [JsonConstructor]
         public ForestEdgeData(List<TerrainPolygon> edges, List<TerrainPolygon> mergedForests)
         {
             Edges = edges;

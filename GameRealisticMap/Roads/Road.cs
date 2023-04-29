@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
 
@@ -6,6 +7,7 @@ namespace GameRealisticMap.Roads
 {
     public class Road : ITerrainEnvelope, IWay
     {
+        [JsonConstructor]
         public Road(WaySpecialSegment specialSegment, TerrainPath path, IRoadTypeInfos roadTypeInfos)
         {
             SpecialSegment = specialSegment;
@@ -21,20 +23,28 @@ namespace GameRealisticMap.Roads
 
         public IRoadTypeInfos RoadTypeInfos { get; }
 
+        [JsonIgnore]
         public RoadTypeId RoadType => RoadTypeInfos.Id;
 
+        [JsonIgnore]
         public float Width => RoadTypeInfos.Width;
 
+        [JsonIgnore]
         public float ClearWidth => RoadTypeInfos.ClearWidth;
 
+        [JsonIgnore]
         public TerrainPoint MinPoint { get; }
 
+        [JsonIgnore]
         public TerrainPoint MaxPoint { get; }
 
+        [JsonIgnore]
         public IEnumerable<TerrainPolygon> Polygons => Path.ToTerrainPolygon(Width);
 
+        [JsonIgnore]
         public IEnumerable<TerrainPolygon> ClearPolygons => Path.ToTerrainPolygon(ClearWidth);
 
+        [JsonIgnore]
         public float Factor
         {
             get

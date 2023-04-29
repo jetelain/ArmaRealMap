@@ -1,23 +1,28 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Nature.Watercourses
 {
     public class Watercourse
     {
-        public Watercourse(TerrainPath path, WatercourseTypeId id)
+        [JsonConstructor]
+        public Watercourse(TerrainPath path, WatercourseTypeId typeId)
         {
             Path = path;
-            TypeId = id;
+            TypeId = typeId;
         }
 
         public TerrainPath Path { get; }
 
         public WatercourseTypeId TypeId { get; }
 
+        [JsonIgnore]
         public IEnumerable<TerrainPolygon> Polygons => Path.ToTerrainPolygon(Width);
 
+        [JsonIgnore]
         public bool IsTunnel => TypeId >= WatercourseTypeId.RiverTunnel;
 
+        [JsonIgnore]
         public float Width // Create a library for that ?
         {
             get

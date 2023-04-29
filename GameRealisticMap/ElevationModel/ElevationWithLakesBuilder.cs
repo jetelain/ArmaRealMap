@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using GameRealisticMap.Buildings;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.IO;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.Nature.Lakes;
@@ -15,7 +16,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.ElevationModel
 {
-    internal class ElevationWithLakesBuilder : IDataBuilder<ElevationWithLakesData>
+    internal class ElevationWithLakesBuilder : IDataBuilder<ElevationWithLakesData>, IDataSerializer<ElevationWithLakesData>
     {
         private readonly IProgressSystem progress;
 
@@ -210,5 +211,16 @@ namespace GameRealisticMap.ElevationModel
             return w.ToPolygonsReverse().ToList();
         }
 
+        public async ValueTask<ElevationWithLakesData?> Read(IPackageReader package, IContext context)
+        {
+            var lakes = await package.ReadJson<List<LakeWithElevation>>("LakesElevation.json");
+
+            return new ElevationWithLakesData(context.GetData<ElevationData>().Elevation, lakes);
+        }
+
+        public Task Write(IPackageWriter package, ElevationWithLakesData data)
+        {
+            return package.WriteJson("LakesElevation.json", data.Lakes);
+        }
     }
 }

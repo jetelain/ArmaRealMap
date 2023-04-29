@@ -1,10 +1,12 @@
-﻿using GeoJSON.Text.Feature;
+﻿using System.Text.Json.Serialization;
+using GeoJSON.Text.Feature;
 using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Roads
 {
     public class RoadsData : IGeoJsonData
     {
+        [JsonConstructor]
         public RoadsData(List<Road> roads)
         { 
             Roads = roads;

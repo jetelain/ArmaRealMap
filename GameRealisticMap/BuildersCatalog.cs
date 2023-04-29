@@ -20,8 +20,7 @@ namespace GameRealisticMap
 {
     public class BuildersCatalog : IBuidersCatalog
     {
-        private readonly Dictionary<Type, object> builders = new Dictionary<Type, object>();
-        private readonly Dictionary<Type,Func<IBuildContext, object>> getters = new Dictionary<Type, Func<IBuildContext, object>>();
+        private readonly Dictionary<Type, IBuilderAdapter> builders = new Dictionary<Type, IBuilderAdapter>();
 
         public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary library)
         {
@@ -54,25 +53,35 @@ namespace GameRealisticMap
         public void Register<TData>(IDataBuilder<TData> builder)
             where TData : class
         {
-            builders.Add(typeof(TData), builder);
-            getters.Add(typeof(TData), (IBuildContext ctx) => ctx.GetData<TData>());
+            builders.Add(typeof(TData), new BuilderAdapter<TData>(builder));
         }
 
         public IDataBuilder<TData> Get<TData>() where TData : class
         {
             if (builders.TryGetValue(typeof(TData), out var builder))
             {
-                return (IDataBuilder<TData>)builder;
+                return (IDataBuilder<TData>)builder.Builder;
             }
             throw new NotSupportedException($"No builder for '{typeof(TData).Name}'");
         }
 
-        public List<T> GetAll<T>(IBuildContext ctx) where T : class
+        public IEnumerable<object> GetAll(IContext ctx)
         {
-            return getters
+            return builders
+                .Select(g => g.Value.Get(ctx));
+        }
+
+        public IEnumerable<T> GetOfType<T>(IContext ctx) where T : class
+        {
+            return builders
                 .Where(p => typeof(T).IsAssignableFrom(p.Key))
-                .Select(g => (T)g.Value(ctx))
-                .ToList();
+                .Select(g => (T)g.Value.Get(ctx));
+        }
+
+        public IEnumerable<TResult> VisitAll<TResult>(IDataBuilderVisitor<TResult> visitor)
+        {
+            return builders
+                .Select(g => g.Value.Accept(visitor));
         }
     }
 }

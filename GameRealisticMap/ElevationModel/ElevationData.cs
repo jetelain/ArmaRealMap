@@ -1,6 +1,5 @@
 ﻿using GeoJSON.Text.Feature;
 using GeoJSON.Text.Geometry;
-using MapToolkit.Contours;
 
 namespace GameRealisticMap.ElevationModel
 {

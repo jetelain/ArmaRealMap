@@ -1,10 +1,12 @@
-﻿using GeoJSON.Text.Feature;
+﻿using System.Text.Json.Serialization;
+using GeoJSON.Text.Feature;
 using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Objects
 {
     public class OrientedObjectData : IGeoJsonData
     {
+        [JsonConstructor]
         public OrientedObjectData(List<OrientedObject> objects)
         {
             Objects = objects;

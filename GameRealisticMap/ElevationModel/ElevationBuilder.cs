@@ -1,17 +1,20 @@
 ﻿using GameRealisticMap.ElevationModel.Constrained;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.IO;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Roads;
+using GeoJSON.Text.Feature;
 using GeoJSON.Text.Geometry;
 using MapToolkit.Contours;
+using MapToolkit.DataCells;
 using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.ElevationModel
 {
-    internal class ElevationBuilder : IDataBuilder<ElevationData>
+    internal class ElevationBuilder : IDataBuilder<ElevationData>, IDataSerializer<ElevationData>
     {
         private readonly IProgressSystem progress;
 
@@ -150,6 +153,26 @@ namespace GameRealisticMap.ElevationModel
         {
             constraintGrid.NodeHard(road.Path.FirstPoint).PinToInitial();
             constraintGrid.NodeHard(road.Path.LastPoint).PinToInitial();
+        }
+
+        public async ValueTask<ElevationData?> Read(IPackageReader package, IContext context)
+        {
+            var contours = await package.ReadJson<IEnumerable<Feature>>("Contours.json");
+
+            using var stream = package.ReadFile("Elevation.ddc");
+            
+            var grid = new ElevationGrid(DemDataCell.Load(stream).To<float>().AsPixelIsPoint());
+
+            return new ElevationData(grid, contours.Select(c => c.Geometry).Cast<LineString>());
+        }
+
+        public async Task Write(IPackageWriter package, ElevationData data)
+        {
+            using (var stream = package.CreateFile("Elevation.ddc"))
+            {
+                data.Elevation.ToDataCell().Save(stream);
+            }
+            await package.WriteJson("Contours.json", data.ToGeoJson());
         }
     }
 }

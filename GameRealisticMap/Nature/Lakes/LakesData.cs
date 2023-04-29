@@ -1,10 +1,12 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature.Lakes
 {
     public class LakesData : IBasicTerrainData
     {
+        [JsonConstructor]
         public LakesData(List<TerrainPolygon> polygons)
         {
             Polygons = polygons;

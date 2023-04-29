@@ -2,12 +2,10 @@
 
 namespace GameRealisticMap
 {
-    public interface IBuildContext
+    public interface IBuildContext : IContext
     {
         ITerrainArea Area { get; }
 
         IOsmDataSource OsmSource { get; }
-
-        T GetData<T>() where T : class;
     }
 }

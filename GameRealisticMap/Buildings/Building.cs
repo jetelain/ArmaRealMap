@@ -1,13 +1,15 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Buildings
 {
     public class Building : ITerrainEnvelope
     {
-        public Building(BoundingBox box, BuildingTypeId value, List<TerrainPolygon> polygons, BoxSide entranceSide)
+        [JsonConstructor]
+        public Building(BoundingBox box, BuildingTypeId typeId, List<TerrainPolygon> polygons, BoxSide entranceSide)
         {
             Box = box;
-            TypeId = value;
+            TypeId = typeId;
             Polygons = polygons;
             EntranceSide = entranceSide;
         }
@@ -20,8 +22,10 @@ namespace GameRealisticMap.Buildings
 
         public BoxSide EntranceSide { get; }
 
+        [JsonIgnore]
         public TerrainPoint MinPoint => Box.MinPoint;
 
+        [JsonIgnore]
         public TerrainPoint MaxPoint => Box.MaxPoint;
     }
 }

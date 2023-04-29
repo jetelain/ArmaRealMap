@@ -1,9 +1,11 @@
-﻿using GeoJSON.Text.Feature;
+﻿using System.Text.Json.Serialization;
+using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.ManMade.Fences
 {
     public class FencesData : IGeoJsonData
     {
+        [JsonConstructor]
         public FencesData(List<Fence> fences)
         {
             Fences = fences;

@@ -1,14 +1,16 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.ManMade.Objects
 {
     public class OrientedObject
     {
-        public OrientedObject(TerrainPoint point, float angle, ObjectTypeId objectTypeId)
+        [JsonConstructor]
+        public OrientedObject(TerrainPoint point, float angle, ObjectTypeId typeId)
         {
             Point = point;
             Angle = angle;
-            TypeId = objectTypeId;
+            TypeId = typeId;
         }
 
         public TerrainPoint Point { get; }
@@ -17,6 +19,7 @@ namespace GameRealisticMap.ManMade.Objects
 
         public ObjectTypeId TypeId { get; }
 
+        [JsonIgnore]
         public float Heading => -Angle;
     }
 }
