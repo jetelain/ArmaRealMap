@@ -4,7 +4,7 @@
     {
         private readonly string filename = typeof(T).Name.Replace("Data", "") + ".json";
 
-        public async ValueTask<T?> Read(IPackageReader package, IContext context)
+        public async ValueTask<T> Read(IPackageReader package, IContext context)
         {
             return await package.ReadJson<T>(filename);
         }

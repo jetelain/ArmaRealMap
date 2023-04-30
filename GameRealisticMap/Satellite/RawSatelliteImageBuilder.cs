@@ -56,7 +56,7 @@ namespace GameRealisticMap.Satellite
             return new RawSatelliteImageData(image);
         }
 
-        public async ValueTask<RawSatelliteImageData?> Read(IPackageReader package, IContext context)
+        public async ValueTask<RawSatelliteImageData> Read(IPackageReader package, IContext context)
         {
             var image = await Image.LoadAsync<Rgb24>(package.ReadFile("RawSatellite.png"), new PngDecoder());
             return new RawSatelliteImageData(image);

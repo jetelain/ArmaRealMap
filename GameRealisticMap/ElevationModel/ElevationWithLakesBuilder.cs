@@ -211,7 +211,7 @@ namespace GameRealisticMap.ElevationModel
             return w.ToPolygonsReverse().ToList();
         }
 
-        public async ValueTask<ElevationWithLakesData?> Read(IPackageReader package, IContext context)
+        public async ValueTask<ElevationWithLakesData> Read(IPackageReader package, IContext context)
         {
             var lakes = await package.ReadJson<List<LakeWithElevation>>("LakesElevation.json");
 

@@ -155,7 +155,7 @@ namespace GameRealisticMap.ElevationModel
             constraintGrid.NodeHard(road.Path.LastPoint).PinToInitial();
         }
 
-        public async ValueTask<ElevationData?> Read(IPackageReader package, IContext context)
+        public async ValueTask<ElevationData> Read(IPackageReader package, IContext context)
         {
             var contours = await package.ReadJson<IEnumerable<Feature>>("Contours.json");
 

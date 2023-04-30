@@ -51,9 +51,9 @@ namespace GameRealisticMap.ElevationModel
             return new RawElevationData(grid);
         }
 
-        public ValueTask<RawElevationData?> Read(IPackageReader package, IContext context)
+        public ValueTask<RawElevationData> Read(IPackageReader package, IContext context)
         {
-            return ValueTask.FromResult<RawElevationData?>(null);
+            return ValueTask.FromResult<RawElevationData>(new RawElevationData(context.GetData<ElevationData>().Elevation));
         }
 
         public Task Write(IPackageWriter package, RawElevationData data)

@@ -24,6 +24,9 @@ namespace GameRealisticMap.Satellite
         private static readonly int tileSize = 256;
         private static readonly string endPoint = "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/GoogleMapsCompatible/";
 
+        private const double rMajor = 6378137; //Equatorial Radius, WGS84
+        private const double shift = Math.PI * rMajor;
+
         public S2Cloudless()
         {
             httpClient = new HttpClient();
@@ -32,8 +35,6 @@ namespace GameRealisticMap.Satellite
 
         public static NetTopologySuite.Geometries.Point LatLonToWebMercator(GeoAPI.Geometries.Coordinate coordinate)
         {
-            var rMajor = 6378137; //Equatorial Radius, WGS84
-            var shift = Math.PI * rMajor;
             var x = coordinate.X * shift / 180;
             var y = Math.Log(Math.Tan((90 + coordinate.Y) * Math.PI / 360)) / (Math.PI / 180);
             y = y * shift / 180;

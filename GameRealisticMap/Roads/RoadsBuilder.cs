@@ -150,7 +150,7 @@ namespace GameRealisticMap.Roads
             return kept;
         }
 
-        public async ValueTask<RoadsData?> Read(IPackageReader package, IContext context)
+        public async ValueTask<RoadsData> Read(IPackageReader package, IContext context)
         {
             return await package.ReadJson<RoadsData>("Roads.json", options);
         }

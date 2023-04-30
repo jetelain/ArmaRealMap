@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\bis-file-formats\BIS.P3D\BIS.P3D.csproj" />
+    <ProjectReference Include="..\bis-file-formats\BIS.PAA\BIS.PAA.csproj" />
+    <ProjectReference Include="..\bis-file-formats\BIS.PBO\BIS.PBO.csproj" />
+    <ProjectReference Include="..\bis-file-formats\BIS.WRP\BIS.WRP.csproj" />
+    <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
+  </ItemGroup>
+
+</Project>
