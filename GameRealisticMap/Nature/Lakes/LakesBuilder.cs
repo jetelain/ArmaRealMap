@@ -1,8 +1,8 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Railways;
+using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Reporting;
-using GameRealisticMap.Roads;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature.Lakes

@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
-using GameRealisticMap.Buildings;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
 using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Railways;
+using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Reporting;
-using GameRealisticMap.Roads;
 using GeoJSON.Text.Geometry;
 using MapToolkit;
 using MapToolkit.Contours;

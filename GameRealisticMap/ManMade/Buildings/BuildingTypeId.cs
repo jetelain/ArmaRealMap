@@ -1,4 +1,4 @@
-﻿namespace GameRealisticMap.Buildings
+﻿namespace GameRealisticMap.ManMade.Buildings
 {
     public enum BuildingTypeId
     {

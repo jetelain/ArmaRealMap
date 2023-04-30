@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace GameRealisticMap.Roads
+namespace GameRealisticMap.ManMade.Roads.Libraries
 {
     internal class RoadTypeInfosConverter : JsonConverter<IRoadTypeInfos>
     {

@@ -13,8 +13,8 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using GameRealisticMap.Roads;
 using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Roads;
 
 namespace ArmaRealMap.TerrainData.GroundDetailTextures
 {

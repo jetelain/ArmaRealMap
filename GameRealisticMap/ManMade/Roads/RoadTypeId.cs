@@ -1,4 +1,4 @@
-﻿namespace GameRealisticMap.Roads
+﻿namespace GameRealisticMap.ManMade.Roads
 {
     public enum RoadTypeId
     {

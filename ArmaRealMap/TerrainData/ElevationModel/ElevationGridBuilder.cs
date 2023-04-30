@@ -10,8 +10,8 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ElevationModel.Constrained;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Reporting;
-using GameRealisticMap.Roads;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
 

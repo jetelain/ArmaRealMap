@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using OsmSharp.Tags;
 
-namespace GameRealisticMap.Roads
+namespace GameRealisticMap.ManMade.Roads
 {
     internal static class RoadTypeIdHelper
     {

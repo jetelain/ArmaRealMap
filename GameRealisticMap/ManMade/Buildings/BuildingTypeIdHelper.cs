@@ -1,6 +1,6 @@
 ﻿using OsmSharp.Tags;
 
-namespace GameRealisticMap.Buildings
+namespace GameRealisticMap.ManMade.Buildings
 {
     internal static class BuildingTypeIdHelper
     {

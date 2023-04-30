@@ -2,11 +2,11 @@
 using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
-using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 
-namespace GameRealisticMap.Roads
+namespace GameRealisticMap.ManMade.Roads
 {
     public class RoadsBuilder : IDataBuilder<RoadsData>, IDataSerializer<RoadsData>
     {

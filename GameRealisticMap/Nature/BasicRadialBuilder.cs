@@ -1,15 +1,15 @@
-﻿using GameRealisticMap.Buildings;
-using GameRealisticMap.ElevationModel;
+﻿using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.ManMade.Railways;
+using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
 using GameRealisticMap.Reporting;
-using GameRealisticMap.Roads;
 
 namespace GameRealisticMap.Nature
 {

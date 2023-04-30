@@ -1,9 +1,9 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Roads.Libraries;
 
-namespace GameRealisticMap.Roads
+namespace GameRealisticMap.ManMade.Roads
 {
     public class Road : ITerrainEnvelope, IWay
     {

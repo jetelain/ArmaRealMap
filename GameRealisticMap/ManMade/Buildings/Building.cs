@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
 
-namespace GameRealisticMap.Buildings
+namespace GameRealisticMap.ManMade.Buildings
 {
     public class Building : ITerrainEnvelope
     {

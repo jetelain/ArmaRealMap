@@ -1,7 +1,6 @@
 ﻿using GameRealisticMap.Geometries;
-using NetTopologySuite.Geometries;
 
-namespace GameRealisticMap.Buildings
+namespace GameRealisticMap.ManMade.Buildings
 {
     internal interface IBuildingCategoryArea
     {

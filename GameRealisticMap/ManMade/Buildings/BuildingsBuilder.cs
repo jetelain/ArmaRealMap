@@ -1,10 +1,9 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
-using GameRealisticMap.Roads;
 
-namespace GameRealisticMap.Buildings
+namespace GameRealisticMap.ManMade.Buildings
 {
     internal class BuildingsBuilder : IDataBuilder<BuildingsData>
     {

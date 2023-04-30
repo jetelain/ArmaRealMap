@@ -1,5 +1,4 @@
-﻿using GameRealisticMap.Roads;
-using OsmSharp.Tags;
+﻿using OsmSharp.Tags;
 
 namespace GameRealisticMap.ManMade
 {

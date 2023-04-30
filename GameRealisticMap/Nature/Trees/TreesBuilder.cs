@@ -1,7 +1,7 @@
-﻿using GameRealisticMap.Buildings;
-using GameRealisticMap.Geometries;
+﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Reporting;
-using GameRealisticMap.Roads;
 using OsmSharp.Geo;
 
 namespace GameRealisticMap.Nature.Trees

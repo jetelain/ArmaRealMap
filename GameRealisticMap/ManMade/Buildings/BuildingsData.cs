@@ -2,7 +2,7 @@
 using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
-namespace GameRealisticMap.Buildings
+namespace GameRealisticMap.ManMade.Buildings
 {
     public class BuildingsData : IGeoJsonData
     {

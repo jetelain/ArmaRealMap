@@ -1,10 +1,10 @@
-﻿using GameRealisticMap.Buildings;
-using GameRealisticMap.ElevationModel;
+﻿using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Railways;
+using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Reporting;
-using GameRealisticMap.Roads;
 
 namespace GameRealisticMap.Nature
 {

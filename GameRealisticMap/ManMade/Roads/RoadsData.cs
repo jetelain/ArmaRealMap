@@ -2,7 +2,7 @@
 using GeoJSON.Text.Feature;
 using GeoJSON.Text.Geometry;
 
-namespace GameRealisticMap.Roads
+namespace GameRealisticMap.ManMade.Roads
 {
     public class RoadsData : IGeoJsonData
     {

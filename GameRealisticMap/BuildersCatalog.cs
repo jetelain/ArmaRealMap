@@ -1,10 +1,12 @@
-﻿using GameRealisticMap.Buildings;
-using GameRealisticMap.ElevationModel;
+﻿using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Railways;
+using GameRealisticMap.ManMade.Roads;
+using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.RockAreas;
@@ -13,7 +15,6 @@ using GameRealisticMap.Nature.Surfaces;
 using GameRealisticMap.Nature.Trees;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Reporting;
-using GameRealisticMap.Roads;
 using GameRealisticMap.Satellite;
 
 namespace GameRealisticMap

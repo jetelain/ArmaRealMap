@@ -1,7 +1,7 @@
 ﻿using GameRealisticMap.Geometries;
 using GeoAPI.Geometries;
 
-namespace GameRealisticMap.Buildings
+namespace GameRealisticMap.ManMade.Buildings
 {
     internal class BuildingCandidate
     {

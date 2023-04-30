@@ -1,5 +1,5 @@
-﻿using GameRealisticMap.Buildings;
-using GameRealisticMap.Geometries;
+﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade.Buildings;
 
 namespace GameRealisticMap.ManMade
 {
