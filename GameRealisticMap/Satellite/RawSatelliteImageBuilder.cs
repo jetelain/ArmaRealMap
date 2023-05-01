@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
 using GameRealisticMap.Reporting;
@@ -13,7 +12,7 @@ namespace GameRealisticMap.Satellite
     internal class RawSatelliteImageBuilder : IDataBuilder<RawSatelliteImageData>, IDataSerializer<RawSatelliteImageData>
     {
         private readonly IProgressSystem progress;
-        private readonly float imageryResolution = 1;
+        private readonly float imageryResolution = 1; // m per pixel
         // private const int maxTileSize = 8192; // ~200 Mo with 24bits/pixel
 
         public RawSatelliteImageBuilder(IProgressSystem progress)
@@ -23,7 +22,7 @@ namespace GameRealisticMap.Satellite
 
         public RawSatelliteImageData Build(IBuildContext context)
         {
-            var totalSize = (int)Math.Ceiling(context.Area.SizeInMeters * imageryResolution);
+            var totalSize = (int)Math.Ceiling(context.Area.SizeInMeters / imageryResolution);
 
 
             /*var tileSize = totalSize;

@@ -1,5 +1,4 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Osm;
 using GeoAPI.Geometries;
 
 namespace GameRealisticMap
