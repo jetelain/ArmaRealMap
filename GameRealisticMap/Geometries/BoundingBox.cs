@@ -1,14 +1,12 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Geometries
 {
     public class BoundingBox : IBoundingShape
     {
-        private readonly Lazy<Polygon> polygon;
         private readonly Lazy<TerrainPolygon> terrainPolygon;
 
         public BoundingBox(float cx, float cy, float cw, float ch, float ca, TerrainPoint[] points)
@@ -23,7 +21,6 @@ namespace GameRealisticMap.Geometries
             Height = ch;
             Angle = ca;
             Points = points;
-            polygon = new Lazy<Polygon>(() => new Polygon(new LinearRing(Points.Concat(Points.Take(1)).Select(p => new Coordinate(p.X, p.Y)).ToArray())));
             terrainPolygon = new Lazy<TerrainPolygon>(() => new TerrainPolygon(Points.Concat(Points.Take(1)).ToList(), TerrainPolygon.NoHoles));
         }
 
@@ -70,7 +67,7 @@ namespace GameRealisticMap.Geometries
         public Vector2 Size => new Vector2(Width, Height);
 
         [JsonIgnore]
-        public IPolygon Poly => polygon.Value;
+        public IPolygon Poly => terrainPolygon.Value.AsPolygon;
 
         [JsonIgnore]
         public TerrainPolygon Polygon => terrainPolygon.Value;

@@ -9,5 +9,6 @@ namespace GameRealisticMap.Geometries
         float Angle { get; }
 
         IPolygon Poly { get; }
+        TerrainPolygon Polygon { get; }
     }
 }

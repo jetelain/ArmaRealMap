@@ -1,24 +1,23 @@
 ﻿using System.Numerics;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace GameRealisticMap.Geometries
 {
     public class BoundingCircle : IBoundingShape
     {
-        private readonly Lazy<Polygon> polygon;
+        private readonly Lazy<TerrainPolygon> polygon;
 
         public BoundingCircle(TerrainPoint center, float radius, float angle)
         {
             Center = center;
             Radius = radius;
             Angle = angle;
-            polygon = new Lazy<Polygon>(GeneratePolygon);
+            polygon = new Lazy<TerrainPolygon>(GeneratePolygon);
         }
 
-        private Polygon GeneratePolygon()
+        private TerrainPolygon GeneratePolygon()
         {
-            return new Polygon(new LinearRing(GeometryHelper.SimpleCircle(Center.Vector, Radius).Select(p => new Coordinate(p.X, p.Y)).ToArray()));
+            return TerrainPolygon.FromCircle(Center, Radius);
         }
 
         public TerrainPoint Center { get; }
@@ -27,10 +26,12 @@ namespace GameRealisticMap.Geometries
 
         public float Angle { get; }
 
-        public IPolygon Poly => polygon.Value;
+        public IPolygon Poly => polygon.Value.AsPolygon;
 
         public TerrainPoint MinPoint => Center - new Vector2(Radius, Radius);
 
         public TerrainPoint MaxPoint => Center + new Vector2(Radius, Radius);
+
+        public TerrainPolygon Polygon => polygon.Value;
     }
 }
