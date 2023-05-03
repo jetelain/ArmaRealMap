@@ -3,7 +3,7 @@ using System.Text.Json;
 using BIS.Core.Streams;
 using BIS.P3D;
 using BIS.P3D.ODOL;
-using GameRealisticMap.Arma3.GameEngine;
+using GameRealisticMap.Arma3.IO;
 
 namespace GameRealisticMap.Arma3.TerrainBuilder
 {
@@ -12,7 +12,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
         private readonly Dictionary<string, ModelInfo> models = new Dictionary<string, ModelInfo>(StringComparer.OrdinalIgnoreCase);
         private readonly IGameFileSystem fileSystem;
 
-        public IEnumerable<ModelInfo> Models { get { return models.Values; } }
+        public IEnumerable<ModelInfo> Models => models.Values;
 
         public ModelInfoLibrary(IGameFileSystem fileSystem)
         {
@@ -59,18 +59,24 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 
         private ODOL? ReadODOL(string path)
         { 
-            using (var stream = fileSystem.TryOpenFile(path))
+            using (var stream = fileSystem.OpenFileIfExists(path))
             {
-                if (stream != null && P3D.IsODOL(stream))
+                if (stream != null)
                 {
-                    return StreamHelper.Read<ODOL>(stream);
+                    if (P3D.IsODOL(stream))
+                    {
+                        return StreamHelper.Read<ODOL>(stream);
+                    }
+
+                    // Mikero Tools binarize into project drive temp, binarized file might be there
+                    using (var streamTemp = fileSystem.OpenFileIfExists(Path.Combine("temp", path)))
+                    {
+                        if (streamTemp != null && P3D.IsODOL(streamTemp))
+                        {
+                            return StreamHelper.Read<ODOL>(streamTemp);
+                        }
+                    }
                 }
-            }
-            
-            var temp = Path.Combine("P:\\temp", path);
-            if (File.Exists(temp) && P3D.IsODOL(temp))
-            {
-                return StreamHelper.Read<ODOL>(temp);
             }
             return null;
         }
