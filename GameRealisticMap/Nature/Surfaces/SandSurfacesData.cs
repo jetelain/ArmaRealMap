@@ -4,7 +4,7 @@ using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Nature.Surfaces
 {
-    internal class SandSurfacesData : IBasicTerrainData
+    public class SandSurfacesData : IBasicTerrainData
     {
         [JsonConstructor]
         public SandSurfacesData(List<TerrainPolygon> polygons)

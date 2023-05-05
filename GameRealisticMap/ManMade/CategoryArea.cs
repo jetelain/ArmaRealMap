@@ -3,7 +3,7 @@ using GameRealisticMap.ManMade.Buildings;
 
 namespace GameRealisticMap.ManMade
 {
-    internal class CategoryArea : IBuildingCategoryArea
+    public class CategoryArea : IBuildingCategoryArea
     {
         public CategoryArea(BuildingTypeId buildingType, List<TerrainPolygon> polyList)
         {

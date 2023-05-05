@@ -93,7 +93,7 @@ namespace GameRealisticMap.Reporting
             }
             sw.Stop();
             WritePercent(100d);
-            if (sw.ElapsedMilliseconds < 1000)
+            if (sw.ElapsedMilliseconds < 5000)
             {
                 Console.Write($"Done in {sw.ElapsedMilliseconds} msec");
             }

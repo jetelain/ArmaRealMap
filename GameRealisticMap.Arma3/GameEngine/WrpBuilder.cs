@@ -10,7 +10,7 @@ namespace GameRealisticMap.Arma3.GameEngine
     {
         private readonly IProgressSystem progress;
 
-        internal const int LandRange = 512;
+        internal const int LandRange = 512; // Make a parameter for this ?
 
         public WrpBuilder(IProgressSystem progress)
         {

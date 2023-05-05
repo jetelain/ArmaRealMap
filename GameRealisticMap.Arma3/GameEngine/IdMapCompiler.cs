@@ -86,7 +86,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                     var color = source[x, y];
                     if (!dict.TryGetValue(color, out var info))
                     {
-                        dict[color] = info = new TextureInfo(materialLibrary.GetMaterial(color));
+                        dict[color] = info = new TextureInfo(materialLibrary.GetMaterialById(color));
                     }
                     info.Count++;
                 }

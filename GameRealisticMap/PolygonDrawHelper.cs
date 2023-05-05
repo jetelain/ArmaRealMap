@@ -18,6 +18,11 @@ namespace GameRealisticMap
             FillPolygonWithHoles(d, toPixels(polygon.Shell), polygon.Holes.Select(toPixels).ToList(), brush, new DrawingOptions());
         }
 
+        public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, DrawingOptions drawingOptions, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels)
+        {
+            FillPolygonWithHoles(d, toPixels(polygon.Shell), polygon.Holes.Select(toPixels).ToList(), brush, drawingOptions);
+        }
+
         private static void FillPolygonWithHoles(IImageProcessingContext d, IEnumerable<PointF> shell, List<IEnumerable<PointF>> holes, IBrush brush, DrawingOptions drawingOptions)
         {
             var pb = new PathBuilder();

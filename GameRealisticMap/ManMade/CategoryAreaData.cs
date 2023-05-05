@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.ManMade
 {
-    internal class CategoryAreaData
+    public class CategoryAreaData
     {
         public CategoryAreaData(List<CategoryArea> areas)
         {
