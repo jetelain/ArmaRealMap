@@ -1,5 +1,6 @@
 ﻿using BIS.Core.Streams;
 using BIS.WRP;
+using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Reporting;
 using SixLabors.ImageSharp;
@@ -9,25 +10,37 @@ namespace GameRealisticMap.Arma3.GameEngine
     public class WrpBuilder
     {
         private readonly IProgressSystem progress;
+        private readonly IGameFileSystemWriter fileSystemWriter;
 
         internal const int LandRange = 512; // Make a parameter for this ?
 
-        public WrpBuilder(IProgressSystem progress)
+        public WrpBuilder(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter)
         {
             this.progress = progress;
+            this.fileSystemWriter = fileSystemWriter;
         }
 
-        public void Write(IArma3MapConfig config, ElevationGrid elevationGrid, IEnumerable<EditableWrpObject> objects, string targetFile)
+        public void Write(IArma3MapConfig config, ElevationGrid elevationGrid, IEnumerable<EditableWrpObject> objects)
         {
-            var terrainTiler = new ImageryTiler(config.TileSize, config.Resolution, config.GetImagerySize());
+            Write(config, elevationGrid, new ImageryTiler(config.TileSize, config.Resolution, config.GetImagerySize()), objects);
+        }
 
+        public void Write(IArma3MapConfig config, ElevationGrid elevationGrid, ImageryTiler terrainTiler, IEnumerable<EditableWrpObject> objects)
+        {
             var wrp = CreateWorldWithoutObjects(elevationGrid, terrainTiler, config.PboPrefix);
 
-            wrp.Objects.AddRange(objects);
+            foreach(var obj in objects)
+            {
+                obj.ObjectID = wrp.Objects.Count + 1;
+                wrp.Objects.Add(obj);
+            }
 
             wrp.Objects.Add(EditableWrpObject.Dummy);
 
-            StreamHelper.Write(wrp, targetFile);
+            using (var stream = fileSystemWriter.Create($"{config.PboPrefix}\\{config.WorldName}.wrp"))
+            {
+                StreamHelper.Write(wrp, stream);
+            }
         }
 
         public EditableWrp CreateWorldWithoutObjects(ElevationGrid elevationGrid, ImageryTiler terrainTiler, string pboPrefix)

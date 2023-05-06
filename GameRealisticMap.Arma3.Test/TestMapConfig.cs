@@ -17,5 +17,7 @@ namespace GameRealisticMap.Arma3.Test
         public double TextureSizeInMeters => 4;
 
         public float SizeInMeters => GridSize * GridCellSize;
+
+        public float FakeSatBlend => 0.5f;
     }
 }

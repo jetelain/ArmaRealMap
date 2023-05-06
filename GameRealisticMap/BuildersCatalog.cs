@@ -23,7 +23,7 @@ namespace GameRealisticMap
     {
         private readonly Dictionary<Type, IBuilderAdapter> builders = new Dictionary<Type, IBuilderAdapter>();
 
-        public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary library)
+        public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library)
         {
             Register(new RawSatelliteImageBuilder(progress));
             Register(new RawElevationBuilder(progress));

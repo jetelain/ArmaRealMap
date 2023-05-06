@@ -1,55 +1,90 @@
-﻿using GameRealisticMap.Reporting;
+﻿using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Reporting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
-    public class IdMapCompiler
+    public class ImageryCompiler
     {
         private readonly ITerrainMaterialLibrary materialLibrary;
         private readonly IProgressSystem progress;
+        private readonly IGameFileSystemWriter gameFileSystemWriter;
 
-        class TextureInfo
+        private class TextureStats
         {
-            public TextureInfo(ITerrainMaterial terrainMaterial)
+            public TextureStats(ITerrainMaterial terrainMaterial)
             {
                 Material = terrainMaterial;
             }
+
             public ITerrainMaterial Material { get; }
-            public int Count { get; internal set; }
-            public Rgba32 Target { get; internal set; }
+
+            public int Count { get; set; }
+
+            public Rgba32 Target { get; set; }
         }
 
-        private static Rgba32[] RuleColors = new[] {
+        private static Rgba32[] RuleColors = new[] 
+        {
             new Rgba32(0, 0, 0, 255), // Stage3
-            new Rgba32(255, 0, 0, 255),  // Stage5
-            new Rgba32(0, 255, 0, 255),  // Stage7
+            new Rgba32(255, 0, 0, 255), // Stage5
+            new Rgba32(0, 255, 0, 255), // Stage7
             new Rgba32(0, 0, 255, 255), // Stage9
-            new Rgba32(0, 0, 255, 128), // Stage11 (need additional processing)
-            new Rgba32(0, 0, 255, 0) // Stage13 (need additional processing)
+            new Rgba32(0, 0, 255, 128), // Stage11
+            new Rgba32(0, 0, 255, 0) // Stage13
         };
 
-        public IdMapCompiler(ITerrainMaterialLibrary materialLibrary, IProgressSystem progress)
+        public ImageryCompiler(ITerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystemWriter gameFileSystemWriter)
         {
             this.materialLibrary = materialLibrary;
             this.progress = progress;
+            this.gameFileSystemWriter = gameFileSystemWriter;
         }
 
-        public void Compile(IArma3MapConfig config, Image idmap, string targetPath)
+        public ImageryTiler Compile(IArma3MapConfig config, IImagerySource source)
         {
-            Directory.CreateDirectory(targetPath);
+            gameFileSystemWriter.CreateDirectory($"{config.PboPrefix}\\data\\layers");
 
             var tiler = new ImageryTiler(config.TileSize, config.Resolution, config.GetImagerySize());
 
-            GenerateSourceFiles(config, idmap, targetPath, tiler);
+            using (var idMap = source.CreateIdMap())
+            {
+                GenerateIdMapTilesAndRvMat(config, idMap, tiler);
+            }
 
-            //Arma3ToolsHelper.ImageToPAA(tiler.Segments.GetLength(0), x => Path.Combine(targetPath, $"M_{x:000}_*_lca.png"));
+            using (var satMap = source.CreateSatMap())
+            {
+                GenerateSatMapTiles(config, satMap, tiler);
+            }
+
+            return tiler;
         }
 
-        private void GenerateSourceFiles(IArma3MapConfig config, Image idmap, string targetPath, ImageryTiler tiler)
+        private void GenerateSatMapTiles(IArma3MapConfig config, Image satMap, ImageryTiler tiler)
         {
-            using var report = progress.CreateStep("Tiling", tiler.Segments.Length);
+            using var report = progress.CreateStep("SatMapTiling", tiler.Segments.Length);
+            Parallel.For(0, tiler.Segments.GetLength(0), x =>
+            {
+                using (var tile = new Image<Rgb24>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgb24>()))
+                {
+                    for (var y = 0; y < tiler.Segments.GetLength(1); ++y)
+                    {
+                        var seg = tiler.Segments[x, y];
+                        var pos = -seg.ImageTopLeft;
+                        tile.Mutate(c => c.DrawImage(satMap, pos, 1.0f));
+                        ImageryTileHelper.FillEdges(tiler.FullImageSize, x, tiler.Segments.GetLength(0), tile, y, pos);
+                        gameFileSystemWriter.WritePngImage($"{config.PboPrefix}\\data\\layers\\S_{x:000}_{y:000}_lco.png", tile);
+                    }
+                }
+            });
+        }
+
+        private void GenerateIdMapTilesAndRvMat(IArma3MapConfig config, Image idmap, ImageryTiler tiler)
+        {
+            using var report = progress.CreateStep("IdMapTiling", tiler.Segments.Length);
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
             {
                 using (var sourceTile = new Image<Rgb24>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgb24>()))
@@ -59,16 +94,13 @@ namespace GameRealisticMap.Arma3.GameEngine
                         for (var y = 0; y < tiler.Segments.GetLength(1); ++y)
                         {
                             var seg = tiler.Segments[x, y];
-
                             var pos = -seg.ImageTopLeft;
                             sourceTile.Mutate(c => c.DrawImage(idmap, pos, 1.0f));
                             ImageryTileHelper.FillEdges(tiler.FullImageSize, x, tiler.Segments.GetLength(0), sourceTile, y, pos);
-
                             var tex = ReduceColors(sourceTile, targetTile);
                             var rvmat = MakeRvMat(seg, config, tex.Select(t => t.Material));
-
-                            targetTile.Save(Path.Combine(targetPath, $"M_{x:000}_{y:000}_lca.png"));
-                            File.WriteAllText(Path.Combine(targetPath, $"P_{x:000}-{y:000}.rvmat"), rvmat);
+                            gameFileSystemWriter.WritePngImage($"{config.PboPrefix}\\data\\layers\\M_{x:000}_{y:000}_lca.png", targetTile);
+                            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\data\\layers\\P_{x:000}-{y:000}.rvmat", rvmat);
                             report.ReportOneDone();
                         }
                     }
@@ -76,22 +108,10 @@ namespace GameRealisticMap.Arma3.GameEngine
             });
         }
 
-        private List<TextureInfo> ReduceColors(Image<Rgb24> source, Image<Rgba32> target)
+        private List<TextureStats> ReduceColors(Image<Rgb24> source, Image<Rgba32> target)
         {
-            var dict = new Dictionary<Rgb24, TextureInfo>();
-            for (var x = 0; x < source.Width; x++)
-            {
-                for (var y = 0; y < source.Height; y++)
-                {
-                    var color = source[x, y];
-                    if (!dict.TryGetValue(color, out var info))
-                    {
-                        dict[color] = info = new TextureInfo(materialLibrary.GetMaterialById(color));
-                    }
-                    info.Count++;
-                }
-            }
-            var colors = dict.Values.OrderByDescending(c => c.Count).ToList();
+            var dict = GetStats(source);
+            var colors = dict.Values.Distinct().OrderByDescending(c => c.Count).ToList();
             foreach (var pair in colors.Zip(RuleColors))
             {
                 pair.First.Target = pair.Second;
@@ -123,6 +143,41 @@ namespace GameRealisticMap.Arma3.GameEngine
                 }
             }
             return colors;
+        }
+
+        private Dictionary<Rgb24, TextureStats> GetStats(Image<Rgb24> source)
+        {
+            var dict = new Dictionary<Rgb24, TextureStats>();
+            for (var x = 0; x < source.Width; x++)
+            {
+                for (var y = 0; y < source.Height; y++)
+                {
+                    GetMaterial(dict, source[x, y]).Count++;
+                }
+            }
+            return dict;
+        }
+
+        private TextureStats GetMaterial(Dictionary<Rgb24, TextureStats> dict, Rgb24 color)
+        {
+            if (!dict.TryGetValue(color, out var info))
+            {
+                var material = materialLibrary.GetMaterialById(color);
+                if (material.Id != color)
+                {
+                    // Approximate match : should reuse the stats of the original color
+                    if (!dict.TryGetValue(color, out var canonicalInfo))
+                    {
+                        dict[material.Id] = canonicalInfo = new TextureStats(material);
+                    }
+                    dict[color] = info = canonicalInfo;
+                }
+                else
+                {
+                    dict[color] = info = new TextureStats(material);
+                }
+            }
+            return info;
         }
 
         private static void ForceAlpha(byte alpha, Image<Rgba32> output, int xc, int yc, Rgba32 exceptFor)

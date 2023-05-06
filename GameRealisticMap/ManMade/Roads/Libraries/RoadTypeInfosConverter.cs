@@ -5,9 +5,9 @@ namespace GameRealisticMap.ManMade.Roads.Libraries
 {
     internal class RoadTypeInfosConverter : JsonConverter<IRoadTypeInfos>
     {
-        private readonly IRoadTypeLibrary library;
+        private readonly IRoadTypeLibrary<IRoadTypeInfos> library;
 
-        public RoadTypeInfosConverter(IRoadTypeLibrary library)
+        public RoadTypeInfosConverter(IRoadTypeLibrary<IRoadTypeInfos> library)
         {
             this.library = library;
         }

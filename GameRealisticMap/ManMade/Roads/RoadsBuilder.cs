@@ -11,10 +11,10 @@ namespace GameRealisticMap.ManMade.Roads
     public class RoadsBuilder : IDataBuilder<RoadsData>, IDataSerializer<RoadsData>
     {
         private readonly IProgressSystem progress;
-        private readonly IRoadTypeLibrary library;
+        private readonly IRoadTypeLibrary<IRoadTypeInfos> library;
         private readonly JsonSerializerOptions options;
 
-        public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary library)
+        public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library)
         {
             this.progress = progress;
             this.library = library;

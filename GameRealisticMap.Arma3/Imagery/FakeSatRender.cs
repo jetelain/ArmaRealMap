@@ -1,13 +1,14 @@
 ﻿using BIS.PAA;
-using GameRealisticMap.Arma3.GameEngine;
+using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace GameRealisticMap.Arma3
+namespace GameRealisticMap.Arma3.Imagery
 {
     internal class FakeSatRender : IdMapRenderBase<Rgba32>
     {
@@ -18,6 +19,13 @@ namespace GameRealisticMap.Arma3
             : base(materialLibrary, progress)
         {
             this.gameFileSystem = gameFileSystem;
+        }
+
+        public override Image<Rgba32> Render(IArma3MapConfig config, IContext context)
+        {
+            var image = base.Render(config, context);
+            image.Mutate(d => d.GaussianBlur(10f));
+            return image;
         }
 
         protected override IBrush GetBrush(ITerrainMaterial material)
@@ -56,6 +64,11 @@ namespace GameRealisticMap.Arma3
             var image = Image.Load<Rgba32>(pngStream);
             image.Mutate(i => i.Resize(8, 8));
             return image;
+        }
+
+        protected override IEnumerable<PointF> TerrainToPixel(IArma3MapConfig config, IEnumerable<TerrainPoint> points)
+        {
+            return config.TerrainToPixel(points);
         }
     }
 }

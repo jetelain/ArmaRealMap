@@ -1,7 +1,7 @@
 ﻿namespace GameRealisticMap.ManMade.Roads.Libraries
 {
-    public interface IRoadTypeLibrary
+    public interface IRoadTypeLibrary<out T> where T : IRoadTypeInfos
     {
-        IRoadTypeInfos GetInfo(RoadTypeId id);
+        T GetInfo(RoadTypeId id);
     }
 }

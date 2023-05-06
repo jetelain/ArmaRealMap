@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Arma3.GameEngine;
+﻿using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
@@ -13,7 +14,7 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace GameRealisticMap.Arma3
+namespace GameRealisticMap.Arma3.Imagery
 {
     internal abstract class IdMapRenderBase<TPixel>
         where TPixel : unmanaged, IPixel<TPixel>
@@ -26,10 +27,10 @@ namespace GameRealisticMap.Arma3
         {
             this.materialLibrary = materialLibrary;
             this.progress = progress;
-            this.drawingOptions = new DrawingOptions();
+            drawingOptions = new DrawingOptions();
         }
 
-        public Image<TPixel> Generate(IArma3MapConfig config, IContext context)
+        public virtual Image<TPixel> Render(IArma3MapConfig config, IContext context)
         {
             var size = config.GetImagerySize();
 
@@ -39,7 +40,7 @@ namespace GameRealisticMap.Arma3
 
             var categories = context.GetData<CategoryAreaData>();
 
-            DrawPolygons(config, image, materialLibrary.DefaultUrban, 
+            DrawPolygons(config, image, materialLibrary.DefaultUrban,
                 categories.Areas.Where(c => c.BuildingType == BuildingTypeId.Residential).SelectMany(c => c.PolyList));
 
             DrawPolygons(config, image, materialLibrary.DefaultIndustrial,
@@ -73,16 +74,13 @@ namespace GameRealisticMap.Arma3
         {
             image.Mutate(d =>
             {
-                foreach(var polygon in polygons)
+                foreach (var polygon in polygons)
                 {
                     PolygonDrawHelper.DrawPolygon(d, polygon, brush, points => TerrainToPixel(config, points));
                 }
             });
         }
 
-        protected virtual IEnumerable<PointF> TerrainToPixel(IArma3MapConfig config, IEnumerable<TerrainPoint> points)
-        {
-            return points.Select(point => new PointF((float)(point.X / config.Resolution), (float)(point.Y / config.Resolution)));
-        }
+        protected abstract IEnumerable<PointF> TerrainToPixel(IArma3MapConfig config, IEnumerable<TerrainPoint> points);
     }
 }

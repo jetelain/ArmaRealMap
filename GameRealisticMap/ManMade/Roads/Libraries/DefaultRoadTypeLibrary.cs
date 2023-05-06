@@ -1,6 +1,6 @@
 ﻿namespace GameRealisticMap.ManMade.Roads.Libraries
 {
-    public class DefaultRoadTypeLibrary : IRoadTypeLibrary
+    public class DefaultRoadTypeLibrary : IRoadTypeLibrary<IRoadTypeInfos>
     {
         private readonly List<DefaultRoadTypeInfos> _roads = new List<DefaultRoadTypeInfos>()
         {

@@ -1,4 +1,5 @@
-﻿using BIS.PBO;
+﻿using System.Runtime.Versioning;
+using BIS.PBO;
 
 namespace GameRealisticMap.Arma3.IO
 {
@@ -33,6 +34,17 @@ namespace GameRealisticMap.Arma3.IO
             yield return Path.Combine(basePath, "Mark");
             yield return Path.Combine(basePath, "Orange");
             yield return Path.Combine(basePath, "Tank");
+        }
+
+        [SupportedOSPlatform("windows")]
+        public static IEnumerable<string> GetArma3Paths()
+        {
+            var basePath = Arma3ToolsHelper.GetArma3Path();
+            if (!string.IsNullOrEmpty(basePath))
+            {
+                return GetArma3Paths(basePath);
+            }
+            return Enumerable.Empty<string>();
         }
 
         public void BuildIndex()

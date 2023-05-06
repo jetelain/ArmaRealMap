@@ -128,7 +128,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             return FormattableString.Invariant(@$"""{model.Name}"";{point.X + XShift:0.000};{point.Y:0.000};{yaw:0.000};{pitch:0.000};{roll:0.000};{scale:0.000};{elevation:0.000};");
         }
 
-        public EditableWrpObject ToWrpObject(int id, ElevationGrid grid)
+        public EditableWrpObject ToWrpObject(ElevationGrid grid)
         {
             var matrix = Matrix4x4.CreateRotationY(ToRadians(yaw)) * Matrix4x4.CreateRotationX(ToRadians(-pitch)) * Matrix4x4.CreateRotationZ(ToRadians(-roll));
             if (scale != 1f)
@@ -141,7 +141,6 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             matrix.M44 = 1f;
             return new EditableWrpObject()
             {
-                ObjectID = id,
                 Model = model.Path,
                 Transform = new BIS.Core.Math.Matrix4P(matrix)
             };

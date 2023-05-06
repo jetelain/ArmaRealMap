@@ -1,6 +1,6 @@
 ﻿using SixLabors.ImageSharp.PixelFormats;
 
-namespace GameRealisticMap.Arma3.GameEngine
+namespace GameRealisticMap.Arma3.Assets
 {
     public interface ITerrainMaterial
     {

@@ -1,4 +1,4 @@
-﻿namespace GameRealisticMap.Arma3.GameEngine
+﻿namespace GameRealisticMap.Arma3
 {
     public interface IArma3MapConfig
     {
@@ -11,5 +11,9 @@
         string PboPrefix { get; }
 
         double TextureSizeInMeters { get; } // Typical value: 4m
+
+        float FakeSatBlend { get; }
+
+        string WorldName { get; }
     }
 }

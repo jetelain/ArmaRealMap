@@ -69,7 +69,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                     }
 
                     // Mikero Tools binarize into project drive temp, binarized file might be there
-                    using (var streamTemp = fileSystem.OpenFileIfExists(Path.Combine("temp", path)))
+                    using (var streamTemp = fileSystem.OpenFileIfExists("temp\\" + path))
                     {
                         if (streamTemp != null && P3D.IsODOL(streamTemp))
                         {
