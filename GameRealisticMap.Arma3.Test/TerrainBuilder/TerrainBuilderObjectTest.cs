@@ -22,7 +22,7 @@ namespace GameRealisticMap.Arma3.Test.TerrainBuilder
             for (var i = 0; i < srcObjects.Count; ++i)
             {
                 var expected = wrpObjects[i];
-                var actual = srcObjects[i].ToWrpObject(i, grid);
+                var actual = srcObjects[i].ToWrpObject(grid);
                 Assert.Equal(expected.Model, actual.Model, true);
                 Assert.Equal(Round(expected.Transform.Matrix), Round(actual.Transform.Matrix));
             }
@@ -39,7 +39,7 @@ namespace GameRealisticMap.Arma3.Test.TerrainBuilder
             for (var i = 0; i < srcObjects.Count; ++i)
             {
                 var expected = wrpObjects[i];
-                var actual = srcObjects[i].ToWrpObject(i, grid);
+                var actual = srcObjects[i].ToWrpObject(grid);
                 Assert.Equal(expected.Model, actual.Model, true);
                 Assert.Equal(Round(expected.Transform.Matrix), Round(actual.Transform.Matrix));
             }
@@ -72,7 +72,7 @@ namespace GameRealisticMap.Arma3.Test.TerrainBuilder
                     Assert.Equal(expected.Roll, actual.Roll, 4);
                 }
                 
-                var tranformBack = actual.ToWrpObject(i, grid);
+                var tranformBack = actual.ToWrpObject(grid);
                 Assert.Equal(Round(wrpObjects[i].Transform.Matrix), Round(tranformBack.Transform.Matrix));
             }
         }
@@ -104,7 +104,7 @@ namespace GameRealisticMap.Arma3.Test.TerrainBuilder
                     Assert.Equal(expected.Roll, actual.Roll, 4);
                 }
 
-                var tranformBack = actual.ToWrpObject(i, grid);
+                var tranformBack = actual.ToWrpObject(grid);
                 Assert.Equal(Round(wrpObjects[i].Transform.Matrix), Round(tranformBack.Transform.Matrix));
             }
         }

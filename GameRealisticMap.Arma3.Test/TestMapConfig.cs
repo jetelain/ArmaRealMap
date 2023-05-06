@@ -1,6 +1,4 @@
-﻿using GameRealisticMap.Arma3.GameEngine;
-
-namespace GameRealisticMap.Arma3.Test
+﻿namespace GameRealisticMap.Arma3.Test
 {
     internal class TestMapConfig : IArma3MapConfig
     {
@@ -19,5 +17,7 @@ namespace GameRealisticMap.Arma3.Test
         public float SizeInMeters => GridSize * GridCellSize;
 
         public float FakeSatBlend => 0.5f;
+
+        public string WorldName => "arm_testworld";
     }
 }

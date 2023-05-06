@@ -342,7 +342,6 @@ healthchecksdb
 
 *.exe
 *.bikey
-*.wrp
 *.pbo
 *.bin
 /PDrive/z/arm/addons/*/data/gdt/*.paa
@@ -376,3 +375,6 @@ healthchecksdb
 /ArmaRealMap/Properties/launchSettings.json
 /ArmaRealMap/amf_mali.json
 *.db-*
+/PDrive/z/arm/addons/sahel
+/PDrive/z/arm/addons/common_v2
+/PDrive/z/arm/addons/centraleurope
