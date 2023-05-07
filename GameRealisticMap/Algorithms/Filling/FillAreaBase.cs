@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using GameRealisticMap.Geometries;
 using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Algorithms.Filling
@@ -85,18 +85,13 @@ namespace GameRealisticMap.Algorithms.Filling
                 {
                     var point = fillarea.Area.GetRandomPointInside();
                     var obj = fillarea.SelectObjectToInsert(point);
-                    var candidate = Create(obj, point, 0.0f);
+                    var candidate = Create(obj, point, 0, 0, GetScale(fillarea.Area.Random, obj));
                     if (WillFit(candidate, fillarea.Area))
                     {
                         var potentialConflits = objects.Search(candidate.MinPoint, candidate.MaxPoint);
                         if (HasRoom(candidate, potentialConflits))
                         {
-                            float? elevation = null;
-                            if (obj.MaxZ != null && obj.MinZ != null)
-                            {
-                                elevation = (float)(obj.MinZ + ((obj.MaxZ - obj.MinZ) * fillarea.Area.Random.NextDouble()));
-                            }
-                            var toinsert = Create(obj, point, (float)(fillarea.Area.Random.NextDouble() * 360), elevation);
+                            var toinsert = Create(obj, point, (float)(fillarea.Area.Random.NextDouble() * 360), GetElevation(fillarea.Area.Random, obj), candidate.Scale);
                             objects.Insert(toinsert);
                             wasChanged = true;
                             remainItems--;
@@ -121,9 +116,27 @@ namespace GameRealisticMap.Algorithms.Filling
             }
         }
 
-        private static RadiusPlacedModel<TModelInfo> Create(IModelDefinition<TModelInfo> obj, TerrainPoint point, float angle, float? elevation = null)
+        private float GetScale(Random random, IClusterItemDefinition<TModelInfo> obj)
         {
-            return new RadiusPlacedModel<TModelInfo>(new BoundingCircle(point, obj.Radius, angle), elevation, obj.Model);
+            if (obj.MinScale != null && obj.MaxScale != null)
+            {
+                return (float)(obj.MinScale + ((obj.MaxScale - obj.MinScale) * random.NextDouble()));
+            }
+            return 1;
+        }
+
+        private static float GetElevation(Random random, IClusterItemDefinition<TModelInfo> obj)
+        {
+            if (obj.MaxZ != null && obj.MinZ != null)
+            {
+                return (float)(obj.MinZ + ((obj.MaxZ - obj.MinZ) * random.NextDouble()));
+            }
+            return 0;
+        }
+
+        private static RadiusPlacedModel<TModelInfo> Create(IClusterItemDefinition<TModelInfo> obj, TerrainPoint point, float angle, float elevation = 0, float scale = 1)
+        {
+            return new RadiusPlacedModel<TModelInfo>(new BoundingCircle(point, obj.Radius * scale, angle), elevation, scale, obj.Model);
         }
 
         private static bool WillFit(RadiusPlacedModel<TModelInfo> candidate, AreaDefinition fillarea)

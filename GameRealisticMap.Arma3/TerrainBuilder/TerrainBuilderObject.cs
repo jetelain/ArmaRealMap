@@ -81,9 +81,9 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 scale = 1;
             }
             point = new TerrainPoint(wrpMatrix.M41, wrpMatrix.M43);
-            yaw = FromRadians(-Math.Atan2(rotateOnly.M13, rotateOnly.M33));
-            pitch = FromRadians(Math.Asin(-rotateOnly.M23));
-            roll = FromRadians(Math.Atan2(rotateOnly.M21, rotateOnly.M22));
+            yaw = MathHelper.FromRadians(-Math.Atan2(rotateOnly.M13, rotateOnly.M33));
+            pitch = MathHelper.FromRadians(Math.Asin(-rotateOnly.M23));
+            roll = MathHelper.FromRadians(Math.Atan2(rotateOnly.M21, rotateOnly.M22));
             elevation = wrpMatrix.M42 - GetAbsoluteElevation(model, GetRotateAndScaleOnly(wrpMatrix));
         }
 
@@ -128,9 +128,9 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             return FormattableString.Invariant(@$"""{model.Name}"";{point.X + XShift:0.000};{point.Y:0.000};{yaw:0.000};{pitch:0.000};{roll:0.000};{scale:0.000};{elevation:0.000};");
         }
 
-        public EditableWrpObject ToWrpObject(ElevationGrid grid)
+        public EditableWrpObject ToWrpObject(IElevationGrid grid)
         {
-            var matrix = Matrix4x4.CreateRotationY(ToRadians(yaw)) * Matrix4x4.CreateRotationX(ToRadians(-pitch)) * Matrix4x4.CreateRotationZ(ToRadians(-roll));
+            var matrix = Matrix4x4.CreateRotationY(MathHelper.ToRadians(yaw)) * Matrix4x4.CreateRotationX(MathHelper.ToRadians(-pitch)) * Matrix4x4.CreateRotationZ(MathHelper.ToRadians(-roll));
             if (scale != 1f)
             {
                 matrix = matrix * Matrix4x4.CreateScale(scale);
@@ -149,7 +149,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
         public static TerrainBuilderObject RelativePitchThenYaw(ModelInfo model, TerrainPoint terrainPoint, float grmYaw, float grmPicth = 0, float elevation = 0, float scale = 1)
         {
             // Pitch/Yaw according to our conventions / Not TerrainBuilder ones
-            var matrix = Matrix4x4.CreateRotationX(ToRadians(grmPicth)) * Matrix4x4.CreateRotationY(ToRadians(-grmYaw));
+            var matrix = Matrix4x4.CreateRotationX(MathHelper.ToRadians(grmPicth)) * Matrix4x4.CreateRotationY(MathHelper.ToRadians(-grmYaw));
             if (scale != 1f)
             {
                 matrix = matrix * Matrix4x4.CreateScale(scale);
@@ -161,7 +161,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             return new TerrainBuilderObject(model, matrix, ElevationMode.Relative);
         }
 
-        private float GetZ(ElevationGrid grid, Matrix4x4 matrix)
+        private float GetZ(IElevationGrid grid, Matrix4x4 matrix)
         {
             if (elevationMode == ElevationMode.Relative)
             {
@@ -170,7 +170,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             return GetAbsoluteElevation(model, matrix) + elevation;
         }
 
-        internal static float GetRelativeElevation(ModelInfo model, ElevationGrid grid, TerrainPoint point, Matrix4x4 matrix)
+        internal static float GetRelativeElevation(ModelInfo model, IElevationGrid grid, TerrainPoint point, Matrix4x4 matrix)
         {
             var pointToCenter = Vector3.Transform(model.BoundingCenter, matrix);
             return grid.ElevationAt(new TerrainPoint(point.X - pointToCenter.X, point.Y - pointToCenter.Z)) + pointToCenter.Y;
@@ -180,24 +180,6 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
         {
             var pointToCenter = Vector3.Transform(model.BoundingCenter, matrix);
             return pointToCenter.Y;
-        }
-
-        private static float ToRadians(float angle)
-        {
-            if (angle == 0)
-            {
-                return 0;
-            }
-            return angle * MathF.PI / 180f;
-        }
-
-        private static float FromRadians(double angle)
-        {
-            if (angle == 0)
-            {
-                return 0;
-            }
-            return (float)(angle * 180.0 / Math.PI);
         }
 
         public override string ToString()

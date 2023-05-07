@@ -2,6 +2,6 @@
 {
     public interface IClusterDefinition<out TModelInfo> : IWithProbability
     {
-        IReadOnlyList<IModelDefinition<TModelInfo>> Models { get; }
+        IReadOnlyList<IClusterItemDefinition<TModelInfo>> Models { get; }
     }
 }

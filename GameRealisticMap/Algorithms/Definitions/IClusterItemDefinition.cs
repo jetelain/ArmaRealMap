@@ -1,6 +1,6 @@
 ﻿namespace GameRealisticMap.Algorithms.Definitions
 {
-    public interface IModelDefinition<out TModelInfo> : IWithProbability
+    public interface IClusterItemDefinition<out TModelInfo> : IWithProbability
     {
         float Radius { get; }
 
@@ -9,5 +9,9 @@
         float? MaxZ { get; }
 
         float? MinZ { get; }
+
+        float? MaxScale { get; }
+
+        float? MinScale { get; }
     }
 }

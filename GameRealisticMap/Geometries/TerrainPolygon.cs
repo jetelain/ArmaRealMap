@@ -13,6 +13,12 @@ namespace GameRealisticMap.Geometries
 
         private readonly Lazy<Polygon> asPolygon;
 
+        public TerrainPolygon(List<TerrainPoint> shell)
+            : this(shell, NoHoles)
+        {
+
+        }
+
         [JsonConstructor]
         public TerrainPolygon(List<TerrainPoint> shell, List<List<TerrainPoint>> holes)
         {
@@ -295,10 +301,11 @@ namespace GameRealisticMap.Geometries
 
         public static List<TerrainPolygon> MergeAll(List<TerrainPolygon> others)
         {
-            var noholes = others.Where(p => p.Holes.Count == 0).ToList();
+            var tomerge = others.ToList();
+            /*var noholes = others.Where(p => p.Holes.Count == 0).ToList();
             var tomerge = others.Where(p => p.Holes.Count != 0).ToList();
-
-            if (noholes.Count > 0)
+            */
+            /*if (noholes.Count > 0)
             {
                 // Polygons without holes can easily merged
                 if (tomerge.Count == 0 )
@@ -306,7 +313,7 @@ namespace GameRealisticMap.Geometries
                     return QuickMergeAllWithNoHoles(noholes);
                 }
                 tomerge.AddRange(QuickMergeAllWithNoHoles(noholes));
-            }
+            }*/
 
             if (tomerge.Count > 1)
             {

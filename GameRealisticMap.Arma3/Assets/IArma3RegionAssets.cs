@@ -9,6 +9,8 @@ namespace GameRealisticMap.Arma3.Assets
 
         ITerrainMaterialLibrary Materials { get; }
 
+        List<BuildingDefinition> Buildings { get; }
+
         ModelInfo GetPond(int pondSize);
     }
 }

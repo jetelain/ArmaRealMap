@@ -2,15 +2,16 @@
 
 namespace GameRealisticMap.Algorithms
 {
-    public class RadiusPlacedModel<TModelInfo> : ITerrainEnvelope
+    public class RadiusPlacedModel<TModelInfo> : ITerrainEnvelope, IModelPosition
     {
         private readonly BoundingCircle boundingCircle;
 
-        public RadiusPlacedModel(BoundingCircle boundingCircle, float? elevation, TModelInfo modelInfo)
+        public RadiusPlacedModel(BoundingCircle boundingCircle, float elevation, float scale, TModelInfo modelInfo)
         {
             this.boundingCircle = boundingCircle;
-            this.Elevation = elevation;
+            this.RelativeElevation = elevation;
             this.Model = modelInfo;
+            this.Scale = scale;
         }
 
         public TerrainPoint MinPoint => boundingCircle.MinPoint;
@@ -27,8 +28,10 @@ namespace GameRealisticMap.Algorithms
 
         public TerrainPoint Center => boundingCircle.Center;
 
-        public float? Elevation { get; }
+        public float RelativeElevation { get; }
 
         public TModelInfo Model { get; }
+
+        public float Scale { get; }
     }
 }

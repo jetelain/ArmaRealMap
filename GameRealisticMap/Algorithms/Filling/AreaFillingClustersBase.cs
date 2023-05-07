@@ -18,7 +18,7 @@ namespace GameRealisticMap.Algorithms.Filling
 
         protected abstract IReadOnlyList<IClusterDefinition<TModelInfo>> Search(Vector2 start, Vector2 end);
 
-        public override IModelDefinition<TModelInfo> SelectObjectToInsert(TerrainPoint point)
+        public override IClusterItemDefinition<TModelInfo> SelectObjectToInsert(TerrainPoint point)
         {
             var potential = Search(point.Vector - ClusterSearchArea, point.Vector + ClusterSearchArea);
             if (potential.Count == 0)

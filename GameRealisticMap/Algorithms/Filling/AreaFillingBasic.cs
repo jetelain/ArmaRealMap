@@ -13,7 +13,7 @@ namespace GameRealisticMap.Algorithms.Filling
             this.definition = definition;
         }
 
-        public override IModelDefinition<TModelInfo> SelectObjectToInsert(TerrainPoint point)
+        public override IClusterItemDefinition<TModelInfo> SelectObjectToInsert(TerrainPoint point)
         {
             return definition.Models.GetRandom(area.Random);
         }

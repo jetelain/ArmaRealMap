@@ -16,7 +16,7 @@ namespace GameRealisticMap.Algorithms.Filling
 
         public double Density { get; }
 
-        public abstract IModelDefinition<TModelInfo> SelectObjectToInsert(TerrainPoint point);
+        public abstract IClusterItemDefinition<TModelInfo> SelectObjectToInsert(TerrainPoint point);
 
         public AreaDefinition Area => area;
 
