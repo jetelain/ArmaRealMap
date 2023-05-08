@@ -4,8 +4,12 @@ namespace GameRealisticMap.Algorithms
 {
     public static class RandomHelper
     {
-        public static void CheckProbabilitySum<T>(this IEnumerable<T> list) where T : IWithProbability
+        public static void CheckProbabilitySum<T>(this IReadOnlyCollection<T> list) where T : IWithProbability
         {
+            if (list.Count == 0)
+            {
+                return;
+            }
             var sum = list.Sum(l => l.Probability);
             if (sum != 1)
             {
@@ -13,11 +17,11 @@ namespace GameRealisticMap.Algorithms
             }
         }
 
-        public static T GetRandom<T>(this IReadOnlyList<T> list, Random random) where T : IWithProbability
+        public static T GetRandom<T>(this IReadOnlyCollection<T> list, Random random) where T : IWithProbability
         {
             if (list.Count == 1)
             {
-                return list[0];
+                return list.First();
             }
             return ((IEnumerable<T>)list).GetRandom(random);
         }

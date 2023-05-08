@@ -7,14 +7,14 @@ using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
-    public class WrpBuilder
+    public class WrpCompiler
     {
         private readonly IProgressSystem progress;
         private readonly IGameFileSystemWriter fileSystemWriter;
 
         internal const int LandRange = 512; // Make a parameter for this ?
 
-        public WrpBuilder(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter)
+        public WrpCompiler(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter)
         {
             this.progress = progress;
             this.fileSystemWriter = fileSystemWriter;

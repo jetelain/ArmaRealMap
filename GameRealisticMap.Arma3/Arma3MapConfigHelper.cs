@@ -13,7 +13,7 @@ namespace GameRealisticMap.Arma3
 
         public static double GetTextureScale(this IArma3MapConfig config)
         {
-            return config.SizeInMeters / WrpBuilder.LandRange / config.TextureSizeInMeters;
+            return config.SizeInMeters / WrpCompiler.LandRange / config.TextureSizeInMeters;
         }
 
         public static IEnumerable<PointF> TerrainToPixel(this IArma3MapConfig config, IEnumerable<TerrainPoint> points)

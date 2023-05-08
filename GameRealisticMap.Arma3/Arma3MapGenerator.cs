@@ -11,6 +11,7 @@ using GameRealisticMap.Arma3.Nature.Scrubs;
 using GameRealisticMap.Arma3.Nature.Trees;
 using GameRealisticMap.Arma3.Nature.Watercourses;
 using GameRealisticMap.ElevationModel;
+using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3
@@ -57,13 +58,18 @@ namespace GameRealisticMap.Arma3
 
         public void WriteDirectlyWrp(IArma3MapConfig config, IContext context)
         {
-            // TODO: Roads
+            // Roads
+            var roadsCompiler = new RoadsCompiler(progress, gameFileSystemWriter, assets.RoadTypeLibrary);
 
+            roadsCompiler.Write(config, context.GetData<RoadsData>().Roads);
+
+            // Imagery
             var imageryCompiler = new ImageryCompiler(assets.Materials, progress, gameFileSystemWriter);
 
             var tiles = imageryCompiler.Compile(config, new ImagerySource(assets.Materials, progress, gameFileSystem, config, context));
 
-            var wrpBuilder = new WrpBuilder(progress, gameFileSystemWriter);
+            // Objects + WRP
+            var wrpBuilder = new WrpCompiler(progress, gameFileSystemWriter);
 
             var grid = context.GetData<ElevationData>().Elevation;
 
