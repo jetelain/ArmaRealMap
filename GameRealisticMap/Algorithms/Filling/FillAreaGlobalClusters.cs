@@ -22,6 +22,14 @@ namespace GameRealisticMap.Algorithms.Filling
             this.defaultClusters = defaultClusters;
         }
 
+        public override void FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
+        {
+            if (map.Count > 0 || defaultClusters.Count > 0)
+            {
+                base.FillPolygons(objects, polygons);
+            }
+        }
+
         internal override AreaFillingBase<TModelInfo> GenerateAreaSelectData(AreaDefinition fillarea)
         {
             return new AreaFillingGlobalClusters<TModelInfo>(fillarea, map, densityDefinition, defaultClusters);

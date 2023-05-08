@@ -3,6 +3,13 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.Imagery;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Arma3.ManMade;
+using GameRealisticMap.Arma3.Nature.Forests;
+using GameRealisticMap.Arma3.Nature.Lakes;
+using GameRealisticMap.Arma3.Nature.RockAreas;
+using GameRealisticMap.Arma3.Nature.Scrubs;
+using GameRealisticMap.Arma3.Nature.Trees;
+using GameRealisticMap.Arma3.Nature.Watercourses;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Reporting;
 
@@ -28,11 +35,30 @@ namespace GameRealisticMap.Arma3
             this.gameFileSystemWriter = gameFileSystemWriter;
 
             // All generators
+
+            // ManMade
+            terrainBuilderLayerGenerators.Add(new BuildingGenerator(progress, assets));
+            terrainBuilderLayerGenerators.Add(new OrientedObjectsGenerator(progress, assets));
+            // TODO: fences
+            // TODO: railway
+
+            // Nature
+            terrainBuilderLayerGenerators.Add(new ForestEdgeGenerator(progress, assets));
+            terrainBuilderLayerGenerators.Add(new ForestGenerator(progress, assets));
+            terrainBuilderLayerGenerators.Add(new ForestRadialGenerator(progress, assets));
             terrainBuilderLayerGenerators.Add(new LakeSurfaceGenerator(assets));
+            terrainBuilderLayerGenerators.Add(new RocksGenerator(progress, assets));
+            terrainBuilderLayerGenerators.Add(new ScrubGenerator(progress, assets));
+            terrainBuilderLayerGenerators.Add(new ScrubRadialGenerator(progress, assets));
+            terrainBuilderLayerGenerators.Add(new TreesGenerator(progress, assets));
+            terrainBuilderLayerGenerators.Add(new WatercourseGenerator(progress, assets));
+            terrainBuilderLayerGenerators.Add(new WatercourseRadialGenerator(progress, assets));
         }
 
         public void WriteDirectlyWrp(IArma3MapConfig config, IContext context)
         {
+            // TODO: Roads
+
             var imageryCompiler = new ImageryCompiler(assets.Materials, progress, gameFileSystemWriter);
 
             var tiles = imageryCompiler.Compile(config, new ImagerySource(assets.Materials, progress, gameFileSystem, config, context));

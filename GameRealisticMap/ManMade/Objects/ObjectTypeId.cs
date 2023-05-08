@@ -12,6 +12,7 @@
         InformationBoard,
         WaysideCross,
         Statue,
-        WarMemorial
+        WarMemorial,
+        Tree
     }
 }

@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Algorithms.Definitions;
+﻿using GameRealisticMap.Algorithms;
+using GameRealisticMap.Algorithms.Definitions;
 
 namespace GameRealisticMap.Arma3.Assets
 {
@@ -8,6 +9,7 @@ namespace GameRealisticMap.Arma3.Assets
         {
             Models = models;
             Probability = probability;
+            Models.CheckProbabilitySum();
         }
 
         public IReadOnlyList<IClusterItemDefinition<Composition>> Models { get; }

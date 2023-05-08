@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Numerics;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3.Assets;
@@ -8,7 +9,7 @@ using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Reporting;
 
-namespace GameRealisticMap.Arma3
+namespace GameRealisticMap.Arma3.ManMade
 {
     internal class BuildingGenerator : ITerrainBuilderLayerGenerator
     {
@@ -114,7 +115,7 @@ namespace GameRealisticMap.Arma3
 
         private List<BuildingDefinition> GetBuildings(Building building, float min, float max)
         {
-            var match = assets.Buildings.Where(b => b.TypeId == building.TypeId && b.Fits(building.Box, min, max))
+            var match = assets.GetBuildings(building.TypeId).Where(b => b.Fits(building.Box, min, max))
                .ToList()
                .OrderBy(c => Math.Abs(c.Surface - building.Box.Surface))
                .ToList();

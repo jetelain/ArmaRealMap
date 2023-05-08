@@ -5,7 +5,7 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Trees
 {
-    internal class TreesData : IGeoJsonData
+    public class TreesData : IGeoJsonData
     {
         [JsonConstructor]
         public TreesData(List<TerrainPoint> points)

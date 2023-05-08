@@ -1,4 +1,7 @@
-﻿using GameRealisticMap.Arma3.TerrainBuilder;
+﻿using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads.Libraries;
 
 namespace GameRealisticMap.Arma3.Assets
@@ -9,7 +12,13 @@ namespace GameRealisticMap.Arma3.Assets
 
         ITerrainMaterialLibrary Materials { get; }
 
-        List<BuildingDefinition> Buildings { get; }
+        IEnumerable<BuildingDefinition> GetBuildings(BuildingTypeId buildingTypeId);
+
+        IReadOnlyList<ObjectDefinition> GetObjects(ObjectTypeId typeId);
+
+        IReadOnlyCollection<IBasicDefinition<Composition>> GetBasic(BasicId basicId);
+
+        IReadOnlyCollection<ClusterCollectionDefinition> GetClusterCollection(ClusterCollectionId clustersId);
 
         ModelInfo GetPond(int pondSize);
     }

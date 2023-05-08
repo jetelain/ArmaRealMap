@@ -8,7 +8,7 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace GameRealisticMap.Arma3
+namespace GameRealisticMap.Arma3.Nature.Lakes
 {
     internal class LakeSurfaceGenerator : ITerrainBuilderLayerGenerator
     {
@@ -19,11 +19,11 @@ namespace GameRealisticMap.Arma3
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate (IArma3MapConfig config, IContext context)
+        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
         {
             var lakes = context.GetData<ElevationWithLakesData>().Lakes;
             var result = new List<TerrainBuilderObject>();
-            foreach(var lake in lakes)
+            foreach (var lake in lakes)
             {
                 GenerateTiles(result, lake.TerrainPolygon, lake.WaterElevation);
             }
@@ -72,8 +72,8 @@ namespace GameRealisticMap.Arma3
                     if (x + objSize <= w10 && y + objSize < h10 && Match(grid10, x, y, x + objSize, y + objSize))
                     {
                         Take(grid10, x, y, x + objSize, y + objSize);
-                        var ax = (x * 10) + hsize;
-                        var ay = (y * 10) + hsize;
+                        var ax = x * 10 + hsize;
+                        var ay = y * 10 + hsize;
                         objects.Add(new TerrainBuilderObject(model, new TerrainPoint(min.X + ax, min.Y + ay), waterElevation, ElevationMode.Absolute, 0, 0, 0, 1));
                     }
                 }

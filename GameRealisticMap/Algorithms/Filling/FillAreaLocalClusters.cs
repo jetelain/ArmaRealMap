@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Algorithms.Filling
@@ -15,6 +16,14 @@ namespace GameRealisticMap.Algorithms.Filling
             : base(progress)
         {
             this.clustersDefinitions = clustersDefinitions;
+        }
+
+        public override void FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
+        {
+            if (clustersDefinitions.Count > 0)
+            {
+                base.FillPolygons(objects, polygons);
+            }
         }
 
         internal override AreaFillingBase<TModelInfo> GenerateAreaSelectData(AreaDefinition fillarea)

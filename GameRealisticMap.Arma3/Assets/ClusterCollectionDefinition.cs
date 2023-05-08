@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Algorithms.Definitions;
+﻿using GameRealisticMap.Algorithms;
+using GameRealisticMap.Algorithms.Definitions;
 
 namespace GameRealisticMap.Arma3.Assets
 {
@@ -10,6 +11,7 @@ namespace GameRealisticMap.Arma3.Assets
             Probability = probability;
             MinDensity = minDensity;
             MaxDensity = maxDensity;
+            Clusters.CheckProbabilitySum();
         }
 
         public IReadOnlyList<IClusterDefinition<Composition>> Clusters { get; }

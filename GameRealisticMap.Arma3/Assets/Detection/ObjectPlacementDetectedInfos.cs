@@ -68,13 +68,18 @@ namespace GameRealisticMap.Arma3.Assets.Detection
 
         private static RectangleBasedPlacement CreateRectangleBased(List<Vector3> points, List<Vector2> projectedPoints)
         {
-            var upperPart = points.Where(p => p.Y >= 1).Select(p => new Vector2(p.X, p.Z)).Distinct().ToList();
-            if (upperPart.Count == 0)
+            var scanPoints = projectedPoints;
+            var maxY = points.Max(p => p.Y);
+            if (maxY > 1.5f)
             {
-                upperPart = projectedPoints;
+                var upperPart = points.Where(p => p.Y >= 1).Select(p => new Vector2(p.X, p.Z)).Distinct().ToList();
+                if (upperPart.Count > 0)
+                {
+                    scanPoints = upperPart;
+                }
             }
-            var min = new Vector2(upperPart.Min(p => p.X), upperPart.Min(p => p.Y));
-            var max = new Vector2(upperPart.Max(p => p.X), upperPart.Max(p => p.Y));
+            var min = new Vector2(scanPoints.Min(p => p.X), scanPoints.Min(p => p.Y));
+            var max = new Vector2(scanPoints.Max(p => p.X), scanPoints.Max(p => p.Y));
             return new RectangleBasedPlacement((min + max) / 2, max - min);
         }
 

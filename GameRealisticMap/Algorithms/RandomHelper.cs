@@ -2,8 +2,17 @@
 
 namespace GameRealisticMap.Algorithms
 {
-    internal static class RandomHelper
+    public static class RandomHelper
     {
+        public static void CheckProbabilitySum<T>(this IEnumerable<T> list) where T : IWithProbability
+        {
+            var sum = list.Sum(l => l.Probability);
+            if (sum != 1)
+            {
+                throw new ArgumentException($"Sum of probability must be 1, but is {sum}");
+            }
+        }
+
         public static T GetRandom<T>(this IReadOnlyList<T> list, Random random) where T : IWithProbability
         {
             if (list.Count == 1)
@@ -22,14 +31,14 @@ namespace GameRealisticMap.Algorithms
                 shift += item.Probability;
                 if (shift > 1)
                 {
-                    throw new ArgumentException("Sum of probability must not exceed 1");
+                    throw new ArgumentException($"Sum of probability must be 1, but is {list.Sum(l => l.Probability)}");
                 }
                 if (shift > value)
                 {
                     return item;
                 }
             }
-            throw new ArgumentException("Sum of probability must be 1");
+            throw new ArgumentException($"Sum of probability must be 1, but is {list.Sum(l => l.Probability)}");
         }
 
         public static double GetDensity(this IWithDensity densityDefinition, Random random)

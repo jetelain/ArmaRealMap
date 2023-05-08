@@ -16,7 +16,7 @@ namespace GameRealisticMap.Algorithms.Filling
 
         internal abstract AreaFillingBase<TModelInfo> GenerateAreaSelectData(AreaDefinition fillarea);
 
-        public void FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
+        public virtual void FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
         {
             var areas = GetFillAreas(polygons.ProgressStep(progress,"Areas"));
 

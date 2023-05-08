@@ -1,6 +1,6 @@
 ﻿namespace GameRealisticMap.Reporting
 {
-    internal static class ProgressSystemHelper
+    public static class ProgressSystemHelper
     {
         public static IEnumerable<T> ProgressStep<T>(this IEnumerable<T> input, IProgressSystem progress, string name)
         {

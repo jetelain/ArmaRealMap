@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Algorithms.Filling
@@ -9,12 +10,20 @@ namespace GameRealisticMap.Algorithms.Filling
     /// <typeparam name="TModelInfo"></typeparam>
     public sealed class FillAreaBasic<TModelInfo> : FillAreaBase<TModelInfo>
     {
-        private readonly List<IBasicDefinition<TModelInfo>> basicDefinitions;
+        private readonly IReadOnlyCollection<IBasicDefinition<TModelInfo>> basicDefinitions;
 
-        public FillAreaBasic(IProgressSystem progress, List<IBasicDefinition<TModelInfo>> basicDefinitions)
+        public FillAreaBasic(IProgressSystem progress, IReadOnlyCollection<IBasicDefinition<TModelInfo>> basicDefinitions)
             : base(progress)
         {
             this.basicDefinitions = basicDefinitions;
+        }
+
+        public override void FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
+        {
+            if (basicDefinitions.Count > 0)
+            {
+                base.FillPolygons(objects, polygons);
+            }
         }
 
         internal override AreaFillingBase<TModelInfo> GenerateAreaSelectData(AreaDefinition fillarea)
