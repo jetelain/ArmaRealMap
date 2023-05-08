@@ -1,6 +1,6 @@
 ﻿using GameRealisticMap.Algorithms.Definitions;
 
-namespace GameRealisticMap.Arma3.Assets
+namespace GameRealisticMap.Arma3.Assets.Filling
 {
     internal class ClusterItemDefinition : IClusterItemDefinition<Composition>
     {

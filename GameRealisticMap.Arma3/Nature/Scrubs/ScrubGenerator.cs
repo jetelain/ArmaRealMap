@@ -1,6 +1,7 @@
 ﻿using GameRealisticMap.Algorithms;
 using GameRealisticMap.Algorithms.Filling;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Reporting;

@@ -2,7 +2,7 @@
 {
     public class BridgeDefinition
     {
-        public BridgeDefinition(BridgeSegmentDefinition single, BridgeSegmentDefinition start, BridgeSegmentDefinition middle, BridgeSegmentDefinition end)
+        public BridgeDefinition(StraightSegmentDefinition single, StraightSegmentDefinition start, StraightSegmentDefinition middle, StraightSegmentDefinition end)
         {
             Single = single;
             Start = start;
@@ -10,13 +10,13 @@
             End = end;
         }
 
-        public BridgeSegmentDefinition Single { get; }
+        public StraightSegmentDefinition Single { get; }
 
-        public BridgeSegmentDefinition Start { get; }
+        public StraightSegmentDefinition Start { get; }
 
-        public BridgeSegmentDefinition Middle { get; }
+        public StraightSegmentDefinition Middle { get; }
 
-        public BridgeSegmentDefinition End { get; }
+        public StraightSegmentDefinition End { get; }
 
     }
 }

@@ -83,7 +83,7 @@ namespace GameRealisticMap.Arma3.ManMade
                 pitch));
         }
 
-        private static void SinglePartBridge(List<TerrainBuilderObject> objects, TerrainPath path, IElevationGrid grid, BridgeSegmentDefinition single, float angle)
+        private static void SinglePartBridge(List<TerrainBuilderObject> objects, TerrainPath path, IElevationGrid grid, StraightSegmentDefinition single, float angle)
         {
             var center = new TerrainPoint(Vector2.Lerp(path.FirstPoint.Vector, path.LastPoint.Vector, 0.5f));
             var vector = Vector2.Normalize(path.LastPoint.Vector - path.FirstPoint.Vector) * single.Size / 2f;

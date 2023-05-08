@@ -2,6 +2,7 @@
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Algorithms.Filling;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature;

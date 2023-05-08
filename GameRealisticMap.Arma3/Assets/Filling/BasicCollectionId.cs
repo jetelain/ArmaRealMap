@@ -1,4 +1,4 @@
-﻿namespace GameRealisticMap.Arma3.Assets
+﻿namespace GameRealisticMap.Arma3.Assets.Filling
 {
     public enum BasicCollectionId
     {
