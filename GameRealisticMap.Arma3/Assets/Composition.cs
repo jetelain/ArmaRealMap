@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Arma3.Assets
 {
@@ -24,7 +25,21 @@ namespace GameRealisticMap.Arma3.Assets
             matrix.M41 = position.Center.X;
             matrix.M43 = position.Center.Y;
             matrix.M44 = 1f;
-            return Objects.Select(o => o.ToTerrainBuilderObject(matrix));
+            return Objects.Select(o => o.ToTerrainBuilderObject(matrix, ElevationMode.Relative));
+        }
+
+        public IEnumerable<TerrainBuilderObject> ToTerrainBuilderObjects(TerrainPoint center, float absoluteElevarion, float angle, float pitch, float scale = 1)
+        {
+            var matrix = Matrix4x4.CreateRotationX(MathHelper.ToRadians(pitch)) * Matrix4x4.CreateRotationY(MathHelper.ToRadians(-angle));
+            if (scale != 1f)
+            {
+                matrix = matrix * Matrix4x4.CreateScale(scale);
+            }
+            matrix.M42 = absoluteElevarion;
+            matrix.M41 = center.X;
+            matrix.M43 = center.Y;
+            matrix.M44 = 1f;
+            return Objects.Select(o => o.ToTerrainBuilderObject(matrix, ElevationMode.Absolute));
         }
 
         public static Composition CreateFrom(IEnumerable<TerrainBuilderObject> objects)

@@ -47,7 +47,7 @@ namespace GameRealisticMap.Arma3.Imagery
                 {
                     foreach (var polygon in road.Polygons)
                     {
-                        PolygonDrawHelper.DrawPolygon(d, polygon, GetBrush((IArma3RoadTypeInfos)road.RoadTypeInfos), config.TerrainToPixel);
+                        PolygonDrawHelper.DrawPolygon(d, polygon, GetBrush((Arma3RoadTypeInfos)road.RoadTypeInfos), config.TerrainToPixel);
                     }
                 }
             });
@@ -70,7 +70,7 @@ namespace GameRealisticMap.Arma3.Imagery
             return satMap;
         }
 
-        private IBrush GetBrush(IArma3RoadTypeInfos roadTypeInfos)
+        private IBrush GetBrush(Arma3RoadTypeInfos roadTypeInfos)
         {
             return new SolidBrush(roadTypeInfos.SatelliteColor);
         }

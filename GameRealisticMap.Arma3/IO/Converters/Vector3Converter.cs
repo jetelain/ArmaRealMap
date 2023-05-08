@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace GameRealisticMap.Arma3.TerrainBuilder
+namespace GameRealisticMap.Arma3.IO.Converters
 {
     internal class Vector3Converter : JsonConverter<Vector3>
     {

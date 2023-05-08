@@ -11,6 +11,6 @@ namespace GameRealisticMap.Arma3.Nature.RockAreas
         {
         }
 
-        protected override BasicId Id => BasicId.Rocks;
+        protected override BasicCollectionId Id => BasicCollectionId.Rocks;
     }
 }

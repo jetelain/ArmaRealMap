@@ -40,6 +40,7 @@ namespace GameRealisticMap.Arma3
             // ManMade
             terrainBuilderLayerGenerators.Add(new BuildingGenerator(progress, assets));
             terrainBuilderLayerGenerators.Add(new OrientedObjectsGenerator(progress, assets));
+            terrainBuilderLayerGenerators.Add(new BridgeGenerator(progress, assets));
             // TODO: fences
             // TODO: railway
 

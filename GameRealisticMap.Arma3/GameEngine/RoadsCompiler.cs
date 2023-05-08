@@ -13,13 +13,13 @@ using NetTopologySuite.IO;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
-    internal class RoadsCompiler
+    public class RoadsCompiler
     {
         private readonly IProgressSystem progress;
         private readonly IGameFileSystemWriter fileSystemWriter;
-        private readonly IRoadTypeLibrary<IArma3RoadTypeInfos> roadTypeLibrary;
+        private readonly IRoadTypeLibrary<Arma3RoadTypeInfos> roadTypeLibrary;
 
-        public RoadsCompiler(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter, IRoadTypeLibrary<IArma3RoadTypeInfos> roadTypeLibrary)
+        public RoadsCompiler(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter, IRoadTypeLibrary<Arma3RoadTypeInfos> roadTypeLibrary)
         {
             this.progress = progress;
             this.fileSystemWriter = fileSystemWriter;

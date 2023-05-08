@@ -1,25 +1,27 @@
-﻿using GameRealisticMap.Algorithms.Definitions;
-using GameRealisticMap.Arma3.TerrainBuilder;
+﻿using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Objects;
+using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
 
 namespace GameRealisticMap.Arma3.Assets
 {
     internal interface IArma3RegionAssets
     {
-        IRoadTypeLibrary<IArma3RoadTypeInfos> RoadTypeLibrary { get; }
+        IRoadTypeLibrary<Arma3RoadTypeInfos> RoadTypeLibrary { get; }
 
         ITerrainMaterialLibrary Materials { get; }
 
         IEnumerable<BuildingDefinition> GetBuildings(BuildingTypeId buildingTypeId);
 
-        IReadOnlyList<ObjectDefinition> GetObjects(ObjectTypeId typeId);
+        IReadOnlyCollection<ObjectDefinition> GetObjects(ObjectTypeId typeId);
 
-        IReadOnlyCollection<IBasicDefinition<Composition>> GetBasic(BasicId basicId);
+        IReadOnlyCollection<BasicCollectionDefinition> GetBasicCollections(BasicCollectionId basicId);
 
-        IReadOnlyCollection<ClusterCollectionDefinition> GetClusterCollection(ClusterCollectionId clustersId);
+        IReadOnlyCollection<ClusterCollectionDefinition> GetClusterCollections(ClusterCollectionId clustersId);
 
         ModelInfo GetPond(int pondSize);
+
+        BridgeDefinition? GetBridge(RoadTypeId roadType);
     }
 }

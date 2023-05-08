@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using GameRealisticMap.Arma3.TerrainBuilder;
 
-namespace GameRealisticMap.Arma3.TerrainBuilder
+namespace GameRealisticMap.Arma3.IO.Converters
 {
     internal class ModelInfoReferenceConverter : JsonConverter<ModelInfo>
     {

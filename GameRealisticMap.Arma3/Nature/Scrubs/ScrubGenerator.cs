@@ -20,7 +20,7 @@ namespace GameRealisticMap.Arma3.Nature.Scrubs
         {
             base.Generate(layer, polygons);
             
-            var additional = new FillAreaBasic<Composition>(progress, assets.GetBasic(BasicId.ScrubAdditional));
+            var additional = new FillAreaBasic<Composition>(progress, assets.GetBasicCollections(BasicCollectionId.ScrubAdditional));
             additional.FillPolygons(layer, polygons);
         }
     }

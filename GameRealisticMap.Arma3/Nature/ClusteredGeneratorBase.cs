@@ -21,7 +21,7 @@ namespace GameRealisticMap.Arma3.Nature
 
         protected override void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons)
         {
-            var main = new FillAreaLocalClusters<Composition>(progress, assets.GetClusterCollection(Id));
+            var main = new FillAreaLocalClusters<Composition>(progress, assets.GetClusterCollections(Id));
             main.FillPolygons(layer, polygons);
         }
     }

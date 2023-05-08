@@ -26,10 +26,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         public Stream OpenWrite(bool truncate)
         {
-            if (!truncate)
-            {
-                throw new NotImplementedException();
-            }
+            // always truncate to be sure to always start from a clean file
             return fileSystemWriter.Create(path);
         }
     }

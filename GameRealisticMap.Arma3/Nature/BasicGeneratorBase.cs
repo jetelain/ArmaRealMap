@@ -15,11 +15,11 @@ namespace GameRealisticMap.Arma3.Nature
 
         }
 
-        protected abstract BasicId Id { get; }
+        protected abstract BasicCollectionId Id { get; }
 
         protected override void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons)
         {
-            var main = new FillAreaBasic<Composition>(progress, assets.GetBasic(Id));
+            var main = new FillAreaBasic<Composition>(progress, assets.GetBasicCollections(Id));
             main.FillPolygons(layer, polygons);
         }
     }

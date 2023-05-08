@@ -1,6 +1,6 @@
 ﻿namespace GameRealisticMap.Arma3.Assets
 {
-    public enum BasicId
+    public enum BasicCollectionId
     {
         ForestAdditional,
         ScrubAdditional,

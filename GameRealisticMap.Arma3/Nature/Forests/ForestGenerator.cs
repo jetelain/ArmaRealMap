@@ -20,7 +20,7 @@ namespace GameRealisticMap.Arma3.Nature.Forests
         {
             base.Generate(layer, polygons);
 
-            var additional = new FillAreaBasic<Composition>(progress, assets.GetBasic(BasicId.ForestAdditional));
+            var additional = new FillAreaBasic<Composition>(progress, assets.GetBasicCollections(BasicCollectionId.ForestAdditional));
             additional.FillPolygons(layer, polygons);
         }
     }

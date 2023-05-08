@@ -16,9 +16,9 @@ namespace GameRealisticMap.Arma3.Assets
 
         public Matrix4x4 Transform { get; }
 
-        internal TerrainBuilderObject ToTerrainBuilderObject(Matrix4x4 matrix)
+        internal TerrainBuilderObject ToTerrainBuilderObject(Matrix4x4 matrix, ElevationMode mode)
         {
-            return new TerrainBuilderObject(Model, Transform * matrix, ElevationMode.Relative);
+            return new TerrainBuilderObject(Model, Transform * matrix, mode);
         }
     }
 }
