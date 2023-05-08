@@ -13,7 +13,7 @@ namespace GameRealisticMap.Arma3.Imagery
         private readonly IArma3MapConfig config;
         private readonly IContext context;
 
-        public ImagerySource(ITerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystem gameFileSystem, IArma3MapConfig config, IContext context)
+        public ImagerySource(TerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystem gameFileSystem, IArma3MapConfig config, IContext context)
         {
             idMapRender = new IdMapRender(materialLibrary, progress);
             satMapRender = new SatMapRender(materialLibrary, progress, gameFileSystem);

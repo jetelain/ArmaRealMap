@@ -56,8 +56,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             }
             return name;
         }
-
-        private ODOL? ReadODOL(string path)
+        public ODOL? ReadODOL(string path)
         { 
             using (var stream = fileSystem.OpenFileIfExists(path))
             {

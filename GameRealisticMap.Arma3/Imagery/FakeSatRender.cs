@@ -5,8 +5,10 @@ using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using static PdfSharpCore.Pdf.PdfDictionary;
 
 namespace GameRealisticMap.Arma3.Imagery
 {
@@ -15,7 +17,7 @@ namespace GameRealisticMap.Arma3.Imagery
         private readonly Dictionary<string, Image<Rgba32>?> cache = new Dictionary<string, Image<Rgba32>?>(StringComparer.OrdinalIgnoreCase);
         private readonly IGameFileSystem gameFileSystem;
 
-        public FakeSatRender(ITerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystem gameFileSystem)
+        public FakeSatRender(TerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystem gameFileSystem)
             : base(materialLibrary, progress)
         {
             this.gameFileSystem = gameFileSystem;
@@ -28,7 +30,7 @@ namespace GameRealisticMap.Arma3.Imagery
             return image;
         }
 
-        protected override IBrush GetBrush(ITerrainMaterial material)
+        protected override IBrush GetBrush(TerrainMaterial material)
         {
             if (!cache.TryGetValue(material.ColorTexture, out var image))
             {
@@ -41,8 +43,12 @@ namespace GameRealisticMap.Arma3.Imagery
             return new ImageBrush(image);
         }
 
-        private Image<Rgba32>? LoadImage(ITerrainMaterial material)
+        private Image<Rgba32>? LoadImage(TerrainMaterial material)
         {
+            if (material.FakeSatPngImage != null)
+            {
+                return Image.Load<Rgba32>(material.FakeSatPngImage, new PngDecoder());
+            }
             using var paaStream = gameFileSystem.OpenFileIfExists(material.ColorTexture);
             if (paaStream == null)
             {
@@ -54,14 +60,14 @@ namespace GameRealisticMap.Arma3.Imagery
             return Image.LoadPixelData<Bgra32>(pixels, map.Width, map.Height).CloneAs<Rgba32>();
         }
 
-        private Image<Rgba32>? LoadPngFallback(ITerrainMaterial material)
+        private Image<Rgba32>? LoadPngFallback(TerrainMaterial material)
         {
             using var pngStream = gameFileSystem.OpenFileIfExists(Path.ChangeExtension(material.ColorTexture, ".png"));
             if (pngStream == null)
             {
                 return null;
             }
-            var image = Image.Load<Rgba32>(pngStream);
+            var image = Image.Load<Rgba32>(pngStream, new PngDecoder());
             image.Mutate(i => i.Resize(8, 8));
             return image;
         }

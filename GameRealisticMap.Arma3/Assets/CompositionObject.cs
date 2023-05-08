@@ -1,11 +1,15 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
+using System.Text.Json.Serialization;
+using GameRealisticMap.Arma3.IO.Converters;
 using GameRealisticMap.Arma3.TerrainBuilder;
 
 namespace GameRealisticMap.Arma3.Assets
 {
-    internal class CompositionObject
+    [DebuggerDisplay("{Model} ({Transform.M41};{Transform.M43})")]
+    public class CompositionObject
     {
+        [JsonConstructor]
         public CompositionObject(ModelInfo model, Matrix4x4 transform)
         {
             Model = model;
@@ -14,6 +18,7 @@ namespace GameRealisticMap.Arma3.Assets
 
         public ModelInfo Model { get; }
 
+        [JsonConverter(typeof(Matrix4x4Converter))]
         public Matrix4x4 Transform { get; }
 
         internal TerrainBuilderObject ToTerrainBuilderObject(Matrix4x4 matrix, ElevationMode mode)

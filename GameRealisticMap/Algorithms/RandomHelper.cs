@@ -11,7 +11,7 @@ namespace GameRealisticMap.Algorithms
                 return;
             }
             var sum = list.Sum(l => l.Probability);
-            if (sum != 1)
+            if (Math.Abs(sum - 1) > 0.001)
             {
                 throw new ArgumentException($"Sum of probability must be 1, but is {sum}");
             }
@@ -33,7 +33,7 @@ namespace GameRealisticMap.Algorithms
             foreach (var item in list)
             {
                 shift += item.Probability;
-                if (shift > 1)
+                if (shift > 1.001)
                 {
                     throw new ArgumentException($"Sum of probability must be 1, but is {list.Sum(l => l.Probability)}");
                 }

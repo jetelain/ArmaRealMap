@@ -22,7 +22,7 @@ namespace GameRealisticMap.Arma3.Imagery
             this.fakeSatRender = fakeSatRender;
         }
 
-        public SatMapRender(ITerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystem gameFileSystem)
+        public SatMapRender(TerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystem gameFileSystem)
             : this(new FakeSatRender(materialLibrary, progress, gameFileSystem))
         {
 

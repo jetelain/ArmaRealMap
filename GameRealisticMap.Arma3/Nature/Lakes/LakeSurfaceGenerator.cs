@@ -37,10 +37,10 @@ namespace GameRealisticMap.Arma3.Nature.Lakes
             var w10 = (int)Math.Ceiling(size.X);
             var h10 = (int)Math.Ceiling(size.Y);
             var grid10 = GenerateMap(polygon, min, w10, h10);
-            Process(result, grid10, w10, h10, min, 80, waterElevation);
-            Process(result, grid10, w10, h10, min, 40, waterElevation);
-            Process(result, grid10, w10, h10, min, 20, waterElevation);
-            Process(result, grid10, w10, h10, min, 10, waterElevation);
+            Process(result, grid10, w10, h10, min, PondSizeId.Size80, waterElevation);
+            Process(result, grid10, w10, h10, min, PondSizeId.Size40, waterElevation);
+            Process(result, grid10, w10, h10, min, PondSizeId.Size20, waterElevation);
+            Process(result, grid10, w10, h10, min, PondSizeId.Size10, waterElevation);
         }
 
         private static bool[,] GenerateMap(TerrainPolygon polygon, Vector2 min, int w10, int h10)
@@ -60,11 +60,11 @@ namespace GameRealisticMap.Arma3.Nature.Lakes
             return grid10;
         }
 
-        private void Process(List<TerrainBuilderObject> objects, bool[,] grid10, int w10, int h10, Vector2 min, int pondSize, float waterElevation)
+        private void Process(List<TerrainBuilderObject> objects, bool[,] grid10, int w10, int h10, Vector2 min, PondSizeId pondSize, float waterElevation)
         {
             var model = assets.GetPond(pondSize);
-            var objSize = pondSize / 10;
-            var hsize = pondSize / 2;
+            var objSize = ((int)pondSize) / 10;
+            var hsize = ((int)pondSize) / 2;
             for (int x = 0; x < w10; x += objSize)
             {
                 for (int y = 0; y < h10; y += objSize)

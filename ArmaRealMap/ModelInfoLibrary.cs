@@ -26,7 +26,7 @@ namespace ArmaRealMap
 
         private readonly Dictionary<string, ModelInfo> indexByName = new Dictionary<string, ModelInfo>();
 
-        internal ModelInfo ResolveByName(string name)
+        public ModelInfo ResolveByName(string name)
         {
             if (!TryResolveByName(name, out ModelInfo modelInfo))
             {
@@ -35,7 +35,7 @@ namespace ArmaRealMap
             return modelInfo;
         }
 
-        internal bool TryResolveByName(string name, out ModelInfo model)
+        public bool TryResolveByName(string name, out ModelInfo model)
         {
             if (!indexByName.TryGetValue(name, out model))
             {
@@ -86,13 +86,13 @@ namespace ArmaRealMap
             return null;
         }
 
-        internal void Load(string modelsInfoFile)
+        public void Load(string modelsInfoFile)
         {
             if (!string.IsNullOrEmpty(modelsInfoFile) && File.Exists(modelsInfoFile))
             {
                 var data = JsonSerializer.Deserialize<JsonModelInfo[]>(File.ReadAllText(modelsInfoFile), options);
 
-                var models = data.Where(m => m.BoundingCenterX != null)
+                var models = data/*.Where(m => m.BoundingCenterX != null)*/
                     .Select(m => new ModelInfo()
                     {
                         Name = m.Name,

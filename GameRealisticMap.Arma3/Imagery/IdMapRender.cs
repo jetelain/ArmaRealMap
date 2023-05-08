@@ -10,13 +10,13 @@ namespace GameRealisticMap.Arma3.Imagery
 {
     internal class IdMapRender : IdMapRenderBase<Rgb24>
     {
-        public IdMapRender(ITerrainMaterialLibrary materialLibrary, IProgressSystem progress)
+        public IdMapRender(TerrainMaterialLibrary materialLibrary, IProgressSystem progress)
             : base(materialLibrary, progress)
         {
             drawingOptions.GraphicsOptions.Antialias = false;
         }
 
-        protected override IBrush GetBrush(ITerrainMaterial material)
+        protected override IBrush GetBrush(TerrainMaterial material)
         {
             return new SolidBrush(new Color(material.Id));
         }

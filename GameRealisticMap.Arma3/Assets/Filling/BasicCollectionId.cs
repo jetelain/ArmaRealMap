@@ -4,6 +4,8 @@
     {
         ForestAdditional,
         ScrubAdditional,
-        Rocks
+        Rocks,
+        RocksAdditional,
+        DefaultAreas
     }
 }

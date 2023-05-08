@@ -138,7 +138,7 @@ namespace ArmaRealMap
 
             var global = ConfigLoader.LoadGlobal(options.Global);
 
-            SyncLibraries(global);
+            ConfigLoader.SyncLibraries(global);
 
             Directory.CreateDirectory(options.Target);
 
@@ -153,7 +153,7 @@ namespace ArmaRealMap
 
             var global = ConfigLoader.LoadGlobal(options.Global);
 
-            SyncLibraries(global);
+            ConfigLoader.SyncLibraries(global);
 
             var library = new ModelInfoLibrary();
             library.LoadAndUpdate(global.ModelsInfoFile);
@@ -172,17 +172,6 @@ namespace ArmaRealMap
             return 0;
         }
 
-        private static void SyncLibraries(GlobalConfig global)
-        {
-            if (global.SyncWithAssetManager)
-            {
-                ConfigLoader.UpdateFile(global.LibrariesFile, global.AssetManager + "ObjectLibraries/Export");
-                ConfigLoader.UpdateFile(global.ModelsInfoFile, global.AssetManager + "Assets/ModelsInfo");
-                ConfigLoader.UpdateFile(global.TerrainMaterialFile, global.AssetManager + "data/terrains.json");
-                ConfigLoader.UpdateFile(global.RoadTypesFile, global.AssetManager + "data/roads.json");
-            }
-        }
-
         private static int Run(GenerateOptions options)
         {
             Arma3ToolsHelper.EnsureProjectDrive();
@@ -194,7 +183,7 @@ namespace ArmaRealMap
 
             SetupLogging(config);
 
-            SyncLibraries(global);
+            ConfigLoader.SyncLibraries(global);
 
             var area = MapInfos.Create(config);
 

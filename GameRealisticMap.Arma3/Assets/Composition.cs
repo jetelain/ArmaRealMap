@@ -1,5 +1,7 @@
 ﻿using System.Numerics;
+using System.Text.Json.Serialization;
 using GameRealisticMap.Algorithms;
+using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
 
@@ -7,12 +9,14 @@ namespace GameRealisticMap.Arma3.Assets
 {
     public class Composition
     {
-        internal Composition(List<CompositionObject> objects)
+
+        [JsonConstructor]
+        public Composition(List<CompositionObject> objects)
         {
             Objects = objects;
         }
 
-        internal List<CompositionObject> Objects { get; }
+        public List<CompositionObject> Objects { get; }
 
         public IEnumerable<TerrainBuilderObject> ToTerrainBuilderObjects(IModelPosition position)
         {
@@ -57,6 +61,24 @@ namespace GameRealisticMap.Arma3.Assets
         public static Composition CreateFromCsv(string terrainBuilderCsv, IModelInfoLibrary library, float elevationOffset)
         {
             return CreateFromCsv(terrainBuilderCsv.Split('\n').Select(l => l.Trim()).Where(l => !string.IsNullOrEmpty(l)), library, elevationOffset);
+        }
+
+        public static Composition CreateSingleFrom(ModelInfo model, Vector2 center)
+        {
+            return new Composition(
+                new List<CompositionObject>()
+                {
+                    new CompositionObject(model, Matrix4x4.CreateTranslation(new Vector3(center.X, 0, center.Y)))
+                });
+        }
+
+        public static Composition CreateSingleFrom(ModelInfo model, Vector2 center, float elevation)
+        {
+            return new Composition(
+                new List<CompositionObject>()
+                {
+                    new CompositionObject(model, Matrix4x4.CreateTranslation(new Vector3(center.X, elevation, center.Y)))
+                });
         }
     }
 }

@@ -4,6 +4,8 @@
     {
         float Radius { get; }
 
+        float ExclusiveRadius { get; }
+
         TModelInfo Model { get; }
 
         float? MaxZ { get; }

@@ -1,12 +1,15 @@
-﻿using GameRealisticMap.Algorithms.Definitions;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Algorithms.Definitions;
 
 namespace GameRealisticMap.Arma3.Assets.Filling
 {
-    internal class ClusterItemDefinition : IClusterItemDefinition<Composition>
+    public class ClusterItemDefinition : IClusterItemDefinition<Composition>
     {
-        public ClusterItemDefinition(float radius, Composition model, float? maxZ, float? minZ, double probability, float? maxScale, float? minScale)
+        [JsonConstructor]
+        public ClusterItemDefinition(float radius, float exclusiveRadius, Composition model, float? maxZ, float? minZ, double probability, float? maxScale, float? minScale)
         {
             Radius = radius;
+            ExclusiveRadius = exclusiveRadius;
             Model = model;
             MaxZ = maxZ;
             MinZ = minZ;
@@ -15,7 +18,15 @@ namespace GameRealisticMap.Arma3.Assets.Filling
             MinScale = minScale;
         }
 
+        /// <summary>
+        /// Radius between objects within area
+        /// </summary>
         public float Radius { get; }
+
+        /// <summary>
+        /// Radius from the area limit (might be larger than Radius, but not smaller)
+        /// </summary>
+        public float ExclusiveRadius { get; }
 
         public Composition Model { get; }
 
@@ -28,5 +39,6 @@ namespace GameRealisticMap.Arma3.Assets.Filling
         public float? MaxScale { get; }
 
         public float? MinScale { get; }
+
     }
 }

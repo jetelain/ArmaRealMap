@@ -11,7 +11,7 @@ namespace GameRealisticMap.Arma3.Assets
     {
         IRoadTypeLibrary<Arma3RoadTypeInfos> RoadTypeLibrary { get; }
 
-        ITerrainMaterialLibrary Materials { get; }
+        TerrainMaterialLibrary Materials { get; }
 
         IEnumerable<BuildingDefinition> GetBuildings(BuildingTypeId buildingTypeId);
 
@@ -21,7 +21,7 @@ namespace GameRealisticMap.Arma3.Assets
 
         IReadOnlyCollection<ClusterCollectionDefinition> GetClusterCollections(ClusterCollectionId clustersId);
 
-        ModelInfo GetPond(int pondSize);
+        ModelInfo GetPond(PondSizeId pondSize);
 
         BridgeDefinition? GetBridge(RoadTypeId roadType);
     }

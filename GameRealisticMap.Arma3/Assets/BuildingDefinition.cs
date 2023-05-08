@@ -1,21 +1,20 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
+using GameRealisticMap.Arma3.IO.Converters;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
 
 namespace GameRealisticMap.Arma3.Assets
 {
-    internal class BuildingDefinition
+    public class BuildingDefinition
     {
-        public BuildingDefinition(BuildingTypeId typeId, Vector2 size, Composition composition)
+        public BuildingDefinition(Vector2 size, Composition composition)
         {
-            TypeId = typeId;
             Size = size;
             Composition = composition;
         }
 
-        public BuildingTypeId TypeId { get; }
-
+        [JsonConverter(typeof(Vector2Converter))]
         public Vector2 Size { get; }
 
         public Composition Composition { get; }

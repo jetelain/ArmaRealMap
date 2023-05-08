@@ -1,11 +1,11 @@
 ﻿using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.Nature.Forests;
+using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Surfaces;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Reporting;
@@ -19,11 +19,11 @@ namespace GameRealisticMap.Arma3.Imagery
     internal abstract class IdMapRenderBase<TPixel>
         where TPixel : unmanaged, IPixel<TPixel>
     {
-        private readonly ITerrainMaterialLibrary materialLibrary;
+        private readonly TerrainMaterialLibrary materialLibrary;
         private readonly IProgressSystem progress;
         protected readonly DrawingOptions drawingOptions;
 
-        public IdMapRenderBase(ITerrainMaterialLibrary materialLibrary, IProgressSystem progress)
+        public IdMapRenderBase(TerrainMaterialLibrary materialLibrary, IProgressSystem progress)
         {
             this.materialLibrary = materialLibrary;
             this.progress = progress;
@@ -36,39 +36,41 @@ namespace GameRealisticMap.Arma3.Imagery
 
             var image = new Image<TPixel>(size.Width, size.Height);
 
-            image.Mutate(d => d.Fill(GetBrush(materialLibrary.Default)));
+            image.Mutate(d => d.Fill(GetBrush(materialLibrary.GetMaterialByUsage(TerrainMaterialUsage.Default))));
 
             var categories = context.GetData<CategoryAreaData>();
 
-            DrawPolygons(config, image, materialLibrary.DefaultUrban,
+            DrawPolygons(config, image, TerrainMaterialUsage.DefaultUrban,
                 categories.Areas.Where(c => c.BuildingType == BuildingTypeId.Residential).SelectMany(c => c.PolyList));
 
-            DrawPolygons(config, image, materialLibrary.DefaultIndustrial,
+            DrawPolygons(config, image, TerrainMaterialUsage.DefaultIndustrial,
                 categories.Areas.Where(c => c.BuildingType == BuildingTypeId.Industrial).SelectMany(c => c.PolyList));
 
-            DrawPolygons(config, image, materialLibrary.ForestGround, context.GetData<ForestData>().Polygons);
+            DrawPolygons(config, image, TerrainMaterialUsage.ForestGround, context.GetData<ForestData>().Polygons);
 
-            DrawPolygons(config, image, materialLibrary.Meadow, context.GetData<MeadowsData>().Polygons);
+            DrawPolygons(config, image, TerrainMaterialUsage.Meadow, context.GetData<MeadowsData>().Polygons);
 
-            DrawPolygons(config, image, materialLibrary.FarmLand, context.GetData<FarmlandsData>().Polygons);
+            DrawPolygons(config, image, TerrainMaterialUsage.FarmLand, context.GetData<FarmlandsData>().Polygons);
 
-            DrawPolygons(config, image, materialLibrary.Sand, context.GetData<SandSurfacesData>().Polygons);
+            DrawPolygons(config, image, TerrainMaterialUsage.Sand, context.GetData<SandSurfacesData>().Polygons);
 
-            DrawPolygons(config, image, materialLibrary.Grass, context.GetData<GrassData>().Polygons);
+            DrawPolygons(config, image, TerrainMaterialUsage.Grass, context.GetData<GrassData>().Polygons);
 
-            DrawPolygons(config, image, materialLibrary.RiverGround, context.GetData<WatercoursesData>().Polygons);
+            DrawPolygons(config, image, TerrainMaterialUsage.RiverGround, context.GetData<WatercoursesData>().Polygons);
 
-            DrawPolygons(config, image, materialLibrary.LakeGround, context.GetData<ElevationWithLakesData>().Lakes.Select(l => l.TerrainPolygon));
+            DrawPolygons(config, image, TerrainMaterialUsage.LakeGround, context.GetData<ElevationWithLakesData>().Lakes.Select(l => l.TerrainPolygon));
+
+            DrawPolygons(config, image, TerrainMaterialUsage.RockGround, context.GetData<RocksData>().Polygons);
 
             return image;
         }
 
-        private void DrawPolygons(IArma3MapConfig config, Image<TPixel> image, ITerrainMaterial material, IEnumerable<TerrainPolygon> polygons)
+        private void DrawPolygons(IArma3MapConfig config, Image<TPixel> image, TerrainMaterialUsage material, IEnumerable<TerrainPolygon> polygons)
         {
-            DrawPolygons(config, image, GetBrush(material), polygons);
+            DrawPolygons(config, image, GetBrush(materialLibrary.GetMaterialByUsage(material)), polygons);
         }
 
-        protected abstract IBrush GetBrush(ITerrainMaterial material);
+        protected abstract IBrush GetBrush(TerrainMaterial material);
 
         private void DrawPolygons(IArma3MapConfig config, Image<TPixel> image, IBrush brush, IEnumerable<TerrainPolygon> polygons)
         {

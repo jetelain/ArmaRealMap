@@ -9,18 +9,18 @@ namespace GameRealisticMap.Arma3.GameEngine
 {
     public class ImageryCompiler
     {
-        private readonly ITerrainMaterialLibrary materialLibrary;
+        private readonly TerrainMaterialLibrary materialLibrary;
         private readonly IProgressSystem progress;
         private readonly IGameFileSystemWriter gameFileSystemWriter;
 
         private class TextureStats
         {
-            public TextureStats(ITerrainMaterial terrainMaterial)
+            public TextureStats(TerrainMaterial terrainMaterial)
             {
                 Material = terrainMaterial;
             }
 
-            public ITerrainMaterial Material { get; }
+            public TerrainMaterial Material { get; }
 
             public int Count { get; set; }
 
@@ -37,7 +37,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             new Rgba32(0, 0, 255, 0) // Stage13
         };
 
-        public ImageryCompiler(ITerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystemWriter gameFileSystemWriter)
+        public ImageryCompiler(TerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystemWriter gameFileSystemWriter)
         {
             this.materialLibrary = materialLibrary;
             this.progress = progress;
@@ -200,7 +200,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             }
         }
 
-        public static string MakeRvMat(ImageryTile segment, IArma3MapConfig config, IEnumerable<ITerrainMaterial> textures)
+        public static string MakeRvMat(ImageryTile segment, IArma3MapConfig config, IEnumerable<TerrainMaterial> textures)
         {
             var textureScale = config.GetTextureScale();
             var sw = new StringWriter();

@@ -15,7 +15,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace ArmaRealMap.TerrainData.GroundDetailTextures
 {
-    internal class TerrainMaterialLibrary
+    public class TerrainMaterialLibrary
     {
         private static readonly Regex Texture = new Regex(@"texture=""([^""]+)"";", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly JsonSerializerOptions options = new JsonSerializerOptions

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Algorithms.Definitions;
+﻿using GameRealisticMap.Algorithms.Definitions;
 
 namespace GameRealisticMap.Arma3.Assets
 {
-    internal class ObjectDefinition : IWithProbability
+    public class ObjectDefinition : IWithProbability
     {
         public ObjectDefinition(Composition composition, double probability)
         {
