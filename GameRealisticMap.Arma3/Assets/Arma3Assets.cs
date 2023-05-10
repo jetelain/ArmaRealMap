@@ -6,6 +6,7 @@ using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.IO.Converters;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
@@ -14,21 +15,23 @@ namespace GameRealisticMap.Arma3.Assets
 {
     public class Arma3Assets : IArma3RegionAssets, IRoadTypeLibrary<Arma3RoadTypeInfos>
     {
-        public Dictionary<BasicCollectionId, List<BasicCollectionDefinition>> BasicCollections { get; set; } = new Dictionary<BasicCollectionId, List<BasicCollectionDefinition>>();
+        public Dictionary<BasicCollectionId, List<BasicCollectionDefinition>> BasicCollections { get; set; } = new ();
         
-        public Dictionary<RoadTypeId, BridgeDefinition> Bridges { get; set; } = new Dictionary<RoadTypeId, BridgeDefinition>();
+        public Dictionary<RoadTypeId, BridgeDefinition> Bridges { get; set; } = new ();
         
-        public Dictionary<BuildingTypeId, List<BuildingDefinition>> Buildings { get; set; } = new Dictionary<BuildingTypeId, List<BuildingDefinition>>();
+        public Dictionary<BuildingTypeId, List<BuildingDefinition>> Buildings { get; set; } = new ();
         
-        public Dictionary<ClusterCollectionId, List<ClusterCollectionDefinition>> ClusterCollections { get; set; } = new Dictionary<ClusterCollectionId, List<ClusterCollectionDefinition>>();
+        public Dictionary<ClusterCollectionId, List<ClusterCollectionDefinition>> ClusterCollections { get; set; } = new ();
 
-        public TerrainMaterialLibrary Materials { get; set; } = new TerrainMaterialLibrary();
+        public TerrainMaterialLibrary Materials { get; set; } = new ();
 
-        public List<Arma3RoadTypeInfos> Roads { get; set; } = new List<Arma3RoadTypeInfos>();
+        public List<Arma3RoadTypeInfos> Roads { get; set; } = new ();
 
-        public Dictionary<ObjectTypeId, List<ObjectDefinition>> Objects { get; set; } = new Dictionary<ObjectTypeId, List<ObjectDefinition>>();
+        public Dictionary<ObjectTypeId, List<ObjectDefinition>> Objects { get; set; } = new ();
 
-        public Dictionary<PondSizeId, ModelInfo> Ponds { get; set; } = new Dictionary<PondSizeId, ModelInfo>();
+        public Dictionary<PondSizeId, ModelInfo> Ponds { get; set; } = new ();
+
+        public Dictionary<FenceTypeId, List<FenceDefinition>> Fences { get; set; } = new();
 
         public IReadOnlyCollection<BasicCollectionDefinition> GetBasicCollections(BasicCollectionId basicId)
         {
@@ -87,6 +90,7 @@ namespace GameRealisticMap.Arma3.Assets
 
         IRoadTypeLibrary<Arma3RoadTypeInfos> IArma3RegionAssets.RoadTypeLibrary => this;
 
+
         public static JsonSerializerOptions CreateJsonSerializerOptions(IModelInfoLibrary library)
         {
             return new JsonSerializerOptions()
@@ -98,6 +102,11 @@ namespace GameRealisticMap.Arma3.Assets
                 },
                 WriteIndented = true
             };
+        }
+
+        public IReadOnlyCollection<FenceDefinition> GetFences(FenceTypeId typeId)
+        {
+            return Lookup(Fences, typeId);
         }
     }
 }

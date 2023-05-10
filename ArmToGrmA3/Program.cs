@@ -14,6 +14,9 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.ManMade.Fences;
+using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
 using SixLabors.ImageSharp;
@@ -63,19 +66,19 @@ namespace ArmToGrmA3
             var oldModels = new OldModelInfoLibrary();
 
             oldModels.Load(globalConfig.ModelsInfoFile);
-            newAssets.Objects.Add(GameRealisticMap.ManMade.Objects.ObjectTypeId.Tree, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.IsolatedTree), newModels, oldModels));
-            newAssets.Objects.Add(GameRealisticMap.ManMade.Objects.ObjectTypeId.Bench, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.Bench), newModels, oldModels));
-            newAssets.Objects.Add(GameRealisticMap.ManMade.Objects.ObjectTypeId.PicnicTable, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.PicnicTable), newModels, oldModels));
-            newAssets.Objects.Add(GameRealisticMap.ManMade.Objects.ObjectTypeId.WaterWell, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.WaterWell), newModels, oldModels));
+            newAssets.Objects.Add(ObjectTypeId.Tree, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.IsolatedTree), newModels, oldModels));
+            newAssets.Objects.Add(ObjectTypeId.Bench, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.Bench), newModels, oldModels));
+            newAssets.Objects.Add(ObjectTypeId.PicnicTable, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.PicnicTable), newModels, oldModels));
+            newAssets.Objects.Add(ObjectTypeId.WaterWell, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.WaterWell), newModels, oldModels));
 
-            newAssets.Buildings.Add(GameRealisticMap.ManMade.Buildings.BuildingTypeId.Residential, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Residential), newModels, oldModels));
-            newAssets.Buildings.Add(GameRealisticMap.ManMade.Buildings.BuildingTypeId.Industrial, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Industrial), newModels, oldModels));
-            newAssets.Buildings.Add(GameRealisticMap.ManMade.Buildings.BuildingTypeId.Retail, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Retail), newModels, oldModels));
-            newAssets.Buildings.Add(GameRealisticMap.ManMade.Buildings.BuildingTypeId.Church, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Church), newModels, oldModels));
-            newAssets.Buildings.Add(GameRealisticMap.ManMade.Buildings.BuildingTypeId.HistoricalFort, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.HistoricalFort), newModels, oldModels));
-            newAssets.Buildings.Add(GameRealisticMap.ManMade.Buildings.BuildingTypeId.Hut, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Hut), newModels, oldModels));
-            newAssets.Buildings.Add(GameRealisticMap.ManMade.Buildings.BuildingTypeId.Military, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Military), newModels, oldModels));
-            newAssets.Buildings.Add(GameRealisticMap.ManMade.Buildings.BuildingTypeId.RadioTower, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.RadioTower), newModels, oldModels));
+            newAssets.Buildings.Add(BuildingTypeId.Residential, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Residential), newModels, oldModels));
+            newAssets.Buildings.Add(BuildingTypeId.Industrial, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Industrial), newModels, oldModels));
+            newAssets.Buildings.Add(BuildingTypeId.Retail, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Retail), newModels, oldModels));
+            newAssets.Buildings.Add(BuildingTypeId.Church, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Church), newModels, oldModels));
+            newAssets.Buildings.Add(BuildingTypeId.HistoricalFort, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.HistoricalFort), newModels, oldModels));
+            newAssets.Buildings.Add(BuildingTypeId.Hut, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Hut), newModels, oldModels));
+            newAssets.Buildings.Add(BuildingTypeId.Military, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Military), newModels, oldModels));
+            newAssets.Buildings.Add(BuildingTypeId.RadioTower, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.RadioTower), newModels, oldModels));
 
             newAssets.Bridges.Add(RoadTypeId.TwoLanesMotorway, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgePrimaryRoad), newModels, oldModels));
             newAssets.Bridges.Add(RoadTypeId.TwoLanesPrimaryRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgePrimaryRoad), newModels, oldModels));
@@ -97,7 +100,41 @@ namespace ArmToGrmA3
 
             newAssets.ClusterCollections.Add(ClusterCollectionId.WatercourseRadial, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.WaterwayBorder), newModels, oldModels));
 
-            // TODO: wall+fences (but not yet supported on GameRealisticMap.Arma3 side)
+            newAssets.Fences.Add(FenceTypeId.Wall, ConvertFences(olibs.GetLibraries(ObjectCategory.Wall), newModels, oldModels));
+            newAssets.Fences.Add(FenceTypeId.Fence, ConvertFences(olibs.GetLibraries(ObjectCategory.Fence), newModels, oldModels));
+        }
+
+        private static List<FenceDefinition> ConvertFences(List<ObjectLibrary> objectLibraries, ModelInfoLibrary newModels, OldModelInfoLibrary oldModels)
+        {
+            var fences = new List<FenceDefinition>();
+            if (objectLibraries.Count > 0)
+            {
+                var defProbability = 1d / objectLibraries.Count;
+                var sumExistingProbability = objectLibraries.Select(o => o.Probability ?? defProbability).Sum();
+                foreach (var lib in objectLibraries)
+                {
+                    var probability = lib.Probability ?? defProbability;
+                    fences.Add( new FenceDefinition(probability, ConvertToSegments(lib.Objects,newModels, oldModels)));
+                }
+            }
+            fences.CheckProbabilitySum();
+            return fences;
+        }
+
+        private static List<StraightSegmentDefinition> ConvertToSegments(List<SingleObjetInfos> objects, ModelInfoLibrary models, OldModelInfoLibrary oldModels)
+        {
+            var defProbability = 1d / objects.Count;
+            var sumExistingProbability = objects.Select(o => o.PlacementProbability ?? defProbability).Sum();
+            var items = new List<StraightSegmentDefinition>();
+            foreach (var old in objects)
+            {
+                var model = models.ResolveByPath(oldModels.ResolveByName(old.Name).Path);
+                var place = ObjectPlacementDetectedInfos.CreateFromODOL(models.ReadODOL(model.Path)!)!;
+                var composition = GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, -place.GeneralRadius.Center);
+                var probability = (old.PlacementProbability ?? defProbability) / sumExistingProbability;
+                items.Add(new StraightSegmentDefinition(composition, (old.PlacementRadius ?? place.GeneralRadius.Radius) * 2));
+            }
+            return items;
         }
 
         private static List<BasicCollectionDefinition> ConvertBasic(ObjectLibrary? oldLibrary, ModelInfoLibrary models, OldModelInfoLibrary oldModels)
@@ -118,6 +155,10 @@ namespace ArmToGrmA3
                         old.ReservedRadius ?? old.PlacementRadius ?? place.GeneralRadius.Radius,
                         composition, old.MaxZ, old.MinZ, probability, null, null));
                 }
+            }
+            if (items.Count == 0)
+            {
+                return new List<BasicCollectionDefinition>();
             }
             return new List<BasicCollectionDefinition>() { new BasicCollectionDefinition(items, 1, oldLibrary?.Density ?? 0, oldLibrary?.Density ?? 0) };
         }
@@ -140,6 +181,10 @@ namespace ArmToGrmA3
                         old.ReservedRadius ?? old.PlacementRadius ?? place.GeneralRadius.Radius,
                         composition, old.MaxZ, old.MinZ, 1, null, null), probability));
                 }
+            }
+            if (items.Count == 0)
+            {
+                return new List<ClusterCollectionDefinition>();
             }
             return new List<ClusterCollectionDefinition>() { new ClusterCollectionDefinition(items, 1, oldLibrary?.Density ?? 0, oldLibrary?.Density ?? 0) };
         }

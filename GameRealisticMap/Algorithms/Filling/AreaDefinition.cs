@@ -15,7 +15,7 @@ namespace GameRealisticMap.Algorithms.Filling
             Polygon = polygon;
             MinPoint = polygon.MinPoint - new Vector2(2);
             MaxPoint = polygon.MaxPoint + new Vector2(2);
-            Random = new Random((int)Math.Truncate(polygon.Centroid.X + polygon.Centroid.Y));
+            Random = RandomHelper.CreateRandom(polygon.Centroid);
             rndX1 = (int)(polygon.MinPoint.X * 100);
             rndX2 = (int)(polygon.MaxPoint.X * 100);
             rndY1 = (int)(polygon.MinPoint.Y * 100);

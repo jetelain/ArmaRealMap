@@ -108,7 +108,7 @@ namespace GameRealisticMap.Arma3.ManMade
 
         private BuildingDefinition PickOne(Building building, List<BuildingDefinition> candidates)
         {
-            var random = new Random((int)Math.Truncate(building.Box.Center.X + building.Box.Center.Y));
+            var random = RandomHelper.CreateRandom(building.Box.Center);
             var obj = candidates[random.Next(0, candidates.Count)];
             return obj;
         }

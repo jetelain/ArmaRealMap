@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Geometries;
+﻿using GameRealisticMap.Algorithms;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
@@ -109,7 +110,7 @@ namespace GameRealisticMap.ManMade.Objects
 
         private float GetRandomAngle(TerrainPoint point)
         {
-            return (float)(new Random((int)(point.X + point.Y)).NextDouble() * 360);
+            return (float)(RandomHelper.CreateRandom(point).NextDouble() * 360);
         }
 
     }

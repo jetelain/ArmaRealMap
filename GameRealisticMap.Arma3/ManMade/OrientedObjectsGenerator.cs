@@ -26,8 +26,7 @@ namespace GameRealisticMap.Arma3.ManMade
                 var candidates = assets.GetObjects(obj.TypeId);
                 if (candidates.Count >  0)
                 {
-                    var random = new Random((int)Math.Truncate(obj.Point.X + obj.Point.Y));
-                    var definition = candidates.GetRandom(random);
+                    var definition = candidates.GetRandom(obj.Point);
                     result.AddRange(definition.Composition.ToTerrainBuilderObjects(new ModelPosition(obj.Point, obj.Angle)));
                 }
             }

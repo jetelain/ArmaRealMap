@@ -64,19 +64,19 @@ namespace GameRealisticMap.Arma3.ManMade
             var stDelta = definition.Start.Size / 2 / bridgeLength;
             var endDelta = 1f - (definition.End.Size / 2 / bridgeLength);
 
-            objects.AddRange(definition.Start.Composition.ToTerrainBuilderObjects(
+            objects.AddRange(definition.Start.Model.ToTerrainBuilderObjects(
                 new TerrainPoint(Vector2.Lerp(path.FirstPoint.Vector, path.LastPoint.Vector, stDelta)),
                 elevationStart + ((elevationEnd - elevationStart) * (1f - stDelta)),
                 angle,
                 pitch));
 
-            objects.AddRange(definition.Middle.Composition.ToTerrainBuilderObjects(
+            objects.AddRange(definition.Middle.Model.ToTerrainBuilderObjects(
                 new TerrainPoint(Vector2.Lerp(path.FirstPoint.Vector, path.LastPoint.Vector, 0.5f)),
                 (elevationStart + elevationEnd) / 2f,
                 angle,
                 pitch));
 
-            objects.AddRange(definition.End.Composition.ToTerrainBuilderObjects(
+            objects.AddRange(definition.End.Model.ToTerrainBuilderObjects(
                 new TerrainPoint(Vector2.Lerp(path.FirstPoint.Vector, path.LastPoint.Vector, endDelta)),
                 elevationStart + ((elevationEnd - elevationStart) * (1f - endDelta)),
                 angle,
@@ -94,7 +94,7 @@ namespace GameRealisticMap.Arma3.ManMade
             var pitch = (MathF.Atan2(elevationStart - elevationEnd, (realStart.Vector - realEnd.Vector).Length()) * 180 / MathF.PI);
             var elevation = (elevationStart + elevationEnd) / 2f;
 
-            objects.AddRange(single.Composition.ToTerrainBuilderObjects(center, elevation, angle, pitch));
+            objects.AddRange(single.Model.ToTerrainBuilderObjects(center, elevation, angle, pitch));
         }
     }
 }

@@ -27,7 +27,7 @@ namespace GameRealisticMap.Arma3.Nature.Trees
                 var points = context.GetData<TreesData>().Points;
                 foreach (var point in points.ProgressStep(progress, "Trees"))
                 {
-                    var random = new Random((int)Math.Truncate(point.X + point.Y));
+                    var random = RandomHelper.CreateRandom(point);
                     var definition = candidates.GetRandom(random);
                     result.AddRange(definition.Composition.ToTerrainBuilderObjects(new ModelPosition(point, (float)(random.NextDouble() * 360))));
                 }

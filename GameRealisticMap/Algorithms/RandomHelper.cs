@@ -1,9 +1,15 @@
 ﻿using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Algorithms
 {
     public static class RandomHelper
     {
+        public static Random CreateRandom(TerrainPoint seed)
+        {
+            return new Random((int)Math.Truncate(seed.X + seed.Y));
+        }
+
         public static void CheckProbabilitySum<T>(this IReadOnlyCollection<T> list) where T : IWithProbability
         {
             if (list.Count == 0)
@@ -15,6 +21,11 @@ namespace GameRealisticMap.Algorithms
             {
                 throw new ArgumentException($"Sum of probability must be 1, but is {sum}");
             }
+        }
+
+        public static T GetRandom<T>(this IReadOnlyCollection<T> list, TerrainPoint seed) where T : IWithProbability
+        {
+            return GetRandom<T>(list, CreateRandom(seed));
         }
 
         public static T GetRandom<T>(this IReadOnlyCollection<T> list, Random random) where T : IWithProbability

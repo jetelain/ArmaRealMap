@@ -1,6 +1,7 @@
 ﻿using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
@@ -24,5 +25,7 @@ namespace GameRealisticMap.Arma3.Assets
         ModelInfo GetPond(PondSizeId pondSize);
 
         BridgeDefinition? GetBridge(RoadTypeId roadType);
+
+        IReadOnlyCollection<FenceDefinition> GetFences(FenceTypeId typeId);
     }
 }
