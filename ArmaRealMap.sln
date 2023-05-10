@@ -31,7 +31,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap", "GameRea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.Test", "GameRealisticMap.Test\GameRealisticMap.Test.csproj", "{96536D55-42E1-4B69-8FED-43ACB72DA175}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameRealisticMap.CommandLine", "GameRealisticMap.CommandLine\GameRealisticMap.CommandLine.csproj", "{2B0249D8-91A5-4B69-811C-300D90FD82EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.CommandLine", "GameRealisticMap.CommandLine\GameRealisticMap.CommandLine.csproj", "{2B0249D8-91A5-4B69-811C-300D90FD82EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.Arma3", "GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj", "{73A2E245-D755-4055-87A6-7B7AEDD4B07B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.Arma3.CommandLine", "GameRealisticMap.Arma3.CommandLine\GameRealisticMap.Arma3.CommandLine.csproj", "{B7E7B414-218E-4D5D-83F3-1D35C00BA2B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.Arma3.Test", "GameRealisticMap.Arma3.Test\GameRealisticMap.Arma3.Test.csproj", "{6CD0D25B-6600-4FDD-B1BB-99DDBD909B5D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArmToGrmA3", "ArmToGrmA3\ArmToGrmA3.csproj", "{E9EC3DEC-403E-4AA0-A374-5F31039A99F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +107,22 @@ Global
 		{2B0249D8-91A5-4B69-811C-300D90FD82EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B0249D8-91A5-4B69-811C-300D90FD82EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B0249D8-91A5-4B69-811C-300D90FD82EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73A2E245-D755-4055-87A6-7B7AEDD4B07B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73A2E245-D755-4055-87A6-7B7AEDD4B07B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73A2E245-D755-4055-87A6-7B7AEDD4B07B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73A2E245-D755-4055-87A6-7B7AEDD4B07B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7E7B414-218E-4D5D-83F3-1D35C00BA2B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7E7B414-218E-4D5D-83F3-1D35C00BA2B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7E7B414-218E-4D5D-83F3-1D35C00BA2B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7E7B414-218E-4D5D-83F3-1D35C00BA2B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD0D25B-6600-4FDD-B1BB-99DDBD909B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD0D25B-6600-4FDD-B1BB-99DDBD909B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD0D25B-6600-4FDD-B1BB-99DDBD909B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD0D25B-6600-4FDD-B1BB-99DDBD909B5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9EC3DEC-403E-4AA0-A374-5F31039A99F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9EC3DEC-403E-4AA0-A374-5F31039A99F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9EC3DEC-403E-4AA0-A374-5F31039A99F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9EC3DEC-403E-4AA0-A374-5F31039A99F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
