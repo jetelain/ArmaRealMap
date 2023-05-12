@@ -88,7 +88,7 @@ namespace GameRealisticMap.Satellite
                     report.Report(Interlocked.Increment(ref done));
                 }
             });
-            img.Mutate(d => d.GaussianBlur(2.2f));
+            img.Mutate(d => d.GaussianBlur(1f));
             return img;
         }
     }
