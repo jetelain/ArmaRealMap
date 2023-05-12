@@ -5,7 +5,7 @@ using MapToolkit.DataCells;
 
 namespace GameRealisticMap.ElevationModel
 {
-    public class ElevationGrid : IElevationGrid
+    public class ElevationGrid : IElevationGrid, IElevationGridConfig
     {
         private readonly int size;
         private readonly float[,] elevationGrid;
@@ -41,6 +41,8 @@ namespace GameRealisticMap.ElevationModel
         public int Size => size;
 
         public Vector2 CellSize => cellSize;
+
+        public Vector2 SizeInMeters => cellSize * size;
 
         public float ElevationAround(TerrainPoint p)
         {

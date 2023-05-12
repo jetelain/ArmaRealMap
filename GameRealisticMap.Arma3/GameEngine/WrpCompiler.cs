@@ -12,7 +12,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         private readonly IProgressSystem progress;
         private readonly IGameFileSystemWriter fileSystemWriter;
 
-        internal const int LandRange = 512; // Make a parameter for this ?
+        // internal const int LandRange = 512; // Make a parameter for this ?
 
         public WrpCompiler(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter)
         {
@@ -22,7 +22,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         public void Write(IArma3MapConfig config, ElevationGrid elevationGrid, IEnumerable<EditableWrpObject> objects)
         {
-            Write(config, elevationGrid, new ImageryTiler(config.TileSize, config.Resolution, config.GetImagerySize()), objects);
+            Write(config, elevationGrid, new ImageryTiler(config), objects);
         }
 
         public void Write(IArma3MapConfig config, ElevationGrid elevationGrid, ImageryTiler terrainTiler, IEnumerable<EditableWrpObject> objects)
@@ -45,68 +45,86 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         public EditableWrp CreateWorldWithoutObjects(ElevationGrid elevationGrid, ImageryTiler terrainTiler, string pboPrefix)
         {
-            var wrp = InitWrp(elevationGrid);
+            var wrp = InitWrp(elevationGrid, LandRange(elevationGrid.SizeInMeters.X));
 
             SetElevation(elevationGrid, wrp);
 
+            SetMaterialAndIndexes(terrainTiler, wrp, pboPrefix);
+
+            return wrp;
+        }
+
+        public static void SetMaterialAndIndexes(ImageryTiler terrainTiler, EditableWrp wrp, string pboPrefix)
+        {
             SetMaterials(terrainTiler, wrp, pboPrefix);
 
             SetMaterialIndexes(terrainTiler, wrp);
-
-            return wrp;
         }
 
-        public static EditableWrp InitWrp(ElevationGrid config)
+        public static EditableWrp InitWrp(IElevationGridConfig config, int landRange)
         {
             var wrp = new EditableWrp();
-            wrp.LandRangeX = LandRange;
-            wrp.LandRangeY = LandRange;
+            wrp.LandRangeX = landRange;
+            wrp.LandRangeY = landRange;
             wrp.TerrainRangeX = config.Size;
             wrp.TerrainRangeY = config.Size;
-            wrp.CellSize = config.Size / LandRange * config.CellSize.X;
+            wrp.CellSize = config.Size * config.CellSize.X / landRange;
             return wrp;
         }
 
-        public void SetMaterials(ImageryTiler terrainTiler, EditableWrp wrp, string pboPrefix)
+        public static int LandRange(float sizeInMeters)
+        {
+            if (sizeInMeters > 30720)
+            {
+                return 1024;
+            }
+            if (sizeInMeters > 15360)
+            {
+                return 512;
+            }
+            if (sizeInMeters > 7680)
+            {
+                return 256;
+            }
+            return 128;
+        }
+
+        private static void SetMaterials(ImageryTiler terrainTiler, EditableWrp wrp, string pboPrefix)
         {
             wrp.MatNames = new string[terrainTiler.Segments.Length + 1];
             var w = terrainTiler.Segments.GetLength(0);
             var h = terrainTiler.Segments.GetLength(1);
             wrp.MatNames[0] = string.Empty;
-            using var report = progress.CreateStep("MatNames", w);
             for (int x = 0; x < w; x++)
             {
                 for (int y = 0; y < h; y++)
                 {
                     wrp.MatNames[x + (y * h) + 1] = $"{pboPrefix}\\data\\layers\\p_{x:000}-{y:000}.rvmat";
                 }
-                report.ReportOneDone();
             }
         }
 
-        private void SetMaterialIndexes(ImageryTiler terrainTiler, EditableWrp wrp)
+        private static void SetMaterialIndexes(ImageryTiler terrainTiler, EditableWrp wrp)
         {
+            var landRange = wrp.LandRangeX;
             var h = terrainTiler.Segments.GetLength(1);
-            using var report = progress.CreateStep("MaterialIndex", LandRange);
             int cellPixelSize = (int)(wrp.CellSize / terrainTiler.Resolution);
-            wrp.MaterialIndex = new ushort[LandRange * LandRange];
-            for (int x = 0; x < LandRange; x++)
+            wrp.MaterialIndex = new ushort[landRange * landRange];
+            for (int x = 0; x < landRange; x++)
             {
-                for (int y = 0; y < LandRange; y++)
+                for (int y = 0; y < landRange; y++)
                 {
                     // FIXME: this seems wrong on some map sizes
-                    var p = new Point((x + 1) * cellPixelSize - 1, (LandRange - 1 - y + 1) * cellPixelSize - 1);
+                    var p = new Point((x + 1) * cellPixelSize - 1, (landRange - 1 - y + 1) * cellPixelSize - 1);
                     var segment = terrainTiler.All.First(s => s.ContainsImagePoint(p));
-                    wrp.MaterialIndex[x + (y * LandRange)] = (ushort)(segment.X + (segment.Y * h) + 1);
+                    wrp.MaterialIndex[x + (y * landRange)] = (ushort)(segment.X + (segment.Y * h) + 1);
                 }
-                report.ReportOneDone();
             }
         }
 
         private void SetElevation(ElevationGrid elevationGrid, EditableWrp wrp)
         {
             var size = elevationGrid.Size;
-            using var report = progress.CreateStep("Elevation", size);
             wrp.Elevation = new float[size * size];
             for (int x = 0; x < size; x++)
             {
@@ -114,7 +132,6 @@ namespace GameRealisticMap.Arma3.GameEngine
                 {
                     wrp.Elevation[x + (y * size)] = elevationGrid[x, y];
                 }
-                report.ReportOneDone();
             }
         }
         

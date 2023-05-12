@@ -8,7 +8,7 @@
 
         public string? PboPrefix { get; set; }
 
-        public float FakeSatBlend { get; set; } = 0.25f;
+        public float FakeSatBlend { get; set; } = 0.5f;
 
         public string? WorldName { get; set; }
 

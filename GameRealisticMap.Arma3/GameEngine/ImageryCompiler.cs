@@ -48,7 +48,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         {
             gameFileSystemWriter.CreateDirectory($"{config.PboPrefix}\\data\\layers");
 
-            var tiler = new ImageryTiler(config.TileSize, config.Resolution, config.GetImagerySize());
+            var tiler = new ImageryTiler(config);
 
             using (var idMap = source.CreateIdMap())
             {
@@ -87,6 +87,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         private void GenerateIdMapTilesAndRvMat(IArma3MapConfig config, Image idmap, ImageryTiler tiler)
         {
             using var report = progress.CreateStep("IdMapTiling", tiler.Segments.Length);
+            var textureScale = GetTextureScale(config);
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
             {
                 using (var sourceTile = new Image<Rgb24>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgb24>()))
@@ -100,7 +101,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                             sourceTile.Mutate(c => c.DrawImage(idmap, pos, 1.0f));
                             ImageryTileHelper.FillEdges(tiler.FullImageSize, x, tiler.Segments.GetLength(0), sourceTile, y, pos);
                             var tex = ReduceColors(sourceTile, targetTile);
-                            var rvmat = MakeRvMat(seg, config, tex.Select(t => t.Material), materialLibrary.TextureSizeInMeters);
+                            var rvmat = MakeRvMat(seg, config, tex.Select(t => t.Material), textureScale);
                             gameFileSystemWriter.WritePngImage($"{config.PboPrefix}\\data\\layers\\M_{x:000}_{y:000}_lca.png", targetTile);
                             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\data\\layers\\P_{x:000}-{y:000}.rvmat", rvmat);
                             report.ReportOneDone();
@@ -108,6 +109,11 @@ namespace GameRealisticMap.Arma3.GameEngine
                     }
                 }
             });
+        }
+
+        public double GetTextureScale(IArma3MapConfig config)
+        {
+            return config.SizeInMeters / WrpCompiler.LandRange(config.SizeInMeters) / materialLibrary.TextureSizeInMeters;
         }
 
         private List<TextureStats> ReduceColors(Image<Rgb24> source, Image<Rgba32> target)
@@ -202,9 +208,8 @@ namespace GameRealisticMap.Arma3.GameEngine
             }
         }
 
-        public static string MakeRvMat(ImageryTile segment, IArma3MapConfig config, IEnumerable<TerrainMaterial> textures, double textureSizeInMeters = TerrainMaterialLibrary.DefaultTextureSizeInMeters)
+        public static string MakeRvMat(ImageryTile segment, IArma3MapConfig config, IEnumerable<TerrainMaterial> textures, double textureScale = 10)
         {
-            var textureScale = config.SizeInMeters / WrpCompiler.LandRange / textureSizeInMeters;
             var sw = new StringWriter();
             sw.WriteLine(FormattableString.Invariant($@"ambient[]={{1,1,1,1}};
 diffuse[]={{1,1,1,1}};

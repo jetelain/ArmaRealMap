@@ -23,6 +23,12 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         public double Resolution { get; }
 
+        public ImageryTiler(IArma3MapConfig config)
+            : this(config.TileSize, config.Resolution, config.GetImagerySize())
+        {
+
+        }
+
         public ImageryTiler(int tileSize, double resolution, Size fullImageSize)
         {
             TileSize = tileSize;
