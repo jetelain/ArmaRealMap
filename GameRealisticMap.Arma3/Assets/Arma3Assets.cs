@@ -90,7 +90,10 @@ namespace GameRealisticMap.Arma3.Assets
 
         IRoadTypeLibrary<Arma3RoadTypeInfos> IArma3RegionAssets.RoadTypeLibrary => this;
 
+        public string BaseWorldName { get; set; } = "arm_world_centraleurope";
 
+        public string BaseDependency { get; set; } = "arm_centraleurope";
+        
         public static JsonSerializerOptions CreateJsonSerializerOptions(IModelInfoLibrary library)
         {
             return new JsonSerializerOptions()
@@ -107,6 +110,20 @@ namespace GameRealisticMap.Arma3.Assets
         public IReadOnlyCollection<FenceDefinition> GetFences(FenceTypeId typeId)
         {
             return Lookup(Fences, typeId);
+        }
+
+        public static async Task<Arma3Assets> LoadFromFile(ModelInfoLibrary library, string path)
+        {
+            Arma3Assets? assets;
+            using (var source = File.OpenRead(path))
+            {
+                assets = await JsonSerializer.DeserializeAsync<Arma3Assets>(source, CreateJsonSerializerOptions(library));
+            }
+            if ( assets == null)
+            {
+                throw new IOException("Invalid JSON file");
+            }
+            return assets;
         }
     }
 }

@@ -28,6 +28,8 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         public void Write(IArma3MapConfig config, IReadOnlyCollection<Road> roadsList)
         {
+            fileSystemWriter.CreateDirectory($"{config.PboPrefix}\\data\\roads");
+
             WriteRoadsLibCgf(config);
             SaveRoadsShp(config, roadsList);
         }
@@ -42,7 +44,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                     continue;
                 }
                 var attributesTable = new AttributesTable();
-                attributesTable.Add("ID", (int)road.RoadType);
+                attributesTable.Add("ID", ((int)road.RoadType)+1);
                 var path = road.Path;
                 if (road.RoadType < RoadTypeId.SingleLaneDirtPath)
                 {
@@ -52,7 +54,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             }
             var shapeWriter = new ShapefileDataWriter(new ShapeFileWriter(fileSystemWriter, $"{config.PboPrefix}\\data\\roads\\roads"), new GeometryFactory(), Encoding.ASCII)
             {
-                Header = ShapefileDataWriter.GetHeader(features.First(), features.Count)
+                Header = ShapefileDataWriter.GetHeader(features.First(), features.Count, Encoding.ASCII)
             };
             shapeWriter.Write(features);
         }
@@ -68,7 +70,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             {
                 var infos = roadTypeLibrary.GetInfo(id);
                 writer.WriteLine(FormattableString.Invariant(
-                $@" class Road{(int)id:0000}
+                $@" class Road{((int)id)+1:0000}
 {{
 	width = {infos.TextureWidth};
 	mainStrTex      = ""{infos.Texture}""; 

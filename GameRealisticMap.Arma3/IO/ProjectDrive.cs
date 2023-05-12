@@ -6,21 +6,14 @@ namespace GameRealisticMap.Arma3.IO
     public class ProjectDrive : IGameFileSystem, IGameFileSystemWriter
     {
         private readonly string mountPath;
-        private readonly IGameFileSystem? autoUnpackFrom;
+        private readonly IGameFileSystem? secondarySource;
         private readonly List<string> imageToPaaPending = new ();
         private readonly List<KeyValuePair<string, string>> mountPoints = new ();
 
-        public ProjectDrive(string mountPath = "P:", IGameFileSystem? autoUnpackFrom = null)
+        public ProjectDrive(string mountPath = "P:", IGameFileSystem? secondarySource = null)
         {
             this.mountPath = mountPath;
-            this.autoUnpackFrom = autoUnpackFrom;
-        }
-
-        public bool Exists(string path)
-        {
-            var fullPath = GetFullPath(path);
-
-            return File.Exists(fullPath) || AutoUnpack(path, fullPath);
+            this.secondarySource = secondarySource;
         }
 
         private string GetFullPath(string path)
@@ -40,13 +33,14 @@ namespace GameRealisticMap.Arma3.IO
             return Path.Combine(mountPath, path);
         }
 
-        private bool AutoUnpack(string path, string fullPath)
+        public bool EnsureLocalFileCopy(string path)
         {
-            if (path.StartsWith("temp/") || path.StartsWith("temp\\"))
+            var fullPath = GetFullPath(path);
+            if (File.Exists(fullPath))
             {
-                return false;
+                return true;
             }
-            using (var fallBack = autoUnpackFrom?.OpenFileIfExists(path))
+            using (var fallBack = secondarySource?.OpenFileIfExists(path))
             {
                 if (fallBack != null)
                 {
@@ -63,11 +57,11 @@ namespace GameRealisticMap.Arma3.IO
         public Stream? OpenFileIfExists(string path)
         {
             var fullPath = GetFullPath(path);
-            if (File.Exists(fullPath) || AutoUnpack(path, fullPath))
+            if (File.Exists(fullPath))
             {
                 return File.OpenRead(fullPath);
             }
-            return null;
+            return secondarySource?.OpenFileIfExists(path);
         }
 
         public void CreateDirectory(string path)
@@ -106,6 +100,11 @@ namespace GameRealisticMap.Arma3.IO
             }
             mountPoints.Add(new (gamePath, physicalPath));
             mountPoints.Sort((a, b) => b.Key.Length.CompareTo(a.Key.Length));
+        }
+
+        public bool FileExists(string path)
+        {
+            return File.Exists(GetFullPath(path));
         }
     }
 }

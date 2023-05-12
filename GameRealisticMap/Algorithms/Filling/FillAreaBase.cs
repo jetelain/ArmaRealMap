@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
@@ -33,13 +34,13 @@ namespace GameRealisticMap.Algorithms.Filling
 
         private List<AreaFillingBase<TModelInfo>> GetFillAreas(IEnumerable<TerrainPolygon> polygons)
         {
-            var areas = new List<AreaFillingBase<TModelInfo>>();
-            foreach (var poly in polygons)
+            var areas = new ConcurrentBag<AreaFillingBase<TModelInfo>>();
+            Parallel.ForEach(polygons, new ParallelOptions() { MaxDegreeOfParallelism = Math.Max(2, Environment.ProcessorCount * 3 / 4) }, poly =>
             {
                 var definition = new AreaDefinition(poly);
                 areas.Add(GenerateAreaSelectData(definition));
-            }
-            return areas;
+            });
+            return areas.ToList();
         }
 
         private void FillAreaList(List<AreaFillingBase<TModelInfo>> areas, RadiusPlacedLayer<TModelInfo> objects, IProgressInteger report, ref int generatedItems)
@@ -86,7 +87,7 @@ namespace GameRealisticMap.Algorithms.Filling
                     var point = fillarea.Area.GetRandomPointInside();
                     var obj = fillarea.SelectObjectToInsert(point);
                     var candidate = Create(obj, point, 0, 0, GetScale(fillarea.Area.Random, obj));
-                    if (WillFit(candidate, fillarea.Area))
+                    //FIXME: if (WillFit(candidate, fillarea.Area))
                     {
                         var potentialConflits = objects.Search(candidate.MinPoint, candidate.MaxPoint);
                         if (HasRoom(candidate, potentialConflits))

@@ -8,12 +8,16 @@ using GameRealisticMap.ManMade.Roads.Libraries;
 
 namespace GameRealisticMap.Arma3.Assets
 {
-    internal interface IArma3RegionAssets
+    public interface IArma3RegionAssets
     {
         IRoadTypeLibrary<Arma3RoadTypeInfos> RoadTypeLibrary { get; }
 
         TerrainMaterialLibrary Materials { get; }
 
+        string BaseWorldName { get; }
+
+        string BaseDependency { get; }
+        
         IEnumerable<BuildingDefinition> GetBuildings(BuildingTypeId buildingTypeId);
 
         IReadOnlyCollection<ObjectDefinition> GetObjects(ObjectTypeId typeId);

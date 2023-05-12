@@ -6,12 +6,13 @@ namespace GameRealisticMap.Arma3.Assets
 {
     public class TerrainMaterial
     {
-        public TerrainMaterial(string normalTexture, string colorTexture, Rgb24 id, byte[]? pngFakeSat)
+        [JsonConstructor]
+        public TerrainMaterial(string normalTexture, string colorTexture, Rgb24 id, byte[]? fakeSatPngImage)
         {
             NormalTexture = normalTexture;
             ColorTexture = colorTexture;
             Id = id;
-            FakeSatPngImage = pngFakeSat;
+            FakeSatPngImage = fakeSatPngImage;
         }
 
         public string NormalTexture { get; }

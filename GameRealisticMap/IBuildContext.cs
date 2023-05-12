@@ -7,5 +7,7 @@ namespace GameRealisticMap
         ITerrainArea Area { get; }
 
         IOsmDataSource OsmSource { get; }
+
+        IImageryOptions Imagery { get; }
     }
 }

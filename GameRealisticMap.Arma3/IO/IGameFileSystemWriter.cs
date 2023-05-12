@@ -11,5 +11,7 @@ namespace GameRealisticMap.Arma3.IO
         void WriteTextFile(string path, string text);
 
         Stream Create(string path);
+
+        bool FileExists(string path);
     }
 }

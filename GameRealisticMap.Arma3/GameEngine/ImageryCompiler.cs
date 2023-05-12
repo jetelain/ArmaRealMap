@@ -52,11 +52,13 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             using (var idMap = source.CreateIdMap())
             {
+                idMap.SaveAsPng("idmap.png");
                 GenerateIdMapTilesAndRvMat(config, idMap, tiler);
             }
 
             using (var satMap = source.CreateSatMap())
             {
+                satMap.SaveAsPng("satmap.png");
                 GenerateSatMapTiles(config, satMap, tiler);
             }
 
@@ -98,7 +100,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                             sourceTile.Mutate(c => c.DrawImage(idmap, pos, 1.0f));
                             ImageryTileHelper.FillEdges(tiler.FullImageSize, x, tiler.Segments.GetLength(0), sourceTile, y, pos);
                             var tex = ReduceColors(sourceTile, targetTile);
-                            var rvmat = MakeRvMat(seg, config, tex.Select(t => t.Material));
+                            var rvmat = MakeRvMat(seg, config, tex.Select(t => t.Material), materialLibrary.TextureSizeInMeters);
                             gameFileSystemWriter.WritePngImage($"{config.PboPrefix}\\data\\layers\\M_{x:000}_{y:000}_lca.png", targetTile);
                             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\data\\layers\\P_{x:000}-{y:000}.rvmat", rvmat);
                             report.ReportOneDone();
@@ -200,9 +202,9 @@ namespace GameRealisticMap.Arma3.GameEngine
             }
         }
 
-        public static string MakeRvMat(ImageryTile segment, IArma3MapConfig config, IEnumerable<TerrainMaterial> textures)
+        public static string MakeRvMat(ImageryTile segment, IArma3MapConfig config, IEnumerable<TerrainMaterial> textures, double textureSizeInMeters = TerrainMaterialLibrary.DefaultTextureSizeInMeters)
         {
-            var textureScale = config.GetTextureScale();
+            var textureScale = config.SizeInMeters / WrpCompiler.LandRange / textureSizeInMeters;
             var sw = new StringWriter();
             sw.WriteLine(FormattableString.Invariant($@"ambient[]={{1,1,1,1}};
 diffuse[]={{1,1,1,1}};

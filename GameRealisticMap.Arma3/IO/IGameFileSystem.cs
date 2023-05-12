@@ -3,6 +3,5 @@
     public interface IGameFileSystem
     {
         Stream? OpenFileIfExists(string path);
-        bool Exists(string path);
     }
 }

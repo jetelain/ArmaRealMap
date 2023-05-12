@@ -11,14 +11,9 @@ namespace GameRealisticMap.Arma3
             return new Size((int)Math.Ceiling(config.SizeInMeters / config.Resolution));
         }
 
-        public static double GetTextureScale(this IArma3MapConfig config)
-        {
-            return config.SizeInMeters / WrpCompiler.LandRange / config.TextureSizeInMeters;
-        }
-
         public static IEnumerable<PointF> TerrainToPixel(this IArma3MapConfig config, IEnumerable<TerrainPoint> points)
         {
-            return points.Select(point => new PointF((float)(point.X / config.Resolution), (float)(point.Y / config.Resolution)));
+            return points.Select(point => new PointF((float)(point.X / config.Resolution), (float)((config.SizeInMeters - point.Y) / config.Resolution)));
         }
     }
 }

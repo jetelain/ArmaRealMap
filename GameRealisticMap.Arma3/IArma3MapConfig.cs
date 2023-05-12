@@ -4,13 +4,11 @@
     {
         float SizeInMeters { get; }
 
-        int TileSize { get; }
+        int TileSize { get; } // Typical value: 1024
 
         double Resolution { get; } // Typical value: 1m/px
 
         string PboPrefix { get; }
-
-        double TextureSizeInMeters { get; } // Typical value: 4m
 
         float FakeSatBlend { get; }
 

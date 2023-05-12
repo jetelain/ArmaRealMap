@@ -7,6 +7,7 @@ using ArmaRealMap.Core;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.Core.Roads;
 using ArmaRealMap.Libraries;
+using ArmaRealMap.TerrainBuilder;
 using ArmaRealMap.TerrainData.Roads;
 using BitMiracle.LibTiff.Classic;
 using GameRealisticMap.Algorithms;
@@ -47,6 +48,8 @@ namespace ArmToGrmA3
             var ceJSON = JsonSerializer.Serialize(centralEurope, Arma3Assets.CreateJsonSerializerOptions(newModels));
             var sJSON = JsonSerializer.Serialize(sahel, Arma3Assets.CreateJsonSerializerOptions(newModels));
 
+            File.WriteAllText("CentralEurope.json", ceJSON);
+            File.WriteAllText("Sahel.json", sJSON);
         }
 
         private static Arma3Assets Convert(TerrainRegion region, GlobalConfig globalConfig, ModelInfoLibrary newModels)
@@ -166,6 +169,7 @@ namespace ArmToGrmA3
         private static List<ClusterCollectionDefinition> ConvertCluster(ObjectLibrary? oldLibrary, ModelInfoLibrary models, OldModelInfoLibrary oldModels)
         {
             var items = new List<ClusterDefinition>();
+            var density = 0d;
             if (oldLibrary != null)
             {
                 var defProbability = 1d / oldLibrary.Objects.Count;
@@ -181,12 +185,20 @@ namespace ArmToGrmA3
                         old.ReservedRadius ?? old.PlacementRadius ?? place.GeneralRadius.Radius,
                         composition, old.MaxZ, old.MinZ, 1, null, null), probability));
                 }
+
+                density = oldLibrary?.Density ?? 0.01d;
+                var itemSurface = oldLibrary.Objects.Sum(o => o.PlacementProbability.Value * Math.Pow(o.PlacementRadius.Value, 2) * Math.PI);
+                var maxDensity = 1 / itemSurface * 0.8d;
+                if (density > maxDensity)
+                {
+                    density = maxDensity;
+                }
             }
             if (items.Count == 0)
             {
                 return new List<ClusterCollectionDefinition>();
             }
-            return new List<ClusterCollectionDefinition>() { new ClusterCollectionDefinition(items, 1, oldLibrary?.Density ?? 0, oldLibrary?.Density ?? 0) };
+            return new List<ClusterCollectionDefinition>() { new ClusterCollectionDefinition(items, 1, density, density) };
         }
 
         private static BridgeDefinition ConvertBridge(ObjectLibrary objectLibrary, ModelInfoLibrary newModels, OldModelInfoLibrary oldModels)
@@ -288,6 +300,22 @@ namespace ArmToGrmA3
         private static void MapMaterial(ArmaRealMap.TerrainData.GroundDetailTextures.TerrainMaterialLibrary oldLib, ArmaRealMap.GroundTextureDetails.TerrainMaterial oldId, TerrainMaterialUsage usage, Dictionary<TerrainMaterial, List<TerrainMaterialUsage>> newMaterials, TerrainRegion region)
         {
             var oldMaterial = oldLib.GetInfo(oldId, region);
+
+            if (oldMaterial.ColorTexture.Contains("_centraleurope_"))
+            {
+                oldMaterial.ColorTexture = oldMaterial.ColorTexture.Replace("\\common\\", "\\centraleurope\\");
+                oldMaterial.NormalTexture = oldMaterial.NormalTexture.Replace("\\common\\", "\\centraleurope\\");
+            }
+            else if (oldMaterial.ColorTexture.Contains("_sahel_"))
+            {
+                oldMaterial.ColorTexture = oldMaterial.ColorTexture.Replace("\\common\\", "\\sahel\\");
+                oldMaterial.NormalTexture = oldMaterial.NormalTexture.Replace("\\common\\", "\\sahel\\");
+            }
+            else
+            {
+                oldMaterial.ColorTexture = oldMaterial.ColorTexture.Replace("\\common\\", "\\common_v2\\");
+                oldMaterial.NormalTexture = oldMaterial.NormalTexture.Replace("\\common\\", "\\common_v2\\");
+            }
             var newMaterial = newMaterials.Keys.FirstOrDefault(m => string.Equals(m.ColorTexture, oldMaterial.ColorTexture, StringComparison.OrdinalIgnoreCase));
             if (newMaterial == null)
             {

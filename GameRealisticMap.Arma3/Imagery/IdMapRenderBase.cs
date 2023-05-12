@@ -78,7 +78,7 @@ namespace GameRealisticMap.Arma3.Imagery
             {
                 foreach (var polygon in polygons)
                 {
-                    PolygonDrawHelper.DrawPolygon(d, polygon, brush, points => TerrainToPixel(config, points));
+                    PolygonDrawHelper.DrawPolygon(d, polygon, brush, drawingOptions, points => TerrainToPixel(config, points));
                 }
             });
         }

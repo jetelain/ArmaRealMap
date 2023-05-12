@@ -25,7 +25,7 @@ namespace GameRealisticMap.Algorithms.Filling
             {
                 potential = defaultClusters;
             }
-            var cluster = potential.GetRandom(area.Random);
+            var cluster = potential.GetEquiprobale(area.Random);
             return cluster.Models.GetRandom(area.Random);
         }
     }

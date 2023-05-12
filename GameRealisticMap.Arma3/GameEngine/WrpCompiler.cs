@@ -94,6 +94,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             {
                 for (int y = 0; y < LandRange; y++)
                 {
+                    // FIXME: this seems wrong on some map sizes
                     var p = new Point((x + 1) * cellPixelSize - 1, (LandRange - 1 - y + 1) * cellPixelSize - 1);
                     var segment = terrainTiler.All.First(s => s.ContainsImagePoint(p));
                     wrp.MaterialIndex[x + (y * LandRange)] = (ushort)(segment.X + (segment.Y * h) + 1);

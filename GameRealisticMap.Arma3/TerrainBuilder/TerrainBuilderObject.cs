@@ -52,18 +52,18 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
         }
 
         public TerrainBuilderObject(EditableWrpObject wrpObject, IModelInfoLibrary library)
-            : this(library.ResolveByPath(wrpObject.Model), wrpObject.Transform.Matrix, ElevationMode.Absolute)
+            : this(library.ResolveByPath(wrpObject.Model), wrpObject.Transform.Matrix, ElevationMode.Absolute, true)
         {
 
         }
 
         public TerrainBuilderObject(ModelInfo model, EditableWrpObject wrpObject)
-            : this(model, wrpObject.Transform.Matrix, ElevationMode.Absolute)
+            : this(model, wrpObject.Transform.Matrix, ElevationMode.Absolute, true)
         {
 
         }
 
-        public TerrainBuilderObject(ModelInfo model, Matrix4x4 wrpMatrix, ElevationMode elevationMode)
+        public TerrainBuilderObject(ModelInfo model, Matrix4x4 wrpMatrix, ElevationMode elevationMode, bool compensateBoudingCenter)
         {
             this.model = model;
             this.elevationMode = elevationMode;
@@ -84,7 +84,14 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             yaw = MathHelper.FromRadians(-Math.Atan2(rotateOnly.M13, rotateOnly.M33));
             pitch = MathHelper.FromRadians(Math.Asin(-rotateOnly.M23));
             roll = MathHelper.FromRadians(Math.Atan2(rotateOnly.M21, rotateOnly.M22));
-            elevation = wrpMatrix.M42 - GetAbsoluteElevation(model, GetRotateAndScaleOnly(wrpMatrix));
+            if (compensateBoudingCenter)
+            {
+                elevation = wrpMatrix.M42 - GetAbsoluteElevation(model, GetRotateAndScaleOnly(wrpMatrix));
+            }
+            else
+            {
+                elevation = wrpMatrix.M42;
+            }
         }
 
         private static Matrix4x4 GetRotateAndScaleOnly(Matrix4x4 rotateMatrix)
@@ -154,11 +161,11 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             {
                 matrix = matrix * Matrix4x4.CreateScale(scale);
             }
-            matrix.M42 = elevation + GetAbsoluteElevation(model, GetRotateAndScaleOnly(matrix));
+            matrix.M42 = elevation;
             matrix.M41 = terrainPoint.X;
             matrix.M43 = terrainPoint.Y;
             matrix.M44 = 1f;
-            return new TerrainBuilderObject(model, matrix, ElevationMode.Relative);
+            return new TerrainBuilderObject(model, matrix, ElevationMode.Relative, false);
         }
 
         private float GetZ(IElevationGrid grid, Matrix4x4 matrix)

@@ -1,4 +1,5 @@
-﻿using BIS.WRP;
+﻿using System.Text;
+using BIS.WRP;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.Imagery;
@@ -16,7 +17,7 @@ using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3
 {
-    internal class Arma3MapGenerator
+    public class Arma3MapGenerator
     {
         private readonly IArma3RegionAssets assets;
         private readonly IProgressSystem progress;
@@ -57,8 +58,10 @@ namespace GameRealisticMap.Arma3
             terrainBuilderLayerGenerators.Add(new WatercourseRadialGenerator(progress, assets));
         }
 
-        public void WriteDirectlyWrp(IArma3MapConfig config, IContext context)
+        public void WriteDirectlyWrp(IArma3MapConfig config, IContext context, ITerrainArea area)
         {
+            new GameConfigGenerator(assets, gameFileSystemWriter).Generate(config, context, area);
+
             // Roads
             var roadsCompiler = new RoadsCompiler(progress, gameFileSystemWriter, assets.RoadTypeLibrary);
 
@@ -83,5 +86,6 @@ namespace GameRealisticMap.Arma3
                 .SelectMany(tb => tb.Generate(config, context))
                 .Select(o => o.ToWrpObject(elevationGrid));
         }
+
     }
 }

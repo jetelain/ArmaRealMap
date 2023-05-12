@@ -56,6 +56,11 @@ namespace GameRealisticMap.Algorithms
             throw new ArgumentException($"Sum of probability must be 1, but is {list.Sum(l => l.Probability)}");
         }
 
+        public static T GetEquiprobale<T>(this IReadOnlyList<T> list, Random random)
+        {
+            return list[random.Next(0, list.Count)];
+        }
+
         public static double GetDensity(this IWithDensity densityDefinition, Random random)
         {
             if (densityDefinition.MaxDensity == densityDefinition.MinDensity)

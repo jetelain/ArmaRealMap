@@ -8,13 +8,15 @@ namespace GameRealisticMap.Arma3.Assets
         private readonly Dictionary<Rgb24, TerrainMaterial> indexByColor = new Dictionary<Rgb24, TerrainMaterial>();
         private readonly Dictionary<TerrainMaterialUsage, TerrainMaterial> indexByUsage = new Dictionary<TerrainMaterialUsage, TerrainMaterial>();
 
+        public const double DefaultTextureSizeInMeters = 4;
+
         public TerrainMaterialLibrary()
         {
 
         }
 
         [JsonConstructor]
-        public TerrainMaterialLibrary(List<TerrainMaterialDefinition> definitions)
+        public TerrainMaterialLibrary(List<TerrainMaterialDefinition> definitions, double textureSizeInMeters = DefaultTextureSizeInMeters)
         {
             foreach (var definition in definitions)
             {
@@ -26,7 +28,10 @@ namespace GameRealisticMap.Arma3.Assets
                     indexByUsage[usage] = definition.Material;
                 }
             }
+            TextureSizeInMeters = textureSizeInMeters;
         }
+
+        public double TextureSizeInMeters { get; } = DefaultTextureSizeInMeters;
 
         public TerrainMaterial GetMaterialById(Rgb24 id)
         {

@@ -12,8 +12,6 @@ namespace GameRealisticMap.Satellite
     internal class RawSatelliteImageBuilder : IDataBuilder<RawSatelliteImageData>, IDataSerializer<RawSatelliteImageData>
     {
         private readonly IProgressSystem progress;
-        private readonly float imageryResolution = 1; // m per pixel
-        // private const int maxTileSize = 8192; // ~200 Mo with 24bits/pixel
 
         public RawSatelliteImageBuilder(IProgressSystem progress)
         {
@@ -22,7 +20,7 @@ namespace GameRealisticMap.Satellite
 
         public RawSatelliteImageData Build(IBuildContext context)
         {
-            var totalSize = (int)Math.Ceiling(context.Area.SizeInMeters / imageryResolution);
+            var totalSize = (int)Math.Ceiling(context.Area.SizeInMeters / context.Imagery.Resolution);
 
 
             /*var tileSize = totalSize;
@@ -71,6 +69,7 @@ namespace GameRealisticMap.Satellite
 
         private Image<Rgb24> LoadImage(IBuildContext context, int tileSize, IProgressInteger report, Vector2 start, int done)
         {
+            var imageryResolution = context.Imagery.Resolution;
             using var src = new S2Cloudless();
             var img = new Image<Rgb24>(tileSize, tileSize);
             var parallel = 16;
@@ -83,7 +82,7 @@ namespace GameRealisticMap.Satellite
                 {
                     for (int x = 0; x < img.Width; x++)
                     {
-                        var latLong = context.Area.TerrainPointToLatLng(new TerrainPoint(x * imageryResolution, y * imageryResolution) + start);
+                        var latLong = context.Area.TerrainPointToLatLng(new TerrainPoint((float)(x * imageryResolution), (float)(y * imageryResolution)) + start);
                         img[x, img.Height - y - 1] = src.GetPixel(latLong).Result;
                     }
                     report.Report(Interlocked.Increment(ref done));
