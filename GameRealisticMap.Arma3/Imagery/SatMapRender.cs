@@ -31,6 +31,13 @@ namespace GameRealisticMap.Arma3.Imagery
             return fakeSatRender.RenderSatOut(config, context, size);
         }
 
+        public Image RenderPictureMap(IArma3MapConfig config, IContext context, int size)
+        {
+            var satMap = context.GetData<RawSatelliteImageData>().Image;
+
+            return satMap.Clone(d => d.Resize(size, size));
+        }
+
         public Image Render(IArma3MapConfig config, IContext context)
         {
             var result = RenderBaseImage(config, context);

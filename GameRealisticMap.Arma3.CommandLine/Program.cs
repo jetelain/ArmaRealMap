@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics;
+using System.Numerics;
 using System.Text.Json;
 using BIS.Core.Streams;
 using BIS.P3D;
@@ -105,7 +106,7 @@ namespace GameRealisticMap.Arma3.CommandLine
                 TileSize = 512
             }.ToArma3MapConfig();
 
-
+            var sw = Stopwatch.StartNew();
 
             var progress = new ConsoleProgressSystem();
 
@@ -126,6 +127,12 @@ namespace GameRealisticMap.Arma3.CommandLine
             generator.WriteDirectlyWrp(a3config, context, a3config.TerrainArea);
 
             await projectDrive.ProcessImageToPaa(progress);
+
+            sw.Stop();
+
+            var surface = a3config.SizeInMeters * a3config.SizeInMeters / 1000000d;
+
+            Console.WriteLine($"It took {sw.ElapsedMilliseconds} msec for {surface:0.0} Km², {sw.ElapsedMilliseconds/surface:0} msec/Km²");
 
             //return;
 

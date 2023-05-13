@@ -26,6 +26,11 @@ namespace GameRealisticMap.Arma3.Imagery
             return idMapRender.Render(config, context);
         }
 
+        public Image CreatePictureMap()
+        {
+            return satMapRender.RenderPictureMap(config, context, 2048);
+        }
+
         public Image CreateSatMap()
         {
             return satMapRender.Render(config, context);

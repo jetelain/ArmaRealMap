@@ -56,10 +56,26 @@ namespace GameRealisticMap.Arma3.GameEngine
                 GenerateIdMapTilesAndRvMat(config, idMap, tiler);
             }
 
+            CreateConfigCppImages(config, source);
+
             using (var satMap = source.CreateSatMap())
             {
                 satMap.SaveAsPng("satmap.png");
                 GenerateSatMapTiles(config, satMap, tiler);
+            }
+
+            return tiler;
+        }
+
+        private void CreateConfigCppImages(IArma3MapConfig config, IImagerySource source)
+        {
+            var picturemapFile = $"{config.PboPrefix}\\data\\picturemap_ca.png";
+            if (!gameFileSystemWriter.FileExists(picturemapFile))
+            {
+                using (var satMapOut = source.CreatePictureMap())
+                {
+                    gameFileSystemWriter.WritePngImage(picturemapFile, satMapOut);
+                }
             }
 
             var satoutFile = $"{config.PboPrefix}\\data\\satout_ca.png";
@@ -70,8 +86,6 @@ namespace GameRealisticMap.Arma3.GameEngine
                     gameFileSystemWriter.WritePngImage(satoutFile, satMapOut);
                 }
             }
-
-            return tiler;
         }
 
         private void GenerateSatMapTiles(IArma3MapConfig config, Image satMap, ImageryTiler tiler)
