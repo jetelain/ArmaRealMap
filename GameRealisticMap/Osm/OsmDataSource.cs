@@ -1,5 +1,6 @@
 ﻿using GeoAPI.Geometries;
 using OsmSharp;
+using OsmSharp.Complete;
 using OsmSharp.Db;
 using OsmSharp.Db.Impl;
 using OsmSharp.Geo;
@@ -40,6 +41,10 @@ namespace GameRealisticMap.Osm
         public IEnumerable<Way> Ways => All.OfType<Way>();
 
         public IEnumerable<Node> Nodes => All.OfType<Node>();
+
+        public IEnumerable<Relation> Relations => All.OfType<Relation>();
+
+        public SnapshotDb SnapshotDb => snapshot;
 
         public IEnumerable<IGeometry> Interpret(OsmGeo osmGeo)
         {

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Reporting;
+using OsmSharp.Streams;
+using OsmSharp;
+using GameRealisticMap.ManMade.Places;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
@@ -31,7 +34,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\mapinfos.hpp", GenerateMapInfos(config, area));
 
-            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\names.hpp", string.Empty); // TODO !
+            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\names.hpp", GenerateNames(context.GetData<CitiesData>()));
         }
 
         private string GenerateMapInfos(IArma3MapConfig config, ITerrainArea area)
@@ -159,6 +162,45 @@ class CfgWorlds
 		pictureMap = ""{config.PboPrefix}\data\picturemap_ca.paa"";
 	}};
 }};";
+        }
+
+        internal string GenerateNames(CitiesData cities)
+        {
+            var id = 0;
+            var sb = new StringBuilder();
+            foreach (var city in cities.Cities)
+            {
+                sb.AppendLine(FormattableString.Invariant($@"class Item{id}
+{{
+    name = ""{city.Name}"";
+	position[]={{{city.Center.X:0.00},{city.Center.Y:0.00}}};
+	type=""{ToArmaMarker(city.Type)}"";
+	radiusA={city.Radius:0};
+	radiusB={city.Radius:0};
+	angle=0;
+}};"));
+                id++;
+            }
+            return sb.ToString();
+        }
+
+        private string ToArmaMarker(CityTypeId type)
+        {
+            switch (type)
+            {
+                case CityTypeId.City:
+                    return "NameCityCapital";
+
+                case CityTypeId.Town: 
+                    return "NameCity";
+
+                case CityTypeId.Village: 
+                    return "NameVillage";
+                
+                case CityTypeId.Hamlet:
+                default:
+                    return "NameLocal";
+            }
         }
     }
 }
