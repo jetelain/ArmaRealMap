@@ -5,14 +5,14 @@ namespace GameRealisticMap.Algorithms
 {
     public sealed class RadiusPlacedLayer<TModelInfo> : SimpleSpacialIndex<RadiusPlacedModel<TModelInfo>>
     {
-        public RadiusPlacedLayer(ITerrainArea area, int cellCount = 512)
-            : this(new Vector2(area.SizeInMeters), cellCount)
+        public RadiusPlacedLayer(ITerrainArea area)
+            : this(new Vector2(area.SizeInMeters))
         {
 
         }
 
-        public RadiusPlacedLayer(Vector2 size, int cellCount = 512)
-            : base(Vector2.Zero, size, cellCount)
+        public RadiusPlacedLayer(Vector2 size)
+            : base(Vector2.Zero, size)
         {
 
         }

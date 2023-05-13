@@ -22,7 +22,7 @@ namespace GameRealisticMap.ElevationModel.Constrained
         private readonly List<ElevationSmoothSegment> smoothSegments = new List<ElevationSmoothSegment>();
 
         public ElevationConstraintGrid(ITerrainArea area, ElevationGrid initial, IProgressSystem progress)
-            : base(Vector2.Zero, new Vector2(area.SizeInMeters), 512)
+            : base(Vector2.Zero, new Vector2(area.SizeInMeters))
         {
             this.area = area;
             this.initial = initial;

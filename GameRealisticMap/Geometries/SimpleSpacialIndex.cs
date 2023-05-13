@@ -57,7 +57,13 @@ namespace GameRealisticMap.Geometries
         private readonly int maxCellIndex;
         private int removedCount = 0;
 
-        public SimpleSpacialIndex(Vector2 start, Vector2 size, int cellCount = 512)
+        public SimpleSpacialIndex(Vector2 start, Vector2 size)
+            : this(start, size, GetCellCount(size))
+        {
+
+        }
+
+        public SimpleSpacialIndex(Vector2 start, Vector2 size, int cellCount)
         {
             this.start = start;
             this.cellSize = size / cellCount;
@@ -71,6 +77,12 @@ namespace GameRealisticMap.Geometries
             }
             maxCellIndex = cellCount - 1;
             maxCell = new Vector2(maxCellIndex, maxCellIndex);
+        }
+
+
+        public static int GetCellCount(Vector2 size)
+        {
+            return (int)Math.Max(2, Math.Ceiling(Math.Max(size.X / 80, size.Y / 80)));
         }
 
         public IEnumerable<T> Values => all.Where(a => !a.isRemoved).Select(a => a.value);

@@ -6,8 +6,8 @@ namespace ArmaRealMap
 {
     public class TerrainSpacialIndex<T> : SimpleSpacialIndex<T> where T : class, ITerrainEnvelope
     {
-        public TerrainSpacialIndex(ITerrainArea map, int cellCount = 512)
-            : base(Vector2.Zero, new Vector2(map.SizeInMeters, map.SizeInMeters), cellCount)
+        public TerrainSpacialIndex(ITerrainArea map)
+            : base(Vector2.Zero, new Vector2(map.SizeInMeters, map.SizeInMeters))
         {
         }
 
