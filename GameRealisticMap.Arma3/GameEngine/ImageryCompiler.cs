@@ -62,6 +62,15 @@ namespace GameRealisticMap.Arma3.GameEngine
                 GenerateSatMapTiles(config, satMap, tiler);
             }
 
+            var satoutFile = $"{config.PboPrefix}\\data\\satout_ca.png";
+            if (!gameFileSystemWriter.FileExists(satoutFile))
+            {
+                using (var satMapOut = source.CreateSatOut())
+                {
+                    gameFileSystemWriter.WritePngImage(satoutFile, satMapOut);
+                }
+            }
+
             return tiler;
         }
 

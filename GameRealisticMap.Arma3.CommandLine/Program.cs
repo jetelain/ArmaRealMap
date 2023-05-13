@@ -101,7 +101,8 @@ namespace GameRealisticMap.Arma3.CommandLine
                 SouthWest = "47.6856, 6.8270",
                 GridSize = 1024,
                 GridCellSize = 2.5f,
-                AssetConfigFile = @"C:\Users\Julien\source\repos\ArmaRealMap\ArmToGrmA3\bin\Debug\net6.0\CentralEurope.json"
+                AssetConfigFile = @"C:\Users\Julien\source\repos\ArmaRealMap\ArmToGrmA3\bin\Debug\net6.0\CentralEurope.json",
+                TileSize = 512
             }.ToArma3MapConfig();
 
 
@@ -123,6 +124,8 @@ namespace GameRealisticMap.Arma3.CommandLine
             var generator = new Arma3MapGenerator(assets, progress, projectDrive, projectDrive);
 
             generator.WriteDirectlyWrp(a3config, context, a3config.TerrainArea);
+
+            await projectDrive.ProcessImageToPaa(progress);
 
             //return;
 

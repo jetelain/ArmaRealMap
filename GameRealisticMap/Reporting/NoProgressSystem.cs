@@ -1,15 +1,15 @@
 ﻿namespace GameRealisticMap.Reporting
 {
-    public class ConsoleProgressSystem : ProgressSystemBase
+    public class NoProgressSystem : ProgressSystemBase
     {
         public override IProgressInteger CreateStep(string name, int total)
         {
-            return new ConsoleProgressReport(Scope.Prefix + name, total);
+            return new NoProgress();
         }
 
         public override IProgressPercent CreateStepPercent(string name)
         {
-            return new ConsoleProgressReport(Scope.Prefix + name, 1000);
+            return new NoProgress();
         }
     }
 }

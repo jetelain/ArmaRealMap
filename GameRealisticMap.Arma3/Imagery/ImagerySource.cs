@@ -30,5 +30,10 @@ namespace GameRealisticMap.Arma3.Imagery
         {
             return satMapRender.Render(config, context);
         }
+
+        public Image CreateSatOut()
+        {
+            return satMapRender.RenderSatOut(config, context, config.TileSize / 2);
+        }
     }
 }

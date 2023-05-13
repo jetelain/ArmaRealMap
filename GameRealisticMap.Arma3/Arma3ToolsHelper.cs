@@ -5,7 +5,7 @@ using Microsoft.Win32;
 
 namespace GameRealisticMap.Arma3
 {
-    internal static class Arma3ToolsHelper
+    public static class Arma3ToolsHelper
     {
         public static void EnsureProjectDrive()
         {
@@ -36,13 +36,13 @@ namespace GameRealisticMap.Arma3
         }
 
         [SupportedOSPlatform("windows")]
-        internal static string GetArma3ToolsPath()
+        public static string GetArma3ToolsPath()
         {
             return GetSteamAppLocation(233800);
         }
 
         [SupportedOSPlatform("windows")]
-        internal static string GetArma3Path()
+        public static string GetArma3Path()
         {
             return GetSteamAppLocation(107410);
         }

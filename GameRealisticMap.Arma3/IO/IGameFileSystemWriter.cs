@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Arma3.IO
 {
-    public interface IGameFileSystemWriter
+    public interface IGameFileSystemWriter : IGameFileSystem
     {
         void CreateDirectory(string path);
 

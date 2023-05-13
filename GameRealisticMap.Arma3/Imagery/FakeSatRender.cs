@@ -29,6 +29,17 @@ namespace GameRealisticMap.Arma3.Imagery
             return image;
         }
 
+        public Image<Rgba32> RenderSatOut(IArma3MapConfig config, IContext context, int size)
+        {
+            var image = new Image<Rgba32>(size, size);
+            image.Mutate(d =>
+            {
+                d.Fill(GetBrush(materialLibrary.GetMaterialByUsage(TerrainMaterialUsage.Default)));
+                d.GaussianBlur(5f);
+            });
+            return image;
+        }
+
         protected override IBrush GetBrush(TerrainMaterial material)
         {
             if (!cache.TryGetValue(material.ColorTexture, out var image))

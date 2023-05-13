@@ -19,8 +19,8 @@ namespace GameRealisticMap.Arma3.Imagery
     internal abstract class IdMapRenderBase<TPixel>
         where TPixel : unmanaged, IPixel<TPixel>
     {
-        private readonly TerrainMaterialLibrary materialLibrary;
-        private readonly IProgressSystem progress;
+        protected readonly TerrainMaterialLibrary materialLibrary;
+        protected readonly IProgressSystem progress;
         protected readonly DrawingOptions drawingOptions;
 
         public IdMapRenderBase(TerrainMaterialLibrary materialLibrary, IProgressSystem progress)

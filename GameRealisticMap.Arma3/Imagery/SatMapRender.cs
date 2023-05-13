@@ -1,8 +1,6 @@
 ﻿using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Reporting;
@@ -26,6 +24,11 @@ namespace GameRealisticMap.Arma3.Imagery
             : this(new FakeSatRender(materialLibrary, progress, gameFileSystem))
         {
 
+        }
+
+        public Image RenderSatOut(IArma3MapConfig config, IContext context, int size)
+        {
+            return fakeSatRender.RenderSatOut(config, context, size);
         }
 
         public Image Render(IArma3MapConfig config, IContext context)

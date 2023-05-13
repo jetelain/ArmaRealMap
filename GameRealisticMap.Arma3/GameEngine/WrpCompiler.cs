@@ -12,8 +12,6 @@ namespace GameRealisticMap.Arma3.GameEngine
         private readonly IProgressSystem progress;
         private readonly IGameFileSystemWriter fileSystemWriter;
 
-        // internal const int LandRange = 512; // Make a parameter for this ?
-
         public WrpCompiler(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter)
         {
             this.progress = progress;
@@ -54,7 +52,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             return wrp;
         }
 
-        public static void SetMaterialAndIndexes(ImageryTiler terrainTiler, EditableWrp wrp, string pboPrefix)
+        public void SetMaterialAndIndexes(ImageryTiler terrainTiler, EditableWrp wrp, string pboPrefix)
         {
             SetMaterials(terrainTiler, wrp, pboPrefix);
 
@@ -89,36 +87,39 @@ namespace GameRealisticMap.Arma3.GameEngine
             return 128;
         }
 
-        private static void SetMaterials(ImageryTiler terrainTiler, EditableWrp wrp, string pboPrefix)
+        private void SetMaterials(ImageryTiler terrainTiler, EditableWrp wrp, string pboPrefix)
         {
             wrp.MatNames = new string[terrainTiler.Segments.Length + 1];
             var w = terrainTiler.Segments.GetLength(0);
             var h = terrainTiler.Segments.GetLength(1);
             wrp.MatNames[0] = string.Empty;
+            using var report = progress.CreateStep("MaterialNames", w);
             for (int x = 0; x < w; x++)
             {
                 for (int y = 0; y < h; y++)
                 {
                     wrp.MatNames[x + (y * h) + 1] = $"{pboPrefix}\\data\\layers\\p_{x:000}-{y:000}.rvmat";
                 }
+                report.ReportOneDone();
             }
         }
 
-        private static void SetMaterialIndexes(ImageryTiler terrainTiler, EditableWrp wrp)
+        private void SetMaterialIndexes(ImageryTiler terrainTiler, EditableWrp wrp)
         {
             var landRange = wrp.LandRangeX;
             var h = terrainTiler.Segments.GetLength(1);
             int cellPixelSize = (int)(wrp.CellSize / terrainTiler.Resolution);
             wrp.MaterialIndex = new ushort[landRange * landRange];
+            using var report = progress.CreateStep("MaterialIndex", landRange);
             for (int x = 0; x < landRange; x++)
             {
                 for (int y = 0; y < landRange; y++)
                 {
-                    // FIXME: this seems wrong on some map sizes
                     var p = new Point((x + 1) * cellPixelSize - 1, (landRange - 1 - y + 1) * cellPixelSize - 1);
                     var segment = terrainTiler.All.First(s => s.ContainsImagePoint(p));
                     wrp.MaterialIndex[x + (y * landRange)] = (ushort)(segment.X + (segment.Y * h) + 1);
                 }
+                report.ReportOneDone();
             }
         }
 

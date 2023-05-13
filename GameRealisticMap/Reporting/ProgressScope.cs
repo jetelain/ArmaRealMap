@@ -1,17 +1,17 @@
 ﻿namespace GameRealisticMap.Reporting
 {
-    internal class ConsoleProgressScope : IDisposable
+    internal class ProgressScope : IDisposable
     {
-        private readonly ConsoleProgressSystem owner;
+        private readonly ProgressSystemBase owner;
 
-        public ConsoleProgressScope(ConsoleProgressScope? parent, ConsoleProgressSystem owner, string name)
+        public ProgressScope(ProgressScope? parent, ProgressSystemBase owner, string name)
         {
             Parent = parent;
             this.owner = owner;
             Name = name;
         }
 
-        public ConsoleProgressScope? Parent { get; }
+        public ProgressScope? Parent { get; }
 
         public string Name { get; }
 

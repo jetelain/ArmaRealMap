@@ -7,5 +7,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         Image CreateIdMap();
 
         Image CreateSatMap();
+
+        Image CreateSatOut();
     }
 }
