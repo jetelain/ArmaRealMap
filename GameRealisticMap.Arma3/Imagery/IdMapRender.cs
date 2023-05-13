@@ -8,7 +8,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.Imagery
 {
-    internal class IdMapRender : IdMapRenderBase<Rgb24>
+    internal class IdMapRender : IdMapRenderBase<Rgba32>
     {
         public IdMapRender(TerrainMaterialLibrary materialLibrary, IProgressSystem progress)
             : base(materialLibrary, progress)
@@ -20,6 +20,12 @@ namespace GameRealisticMap.Arma3.Imagery
         {
             return new SolidBrush(new Color(material.Id));
         }
+
+        protected override IBrush GetEdgeBrush(TerrainMaterial material)
+        {
+            return new PatternBrush(new Color(material.Id), Color.Transparent, GeneratePattern(GetSeed(material)));
+        }
+
         protected override IEnumerable<PointF> TerrainToPixel(IArma3MapConfig config, IEnumerable<TerrainPoint> points)
         {
             return config.TerrainToPixel(points);

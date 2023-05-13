@@ -64,7 +64,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                 GenerateSatMapTiles(config, satMap, tiler);
             }
 
-            return tiler;
+             return tiler;
         }
 
         private void CreateConfigCppImages(IArma3MapConfig config, IImagerySource source)

@@ -46,7 +46,7 @@ namespace GameRealisticMap.Arma3.Imagery
             DrawPolygons(config, image, TerrainMaterialUsage.DefaultIndustrial,
                 categories.Areas.Where(c => c.BuildingType == BuildingTypeId.Industrial).SelectMany(c => c.PolyList));
 
-            DrawPolygons(config, image, TerrainMaterialUsage.ForestGround, context.GetData<ForestData>().Polygons);
+            DrawPolygonsWithCrown(config, image, TerrainMaterialUsage.ForestGround, 2.5f, context.GetData<ForestData>().Polygons);
 
             DrawPolygons(config, image, TerrainMaterialUsage.Meadow, context.GetData<MeadowsData>().Polygons);
 
@@ -70,7 +70,16 @@ namespace GameRealisticMap.Arma3.Imagery
             DrawPolygons(config, image, GetBrush(materialLibrary.GetMaterialByUsage(material)), polygons);
         }
 
+        private void DrawPolygonsWithCrown(IArma3MapConfig config, Image<TPixel> image, TerrainMaterialUsage material, float crownSize, IEnumerable<TerrainPolygon> polygons)
+        {
+            DrawPolygons(config, image, GetBrush(materialLibrary.GetMaterialByUsage(material)), polygons);
+
+            DrawPolygonsCrown(config, image, GetEdgeBrush(materialLibrary.GetMaterialByUsage(material)), polygons, crownSize);
+        }
+
         protected abstract IBrush GetBrush(TerrainMaterial material);
+
+        protected abstract IBrush GetEdgeBrush(TerrainMaterial material);
 
         private void DrawPolygons(IArma3MapConfig config, Image<TPixel> image, IBrush brush, IEnumerable<TerrainPolygon> polygons)
         {
@@ -78,11 +87,50 @@ namespace GameRealisticMap.Arma3.Imagery
             {
                 foreach (var polygon in polygons)
                 {
-                    PolygonDrawHelper.DrawPolygon(d, polygon, brush, drawingOptions, points => TerrainToPixel(config, points));
+                    DrawPolygon(config, brush, d, polygon);
                 }
             });
         }
 
+        private void DrawPolygonsCrown(IArma3MapConfig config, Image<TPixel> image, IBrush crownBrush, IEnumerable<TerrainPolygon> polygons, float crownSize)
+        {
+            image.Mutate(d =>
+            {
+                foreach (var polygon in polygons)
+                {
+                    foreach (var x in polygon.OuterCrown(crownSize))
+                    {
+                        DrawPolygon(config, crownBrush, d, x);
+                    }
+                }
+            });
+        }
+
+        private void DrawPolygon(IArma3MapConfig config, IBrush brush, IImageProcessingContext d, TerrainPolygon polygon)
+        {
+            PolygonDrawHelper.DrawPolygon(d, polygon, brush, drawingOptions, points => TerrainToPixel(config, points));
+        }
+
         protected abstract IEnumerable<PointF> TerrainToPixel(IArma3MapConfig config, IEnumerable<TerrainPoint> points);
+
+        protected static int GetSeed(TerrainMaterial material)
+        {
+            return material.Id.R >> 16 | material.Id.G >> 8 | material.Id.B;
+        }
+
+        protected static bool[,] GeneratePattern(int seed, float coef = 0.5f, int size = 64)
+        {
+            var rnd = new Random(seed);
+            var matrix = new bool[size, size];
+            for (var x = 0; x < size; ++x)
+            {
+                for (var y = 0; y < size; ++y)
+                {
+                    matrix[x, y] = rnd.NextDouble() >= coef;
+                }
+            }
+            return matrix;
+        }
+
     }
 }

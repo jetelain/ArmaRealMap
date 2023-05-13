@@ -53,6 +53,25 @@ namespace GameRealisticMap.Arma3.Imagery
             return new ImageBrush(image);
         }
 
+        protected override IBrush GetEdgeBrush(TerrainMaterial material)
+        {
+            var pattern = GeneratePattern(GetSeed(material));
+            var transparent = new Rgba32(0, 0, 0, 0);
+            var image = new Image<Rgba32>(pattern.GetLength(0), pattern.GetLength(1));
+            image.Mutate(d => d.Fill(GetBrush(material)));
+            for(var x = 0; x < image.Width; ++x)
+            {
+                for(var y = 0; y < image.Height; ++y)
+                {
+                    if (!pattern[x, y])
+                    {
+                        image[x, y] = transparent;
+                    }
+                }
+            }
+            return new ImageBrush(image);
+        }
+
         private Image<Rgba32>? LoadImage(TerrainMaterial material)
         {
             if (material.FakeSatPngImage != null)
