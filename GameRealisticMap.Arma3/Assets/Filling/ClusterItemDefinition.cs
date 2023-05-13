@@ -30,14 +30,18 @@ namespace GameRealisticMap.Arma3.Assets.Filling
 
         public Composition Model { get; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public float? MaxZ { get; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public float? MinZ { get; }
 
         public double Probability { get; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public float? MaxScale { get; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public float? MinScale { get; }
 
     }

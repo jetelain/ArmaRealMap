@@ -6,6 +6,7 @@ namespace GameRealisticMap.Arma3.Assets.Filling
 {
     public class BasicCollectionDefinition : IBasicDefinition<Composition>
     {
+        [JsonConstructor]
         public BasicCollectionDefinition(IReadOnlyList<ClusterItemDefinition> models, double probability, double minDensity, double maxDensity)
         {
             Models = models;

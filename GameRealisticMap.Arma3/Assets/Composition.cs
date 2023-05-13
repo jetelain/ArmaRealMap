@@ -1,7 +1,6 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using GameRealisticMap.Algorithms;
-using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
 

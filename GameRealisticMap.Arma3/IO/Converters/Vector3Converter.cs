@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace GameRealisticMap.Arma3.IO.Converters
 {
-    internal class Vector3Converter : JsonConverter<Vector3>
+    internal class Vector3Converter : JsonConverterNoIdentation<Vector3>
     {
         public override Vector3 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -16,7 +16,7 @@ namespace GameRealisticMap.Arma3.IO.Converters
             return new Vector3(value[0], value[1], value[2]);
         }
 
-        public override void Write(Utf8JsonWriter writer, Vector3 value, JsonSerializerOptions options)
+        protected override void WriteNotIndented(Utf8JsonWriter writer, Vector3 value)
         {
             writer.WriteStartArray();
             writer.WriteNumberValue(value.X);
