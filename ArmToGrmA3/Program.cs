@@ -89,7 +89,7 @@ namespace ArmToGrmA3
             newAssets.Bridges.Add(RoadTypeId.TwoLanesConcreteRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgeConcreteRoad), newModels, oldModels));
 
             newAssets.BasicCollections.Add(BasicCollectionId.ScrubAdditional, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.ScrubAdditionalObjects), newModels, oldModels));
-            newAssets.BasicCollections.Add(BasicCollectionId.ForestAdditional, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.ScrubAdditionalObjects), newModels, oldModels));
+            newAssets.BasicCollections.Add(BasicCollectionId.ForestAdditional, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.ForestAdditionalObjects), newModels, oldModels));
             newAssets.BasicCollections.Add(BasicCollectionId.Rocks, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.GroundRock), newModels, oldModels));
             newAssets.BasicCollections.Add(BasicCollectionId.RocksAdditional, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.GroundRockAdditionalObjects), newModels, oldModels));
             newAssets.BasicCollections.Add(BasicCollectionId.DefaultAreas, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.RandomVegetation), newModels, oldModels));
@@ -220,6 +220,7 @@ namespace ArmToGrmA3
         {
             if (region == TerrainRegion.Sahel)
             {
+                newAssets.Ponds.Add(PondSizeId.Size5, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_5.p3d"));
                 newAssets.Ponds.Add(PondSizeId.Size10, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_10.p3d"));
                 newAssets.Ponds.Add(PondSizeId.Size20, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_20.p3d"));
                 newAssets.Ponds.Add(PondSizeId.Size40, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_40.p3d"));
@@ -227,6 +228,7 @@ namespace ArmToGrmA3
             }
             else
             {
+                newAssets.Ponds.Add(PondSizeId.Size5, newModels.ResolveByPath(@"z\arm\addons\common_v2\data\water\arm_pond_blue_5.p3d"));
                 newAssets.Ponds.Add(PondSizeId.Size10, newModels.ResolveByPath(@"z\arm\addons\common_v2\data\water\arm_pond_blue_10.p3d"));
                 newAssets.Ponds.Add(PondSizeId.Size20, newModels.ResolveByPath(@"z\arm\addons\common_v2\data\water\arm_pond_blue_20.p3d"));
                 newAssets.Ponds.Add(PondSizeId.Size40, newModels.ResolveByPath(@"z\arm\addons\common_v2\data\water\arm_pond_blue_40.p3d"));

@@ -72,18 +72,26 @@ namespace GameRealisticMap.ElevationModel
 
         private void ProcessWatercourses(ElevationConstraintGrid constraintGrid, WatercoursesData waterData)
         {
-            var waterWaysPaths = waterData.Paths.Where(w => !w.IsTunnel).Select(w => w.Path).Where(w => w.Length > 10f).ToList();
+            var waterWaysPaths = waterData.Paths.Where(w => !w.IsTunnel).Where(w => w.Path.Length > 10f).ToList();
             using var report = progress.CreateStep("Waterways", waterWaysPaths.Count);
             foreach (var waterWay in waterWaysPaths)
             {
-                var points = GeometryHelper.PointsOnPath(waterWay.Points, 2).Select(constraintGrid.NodeSoft).ToList();
+                var points = GeometryHelper.PointsOnPath(waterWay.Path.Points, 2).Select(constraintGrid.NodeSoft).ToList();
                 foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
                 {
                     if (segment.First != segment.Second)
                     {
                         segment.Second.MustBeLowerThan(segment.First);
-                        segment.First.WantedInitialRelativeElevation = -1f;
-                        segment.First.LowerLimitRelativeElevation = -4f;
+                        if (waterWay.TypeId == WatercourseTypeId.Stream)
+                        {
+                            segment.First.WantedInitialRelativeElevation = -0.25f;
+                            segment.First.LowerLimitRelativeElevation = -1f;
+                        }
+                        else
+                        {
+                            segment.First.WantedInitialRelativeElevation = -1f;
+                            segment.First.LowerLimitRelativeElevation = -4f;
+                        }
                     }
                 }
                 report.ReportOneDone();

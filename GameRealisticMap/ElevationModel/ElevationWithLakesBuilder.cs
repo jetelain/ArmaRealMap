@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
 using GameRealisticMap.ManMade;
@@ -12,6 +13,7 @@ using MapToolkit;
 using MapToolkit.Contours;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.ElevationModel
@@ -19,6 +21,19 @@ namespace GameRealisticMap.ElevationModel
     internal class ElevationWithLakesBuilder : IDataBuilder<ElevationWithLakesData>, IDataSerializer<ElevationWithLakesData>
     {
         private readonly IProgressSystem progress;
+
+        private static readonly Vector2 FlatAreaMargin = new Vector2(FlatAreaOffset25 + 10f);
+        private const float FlatAreaOffset25 = 15f;
+        private const float FlatAreaOffset50 = 10f;
+        private const float FlatAreaOffset = 2.5f;
+
+        private static readonly Vector2 LakeDrawMargin = new Vector2(40);
+        private const float LakeDepth100Offset = -15f;
+        private const float LakeDepth50Offset = -7.5f;
+        private const float LakeDepthOutsideOffset = 7.5f;
+        private const float LakeDepthMinElevationOffset = 10;
+
+        private static readonly Vector2 LakeScanMargin = new Vector2(10);
 
         public ElevationWithLakesBuilder(IProgressSystem progress)
         {
@@ -113,92 +128,142 @@ namespace GameRealisticMap.ElevationModel
             foreach (var flat in flatAreas.ProgressStep(progress, "Flat"))
             {
                 var avg = grid.GetAverageElevation(flat);
-                var mutate = grid.PrepareToMutate(flat.MinPoint - grid.CellSize, flat.MaxPoint + grid.CellSize, avg - 10, avg);
+                var mutate = grid.PrepareToMutate(flat.MinPoint - FlatAreaMargin, flat.MaxPoint + FlatAreaMargin, avg - 10, avg + 10);
                 mutate.Image.Mutate(d =>
                 {
-                    foreach (var scaled in flat.Offset(grid.CellSize.X))
+                    foreach (var scaled in flat.Offset(FlatAreaOffset25))
                     {
-                        PolygonDrawHelper.DrawPolygon(d, flat, new SolidBrush(mutate.ElevationToColor(avg).WithAlpha(0.5f)), mutate.ToPixels);
+                        PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(mutate.ElevationToColor(avg).WithAlpha(0.25f)), mutate.ToPixels);
                     }
-                    PolygonDrawHelper.DrawPolygon(d, flat, new SolidBrush(mutate.ElevationToColor(avg)), mutate.ToPixels);
-
+                    foreach (var scaled in flat.Offset(FlatAreaOffset50))
+                    {
+                        PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(mutate.ElevationToColor(avg).WithAlpha(0.5f)), mutate.ToPixels);
+                    }
+                    foreach (var scaled in flat.Offset(FlatAreaOffset))
+                    {
+                        PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(mutate.ElevationToColor(avg)), mutate.ToPixels);
+                    }
+                    d.BoxBlur(1);
                 });
                 mutate.Apply();
             }
         }
 
-
-        private List<LakeWithElevation> DigLakes(ElevationGrid rawElevation, LakesData lakesData, ITerrainArea area)
+        private List<LakeWithElevation> DigLakes(ElevationGrid elevationGrid, LakesData lakesData, ITerrainArea area)
         {
-            using var report = progress.CreateStep("DigLakes", lakesData.Polygons.Count);
+            var minimalArea = Math.Pow(LakeDepth50Offset * -2.5f, 2);
+            var minimalOffsetArea = Math.Pow(LakeDepth50Offset * -1.25f, 2);
+            var lakesToProcess = lakesData.Polygons.Where(p => p.Area >= minimalArea && p.Offset(-area.GridCellSize).Sum(a => a.Area) >= minimalOffsetArea).ToList();
 
-            var minimalArea = Math.Pow(5 * area.GridCellSize, 2); // 5 x 5 nodes minimum
-            var minimalOffsetArea = area.GridCellSize * area.GridCellSize;
+            using var report = progress.CreateStep("DigLakes", lakesToProcess.Count * 2);
             var lakes = new List<LakeWithElevation>();
-            var cellSize = rawElevation.CellSize;
-            foreach (var g in lakesData.Polygons)
+
+            var lakesWithBorder = lakesToProcess.Select(l => new { Polygon = l, BorderElevation = GeometryHelper.PointsOnPath(l.Shell, elevationGrid.CellSize.X / 10f).Min(p => elevationGrid.ElevationAt(p)) }).ToList();
+            var index = 0;
+            foreach (var lake in lakesWithBorder.OrderBy(l => l.BorderElevation))
             {
-                if (g.Area < minimalArea)
-                {
-                    continue; // too small
-                }
-                var offsetArea = g.Offset(area.GridCellSize * -2f).Sum(a => a.Area);
-                if (offsetArea < minimalOffsetArea)
-                {
-                    Trace.WriteLine($"Lake {g}");
-                    Trace.WriteLine($"is in fact too small, {offsetArea} offseted -- {Math.Round(g.Area)} area");
-                    continue; // too small
-                }
-                var min = g.MinPoint - (2 * cellSize);
-                var max = g.MaxPoint + (2 * cellSize);
-
-                var borderElevation = GeometryHelper.PointsOnPath(g.Shell, area.GridCellSize / 10f).Min(p => rawElevation.ElevationAt(p));
-                var lakeElevation = rawElevation.PrepareToMutate(min, max, borderElevation - 2.5f, borderElevation);
-                lakeElevation.Image.Mutate(d =>
-                {
-                    PolygonDrawHelper.DrawPolygon(d, g, new SolidBrush(Color.FromRgba(255, 255, 255, 255)), lakeElevation.ToPixels);
-                    foreach (var scaled in g.Offset(cellSize.X * -2f))
-                    {
-                        PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(Color.FromRgba(128, 128, 128, 255)), lakeElevation.ToPixels);
-                    }
-                    foreach (var scaled in g.Offset(cellSize.X * -4f))
-                    {
-                        PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(Color.FromRgba(0, 0, 0, 255)), lakeElevation.ToPixels);
-                    }
-                    d.BoxBlur(1);
-                });
-                //lakeElevation.Image.SaveAsPng($"lake{lakes.Count}.png");
-                lakeElevation.Apply();
-
-                lakeElevation = rawElevation.PrepareToMutate(min, max, borderElevation - 10f, borderElevation + 10f);
-                lakeElevation.Image.Mutate(d =>
-                {
-                    foreach (var scaled in g.OuterCrown(cellSize.X * 2f))
-                    {
-                        PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(lakeElevation.ElevationToColor(borderElevation)), lakeElevation.ToPixels);
-                    }
-                });
-                lakeElevation.ApplyAsMinimal();
+                DigLake(elevationGrid, lakes, lake.Polygon, lake.BorderElevation, index);
+                index++;
                 report.ReportOneDone();
+            }
 
-                float waterElevation = borderElevation - 0.1f;
-                var polys = GetElevationSurfaceBelow(rawElevation, min, max, waterElevation);
-                while (polys.Count == 0 && waterElevation > borderElevation - 2.5f)
-                {
-                    waterElevation -= 0.1f;
-                    polys = GetElevationSurfaceBelow(rawElevation, min, max, waterElevation);
-                }
-                foreach (var poly in polys)
-                {
-                    var tpoly = TerrainPolygon.FromGeoJson(poly);
-                    if (polys.Count == 1 || tpoly.Shell.Any(p => g.ContainsRaw(p)))
-                    {
-                        lakes.Add(new LakeWithElevation(TerrainPolygon.FromGeoJson(poly), borderElevation, waterElevation));
-                    }
-                }
-
+            foreach (var lake in lakesWithBorder)
+            {
+                var isOK = DetectRealLake(elevationGrid, lakes, lake.Polygon, lake.BorderElevation);
+                Trace.WriteLine($"{lake.Polygon.Area} => {isOK}");
+                report.ReportOneDone();
             }
             return lakes;
+        }
+
+        private static void DigLake(ElevationGrid elevationGrid, List<LakeWithElevation> lakes, TerrainPolygon lakePolygon, float borderElevation, int lakeIndex)
+        {
+            ApplyLakeElevation(elevationGrid, lakePolygon, borderElevation, lakes.Count);
+
+            MinimalElevationAroundLake(elevationGrid, lakePolygon, borderElevation, lakes.Count);
+        }
+
+        private static bool DetectRealLake(ElevationGrid elevationGrid, List<LakeWithElevation> lakes, TerrainPolygon lakePolygon, float borderElevation)
+        {
+            var ok = false;
+            var min = lakePolygon.MinPoint - LakeScanMargin;
+            var max = lakePolygon.MaxPoint + LakeScanMargin;
+            float waterElevation = borderElevation - 0.2f;
+            var polys = GetElevationSurfaceBelow(elevationGrid, min, max, waterElevation);
+            while (polys.Count == 0 && waterElevation > borderElevation - 2.5f)
+            {
+                waterElevation -= 0.1f;
+                polys = GetElevationSurfaceBelow(elevationGrid, min, max, waterElevation);
+            }
+            foreach (var poly in polys)
+            {
+                var tpoly = TerrainPolygon.FromGeoJson(poly);
+                if (tpoly.Shell.Any(p => lakePolygon.ContainsRaw(p)))
+                {
+                    lakes.Add(new LakeWithElevation(TerrainPolygon.FromGeoJson(poly), borderElevation, waterElevation));
+                    ok = true;
+                }
+            }
+            return ok;
+        }
+
+        private static void ApplyLakeElevation(ElevationGrid elevationGrid, TerrainPolygon lakePolygon, float borderElevation, int lakeIndex)
+        {
+            var min = lakePolygon.MinPoint - LakeDrawMargin;
+            var max = lakePolygon.MaxPoint + LakeDrawMargin;
+
+            using var lakeElevation = elevationGrid.PrepareToMutate(min, max, borderElevation - 2.5f, borderElevation);
+            lakeElevation.Image.Mutate(d =>
+            {
+                var blurRadius = (int)Math.Ceiling(LakeDepthOutsideOffset / elevationGrid.CellSize.X);
+                foreach (var scaled in lakePolygon.Offset(LakeDepthOutsideOffset))
+                {
+                    PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(lakeElevation.ElevationToColor(borderElevation)), lakeElevation.ToPixels);
+                }
+                d.BoxBlur(blurRadius);
+                PolygonDrawHelper.DrawPolygon(d, lakePolygon, new SolidBrush(lakeElevation.ElevationToColor(borderElevation)), lakeElevation.ToPixels);
+
+                using var layer = CreateDepthLayer(elevationGrid, lakePolygon, borderElevation, lakeElevation);
+                d.DrawImage(layer, 1);
+            });
+            lakeElevation.Image.SaveAsPng($"lake{lakeIndex}.png");
+            lakeElevation.Apply();
+        }
+
+        private static Image<Rgba64> CreateDepthLayer(ElevationGrid elevationGrid, TerrainPolygon lakePolygon, float borderElevation, ElevationGridArea lakeElevation)
+        {
+            var layer = lakeElevation.Image.Clone();
+            layer.Mutate(d =>
+            {
+                var blurRadius = (int)Math.Ceiling(-LakeDepth50Offset / elevationGrid.CellSize.X);
+                PolygonDrawHelper.DrawPolygon(d, lakePolygon, new SolidBrush(lakeElevation.ElevationToColor(borderElevation)), lakeElevation.ToPixels);
+                foreach (var scaled in lakePolygon.Offset(LakeDepth50Offset))
+                {
+                    PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(lakeElevation.ElevationToColor(borderElevation - 1.25f)), lakeElevation.ToPixels);
+                }
+                foreach (var scaled in lakePolygon.Offset(LakeDepth100Offset))
+                {
+                    PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(lakeElevation.ElevationToColor(borderElevation - 2.5f)), lakeElevation.ToPixels);
+                }
+                d.BoxBlur(blurRadius);
+            });
+            return layer;
+        }
+
+        private static void MinimalElevationAroundLake(ElevationGrid rawElevation, TerrainPolygon lakePolygon, float borderElevation, int lakeIndex)
+        {
+            var min = lakePolygon.MinPoint - LakeDrawMargin;
+            var max = lakePolygon.MaxPoint + LakeDrawMargin;
+            using var lakeElevation = rawElevation.PrepareToMutate(min, max, borderElevation - 10f, borderElevation + 10f);
+            lakeElevation.Image.Mutate(d =>
+            {
+                foreach (var scaled in lakePolygon.OuterCrown(LakeDepthMinElevationOffset))
+                {
+                    PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(lakeElevation.ElevationToColor(borderElevation)), lakeElevation.ToPixels);
+                }
+            });
+            lakeElevation.Image.SaveAsPng($"lake{lakeIndex}-min.png");
+            lakeElevation.ApplyAsMinimal();
         }
 
         private static List<Polygon> GetElevationSurfaceBelow(ElevationGrid rawElevation, TerrainPoint min, TerrainPoint max, float waterElevation)

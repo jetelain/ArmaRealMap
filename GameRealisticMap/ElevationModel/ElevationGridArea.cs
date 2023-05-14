@@ -6,14 +6,14 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.ElevationModel
 {
-    public class ElevationGridArea
+    public sealed class ElevationGridArea : IDisposable
     {
-        private ElevationGrid elevationGrid;
-        private int startX;
-        private int startY;
-        private Image<Rgba64> image;
-        private float minElevation;
-        private float elevationDelta;
+        private readonly ElevationGrid elevationGrid;
+        private readonly int startX;
+        private readonly int startY;
+        private readonly Image<Rgba64> image;
+        private readonly float minElevation;
+        private readonly float elevationDelta;
 
         public ElevationGridArea(ElevationGrid elevationGrid, int startX, int startY, int width, int height, float minElevation, float elevationDelta)
         {
@@ -106,6 +106,11 @@ namespace GameRealisticMap.ElevationModel
                 pixelElevation = existingElevation + ((pixelElevation - existingElevation) * alpha / (float)ushort.MaxValue);
             }
             elevationGrid[x + startX, y + startY] = Math.Max(pixelElevation, existingElevation);
+        }
+
+        public void Dispose()
+        {
+            image.Dispose();
         }
     }
 }

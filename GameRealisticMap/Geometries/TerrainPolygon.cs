@@ -585,7 +585,7 @@ namespace GameRealisticMap.Geometries
             return AsPolygon.ToString();
         }
 
-        internal GeoJSON.Text.Geometry.Polygon ToGeoJson()
+        public GeoJSON.Text.Geometry.Polygon ToGeoJson()
         {
             return new GeoJSON.Text.Geometry.Polygon(new[] { new GeoJSON.Text.Geometry.LineString(Shell) }.Concat(Holes.Select(h => new GeoJSON.Text.Geometry.LineString(h))));
         }

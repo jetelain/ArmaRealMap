@@ -10,12 +10,15 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Arma3.Nature.Lakes;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Roads.Libraries;
+using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
+using GeoJSON.Text.Feature;
 using NetTopologySuite.Utilities;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing;
@@ -132,165 +135,188 @@ namespace GameRealisticMap.Arma3.CommandLine
 
             var surface = a3config.SizeInMeters * a3config.SizeInMeters / 1000000d;
 
-            Console.WriteLine($"It took {sw.ElapsedMilliseconds} msec for {surface:0.0} Km², {sw.ElapsedMilliseconds/surface:0} msec/Km²");
+            Console.WriteLine($"It took {sw.ElapsedMilliseconds} msec for {surface:0.0} Km², {sw.ElapsedMilliseconds / surface:0} msec/Km²");
 
-            //return;
 
-            //var config = new TestMapConfig();
-            //var grid = new ElevationGrid(config.GridSize, config.GridCellSize);
-            //for (var ex = 0; ex < grid.Size; ++ex)
+            //var x = new LakeSurfaceGenerator(assets);
+
+            //var result = x.Generate(a3config, context).ToList();
+
+            //var preview = new ModelPreviewHelper(library);
+
+            //var collection = new FeatureCollection(
+            //    context.GetData<ElevationWithLakesData>().ToGeoJson()
+            //    .Concat(context.GetData<LakesData>().ToGeoJson())
+            //    .Concat(preview.ToGeoJson(result))
+            //    .ToList());
+
+            //var json = JsonSerializer.Serialize(collection);
+
+            //using (var reader = new StreamReader(typeof(Program).Assembly.GetManifestResourceStream("GameRealisticMap.Arma3.CommandLine.preview.html")!))
             //{
-            //    for (var ey = 0; ey < grid.Size; ++ey)
-            //    {
-            //        if (ex % 4 == 1 || ex % 4 == 2)
-            //        {
-            //            grid[ex, ey] = 21;
-            //        }
-            //        else
-            //        {
-            //            grid[ex, ey] = 20;
-            //        }
-            //    }
+            //    File.WriteAllText("preview.html", reader.ReadToEnd().Replace(@"{""type"":""FeatureCollection""}", json));
             //}
-
-            //var objects = new List<TerrainBuilderObject>();
-            //var model = new ModelInfo("Sign_Arrow_Direction_F", "a3\\misc_f\\Helpers\\Sign_Arrow_Direction_F.p3d", "a3_misc_f", new Vector3(0, 0.058088847f, 0.029880643f));
-
-            ///*var anglesToTest = new float[] { 0, 45, 90, 135, 180, 225, 270, 315 };
-            //var pos = 1;
-            //foreach (var yaw in anglesToTest)
+            //using (var reader = new StreamReader(typeof(Program).Assembly.GetManifestResourceStream("GameRealisticMap.Arma3.CommandLine.preview.js")!))
             //{
-            //    foreach (var pitch in anglesToTest)
-            //    {
-            //        foreach (var roll in anglesToTest)
-            //        {
-            //            objects.Add(new TerrainBuilderObject(model, new TerrainPoint(pos, 1), 0, ElevationMode.Relative, yaw, pitch, roll, 1));
-            //            pos++;
-            //        }
-            //    }
-            //}*/
-
-            // p:\z\arm\addons\arm_testworld
-
-            //var progress = new ConsoleProgressSystem();
-            //var projectDrive = new ProjectDrive();
-            //projectDrive.AddMountPoint(@"z\arm\addons", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive\z\arm\addons");
-
-            //var materials = new TestTerrainMaterialLibrary();
-
-            //var tiler = new ImageryTiler(config.TileSize, config.Resolution, config.GetImagerySize());
-
-            //var targetPath = @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive\z\arm\addons\arm_testworld\data\layers";
-            //Directory.CreateDirectory(targetPath);
-
-            //var targetId = new Image<Rgba32>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgba32>());
-            //var targetSat = new Image<Rgba32>(tiler.TileSize, tiler.TileSize, Color.Gray.ToPixel<Rgba32>());
-
-
-            //DrawRectangle(targetId, x: 064, y: 064, w: 224, h: 112, c: new Rgba32(0, 0, 0, 255));
-            //DrawRectangle(targetId, x: 288, y: 064, w: 224, h: 112, c: new Rgba32(255, 0, 0, 255));
-            //DrawRectangle(targetId, x: 512, y: 064, w: 224, h: 112, c: new Rgba32(0, 255, 0, 255));
-            //DrawRectangle(targetId, x: 736, y: 064, w: 224, h: 112, c: new Rgba32(0, 0, 255, 255));
-
-            //DrawRectangle(targetId, x: 064, y: 176, w: 224, h: 112, c: new Rgba32(0, 0, 0, 128));
-            //DrawRectangle(targetId, x: 288, y: 176, w: 224, h: 112, c: new Rgba32(255, 0, 0, 128));
-            //DrawRectangle(targetId, x: 512, y: 176, w: 224, h: 112, c: new Rgba32(0, 255, 0, 128));
-            //DrawRectangle(targetId, x: 736, y: 176, w: 224, h: 112, c: new Rgba32(0, 0, 255, 128));
-
-            //DrawRectangle(targetId, x: 064, y: 288, w: 224, h: 112, c: new Rgba32(0, 0, 0, 255));
-            //DrawRectangle(targetId, x: 288, y: 288, w: 224, h: 112, c: new Rgba32(255, 0, 0, 255));
-            //DrawRectangle(targetId, x: 512, y: 288, w: 224, h: 112, c: new Rgba32(0, 255, 0, 255));
-            //DrawRectangle(targetId, x: 736, y: 288, w: 224, h: 112, c: new Rgba32(0, 0, 255, 255));
-
-            //DrawRectangle(targetId, x: 064, y: 400, w: 224, h: 112, c: new Rgba32(0, 0, 0, 0));
-            //DrawRectangle(targetId, x: 288, y: 400, w: 224, h: 112, c: new Rgba32(255, 0, 0, 0));
-            //DrawRectangle(targetId, x: 512, y: 400, w: 224, h: 112, c: new Rgba32(0, 255, 0, 0));
-            //DrawRectangle(targetId, x: 736, y: 400, w: 224, h: 112, c: new Rgba32(0, 0, 255, 0));
-
-            //DrawRectangle(targetId, x: 064, y: 512, w: 224, h: 112, c: new Rgba32(0, 0, 0, 128));
-            //DrawRectangle(targetId, x: 288, y: 512, w: 224, h: 112, c: new Rgba32(255, 0, 0, 128));
-            //DrawRectangle(targetId, x: 512, y: 512, w: 224, h: 112, c: new Rgba32(0, 255, 0, 128));
-            //DrawRectangle(targetId, x: 736, y: 512, w: 224, h: 112, c: new Rgba32(0, 0, 255, 128));
-
-            //DrawRectangle(targetId, x: 064, y: 624, w: 224, h: 112, c: new Rgba32(0, 0, 0, 255));
-            //DrawRectangle(targetId, x: 288, y: 624, w: 224, h: 112, c: new Rgba32(255, 0, 0, 255));
-            //DrawRectangle(targetId, x: 512, y: 624, w: 224, h: 112, c: new Rgba32(0, 255, 0, 255));
-            //DrawRectangle(targetId, x: 736, y: 624, w: 224, h: 112, c: new Rgba32(0, 0, 255, 255));
-
-
-            //foreach (var tile in tiler.All)
-            //{
-            //    var rvmat = ImageryCompiler.MakeRvMat(tile, config, materials.Materials);
-            //    File.WriteAllText(Path.Combine(targetPath, $"P_{tile.X:000}-{tile.Y:000}.rvmat"), rvmat);
-            //    targetId.Save(Path.Combine(targetPath, $"m_{tile.X:000}_{tile.Y:000}_lca.png"));
-            //    targetSat.Save(Path.Combine(targetPath, $"s_{tile.X:000}_{tile.Y:000}_lco.png"));
+            //    File.WriteAllText("preview.js", reader.ReadToEnd());
             //}
-
-            ////var objects = new List<TerrainBuilderObject>();
-
-            ////var model = new ModelInfo("Sign_Arrow_Direction_F", "a3\\misc_f\\Helpers\\Sign_Arrow_Direction_F.p3d", "a3_misc_f", new Vector3(0, 0.058088847f, 0.029880643f));
-            //var model2 = new ModelInfo("Sign_Arrow_F", "a3\\misc_f\\Helpers\\Sign_Arrow_F.p3d", "a3_misc_f", new Vector3(0, 0.3732606f, 0));
-            //// BoundingCenter	{0,0.3732606,0}
-            ///*
-            //var anglesToTest = new float[] { 0, 45, 90, 135, 180, 225, 270, 315 };
-            //var pos = 1;
-            //foreach(var yaw in anglesToTest)
-            //{
-            //    foreach (var pitch in anglesToTest)
-            //    {
-            //        foreach (var roll in anglesToTest)
-            //        {
-            //            objects.Add(new TerrainBuilderObject(model, new TerrainPoint(pos, 1), 0, ElevationMode.Relative, yaw, pitch, roll, 1));
-            //            pos++;
-            //        }
-            //    }
-            //}*/
-
-            //var result = string.Join("\r\n", objects.Select(o => o.ToTerrainBuilderCSV()));
-
-
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(2, 3), -0,   0));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(3, 3), -45,  0));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(3, 2), -90,  0));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(3, 1), -135, 0));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(2, 1), -180, 0));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(1, 1), -225, 0));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(1, 2), -270, 0));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(1, 3), -315, 0));
-
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(6, 3), -0,   45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(7, 3), -45,  45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(7, 2), -90,  45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(7, 1), -135, 45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(6, 1), -180, 45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(5, 1), -225, 45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(5, 2), -270, 45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(5, 3), -315, 45));
-
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(10, 3), -0,   90));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(11, 3), -45,  90));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(11, 2), -90,  90));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(11, 1), -135, 90));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(10, 1), -180, 90));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(9, 1),  -225, 90));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(9, 2),  -270, 90));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(9, 3),  -315, 90));
-
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(14, 3), -0,   -45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(15, 3), -45,  -45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(15, 2), -90,  -45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(15, 1), -135, -45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(14, 1), -180, -45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(13, 1), -225, -45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(13, 2), -270, -45));
-            //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(13, 3), -315, -45));
-
-            //var wrpBuilder = new WrpCompiler(progress, projectDrive);
-
-            //wrpBuilder.Write(config, grid, objects.Select((obj,idx) => obj.ToWrpObject(grid)));
-
 
         }
+
+        //return;
+
+        //var config = new TestMapConfig();
+        //var grid = new ElevationGrid(config.GridSize, config.GridCellSize);
+        //for (var ex = 0; ex < grid.Size; ++ex)
+        //{
+        //    for (var ey = 0; ey < grid.Size; ++ey)
+        //    {
+        //        if (ex % 4 == 1 || ex % 4 == 2)
+        //        {
+        //            grid[ex, ey] = 21;
+        //        }
+        //        else
+        //        {
+        //            grid[ex, ey] = 20;
+        //        }
+        //    }
+        //}
+
+        //var objects = new List<TerrainBuilderObject>();
+        //var model = new ModelInfo("Sign_Arrow_Direction_F", "a3\\misc_f\\Helpers\\Sign_Arrow_Direction_F.p3d", "a3_misc_f", new Vector3(0, 0.058088847f, 0.029880643f));
+
+        ///*var anglesToTest = new float[] { 0, 45, 90, 135, 180, 225, 270, 315 };
+        //var pos = 1;
+        //foreach (var yaw in anglesToTest)
+        //{
+        //    foreach (var pitch in anglesToTest)
+        //    {
+        //        foreach (var roll in anglesToTest)
+        //        {
+        //            objects.Add(new TerrainBuilderObject(model, new TerrainPoint(pos, 1), 0, ElevationMode.Relative, yaw, pitch, roll, 1));
+        //            pos++;
+        //        }
+        //    }
+        //}*/
+
+        // p:\z\arm\addons\arm_testworld
+
+        //var progress = new ConsoleProgressSystem();
+        //var projectDrive = new ProjectDrive();
+        //projectDrive.AddMountPoint(@"z\arm\addons", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive\z\arm\addons");
+
+        //var materials = new TestTerrainMaterialLibrary();
+
+        //var tiler = new ImageryTiler(config.TileSize, config.Resolution, config.GetImagerySize());
+
+        //var targetPath = @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive\z\arm\addons\arm_testworld\data\layers";
+        //Directory.CreateDirectory(targetPath);
+
+        //var targetId = new Image<Rgba32>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgba32>());
+        //var targetSat = new Image<Rgba32>(tiler.TileSize, tiler.TileSize, Color.Gray.ToPixel<Rgba32>());
+
+
+        //DrawRectangle(targetId, x: 064, y: 064, w: 224, h: 112, c: new Rgba32(0, 0, 0, 255));
+        //DrawRectangle(targetId, x: 288, y: 064, w: 224, h: 112, c: new Rgba32(255, 0, 0, 255));
+        //DrawRectangle(targetId, x: 512, y: 064, w: 224, h: 112, c: new Rgba32(0, 255, 0, 255));
+        //DrawRectangle(targetId, x: 736, y: 064, w: 224, h: 112, c: new Rgba32(0, 0, 255, 255));
+
+        //DrawRectangle(targetId, x: 064, y: 176, w: 224, h: 112, c: new Rgba32(0, 0, 0, 128));
+        //DrawRectangle(targetId, x: 288, y: 176, w: 224, h: 112, c: new Rgba32(255, 0, 0, 128));
+        //DrawRectangle(targetId, x: 512, y: 176, w: 224, h: 112, c: new Rgba32(0, 255, 0, 128));
+        //DrawRectangle(targetId, x: 736, y: 176, w: 224, h: 112, c: new Rgba32(0, 0, 255, 128));
+
+        //DrawRectangle(targetId, x: 064, y: 288, w: 224, h: 112, c: new Rgba32(0, 0, 0, 255));
+        //DrawRectangle(targetId, x: 288, y: 288, w: 224, h: 112, c: new Rgba32(255, 0, 0, 255));
+        //DrawRectangle(targetId, x: 512, y: 288, w: 224, h: 112, c: new Rgba32(0, 255, 0, 255));
+        //DrawRectangle(targetId, x: 736, y: 288, w: 224, h: 112, c: new Rgba32(0, 0, 255, 255));
+
+        //DrawRectangle(targetId, x: 064, y: 400, w: 224, h: 112, c: new Rgba32(0, 0, 0, 0));
+        //DrawRectangle(targetId, x: 288, y: 400, w: 224, h: 112, c: new Rgba32(255, 0, 0, 0));
+        //DrawRectangle(targetId, x: 512, y: 400, w: 224, h: 112, c: new Rgba32(0, 255, 0, 0));
+        //DrawRectangle(targetId, x: 736, y: 400, w: 224, h: 112, c: new Rgba32(0, 0, 255, 0));
+
+        //DrawRectangle(targetId, x: 064, y: 512, w: 224, h: 112, c: new Rgba32(0, 0, 0, 128));
+        //DrawRectangle(targetId, x: 288, y: 512, w: 224, h: 112, c: new Rgba32(255, 0, 0, 128));
+        //DrawRectangle(targetId, x: 512, y: 512, w: 224, h: 112, c: new Rgba32(0, 255, 0, 128));
+        //DrawRectangle(targetId, x: 736, y: 512, w: 224, h: 112, c: new Rgba32(0, 0, 255, 128));
+
+        //DrawRectangle(targetId, x: 064, y: 624, w: 224, h: 112, c: new Rgba32(0, 0, 0, 255));
+        //DrawRectangle(targetId, x: 288, y: 624, w: 224, h: 112, c: new Rgba32(255, 0, 0, 255));
+        //DrawRectangle(targetId, x: 512, y: 624, w: 224, h: 112, c: new Rgba32(0, 255, 0, 255));
+        //DrawRectangle(targetId, x: 736, y: 624, w: 224, h: 112, c: new Rgba32(0, 0, 255, 255));
+
+
+        //foreach (var tile in tiler.All)
+        //{
+        //    var rvmat = ImageryCompiler.MakeRvMat(tile, config, materials.Materials);
+        //    File.WriteAllText(Path.Combine(targetPath, $"P_{tile.X:000}-{tile.Y:000}.rvmat"), rvmat);
+        //    targetId.Save(Path.Combine(targetPath, $"m_{tile.X:000}_{tile.Y:000}_lca.png"));
+        //    targetSat.Save(Path.Combine(targetPath, $"s_{tile.X:000}_{tile.Y:000}_lco.png"));
+        //}
+
+        ////var objects = new List<TerrainBuilderObject>();
+
+        ////var model = new ModelInfo("Sign_Arrow_Direction_F", "a3\\misc_f\\Helpers\\Sign_Arrow_Direction_F.p3d", "a3_misc_f", new Vector3(0, 0.058088847f, 0.029880643f));
+        //var model2 = new ModelInfo("Sign_Arrow_F", "a3\\misc_f\\Helpers\\Sign_Arrow_F.p3d", "a3_misc_f", new Vector3(0, 0.3732606f, 0));
+        //// BoundingCenter	{0,0.3732606,0}
+        ///*
+        //var anglesToTest = new float[] { 0, 45, 90, 135, 180, 225, 270, 315 };
+        //var pos = 1;
+        //foreach(var yaw in anglesToTest)
+        //{
+        //    foreach (var pitch in anglesToTest)
+        //    {
+        //        foreach (var roll in anglesToTest)
+        //        {
+        //            objects.Add(new TerrainBuilderObject(model, new TerrainPoint(pos, 1), 0, ElevationMode.Relative, yaw, pitch, roll, 1));
+        //            pos++;
+        //        }
+        //    }
+        //}*/
+
+        //var result = string.Join("\r\n", objects.Select(o => o.ToTerrainBuilderCSV()));
+
+
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(2, 3), -0,   0));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(3, 3), -45,  0));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(3, 2), -90,  0));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(3, 1), -135, 0));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(2, 1), -180, 0));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(1, 1), -225, 0));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(1, 2), -270, 0));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model, new TerrainPoint(1, 3), -315, 0));
+
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(6, 3), -0,   45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(7, 3), -45,  45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(7, 2), -90,  45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(7, 1), -135, 45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(6, 1), -180, 45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(5, 1), -225, 45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(5, 2), -270, 45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(5, 3), -315, 45));
+
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(10, 3), -0,   90));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(11, 3), -45,  90));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(11, 2), -90,  90));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(11, 1), -135, 90));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(10, 1), -180, 90));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(9, 1),  -225, 90));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(9, 2),  -270, 90));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(9, 3),  -315, 90));
+
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(14, 3), -0,   -45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(15, 3), -45,  -45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(15, 2), -90,  -45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(15, 1), -135, -45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(14, 1), -180, -45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(13, 1), -225, -45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(13, 2), -270, -45));
+        //objects.Add(TerrainBuilderObject.RelativePitchThenYaw(model2, new TerrainPoint(13, 3), -315, -45));
+
+        //var wrpBuilder = new WrpCompiler(progress, projectDrive);
+
+        //wrpBuilder.Write(config, grid, objects.Select((obj,idx) => obj.ToWrpObject(grid)));
 
 
         //private static void DrawRectangle(Image<Rgba32> targetId, int x, int y, int w, int h, Rgba32 c)

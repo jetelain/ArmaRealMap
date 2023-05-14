@@ -5,6 +5,7 @@
         Size80 = 80,
         Size40 = 40,
         Size20 = 20,
-        Size10 = 10
+        Size10 = 10,
+        Size5 = 5
     }
 }

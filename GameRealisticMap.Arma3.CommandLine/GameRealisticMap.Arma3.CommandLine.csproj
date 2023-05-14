@@ -8,6 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="preview.html" />
+    <None Remove="preview.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="preview.html" />
+    <EmbeddedResource Include="preview.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
     <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
     <ProjectReference Include="..\mapkit\MapToolkit\MapToolkit.csproj" />

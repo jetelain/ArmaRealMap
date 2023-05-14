@@ -35,12 +35,18 @@ namespace GameRealisticMap.Arma3.Imagery
         {
             var satMap = context.GetData<RawSatelliteImageData>().Image;
 
+            // TODO: Add shadows based on elevation data
+
             return satMap.Clone(d => d.Resize(size, size));
         }
 
         public Image Render(IArma3MapConfig config, IContext context)
         {
             var result = RenderBaseImage(config, context);
+
+            // TODO: Add perlin noise ? (in natural areas ?)
+
+            // TODO: Maybe also add shadows based on elevation data ?
 
             DrawRoads(config, context, result);
 
