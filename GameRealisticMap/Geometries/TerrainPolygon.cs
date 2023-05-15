@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using ClipperLib;
+using GameRealisticMap.Reporting;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Distance;
@@ -48,6 +49,9 @@ namespace GameRealisticMap.Geometries
 
         [JsonIgnore]
         public double Area => AsPolygon.Area;
+
+        [JsonIgnore]
+        public double EnveloppeArea => (MaxPoint.Vector - MinPoint.Vector).LengthSquared();
 
         [JsonIgnore]
         public TerrainPoint Centroid 
@@ -299,9 +303,60 @@ namespace GameRealisticMap.Geometries
             return ToPolygons(result);
         }
 
-        public static List<TerrainPolygon> MergeAll(List<TerrainPolygon> others)
+        private void ToClipper(Clipper clipper, PolyType type)
+        {
+            clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), type, true);
+            foreach (var hole in Holes)
+            {
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), type, true);
+            }
+        }
+
+        public static List<TerrainPolygon> MergeAll(List<TerrainPolygon> others, IProgressPercent? progress = null, double artefactFilter = 0.01f)
+        {
+            return MergeAllNew(others, progress, artefactFilter);
+        }
+
+        public static List<TerrainPolygon> MergeAllNew(List<TerrainPolygon> others, IProgressPercent? progress = null, double artefactFilter = 0.01f)
+        {
+            if (others.Count == 0)
+            {
+                return others;
+            }
+            var source = others.Where(p => p.Area > artefactFilter).ToList();
+            var merged = new List<TerrainPolygon>(source.Take(1));
+            var box = merged.GetEnvelope();
+            var position = 1;
+            foreach (var polygon in source.Skip(1))
+            {
+                if (polygon.EnveloppeIntersects(box) && box != Envelope.None)
+                {
+                    var clipper = new Clipper();
+                    foreach (var other in merged)
+                    {
+                        other.ToClipper(clipper, PolyType.ptSubject);
+                    }
+                    polygon.ToClipper(clipper, PolyType.ptClip);
+
+                    var result = new PolyTree();
+                    clipper.Execute(ClipType.ctUnion, result);
+                    merged = ToPolygons(result).Where(p => p.Area > artefactFilter).ToList();
+                }
+                else
+                {
+                    merged.Add(polygon);
+                }
+                box = merged.GetEnvelope();
+                progress?.Report(position * 100d / source.Count);
+                position++;
+            }
+            return merged;
+        }
+
+        public static List<TerrainPolygon> MergeAllOld(List<TerrainPolygon> others, IProgressPercent? progress = null, double artefactFilter = 0.01f)
         {
             var tomerge = others.ToList();
+
             /*var noholes = others.Where(p => p.Holes.Count == 0).ToList();
             var tomerge = others.Where(p => p.Holes.Count != 0).ToList();
             */
@@ -324,7 +379,7 @@ namespace GameRealisticMap.Geometries
                     {
                         foreach(var other in tomerge.Where(other => other != poly && GeometryHelper.EnveloppeIntersects(poly, other)))
                         {
-                            var merged = poly.Merge(other).ToList();
+                            var merged = poly.Merge(other, artefactFilter).ToList();
                             if (merged.Count == 1) // successfully merged
                             {
                                 tomerge.Remove(poly);
@@ -342,19 +397,8 @@ namespace GameRealisticMap.Geometries
                 }
                 while (changed);
             }
+            progress?.Report(100);
             return tomerge;
-        }
-
-        private static List<TerrainPolygon> QuickMergeAllWithNoHoles(List<TerrainPolygon> noholes)
-        {
-            var clipper = new Clipper();
-            foreach (var simple in noholes)
-            {
-                clipper.AddPath(simple.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
-            }
-            var result = new PolyTree();
-            clipper.Execute(ClipType.ctUnion, result, PolyFillType.pftNonZero);
-            return ToPolygons(result);
         }
 
         public IEnumerable<TerrainPolygon> Merge(TerrainPolygon other, double artefactFilter = 0.01f)

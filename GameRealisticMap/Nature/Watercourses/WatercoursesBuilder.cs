@@ -87,7 +87,7 @@ namespace GameRealisticMap.Nature.Watercourses
 
             var surfaceOfWays = waterwaysPaths.Where(w => !w.IsTunnel).SelectMany(w => w.Polygons);
 
-            return TerrainPolygon.MergeAll(builder.GetPolygons(context, surfaceOfWays));
+            return builder.GetPolygons(context, surfaceOfWays);
         }
 
         private List<Watercourse> GetPaths(IBuildContext context, List<TerrainPolygon> lakesPolygons, List<OsmGeo> waterwayNodes)

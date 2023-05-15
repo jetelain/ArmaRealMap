@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Management;
 using System.Runtime.Versioning;
 using GameRealisticMap.Reporting;
 using Microsoft.Win32;
@@ -72,5 +73,23 @@ namespace GameRealisticMap.Arma3
                 report.ReportOneDone();
             }).ConfigureAwait(false);
         }
+
+        [SupportedOSPlatform("windows")]
+        public static async Task<int> BuildWithMikeroPboProject(string pboPrefix, string targetMod)
+        {
+            EnsureProjectDrive();
+            var process = Process.Start(new ProcessStartInfo()
+            {
+                FileName = @"C:\Program Files (x86)\Mikero\DePboTools\bin\pboProject.exe", // Hard-coded because tool can only work from this location
+                Arguments = @$"-R -E=""arma3"" -W -P -M=""{targetMod}"" ""P:\{pboPrefix}"""
+            }) ;
+            if (process == null)
+            {
+                return -1;
+            }
+            await process.WaitForExitAsync();
+            return process.ExitCode;
+        }
+
     }
 }

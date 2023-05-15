@@ -8,7 +8,7 @@ using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.Nature.Forests
 {
-    internal class ForestGenerator : ClusteredGeneratorBase<ForestData>
+    public class ForestGenerator : ClusteredGeneratorBase<ForestData>
     {
         public ForestGenerator(IProgressSystem progress, IArma3RegionAssets assets)
             : base(progress,assets)

@@ -101,7 +101,7 @@ namespace ArmaRealMap
                         BoundingCenter = new Vector3(m.BoundingCenterX ?? 0, m.BoundingCenterY ?? 0, m.BoundingCenterZ ?? 0)
                     }).ToList();
 
-                CheckBoudingCenters(models);
+                //CheckBoudingCenters(models);
 
                 Models.AddRange(models);
             }

@@ -10,7 +10,7 @@ using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.Nature
 {
-    internal abstract class ClusteredGeneratorBase<TData> : GeneratorBase<TData> where TData : class, IBasicTerrainData
+    public abstract class ClusteredGeneratorBase<TData> : GeneratorBase<TData> where TData : class, IBasicTerrainData
     {
         public ClusteredGeneratorBase(IProgressSystem progress, IArma3RegionAssets assets)
             : base(progress, assets)

@@ -64,7 +64,9 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             foreach (var face in geoLod.Polygons.Faces)
             {
                 var points = face.VertexIndices.Select(i => geoLod.Vertices[i]).Select(p => p.Vector3 /*+ p3d.ModelInfo.BoundingCenter.Vector3*/);
-                list.Add(new TerrainPolygon(points.Select(p => new TerrainPoint(p.X, p.Z)).ToList()));
+                var x = points.Select(p => new TerrainPoint(p.X, p.Z)).ToList();
+                x.Add(x[0]);
+                list.Add(new TerrainPolygon(x));
             }
             return TerrainPolygon.MergeAll(list);
         }

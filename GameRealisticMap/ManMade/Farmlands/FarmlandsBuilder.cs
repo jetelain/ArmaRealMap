@@ -30,5 +30,10 @@ namespace GameRealisticMap.ManMade.Farmlands
             return base.GetPriority(context)
                 .Concat(context.GetData<ForestData>().Polygons);
         }
+
+        protected override List<TerrainPolygon> MergeIfRequired(List<TerrainPolygon> polygons)
+        {
+            return polygons; // Do not merge, to be able to place objects at edges and to be able to post-process satellite image
+        }
     }
 }

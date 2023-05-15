@@ -27,11 +27,6 @@ namespace GameRealisticMap.Nature.Forests
                 .Concat(context.GetData<BuildingsData>().Buildings.SelectMany(b => b.Box.Polygon.Offset(2.5f)))
                 .ToList();
 
-            using (var step = progress.CreateStep("Merge", 1))
-            {
-                forests = TerrainPolygon.MergeAll(forests); // XXX: Merge in BasicBuilderBase to rely only on clusters ?
-            }
-
             // Ignore reallys smalls "forests", as it might have been used to map some isolated trees
             forests = forests.Where(f => f.Area > 200).ToList();
 

@@ -15,9 +15,9 @@ namespace GameRealisticMap.Algorithms.Following
 
         public TerrainPoint Center { get; }
 
-        public float RelativeElevation { get; }
+        public float RelativeElevation => 0f;
 
-        public float Scale { get; }
+        public float Scale => 1f;
 
         public TModel Model { get; }
     }

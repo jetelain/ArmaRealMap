@@ -52,7 +52,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             using (var idMap = source.CreateIdMap())
             {
-                idMap.SaveAsPng("idmap.png");
+                // idMap.SaveAsPng("idmap.png");
                 GenerateIdMapTilesAndRvMat(config, idMap, tiler);
             }
 
@@ -60,7 +60,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             using (var satMap = source.CreateSatMap())
             {
-                satMap.SaveAsPng("satmap.png");
+                // satMap.SaveAsPng("satmap.png");
                 GenerateSatMapTiles(config, satMap, tiler);
             }
 

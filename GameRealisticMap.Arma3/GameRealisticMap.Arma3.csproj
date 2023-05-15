@@ -13,6 +13,7 @@
     <ProjectReference Include="..\bis-file-formats\BIS.WRP\BIS.WRP.csproj" />
     <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
 	  <PackageReference Include="NetTopologySuite.IO.ShapeFile" Version="1.15.3" />
+	  <PackageReference Include="System.Management" Version="7.0.1" />
   </ItemGroup>
 
 </Project>

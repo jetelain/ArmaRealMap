@@ -38,7 +38,15 @@ namespace GameRealisticMap.Nature
                 .SelectMany(l => l.SubstractAll(priority))
                 .ToList();
 
-            return polygons;
+            return MergeIfRequired(polygons);
+        }
+
+        protected virtual List<TerrainPolygon> MergeIfRequired(List<TerrainPolygon> polygons)
+        {
+            using (var step = progress.CreateStepPercent("Merge"))
+            {
+                return TerrainPolygon.MergeAll(polygons, step);
+            }
         }
     }
 }

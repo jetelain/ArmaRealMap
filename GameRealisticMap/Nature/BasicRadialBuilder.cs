@@ -55,9 +55,9 @@ namespace GameRealisticMap.Nature
                 .SelectMany(l => l.SubstractAll(priority))
                 .ToList();
 
-            using var step = progress.CreateStep("Merge", 1);
+            using var step = progress.CreateStepPercent("Merge");
 
-            var final = TerrainPolygon.MergeAll(radial);
+            var final = TerrainPolygon.MergeAll(radial, step);
 
             return CreateWrapper(final);
         }

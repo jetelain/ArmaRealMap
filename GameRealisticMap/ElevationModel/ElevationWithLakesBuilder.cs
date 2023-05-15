@@ -226,7 +226,6 @@ namespace GameRealisticMap.ElevationModel
                 using var layer = CreateDepthLayer(elevationGrid, lakePolygon, borderElevation, lakeElevation);
                 d.DrawImage(layer, 1);
             });
-            lakeElevation.Image.SaveAsPng($"lake{lakeIndex}.png");
             lakeElevation.Apply();
         }
 
@@ -262,7 +261,6 @@ namespace GameRealisticMap.ElevationModel
                     PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(lakeElevation.ElevationToColor(borderElevation)), lakeElevation.ToPixels);
                 }
             });
-            lakeElevation.Image.SaveAsPng($"lake{lakeIndex}-min.png");
             lakeElevation.ApplyAsMinimal();
         }
 

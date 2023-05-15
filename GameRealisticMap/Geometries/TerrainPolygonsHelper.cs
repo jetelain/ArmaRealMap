@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Reporting;
+﻿using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Geometries
 {
@@ -36,6 +31,22 @@ namespace GameRealisticMap.Geometries
                 report.ReportOneDone();
             }
             return input;
+        }
+
+
+        internal static ITerrainEnvelope GetEnvelope(this IReadOnlyCollection<ITerrainEnvelope> merged)
+        {
+            if (merged.Count == 0)
+            {
+                return Envelope.None;
+            }
+            if (merged.Count == 1)
+            {
+                return merged.First();
+            }
+            return new Envelope(
+                new TerrainPoint(merged.Min(m => m.MinPoint.X), merged.Min(m => m.MinPoint.Y)),
+                new TerrainPoint(merged.Max(m => m.MaxPoint.X), merged.Max(m => m.MaxPoint.Y)));
         }
     }
 }

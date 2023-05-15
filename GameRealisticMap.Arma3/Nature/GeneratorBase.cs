@@ -9,7 +9,7 @@ using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.Nature
 {
-    internal abstract class GeneratorBase<TData> : ITerrainBuilderLayerGenerator 
+    public abstract class GeneratorBase<TData> : ITerrainBuilderLayerGenerator 
         where TData : class, IBasicTerrainData
     {
         protected readonly IProgressSystem progress;
