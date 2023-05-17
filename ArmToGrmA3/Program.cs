@@ -11,6 +11,7 @@ using ArmaRealMap.TerrainBuilder;
 using ArmaRealMap.TerrainData.Roads;
 using BitMiracle.LibTiff.Classic;
 using GameRealisticMap.Algorithms;
+using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
@@ -38,7 +39,7 @@ namespace ArmToGrmA3
 
             ConfigLoader.SyncLibraries(globalConfig);
 
-            var prj = new ProjectDrive(@"d:\Julien\Documents\Arma 3 Projects");
+            var prj = new ProjectDrive(Arma3ToolsHelper.GetProjectDrivePath(), new PboFileSystem());
             prj.AddMountPoint(@"z\arm\addons", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive\z\arm\addons");
             var newModels = new ModelInfoLibrary(prj);
 

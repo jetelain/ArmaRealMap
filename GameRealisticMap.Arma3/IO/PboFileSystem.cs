@@ -19,6 +19,12 @@ namespace GameRealisticMap.Arma3.IO
             this.searchPaths = searchPaths;
         }
 
+        [SupportedOSPlatform("windows")]
+        public PboFileSystem()
+            : this(GetArma3Paths())
+        {
+        }
+
         public static IEnumerable<string> GetArma3Paths(string basePath)
         {
             yield return Path.Combine(basePath, "Addons");

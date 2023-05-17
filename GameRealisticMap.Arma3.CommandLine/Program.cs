@@ -13,7 +13,7 @@ namespace GameRealisticMap.Arma3.CommandLine
     {
         static async Task Main(string[] args)
         {
-            var projectDrive = new ProjectDrive(@"d:\Julien\Documents\Arma 3 Projects");
+            var projectDrive = new ProjectDrive(Arma3ToolsHelper.GetProjectDrivePath(), new PboFileSystem());
 
             projectDrive.AddMountPoint(@"z\arm\addons", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive\z\arm\addons");
 

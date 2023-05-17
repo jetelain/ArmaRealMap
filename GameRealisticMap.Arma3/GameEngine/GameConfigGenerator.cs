@@ -25,6 +25,8 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         public void Generate(IArma3MapConfig config, IContext context, ITerrainArea area)
         {
+            gameFileSystemWriter.CreateDirectory(config.PboPrefix);
+
             var configCpp = $"{config.PboPrefix}\\config.cpp";
 
             if (!gameFileSystemWriter.FileExists(configCpp))

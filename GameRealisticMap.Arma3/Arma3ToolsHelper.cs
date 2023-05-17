@@ -91,5 +91,9 @@ namespace GameRealisticMap.Arma3
             return process.ExitCode;
         }
 
+        public static string GetProjectDrivePath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Arma 3 Projects");
+        }
     }
 }
