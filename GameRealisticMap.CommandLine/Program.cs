@@ -21,7 +21,7 @@ namespace GameRealisticMap.CommandLine
 
             var osmSource = await loader.Load(area);
 
-            var context = new BuildContext(catalog, progress, area, osmSource);
+            var context = new BuildContext(catalog, progress, area, osmSource, new ImageryOptions());
 
             var serializer = new ContextSerializer(catalog);
 

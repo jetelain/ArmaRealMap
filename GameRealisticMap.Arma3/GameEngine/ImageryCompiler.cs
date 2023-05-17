@@ -70,7 +70,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         private void CreateConfigCppImages(IArma3MapConfig config, IImagerySource source)
         {
             var picturemapFile = $"{config.PboPrefix}\\data\\picturemap_ca.png";
-            if (!gameFileSystemWriter.FileExists(picturemapFile))
+            //if (!gameFileSystemWriter.FileExists(picturemapFile))
             {
                 using (var satMapOut = source.CreatePictureMap())
                 {
@@ -79,7 +79,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             }
 
             var satoutFile = $"{config.PboPrefix}\\data\\satout_ca.png";
-            if (!gameFileSystemWriter.FileExists(satoutFile))
+            //if (!gameFileSystemWriter.FileExists(satoutFile))
             {
                 using (var satMapOut = source.CreateSatOut())
                 {

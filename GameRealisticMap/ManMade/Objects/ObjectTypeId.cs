@@ -13,6 +13,7 @@
         WaysideCross,
         Statue,
         WarMemorial,
-        Tree
+        Tree,
+        Sculpture
     }
 }

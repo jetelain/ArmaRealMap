@@ -95,6 +95,10 @@ namespace GameRealisticMap.ManMade.Objects
                     }
                     break;
             }
+            if (tags.GetValue("artwork_type") == "sculpture")
+            {
+                return ObjectTypeId.Sculpture;
+            }
             return null;
         }
 

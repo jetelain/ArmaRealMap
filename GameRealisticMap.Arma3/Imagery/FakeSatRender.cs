@@ -25,7 +25,7 @@ namespace GameRealisticMap.Arma3.Imagery
         public override Image<Rgba32> Render(IArma3MapConfig config, IContext context)
         {
             var image = base.Render(config, context);
-            image.Mutate(d => d.GaussianBlur(5f));
+            image.Mutate(d => d.GaussianBlur(1.5f));
             return image;
         }
 
@@ -35,7 +35,7 @@ namespace GameRealisticMap.Arma3.Imagery
             image.Mutate(d =>
             {
                 d.Fill(GetBrush(materialLibrary.GetMaterialByUsage(TerrainMaterialUsage.Default)));
-                d.GaussianBlur(5f);
+                d.GaussianBlur(1.5f);
             });
             return image;
         }
