@@ -17,8 +17,8 @@ namespace GameRealisticMap.Arma3.Assets
         string BaseWorldName { get; }
 
         string BaseDependency { get; }
-        
-        IEnumerable<BuildingDefinition> GetBuildings(BuildingTypeId buildingTypeId);
+
+        IReadOnlyCollection<BuildingDefinition> GetBuildings(BuildingTypeId buildingTypeId);
 
         IReadOnlyCollection<ObjectDefinition> GetObjects(ObjectTypeId typeId);
 

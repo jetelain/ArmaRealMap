@@ -12,7 +12,12 @@ namespace GameRealisticMap.Arma3.Assets
 
         public TerrainMaterialLibrary()
         {
-
+            var none = new TerrainMaterial("", "", new Rgb24(), null);
+            indexByColor[none.Id] = none;
+            foreach(var id in Enum.GetValues<TerrainMaterialUsage>())
+            {
+                indexByUsage[id] = none;
+            }
         }
 
         [JsonConstructor]

@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--<PackageReference Include="Gemini.Modules.CodeEditor" Version="1.0.60-beta" />-->
+    <PackageReference Include="Gemini.Modules.ErrorList" Version="1.0.60-beta" />
+    <!--<PackageReference Include="Gemini.Modules.GraphEditor" Version="1.0.60-beta" />-->
+    <!--<PackageReference Include="Gemini.Modules.Inspector" Version="1.0.60-beta" />-->
+    <PackageReference Include="Gemini.Modules.Output" Version="1.0.60-beta" />
+    <!--<PackageReference Include="Gemini.Modules.PropertyGrid" Version="1.0.60-beta" />-->
+    <PackageReference Include="GeminiWpf" Version="1.0.60-beta" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
+    <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -20,6 +20,11 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
             throw new NotImplementedException();
         }
 
+        public IEnumerable<string> FindAll(string pattern)
+        {
+            throw new NotImplementedException();
+        }
+
         public Stream? OpenFileIfExists(string path)
         {
             throw new NotImplementedException();

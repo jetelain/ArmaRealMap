@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.AssetConfigEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:CollectionCountValueConverter x:Key="CollectionCountValueConverter" />
+        <local:PercentValueConverter x:Key="PercentValueConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" local:Behaviors.EnforceScroll="True">
+        <Grid>
+            <StackPanel>
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        Filling objects
+                    </Expander.Header>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 10">
+                            <Button Padding="5">Add a variation</Button>
+                        </StackPanel>
+                        <DataGrid ItemsSource="{Binding Filling}" AutoGenerateColumns="false">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" Width="200" />
+                                <DataGridTextColumn Header="Label" Binding="{Binding Label}" IsReadOnly="True" Width="200" />
+                                <DataGridTextColumn Header="Probability" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
+                                <DataGridTextColumn Header="Density" Binding="{Binding DensityText}" IsReadOnly="True" Width="100" />
+                                <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="150" />
+                                <DataGridTemplateColumn Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2" CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+
+
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        Individual objects
+                    </Expander.Header>
+                    <StackPanel>
+                        <DataGrid ItemsSource="{Binding Individual}" AutoGenerateColumns="false" Margin="0 10 0 0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" Width="200" />
+                                <DataGridTextColumn Header="Label" Binding="{Binding Label}" IsReadOnly="True" Width="200" />
+                                <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="300" />
+                                <DataGridTemplateColumn Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        Ground textures
+                    </Expander.Header>
+                    <StackPanel>
+                        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Materials}" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Texture" Binding="{Binding ColorTexture}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Same as" Binding="{Binding SameAs.IdText}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+
+
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        Roads and bridges
+                    </Expander.Header>
+                    <StackPanel>
+                        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Roads}" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Texture" Binding="{Binding Texture}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Width" Binding="{Binding Width}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+
+            </StackPanel>
+            <TextBlock
+                FontSize="20"
+                Background="#bfff"
+                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Padding="50">Loading...</TextBlock>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

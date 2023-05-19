@@ -106,5 +106,35 @@ namespace GameRealisticMap.Arma3.IO
         {
             return File.Exists(GetFullPath(path));
         }
+
+        public string GetGamePath(string fullPath)
+        {
+            if (fullPath.StartsWith("P:\\", StringComparison.OrdinalIgnoreCase))
+            {
+                return fullPath.Substring(3);
+            }
+            if (fullPath.StartsWith(mountPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return fullPath.Substring(mountPath.Length).TrimStart('\\');
+            }
+            foreach (var item in mountPoints)
+            {
+                if (fullPath.StartsWith(item.Value, StringComparison.OrdinalIgnoreCase))
+                {
+                    return item.Key + fullPath.Substring(item.Value.Length);
+                }
+            }
+            return fullPath;
+        }
+
+        public IEnumerable<string> FindAll(string pattern)
+        {
+            var physical = Directory.GetFiles(mountPath, pattern, SearchOption.AllDirectories).Select(file => file.Substring(mountPath.Length).TrimStart('\\'));
+            if (secondarySource != null)
+            {
+                return secondarySource.FindAll(pattern).Concat(physical).Distinct(StringComparer.OrdinalIgnoreCase);
+            }
+            return physical;
+        }
     }
 }

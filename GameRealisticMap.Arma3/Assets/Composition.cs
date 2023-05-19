@@ -50,16 +50,15 @@ namespace GameRealisticMap.Arma3.Assets
             return new Composition(objects.Select(o => new CompositionObject(o.Model, o.ToWrpObject(NoGrid.Zero).Transform.Matrix)).ToList());
         }
 
-        public static Composition CreateFromCsv(IEnumerable<string> terrainBuilderCsv, IModelInfoLibrary library, float elevationOffset)
+        public static Composition CreateFromCsv(IEnumerable<string> terrainBuilderCsv, IModelInfoLibrary library)
         {
             return CreateFrom(terrainBuilderCsv
-                .Select(line => new TerrainBuilderObject(ElevationMode.Absolute, line, library))
-                .Select(line => new TerrainBuilderObject(line.Model, line.Point, line.Elevation - elevationOffset, ElevationMode.Absolute, line.Yaw, line.Pitch, line.Roll, line.Scale)));
+                .Select(line => new TerrainBuilderObject(ElevationMode.Absolute, line, library)));
         }
 
-        public static Composition CreateFromCsv(string terrainBuilderCsv, IModelInfoLibrary library, float elevationOffset)
+        public static Composition CreateFromCsv(string terrainBuilderCsv, IModelInfoLibrary library)
         {
-            return CreateFromCsv(terrainBuilderCsv.Split('\n').Select(l => l.Trim()).Where(l => !string.IsNullOrEmpty(l)), library, elevationOffset);
+            return CreateFromCsv(terrainBuilderCsv.Split('\n').Select(l => l.Trim()).Where(l => !string.IsNullOrEmpty(l)), library);
         }
 
         public static Composition CreateSingleFrom(ModelInfo model, Vector2 center)

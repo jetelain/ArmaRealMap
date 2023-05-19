@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Versioning;
+using System.Text.RegularExpressions;
 using BIS.PBO;
 
 namespace GameRealisticMap.Arma3.IO
@@ -11,17 +12,19 @@ namespace GameRealisticMap.Arma3.IO
             "editorpreviews_", "ui_", "functions_", "anims_", "air_", "armor_", "characters_", "boat_"
         };
 
-        private readonly IEnumerable<string> searchPaths;
+        private readonly IEnumerable<string> gamePaths;
+        private readonly IEnumerable<string> mods;
         private readonly Dictionary<string, IPBOFileEntry> index = new(StringComparer.OrdinalIgnoreCase);
 
-        public PboFileSystem(IEnumerable<string> searchPaths)
+        public PboFileSystem(IEnumerable<string> gamePaths, IEnumerable<string> mods)
         {
-            this.searchPaths = searchPaths;
+            this.gamePaths = gamePaths;
+            this.mods = mods;
         }
 
         [SupportedOSPlatform("windows")]
         public PboFileSystem()
-            : this(GetArma3Paths())
+            : this(GetArma3Paths(), Enumerable.Empty<string>())
         {
         }
 
@@ -55,26 +58,41 @@ namespace GameRealisticMap.Arma3.IO
 
         public void BuildIndex()
         {
-            foreach(var path in searchPaths)
+            foreach(var path in gamePaths)
             {
-                foreach(var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories))
+                foreach(var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories).Where(f => ShouldRead(f, PboPrefixIgnore)))
                 {
-                    var fileName = Path.GetFileName(pboPath);
-                    if (PboPrefixIgnore.Any(suffix => fileName.StartsWith(suffix, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        continue;
-                    }
-
-                    var pboFile = new PBO(pboPath, false);
-                    foreach(var entry in pboFile.Files)
-                    {
-                        if (EntryExtensionsList.Any(suffix => entry.FileName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase)))
-                        {
-                            index[pboFile.Prefix + "\\" + entry.FileName] = entry;
-                        }
-                    }
+                    AddCacheDefault(pboPath);
                 }
             }
+
+            foreach (var path in mods)
+            {
+                foreach (var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories))
+                {
+                    AddCacheDefault(pboPath);
+                }
+            }
+        }
+
+        private void AddCacheDefault(string pboPath)
+        {
+            var pboFile = new PBO(pboPath, false);
+            foreach (var entry in pboFile.Files.Where(ShouldBeCached))
+            {
+                index[pboFile.Prefix + "\\" + entry.FileName] = entry;
+            }
+        }
+
+        private bool ShouldRead(string file, string[] ignorePrefix)
+        {
+            var fileName = Path.GetFileName(file);
+            return !ignorePrefix.Any(suffix => fileName.StartsWith(suffix, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static bool ShouldBeCached(IPBOFileEntry entry)
+        {
+            return EntryExtensionsList.Any(suffix => entry.FileName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase));
         }
 
         public bool Exists(string path)
@@ -98,7 +116,56 @@ namespace GameRealisticMap.Arma3.IO
             {
                 return entry.OpenRead();
             }
+
             return null;
+        }
+
+        public IEnumerable<string> FindAll(string pattern)
+        {
+            var regex = new Regex("\\\\" + Regex.Escape(pattern).Replace("\\*", ".*") + "$", RegexOptions.IgnoreCase);
+            var extension = Path.GetExtension(pattern);
+            if (EntryExtensionsList.Contains(extension, StringComparer.OrdinalIgnoreCase))
+            {
+                LazyBuildIndex();
+                return index.Keys.Where(v => regex.IsMatch(v));
+            }
+            var isJpeg = string.Equals(extension, ".jpg", StringComparison.OrdinalIgnoreCase);
+            var result = new List<string>();
+            foreach (var path in gamePaths)
+            {
+                foreach (var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories))
+                {
+                    if (isJpeg && !Path.GetFileName(pboPath).StartsWith("editorpreviews_"))
+                    {
+                        continue;
+                    }
+                    FindAll(regex, result, pboPath);
+                }
+            }
+            foreach (var path in mods)
+            {
+                foreach (var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories))
+                {
+                    FindAll(regex, result, pboPath);
+                }
+            }
+            return result.Distinct();
+        }
+
+        private void FindAll(Regex regex, List<string> result, string pboPath)
+        {
+            var pboFile = new PBO(pboPath, false);
+
+            foreach (var entry in pboFile.Files)
+            {
+                var entryPath = pboFile.Prefix + "\\" + entry.FileName;
+
+                if (regex.IsMatch(entryPath))
+                {
+                    index[entryPath] = entry;
+                    result.Add(entryPath);
+                }
+            }
         }
     }
 }

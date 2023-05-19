@@ -47,7 +47,7 @@ namespace GameRealisticMap.Arma3.Assets
             return null;
         }
 
-        public IEnumerable<BuildingDefinition> GetBuildings(BuildingTypeId buildingTypeId)
+        public IReadOnlyCollection<BuildingDefinition> GetBuildings(BuildingTypeId buildingTypeId)
         {
             if (!Buildings.TryGetValue(buildingTypeId, out var buildings))
             {

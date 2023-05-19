@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling.FillingAssetBasicView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:PercentValueConverter x:Key="PercentValueConverter" />
+        <local:CompositionPreviewConverter x:Key="CompositionPreviewConverter" />
+    </UserControl.Resources>
+    <ScrollViewer local:Behaviors.EnforceScroll="True" local:Behaviors.DropTarget="{Binding CompositionImporter}">
+        <StackPanel Margin="10 0">
+            <StackPanel Orientation="Horizontal" Margin="0 10">
+                <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">Add an object</Button>
+                <Button Padding="5" Margin="10 0" Command="{Binding CompositionImporter.AddComposition}">Add a composition</Button>
+            </StackPanel>
+            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                    <DataGridTemplateColumn Width="200">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Composition, Converter={StaticResource CompositionPreviewConverter}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Probability" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="100" />
+                    <DataGridTextColumn Header="Radius" Binding="{Binding Radius}" Width="100" />
+                    <DataGridTextColumn Header="ExclusiveRadius" Binding="{Binding ExclusiveRadius}" Width="100" />
+                    <DataGridTextColumn Header="MaxZ" Binding="{Binding MaxZ}" Width="100" />
+                    <DataGridTextColumn Header="MinZ" Binding="{Binding MinZ}" Width="100" />
+                    <DataGridTextColumn Header="MaxScale" Binding="{Binding MaxScale}" Width="100" />
+                    <DataGridTextColumn Header="MinScale" Binding="{Binding MinScale}" Width="100" />
+                    <DataGridTemplateColumn Width="75">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Padding="2" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Edit</Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="75">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Padding="2" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Remove</Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
