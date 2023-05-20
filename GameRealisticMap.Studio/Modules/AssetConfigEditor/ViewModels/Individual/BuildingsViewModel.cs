@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
-using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Buildings;
 using Gemini.Framework;
 
@@ -19,6 +18,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
         }
 
         public ObservableCollection<BuildingItem> Items { get; }
+
         public RelayCommand RemoveItem { get; }
 
         public override List<BuildingDefinition> ToDefinition()
@@ -26,9 +26,14 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
             return Items.Select(i => i.ToDefinition()).ToList();
         }
 
-        public override void AddSingleObject(ModelInfo model, ObjectPlacementDetectedInfos detected)
+        public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.Add(new BuildingItem(new BuildingDefinition(detected.Rectangle.Size, Composition.CreateSingleFrom(model, -detected.Rectangle.Center))));
+            var use = detected.UpperRectangle;
+            if (detected.GeneralRectangle.Surface > use.Surface * 3)
+            {
+                use = detected.GeneralRectangle;
+            }
+            Items.Add(new BuildingItem(new BuildingDefinition(use.Size, composition.Translate(-use.Center))));
         }
     }
 }

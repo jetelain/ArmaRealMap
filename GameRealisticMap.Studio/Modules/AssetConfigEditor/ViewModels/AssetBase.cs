@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
@@ -19,6 +20,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             ParentEditor = parent;
             Edit = new AsyncCommand(() => parent.EditAssetCategory(this));
             EditComposition = new RelayCommand(c => parent.EditComposition((IWithComposition)c));
+            Back = new AsyncCommand(() => parent.EditAssetCategory(parent));
             CompositionImporter = new CompositionImporter(this);
         }
 
@@ -33,10 +35,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public AsyncCommand Edit { get; }
 
         public RelayCommand EditComposition { get; }
-
+        public AsyncCommand Back { get; }
         public CompositionImporter CompositionImporter { get; }
 
-        public virtual void AddSingleObject(ModelInfo model, ObjectPlacementDetectedInfos detected)
+        public virtual void AddComposition(Composition model, ObjectPlacementDetectedInfos detected)
         {
             throw new NotImplementedException();
         }

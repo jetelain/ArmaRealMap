@@ -8,13 +8,18 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
     {
         public ObjectItem(ObjectDefinition d)
         {
-            Probability = d.Probability;
+            _probability = d.Probability;
             Composition = new CompositionViewModel(d.Composition);
         }
 
-        public double Probability { get; set; }
+        private double _probability;
+        public double Probability
+        {
+            get { return _probability; }
+            set { _probability = value; NotifyOfPropertyChange(); }
+        }
 
-        public CompositionViewModel Composition { get; set; }
+        public CompositionViewModel Composition { get; }
 
         internal ObjectDefinition ToDefinition()
         {

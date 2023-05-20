@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Numerics;
 using BIS.WRP;
+using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 
@@ -52,18 +53,18 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
         }
 
         public TerrainBuilderObject(EditableWrpObject wrpObject, IModelInfoLibrary library)
-            : this(library.ResolveByPath(wrpObject.Model), wrpObject.Transform.Matrix, ElevationMode.Absolute, true)
+            : this(library.ResolveByPath(wrpObject.Model), wrpObject.Transform.Matrix, ElevationMode.Absolute)
         {
 
         }
 
         public TerrainBuilderObject(ModelInfo model, EditableWrpObject wrpObject)
-            : this(model, wrpObject.Transform.Matrix, ElevationMode.Absolute, true)
+            : this(model, wrpObject.Transform.Matrix, ElevationMode.Absolute)
         {
 
         }
 
-        public TerrainBuilderObject(ModelInfo model, Matrix4x4 wrpMatrix, ElevationMode elevationMode, bool compensateBoudingCenter)
+        public TerrainBuilderObject(ModelInfo model, Matrix4x4 wrpMatrix, ElevationMode elevationMode)
         {
             this.model = model;
             this.elevationMode = elevationMode;
@@ -84,14 +85,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             yaw = MathHelper.FromRadians(-Math.Atan2(rotateOnly.M13, rotateOnly.M33));
             pitch = MathHelper.FromRadians(Math.Asin(-rotateOnly.M23));
             roll = MathHelper.FromRadians(Math.Atan2(rotateOnly.M21, rotateOnly.M22));
-            if (compensateBoudingCenter)
-            {
-                elevation = wrpMatrix.M42 - GetAbsoluteElevation(model, GetRotateAndScaleOnly(wrpMatrix));
-            }
-            else
-            {
-                elevation = wrpMatrix.M42;
-            }
+            elevation = wrpMatrix.M42 - GetAbsoluteElevation(model, GetRotateAndScaleOnly(wrpMatrix));
         }
 
         private static Matrix4x4 GetRotateAndScaleOnly(Matrix4x4 rotateMatrix)
@@ -137,6 +131,15 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 
         public EditableWrpObject ToWrpObject(IElevationGrid grid)
         {
+            return new EditableWrpObject()
+            {
+                Model = model.Path,
+                Transform = new BIS.Core.Math.Matrix4P(ToWrpTransform(grid))
+            };
+        }
+
+        public Matrix4x4 ToWrpTransform(IElevationGrid grid)
+        {
             var matrix = Matrix4x4.CreateRotationY(MathHelper.ToRadians(yaw)) * Matrix4x4.CreateRotationX(MathHelper.ToRadians(-pitch)) * Matrix4x4.CreateRotationZ(MathHelper.ToRadians(-roll));
             if (scale != 1f)
             {
@@ -146,11 +149,12 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             matrix.M41 = point.X;
             matrix.M43 = point.Y;
             matrix.M44 = 1f;
-            return new EditableWrpObject()
-            {
-                Model = model.Path,
-                Transform = new BIS.Core.Math.Matrix4P(matrix)
-            };
+            return matrix;
+        }
+
+        public Matrix4x4 ToWrpTransform()
+        {
+            return ToWrpTransform(FlatElevationGrid.Zero);
         }
 
         public static TerrainBuilderObject RelativePitchThenYaw(ModelInfo model, TerrainPoint terrainPoint, float grmYaw, float grmPicth = 0, float elevation = 0, float scale = 1)
@@ -165,7 +169,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             matrix.M41 = terrainPoint.X;
             matrix.M43 = terrainPoint.Y;
             matrix.M44 = 1f;
-            return new TerrainBuilderObject(model, matrix, ElevationMode.Relative, false);
+            return new TerrainBuilderObject(model, matrix, ElevationMode.Relative);
         }
 
         private float GetZ(IElevationGrid grid, Matrix4x4 matrix)

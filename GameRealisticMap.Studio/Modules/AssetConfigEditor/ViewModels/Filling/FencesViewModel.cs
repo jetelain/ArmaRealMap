@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.TerrainBuilder;
@@ -39,9 +35,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             return new FenceDefinition(Probability, Items.Select(i => i.ToDefinition()).ToList());
         }
 
-        public override void AddSingleObject(ModelInfo model, ObjectPlacementDetectedInfos detected)
+        public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.Add(new FenceItem(new StraightSegmentDefinition(Composition.CreateSingleFrom(model, -detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
+            Items.Add(new FenceItem(new StraightSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
         }
     }
 }

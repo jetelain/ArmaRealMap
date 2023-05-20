@@ -11,13 +11,23 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         protected AssetDensityBase(TId id, TDefinition? definition, AssetConfigEditorViewModel parent) 
             : base(id, definition, parent)
         {
-            MinDensity = definition?.MinDensity ?? 1;
-            MaxDensity = definition?.MaxDensity ?? 1;
+            _minDensity = definition?.MinDensity ?? 1;
+            _maxDensity = definition?.MaxDensity ?? 1;
         }
 
-        public double MinDensity { get; set; }
+        private double _minDensity;
+        public double MinDensity
+        {
+            get { return _minDensity; }
+            set { _minDensity = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(DensityText)); }
+        }
 
-        public double MaxDensity { get; set; }
+        private double _maxDensity;
+        public double MaxDensity
+        {
+            get { return _maxDensity; }
+            set { _maxDensity = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(DensityText)); }
+        }
 
         public string DensityText
         {
@@ -28,7 +38,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                     return $"{MaxDensity} objects/m²";
                 }
                 return $"{MinDensity} to {MaxDensity} objects/m²";
-
             }
         }
     }

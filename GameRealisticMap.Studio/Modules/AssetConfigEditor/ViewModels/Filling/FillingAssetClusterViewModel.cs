@@ -22,7 +22,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             {
                 Items = new ObservableCollection<SeedItem>();
             }
-            //RemoveItem = new RelayCommand(item => Items.Remove((FillingItem)item));
 
             RemoveSeed = new RelayCommand(item => Items.Remove((SeedItem)item));
 
@@ -36,6 +35,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public ObservableCollection<SeedItem> Items { get; }
 
         public RelayCommand RemoveSeed { get; }
+
         public RelayCommand AddEmptySeed { get; }
 
         public override ClusterCollectionDefinition ToDefinition()
@@ -44,12 +44,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             return new ClusterCollectionDefinition(Items.Select(i => i.ToDefinition()).ToList(), Probability, MinDensity, MaxDensity);
         }
 
-        public override void AddSingleObject(ModelInfo model, ObjectPlacementDetectedInfos detected)
+        public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
             Items.Add(new SeedItem(new ClusterDefinition(new ClusterItemDefinition(
                 detected.GeneralRadius.Radius,
                 detected.GeneralRadius.Radius,
-                Composition.CreateSingleFrom(model, -detected.GeneralRadius.Center),
+                composition.Translate(-detected.GeneralRadius.Center),
                 null,
                 null,
                 1,

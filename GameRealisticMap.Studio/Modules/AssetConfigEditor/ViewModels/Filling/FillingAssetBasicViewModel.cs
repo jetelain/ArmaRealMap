@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using Gemini.Framework;
-using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
@@ -38,12 +33,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             return new BasicCollectionDefinition(Items.Select(i => i.ToDefinition()).ToList(), Probability, MinDensity, MaxDensity);
         }
 
-        public override void AddSingleObject(ModelInfo model, ObjectPlacementDetectedInfos detected)
+        public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
             Items.Add(new FillingItem(new ClusterItemDefinition(
                 detected.GeneralRadius.Radius,
                 detected.GeneralRadius.Radius,
-                Composition.CreateSingleFrom(model, -detected.GeneralRadius.Center),
+                composition.Translate(-detected.GeneralRadius.Center),
                 null,
                 null,
                 DefinitionHelper.GetNewItemProbility(Items),

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
+using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
 {

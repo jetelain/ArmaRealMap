@@ -19,7 +19,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
 
         public float Depth { get; set; }
 
-        public CompositionViewModel Composition { get; set; }
+        public CompositionViewModel Composition { get; }
 
         internal BuildingDefinition ToDefinition()
         {

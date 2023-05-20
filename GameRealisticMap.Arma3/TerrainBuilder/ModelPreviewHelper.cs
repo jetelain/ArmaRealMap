@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 
@@ -17,7 +17,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 
         public IEnumerable<Feature> ToGeoJson(IEnumerable<TerrainBuilderObject> objects)
         {
-            return objects.SelectMany(o => ToFeatures(GetPolygonsCache(o.Model), o.ToWrpObject(NoGrid.Zero).Transform.Matrix));
+            return objects.SelectMany(o => ToFeatures(GetPolygonsCache(o.Model), o.ToWrpTransform()));
         }
 
         private IEnumerable<Feature> ToFeatures(List<TerrainPolygon> terrainPolygons, Matrix4x4 matrix)

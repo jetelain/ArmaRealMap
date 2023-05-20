@@ -20,5 +20,8 @@ namespace GameRealisticMap.Arma3.Assets.Detection
 
         [JsonIgnore]
         public Vector2 Max => Center + (Size / 2);
+
+        [JsonIgnore]
+        public float Surface => Size.X * Size.Y;
     }
 }

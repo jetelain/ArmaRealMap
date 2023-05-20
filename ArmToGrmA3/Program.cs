@@ -245,11 +245,11 @@ namespace ArmToGrmA3
                 foreach (var old in oldLibrary.Objects)
                 {
                     var model = models.ResolveByPath(oldModels.ResolveByName(old.Name).Path);
-                    var place = ObjectPlacementDetectedInfos.CreateFromODOL(models.ReadODOL(model.Path)!);
+                    var place = ObjectPlacementDetectedInfos.CreateFromModel(model, models)!;
                     if (place != null)
                     {
-                        var composition = GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, -place.Rectangle.Center);
-                        result.Add(new BuildingDefinition(place.Rectangle.Size, composition));
+                        var composition = GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, -place.UpperRectangle.Center);
+                        result.Add(new BuildingDefinition(place.UpperRectangle.Size, composition));
                     }
                     else
                     {
@@ -272,7 +272,7 @@ namespace ArmToGrmA3
                 foreach(var old in oldLibrary.Objects)
                 {
                     var model = models.ResolveByPath(oldModels.ResolveByName(old.Name).Path);
-                    var place = ObjectPlacementDetectedInfos.CreateFromODOL(models.ReadODOL(model.Path)!)!;
+                    var place = ObjectPlacementDetectedInfos.CreateFromModel(model, models)!;
                     var composition = GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, -place.TrunkRadius.Center);
                     result.Add(new ObjectDefinition(composition, (old.PlacementProbability ?? defProbability) / sumExistingProbability));
                 }

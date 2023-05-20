@@ -14,13 +14,20 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             return list.Min(o => o.Probability);
         }
 
+        internal static void SameProbabilities(IReadOnlyList<IWithEditableProbability> list)
+        {
+            foreach (var item in list)
+            {
+                item.Probability = 1 / list.Count;
+            }
+        }
+
         internal static void EquilibrateProbabilities(IReadOnlyList<IWithEditableProbability> list)
         {
             if (list.Count == 1)
             {
                 var item = list[0];
                 item.Probability = 1;
-                item.NotifyOfPropertyChange(nameof(item.Probability));
             }
             else if (list.Count > 1)
             {
@@ -29,7 +36,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                     if (item.Probability <= 0)
                     {
                         item.Probability = 1 / list.Count;
-                        item.NotifyOfPropertyChange(nameof(item.Probability));
                     }
                 }
                 var sum = list.Sum(p => p.Probability);
@@ -38,7 +44,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                     foreach (var item in list)
                     {
                         item.Probability = item.Probability / sum;
-                        item.NotifyOfPropertyChange(nameof(item.Probability));
                     }
                 }
             }

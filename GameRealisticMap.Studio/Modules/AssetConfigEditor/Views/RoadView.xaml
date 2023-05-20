@@ -4,9 +4,89 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <UserControl.Resources>
+        <local:CompositionPreviewConverter x:Key="CompositionPreviewConverter" />
+    </UserControl.Resources>
+
+    <ScrollViewer local:Behaviors.EnforceScroll="True">
+        <StackPanel Margin="10 0">
+            <StackPanel Orientation="Horizontal" Margin="0 10">
+                <Button Padding="10" Command="{Binding Back}">🡰</Button>
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding IdText}" />
+            </StackPanel>
+
+            <TextBlock FontSize="25">Road configuration</TextBlock>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">ClearWidth</Label>
+                <TextBox Width="50" Text="{Binding ClearWidth,Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Width</Label>
+                <TextBox Width="50" Text="{Binding Width,Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">TextureWidth</Label>
+                <TextBox Width="50" Text="{Binding TextureWidth,Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Texture</Label>
+                <TextBox Width="400" Text="{Binding Texture,Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">TextureEnd</Label>
+                <TextBox Width="400" Text="{Binding TextureEnd,Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Material</Label>
+                <TextBox Width="400" Text="{Binding Material,Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">SatelliteColor</Label>
+                <toolkit:ColorPicker 
+                    SelectedColor="{Binding SatelliteColor,Mode=TwoWay}" 
+                    Width="100"
+                    UsingAlphaChannel="False" />
+            </StackPanel>
+
+            <TextBlock FontSize="25" Padding="0 15 0 5">Bridge elements</TextBlock>
+            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Element" Binding="{Binding Label}" Width="200" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                    <DataGridTemplateColumn Width="200">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Composition, Converter={StaticResource CompositionPreviewConverter}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Size" Binding="{Binding Size}" Width="100" />
+                    <DataGridTemplateColumn Width="75">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Padding="2" Command="{Binding CompositionImporter.AddSingle}">Choose</Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="75">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Padding="2" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Edit</Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="75">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Padding="2" CommandParameter="{Binding}" Command="{Binding DataContext.ClearItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Clear</Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

@@ -11,10 +11,15 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         protected AssetProbabilityBase(TId id, TDefinition? definition, AssetConfigEditorViewModel parent) 
             : base(id, parent)
         {
-            Probability = definition?.Probability ?? 1;
+            _probability = definition?.Probability ?? 1;
         }
 
-        public double Probability { get; set; }
+        private double _probability;
+        public double Probability 
+        { 
+            get { return _probability; } 
+            set { _probability = value; NotifyOfPropertyChange(); } 
+        }
 
     }
 }

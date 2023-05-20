@@ -1,40 +1,91 @@
 ﻿using System.Numerics;
 using BIS.P3D.ODOL;
+using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Arma3.Assets.Detection
 {
     public class ObjectPlacementDetectedInfos
     {
-        public ObjectPlacementDetectedInfos(RadiusBasedPlacement generalRadius, RadiusBasedPlacement trunkRadius, RectangleBasedPlacement rectangle)
+        public ObjectPlacementDetectedInfos(RadiusBasedPlacement generalRadius, RadiusBasedPlacement trunkRadius, RectangleBasedPlacement upperRectangle, RectangleBasedPlacement generalRectangle)
         {
             GeneralRadius = generalRadius;
             TrunkRadius = trunkRadius;
-            Rectangle = rectangle;
+            UpperRectangle = upperRectangle;
+            GeneralRectangle = generalRectangle;
         }
 
         public RadiusBasedPlacement GeneralRadius { get; }
 
         public RadiusBasedPlacement TrunkRadius { get; }
 
-        public RectangleBasedPlacement Rectangle { get; }
+        public RectangleBasedPlacement UpperRectangle { get; }
+
+        public RectangleBasedPlacement GeneralRectangle { get; }
 
         public static ObjectPlacementDetectedInfos? CreateFromODOL(ODOL odol)
         {
-            var geoLod = odol.Lods.FirstOrDefault(l => l.Resolution == 1E+13f);
-            if (geoLod == null)
+            var points = GetPoints(odol);
+            if (points.Count == 0)
             {
                 return null;
             }
+            return CreateFromPoints(points);
+        }
 
-            var points = GetPointsInComponent(odol.ModelInfo.BoundingCenter.Vector3, geoLod);
+        public static ObjectPlacementDetectedInfos? CreateFromModel(GameRealisticMap.Arma3.TerrainBuilder.ModelInfo model, ModelInfoLibrary library)
+        {
+            var odol = library.ReadODOL(model.Path);
+            if ( odol != null)
+            {
+                return CreateFromODOL(odol);
+            }
+            return null;
+        }
 
+        public static ObjectPlacementDetectedInfos? CreateFromComposition(Composition composition, ModelInfoLibrary library)
+        {
+            var points = new List<Vector3>();
+            foreach (var obj in composition.Objects)
+            {
+                var odol = library.ReadODOL(obj.Model.Path);
+                if (odol != null)
+                {
+                    points.AddRange(GetPoints(odol).Select(p => Vector3.Transform(p, obj.Transform)));
+                }
+            }
+            if (points.Count == 0)
+            {
+                return null;
+            }
+            return CreateFromPoints(points);
+        }
+
+        public static ObjectPlacementDetectedInfos CreateFromPoints(List<Vector3> points)
+        {
             var projectedPoints = points.Select(p => new Vector2(p.X, p.Z)).Distinct().ToList();
 
             return new ObjectPlacementDetectedInfos(
                 CreateRadiusBased(projectedPoints, projectedPoints),
                 CreateRadiusBased(projectedPoints, GetTrunk(points, projectedPoints)),
-                CreateRectangleBased(points, projectedPoints));
+                CreateUpperRectangleBased(points, projectedPoints),
+                CreateRectangleBased(projectedPoints));
+        }
+
+
+        private static List<Vector3> GetPoints(ODOL odol)
+        {
+            var geoLod = odol.Lods.FirstOrDefault(l => l.Resolution == 1E+13f && l.Polygons.Faces.Length > 0);
+            if (geoLod != null)
+            {
+                return GetPointsInComponent(odol.ModelInfo.BoundingCenter.Vector3, geoLod);
+            }
+            var anyLod = odol.Lods.OrderBy(l => l.Resolution).FirstOrDefault(l => l.Polygons.Faces.Length > 0);
+            if (anyLod != null)
+            {
+                return GetPointsInFaces(odol.ModelInfo.BoundingCenter.Vector3, anyLod);
+            }
+            return new List<Vector3>();
         }
 
         private static List<Vector3> GetPointsInComponent(Vector3 boundingCenter, LOD geoLod)
@@ -55,6 +106,19 @@ namespace GameRealisticMap.Arma3.Assets.Detection
                 .ToList();
         }
 
+        private static List<Vector3> GetPointsInFaces(Vector3 boundingCenter, LOD lod)
+        {
+            return
+                lod.Polygons.Faces
+
+                // Get face vertices
+                .SelectMany(f => f.VertexIndices).Distinct()
+                .Select(i => lod.Vertices[i])
+
+                // Return vertices corrected by BoundingCenter
+                .Select(v => v.Vector3 + boundingCenter)
+                .ToList();
+        }
 
         private static List<Vector2> GetTrunk(List<Vector3> points, List<Vector2> projectedPoints)
         {
@@ -66,7 +130,7 @@ namespace GameRealisticMap.Arma3.Assets.Detection
             return trunk;
         }
 
-        private static RectangleBasedPlacement CreateRectangleBased(List<Vector3> points, List<Vector2> projectedPoints)
+        private static RectangleBasedPlacement CreateUpperRectangleBased(List<Vector3> points, List<Vector2> projectedPoints)
         {
             var scanPoints = projectedPoints;
             var maxY = points.Max(p => p.Y);
@@ -80,6 +144,13 @@ namespace GameRealisticMap.Arma3.Assets.Detection
             }
             var min = new Vector2(scanPoints.Min(p => p.X), scanPoints.Min(p => p.Y));
             var max = new Vector2(scanPoints.Max(p => p.X), scanPoints.Max(p => p.Y));
+            return new RectangleBasedPlacement((min + max) / 2, max - min);
+        }
+
+        private static RectangleBasedPlacement CreateRectangleBased(List<Vector2> projectedPoints)
+        {
+            var min = new Vector2(projectedPoints.Min(p => p.X), projectedPoints.Min(p => p.Y));
+            var max = new Vector2(projectedPoints.Max(p => p.X), projectedPoints.Max(p => p.Y));
             return new RectangleBasedPlacement((min + max) / 2, max - min);
         }
 

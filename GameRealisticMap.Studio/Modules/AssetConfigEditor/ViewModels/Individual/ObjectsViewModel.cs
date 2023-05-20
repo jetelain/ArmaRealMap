@@ -27,9 +27,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
             return Items.Select(i => i.ToDefinition()).ToList();
         }
 
-        public override void AddSingleObject(ModelInfo model, ObjectPlacementDetectedInfos detected)
+        public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.Add(new ObjectItem(new ObjectDefinition(Composition.CreateSingleFrom(model, -detected.TrunkRadius.Center), DefinitionHelper.GetNewItemProbility(Items))));
+            Items.Add(new ObjectItem(new ObjectDefinition(composition.Translate(-detected.TrunkRadius.Center), DefinitionHelper.GetNewItemProbility(Items))));
             DefinitionHelper.EquilibrateProbabilities(Items);
         }
     }

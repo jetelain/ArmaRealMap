@@ -129,7 +129,9 @@ namespace GameRealisticMap.Arma3.IO
 
         public IEnumerable<string> FindAll(string pattern)
         {
-            var physical = Directory.GetFiles(mountPath, pattern, SearchOption.AllDirectories).Select(file => file.Substring(mountPath.Length).TrimStart('\\'));
+            var physical = Directory.GetFiles(mountPath, pattern, SearchOption.AllDirectories)
+                .Select(file => file.Substring(mountPath.Length).TrimStart('\\'))
+                .Where(file => !file.StartsWith("temp\\", StringComparison.OrdinalIgnoreCase));
             if (secondarySource != null)
             {
                 return secondarySource.FindAll(pattern).Concat(physical).Distinct(StringComparer.OrdinalIgnoreCase);

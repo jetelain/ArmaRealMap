@@ -9,6 +9,7 @@
     <UserControl.Resources>
         <local:CollectionCountValueConverter x:Key="CollectionCountValueConverter" />
         <local:PercentValueConverter x:Key="PercentValueConverter" />
+        <local:TexturePreviewConverter x:Key="TexturePreviewConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
@@ -70,10 +71,22 @@
                         Ground textures
                     </Expander.Header>
                     <StackPanel>
+                        <StackPanel Margin="10" Orientation="Horizontal" >
+                            <Label Width="200">Texture size</Label>
+                            <TextBox Width="100" Text="{Binding TextureSizeInMeters,Mode=TwoWay}" />
+                            <TextBlock Padding="5 0 0 0">meters</TextBlock>
+                        </StackPanel>
                         <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Materials}" AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
                                 <DataGridTextColumn Header="Texture" Binding="{Binding ColorTexture}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding ColorTexture, Converter={StaticResource TexturePreviewConverter}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="Same as" Binding="{Binding SameAs.IdText}" IsReadOnly="True" />
                                 <DataGridTemplateColumn Width="75">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -97,7 +110,16 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
                                 <DataGridTextColumn Header="Texture" Binding="{Binding Texture}" IsReadOnly="True" />
-                                <DataGridTextColumn Header="Width" Binding="{Binding Width}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Width" Binding="{Binding Width}" />
+                                <DataGridTextColumn Header="Texture Width" Binding="{Binding TextureWidth}" />
+                                <DataGridTextColumn Header="Clear Width" Binding="{Binding ClearWidth}" />
                                 <DataGridTemplateColumn Width="75">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

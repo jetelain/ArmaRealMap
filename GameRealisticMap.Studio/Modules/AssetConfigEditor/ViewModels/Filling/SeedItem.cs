@@ -5,6 +5,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
@@ -14,7 +15,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public SeedItem(ClusterDefinition c, int index, FillingAssetClusterViewModel parent)
         {
             Items = new ObservableCollection<FillingItem>(c.Models.Select(m => new FillingItem(m)));
-            Probability = c.Probability;
+            _probability = c.Probability;
             Label = $"Seed #{index + 1}";
             CompositionImporter = new CompositionImporter(this);
             RemoveItem = new RelayCommand(item => Items.Remove((FillingItem)item));
@@ -22,7 +23,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public ObservableCollection<FillingItem> Items { get; }
 
-        public double Probability { get; set; }
+        private double _probability;
+        public double Probability
+        {
+            get { return _probability; }
+            set { _probability = value; NotifyOfPropertyChange(); }
+        }
 
         public string Label { get; set; }
 
@@ -30,12 +36,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public RelayCommand RemoveItem { get; }
 
-        public void AddSingleObject(ModelInfo model, ObjectPlacementDetectedInfos detected)
+        public void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
             Items.Add(new FillingItem(new ClusterItemDefinition(
                 detected.GeneralRadius.Radius,
                 detected.GeneralRadius.Radius,
-                Composition.CreateSingleFrom(model, -detected.GeneralRadius.Center),
+                composition.Translate(-detected.GeneralRadius.Center),
                 null,
                 null,
                 DefinitionHelper.GetNewItemProbility(Items),

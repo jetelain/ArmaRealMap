@@ -15,7 +15,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             Composition = new CompositionViewModel(d.Model);
             MaxZ = d.MaxZ;
             MinZ = d.MinZ;
-            Probability = d.Probability;
+            _probability = d.Probability;
             MaxScale = d.MaxScale;
             MinScale = d.MinScale;
         }
@@ -30,7 +30,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public float? MinZ { get; set; }
 
-        public double Probability { get; set; }
+        private double _probability;
+        public double Probability
+        {
+            get { return _probability; }
+            set { _probability = value; NotifyOfPropertyChange(); }
+        }
 
         public float? MaxScale { get; set; }
 

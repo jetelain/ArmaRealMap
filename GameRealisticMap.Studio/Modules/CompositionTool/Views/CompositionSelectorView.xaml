@@ -4,12 +4,16 @@
     xmlns:cal="http://www.caliburnproject.org"
     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:geminibehaviors="clr-namespace:Gemini.Framework.Behaviors;assembly=Gemini"
-    x:Class="GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.CompositionSelectorView" 
+    x:Class="GameRealisticMap.Studio.Modules.CompositionTool.Views.CompositionSelectorView" 
     Background="{DynamicResource EnvironmentWindowBackground}"
     Foreground="{DynamicResource EnvironmentWindowText}"
     Width="760" Height="500" MinWidth="512" MinHeight="300" 
     WindowStartupLocation="CenterOwner"
-    ShowInTaskbar="False">
+    ShowInTaskbar="False"
+    Title="Add a composition">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
     <behaviors:Interaction.Behaviors>
         <geminibehaviors:WindowOptionsBehavior ShowIcon="False"
                                                ShowMinimizeBox="False"
@@ -34,10 +38,32 @@
             <ScrollViewer IsTabStop="False" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 
                 <StackPanel>
-                    <TextBlock FontSize="20">Import from a file</TextBlock>
+                    <GroupBox>
+                        <GroupBox.Header>
+                            <TextBlock FontSize="20">Import from clipboad</TextBlock>
+                        </GroupBox.Header>
+                        <StackPanel>
+                            <TextBlock Margin="10">In VR world place wanted objects, then use export for Terrain Builder, and copy value.
+                                <LineBreak />Native export may give strange results, for a better result use <Hyperlink RequestNavigate="Hyperlink_RequestNavigate"  NavigateUri="steam://url/CommunityFilePage/1174073713">[E2TB] Export to Terrain Builder</Hyperlink>.
+                            </TextBlock>
+
+                            <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardNotValid, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardRefresh">⟳ Refresh</Button>
+                                <TextBlock VerticalAlignment="Center" Foreground="Red" Margin="0 0 10 0">❌</TextBlock>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding ClipboardError}"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardValid, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardRefresh">⟳ Refresh</Button>
+                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardImport">Import from clipboard</Button>
+                                <TextBlock VerticalAlignment="Center" Foreground="Green" Margin="0 0 10 0">✔</TextBlock>
+                                <TextBlock VerticalAlignment="Center">Data seems valid.</TextBlock>
+                            </StackPanel>
+     
+                        </StackPanel>
+                    </GroupBox>
                     
                     
-                    <TextBlock FontSize="20">Import from clipboad</TextBlock>
                 </StackPanel>
                 
             </ScrollViewer>
@@ -60,7 +86,7 @@
                 <ColumnDefinition SharedSizeGroup="WindowButtons" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" IsDefault="True" cal:Message.Attach="SaveChanges">OK</Button>
+            <!--<Button Grid.Column="0" IsDefault="True" cal:Message.Attach="SaveChanges">OK</Button>-->
             <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">Cancel</Button>
         </Grid>
     </Grid>

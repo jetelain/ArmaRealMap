@@ -23,7 +23,7 @@ namespace GameRealisticMap.Arma3.Assets
 
         internal TerrainBuilderObject ToTerrainBuilderObject(Matrix4x4 matrix, ElevationMode mode)
         {
-            return new TerrainBuilderObject(Model, Transform * matrix, mode, false);
+            return new TerrainBuilderObject(Model, Transform * matrix, mode);
         }
     }
 }

@@ -25,5 +25,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
         public ModelInfo? SingleModel => composition.Objects.Count == 1 ? composition.Objects[0].Model : null;
 
         public string Name => string.Join(", ", composition.Objects.Select(o => o.Model.Name));
+
+        public bool IsEmpty => composition.Objects.Count == 0;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using GameRealisticMap.Arma3.Assets;
 using SixLabors.ImageSharp.PixelFormats;
@@ -10,49 +11,105 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public MaterialViewModel(TerrainMaterialUsage id, TerrainMaterial terrainMaterial, AssetConfigEditorViewModel parent)
             : base(id, parent)
         {
-            ColorId = Color.FromRgb(terrainMaterial.Id.R, terrainMaterial.Id.G, terrainMaterial.Id.B);
-
+            _colorId = Color.FromRgb(terrainMaterial.Id.R, terrainMaterial.Id.G, terrainMaterial.Id.B);
             _sameAs = parent.Materials.FirstOrDefault(m => m.ColorId == ColorId);
-
-            ColorTexture = terrainMaterial.ColorTexture;
-
-            NormalTexture = terrainMaterial.NormalTexture;
+            _colorTexture = terrainMaterial.ColorTexture;
+            _normalTexture = terrainMaterial.NormalTexture;
         }
 
+        public List<string> Others =>
+            ParentEditor.Materials.Where(m => m != this && m.SameAs == null)
+            .Select(m => m.IdText)
+            .Concat(new[] { string.Empty })
+            .ToList();
+
         MaterialViewModel? _sameAs;
-        public MaterialViewModel? SameAs 
-        { 
+
+        public MaterialViewModel? SameAs
+        {
             get { return _sameAs; }
-            set 
-            { 
+            set
+            {
                 if (value != null)
                 {
                     ColorId = value.ColorId;
                     ColorTexture = value.ColorTexture;
                     NormalTexture = value.NormalTexture;
-                    NotifyOfPropertyChange(nameof(ColorId));
-                    NotifyOfPropertyChange(nameof(ColorTexture));
-                    NotifyOfPropertyChange(nameof(NormalTexture));
+                    foreach (var sameAsSelf in ParentEditor.Materials.Where(m => m != this && m.SameAs == this))
+                    {
+                        sameAsSelf.SameAs = value;
+                    }
                 }
                 else if (value == null && _sameAs != null)
                 {
                     // TODO: Find an unique color
-                    NotifyOfPropertyChange(nameof(ColorId));
                 }
                 _sameAs = value;
                 NotifyOfPropertyChange();
-            } 
+                NotifyOfPropertyChange(nameof(SameAsText));
+                NotifyOfPropertyChange(nameof(IsNotSameAs));
+            }
         }
 
-        public Color ColorId { get; set; }
+        public bool IsNotSameAs
+        {
+            get { return _sameAs == null; }
+        }
 
-        public string ColorTexture { get; set; }
+        public string SameAsText
+        {
+            get { return SameAs?.IdText ?? string.Empty; }
+            set { SameAs = ParentEditor.Materials.FirstOrDefault(m => m != this && m.IdText == value); }
+        }
 
-        public string NormalTexture { get; set; }
+        private Color _colorId;
+        public Color ColorId
+        {
+            get { return _colorId; }
+            set
+            {
+                _colorId = value;
+                NotifyOfPropertyChange();
+                foreach (var sameAsSelf in ParentEditor.Materials.Where(m => m != this && m.SameAs == this))
+                {
+                    sameAsSelf.ColorId = value;
+                }
+            }
+        }
+
+        private string _colorTexture;
+        public string ColorTexture
+        {
+            get { return _colorTexture; }
+            set
+            {
+                _colorTexture = value;
+                NotifyOfPropertyChange();
+                foreach (var sameAsSelf in ParentEditor.Materials.Where(m => m != this && m.SameAs == this))
+                {
+                    sameAsSelf.ColorTexture = value;
+                }
+            }
+        }
+
+        private string _normalTexture;
+        public string NormalTexture
+        {
+            get { return _normalTexture; }
+            set
+            {
+                _normalTexture = value;
+                NotifyOfPropertyChange();
+                foreach (var sameAsSelf in ParentEditor.Materials.Where(m => m != this && m.SameAs == this))
+                {
+                    sameAsSelf.NormalTexture = value;
+                }
+            }
+        }
 
         public override TerrainMaterial ToDefinition()
         {
-            return new TerrainMaterial(NormalTexture, ColorTexture, new Rgb24(ColorId.R, ColorId.G, ColorId.B), null /*TODO !*/);
+            return new TerrainMaterial(NormalTexture, _colorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), null /*TODO !*/);
         }
     }
 }

@@ -3,11 +3,23 @@ using System.Text.Json.Serialization;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
+using MathNet.Numerics;
 
 namespace GameRealisticMap.Arma3.Assets
 {
     public class Composition
     {
+        public Composition()
+            : this(new List<CompositionObject>())
+        {
+
+        }
+
+        public Composition(CompositionObject obj)
+            : this(new List<CompositionObject>(1) { obj })
+        {
+
+        }
 
         [JsonConstructor]
         public Composition(List<CompositionObject> objects)
@@ -16,6 +28,21 @@ namespace GameRealisticMap.Arma3.Assets
         }
 
         public List<CompositionObject> Objects { get; }
+
+        public Composition Translate(Vector2 translation)
+        {
+            return Translate(new Vector3(translation.X, 0, translation.Y));
+        }
+
+        public Composition Translate(Vector3 translation)
+        {
+            return Transform(Matrix4x4.CreateTranslation(translation));
+        }
+
+        private Composition Transform(Matrix4x4 matrix)
+        {
+            return new Composition(Objects.Select(o => new CompositionObject(o.Model, o.Transform * matrix)).ToList());
+        }
 
         public IEnumerable<TerrainBuilderObject> ToTerrainBuilderObjects(IModelPosition position)
         {
@@ -47,9 +74,12 @@ namespace GameRealisticMap.Arma3.Assets
 
         public static Composition CreateFrom(IEnumerable<TerrainBuilderObject> objects)
         {
-            return new Composition(objects.Select(o => new CompositionObject(o.Model, o.ToWrpObject(NoGrid.Zero).Transform.Matrix)).ToList());
+            return new Composition(objects.Select(o => new CompositionObject(o.Model, o.ToWrpTransform())).ToList());
         }
-
+        public static Composition CreateFrom(TerrainBuilderObject o)
+        {
+            return new Composition(new CompositionObject(o.Model, o.ToWrpTransform()));
+        }
         public static Composition CreateFromCsv(IEnumerable<string> terrainBuilderCsv, IModelInfoLibrary library)
         {
             return CreateFrom(terrainBuilderCsv
@@ -61,22 +91,19 @@ namespace GameRealisticMap.Arma3.Assets
             return CreateFromCsv(terrainBuilderCsv.Split('\n').Select(l => l.Trim()).Where(l => !string.IsNullOrEmpty(l)), library);
         }
 
+        public static Composition CreateSingleFrom(ModelInfo model)
+        {
+            return CreateFrom(new TerrainBuilderObject(model, new TerrainPoint(Vector2.Zero)));
+        }
+
         public static Composition CreateSingleFrom(ModelInfo model, Vector2 center)
         {
-            return new Composition(
-                new List<CompositionObject>()
-                {
-                    new CompositionObject(model, Matrix4x4.CreateTranslation(new Vector3(center.X, 0, center.Y)))
-                });
+            return CreateFrom(new TerrainBuilderObject(model, new TerrainPoint(center)));
         }
 
         public static Composition CreateSingleFrom(ModelInfo model, Vector2 center, float elevation)
         {
-            return new Composition(
-                new List<CompositionObject>()
-                {
-                    new CompositionObject(model, Matrix4x4.CreateTranslation(new Vector3(center.X, elevation, center.Y)))
-                });
+            return CreateFrom(new TerrainBuilderObject(model, new TerrainPoint(center), elevation));
         }
     }
 }

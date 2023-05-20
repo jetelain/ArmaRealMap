@@ -1,7 +1,10 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Media;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
+using Gemini.Framework;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
@@ -28,7 +31,14 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 SatelliteColor = Colors.Gray;
             }
-            // TODO : Bridge
+            Items = new List<BridgeViewModel>()
+            {
+                new BridgeViewModel("Single", bridgeDefinition?.Single),
+                new BridgeViewModel("Start", bridgeDefinition?.Start),
+                new BridgeViewModel("Middle", bridgeDefinition?.Middle),
+                new BridgeViewModel("End", bridgeDefinition?.End)
+            }; 
+            ClearItem = new RelayCommand(item => ((BridgeViewModel)item).Clear());
         }
 
         public float ClearWidth { get; set; }
@@ -45,6 +55,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public Color SatelliteColor { get; set; }
 
+        public List<BridgeViewModel> Items { get; }
+        public RelayCommand ClearItem { get; }
+
         public override Arma3RoadTypeInfos ToDefinition()
         {
             return new Arma3RoadTypeInfos(FillId, new Rgb24(SatelliteColor.R, SatelliteColor.G, SatelliteColor.B), TextureWidth, Texture, TextureEnd, Material, Width, ClearWidth);
@@ -52,7 +65,15 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public BridgeDefinition? ToBridgeDefinition()
         {
-            throw new System.NotImplementedException(); // TODO
+            if (Items.Any(i => !i.Composition.IsEmpty))
+            {
+                return new BridgeDefinition(
+                    Items[0].ToDefinition(),
+                    Items[1].ToDefinition(),
+                    Items[2].ToDefinition(),
+                    Items[3].ToDefinition());
+            }
+            return null;
         }
     }
 }

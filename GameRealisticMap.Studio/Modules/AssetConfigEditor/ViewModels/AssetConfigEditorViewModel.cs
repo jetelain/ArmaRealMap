@@ -44,7 +44,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             _compositionTool = compositionTool;
         }
 
-        public Arma3DataModule Arma3DataModule => _arma3Data;
+        public double TextureSizeInMeters { get; set; }
 
         protected override async Task DoLoad(string filePath)
         {
@@ -52,6 +52,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(IsLoading));
             using var stream = File.OpenRead(filePath);
             FromJson(await JsonSerializer.DeserializeAsync<Arma3Assets>(stream, Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library)) ?? new Arma3Assets());
+            await _arma3Data.SaveLibraryCache();
             IsLoading = false;
             NotifyOfPropertyChange(nameof(IsLoading));
         }
@@ -93,13 +94,14 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 Materials.Add(new MaterialViewModel(id, arma3Assets.Materials.GetMaterialByUsage(id), this));
             }
-
+            TextureSizeInMeters = arma3Assets.Materials.TextureSizeInMeters;
             foreach (var id in Enum.GetValues<RoadTypeId>().OrderByDescending(i => i))
             {
                 Roads.Add(new RoadViewModel(id, arma3Assets.Roads.FirstOrDefault(m => m.Id == id), arma3Assets.GetBridge(id), this));
             }
             // TODO :
             // - Ponds
+            NotifyOfPropertyChange(nameof(TextureSizeInMeters));
         }
 
         private IEnumerable<T?> AtLeastOne<T>(IReadOnlyCollection<T> collection, T? one = null) where T : class
@@ -116,19 +118,20 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             EquilibrateProbabilities();
 
             var json = new Arma3Assets();
-            json.ClusterCollections = Filling.OfType<FillingAssetClusterViewModel>().GroupBy(c => c.FillId).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
-            json.BasicCollections = Filling.OfType<FillingAssetBasicViewModel>().GroupBy(c => c.FillId).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
-            json.Fences = Filling.OfType<FencesViewModel>().GroupBy(c => c.FillId).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
-            json.Buildings = Individual.OfType<BuildingsViewModel>().ToDictionary(k => k.FillId, k => k.ToDefinition());
-            json.Objects = Individual.OfType<ObjectsViewModel>().ToDictionary(k => k.FillId, k => k.ToDefinition());
+            json.ClusterCollections = Filling.OfType<FillingAssetClusterViewModel>().GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
+            json.BasicCollections = Filling.OfType<FillingAssetBasicViewModel>().GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
+            json.Fences = Filling.OfType<FencesViewModel>().GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
+            json.Buildings = Individual.OfType<BuildingsViewModel>().OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
+            json.Objects = Individual.OfType<ObjectsViewModel>().OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
             var materialDefintions = Materials
                 .Where(m => m.SameAs == null)
                 .Select(m => new TerrainMaterialDefinition(m.ToDefinition(), Materials.Where(o => o == m || o.SameAs == m).Select(o => o.FillId).ToArray()))
                 .ToList();
-            json.Materials = new TerrainMaterialLibrary(materialDefintions);
-            json.Roads = Roads.Select(r => r.ToDefinition()).ToList();
+            json.Materials = new TerrainMaterialLibrary(materialDefintions, TextureSizeInMeters);
+            json.Roads = Roads.OrderBy(k => k.FillId).Select(r => r.ToDefinition()).ToList();
             json.Bridges = Roads.Select(r => new { Key = r.FillId, Bridge = r.ToBridgeDefinition() })
                 .Where(b => b.Bridge != null)
+                .OrderBy(k => k.Key)
                 .ToDictionary(k => k.Key, k => k.Bridge!);
 
             // TODO :

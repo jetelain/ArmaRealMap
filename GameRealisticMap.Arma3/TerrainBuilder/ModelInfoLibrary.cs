@@ -9,10 +9,10 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 {
     public class ModelInfoLibrary : IModelInfoLibrary
     {
-        private readonly Dictionary<string, ModelInfo> models = new Dictionary<string, ModelInfo>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, ModelInfo> indexByName = new Dictionary<string, ModelInfo>(StringComparer.OrdinalIgnoreCase);
         private readonly IGameFileSystem fileSystem;
 
-        public IEnumerable<ModelInfo> Models => models.Values;
+        public IEnumerable<ModelInfo> Models => indexByName.Values;
 
         public ModelInfoLibrary(IGameFileSystem fileSystem)
         {
@@ -21,8 +21,17 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 
         public ModelInfo ResolveByName(string name)
         {
-            if (!models.TryGetValue(name, out var modelInfo))
+            if (!indexByName.TryGetValue(name, out var modelInfo))
             {
+                var candidates = fileSystem.FindAll(name + ".p3d").ToList();
+                if (candidates.Count == 1)
+                {
+                    return ResolveByPath(candidates[0]);
+                }
+                if (candidates.Count > 1)
+                {
+                    throw new ApplicationException($"Name '{name}' matches multiples files : '{string.Join("', '", candidates)}'");
+                }
                 throw new ApplicationException($"Unknown model '{name}'");
             }
             return modelInfo;
@@ -30,32 +39,81 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 
         public ModelInfo ResolveByPath(string path)
         {
-            var model = models.Values.FirstOrDefault(m => string.Equals(m.Path, path, StringComparison.OrdinalIgnoreCase));
+            var model = indexByName.Values.FirstOrDefault(m => string.Equals(m.Path, path, StringComparison.OrdinalIgnoreCase));
             if (model == null)
             {
-                var odol = ReadODOL(path);
+                var odol = ReadModelInfoOnly(path);
                 if (odol == null)
                 {
+                    // TODO: Binarize on the fly
                     throw new ApplicationException($"ODOL file for model '{path}' was not found, unable to use it");
                 }
                 var name = UniqueName(Path.GetFileNameWithoutExtension(path));
-                model = new ModelInfo(name, path, "unknown", odol.ModelInfo.BoundingCenter.Vector3);
-                models.Add(name, model);
+                model = new ModelInfo(name, path, GetBundle(path), odol.BoundingCenter.Vector3);
+                indexByName.Add(name, model);
             }
             return model;
+        }
+
+        private static string GetBundle(string path)
+        {
+            if (path.Length > 3 && path[1] == '\\')
+            {
+                return GetRootName(path.Substring(2));
+            }
+            if (path.Length > 4 && path[2] == '\\')
+            {
+                return path.Substring(0, 2) + "_" + GetRootName(path.Substring(3));
+            }
+            return GetRootName(path);
+        }
+
+        private static string GetRootName(string path)
+        {
+            var idx = path.IndexOf('\\');
+            if ( idx != -1 )
+            {
+                return path.Substring(0, idx);
+            }
+            return path;
         }
 
         private string UniqueName(string initialName)
         {
             var name = initialName;
             var suffix = 1;
-            while(models.ContainsKey(name))
+            while(indexByName.ContainsKey(name))
             {
                 suffix++;
                 name = FormattableString.Invariant($"{name}_{suffix}");
             }
             return name;
         }
+
+        public BIS.P3D.ODOL.ModelInfo? ReadModelInfoOnly(string path)
+        {
+            using (var stream = fileSystem.OpenFileIfExists(path))
+            {
+                if (stream != null)
+                {
+                    var result = StreamHelper.Read<P3DInfosOnly>(stream).ModelInfo as BIS.P3D.ODOL.ModelInfo;
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                    // Mikero Tools binarize into project drive temp, binarized file might be there
+                    using (var streamTemp = fileSystem.OpenFileIfExists("temp\\" + path))
+                    {
+                        if (streamTemp != null)
+                        {
+                            return StreamHelper.Read<P3DInfosOnly>(streamTemp).ModelInfo as BIS.P3D.ODOL.ModelInfo;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         public ODOL? ReadODOL(string path)
         { 
             using (var stream = fileSystem.OpenFileIfExists(path))
@@ -87,7 +145,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 if (model != null)
                 {
                     CheckBoudingCenter(model);
-                    models.Add(model.Name, model);
+                    indexByName.Add(model.Name, model);
                 }
             }
         }
@@ -100,16 +158,16 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 if (model != null)
                 {
                     var updatedModel = model;
-                    var odol = ReadODOL(model.Path);
+                    var odol = ReadModelInfoOnly(model.Path);
                     if (odol != null)
                     {
-                        if (!IsAlmostSame(odol.ModelInfo.BoundingCenter.Vector3, model.BoundingCenter))
+                        if (!IsAlmostSame(odol.BoundingCenter.Vector3, model.BoundingCenter))
                         {
-                            updatedModel = new ModelInfo(model.Name, model.Path, model.Bundle, odol.ModelInfo.BoundingCenter.Vector3);
+                            updatedModel = new ModelInfo(model.Name, model.Path, model.Bundle, odol.BoundingCenter.Vector3);
                             updated++;
                         }
                     }
-                    models.Add(updatedModel.Name, updatedModel);
+                    indexByName.Add(updatedModel.Name, updatedModel);
                 }
             }
             return updated > 0;
@@ -122,10 +180,10 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 
         private void CheckBoudingCenter(ModelInfo model)
         {
-            var odol = ReadODOL(model.Path);
-            if (odol != null && !IsAlmostSame(odol.ModelInfo.BoundingCenter.Vector3, model.BoundingCenter))
+            var odol = ReadModelInfoOnly(model.Path);
+            if (odol != null && !IsAlmostSame(odol.BoundingCenter.Vector3, model.BoundingCenter))
             {
-                throw new ApplicationException($"BoundingCenter of '{model.Path}' mismatch: Database={model.BoundingCenter}, ODOL={odol.ModelInfo.BoundingCenter.Vector3}.");
+                throw new ApplicationException($"BoundingCenter of '{model.Path}' mismatch: Database={model.BoundingCenter}, ODOL={odol.BoundingCenter.Vector3}.");
             }
         }
 
@@ -134,6 +192,22 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             return MathF.Abs(a.X - b.X) < 0.00001f
                 && MathF.Abs(a.Y - b.Y) < 0.00001f 
                 && MathF.Abs(a.Z - b.Z) < 0.00001f;
+        }
+
+        public async Task LoadFrom(string path)
+        {
+            using var stream = File.OpenRead(path);
+            var items = await JsonSerializer.DeserializeAsync<List<ModelInfo>>(stream);
+            indexByName.Clear();
+            foreach(var item in items!)
+            {
+                indexByName[item.Name] = item;
+            }
+        }
+        public async Task SaveTo(string path)
+        {
+            using var stream = File.Create(path);
+            await JsonSerializer.SerializeAsync(stream, indexByName.Values);
         }
     }
 }

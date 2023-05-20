@@ -12,7 +12,26 @@
     </UserControl.Resources>
     <ScrollViewer local:Behaviors.EnforceScroll="True" local:Behaviors.DropTarget="{Binding CompositionImporter}">
         <StackPanel Margin="10">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="0 10">
+                <Button Padding="10" Command="{Binding Back}">🡰</Button>
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding IdText}" />
+            </StackPanel>
+            <TextBlock FontSize="25">Filling options</TextBlock>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Probability of this collection</Label>
+                <TextBox Width="50" Text="{Binding Probability,Mode=TwoWay,Converter={StaticResource PercentValueConverter}}" />
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Min Density</Label>
+                <TextBox Width="100" Text="{Binding MinDensity,Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Max Density</Label>
+                <TextBox Width="100" Text="{Binding MaxDensity,Mode=TwoWay}" />
+            </StackPanel>
+
+            <TextBlock FontSize="25">Filling seeds/objects</TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="0 10">
                 <Button Padding="5" Command="{Binding AddEmptySeed}">Add an empty seed</Button>
                 <Button Padding="5" Margin="5 0" Command="{Binding CompositionImporter.AddSingle}">Add a seed from an object</Button>
             </StackPanel>
@@ -20,7 +39,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
 
-                    <StackPanel Margin="0 10 0 0">
+                    <StackPanel Margin="0 0 0 10">
 
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock FontSize="20" Text="{Binding Label}"/>
