@@ -39,5 +39,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             Items.Add(new FenceItem(new StraightSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
         }
+
+        public override void Equilibrate()
+        {
+
+        }
     }
 }

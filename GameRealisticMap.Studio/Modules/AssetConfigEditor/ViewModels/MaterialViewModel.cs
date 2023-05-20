@@ -111,5 +111,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             return new TerrainMaterial(NormalTexture, _colorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), null /*TODO !*/);
         }
+
+        public override void Equilibrate()
+        {
+
+        }
     }
 }

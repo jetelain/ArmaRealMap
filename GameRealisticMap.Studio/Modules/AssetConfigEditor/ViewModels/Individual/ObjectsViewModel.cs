@@ -32,5 +32,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
             Items.Add(new ObjectItem(new ObjectDefinition(composition.Translate(-detected.TrunkRadius.Center), DefinitionHelper.GetNewItemProbility(Items))));
             DefinitionHelper.EquilibrateProbabilities(Items);
         }
+
+        public override void Equilibrate()
+        {
+            DefinitionHelper.EquilibrateProbabilities(Items);
+        }
     }
 }

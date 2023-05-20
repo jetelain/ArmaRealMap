@@ -27,13 +27,15 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         private readonly IShell _shell;
         private readonly ICompositionTool _compositionTool;
 
-        public ObservableCollection<IDocument> Filling { get; } = new ObservableCollection<IDocument>();
+        public ObservableCollection<IAssetCategory> Filling { get; } = new ObservableCollection<IAssetCategory>();
 
-        public ObservableCollection<IDocument> Individual { get; } = new ObservableCollection<IDocument>();
+        public ObservableCollection<IAssetCategory> Individual { get; } = new ObservableCollection<IAssetCategory>();
 
         public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
 
         public ObservableCollection<RoadViewModel> Roads { get; } = new ObservableCollection<RoadViewModel>();
+
+        public ObservableCollection<PondViewModel> Ponds { get; } = new ObservableCollection<PondViewModel>();
 
         public bool IsLoading { get; set; }
 
@@ -61,6 +63,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             Filling.Clear();
             Individual.Clear();
+            Roads.Clear();
+            Materials.Clear();
+            Ponds.Clear();
             foreach (var id in Enum.GetValues<BasicCollectionId>())
             {
                 foreach (var entry in AtLeastOne(arma3Assets.GetBasicCollections(id)))
@@ -99,8 +104,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 Roads.Add(new RoadViewModel(id, arma3Assets.Roads.FirstOrDefault(m => m.Id == id), arma3Assets.GetBridge(id), this));
             }
-            // TODO :
-            // - Ponds
+            foreach (var id in Enum.GetValues<PondSizeId>())
+            {
+                Ponds.Add(new PondViewModel(id, arma3Assets.Ponds.Count == 0 ? null : arma3Assets.GetPond(id), _arma3Data.Library));
+            }
             NotifyOfPropertyChange(nameof(TextureSizeInMeters));
         }
 
@@ -133,9 +140,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .Where(b => b.Bridge != null)
                 .OrderBy(k => k.Key)
                 .ToDictionary(k => k.Key, k => k.Bridge!);
-
-            // TODO :
-            // - Ponds
+            json.Ponds = Ponds.ToDictionary(p => p.Id, k => k.ToDefinition());
             return json;
         }
 
@@ -153,8 +158,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 DefinitionHelper.EquilibrateProbabilities(list.ToList());
             }
+            foreach(var item in Filling.Concat(Individual))
+            {
+                item.Equilibrate();
+            }
         }
-
 
         protected override Task DoNew()
         {

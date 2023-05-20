@@ -75,5 +75,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             }
             return null;
         }
+
+        public override void Equilibrate()
+        {
+
+        }
     }
 }

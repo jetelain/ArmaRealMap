@@ -45,7 +45,6 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 var odol = ReadModelInfoOnly(path);
                 if (odol == null)
                 {
-                    // TODO: Binarize on the fly
                     throw new ApplicationException($"ODOL file for model '{path}' was not found, unable to use it");
                 }
                 var name = UniqueName(Path.GetFileNameWithoutExtension(path));
@@ -109,6 +108,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                             return StreamHelper.Read<P3DInfosOnly>(streamTemp).ModelInfo as BIS.P3D.ODOL.ModelInfo;
                         }
                     }
+                    // TODO: Binarize on the fly
                 }
             }
             return null;
@@ -124,7 +124,6 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                     {
                         return StreamHelper.Read<ODOL>(stream);
                     }
-
                     // Mikero Tools binarize into project drive temp, binarized file might be there
                     using (var streamTemp = fileSystem.OpenFileIfExists("temp\\" + path))
                     {
@@ -133,6 +132,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                             return StreamHelper.Read<ODOL>(streamTemp);
                         }
                     }
+                    // TODO: Binarize on the fly
                 }
             }
             return null;

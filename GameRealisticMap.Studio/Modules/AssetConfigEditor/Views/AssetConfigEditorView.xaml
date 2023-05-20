@@ -16,9 +16,12 @@
     <ScrollViewer HorizontalScrollBarVisibility="Hidden" local:Behaviors.EnforceScroll="True">
         <Grid>
             <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 10">
+                    <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
+                </StackPanel>
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
-                        Filling objects
+                        <TextBlock FontSize="25">Filling objects</TextBlock>
                     </Expander.Header>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 10">
@@ -46,7 +49,7 @@
 
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
-                        Individual objects
+                        <TextBlock FontSize="25">Individual objects</TextBlock>
                     </Expander.Header>
                     <StackPanel>
                         <DataGrid ItemsSource="{Binding Individual}" AutoGenerateColumns="false" Margin="0 10 0 0">
@@ -68,7 +71,7 @@
 
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
-                        Ground textures
+                        <TextBlock FontSize="25">Ground textures</TextBlock>
                     </Expander.Header>
                     <StackPanel>
                         <StackPanel Margin="10" Orientation="Horizontal" >
@@ -103,7 +106,7 @@
 
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
-                        Roads and bridges
+                        <TextBlock FontSize="25">Roads and bridges</TextBlock>
                     </Expander.Header>
                     <StackPanel>
                         <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Roads}" AutoGenerateColumns="False">
@@ -131,7 +134,19 @@
                         </DataGrid>
                     </StackPanel>
                 </Expander>
-
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25">Water tiles</TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Ponds}" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Texture" Binding="{Binding Model}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
             </StackPanel>
             <TextBlock
                 FontSize="20"

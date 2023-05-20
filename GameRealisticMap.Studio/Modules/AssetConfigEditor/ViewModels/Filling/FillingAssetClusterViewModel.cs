@@ -57,5 +57,15 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
                 null), DefinitionHelper.GetNewItemProbility(Items)), Items.Count, this));
             DefinitionHelper.EquilibrateProbabilities(Items);
         }
+
+        public override void Equilibrate()
+        {
+            DefinitionHelper.EquilibrateProbabilities(Items);
+
+            foreach(var item in Items)
+            {
+                DefinitionHelper.EquilibrateProbabilities(item.Items);
+            }
+        }
     }
 }

@@ -35,5 +35,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
             }
             Items.Add(new BuildingItem(new BuildingDefinition(use.Size, composition.Translate(-use.Center))));
         }
+
+        public override void Equilibrate()
+        {
+
+        }
     }
 }

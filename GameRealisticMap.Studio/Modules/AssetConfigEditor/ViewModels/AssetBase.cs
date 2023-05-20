@@ -8,7 +8,7 @@ using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
-    internal abstract class AssetBase<TId, TDefinition> : Document, IModelImporterTarget
+    internal abstract class AssetBase<TId, TDefinition> : Document, IModelImporterTarget, IAssetCategory
         where TId : struct, Enum 
         where TDefinition : class
     {
@@ -35,13 +35,17 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public AsyncCommand Edit { get; }
 
         public RelayCommand EditComposition { get; }
+
         public AsyncCommand Back { get; }
+
         public CompositionImporter CompositionImporter { get; }
 
         public virtual void AddComposition(Composition model, ObjectPlacementDetectedInfos detected)
         {
             throw new NotImplementedException();
         }
+
+        public abstract void Equilibrate();
 
         public abstract TDefinition ToDefinition();
     }
