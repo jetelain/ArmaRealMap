@@ -21,7 +21,7 @@ namespace GameRealisticMap.Arma3.Assets
         [JsonConverter(typeof(Matrix4x4Converter))]
         public Matrix4x4 Transform { get; }
 
-        internal TerrainBuilderObject ToTerrainBuilderObject(Matrix4x4 matrix, ElevationMode mode)
+        public TerrainBuilderObject ToTerrainBuilderObject(Matrix4x4 matrix, ElevationMode mode)
         {
             return new TerrainBuilderObject(Model, Transform * matrix, mode);
         }

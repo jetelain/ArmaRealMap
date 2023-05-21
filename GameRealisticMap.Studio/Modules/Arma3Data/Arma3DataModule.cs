@@ -29,6 +29,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
 
         public ProjectDrive ProjectDrive { get; private set; }
 
+        public ModelPreviewHelper ModelPreviewHelper { get; private set; }
+
         public string PreviewCachePath { get; set; } = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
             "GameRealisticMap", 
@@ -46,6 +48,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             ProjectDrive = new ProjectDrive(Arma3ToolsHelper.GetProjectDrivePath(), new PboFileSystem());
 
             Library = new ModelInfoLibrary(ProjectDrive);
+
+            ModelPreviewHelper = new ModelPreviewHelper(Library);
         }
 
         public override async Task PostInitializeAsync()

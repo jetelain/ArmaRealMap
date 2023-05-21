@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
@@ -23,6 +24,16 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
         private IEnumerable<Feature> ToFeatures(List<TerrainPolygon> terrainPolygons, Matrix4x4 matrix)
         {
             return terrainPolygons.Select(p => new Feature(Transform(p, matrix).ToGeoJson()));
+        }
+
+        public IEnumerable<TerrainPolygon> ToPolygons(TerrainBuilderObject obj)
+        {
+            return ToPolygons(GetPolygonsCache(obj.Model), obj.ToWrpTransform());
+        }
+
+        private IEnumerable<TerrainPolygon> ToPolygons(List<TerrainPolygon> terrainPolygons, Matrix4x4 matrix)
+        {
+            return terrainPolygons.Select(p => Transform(p, matrix));
         }
 
         private TerrainPolygon Transform(TerrainPolygon polygon, Matrix4x4 matrix)
@@ -56,14 +67,14 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 return list;
             }
             var geoLod = p3d.Lods.FirstOrDefault(l => l.Resolution == 1E+13f && l.Polygons.Faces.Length > 0)
-                ?? p3d.Lods.FirstOrDefault(l => l.Resolution == 0 && l.Polygons.Faces.Length > 0);
+                ?? p3d.Lods.OrderBy(l => l.Resolution).FirstOrDefault(l => l.Polygons.Faces.Length > 0);
             if (geoLod == null)
             {
                 return list;
             }
             foreach (var face in geoLod.Polygons.Faces)
             {
-                var points = face.VertexIndices.Select(i => geoLod.Vertices[i]).Select(p => p.Vector3 /*+ p3d.ModelInfo.BoundingCenter.Vector3*/);
+                var points = face.VertexIndices.Select(i => geoLod.Vertices[i]).Select(p => p.Vector3 + p3d.ModelInfo.BoundingCenter.Vector3);
                 var x = points.Select(p => new TerrainPoint(p.X, p.Z)).ToList();
                 x.Add(x[0]);
                 list.Add(new TerrainPolygon(x));

@@ -4,7 +4,7 @@ using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
-    internal class FenceItem : PropertyChangedBase, IWithComposition
+    internal class FenceItem : PropertyChangedBase, IWithComposition, IWithCompositionRectangle
     {
         public FenceItem(StraightSegmentDefinition d)
         {
@@ -16,10 +16,16 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public float Size 
         { 
             get { return _size; }
-            set { _size = value; NotifyOfPropertyChange(); }
+            set { _size = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Width)); NotifyOfPropertyChange(nameof(Depth)); }
         }
 
         public CompositionViewModel Composition { get; protected set; }
+
+        // TODO: Fences should be oriented North-South and not West-East
+
+        public virtual float Depth { get => 200; set { } }
+
+        public virtual float Width { get => Size; set => Size = value; }
 
         internal StraightSegmentDefinition ToDefinition()
         {

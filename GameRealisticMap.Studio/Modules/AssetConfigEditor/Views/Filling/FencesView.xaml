@@ -35,14 +35,10 @@
                     <DataGridTemplateColumn Width="75">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Padding="2" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Edit</Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="75">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Padding="2" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Remove</Button>
+                                <StackPanel>
+                                    <Button Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Edit</Button>
+                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Remove</Button>
+                                </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

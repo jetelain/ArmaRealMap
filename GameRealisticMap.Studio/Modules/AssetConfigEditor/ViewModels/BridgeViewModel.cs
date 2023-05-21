@@ -21,6 +21,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public CompositionImporter CompositionImporter { get; }
 
+        public override float Depth { get => Size; set => Size = value; }
+
+        public override float Width { get => 200; set { } }
+
         public void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
             Composition = new CompositionViewModel(composition.Translate(-detected.GeneralRadius.Center));

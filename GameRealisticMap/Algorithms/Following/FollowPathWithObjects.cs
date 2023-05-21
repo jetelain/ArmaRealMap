@@ -25,7 +25,7 @@ namespace GameRealisticMap.Algorithms.Following
             while (follow.Move(width))
             {
                 var delta = Vector2.Normalize(follow.Current.Vector - follow.Previous.Vector);
-                var angle = (180f + (MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI)) % 360f;
+                var angle = (180f + (MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI)) % 360f; // FIXME: Should be North-South (and not West-East)
 
                 var wantedSize = (follow.Previous.Vector - follow.Current.Vector).Length();
                 if (Math.Abs(wantedSize - width) < 0.2f)
