@@ -15,15 +15,15 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
     internal class CompositionImporter
     {
         private readonly IModelImporterTarget target;
-        private readonly Arma3DataModule arma3DataModule;
+        private readonly IArma3DataModule arma3DataModule;
 
         public CompositionImporter(IModelImporterTarget target)
-            : this(target, IoC.Get<Arma3DataModule>(), IoC.Get<IWindowManager>())
+            : this(target, IoC.Get<IArma3DataModule>(), IoC.Get<IWindowManager>())
         {
 
         }
 
-        public CompositionImporter(IModelImporterTarget target, Arma3DataModule arma3DataModule, IWindowManager windowManager)
+        public CompositionImporter(IModelImporterTarget target, IArma3DataModule arma3DataModule, IWindowManager windowManager)
         {
             this.arma3DataModule = arma3DataModule;
             this.target = target;

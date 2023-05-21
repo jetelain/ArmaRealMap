@@ -9,6 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <local:CompositionPreviewConverter x:Key="CompositionPreviewConverter" />
+        <local:TexturePreviewConverter x:Key="TexturePreviewConverter" />
     </UserControl.Resources>
 
     <ScrollViewer local:Behaviors.EnforceScroll="True">
@@ -46,6 +47,16 @@
                 <TextBox Width="400" Text="{Binding NormalTexture,Mode=TwoWay}" IsEnabled="{Binding IsNotSameAs}"  />
             </StackPanel>
 
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding ColorTexture, Converter={StaticResource TexturePreviewConverter}}" Margin="5" />
+                <Image Source="{Binding NormalTexture, Converter={StaticResource TexturePreviewConverter}}" Grid.Column="1" Margin="5" />
+            </Grid>
+            
+            
         </StackPanel>
     </ScrollViewer>
 </UserControl>

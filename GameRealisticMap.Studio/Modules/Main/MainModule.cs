@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace GameRealisticMap.Studio.Modules.Main
         {
             _mainWindow.Title = "GameRealisticMap Studio";
             //_mainWindow.Icon = new BitmapImage(new("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/WindowIcon.png"));
-
+            //>>>PackageStore.GetPackage(new ("application:///"));
             _mainWindow.Shell.ToolBars.Visible = true;
         }
     }

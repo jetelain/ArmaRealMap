@@ -17,12 +17,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor
     [Export(typeof(IEditorProvider))]
     internal class AssetConfigEditorProvider : IEditorProvider
     {
-        private readonly Arma3DataModule _arma3Data;
+        private readonly IArma3DataModule _arma3Data;
         private readonly IShell _shell;
         private readonly ICompositionTool _composition;
 
         [ImportingConstructor]
-        public AssetConfigEditorProvider(Arma3DataModule arma3Data, IShell shell, ICompositionTool composition)
+        public AssetConfigEditorProvider(IArma3DataModule arma3Data, IShell shell, ICompositionTool composition)
         {
             _arma3Data = arma3Data;
             _shell = shell;

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -13,15 +11,14 @@ using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using Gemini.Framework;
-using static PdfSharpCore.Pdf.PdfDictionary;
 
 namespace GameRealisticMap.Studio.Modules.Arma3Data
 {
-    [Export(typeof(Arma3DataModule))] // TODO: an interface would be nicer
+    [Export(typeof(IArma3DataModule))]
     [Export(typeof(IModule))]
     [Export(typeof(IArma3Previews))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    internal class Arma3DataModule : ModuleBase, IArma3Previews
+    internal class Arma3DataModule : ModuleBase, IArma3Previews, IArma3DataModule
     {
         private List<string>? previewsInProject;
 
@@ -41,7 +38,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "GameRealisticMap",
             "Arma3",
-            "library.json");
+            "modelinfo.json");
 
         public override void Initialize()
         {
@@ -66,17 +63,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             await Library.SaveTo(LibraryCachePath);
         }
 
-        public IEnumerable<ModelInfo> Import(IEnumerable<string> paths)
-        {
-            try
-            {
-                return paths.Select(ProjectDrive.GetGamePath).Select(p => Library.ResolveByPath(p)).ToList();
-            }
-            catch
-            {
-                return new List<ModelInfo>();
-            }
-        }
 
         public Uri? GetPreview(ModelInfo modelInfo)
         {
@@ -84,11 +70,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             if (File.Exists(cacheJpeg))
             {
                 return new Uri(cacheJpeg);
-            }
-            var cachePng = Path.Combine(PreviewCachePath, Path.ChangeExtension(modelInfo.Path, ".png"));
-            if (File.Exists(cachePng))
-            {
-                return new Uri(cachePng);
             }
             var editorPreview = LocateGameEditorPreview(modelInfo);
             if (!string.IsNullOrEmpty(editorPreview))
@@ -101,9 +82,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
         private Uri CacheGameEditorPreview(string cacheJpeg, string editorPreview)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(cacheJpeg)!);
-            using (var target = File.Create(cacheJpeg))
+            using (var source = ProjectDrive.OpenFileIfExists(editorPreview)!)
             {
-                using (var source = ProjectDrive.OpenFileIfExists(editorPreview)!)
+                using (var target = File.Create(cacheJpeg))
                 {
                     source.CopyTo(target);
                 }

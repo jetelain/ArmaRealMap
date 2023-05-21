@@ -1,13 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Media;
+using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Studio.Modules.Arma3Data;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using Color = System.Windows.Media.Color;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
     internal class MaterialViewModel : AssetBase<TerrainMaterialUsage, TerrainMaterial>
     {
+        private byte[]? _fakeSatPngImage;
+
         public MaterialViewModel(TerrainMaterialUsage id, TerrainMaterial terrainMaterial, AssetConfigEditorViewModel parent)
             : base(id, parent)
         {
@@ -15,6 +23,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             _sameAs = parent.Materials.FirstOrDefault(m => m.ColorId == ColorId);
             _colorTexture = terrainMaterial.ColorTexture;
             _normalTexture = terrainMaterial.NormalTexture;
+            _fakeSatPngImage = terrainMaterial.FakeSatPngImage;
         }
 
         public List<string> Others =>
@@ -84,6 +93,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             set
             {
                 _colorTexture = value;
+                _fakeSatPngImage = null; // RESET
                 NotifyOfPropertyChange();
                 foreach (var sameAsSelf in ParentEditor.Materials.Where(m => m != this && m.SameAs == this))
                 {
@@ -93,6 +103,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         }
 
         private string _normalTexture;
+
         public string NormalTexture
         {
             get { return _normalTexture; }
@@ -109,7 +120,19 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public override TerrainMaterial ToDefinition()
         {
-            return new TerrainMaterial(NormalTexture, _colorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), null /*TODO : FakeSatPngImage*/);
+            if (_fakeSatPngImage == null)
+            {
+                var uri = IoC.Get<IArma3Previews>().GetTexturePreview(_colorTexture);
+                if (uri != null && uri.IsFile)
+                {
+                    var img = Image.Load(uri.LocalPath);
+                    img.Mutate(d => d.Resize(8, 8));
+                    var mem = new MemoryStream();
+                    img.SaveAsPng(mem);
+                    _fakeSatPngImage = mem.ToArray();
+                }
+            }
+            return new TerrainMaterial(_normalTexture, _colorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), _fakeSatPngImage);
         }
 
         public override void Equilibrate()

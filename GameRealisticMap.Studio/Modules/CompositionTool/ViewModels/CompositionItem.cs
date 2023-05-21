@@ -73,7 +73,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
         {
             get
             {
-                var polygons = IoC.Get<Arma3DataModule>().ModelPreviewHelper.ToPolygons(ToTerrainBuilderObject());
+                var polygons = IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToPolygons(ToTerrainBuilderObject());
                 var sb = new StringBuilder();
                 foreach(var polygon in polygons)
                 {

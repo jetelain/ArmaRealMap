@@ -23,7 +23,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
     internal class AssetConfigEditorViewModel : PersistedDocument
     {
-        private readonly Arma3DataModule _arma3Data;
+        private readonly IArma3DataModule _arma3Data;
         private readonly IShell _shell;
         private readonly ICompositionTool _compositionTool;
 
@@ -39,7 +39,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public bool IsLoading { get; set; }
 
-        public AssetConfigEditorViewModel(Arma3DataModule arma3Data, IShell shell, ICompositionTool compositionTool)
+        public AssetConfigEditorViewModel(IArma3DataModule arma3Data, IShell shell, ICompositionTool compositionTool)
         {
             _arma3Data = arma3Data;
             _shell = shell;

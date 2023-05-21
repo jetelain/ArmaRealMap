@@ -43,7 +43,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
                 {
                     try
                     {
-                        var library = IoC.Get<Arma3DataModule>().Library;
+                        var library = IoC.Get<IArma3DataModule>().Library;
                         clipboardComposition = Composition.CreateFromCsv(lines, library).Translate(new Vector3(0, -5, 0)); // Translate z -= 5 m (assume VR world)
                         clipboardDetected = ObjectPlacementDetectedInfos.CreateFromComposition(clipboardComposition, library);
                         if (clipboardDetected == null)
