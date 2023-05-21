@@ -8,6 +8,7 @@
              d:DesignHeight="900" d:DesignWidth="{x:Static local:CanvasGrid.Size}">
     <UserControl.Resources>
         <local:MetersToPixelsConverter x:Key="MetersToPixelsConverter" />
+        <local:MetersToPixelsConverter x:Key="MetersToPixelsConverterX2" Coef="2" />
         <BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
@@ -17,45 +18,41 @@
         </Grid.RowDefinitions>
         <Border ClipToBounds="True">
             <local:ZoomBorder Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" Background="LightGray">
-            <Grid Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" ClipToBounds="False"  VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Background="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="BaseLayer">
-            </Canvas>
-
-            <ItemsControl ItemsSource="{Binding Composition.Items}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Path Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Data="{Binding PreviewPath}" Fill="Black" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-            <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Line X1="0" X2="{x:Static local:CanvasGrid.Size}" Y1="{x:Static local:CanvasGrid.HalfSize}" Y2="{x:Static local:CanvasGrid.HalfSize}"  Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Stroke="Red" StrokeThickness="1" />
-                <Line X1="{x:Static local:CanvasGrid.HalfSize}" X2="{x:Static local:CanvasGrid.HalfSize}" Y1="0" Y2="{x:Static local:CanvasGrid.Size}"  Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Stroke="Red" StrokeThickness="1" />
-            </Canvas>
-
-            <Ellipse 
-                Width="{Binding Radius.ExclusiveRadius, Converter={StaticResource MetersToPixelsConverter}}" 
-                Height="{Binding Radius.ExclusiveRadius, Converter={StaticResource MetersToPixelsConverter}}"
-                Visibility="{Binding HasRadius, Converter={StaticResource BoolToVisibilityConverter}}" 
-                StrokeThickness="2" Stroke="Green" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            <Ellipse 
-                Width="{Binding Radius.Radius, Converter={StaticResource MetersToPixelsConverter}}" 
-                Height="{Binding Radius.Radius, Converter={StaticResource MetersToPixelsConverter}}"
-                Visibility="{Binding HasRadius, Converter={StaticResource BoolToVisibilityConverter}}"
-                StrokeThickness="2" Stroke="Blue" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="#100000FF" />
-            <Rectangle 
-                Width="{Binding Rectangle.Width, Converter={StaticResource MetersToPixelsConverter}}" 
-                Height="{Binding Rectangle.Depth, Converter={StaticResource MetersToPixelsConverter}}"
-                Visibility="{Binding HasRectangle, Converter={StaticResource BoolToVisibilityConverter}}" 
-                StrokeThickness="2" Stroke="Blue" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="#100000FF" ClipToBounds="False" />
-            
-        </Grid>
+                <Grid Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" ClipToBounds="False"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Background="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="BaseLayer">
+                    </Canvas>
+                    <ItemsControl ItemsSource="{Binding Composition.Items}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Path Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Data="{Binding PreviewPath}" Fill="Black" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Line X1="0" X2="{x:Static local:CanvasGrid.Size}" Y1="{x:Static local:CanvasGrid.HalfSize}" Y2="{x:Static local:CanvasGrid.HalfSize}"  Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Stroke="Red" StrokeThickness="1" />
+                        <Line X1="{x:Static local:CanvasGrid.HalfSize}" X2="{x:Static local:CanvasGrid.HalfSize}" Y1="0" Y2="{x:Static local:CanvasGrid.Size}"  Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Stroke="Red" StrokeThickness="1" />
+                    </Canvas>
+                    <Ellipse 
+                        Width="{Binding Radius.ExclusiveRadius, Converter={StaticResource MetersToPixelsConverterX2}}" 
+                        Height="{Binding Radius.ExclusiveRadius, Converter={StaticResource MetersToPixelsConverterX2}}"
+                        Visibility="{Binding HasRadius, Converter={StaticResource BoolToVisibilityConverter}}" 
+                        StrokeThickness="2" Stroke="Green" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <Ellipse 
+                        Width="{Binding Radius.Radius, Converter={StaticResource MetersToPixelsConverterX2}}" 
+                        Height="{Binding Radius.Radius, Converter={StaticResource MetersToPixelsConverterX2}}"
+                        Visibility="{Binding HasRadius, Converter={StaticResource BoolToVisibilityConverter}}"
+                        StrokeThickness="2" Stroke="Blue" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="#100000FF" />
+                    <Rectangle 
+                        Width="{Binding Rectangle.Width, Converter={StaticResource MetersToPixelsConverter}}" 
+                        Height="{Binding Rectangle.Depth, Converter={StaticResource MetersToPixelsConverter}}"
+                        Visibility="{Binding HasRectangle, Converter={StaticResource BoolToVisibilityConverter}}" 
+                        StrokeThickness="2" Stroke="Blue" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="#100000FF" ClipToBounds="False" />
+                </Grid>
             </local:ZoomBorder>
         </Border>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Composition.Items}" AutoGenerateColumns="false">
@@ -68,9 +65,7 @@
                 <DataGridTextColumn Header="Pitch" Binding="{Binding Pitch}" />
                 <DataGridTextColumn Header="Roll" Binding="{Binding Roll}" />
                 <DataGridTextColumn Header="Scale" Binding="{Binding Scale}" />
-
             </DataGrid.Columns>
         </DataGrid>
-
     </Grid>
 </UserControl>

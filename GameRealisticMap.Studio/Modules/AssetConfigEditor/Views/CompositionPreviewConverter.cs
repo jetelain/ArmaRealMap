@@ -21,7 +21,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
                     var uri = IoC.Get<IArma3Previews>().GetPreview(singleModel); // GetPreview can be really slow, find a way to make this lazy
                     if (uri != null)
                     {
-                        return new BitmapImage(uri);
+                        return new BitmapImage(uri) { CreateOptions = BitmapCreateOptions.DelayCreation };
                     }
                 }
             }

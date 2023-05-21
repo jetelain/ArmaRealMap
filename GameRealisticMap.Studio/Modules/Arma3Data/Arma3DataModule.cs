@@ -128,13 +128,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             return editorPreview;
         }
 
-        public BitmapSource? GetTexturePreview(string texture)
+        public Uri? GetTexturePreview(string texture)
         {
             var cachePng = Path.Combine(PreviewCachePath, Path.ChangeExtension(texture, ".png"));
             if (File.Exists(cachePng))
             {
                 // TODO: ensure that file is still up to date
-                return new BitmapImage(new Uri(cachePng));
+                return new Uri(cachePng);
             }
             using (var paaStream = ProjectDrive.OpenFileIfExists(texture))
             {
@@ -148,7 +148,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
                         encoder.Frames.Add(BitmapFrame.Create(source));
                         encoder.Save(stream);
                     }
-                    return new BitmapImage(new Uri(cachePng));
+                    return new Uri(cachePng);
                 }
             }
             return null;

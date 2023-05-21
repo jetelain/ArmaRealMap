@@ -124,13 +124,20 @@ namespace GameRealisticMap.Geometries
 
         public static Circle CreateFrom(List<Vector2> points, int attempts = 10)
         {
+            bool canWelzl = points.Count < 4000; // May stackoverflow otherwise
             var results = new List<Circle>((attempts * 2) + 2);
             results.Add(CreateFromRitterStable(points));
-            results.Add(CreateFromWelzlStable(points));
+            if (canWelzl)
+            {
+                results.Add(CreateFromWelzlStable(points));
+            }
             for (int i = 0; i < attempts; ++i)
             {
                 results.Add(CreateFromRitter(points));
-                results.Add(CreateFromWelzl(points));
+                if (canWelzl)
+                {
+                    results.Add(CreateFromWelzl(points));
+                }
             }
             return results.Where(c => c.Radius > 0).OrderBy(c => c.Radius).First();
         }

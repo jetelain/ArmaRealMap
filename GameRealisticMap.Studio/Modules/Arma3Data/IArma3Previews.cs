@@ -7,6 +7,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
     internal interface IArma3Previews
     {
         Uri? GetPreview(ModelInfo modelInfo);
-        BitmapSource? GetTexturePreview(string texture);
+        Uri? GetTexturePreview(string texture);
     }
 }

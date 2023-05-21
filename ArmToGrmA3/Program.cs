@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Reflection;
 using System.Text.Json;
 using ArmaRealMap;
 using ArmaRealMap.Configuration;
@@ -7,9 +6,8 @@ using ArmaRealMap.Core;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.Core.Roads;
 using ArmaRealMap.Libraries;
-using ArmaRealMap.TerrainBuilder;
 using ArmaRealMap.TerrainData.Roads;
-using BitMiracle.LibTiff.Classic;
+using ArmaRealMapWebSite.Entities;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
@@ -21,8 +19,11 @@ using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
+using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using ModelInfoLibrary = GameRealisticMap.Arma3.TerrainBuilder.ModelInfoLibrary;
 using OldModelInfoLibrary = ArmaRealMap.ModelInfoLibrary;
 
@@ -33,24 +34,53 @@ namespace ArmToGrmA3
     /// </summary>
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
+        {
+            await ExtractScreenShotsFromDB("c:\\temp\\");
+            await ConvertToAssetConfiguration("c:\\temp\\");
+        }
+
+        private static async Task ExtractScreenShotsFromDB(string path)
+        {
+            var dbfile = Path.Combine(path, "assets.db");
+            if (!File.Exists(dbfile))
+            {
+                return;
+            }
+            var assetsDB = new AssetsContext(Path.Combine(path, "assets.db"));
+            var previews = await assetsDB.AssetPreviews.Where(p => p.Height == 1080).Include(p => p.Asset).ToListAsync();
+            foreach (var preview in previews)
+            {
+                Console.WriteLine(preview.Asset.ModelPath);
+                var targetFile = Path.Combine(path, "previews", Path.ChangeExtension(preview.Asset.ModelPath, ".jpg"));
+                using var image = Image.Load(preview.Data);
+                image.Mutate(i => i.Resize(455, 256));
+                image.Mutate(i => i.Contrast(1.4f)); // Screens shots was taken with wrong settings, fix constrast to match ingame editor previews colors
+                Directory.CreateDirectory(Path.GetDirectoryName(targetFile)!);
+                await image.SaveAsJpegAsync(targetFile, new JpegEncoder() { Quality = 95 });
+            }
+        }
+
+        private static async Task ConvertToAssetConfiguration(string targetPath)
         {
             var globalConfig = ConfigLoader.LoadGlobal(string.Empty);
-
             ConfigLoader.SyncLibraries(globalConfig);
-
             var prj = new ProjectDrive(Arma3ToolsHelper.GetProjectDrivePath(), new PboFileSystem());
-            prj.AddMountPoint(@"z\arm\addons", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive\z\arm\addons");
             var newModels = new ModelInfoLibrary(prj);
+            await ConvertToAssetConfiguration(globalConfig, newModels, targetPath, TerrainRegion.CentralEurope);
+            await ConvertToAssetConfiguration(globalConfig, newModels, targetPath, TerrainRegion.Sahel);
+            Console.WriteLine($"Done");
+        }
 
-            var centralEurope = Convert(TerrainRegion.CentralEurope, globalConfig, newModels);
-            var sahel = Convert(TerrainRegion.Sahel, globalConfig, newModels);
-
-            var ceJSON = JsonSerializer.Serialize(centralEurope, Arma3Assets.CreateJsonSerializerOptions(newModels));
-            var sJSON = JsonSerializer.Serialize(sahel, Arma3Assets.CreateJsonSerializerOptions(newModels));
-
-            File.WriteAllText("CentralEurope.json", ceJSON);
-            File.WriteAllText("Sahel.json", sJSON);
+        private static async Task ConvertToAssetConfiguration(GlobalConfig globalConfig, ModelInfoLibrary newModels, string targetPath, TerrainRegion terrain)
+        {
+            Console.WriteLine($"Convert {terrain}");
+            var data = Convert(terrain, globalConfig, newModels);
+            Console.WriteLine($"Write {terrain}.grma3a");
+            using (var stream = File.Create(Path.Combine(targetPath, terrain + ".grma3a")))
+            {
+                await JsonSerializer.SerializeAsync(stream, data, Arma3Assets.CreateJsonSerializerOptions(newModels));
+            }
         }
 
         private static Arma3Assets Convert(TerrainRegion region, GlobalConfig globalConfig, ModelInfoLibrary newModels)
@@ -74,6 +104,7 @@ namespace ArmToGrmA3
             newAssets.Objects.Add(ObjectTypeId.Bench, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.Bench), newModels, oldModels));
             newAssets.Objects.Add(ObjectTypeId.PicnicTable, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.PicnicTable), newModels, oldModels));
             newAssets.Objects.Add(ObjectTypeId.WaterWell, ConvertObject(olibs.GetSingleLibrary(ObjectCategory.WaterWell), newModels, oldModels));
+            newAssets.Objects = newAssets.Objects.OrderBy(o => o.Key).ToDictionary(p=>p.Key, p => p.Value);
 
             newAssets.Buildings.Add(BuildingTypeId.Residential, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Residential), newModels, oldModels));
             newAssets.Buildings.Add(BuildingTypeId.Industrial, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Industrial), newModels, oldModels));
@@ -83,29 +114,32 @@ namespace ArmToGrmA3
             newAssets.Buildings.Add(BuildingTypeId.Hut, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Hut), newModels, oldModels));
             newAssets.Buildings.Add(BuildingTypeId.Military, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.Military), newModels, oldModels));
             newAssets.Buildings.Add(BuildingTypeId.RadioTower, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.RadioTower), newModels, oldModels));
+            newAssets.Buildings = newAssets.Buildings.OrderBy(o => o.Key).ToDictionary(p => p.Key, p => p.Value);
 
             newAssets.Bridges.Add(RoadTypeId.TwoLanesMotorway, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgePrimaryRoad), newModels, oldModels));
             newAssets.Bridges.Add(RoadTypeId.TwoLanesPrimaryRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgePrimaryRoad), newModels, oldModels));
             newAssets.Bridges.Add(RoadTypeId.TwoLanesSecondaryRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgeSecondaryRoad), newModels, oldModels));
             newAssets.Bridges.Add(RoadTypeId.TwoLanesConcreteRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgeConcreteRoad), newModels, oldModels));
+            newAssets.Bridges = newAssets.Bridges.OrderBy(o => o.Key).ToDictionary(p => p.Key, p => p.Value);
 
             newAssets.BasicCollections.Add(BasicCollectionId.ScrubAdditional, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.ScrubAdditionalObjects), newModels, oldModels));
             newAssets.BasicCollections.Add(BasicCollectionId.ForestAdditional, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.ForestAdditionalObjects), newModels, oldModels));
             newAssets.BasicCollections.Add(BasicCollectionId.Rocks, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.GroundRock), newModels, oldModels));
             newAssets.BasicCollections.Add(BasicCollectionId.RocksAdditional, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.GroundRockAdditionalObjects), newModels, oldModels));
             newAssets.BasicCollections.Add(BasicCollectionId.DefaultAreas, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.RandomVegetation), newModels, oldModels));
+            newAssets.BasicCollections = newAssets.BasicCollections.OrderBy(o => o.Key).ToDictionary(p => p.Key, p => p.Value);
 
             newAssets.ClusterCollections.Add(ClusterCollectionId.Forest, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.ForestTree), newModels, oldModels));
             newAssets.ClusterCollections.Add(ClusterCollectionId.ForestRadial, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.ForestRadialEdge), newModels, oldModels));
             newAssets.ClusterCollections.Add(ClusterCollectionId.ForestEdge, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.ForestEdge), newModels, oldModels));
-
             newAssets.ClusterCollections.Add(ClusterCollectionId.Scrub, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.Scrub), newModels, oldModels));
             newAssets.ClusterCollections.Add(ClusterCollectionId.ScrubRadial, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.ScrubRadialEdge), newModels, oldModels));
-
             newAssets.ClusterCollections.Add(ClusterCollectionId.WatercourseRadial, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.WaterwayBorder), newModels, oldModels));
+            newAssets.ClusterCollections = newAssets.ClusterCollections.OrderBy(o => o.Key).ToDictionary(p => p.Key, p => p.Value);
 
             newAssets.Fences.Add(FenceTypeId.Wall, ConvertFences(olibs.GetLibraries(ObjectCategory.Wall), newModels, oldModels));
             newAssets.Fences.Add(FenceTypeId.Fence, ConvertFences(olibs.GetLibraries(ObjectCategory.Fence), newModels, oldModels));
+            newAssets.Fences = newAssets.Fences.OrderBy(o => o.Key).ToDictionary(p => p.Key, p => p.Value);
         }
 
         private static List<FenceDefinition> ConvertFences(List<ObjectLibrary> objectLibraries, ModelInfoLibrary newModels, OldModelInfoLibrary oldModels)
@@ -297,7 +331,7 @@ namespace ArmToGrmA3
             MapMaterial(terrainMaterialLibrary, ArmaRealMap.GroundTextureDetails.TerrainMaterial.WetLand, TerrainMaterialUsage.RiverGround, mats, region);
             MapMaterial(terrainMaterialLibrary, ArmaRealMap.GroundTextureDetails.TerrainMaterial.Sand, TerrainMaterialUsage.Sand, mats, region);
             MapMaterial(terrainMaterialLibrary, ArmaRealMap.GroundTextureDetails.TerrainMaterial.Rock, TerrainMaterialUsage.RockGround, mats, region);
-            newAssets.Materials = new TerrainMaterialLibrary(mats.Select(pair => new TerrainMaterialDefinition(pair.Key, pair.Value.ToArray())).ToList());
+            newAssets.Materials = new TerrainMaterialLibrary(mats.Select(pair => new TerrainMaterialDefinition(pair.Key, pair.Value.OrderBy(m => m).ToArray())).OrderBy(m => m.Usages.Min()).ToList());
         }
 
         private static void MapMaterial(ArmaRealMap.TerrainData.GroundDetailTextures.TerrainMaterialLibrary oldLib, ArmaRealMap.GroundTextureDetails.TerrainMaterial oldId, TerrainMaterialUsage usage, Dictionary<TerrainMaterial, List<TerrainMaterialUsage>> newMaterials, TerrainRegion region)

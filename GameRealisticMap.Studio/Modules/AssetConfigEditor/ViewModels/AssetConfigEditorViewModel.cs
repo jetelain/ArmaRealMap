@@ -132,7 +132,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             json.Objects = Individual.OfType<ObjectsViewModel>().OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
             var materialDefintions = Materials
                 .Where(m => m.SameAs == null)
-                .Select(m => new TerrainMaterialDefinition(m.ToDefinition(), Materials.Where(o => o == m || o.SameAs == m).Select(o => o.FillId).ToArray()))
+                .Select(m => new TerrainMaterialDefinition(m.ToDefinition(), Materials.Where(o => o == m || o.SameAs == m).Select(o => o.FillId).OrderBy(m => m).ToArray()))
+                .OrderBy(m => m.Usages.Min())
                 .ToList();
             json.Materials = new TerrainMaterialLibrary(materialDefintions, TextureSizeInMeters);
             json.Roads = Roads.OrderBy(k => k.FillId).Select(r => r.ToDefinition()).ToList();

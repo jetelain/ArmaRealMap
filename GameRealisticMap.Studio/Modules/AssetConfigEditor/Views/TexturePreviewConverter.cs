@@ -15,7 +15,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
             var texture = value as string;
             if (!string.IsNullOrEmpty(texture))
             {
-                return IoC.Get<IArma3Previews>().GetTexturePreview(texture);
+                var uri = IoC.Get<IArma3Previews>().GetTexturePreview(texture); // GetTexturePreview can be really slow, find a way to make this lazy
+                if (uri != null)
+                {
+                    return new BitmapImage(uri) { CreateOptions = BitmapCreateOptions.DelayCreation };
+                }
             }
             return null;
         }

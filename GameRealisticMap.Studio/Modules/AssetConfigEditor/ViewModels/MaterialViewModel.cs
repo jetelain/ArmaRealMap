@@ -109,7 +109,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public override TerrainMaterial ToDefinition()
         {
-            return new TerrainMaterial(NormalTexture, _colorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), null /*TODO !*/);
+            return new TerrainMaterial(NormalTexture, _colorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), null /*TODO : FakeSatPngImage*/);
         }
 
         public override void Equilibrate()
