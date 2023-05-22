@@ -27,7 +27,7 @@
                         <StackPanel Orientation="Horizontal" Margin="0 10">
                             <Button Padding="5">Add a variation</Button>
                         </StackPanel>
-                        <DataGrid ItemsSource="{Binding Filling}" AutoGenerateColumns="false">
+                        <DataGrid ItemsSource="{Binding Filling}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" Width="200" />
                                 <DataGridTextColumn Header="Label" Binding="{Binding Label}" IsReadOnly="True" Width="200" />
@@ -139,7 +139,7 @@
                         <TextBlock FontSize="25">Water tiles</TextBlock>
                     </Expander.Header>
                     <StackPanel>
-                        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Ponds}" AutoGenerateColumns="False">
+                        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Ponds}" AutoGenerateColumns="False" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
                                 <DataGridTextColumn Header="Texture" Binding="{Binding Model}" />

@@ -4,6 +4,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Fences;
+using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
@@ -21,7 +22,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             {
                 Items = new();
             }
-            RemoveItem = new RelayCommand(item => Items.Remove((FenceItem)item));
+            RemoveItem = new RelayCommand(item => Items.RemoveUndoable(UndoRedoManager, (FenceItem)item));
         }
 
         public ObservableCollection<FenceItem> Items { get; }
@@ -37,7 +38,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.Add(new FenceItem(new StraightSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
+            Items.AddUndoable(UndoRedoManager, new FenceItem(new StraightSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
         }
 
         public override void Equilibrate()

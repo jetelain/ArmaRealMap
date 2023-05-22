@@ -20,7 +20,7 @@
                 <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">Add an object</Button>
                 <Button Padding="5" Margin="10 0" Command="{Binding CompositionImporter.AddComposition}">Add a composition</Button>
             </StackPanel>
-            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false">
+            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
                     <DataGridTemplateColumn Width="200">

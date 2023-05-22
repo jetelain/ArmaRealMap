@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
-using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using Gemini.Framework;
+using Gemini.Modules.UndoRedo;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
@@ -22,6 +21,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             EditComposition = new RelayCommand(c => parent.EditComposition((IWithComposition)c));
             Back = new AsyncCommand(() => parent.EditAssetCategory(parent));
             CompositionImporter = new CompositionImporter(this);
+        }
+
+        protected override IUndoRedoManager CreateUndoRedoManager()
+        {
+            return ParentEditor.UndoRedoManager;
         }
 
         public TId FillId { get; }

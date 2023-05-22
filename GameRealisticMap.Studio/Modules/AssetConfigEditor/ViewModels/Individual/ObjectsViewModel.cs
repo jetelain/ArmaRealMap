@@ -5,6 +5,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Objects;
+using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual
@@ -15,7 +16,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
             : base(id, parent)
         {
             Items = new ObservableCollection<ObjectItem>(definitions.Select(d => new ObjectItem(d)));
-            RemoveItem = new RelayCommand(item => Items.Remove((ObjectItem)item));
+            RemoveItem = new RelayCommand(item => Items.RemoveUndoable(UndoRedoManager, (ObjectItem)item));
         }
 
         public ObservableCollection<ObjectItem> Items { get; }
@@ -29,7 +30,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.Add(new ObjectItem(new ObjectDefinition(composition.Translate(-detected.TrunkRadius.Center), DefinitionHelper.GetNewItemProbility(Items))));
+            Items.AddUndoable(UndoRedoManager,new ObjectItem(new ObjectDefinition(composition.Translate(-detected.TrunkRadius.Center), DefinitionHelper.GetNewItemProbility(Items))));
             DefinitionHelper.EquilibrateProbabilities(Items);
         }
 

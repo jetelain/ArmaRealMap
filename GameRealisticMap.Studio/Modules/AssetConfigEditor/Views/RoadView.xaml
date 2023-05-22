@@ -15,33 +15,33 @@
         <StackPanel Margin="10 0">
             <StackPanel Orientation="Horizontal" Margin="0 10">
                 <Button Padding="10" Command="{Binding Back}">🡰</Button>
-                <TextBlock FontSize="30" Margin="20 0" Text="{Binding IdText}" />
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding IdText}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
 
             <TextBlock FontSize="25">Road configuration</TextBlock>
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">ClearWidth</Label>
-                <TextBox Width="50" Text="{Binding ClearWidth,Mode=TwoWay}" />
+                <TextBox Width="50" Text="{Binding ClearWidth,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">Width</Label>
-                <TextBox Width="50" Text="{Binding Width,Mode=TwoWay}" />
+                <TextBox Width="50" Text="{Binding Width,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">TextureWidth</Label>
-                <TextBox Width="50" Text="{Binding TextureWidth,Mode=TwoWay}" />
+                <TextBox Width="50" Text="{Binding TextureWidth,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">Texture</Label>
-                <TextBox Width="400" Text="{Binding Texture,Mode=TwoWay}" />
+                <TextBox Width="400" Text="{Binding Texture,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">TextureEnd</Label>
-                <TextBox Width="400" Text="{Binding TextureEnd,Mode=TwoWay}" />
+                <TextBox Width="400" Text="{Binding TextureEnd,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">Material</Label>
-                <TextBox Width="400" Text="{Binding Material,Mode=TwoWay}" />
+                <TextBox Width="400" Text="{Binding Material,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">SatelliteColor</Label>
@@ -52,7 +52,7 @@
             </StackPanel>
 
             <TextBlock FontSize="25" Padding="0 15 0 5">Bridge elements</TextBlock>
-            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false">
+            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Element" Binding="{Binding Label}" Width="200" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />

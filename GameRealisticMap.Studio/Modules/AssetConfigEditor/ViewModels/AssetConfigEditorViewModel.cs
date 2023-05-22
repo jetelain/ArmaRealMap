@@ -186,6 +186,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             _shell.ShowTool(_compositionTool);
             _compositionTool.Current = document;
+            _compositionTool.UndoRedoManager = UndoRedoManager;
         }
     }
 }

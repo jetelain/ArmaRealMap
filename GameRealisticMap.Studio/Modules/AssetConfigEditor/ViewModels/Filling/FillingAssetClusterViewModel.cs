@@ -5,6 +5,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
@@ -23,10 +24,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
                 Items = new ObservableCollection<SeedItem>();
             }
 
-            RemoveSeed = new RelayCommand(item => Items.Remove((SeedItem)item));
+            RemoveSeed = new RelayCommand(item => Items.RemoveUndoable(UndoRedoManager, (SeedItem)item));
 
             AddEmptySeed = new RelayCommand(_ => {
-                Items.Add(new SeedItem(new ClusterDefinition(new List<ClusterItemDefinition>(), DefinitionHelper.GetNewItemProbility(Items)), Items.Count, this));
+                Items.AddUndoable(UndoRedoManager,new SeedItem(new ClusterDefinition(new List<ClusterItemDefinition>(), DefinitionHelper.GetNewItemProbility(Items)), Items.Count, this));
                 DefinitionHelper.EquilibrateProbabilities(Items);
             });
         }
@@ -46,7 +47,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.Add(new SeedItem(new ClusterDefinition(new ClusterItemDefinition(
+            Items.AddUndoable(UndoRedoManager, new SeedItem(new ClusterDefinition(new ClusterItemDefinition(
                 detected.GeneralRadius.Radius,
                 detected.GeneralRadius.Radius,
                 composition.Translate(-detected.GeneralRadius.Center),

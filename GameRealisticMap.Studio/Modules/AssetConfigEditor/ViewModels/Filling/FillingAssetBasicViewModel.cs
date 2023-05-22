@@ -4,6 +4,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
@@ -21,7 +22,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             {
                 Items = new();
             }
-            RemoveItem = new RelayCommand(item => Items.Remove((FillingItem)item));
+            RemoveItem = new RelayCommand(item => Items.RemoveUndoable(UndoRedoManager, (FillingItem)item));
         }
 
         public ObservableCollection<FillingItem> Items { get; }
@@ -35,7 +36,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.Add(new FillingItem(new ClusterItemDefinition(
+            Items.AddUndoable(UndoRedoManager, new FillingItem(new ClusterItemDefinition(
                 detected.GeneralRadius.Radius,
                 detected.GeneralRadius.Radius,
                 composition.Translate(-detected.GeneralRadius.Center),

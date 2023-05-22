@@ -6,6 +6,7 @@ using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
+using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
@@ -14,12 +15,15 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
     {
         public SeedItem(ClusterDefinition c, int index, FillingAssetClusterViewModel parent)
         {
+            _parent = parent;
             Items = new ObservableCollection<FillingItem>(c.Models.Select(m => new FillingItem(m)));
             _probability = c.Probability;
             Label = $"Seed #{index + 1}";
             CompositionImporter = new CompositionImporter(this);
-            RemoveItem = new RelayCommand(item => Items.Remove((FillingItem)item));
+            RemoveItem = new RelayCommand(item => Items.RemoveUndoable(parent.UndoRedoManager,(FillingItem)item));
         }
+
+        private readonly FillingAssetClusterViewModel _parent;
 
         public ObservableCollection<FillingItem> Items { get; }
 
@@ -38,7 +42,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.Add(new FillingItem(new ClusterItemDefinition(
+            Items.AddUndoable(_parent.UndoRedoManager,new FillingItem(new ClusterItemDefinition(
                 detected.GeneralRadius.Radius,
                 detected.GeneralRadius.Radius,
                 composition.Translate(-detected.GeneralRadius.Center),

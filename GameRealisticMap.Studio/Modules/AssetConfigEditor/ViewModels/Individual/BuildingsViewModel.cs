@@ -4,6 +4,7 @@ using System.Linq;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual
@@ -14,7 +15,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
             : base(id, parent)
         {
             Items = new ObservableCollection<BuildingItem>(definitions.Select(d => new BuildingItem(d)));
-            RemoveItem = new RelayCommand(item => Items.Remove((BuildingItem)item));
+            RemoveItem = new RelayCommand(item => Items.RemoveUndoable(UndoRedoManager,(BuildingItem)item));
         }
 
         public ObservableCollection<BuildingItem> Items { get; }
@@ -33,7 +34,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
             {
                 use = detected.GeneralRectangle;
             }
-            Items.Add(new BuildingItem(new BuildingDefinition(use.Size, composition.Translate(-use.Center))));
+            Items.AddUndoable(UndoRedoManager,new BuildingItem(new BuildingDefinition(use.Size, composition.Translate(-use.Center))));
         }
 
         public override void Equilibrate()

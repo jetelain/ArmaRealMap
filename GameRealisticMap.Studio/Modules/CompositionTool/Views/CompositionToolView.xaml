@@ -4,16 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Views"
+             xmlns:local2="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="{x:Static local:CanvasGrid.Size}">
+             d:DesignHeight="900" d:DesignWidth="485">
     <UserControl.Resources>
         <local:MetersToPixelsConverter x:Key="MetersToPixelsConverter" />
         <local:MetersToPixelsConverter x:Key="MetersToPixelsConverterX2" Coef="2" />
         <BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <local2:CompositionPreviewConverter x:Key="CompositionPreviewConverter" />
     </UserControl.Resources>
-    <Grid>
+    <Grid local2:Behaviors.DropTarget="{Binding Importer}">
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Border ClipToBounds="True">
@@ -55,7 +58,7 @@
                 </Grid>
             </local:ZoomBorder>
         </Border>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Composition.Items}" AutoGenerateColumns="false">
+        <DataGrid Grid.Row="2" ItemsSource="{Binding Composition.Items}" AutoGenerateColumns="false" local2:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Model" Binding="{Binding Model.Name}" IsReadOnly="True" Width="120" />
                 <DataGridTextColumn Header="X" Binding="{Binding X}" />
@@ -65,7 +68,19 @@
                 <DataGridTextColumn Header="Pitch" Binding="{Binding Pitch}" />
                 <DataGridTextColumn Header="Roll" Binding="{Binding Roll}" />
                 <DataGridTextColumn Header="Scale" Binding="{Binding Scale}" />
+                <DataGridTemplateColumn Width="30">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Button CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" ToolTip="Remove item">❌</Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button Command="{Binding Importer.AddSingle}">Add an object</Button>
+        </StackPanel>
     </Grid>
 </UserControl>

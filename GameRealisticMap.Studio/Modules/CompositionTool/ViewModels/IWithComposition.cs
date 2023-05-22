@@ -1,4 +1,6 @@
-﻿namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
+﻿using Gemini.Modules.UndoRedo;
+
+namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
 {
     internal interface IWithComposition
     {

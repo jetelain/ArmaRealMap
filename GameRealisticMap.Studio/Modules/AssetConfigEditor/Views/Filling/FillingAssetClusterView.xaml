@@ -19,14 +19,14 @@
             <TextBlock FontSize="25">Filling options</TextBlock>
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">Probability of this collection</Label>
-                <TextBox Width="50" Text="{Binding Probability,Mode=TwoWay,Converter={StaticResource PercentValueConverter}}" />
+                <TextBox Width="50" Text="{Binding Probability,Mode=TwoWay,Converter={StaticResource PercentValueConverter}}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">Density</Label>
                 <TextBlock VerticalAlignment="Center" Margin="0 0 5 0">Random from</TextBlock>
-                <TextBox Width="100" Text="{Binding MinDensity,Mode=TwoWay}" />
+                <TextBox Width="100" Text="{Binding MinDensity,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                 <TextBlock VerticalAlignment="Center" Margin="5 0">to</TextBlock>
-                <TextBox Width="100" Text="{Binding MaxDensity,Mode=TwoWay}" />
+                <TextBox Width="100" Text="{Binding MaxDensity,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                 <TextBlock VerticalAlignment="Center" Margin="5 0 0 0">objects/m²</TextBlock>
             </StackPanel>
 
@@ -44,14 +44,14 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock FontSize="20" Text="{Binding Label}"/>
                                 <Label  Margin="20 5 0 5">Probability</Label>
-                                <TextBox VerticalContentAlignment="Center" Margin="0 7 0 5" Text="{Binding Probability, Converter={StaticResource PercentValueConverter}}" MinWidth="50" />
+                                <TextBox VerticalContentAlignment="Center" Margin="0 7 0 5" Text="{Binding Probability, Converter={StaticResource PercentValueConverter}}" MinWidth="50" local:Behaviors.UndoRedoManager="{Binding DataContext.UndoRedoManager, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="10 5 0 10">
                                 <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">Add an object</Button>
                                 <Button Padding="5" Margin="5 0 0 0" Command="{Binding CompositionImporter.AddComposition}">Add a composition</Button>
                                 <Button Padding="5" Margin="5 0 0 0" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveSeed, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Remove seed</Button>
                             </StackPanel>
-                            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.DropTarget="{Binding CompositionImporter}"  Margin="10 0 0 0">
+                            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.DropTarget="{Binding CompositionImporter}" local:Behaviors.UndoRedoManager="{Binding DataContext.UndoRedoManager, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Margin="10 0 0 0">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Name" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
                                     <DataGridTemplateColumn Width="200">
