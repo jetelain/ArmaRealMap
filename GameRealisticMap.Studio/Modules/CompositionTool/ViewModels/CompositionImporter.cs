@@ -37,7 +37,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             var dialog = new OpenFileDialog();
             dialog.Multiselect = true;
             dialog.Filter = "P3D|*.p3d";
-            dialog.InitialDirectory = Directory.Exists("P:") ? "P:\\" : Arma3ToolsHelper.GetProjectDrivePath();
+            dialog.InitialDirectory = Arma3ToolsHelper.GetProjectDrivePath();
             if (dialog.ShowDialog() == true)
             {
                 FromFiles(dialog.FileNames);

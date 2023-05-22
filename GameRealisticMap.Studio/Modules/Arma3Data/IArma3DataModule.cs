@@ -13,5 +13,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
         ModelPreviewHelper ModelPreviewHelper { get; }
 
         Task SaveLibraryCache();
+
+        void Reload();
     }
 }

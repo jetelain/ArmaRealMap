@@ -143,5 +143,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             var bitmapPalette = (colors.Count > 0) ? new BitmapPalette(colors) : null;
             return BitmapSource.Create(paa.Width, paa.Height, 300, 300, PixelFormats.Bgra32, bitmapPalette, pixels, paa.Width * 4);
         }
+
+        public void Reload()
+        {
+            Initialize();
+            previewsInProject = null;
+        }
     }
 }

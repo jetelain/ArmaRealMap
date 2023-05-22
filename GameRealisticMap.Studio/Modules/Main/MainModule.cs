@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using GameRealisticMap.Studio.Modules.Main.ViewModels;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 
@@ -29,5 +30,11 @@ namespace GameRealisticMap.Studio.Modules.Main
             //>>>PackageStore.GetPackage(new ("application:///"));
             _mainWindow.Shell.ToolBars.Visible = true;
         }
+
+        public override async Task PostInitializeAsync()
+        {
+            await _mainWindow.Shell.OpenDocumentAsync(new HomeViewModel(_mainWindow.Shell));
+        }
+
     }
 }

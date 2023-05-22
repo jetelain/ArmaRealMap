@@ -15,6 +15,7 @@ using Gemini.Framework.Services;
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor
 {
     [Export(typeof(IEditorProvider))]
+    [Export(typeof(AssetConfigEditorProvider))]
     internal class AssetConfigEditorProvider : IEditorProvider
     {
         private readonly IArma3DataModule _arma3Data;

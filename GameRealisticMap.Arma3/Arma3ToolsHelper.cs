@@ -8,7 +8,7 @@ namespace GameRealisticMap.Arma3
 {
     public static class Arma3ToolsHelper
     {
-        public static void EnsureProjectDrive()
+        public static void EnsureProjectDrive(bool auto = true)
         {
             if (OperatingSystem.IsWindows() && !Directory.Exists("P:\\"))
             {
@@ -16,7 +16,7 @@ namespace GameRealisticMap.Arma3
                 string path = GetArma3ToolsPath();
                 if (!string.IsNullOrEmpty(path))
                 {
-                    var processs = Process.Start(Path.Combine(path, @"WorkDrive\WorkDrive.exe"), "/Mount /y");
+                    var processs = Process.Start(Path.Combine(path, @"WorkDrive\WorkDrive.exe"), auto ? "/Mount /y" : "/Mount");
                     processs.WaitForExit();
                 }
             }
@@ -80,9 +80,9 @@ namespace GameRealisticMap.Arma3
             EnsureProjectDrive();
             var process = Process.Start(new ProcessStartInfo()
             {
-                FileName = @"C:\Program Files (x86)\Mikero\DePboTools\bin\pboProject.exe", // Hard-coded because tool can only work from this location
+                FileName = GetPboProjectPath(),
                 Arguments = @$"-R -E=""arma3"" -W -P -M=""{targetMod}"" ""P:\{pboPrefix}"""
-            }) ;
+            });
             if (process == null)
             {
                 return -1;
@@ -91,8 +91,17 @@ namespace GameRealisticMap.Arma3
             return process.ExitCode;
         }
 
+        public static string GetPboProjectPath()
+        {
+            return @"C:\Program Files (x86)\Mikero\DePboTools\bin\pboProject.exe"; // Hard-coded because tool can only work from this location
+        }
+
         public static string GetProjectDrivePath()
         {
+            if (Directory.Exists("P:"))
+            {
+                return "P:";
+            }
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Arma 3 Projects");
         }
     }
