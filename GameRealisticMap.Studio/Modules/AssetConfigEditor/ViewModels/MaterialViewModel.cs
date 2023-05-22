@@ -39,6 +39,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             get { return _sameAs; }
             set
             {
+                // TODO: Undo/redo as it cannot be handled only on property value
                 if (value != null)
                 {
                     ColorId = value.ColorId;

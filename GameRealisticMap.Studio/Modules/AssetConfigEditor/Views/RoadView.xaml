@@ -46,7 +46,7 @@
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">SatelliteColor</Label>
                 <toolkit:ColorPicker 
-                    SelectedColor="{Binding SatelliteColor,Mode=TwoWay}" 
+                    SelectedColor="{Binding SatelliteColor,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
                     Width="100"
                     UsingAlphaChannel="False" />
             </StackPanel>

@@ -109,7 +109,7 @@
                         <TextBlock FontSize="25">Roads and bridges</TextBlock>
                     </Expander.Header>
                     <StackPanel>
-                        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Roads}" AutoGenerateColumns="False">
+                        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Roads}" AutoGenerateColumns="False" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
                                 <DataGridTextColumn Header="Texture" Binding="{Binding Texture}" IsReadOnly="True" />
@@ -142,7 +142,7 @@
                         <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Ponds}" AutoGenerateColumns="False" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
-                                <DataGridTextColumn Header="Texture" Binding="{Binding Model}" />
+                                <DataGridTextColumn Header="Model" Binding="{Binding Model}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </StackPanel>

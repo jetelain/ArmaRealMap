@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Modules.UndoRedo;
+using Xceed.Wpf.Toolkit;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
 {
@@ -24,45 +27,51 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
                     grid.CellEditEnding += Grid_CellEditEnding;
                 }
             }
-            else
+            var textbox = d as TextBox;
+            if ( textbox != null )
             {
-                var textbox = d as TextBox;
-                if ( textbox != null )
-                {
-                    textbox.GotFocus += Textbox_GotFocus; ;
-                    textbox.LostFocus += Textbox_LostFocus;
-                }
+                textbox.GotFocus += (sender, _) => GotFocus<string>((FrameworkElement)sender!, TextBox.TextProperty);
+                textbox.LostFocus += (sender, _) => LostFocus<string>((FrameworkElement)sender!, TextBox.TextProperty);
+            }
+            var colorPicker = d as ColorPicker;
+            if (colorPicker != null)
+            {
+                colorPicker.GotFocus += (sender, _) => GotFocus<System.Windows.Media.Color?>((FrameworkElement)sender!, ColorPicker.SelectedColorProperty);
+                colorPicker.LostFocus += (sender, _) => LostFocus<System.Windows.Media.Color?>((FrameworkElement)sender!, ColorPicker.SelectedColorProperty);
             }
         }
 
-        private static readonly DependencyProperty TextWhenGotFocusProperty = DependencyProperty.RegisterAttached(
-            "TextWhenGotFocus",
-            typeof(string),
+        private static void PropertyChangedEvent<T>(FrameworkElement element, DependencyProperty property, RoutedPropertyChangedEventArgs<T> e)
+        {
+            var binding = BindingOperations.GetBinding(element, property);
+            if (binding != null)
+            {
+                var undoRedo = (IUndoRedoManager)element.GetValue(UndoRedoManagerProperty);
+                undoRedo.PushAction(new BindingFocusAction<T>(element, binding, e.OldValue, e.NewValue));
+            }
+        }
+
+        internal static readonly DependencyProperty ValueWhenGotFocusProperty = DependencyProperty.RegisterAttached(
+            "ValueWhenGotFocus",
+            typeof(object),
             typeof(Behaviors));
 
-        private static void Textbox_GotFocus(object sender, RoutedEventArgs e)
+        private static void GotFocus<T>(FrameworkElement sender, DependencyProperty property)
         {
-            var textBox = sender as TextBox;
-            if (textBox != null)
-            {
-                textBox.SetValue(TextWhenGotFocusProperty, textBox.Text);
-            }
+            sender.SetValue(ValueWhenGotFocusProperty, sender.GetValue(property));
         }
 
-        private static void Textbox_LostFocus(object sender, RoutedEventArgs e)
+        private static void LostFocus<T>(FrameworkElement sender, DependencyProperty property)
         {
-            var textBox = sender as TextBox;
-            if (textBox != null)
+            var binding = BindingOperations.GetBinding(sender, property);
+            if (binding != null)
             {
-                var binding = BindingOperations.GetBinding(textBox, TextBox.TextProperty);
-                if (binding != null )
+                var newValue = (T?)sender.GetValue(property);
+                var oldValue = (T?)sender.GetValue(ValueWhenGotFocusProperty);
+                if (!EqualityComparer<T>.Default.Equals(oldValue,newValue))
                 {
-                    var oldText = textBox.GetValue(TextWhenGotFocusProperty) as string;
-                    if( oldText != textBox.Text )
-                    {
-                        var undoRedo = (IUndoRedoManager)textBox.GetValue(UndoRedoManagerProperty);
-                        undoRedo.PushAction(new StringBindingAction(textBox.DataContext, binding, oldText));
-                    }
+                    var undoRedo = (IUndoRedoManager)sender.GetValue(UndoRedoManagerProperty);
+                    undoRedo.PushAction(new BindingFocusAction<T>(sender, binding, oldValue, newValue));
                 }
             }
         }
@@ -76,12 +85,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
                 var col = e.Column as DataGridBoundColumn;
                 if (col != null)
                 {
-                    undoRedo.PushAction(new StringBindingAction(e.Row.DataContext, (Binding)col.Binding));
+                    undoRedo.PushAction(new BindingAction<string>(e.Row, (Binding)col.Binding));
                 }
             }
         }
 
-        public static void SetUndoRedoManager(DataGrid target, IUndoRedoManager value)
+        public static void SetUndoRedoManager(UIElement target, IUndoRedoManager value)
         {
             target.SetValue(UndoRedoManagerProperty, value);
         }

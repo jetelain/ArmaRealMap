@@ -34,7 +34,9 @@
                     SelectedColor="{Binding ColorId,Mode=TwoWay}" 
                     Width="100"
                     UsingAlphaChannel="False" 
-                    IsEnabled="{Binding IsNotSameAs}"  />
+                    IsEnabled="{Binding IsNotSameAs}"
+                    local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
+                    />
             </StackPanel>
             
             <StackPanel Margin="10" Orientation="Horizontal" >

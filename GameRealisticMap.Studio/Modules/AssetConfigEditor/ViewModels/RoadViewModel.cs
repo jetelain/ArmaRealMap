@@ -12,24 +12,31 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
     internal class RoadViewModel : AssetBase<RoadTypeId, Arma3RoadTypeInfos>
     {
         private static readonly DefaultRoadTypeLibrary defaultRoadTypeLibrary = new DefaultRoadTypeLibrary();
+        private float clearWidth;
+        private float width;
+        private float textureWidth;
+        private string texture;
+        private string textureEnd;
+        private string material;
+        private Color satelliteColor;
 
         public RoadViewModel(RoadTypeId id, Arma3RoadTypeInfos? arma3RoadTypeInfos, BridgeDefinition? bridgeDefinition, AssetConfigEditorViewModel parent)
             : base(id, parent)
         {
             var defaults = defaultRoadTypeLibrary.GetInfo(id);
-            ClearWidth = arma3RoadTypeInfos?.ClearWidth ?? defaults.ClearWidth;
-            Width = arma3RoadTypeInfos?.Width ?? defaults.Width;
-            Texture = arma3RoadTypeInfos?.Texture ?? string.Empty;
-            TextureEnd = arma3RoadTypeInfos?.TextureEnd ?? string.Empty;
-            Material = arma3RoadTypeInfos?.Material ?? string.Empty;
-            TextureWidth = arma3RoadTypeInfos?.TextureWidth ?? Width;
+            clearWidth = arma3RoadTypeInfos?.ClearWidth ?? defaults.ClearWidth;
+            width = arma3RoadTypeInfos?.Width ?? defaults.Width;
+            texture = arma3RoadTypeInfos?.Texture ?? string.Empty;
+            textureEnd = arma3RoadTypeInfos?.TextureEnd ?? string.Empty;
+            material = arma3RoadTypeInfos?.Material ?? string.Empty;
+            textureWidth = arma3RoadTypeInfos?.TextureWidth ?? Width;
             if (arma3RoadTypeInfos != null)
             {
-                SatelliteColor = Color.FromRgb(arma3RoadTypeInfos.SatelliteColor.R, arma3RoadTypeInfos.SatelliteColor.G, arma3RoadTypeInfos.SatelliteColor.B);
+                satelliteColor = Color.FromRgb(arma3RoadTypeInfos.SatelliteColor.R, arma3RoadTypeInfos.SatelliteColor.G, arma3RoadTypeInfos.SatelliteColor.B);
             }
             else
             {
-                SatelliteColor = Colors.Gray;
+                satelliteColor = Colors.Gray;
             }
             Items = new List<BridgeViewModel>()
             {
@@ -37,23 +44,23 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 new BridgeViewModel("Start", bridgeDefinition?.Start),
                 new BridgeViewModel("Middle", bridgeDefinition?.Middle),
                 new BridgeViewModel("End", bridgeDefinition?.End)
-            }; 
+            };
             ClearItem = new RelayCommand(item => ((BridgeViewModel)item).Clear());
         }
 
-        public float ClearWidth { get; set; }
+        public float ClearWidth { get => clearWidth; set { clearWidth = value; NotifyOfPropertyChange(); } }
 
-        public float Width { get; set; }
+        public float Width { get => width; set { width = value; NotifyOfPropertyChange(); } }
 
-        public float TextureWidth { get; set; }
+        public float TextureWidth { get => textureWidth; set { textureWidth = value; NotifyOfPropertyChange(); } }
 
-        public string Texture { get; set; }
+        public string Texture { get => texture; set { texture = value; NotifyOfPropertyChange(); } }
 
-        public string TextureEnd { get; set; }
+        public string TextureEnd { get => textureEnd; set { textureEnd = value; NotifyOfPropertyChange(); } }
 
-        public string Material { get; set; }
+        public string Material { get => material; set { material = value; NotifyOfPropertyChange(); } }
 
-        public Color SatelliteColor { get; set; }
+        public Color SatelliteColor { get => satelliteColor; set { satelliteColor = value; NotifyOfPropertyChange(); } }
 
         public List<BridgeViewModel> Items { get; }
         public RelayCommand ClearItem { get; }
