@@ -6,7 +6,14 @@ namespace GameRealisticMap.Arma3
     {
         public Arma3MapConfig(Arma3MapConfigJson arma3MapConfigJson)
         {
-            TerrainArea = TerrainAreaUTM.CreateFromSouthWest(arma3MapConfigJson.SouthWest!, arma3MapConfigJson.GridCellSize, arma3MapConfigJson.GridSize);
+            if (!string.IsNullOrEmpty(arma3MapConfigJson.Center))
+            {
+                TerrainArea = TerrainAreaUTM.CreateFromCenter(arma3MapConfigJson.Center, arma3MapConfigJson.GridCellSize, arma3MapConfigJson.GridSize);
+            }
+            else
+            {
+                TerrainArea = TerrainAreaUTM.CreateFromSouthWest(arma3MapConfigJson.SouthWest!, arma3MapConfigJson.GridCellSize, arma3MapConfigJson.GridSize);
+            }
 
             TileSize = arma3MapConfigJson.TileSize;
 

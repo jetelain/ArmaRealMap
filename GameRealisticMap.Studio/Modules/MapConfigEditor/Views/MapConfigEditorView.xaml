@@ -3,23 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:map="clr-namespace:MapControl;assembly=MapControl.WPF"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.MapConfigEditor.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel  Orientation="Vertical">
 
+        
         <StackPanel Margin="10" Orientation="Horizontal" >
             <Button Margin="10" Padding="10">Generate preview</Button>
             <Button Margin="10" Padding="10">Generate map for Arma 3</Button>
         </StackPanel>
-        
+
         <StackPanel Margin="10" Orientation="Horizontal" >
-            <Label Width="200">South west coordinates of map *</Label>
-            <TextBox Width="200" Text="{Binding Config.SouthWest,Mode=TwoWay}" />
+            <Label Width="200">Coordinates of center of map</Label>
+            <TextBox Width="200" Text="{Binding Center,Mode=TwoWay}" />
+            <Label>or south west of map</Label>
+            <TextBox Width="200" Text="{Binding SouthWest,Mode=TwoWay}" />
         </StackPanel>
 
         <StackPanel Margin="10" Orientation="Horizontal" >
-            <Label Width="200">Map size (square) *</Label>
+            <Label Width="200">Map size (square)</Label>
             <ComboBox SelectedValue="{Binding GridSize,Mode=TwoWay}" ItemsSource="{Binding GridSizes}" />
             <TextBlock Margin="10 0" FontSize="18">×</TextBlock>
             <TextBox Width="50" Text="{Binding GridCellSize,Mode=TwoWay}" />
@@ -67,24 +71,34 @@
             </StackPanel>
         </Expander>
 
+        <TextBlock Margin="5">
+            To select an area on the map : <LineBreak />
+            - From a corner, press Ctrl Key then press Left Mouse Button<LineBreak />
+            - From center, press Alt Key then press Left Mouse Button.
+        </TextBlock>
+        
+        <map:Map x:Name="MapControl"
+                 Height="600"
+                 MinZoomLevel="2" MaxZoomLevel="21" ZoomLevel="2"
+                 Center="53.5,8.2" ManipulationMode="All"
+                 MouseDown="Map_MouseDown"
+                 MouseUp="Map_MouseUp"
+                 MouseMove="Map_MouseMove"
+                 >
+
+            <map:MapTileLayer
+                TileSource="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                SourceName="OpenStreetMap"
+                Description="© [OpenStreetMap contributors](https://www.openstreetmap.org/copyright)"/>
+
+            <map:MapPolyline Stroke="Red" StrokeThickness="2" Locations="{Binding Locations}" />
+            
+            <map:MapPolyline Stroke="Blue" StrokeThickness="2" Visibility="Collapsed" x:Name="RectanglePreview" />
+
+        </map:Map>
+
+        <TextBlock>© OpenStreetMap contributors. See https://www.openstreetmap.org/copyright</TextBlock>
+        
     </StackPanel>
 
-
-    <!--public int TileSize { get; set; } = 1024;
-
-        public double Resolution { get; set; } = 1;
-
-        public string? PboPrefix { get; set; }
-
-        public float FakeSatBlend { get; set; } = 0.5f;
-
-        public string? WorldName { get; set; }
-
-        public float GridCellSize { get; set; } = 5;
-
-        public int GridSize { get; set; } = 1024;
-
-        public string? SouthWest { get; set; }
-
-        public string? AssetConfigFile { get; set; }-->
 </UserControl>

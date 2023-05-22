@@ -15,6 +15,7 @@
     <!--<PackageReference Include="Gemini.Modules.Output" Version="1.0.60-beta" />-->
     <!--<PackageReference Include="Gemini.Modules.PropertyGrid" Version="1.0.60-beta" />-->
     <PackageReference Include="GeminiWpf" Version="1.0.60-beta" />
+    <PackageReference Include="XAML.MapControl" Version="8.1.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -17,6 +17,7 @@
         public int GridSize { get; set; } = 1024;
 
         public string? SouthWest { get; set; }
+        public string? Center { get; set; }
 
         public string? AssetConfigFile { get; set; }
 
