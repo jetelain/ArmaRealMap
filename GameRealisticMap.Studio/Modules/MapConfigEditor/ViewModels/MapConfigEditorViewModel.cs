@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GameRealisticMap.Arma3;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using Gemini.Framework;
 using MapControl;
 
 namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 {
-    internal class MapConfigEditorViewModel : PersistedDocument
+    internal class MapConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem
     {
         public Arma3MapConfigJson Config { get; set; } = new Arma3MapConfigJson();
 
@@ -106,6 +107,13 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 return new List<Location>(); 
             }
         }
+
+        public string TreeName => DisplayName;
+        public string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png";
+
+        public override string DisplayName { get => base.DisplayName; set { base.DisplayName = value; NotifyOfPropertyChange(nameof(TreeName)); } }
+
+        public IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
 
         protected override async Task DoLoad(string filePath)
         {

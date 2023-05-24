@@ -19,12 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
+    <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
-    <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
+	  <Resource Include="Resources\Icons\*.png" />
   </ItemGroup>
 
 </Project>

@@ -41,16 +41,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
             }
         }
 
-        private static void PropertyChangedEvent<T>(FrameworkElement element, DependencyProperty property, RoutedPropertyChangedEventArgs<T> e)
-        {
-            var binding = BindingOperations.GetBinding(element, property);
-            if (binding != null)
-            {
-                var undoRedo = (IUndoRedoManager)element.GetValue(UndoRedoManagerProperty);
-                undoRedo.PushAction(new BindingFocusAction<T>(element, binding, e.OldValue, e.NewValue));
-            }
-        }
-
         internal static readonly DependencyProperty ValueWhenGotFocusProperty = DependencyProperty.RegisterAttached(
             "ValueWhenGotFocus",
             typeof(object),
@@ -111,7 +101,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
             e.Handled = true;
         }
 
-        private static readonly DependencyProperty DropTargetProperty = 
+        public static readonly DependencyProperty DropTargetProperty = 
             DependencyProperty.RegisterAttached("DropTarget", typeof(object), typeof(Behaviors), new PropertyMetadata(DropTargetChanged));
         public static void SetDropTarget(UIElement target, object value)
         {
@@ -161,7 +151,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
                 {
                     e.Effects = DragDropEffects.Link;
                 }
-                e.Handled = true;
+                //e.Handled = true;
             }
         }
     }

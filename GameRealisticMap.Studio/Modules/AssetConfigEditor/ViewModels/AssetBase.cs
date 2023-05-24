@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using Gemini.Framework;
 using Gemini.Modules.UndoRedo;
 
@@ -32,6 +35,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public string IdText => FillId.ToString();
 
+        public virtual string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/{IdText}.png";
+
+        public virtual string TreeName => IdText;
+
         public string Label { get; set; } = string.Empty;
 
         public AssetConfigEditorViewModel ParentEditor { get; }
@@ -43,6 +50,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public AsyncCommand Back { get; }
 
         public CompositionImporter CompositionImporter { get; }
+
+        public virtual IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
 
         public virtual void AddComposition(Composition model, ObjectPlacementDetectedInfos detected)
         {

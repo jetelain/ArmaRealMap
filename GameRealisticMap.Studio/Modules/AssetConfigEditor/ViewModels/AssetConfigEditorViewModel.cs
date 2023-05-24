@@ -16,12 +16,14 @@ using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual;
 using GameRealisticMap.Studio.Modules.CompositionTool;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
+using GameRealisticMap.Studio.Modules.Explorer;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
-    internal class AssetConfigEditorViewModel : PersistedDocument
+    internal class AssetConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem
     {
         private readonly IArma3DataModule _arma3Data;
         private readonly IShell _shell;
@@ -44,9 +46,23 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             _arma3Data = arma3Data;
             _shell = shell;
             _compositionTool = compositionTool;
+            Children = new List<IExplorerTreeItem>()
+            {
+                new ExplorerTreeItem("Natural areas and fences", Filling,"Nature"),
+                new ExplorerTreeItem("Objects and buildings", Individual, "Buildings"),
+                new ExplorerTreeItem("Ground materials", Materials, "Materials"),
+                new ExplorerTreeItem("Roads and bridges", Roads, "Road")
+            };
         }
 
         public double TextureSizeInMeters { get; set; }
+
+        public IEnumerable<IExplorerTreeItem> Children { get; }
+
+        public string TreeName => DisplayName;
+        public string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/AssetConfig.png";
+
+        public override string DisplayName { get => base.DisplayName; set { base.DisplayName = value; NotifyOfPropertyChange(nameof(TreeName)); } }
 
         protected override async Task DoLoad(string filePath)
         {

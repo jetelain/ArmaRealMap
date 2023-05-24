@@ -7,98 +7,99 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.MapConfigEditor.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel  Orientation="Vertical">
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden">
+        <StackPanel  Orientation="Vertical">
 
-        
-        <StackPanel Margin="10" Orientation="Horizontal" >
-            <Button Margin="10" Padding="10">Generate preview</Button>
-            <Button Margin="10" Padding="10">Generate map for Arma 3</Button>
-        </StackPanel>
 
-        <StackPanel Margin="10" Orientation="Horizontal" >
-            <Label Width="200">Coordinates of center of map</Label>
-            <TextBox Width="200" Text="{Binding Center,Mode=TwoWay}" />
-            <Label>or south west of map</Label>
-            <TextBox Width="200" Text="{Binding SouthWest,Mode=TwoWay}" />
-        </StackPanel>
-
-        <StackPanel Margin="10" Orientation="Horizontal" >
-            <Label Width="200">Map size (square)</Label>
-            <ComboBox SelectedValue="{Binding GridSize,Mode=TwoWay}" ItemsSource="{Binding GridSizes}" />
-            <TextBlock Margin="10 0" FontSize="18">×</TextBlock>
-            <TextBox Width="50" Text="{Binding GridCellSize,Mode=TwoWay}" />
-            <TextBlock Margin="10 0">meters</TextBlock>
-            <TextBlock Margin="10 0" FontSize="18">➜</TextBlock>
-            <TextBox Width="75" Text="{Binding MapSize,Mode=TwoWay}" />
-            <TextBlock Margin="10 0">meters</TextBlock>
-        </StackPanel>
-
-        <StackPanel Margin="10" Orientation="Horizontal" >
-            <Label Width="200">Assets configuration / style of map *</Label>
-            <TextBox Width="400" Text="{Binding Config.AssetConfigFile,Mode=TwoWay}" />
-            <Button Padding="10 0" Margin="10 0">...</Button>
-            <Button Padding="10 0" Margin="10 0">Edit</Button>
-            <Button Padding="10 0">New</Button>
-        </StackPanel>
-        
-        <Expander Margin="10">
-            <Expander.Header>
-                Advanced parameters
-            </Expander.Header>
-            <StackPanel  Orientation="Vertical">
-                <StackPanel Margin="10" Orientation="Horizontal" >
-                    <Label Width="200">WorldName</Label>
-                    <TextBox Width="200" Text="{Binding Config.WorldName,Mode=TwoWay}" />
-                </StackPanel>
-                <StackPanel Margin="10" Orientation="Horizontal" >
-                    <Label Width="200">PboPrefix</Label>
-                    <TextBox Width="200" Text="{Binding Config.PboPrefix,Mode=TwoWay}" />
-                </StackPanel>
-                <StackPanel Margin="10" Orientation="Horizontal" >
-                    <Label Width="200">TileSize</Label>
-                    <TextBox Width="200" Text="{Binding Config.TileSize,Mode=TwoWay}" />
-                    <TextBlock Margin="10 0">pixels</TextBlock>
-                </StackPanel>
-                <StackPanel Margin="10" Orientation="Horizontal" >
-                    <Label Width="200">Resolution</Label>
-                    <TextBox Width="200" Text="{Binding Config.Resolution,Mode=TwoWay}" />
-                    <TextBlock Margin="10 0">meters per pixels</TextBlock>
-                </StackPanel>
-                <StackPanel Margin="10" Orientation="Horizontal" >
-                    <Label Width="200">FakeSatBlend</Label>
-                    <TextBox Width="200" Text="{Binding Config.FakeSatBlend,Mode=TwoWay}" />
-                </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Button Margin="10" Padding="10">Generate preview</Button>
+                <Button Margin="10" Padding="10">Generate map for Arma 3</Button>
             </StackPanel>
-        </Expander>
 
-        <TextBlock Margin="5">
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Coordinates of center of map</Label>
+                <TextBox Width="200" Text="{Binding Center,Mode=TwoWay}" />
+                <Label>or south west of map</Label>
+                <TextBox Width="200" Text="{Binding SouthWest,Mode=TwoWay}" />
+            </StackPanel>
+
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Map size (square)</Label>
+                <ComboBox SelectedValue="{Binding GridSize,Mode=TwoWay}" ItemsSource="{Binding GridSizes}" />
+                <TextBlock Margin="10 0" FontSize="18">×</TextBlock>
+                <TextBox Width="50" Text="{Binding GridCellSize,Mode=TwoWay}" />
+                <TextBlock Margin="10 0">meters</TextBlock>
+                <TextBlock Margin="10 0" FontSize="18">➜</TextBlock>
+                <TextBox Width="75" Text="{Binding MapSize,Mode=TwoWay}" />
+                <TextBlock Margin="10 0">meters</TextBlock>
+            </StackPanel>
+
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Assets configuration / style of map *</Label>
+                <TextBox Width="400" Text="{Binding Config.AssetConfigFile,Mode=TwoWay}" />
+                <Button Padding="10 0" Margin="10 0">...</Button>
+                <Button Padding="10 0" Margin="10 0">Edit</Button>
+                <Button Padding="10 0">New</Button>
+            </StackPanel>
+
+            <Expander Margin="10">
+                <Expander.Header>
+                    Advanced parameters
+                </Expander.Header>
+                <StackPanel  Orientation="Vertical">
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="200">WorldName</Label>
+                        <TextBox Width="200" Text="{Binding Config.WorldName,Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="200">PboPrefix</Label>
+                        <TextBox Width="200" Text="{Binding Config.PboPrefix,Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="200">TileSize</Label>
+                        <TextBox Width="200" Text="{Binding Config.TileSize,Mode=TwoWay}" />
+                        <TextBlock Margin="10 0">pixels</TextBlock>
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="200">Resolution</Label>
+                        <TextBox Width="200" Text="{Binding Config.Resolution,Mode=TwoWay}" />
+                        <TextBlock Margin="10 0">meters per pixels</TextBlock>
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="200">FakeSatBlend</Label>
+                        <TextBox Width="200" Text="{Binding Config.FakeSatBlend,Mode=TwoWay}" />
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+
+            <TextBlock Margin="5">
             To select an area on the map : <LineBreak />
             - From a corner, press Ctrl Key then press Left Mouse Button<LineBreak />
             - From center, press Alt Key then press Left Mouse Button.
-        </TextBlock>
-        
-        <map:Map x:Name="MapControl"
+            </TextBlock>
+
+            <map:Map x:Name="MapControl"
                  Height="600"
                  MinZoomLevel="2" MaxZoomLevel="21" ZoomLevel="2"
                  Center="53.5,8.2" ManipulationMode="All"
                  MouseDown="Map_MouseDown"
                  MouseUp="Map_MouseUp"
                  MouseMove="Map_MouseMove"
-                 >
+                 MouseWheel="MapControl_MouseWheel">
 
-            <map:MapTileLayer
+                <map:MapTileLayer
                 TileSource="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
                 SourceName="OpenStreetMap"
                 Description="© [OpenStreetMap contributors](https://www.openstreetmap.org/copyright)"/>
 
-            <map:MapPolyline Stroke="Red" StrokeThickness="2" Locations="{Binding Locations}" />
-            
-            <map:MapPolyline Stroke="Blue" StrokeThickness="2" Visibility="Collapsed" x:Name="RectanglePreview" />
+                <map:MapPolyline Stroke="Red" StrokeThickness="2" Locations="{Binding Locations}" />
 
-        </map:Map>
+                <map:MapPolyline Stroke="Blue" StrokeThickness="2" Visibility="Collapsed" x:Name="RectanglePreview" />
 
-        <TextBlock>© OpenStreetMap contributors. See https://www.openstreetmap.org/copyright</TextBlock>
-        
-    </StackPanel>
+            </map:Map>
 
+            <TextBlock>© OpenStreetMap contributors. See https://www.openstreetmap.org/copyright</TextBlock>
+
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

@@ -26,6 +26,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             _fakeSatPngImage = terrainMaterial.FakeSatPngImage;
         }
 
+        public override string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Generic.png";
+
         public List<string> Others =>
             ParentEditor.Materials.Where(m => m != this && m.SameAs == null)
             .Select(m => m.IdText)

@@ -48,6 +48,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             ClearItem = new RelayCommand(item => ((BridgeViewModel)item).Clear());
         }
 
+        public override string Icon => "pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Generic.png";
+
         public float ClearWidth { get => clearWidth; set { clearWidth = value; NotifyOfPropertyChange(); } }
 
         public float Width { get => width; set { width = value; NotifyOfPropertyChange(); } }

@@ -56,7 +56,8 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.Views
             {
                 var viewModel = (DataContext as MapConfigEditorViewModel);
                 if (viewModel != null)
-                {
+                { 
+                    // TODO: adopt a MVVM construct
                     var area = GetPseudoArea(startLocation, MapControl.ViewToLocation(e.GetPosition(MapControl)), out var center);
                     viewModel.MapSize = area.SizeInMeters;
                     viewModel.Center = FormattableString.Invariant($"{center.Latitude.ToDouble()}, {center.Longitude.ToDouble()}");
@@ -71,7 +72,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.Views
         {
             if (startLocation != null && e.LeftButton == MouseButtonState.Pressed)
             {
-                UpdatePreviewRectangle(MapControl.ViewToLocation(e.GetPosition(MapControl)));
+                UpdatePreviewRectangle(MapControl.ViewToLocation(e.GetPosition(MapControl))); // TODO: adopt a MVVM construct
             }
         }
 
@@ -116,6 +117,11 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.Views
                 center.Move(p2, distance.Meters / 2, Shape.Ellipsoid);
                 return TerrainAreaUTM.CreateFromCenter(center, 1, (int)size);
             }
+        }
+
+        private void MapControl_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

@@ -78,7 +78,12 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel HorizontalAlignment="Center">
-                        <Button Margin="10" Padding="15" Width="220" cal:Message.Attach="NewArma3AssetConfig">Create an Assets Configuration</Button>
+                        <Button Margin="10" Padding="10" Width="220" cal:Message.Attach="NewArma3AssetConfig">
+                            <StackPanel>
+                                <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/AssetConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
+                                <TextBlock>Create an Assets Configuration</TextBlock>
+                            </StackPanel>
+                        </Button>
                         <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
                             An assets configuration defines the textures and objects to use to generate a map. You can create your our own configuration or use one the built-in configuration.
                         </TextBlock>
@@ -90,7 +95,12 @@
                         </TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="2"  HorizontalAlignment="Center">
-                        <Button Margin="10" Padding="15" Width="220" cal:Message.Attach="NewArma3MapConfig">Create a Map Configuration</Button>
+                        <Button Margin="10" Padding="10" Width="220" cal:Message.Attach="NewArma3MapConfig">
+                            <StackPanel>
+                                <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
+                                <TextBlock>Create a Map Configuration</TextBlock>
+                            </StackPanel>
+                        </Button>
                         <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
                             A map configuration defines a square to extract from OpenStreeMap, and associate an assets configuration to use for the generation process.
                         </TextBlock>
