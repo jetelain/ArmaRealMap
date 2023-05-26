@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Caliburn.Micro;
+using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Modules.UndoRedo;
@@ -19,16 +22,16 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
         private static void UndoRedoManagerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var grid = d as DataGrid;
-            if ( grid != null )
-            { 
+            if (grid != null)
+            {
                 grid.CellEditEnding -= Grid_CellEditEnding;
-                if ( e.NewValue != null )
+                if (e.NewValue != null)
                 {
                     grid.CellEditEnding += Grid_CellEditEnding;
                 }
             }
             var textbox = d as TextBox;
-            if ( textbox != null )
+            if (textbox != null)
             {
                 textbox.GotFocus += (sender, _) => GotFocus<string>((FrameworkElement)sender!, TextBox.TextProperty);
                 textbox.LostFocus += (sender, _) => LostFocus<string>((FrameworkElement)sender!, TextBox.TextProperty);
@@ -58,7 +61,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
             {
                 var newValue = (T?)sender.GetValue(property);
                 var oldValue = (T?)sender.GetValue(ValueWhenGotFocusProperty);
-                if (!EqualityComparer<T>.Default.Equals(oldValue,newValue))
+                if (!EqualityComparer<T>.Default.Equals(oldValue, newValue))
                 {
                     var undoRedo = (IUndoRedoManager)sender.GetValue(UndoRedoManagerProperty);
                     undoRedo.PushAction(new BindingFocusAction<T>(sender, binding, oldValue, newValue));
@@ -69,7 +72,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
         private static void Grid_CellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
         {
             var grid = sender as DataGrid;
-            if ( grid != null )
+            if (grid != null)
             {
                 var undoRedo = (IUndoRedoManager)grid.GetValue(UndoRedoManagerProperty);
                 var col = e.Column as DataGridBoundColumn;
@@ -101,7 +104,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
             e.Handled = true;
         }
 
-        public static readonly DependencyProperty DropTargetProperty = 
+        public static readonly DependencyProperty DropTargetProperty =
             DependencyProperty.RegisterAttached("DropTarget", typeof(object), typeof(Behaviors), new PropertyMetadata(DropTargetChanged));
         public static void SetDropTarget(UIElement target, object value)
         {
@@ -140,6 +143,15 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
                 }
                 e.Handled = true;
             }
+            if (e.Data.GetDataPresent("GRM.A3.Path"))
+            {
+                e.Handled = true;
+                var target = ((UIElement)sender).GetValue(DropTargetProperty) as CompositionImporter;
+                if (target != null)
+                {
+                    target.FromPaths(new[] { (string)e.Data.GetData("GRM.A3.Path") });
+                }
+            }
         }
 
         private static void Viewer_DragEnter(object sender, DragEventArgs e)
@@ -151,8 +163,93 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
                 {
                     e.Effects = DragDropEffects.Link;
                 }
-                //e.Handled = true;
+            }
+            if (e.Data.GetDataPresent("GRM.A3.Path"))
+            {
+                e.Effects = DragDropEffects.Link;
             }
         }
+
+        public static readonly DependencyProperty CompositionPreviewProperty =
+            DependencyProperty.RegisterAttached("CompositionPreview", typeof(CompositionViewModel), typeof(Behaviors), new PropertyMetadata(CompositionPreviewChanged));
+
+        internal static void SetCompositionPreview(Image target, CompositionViewModel value)
+        {
+            target.SetValue(CompositionPreviewProperty, value);
+        }
+
+        public static void CompositionPreviewChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var img = d as Image;
+            var vm = e.NewValue as CompositionViewModel;
+            if (img != null && vm != null)
+            {
+                var source = new CompositionImage(vm, IoC.Get<IArma3Previews>());
+                BindingOperations.SetBinding(img, Image.SourceProperty, new Binding("Preview") { 
+                    Source = source, 
+                    IsAsync = true, 
+                    FallbackValue = source.PreviewFast
+                });
+            }
+        }
+
+        private class CompositionImage : PropertyChangedBase
+        {
+            private readonly CompositionViewModel vm;
+            private readonly IArma3Previews arma3Previews;
+            private Uri previewCache;
+
+            public CompositionImage(CompositionViewModel vm, IArma3Previews arma3Previews)
+            {
+                this.vm = vm;
+                this.arma3Previews = arma3Previews;
+                previewCache = GetPreviewFast();
+                vm.PropertyChanged += VmUpdated;
+            }
+
+            private Uri GetPreviewFast()
+            {
+                var model = vm.SingleModel;
+                if (model != null)
+                {
+                    return arma3Previews.GetPreviewFast(model.Path);
+                }
+                return Arma3DataModule.NoPreview;
+            }
+
+            private Uri GetPreviewSlow()
+            {
+                var model = vm.SingleModel;
+                if (model != null)
+                {
+                    return arma3Previews.GetPreview(model.Path).Result;
+                }
+                return Arma3DataModule.NoPreview;
+            }
+
+            private void VmUpdated(object? sender, PropertyChangedEventArgs e)
+            {
+                if ( e.PropertyName == "SingleModel")
+                {
+                    previewCache = GetPreviewFast();
+                    NotifyOfPropertyChange(nameof(Preview));
+                }
+            }
+
+            public Uri PreviewFast => previewCache;
+
+            public Uri Preview
+            {
+                get
+                {
+                    if (previewCache.IsFile)
+                    {
+                        return previewCache;
+                    }
+                    return previewCache = GetPreviewSlow();
+                }
+            }
+        }
+
     }
 }

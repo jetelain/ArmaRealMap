@@ -35,7 +35,7 @@ namespace GameRealisticMap.Studio.Modules.Main
 
         public override async Task PostInitializeAsync()
         {
-            await _mainWindow.Shell.OpenDocumentAsync(new HomeViewModel(_mainWindow.Shell));
+            await _mainWindow.Shell.OpenDocumentAsync(IoC.Get<HomeViewModel>());
         }
 
     }

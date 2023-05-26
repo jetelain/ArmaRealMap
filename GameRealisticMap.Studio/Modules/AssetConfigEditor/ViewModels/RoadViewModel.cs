@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Media;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
 using Gemini.Framework;
@@ -88,6 +89,14 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public override void Equilibrate()
         {
 
+        }
+        public override void AddComposition(Composition model, ObjectPlacementDetectedInfos detected)
+        {
+            var item = Items.FirstOrDefault(i => i.Composition.IsEmpty);
+            if (item != null)
+            {
+                item.AddComposition(model, detected);
+            }
         }
     }
 }

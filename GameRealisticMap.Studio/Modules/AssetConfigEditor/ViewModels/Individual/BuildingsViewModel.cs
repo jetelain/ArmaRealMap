@@ -4,12 +4,13 @@ using System.Linq;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual
 {
-    internal class BuildingsViewModel : AssetBase<BuildingTypeId, List<BuildingDefinition>>
+    internal class BuildingsViewModel : AssetBase<BuildingTypeId, List<BuildingDefinition>>, IExplorerTreeItemCounter
     {
         public BuildingsViewModel(BuildingTypeId id, IReadOnlyCollection<BuildingDefinition> definitions, AssetConfigEditorViewModel parent)
             : base(id, parent)

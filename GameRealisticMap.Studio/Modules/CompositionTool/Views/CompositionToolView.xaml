@@ -11,7 +11,6 @@
         <local:MetersToPixelsConverter x:Key="MetersToPixelsConverter" />
         <local:MetersToPixelsConverter x:Key="MetersToPixelsConverterX2" Coef="2" />
         <BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <local2:CompositionPreviewConverter x:Key="CompositionPreviewConverter" />
     </UserControl.Resources>
     <Grid local2:Behaviors.DropTarget="{Binding Importer}">
         <Grid.RowDefinitions>

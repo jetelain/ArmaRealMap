@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor;
 using GameRealisticMap.Studio.Modules.MapConfigEditor;
 using Gemini.Framework;
@@ -13,12 +15,14 @@ using Microsoft.Win32;
 
 namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 {
+    [Export]
     internal class HomeViewModel : Document
     {
         private bool isArma3ToolsInstalled;
         private bool isArma3ToolsAccepted;
         private readonly IShell _shell;
 
+        [ImportingConstructor]
         public HomeViewModel(IShell shell)
         {
             _shell = shell;
@@ -38,10 +42,9 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 
         public RelayCommand SetupArma3WorkDriveCommand { get; }
 
-        protected override async Task OnActivateAsync(CancellationToken cancellationToken)
+        protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
             await RefreshArma3ToolChain();
-            await base.OnActivateAsync(cancellationToken);
         }
 
         public async Task NewArma3MapConfig()
@@ -63,10 +66,10 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 
         public async Task BrowseArma3Assets()
         {
-            // TODO
+            await _shell.OpenDocumentAsync(IoC.Get<AssetBrowserViewModel>());
         }
 
-        public Task RefreshArma3ToolChain()
+        public async Task RefreshArma3ToolChain()
         {
             IsArma3Installed = !string.IsNullOrEmpty(Arma3ToolsHelper.GetArma3Path());
             isArma3ToolsInstalled = !string.IsNullOrEmpty(Arma3ToolsHelper.GetArma3ToolsPath());
@@ -84,12 +87,6 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
             IsPboProjectInstalled = File.Exists(Arma3ToolsHelper.GetPboProjectPath());
             IsProjectDriveCreated = Directory.Exists(Arma3ToolsHelper.GetProjectDrivePath());
 
-            if (IsProjectDriveCreated)
-            {
-                // it's location may have changed
-                IoC.Get<IArma3DataModule>().Reload();
-            }
-
             NotifyOfPropertyChange(nameof(IsArma3Installed));
             NotifyOfPropertyChange(nameof(IsArma3NotInstalled));
             NotifyOfPropertyChange(nameof(IsArma3ToolsNotAccepted));
@@ -100,7 +97,11 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
             NotifyOfPropertyChange(nameof(IsProjectDriveCreated));
             NotifyOfPropertyChange(nameof(IsProjectDriveNotCreated));
 
-            return Task.CompletedTask;
+            if (IsProjectDriveCreated)
+            {
+                // it's location may have changed
+                await IoC.Get<IArma3DataModule>().Reload();
+            }
         }
     }
 }

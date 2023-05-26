@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.Composition;
-using Caliburn.Micro;
-using GameRealisticMap.Studio.Toolkit;
+﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Windows.Data;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 
@@ -10,7 +10,7 @@ namespace GameRealisticMap.Studio.Modules.Explorer.ViewModels
     public class ExplorerViewModel : Tool, IExplorerTool
     {
         private readonly IShell _shell;
-        public IObservableCollection<IExplorerRootTreeItem> Items { get; }
+        public ICollectionView Items { get; }
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
 
@@ -18,8 +18,10 @@ namespace GameRealisticMap.Studio.Modules.Explorer.ViewModels
         public ExplorerViewModel(IShell shell) 
         {
             _shell = shell;
-            Items = new ObservableCollectionOfType<IExplorerRootTreeItem, IDocument>(_shell.Documents);
             DisplayName = "Explorer";
+            Items = CollectionViewSource.GetDefaultView(_shell.Documents);
+            Items.Filter = o => o is IExplorerRootTreeItem;
+
         }
     }
 }

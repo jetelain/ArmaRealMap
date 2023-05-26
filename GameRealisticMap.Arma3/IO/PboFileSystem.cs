@@ -15,7 +15,7 @@ namespace GameRealisticMap.Arma3.IO
         private readonly IEnumerable<string> gamePaths;
         private readonly IEnumerable<string> mods;
         private readonly Dictionary<string, IPBOFileEntry> index = new(StringComparer.OrdinalIgnoreCase);
-
+        
         public PboFileSystem(IEnumerable<string> gamePaths, IEnumerable<string> mods)
         {
             this.gamePaths = gamePaths;

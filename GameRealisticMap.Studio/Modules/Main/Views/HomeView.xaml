@@ -78,10 +78,10 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel HorizontalAlignment="Center">
-                        <Button Margin="10" Padding="10" Width="220" cal:Message.Attach="NewArma3AssetConfig">
+                        <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewArma3AssetConfig">
                             <StackPanel>
                                 <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/AssetConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
-                                <TextBlock>Create an Assets Configuration</TextBlock>
+                                <TextBlock TextWrapping="Wrap">Create an Assets Configuration</TextBlock>
                             </StackPanel>
                         </Button>
                         <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
@@ -89,16 +89,20 @@
                         </TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-                        <Button Margin="10" Padding="15" Width="220" cal:Message.Attach="BrowseArma3Assets" IsEnabled="False">Browse Assets</Button>
+                        <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="BrowseArma3Assets">
+                            <StackPanel>
+                                <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Objects.png" Width="24" Height="24" Margin="0 0 0 5"/>
+                                <TextBlock TextWrapping="Wrap">Browse Assets</TextBlock>
+                            </StackPanel></Button>
                         <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
                             Browse all available objects to pick the best ones to complete your assets configuration.
                         </TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="2"  HorizontalAlignment="Center">
-                        <Button Margin="10" Padding="10" Width="220" cal:Message.Attach="NewArma3MapConfig">
+                        <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewArma3MapConfig">
                             <StackPanel>
                                 <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
-                                <TextBlock>Create a Map Configuration</TextBlock>
+                                <TextBlock TextWrapping="Wrap">Create a Map Configuration</TextBlock>
                             </StackPanel>
                         </Button>
                         <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">

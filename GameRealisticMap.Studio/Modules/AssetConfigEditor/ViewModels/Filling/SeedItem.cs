@@ -13,7 +13,7 @@ using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
-    internal class SeedItem : PropertyChangedBase, IWithEditableProbability, IModelImporterTarget, IExplorerTreeItem
+    internal class SeedItem : PropertyChangedBase, IWithEditableProbability, IModelImporterTarget, IExplorerTreeItem, IExplorerTreeItemCounter
     {
         public SeedItem(ClusterDefinition c, int index, FillingAssetClusterViewModel parent)
         {

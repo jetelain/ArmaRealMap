@@ -14,6 +14,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
 
         Task SaveLibraryCache();
 
-        void Reload();
+        Task Reload();
     }
 }

@@ -53,10 +53,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public virtual IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
 
-        public virtual void AddComposition(Composition model, ObjectPlacementDetectedInfos detected)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void AddComposition(Composition model, ObjectPlacementDetectedInfos detected);
 
         public abstract void Equilibrate();
 

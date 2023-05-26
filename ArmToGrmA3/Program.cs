@@ -52,7 +52,7 @@ namespace ArmToGrmA3
             foreach (var preview in previews)
             {
                 Console.WriteLine(preview.Asset.ModelPath);
-                var targetFile = Path.Combine(path, "previews", Path.ChangeExtension(preview.Asset.ModelPath, ".jpg"));
+                var targetFile = Path.Combine(path, "previews", Path.ChangeExtension(preview.Asset.ModelPath.ToLowerInvariant(), ".jpg"));
                 using var image = Image.Load(preview.Data);
                 image.Mutate(i => i.Resize(455, 256));
                 image.Mutate(i => i.Contrast(1.4f)); // Screens shots was taken with wrong settings, fix constrast to match ingame editor previews colors

@@ -34,7 +34,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor
         {
             get
             {
-                yield return new EditorFileType("Arma 3 Assets Configuration", ".grma3a");
+                yield return new EditorFileType("Arma 3 Assets Configuration", ".grma3a", new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/AssetConfig.png"));
             }
         }
 

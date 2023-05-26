@@ -4,12 +4,13 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Fences;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
-    internal class FencesViewModel : AssetProbabilityBase<FenceTypeId, FenceDefinition>
+    internal class FencesViewModel : AssetProbabilityBase<FenceTypeId, FenceDefinition>, IExplorerTreeItemCounter
     {
         public FencesViewModel(FenceTypeId id, FenceDefinition? definition, AssetConfigEditorViewModel parent)
             : base(id, definition, parent)

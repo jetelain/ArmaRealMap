@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -139,6 +140,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         }
 
         public override void Equilibrate()
+        {
+
+        }
+
+        public override void AddComposition(Composition model, ObjectPlacementDetectedInfos detected)
         {
 
         }

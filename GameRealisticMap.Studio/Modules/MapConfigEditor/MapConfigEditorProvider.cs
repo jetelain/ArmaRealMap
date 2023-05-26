@@ -19,7 +19,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor
         {
             get
             {
-                yield return new EditorFileType("Arma 3 Map Config", ".grma3m");
+                yield return new EditorFileType("Arma 3 Map Config", ".grma3m", new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png"));
             }
         }
 

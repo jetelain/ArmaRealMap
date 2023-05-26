@@ -9,7 +9,7 @@ namespace GameRealisticMap.Arma3.Test.TerrainBuilder
 {
     public class TerrainBuilderObjectTest
     {
-        private static readonly ModelInfo SignArrowDirectionF = new ModelInfo("Sign_Arrow_Direction_F", "a3\\misc_f\\Helpers\\Sign_Arrow_Direction_F.p3d", "a3_misc_f", new Vector3(0, 0.058088847f, 0.029880643f));
+        private static readonly ModelInfo SignArrowDirectionF = new ModelInfo("Sign_Arrow_Direction_F", "a3\\misc_f\\Helpers\\Sign_Arrow_Direction_F.p3d", new Vector3(0, 0.058088847f, 0.029880643f));
 
         [Fact]
         public void TerrainBuilderObject_ToWrpObject_Angles()

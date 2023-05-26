@@ -17,5 +17,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
                 return new List<ModelInfo>();
             }
         }
+        public static IEnumerable<ModelInfo> ImportPaths(this IArma3DataModule module, IEnumerable<string> paths)
+        {
+            try
+            {
+                return paths.Select(p => module.Library.ResolveByPath(p)).ToList();
+            }
+            catch
+            {
+                return new List<ModelInfo>();
+            }
+        }
     }
 }

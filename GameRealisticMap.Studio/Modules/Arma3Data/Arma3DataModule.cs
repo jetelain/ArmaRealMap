@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -20,7 +21,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
     [PartCreationPolicy(CreationPolicy.Shared)]
     internal class Arma3DataModule : ModuleBase, IArma3Previews, IArma3DataModule
     {
+        public static Uri NoPreview = new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/noimage.png");
+
         private List<string>? previewsInProject;
+
+        private HttpClient client = new HttpClient();
 
         public ModelInfoLibrary Library { get; private set; }
 
@@ -51,6 +56,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
 
         public override async Task PostInitializeAsync()
         {
+            await LoadLibraryFromCache();
+        }
+
+        private async Task LoadLibraryFromCache()
+        {
             if (File.Exists(LibraryCachePath))
             {
                 await Library.LoadFrom(LibraryCachePath);
@@ -63,36 +73,71 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             await Library.SaveTo(LibraryCachePath);
         }
 
-
-        public Uri? GetPreview(ModelInfo modelInfo)
+        public Uri GetPreviewFast(string modelPath)
         {
-            var cacheJpeg = Path.Combine(PreviewCachePath, Path.ChangeExtension(modelInfo.Path, ".jpg"));
+            var cacheJpeg = Path.Combine(PreviewCachePath, Path.ChangeExtension(modelPath, ".jpg"));
             if (File.Exists(cacheJpeg))
             {
                 return new Uri(cacheJpeg);
             }
-            var editorPreview = LocateGameEditorPreview(modelInfo);
-            if (!string.IsNullOrEmpty(editorPreview))
-            {
-                return CacheGameEditorPreview(cacheJpeg, editorPreview);
-            }
-            return null;
+            return NoPreview;
         }
 
-        private Uri CacheGameEditorPreview(string cacheJpeg, string editorPreview)
+        public async Task<Uri> GetPreview(string modelPath)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(cacheJpeg)!);
+            var cacheJpeg = Path.Combine(PreviewCachePath, Path.ChangeExtension(modelPath, ".jpg"));
+            if (File.Exists(cacheJpeg))
+            {
+                return new Uri(cacheJpeg);
+            }
+            try
+            {
+                return await GetPreviewSlow(modelPath, cacheJpeg).ConfigureAwait(false);
+            }
+            catch
+            {
+                return NoPreview;
+            }
+        }
+
+        private async Task<Uri> GetPreviewSlow(string modelPath, string cacheJpeg)
+        {
+            var editorPreview = LocateGameEditorPreview(modelPath);
+            if (!string.IsNullOrEmpty(editorPreview))
+            {
+                return await CacheGameEditorPreview(cacheJpeg, editorPreview).ConfigureAwait(false);
+            }
+            var response = await client.GetAsync("https://arm.pmad.net/previews/" + Path.ChangeExtension(modelPath, ".jpg").ToLowerInvariant());
+            if (response.IsSuccessStatusCode)
+            {
+                using (var source = response.Content.ReadAsStream())
+                {
+                    await CopyToCache(cacheJpeg, source).ConfigureAwait(false);
+                }
+                return new Uri(cacheJpeg);
+            }
+            return NoPreview;
+        }
+
+        private async Task<Uri> CacheGameEditorPreview(string cacheJpeg, string editorPreview)
+        {
             using (var source = ProjectDrive.OpenFileIfExists(editorPreview)!)
             {
-                using (var target = File.Create(cacheJpeg))
-                {
-                    source.CopyTo(target);
-                }
+                await CopyToCache(cacheJpeg, source).ConfigureAwait(false);
             }
             return new Uri(cacheJpeg);
         }
 
-        private string? LocateGameEditorPreview(ModelInfo modelInfo)
+        private static async Task CopyToCache(string cacheJpeg, Stream source)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(cacheJpeg)!);
+            using (var target = File.Create(cacheJpeg))
+            {
+                await source.CopyToAsync(target).ConfigureAwait(false);
+            }
+        }
+
+        private string? LocateGameEditorPreview(string modelPath)
         {
             if (previewsInProject == null)
             {
@@ -104,7 +149,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
                     }
                 }
             }
-            var previewName = $"land_{Path.GetFileNameWithoutExtension(modelInfo.Path)}.jpg";
+            var previewName = $"land_{Path.GetFileNameWithoutExtension(modelPath)}.jpg";
             var editorPreview = previewsInProject.FirstOrDefault(p => p.EndsWith(previewName, StringComparison.OrdinalIgnoreCase));
             return editorPreview;
         }
@@ -144,10 +189,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             return BitmapSource.Create(paa.Width, paa.Height, 300, 300, PixelFormats.Bgra32, bitmapPalette, pixels, paa.Width * 4);
         }
 
-        public void Reload()
+        public async Task Reload()
         {
             Initialize();
+
+            await LoadLibraryFromCache();
+
             previewsInProject = null;
         }
+
     }
 }

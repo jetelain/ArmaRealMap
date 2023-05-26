@@ -5,12 +5,13 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
+using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 using MapControl;
 
 namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 {
-    internal class MapConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem
+    internal class MapConfigEditorViewModel : PersistedDocument2, IExplorerRootTreeItem
     {
         public Arma3MapConfigJson Config { get; set; } = new Arma3MapConfigJson();
 
@@ -29,6 +30,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 NotifyOfPropertyChange(nameof(SouthWest));
                 NotifyOfPropertyChange(nameof(Center));
                 NotifyOfPropertyChange(nameof(Locations));
+                IsDirty = true;
             }
         }
 
@@ -45,6 +47,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 NotifyOfPropertyChange(nameof(SouthWest));
                 NotifyOfPropertyChange(nameof(Center));
                 NotifyOfPropertyChange(nameof(Locations));
+                IsDirty = true;
             }
         }
 
@@ -57,6 +60,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 NotifyOfPropertyChange(nameof(MapSize));
                 NotifyOfPropertyChange(nameof(GridCellSize));
                 NotifyOfPropertyChange(nameof(Locations));
+                IsDirty = true;
             }
         }
 
@@ -69,6 +73,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 NotifyOfPropertyChange(nameof(MapSize));
                 NotifyOfPropertyChange(nameof(GridSize));
                 NotifyOfPropertyChange(nameof(Locations));
+                IsDirty = true;
             }
         }
 
@@ -92,6 +97,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 NotifyOfPropertyChange(nameof(GridSize));
                 NotifyOfPropertyChange(nameof(GridCellSize));
                 NotifyOfPropertyChange(nameof(Locations));
+                IsDirty = true;
             }
         }
 

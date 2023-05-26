@@ -5,12 +5,13 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Objects;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual
 {
-    internal class ObjectsViewModel : AssetBase<ObjectTypeId, List<ObjectDefinition>>
+    internal class ObjectsViewModel : AssetBase<ObjectTypeId, List<ObjectDefinition>>, IExplorerTreeItemCounter
     {
         public ObjectsViewModel(ObjectTypeId id, IReadOnlyCollection<ObjectDefinition> definitions, AssetConfigEditorViewModel parent)
             : base(id, parent)

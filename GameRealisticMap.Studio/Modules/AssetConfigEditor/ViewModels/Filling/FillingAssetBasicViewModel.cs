@@ -4,12 +4,13 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
-    internal class FillingAssetBasicViewModel : AssetDensityBase<BasicCollectionId, BasicCollectionDefinition>
+    internal class FillingAssetBasicViewModel : AssetDensityBase<BasicCollectionId, BasicCollectionDefinition>, IExplorerTreeItemCounter
     {
         public FillingAssetBasicViewModel(BasicCollectionId id, BasicCollectionDefinition? definition, AssetConfigEditorViewModel shell)
             : base(id, definition, shell)

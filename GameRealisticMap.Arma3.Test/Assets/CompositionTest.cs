@@ -30,7 +30,7 @@ namespace GameRealisticMap.Arma3.Test.Assets
         [Fact]
         public void Composition_SimpleCase()
         {
-            var sampleModel = new ModelInfo("modelname", "path", "bundle", Vector3.Zero);
+            var sampleModel = new ModelInfo("modelname", "path", Vector3.Zero);
 
             var composition = Composition.CreateFrom(new[] {
                 new TerrainBuilderObject(sampleModel, new TerrainPoint(0, 1), 0, ElevationMode.Relative, 0)

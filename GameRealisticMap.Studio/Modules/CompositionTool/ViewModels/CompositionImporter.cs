@@ -52,7 +52,10 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
         {
             FromModels(arma3DataModule.Import(paths));
         }
-
+        public void FromPaths(IEnumerable<string> paths)
+        {
+            FromModels(arma3DataModule.ImportPaths(paths));
+        }
         public void FromModels(IEnumerable<ModelInfo> models)
         {
             foreach (var model in models)

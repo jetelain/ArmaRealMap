@@ -48,33 +48,10 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                     throw new ApplicationException($"ODOL file for model '{path}' was not found, unable to use it");
                 }
                 var name = UniqueName(Path.GetFileNameWithoutExtension(path));
-                model = new ModelInfo(name, path, GetBundle(path), odol.BoundingCenter.Vector3);
+                model = new ModelInfo(name, path, odol.BoundingCenter.Vector3);
                 indexByName.Add(name, model);
             }
             return model;
-        }
-
-        private static string GetBundle(string path)
-        {
-            if (path.Length > 3 && path[1] == '\\')
-            {
-                return GetRootName(path.Substring(2));
-            }
-            if (path.Length > 4 && path[2] == '\\')
-            {
-                return path.Substring(0, 2) + "_" + GetRootName(path.Substring(3));
-            }
-            return GetRootName(path);
-        }
-
-        private static string GetRootName(string path)
-        {
-            var idx = path.IndexOf('\\');
-            if ( idx != -1 )
-            {
-                return path.Substring(0, idx);
-            }
-            return path;
         }
 
         private string UniqueName(string initialName)
@@ -163,7 +140,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                     {
                         if (!IsAlmostSame(odol.BoundingCenter.Vector3, model.BoundingCenter))
                         {
-                            updatedModel = new ModelInfo(model.Name, model.Path, model.Bundle, odol.BoundingCenter.Vector3);
+                            updatedModel = new ModelInfo(model.Name, model.Path, odol.BoundingCenter.Vector3);
                             updated++;
                         }
                     }
