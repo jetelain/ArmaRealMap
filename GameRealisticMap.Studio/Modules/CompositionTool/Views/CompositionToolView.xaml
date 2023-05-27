@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Views"
              xmlns:local2="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="485">
     <UserControl.Resources>
@@ -12,7 +13,7 @@
         <local:MetersToPixelsConverter x:Key="MetersToPixelsConverterX2" Coef="2" />
         <BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
-    <Grid local2:Behaviors.DropTarget="{Binding Importer}">
+    <Grid c:CompositionDragDrop.Importer="{Binding Importer}">
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="30"/>

@@ -16,6 +16,10 @@ namespace GameRealisticMap.Arma3.IO
             this.secondarySource = secondarySource;
         }
 
+        public string MountPath => mountPath;
+
+        public IGameFileSystem? SecondarySource => secondarySource;
+
         private string GetFullPath(string path)
         {
             if (path.StartsWith("\\", StringComparison.Ordinal))

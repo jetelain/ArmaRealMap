@@ -1,11 +1,9 @@
-﻿using System.Buffers;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
-namespace GameRealisticMap.Arma3.IO.Converters
+namespace GameRealisticMap.IO.Converters
 {
-    internal class Matrix4x4Converter : JsonConverterNoIdentation<Matrix4x4>
+    public class Matrix4x4Converter : JsonConverterNoIdentation<Matrix4x4>
     {
         public override Matrix4x4 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

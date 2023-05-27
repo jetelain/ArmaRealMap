@@ -1,10 +1,9 @@
 ﻿using System.Numerics;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
-namespace GameRealisticMap.Arma3.IO.Converters
+namespace GameRealisticMap.IO.Converters
 {
-    internal class Vector3Converter : JsonConverterNoIdentation<Vector3>
+    public class Vector3Converter : JsonConverterNoIdentation<Vector3>
     {
         public override Vector3 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

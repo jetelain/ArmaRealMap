@@ -23,10 +23,5 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.Views
         {
             InitializeComponent();
         }
-
-        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
-        {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName= e.Uri.OriginalString });
-        }
     }
 }

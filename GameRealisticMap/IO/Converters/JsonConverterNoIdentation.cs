@@ -2,9 +2,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace GameRealisticMap.Arma3.IO.Converters
+namespace GameRealisticMap.IO.Converters
 {
-    internal abstract class JsonConverterNoIdentation<T> : JsonConverter<T>
+    public abstract class JsonConverterNoIdentation<T> : JsonConverter<T>
     {
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {

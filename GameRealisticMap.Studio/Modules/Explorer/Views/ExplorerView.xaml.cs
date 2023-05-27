@@ -5,6 +5,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Caliburn.Micro;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.Views;
+using GameRealisticMap.Studio.Modules.CompositionTool.Behaviors;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using Gemini.Framework;
@@ -41,7 +42,7 @@ namespace GameRealisticMap.Studio.Modules.Explorer.Views
             if (fw != null && fw.DataContext is IModelImporterTarget)
             {
                 var treeViewItem = fw.GetVisualAncestor<TreeViewItem>();
-                BindingOperations.SetBinding(treeViewItem, Behaviors.DropTargetProperty, new Binding("CompositionImporter"));
+                BindingOperations.SetBinding(treeViewItem, CompositionDragDrop.ImporterProperty, new Binding("CompositionImporter"));
                 treeViewItem.DragEnter += TreeViewItem_DragEnter;
             }
         }

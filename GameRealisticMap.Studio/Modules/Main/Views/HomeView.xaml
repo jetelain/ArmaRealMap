@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Main.Views"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
@@ -44,22 +45,22 @@
                         <TextBlock HorizontalAlignment="Center" FontSize="20">Arma 3</TextBlock>
                         <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsArma3NotInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">❌ Not installed</TextBlock>
                         <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsArma3Installed, Converter={StaticResource BooleanToVisibilityConverter}}">✔ Installed</TextBlock>
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="steam://install/107410">Install with Steam</Hyperlink></TextBlock>
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="steam://run/107410">Open Arma3 Launcher</Hyperlink></TextBlock>
+                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://install/107410">Install with Steam</Hyperlink></TextBlock>
+                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://run/107410">Open Arma3 Launcher</Hyperlink></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="1">
                         <TextBlock HorizontalAlignment="Center" FontSize="20">Arma 3 Tools</TextBlock>
                         <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsArma3ToolsNotInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">❌ Not installed</TextBlock>
                         <TextBlock HorizontalAlignment="Center" Foreground="Red"  Visibility="{Binding IsArma3ToolsNotAccepted, Converter={StaticResource BooleanToVisibilityConverter}}">❌ License not approved</TextBlock>
                         <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsArma3ToolsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">✔ Installed</TextBlock>
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="steam://install/233800">Install with Steam</Hyperlink></TextBlock>
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="steam://run/233800">Launch to approve license</Hyperlink></TextBlock>
+                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://install/233800">Install with Steam</Hyperlink></TextBlock>
+                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://run/233800">Launch to approve license</Hyperlink></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock HorizontalAlignment="Center" FontSize="20">Mikero's Pbo Project</TextBlock>
                         <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsPboProjectNotInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">❌ Not installed</TextBlock>
                         <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsPboProjectInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">✔ Installed</TextBlock>
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://mikero.bytex.digital/">Download from official site (free)</Hyperlink></TextBlock>
+                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="https://mikero.bytex.digital/">Download from official site (free)</Hyperlink></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="3">
                         <TextBlock HorizontalAlignment="Center" FontSize="20">Work Drive (P:)</TextBlock>
@@ -110,11 +111,10 @@
                         </TextBlock>
                     </StackPanel>
                 </Grid>
-                <TextBlock FontSize="8" Margin="0 20 0 0">Arma 3, Arma 3 Tools: Copyright © Bohemia Interactive</TextBlock>
             </StackPanel>
         </Expander>
 
-
+        <TextBlock FontSize="10" Margin="0 20 0 0">Arma 3 (including screenshots), Arma 3 Tools : Copyright © Bohemia Interactive. Icons made by Freepik and Mihimihi from www.flaticon.com.</TextBlock>
 
     </StackPanel>
 </UserControl>

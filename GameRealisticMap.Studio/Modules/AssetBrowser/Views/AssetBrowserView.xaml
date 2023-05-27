@@ -3,32 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetBrowser.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition  Height="Auto" />
         </Grid.RowDefinitions>
-        <!--<ListView HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{Binding AllAssets}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Height="200">
-                        <Image Source="{Binding Preview}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="250" Stretch="UniformToFill" />
-                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
 
-        <Grid Margin="0 0 0 5">
+        <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto"/>
@@ -37,27 +27,88 @@
             <StackPanel Orientation="Horizontal">
                 <Label>Filter</Label>
                 <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=500}" Width="200" />
+                <Label>Detected type</Label>
+                <ComboBox SelectedValue="{Binding FilterCategory}" ItemsSource="{Binding Categories}" SelectedValuePath="Category" DisplayMemberPath="Name" />
+                <Label>DLC/Mod</Label>
+                <ComboBox SelectedValue="{Binding FilterModId}" ItemsSource="{Binding Mods}" SelectedValuePath="ModId" DisplayMemberPath="Name" />
+
+                <TextBlock Margin="5">Matching:</TextBlock>
+                <TextBlock Margin="5" Text="{Binding Assets.Count}" />
+
+                <TextBlock Margin="5">All:</TextBlock>
+                <TextBlock Margin="5" Text="{Binding AllAssets.Count}" />
+                
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <Button>Import files</Button>
-                <Button>Import screenshots</Button>
+                <ProgressBar Visibility="{Binding IsImporting, Converter={StaticResource BooleanToVisibilityConverter}}" IsIndeterminate="{Binding IsImporting}" Width="100" Margin="0 5 10 5" />
+
+                <Button Click="Button_Click">
+                    Import files
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="AddMenu">
+                            <MenuItem Header="Arma 3" Command="{Binding ImportA3}" CommandParameter="Base" />
+                            <MenuItem Header="Arma 3: Tanoa" Command="{Binding ImportA3}" CommandParameter="Tanoa" />
+                            <MenuItem Header="Arma 3: Livonia" Command="{Binding ImportA3}" CommandParameter="Livonia" />
+                            <MenuItem Header="Usual terrain mods" ItemsSource="{Binding UsualMods}">
+                                <MenuItem.ItemContainerStyle>
+                                    <Style>
+                                        <Setter Property="MenuItem.Header" Value="{Binding Name}" />
+                                        <Setter Property="MenuItem.Command" Value="{Binding DataContext.ImportUsualMod, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+                                        <Setter Property="MenuItem.CommandParameter" Value="{Binding}" />
+                                    </Style>
+                                </MenuItem.ItemContainerStyle>
+                            </MenuItem>
+                            <MenuItem Header="Active mods" ItemsSource="{Binding ActiveMods}">
+                                <MenuItem.ItemContainerStyle>
+                                    <Style>
+                                        <Setter Property="MenuItem.Header" Value="{Binding Name}"/>
+                                        <Setter Property="MenuItem.Command" Value="{Binding DataContext.ImportActiveMod, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+                                        <Setter Property="MenuItem.CommandParameter" Value="{Binding}" />
+                                    </Style>
+                                </MenuItem.ItemContainerStyle>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
             </StackPanel>
         </Grid>
-        <wpftk:GridView ItemsSource="{Binding AllAssets}" Grid.Row="1">
+        <wpftk:GridView x:Name="Grid" ItemsSource="{Binding AllAssets}" Grid.Row="1" SelectionMode="Extended" PreviewMouseDown="GridView_PreviewMouseDown" MouseUp="GridView_MouseUp">
 
             <wpftk:GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Height="170" Width="260" MouseMove="StackPanel_MouseMove">
+                        <StackPanel.ToolTip>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Margin="0 2 10 2">File</TextBlock>
+                                <TextBlock Margin="0 2" Text="{Binding Path}" Grid.Column="1" />
+                                <TextBlock Margin="0 2 10 2" Grid.Row="1">Mod</TextBlock>
+                                <TextBlock Margin="0 2" Text="{Binding ModId}" Grid.Column="1" Grid.Row="1" />
+                                <TextBlock Margin="0 2 10 2" Grid.Row="2">Size (estimated)</TextBlock>
+                                <TextBlock Margin="0 2" Text="{Binding GroundSizeText}" Grid.Column="1" Grid.Row="2" />
+                                <TextBlock Margin="0 2 10 2" Grid.Row="3">Height (estimated)</TextBlock>
+                                <TextBlock Margin="0 2" Text="{Binding HeightText}" Grid.Column="1" Grid.Row="3" />
+                            </Grid>
+                        </StackPanel.ToolTip>
                         <Image Source="{Binding Preview}" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="UniformToFill" Width="250" />
                         <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
                     </StackPanel>
                 </DataTemplate>
             </wpftk:GridView.ItemTemplate>
 
-
         </wpftk:GridView>
-        
+
+        <TextBlock FontSize="10" Margin="5"  Grid.Row="2">Copyright © Bohemia Interactive, Community authors.</TextBlock>
 
     </Grid>
 </UserControl>

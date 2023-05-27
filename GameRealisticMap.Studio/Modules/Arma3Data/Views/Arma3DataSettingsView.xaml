@@ -3,10 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <Label>Project drive location</Label>
+            <Label>
+                <Hyperlink NavigateUri="{Binding ProjectDriveBasePath}"  b:HyperLinkBehaviors.ShellExecute="True">
+                    <TextBlock Text="{Binding ProjectDriveBasePath}" />
+                </Hyperlink>
+            </Label>
+        </StackPanel>
+
+        
+    </StackPanel>
 </UserControl>

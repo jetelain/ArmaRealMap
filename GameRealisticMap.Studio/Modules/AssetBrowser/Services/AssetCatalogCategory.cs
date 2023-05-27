@@ -9,9 +9,16 @@
         Building,
         Cross,
         Rock,
-        Fence,
-        Wall,
+        FenceOrWall,
         BusStop,
-        Watertower
+        Watertower,
+        BridgeOrRoad,
+        RadioTower,
+        PowerPlant,
+        WaterSurface,
+        Ruins,
+        RailWay,
+        PowerLines,
+        Lighthouse
     }
 }

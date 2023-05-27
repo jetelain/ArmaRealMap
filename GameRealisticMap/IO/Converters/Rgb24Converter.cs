@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace GameRealisticMap.Arma3.IO.Converters
+namespace GameRealisticMap.IO.Converters
 {
-    internal class Rgb24Converter : JsonConverter<Rgb24>
+    public class Rgb24Converter : JsonConverter<Rgb24>
     {
         public override Rgb24 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

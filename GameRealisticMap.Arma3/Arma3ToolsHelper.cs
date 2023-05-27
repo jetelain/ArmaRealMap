@@ -48,6 +48,21 @@ namespace GameRealisticMap.Arma3
             return GetSteamAppLocation(107410);
         }
 
+        [SupportedOSPlatform("windows")]
+        public static string GetArma3WorkshopPath()
+        {
+            var a3 = GetArma3Path();
+            if (!string.IsNullOrEmpty(a3))
+            {
+                var workshop = Path.Combine(a3, @"..\..\workshop\content\107410");
+                if (Directory.Exists(workshop))
+                {
+                    return Path.GetFullPath(workshop);
+                }
+            }
+            return string.Empty;
+        }
+
         internal static async Task ImageToPAA(IProgressSystem system, IReadOnlyCollection<string> paths, int? maxDegreeOfParallelism = null)
         {
             if (!OperatingSystem.IsWindows())

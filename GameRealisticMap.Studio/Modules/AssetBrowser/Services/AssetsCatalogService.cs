@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using BIS.Core.Streams;
 using BIS.P3D;
+using BIS.P3D.ODOL;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
@@ -47,13 +49,19 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 if (stream != null)
                 {
                     var infos = StreamHelper.Read<P3DInfosOnly>(stream);
-                    if (DetectModel(infos.ModelInfo, out var category))
-                    {
-                        result.Add(new AssetCatalogItem(path, GetModId(modId, path), category));
-                    }
+                    result.Add(new AssetCatalogItem(path, GetModId(modId, path), DetectModel(infos.ModelInfo, path), infos.ModelInfo.BboxMax.Vector3 - infos.ModelInfo.BboxMin.Vector3, GetHeight(infos.ModelInfo)));
                 }
             }
             return Task.FromResult(result);
+        }
+
+        private float GetHeight(IModelInfo modelInfo)
+        {
+            if ( modelInfo is ModelInfo odolModel)
+            {
+                return (odolModel.BoundingCenter.Vector3 + odolModel.BboxMax.Vector3).Y;
+            }
+            return modelInfo.BboxMax.Y;
         }
 
         private string GetModId(string modId, string path)
@@ -62,7 +70,15 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             {
                 if (path.StartsWith("a3\\", StringComparison.OrdinalIgnoreCase))
                 {
-                    return "Arma3";
+                    if (path.Contains("f_enoch\\", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return "Arma 3: Livonia";
+                    }
+                    if (path.Contains("f_exp\\", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return "Arma 3: Tanoa";
+                    }
+                    return "Arma 3";
                 }
                 if (path.StartsWith("ca\\", StringComparison.OrdinalIgnoreCase) || path.StartsWith("CUP\\", StringComparison.OrdinalIgnoreCase))
                 {
@@ -72,26 +88,50 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 {
                     return "ARM";
                 }
+                if (path.StartsWith("jbad", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "JBAD";
+                }
             }
             return modId;
         }
 
-        private bool DetectModel(IModelInfo modelInfo, out AssetCatalogCategory category)
+        private AssetCatalogCategory DetectModel(IModelInfo modelInfo, string name)
         {
             if (modelInfo.MapType != MapType.Hide)
             {
-                category = ToCategory(modelInfo);
-                return true;
+                return ToCategory(modelInfo, name);
             }
-            category = AssetCatalogCategory.Unknown;
-            if ( string.IsNullOrEmpty(modelInfo.Class))
+            if (string.IsNullOrEmpty(modelInfo.Class))
             {
-                return true;
+                Trace.WriteLine($"No clue for '{name}'");
+                return AssetCatalogCategory.Unknown;
             }
-            return false;
+            return ClassToCategory(modelInfo.Class, name);
+        }
+        private AssetCatalogCategory ClassToCategory(string modelClass, string name)
+        {
+            switch (modelClass.ToLowerInvariant())
+            {
+                case "treesoft":
+                case "treehard":
+                case "tree":
+                    return AssetCatalogCategory.Tree;
+                case "bushsoft":
+                case "bush":
+                    return AssetCatalogCategory.Bush;
+                case "pond":
+                    return AssetCatalogCategory.WaterSurface;
+                case "housesimulated":
+                case "building":
+                case "house":
+                    return AssetCatalogCategory.Building;
+            }
+            Trace.WriteLine($"Unknown class='{modelClass}' for '{name}'");
+            return AssetCatalogCategory.Unknown;
         }
 
-        private AssetCatalogCategory ToCategory(IModelInfo modelInfo)
+        private AssetCatalogCategory ToCategory(IModelInfo modelInfo, string name)
         {
             switch (modelInfo.MapType)
             {
@@ -103,6 +143,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                     return AssetCatalogCategory.Bush;
                 case MapType.Building:
                 case MapType.House:
+                case MapType.Tourism:
                     return AssetCatalogCategory.Building;
                 case MapType.Church:
                 case MapType.Chapel:
@@ -110,6 +151,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 case MapType.Cross:
                     return AssetCatalogCategory.Cross;
                 case MapType.Rock:
+                case MapType.Rocks:
                     return AssetCatalogCategory.Rock;
                 case MapType.Bunker:
                     break;
@@ -120,7 +162,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 case MapType.ViewTower:
                     break;
                 case MapType.Lighthouse:
-                    break;
+                    return AssetCatalogCategory.Lighthouse;
                 case MapType.Quay:
                     break;
                 case MapType.Fuelstation:
@@ -128,46 +170,34 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 case MapType.Hospital:
                     break;
                 case MapType.Fence:
-                    return AssetCatalogCategory.Fence;
                 case MapType.Wall:
-                    return AssetCatalogCategory.Wall;
+                    return AssetCatalogCategory.FenceOrWall;
                 case MapType.BusStop:
                     return AssetCatalogCategory.BusStop;
-                case MapType.Road:
-                    break;
                 case MapType.Transmitter:
-                    break;
+                    return AssetCatalogCategory.RadioTower;
                 case MapType.Stack:
                     break;
                 case MapType.Ruin:
-                    break;
-                case MapType.Tourism:
-                    break;
+                    return AssetCatalogCategory.Ruins;
                 case MapType.Watertower:
                     return AssetCatalogCategory.Watertower;
-                case MapType.Track:
-                    break;
-                case MapType.MainRoad:
-                    break;
-                case MapType.Rocks:
-                    break;
                 case MapType.PowerLines:
-                    break;
+                    return AssetCatalogCategory.PowerLines;
                 case MapType.RailWay:
-                    break;
+                    return AssetCatalogCategory.RailWay;
                 case MapType.SolarPowerPlant:
-                    break;
                 case MapType.WavePowerPlant:
-                    break;
                 case MapType.WindPowerPlant:
-                    break;
+                    return AssetCatalogCategory.PowerPlant;
                 case MapType.River:
-                    break;
-                case MapType.Unkwown:
-                    break;
-                default:
-                    break;
+                    return AssetCatalogCategory.WaterSurface;
+                case MapType.Road:
+                case MapType.MainRoad:
+                case MapType.Track:
+                    return AssetCatalogCategory.BridgeOrRoad;
             }
+            Trace.WriteLine($"Unknown map='{modelInfo.MapType}' for '{name}'");
             return AssetCatalogCategory.Unknown;
         }
     }

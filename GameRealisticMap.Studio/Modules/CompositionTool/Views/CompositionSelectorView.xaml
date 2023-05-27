@@ -4,6 +4,7 @@
     xmlns:cal="http://www.caliburnproject.org"
     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:geminibehaviors="clr-namespace:Gemini.Framework.Behaviors;assembly=Gemini"
+    xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
     x:Class="GameRealisticMap.Studio.Modules.CompositionTool.Views.CompositionSelectorView" 
     Background="{DynamicResource EnvironmentWindowBackground}"
     Foreground="{DynamicResource EnvironmentWindowText}"
@@ -44,7 +45,7 @@
                         </GroupBox.Header>
                         <StackPanel>
                             <TextBlock Margin="10">In VR world place wanted objects, then use export for Terrain Builder, and copy value.
-                                <LineBreak />Native export may give strange results, for a better result use <Hyperlink RequestNavigate="Hyperlink_RequestNavigate"  NavigateUri="steam://url/CommunityFilePage/1174073713">[E2TB] Export to Terrain Builder</Hyperlink>.
+                                <LineBreak />Native export may give strange results, for a better result use <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/1174073713">[E2TB] Export to Terrain Builder</Hyperlink>.
                             </TextBlock>
 
                             <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardNotValid, Converter={StaticResource BooleanToVisibilityConverter}}">

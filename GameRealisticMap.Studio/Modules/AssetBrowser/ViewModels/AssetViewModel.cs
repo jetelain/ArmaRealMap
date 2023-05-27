@@ -20,5 +20,15 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         private Uri preview;
         public Uri Preview { get { return preview; } set { preview = value; NotifyOfPropertyChange(); } }
+
+        public string ModId => item.ModId;
+
+        public AssetCatalogCategory Category => item.Category;
+
+        public string GroundSizeText => $"{item.Size.X:0.0} x {item.Size.Z:0.0} m";
+
+        public string HeightText => $"{item.Height:0.0} m";
+
+        public AssetCatalogItem Item => item;
     }
 }

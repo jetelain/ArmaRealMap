@@ -15,7 +15,8 @@ namespace GameRealisticMap.Arma3.IO
         private readonly IEnumerable<string> gamePaths;
         private readonly IEnumerable<string> mods;
         private readonly Dictionary<string, IPBOFileEntry> index = new(StringComparer.OrdinalIgnoreCase);
-        
+        private bool isIndexReady = false;
+
         public PboFileSystem(IEnumerable<string> gamePaths, IEnumerable<string> mods)
         {
             this.gamePaths = gamePaths;
@@ -27,6 +28,10 @@ namespace GameRealisticMap.Arma3.IO
             : this(GetArma3Paths(), Enumerable.Empty<string>())
         {
         }
+
+        public IEnumerable<string> GamePaths => gamePaths;
+
+        public IEnumerable<string> ModsPaths => mods;
 
         public static IEnumerable<string> GetArma3Paths(string basePath)
         {
@@ -103,8 +108,9 @@ namespace GameRealisticMap.Arma3.IO
 
         private void LazyBuildIndex()
         {
-            if (index.Count == 0)
+            if (!isIndexReady)
             {
+                isIndexReady = true;
                 BuildIndex();
             }
         }

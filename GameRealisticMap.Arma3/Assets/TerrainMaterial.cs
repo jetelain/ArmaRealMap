@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using GameRealisticMap.Arma3.IO.Converters;
+using GameRealisticMap.IO.Converters;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.Assets
