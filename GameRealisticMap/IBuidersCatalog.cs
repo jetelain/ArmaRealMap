@@ -9,6 +9,7 @@
             where TData : class;
 
         IEnumerable<TResult> VisitAll<TResult>(IDataBuilderVisitor<TResult> visitor);
-        //IEnumerable<TResult> Visit<TResult>(IDataBuilderVisitor<TResult> visitor);
+
+        IEnumerable<T> GetOfType<T>(IContext ctx, Func<Type, bool>? filter = null) where T : class;
     }
 }

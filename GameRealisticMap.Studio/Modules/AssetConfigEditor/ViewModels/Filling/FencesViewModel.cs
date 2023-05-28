@@ -31,6 +31,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public string DensityText => string.Empty; // To avoid binding error
 
         public RelayCommand RemoveItem { get; }
+        public bool IsEmpty { get { return Items.Count == 0; } }
 
         public override FenceDefinition ToDefinition()
         {

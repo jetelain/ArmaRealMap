@@ -33,7 +33,7 @@ namespace GameRealisticMap.Osm
             if (!File.Exists(cacheFileName) || (File.GetLastWriteTimeUtc(cacheFileName) < DateTime.UtcNow.AddDays(-cacheDays)))
             {
                 Directory.CreateDirectory(cacheDirectory);
-                var uri = FormattableString.Invariant($"https://overpass-api.de/api/map?bbox={box.Left},{box.Bottom},{box.Right},{box.Top}");
+                var uri = FormattableString.Invariant($"https://overpass-api.de/api/map?bbox={box.Left - 0.025},{box.Bottom - 0.025},{box.Right + 0.025},{box.Top + 0.025}");
                 using (var client = new HttpClient())
                 {
                     using (var target = File.Create(cacheFileName))

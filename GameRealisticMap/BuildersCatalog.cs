@@ -28,7 +28,6 @@ namespace GameRealisticMap
         {
             Register(new RawSatelliteImageBuilder(progress));
             Register(new RawElevationBuilder(progress));
-            Register(new ElevationBuilder(progress));
             Register(new CategoryAreaBuilder(progress));
             Register(new RoadsBuilder(progress, library));
             Register(new BuildingsBuilder(progress));
@@ -51,6 +50,7 @@ namespace GameRealisticMap
             Register(new OrientedObjectBuilder(progress));
             Register(new RailwaysBuilder(progress));
             Register(new CitiesBuilder(progress));
+            Register(new ElevationBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)
@@ -74,11 +74,18 @@ namespace GameRealisticMap
                 .Select(g => g.Value.Get(ctx));
         }
 
-        public IEnumerable<T> GetOfType<T>(IContext ctx) where T : class
+        public IEnumerable<T> GetOfType<T>(IContext ctx, Func<Type,bool>? filter = null) where T : class
         {
             return builders
-                .Where(p => typeof(T).IsAssignableFrom(p.Key))
+                .Where(p => typeof(T).IsAssignableFrom(p.Key) && (filter == null || filter(p.Key)))
                 .Select(g => (T)g.Value.Get(ctx));
+        }
+
+        public int CountOfType<T>(Func<Type, bool>? filter = null) where T : class
+        {
+            return builders
+                .Where(p => typeof(T).IsAssignableFrom(p.Key) && (filter == null || filter(p.Key)))
+                .Count();
         }
 
         public IEnumerable<TResult> VisitAll<TResult>(IDataBuilderVisitor<TResult> visitor)

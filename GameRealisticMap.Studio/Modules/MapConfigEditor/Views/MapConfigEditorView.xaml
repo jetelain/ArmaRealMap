@@ -4,16 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:map="clr-namespace:MapControl;assembly=MapControl.WPF"
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.MapConfigEditor.Views"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <ScrollViewer HorizontalScrollBarVisibility="Hidden">
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" IsTabStop="False">
         <StackPanel  Orientation="Vertical">
 
 
             <StackPanel Margin="10" Orientation="Horizontal" >
-                <Button Margin="10" Padding="10">Generate preview</Button>
-                <Button Margin="10" Padding="10">Generate map for Arma 3</Button>
+                <Button Margin="10" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
+                    Generate Preview
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Generate with elevation" cal:Message.Attach="GeneratePreviewNormal"></MenuItem>
+                            <MenuItem Header="Generate areas only (faster)" cal:Message.Attach="GeneratePreviewFast"></MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMap">Generate Map for Arma 3</Button>
             </StackPanel>
 
             <StackPanel Margin="10" Orientation="Horizontal" >
@@ -35,11 +45,11 @@
             </StackPanel>
 
             <StackPanel Margin="10" Orientation="Horizontal" >
-                <Label Width="200">Assets configuration / style of map *</Label>
-                <TextBox Width="400" Text="{Binding Config.AssetConfigFile,Mode=TwoWay}" />
-                <Button Padding="10 0" Margin="10 0">...</Button>
-                <Button Padding="10 0" Margin="10 0">Edit</Button>
-                <Button Padding="10 0">New</Button>
+                <Label Width="200">Assets configuration / style of map</Label>
+                <ComboBox Width="400" Text="{Binding AssetConfigFile,Mode=TwoWay}" IsEditable="True" />
+                <Button Padding="10 0" Margin="10 0" cal:Message.Attach="ChooseAssetConfig">...</Button>
+                <Button Padding="10 0" Margin="10 0" cal:Message.Attach="EditAssetConfig">Edit</Button>
+                <!--<Button Padding="10 0" cal:Message.Attach="CreateAssetConfig">New</Button>-->
             </StackPanel>
 
             <Expander Margin="10">
@@ -71,12 +81,14 @@
                     </StackPanel>
                 </StackPanel>
             </Expander>
-
+ 
             <TextBlock Margin="5">
             To select an area on the map : <LineBreak />
             - From a corner, press Ctrl Key then press Left Mouse Button<LineBreak />
             - From center, press Alt Key then press Left Mouse Button.
             </TextBlock>
+
+            <!--https://www.openstreetmap.org/edit#map=14/47.5534/6.9822-->
 
             <map:Map x:Name="MapControl"
                  Height="600"

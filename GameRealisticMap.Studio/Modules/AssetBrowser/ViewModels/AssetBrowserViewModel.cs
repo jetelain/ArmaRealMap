@@ -170,6 +170,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             var assets = AllAssets.Where(a => !a.Preview.IsFile).ToList();
             _ = Task.Run(() => LoadPreviews(assets));
             _ = Task.Run(() => LoadMods());
+
+            if (items.Count == 0)
+            {
+                _ = Task.Run(async () => { await DoImportBuiltin("Base", string.Empty); await DoImportBuiltin("Livonia", string.Empty); await DoImportBuiltin("Tanoa", string.Empty); });
+            }
+
         }
 
         private void UpdateModsList(IEnumerable<AssetViewModel> assets)
@@ -180,6 +186,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 .Select(a => a.ModId)
                 .Distinct()
                 .Where(m => !existingMods.Contains(m))
+                .OrderBy(m => m)
                 .Select(m => new ModOption(m, m)));
         }
 

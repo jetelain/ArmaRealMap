@@ -6,6 +6,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetBrowser.Views"
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -43,13 +44,13 @@
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <ProgressBar Visibility="{Binding IsImporting, Converter={StaticResource BooleanToVisibilityConverter}}" IsIndeterminate="{Binding IsImporting}" Width="100" Margin="0 5 10 5" />
 
-                <Button Click="Button_Click">
-                    Import files
+                <Button Padding="15 0" b:ButtonBehaviors.OpenContextOnClick="True">
+                    Import assets
                     <Button.ContextMenu>
-                        <ContextMenu x:Name="AddMenu">
+                        <ContextMenu>
                             <MenuItem Header="Arma 3" Command="{Binding ImportA3}" CommandParameter="Base" />
-                            <MenuItem Header="Arma 3: Tanoa" Command="{Binding ImportA3}" CommandParameter="Tanoa" />
                             <MenuItem Header="Arma 3: Livonia" Command="{Binding ImportA3}" CommandParameter="Livonia" />
+                            <MenuItem Header="Arma 3: Tanoa" Command="{Binding ImportA3}" CommandParameter="Tanoa" />
                             <MenuItem Header="Usual terrain mods" ItemsSource="{Binding UsualMods}">
                                 <MenuItem.ItemContainerStyle>
                                     <Style>

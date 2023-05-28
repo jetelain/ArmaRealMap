@@ -77,15 +77,5 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Views
                 }
             }
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var ui = sender as FrameworkElement;
-            AddMenu.Placement = PlacementMode.Relative;
-            AddMenu.PlacementTarget = ui;
-            AddMenu.HorizontalOffset = 0;
-            AddMenu.VerticalOffset = ui.ActualHeight;
-            AddMenu.IsOpen = true;
-        }
     }
 }

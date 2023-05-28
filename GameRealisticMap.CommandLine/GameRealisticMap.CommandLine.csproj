@@ -8,16 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="preview.html" />
-    <None Remove="preview.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="preview.html" />
-    <EmbeddedResource Include="preview.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
   </ItemGroup>
 

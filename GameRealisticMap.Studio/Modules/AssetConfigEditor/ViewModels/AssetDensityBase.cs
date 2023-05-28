@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using GameRealisticMap.Algorithms.Definitions;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
@@ -11,8 +12,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         protected AssetDensityBase(TId id, TDefinition? definition, AssetConfigEditorViewModel parent) 
             : base(id, definition, parent)
         {
-            _minDensity = definition?.MinDensity ?? 1;
-            _maxDensity = definition?.MaxDensity ?? 1;
+            _minDensity = definition?.MinDensity ?? 0.01;
+            _maxDensity = definition?.MaxDensity ?? 0.01;
         }
 
         private double _minDensity;
@@ -29,6 +30,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             set { _maxDensity = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(DensityText)); }
         }
 
+        public double? ComputedMaxDensity { get; set; }
+
         public string DensityText
         {
             get
@@ -40,5 +43,27 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 return $"{MinDensity} to {MaxDensity} objects/m²";
             }
         }
+
+        protected abstract double GetMaxDensity();
+
+        public Task ComputeMaxDensity()
+        {
+            var max = Math.Round(GetMaxDensity(), 4);
+            ComputedMaxDensity = max;
+            if (_maxDensity > max)
+            {
+                _maxDensity = max;
+            }
+            if (_minDensity > _maxDensity)
+            {
+                _minDensity = _maxDensity;
+            }
+            NotifyOfPropertyChange(nameof(ComputedMaxDensity));
+            NotifyOfPropertyChange(nameof(MaxDensity));
+            NotifyOfPropertyChange(nameof(MinDensity));
+            NotifyOfPropertyChange(nameof(DensityText));
+            return Task.CompletedTask;
+        }
+
     }
 }

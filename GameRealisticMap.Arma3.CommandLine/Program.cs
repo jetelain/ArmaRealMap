@@ -4,6 +4,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Osm;
+using GameRealisticMap.Preview;
 using GameRealisticMap.Reporting;
 using GeoJSON.Text.Feature;
 
@@ -35,41 +36,21 @@ namespace GameRealisticMap.Arma3.CommandLine
 
             var sw = Stopwatch.StartNew();
 
-            var catalog = new BuildersCatalog(progress, assets);
+            var generator = new Arma3MapGenerator(assets, projectDrive);
 
-            var loader = new OsmDataOverPassLoader(progress);
-
-            var osmSource = await loader.Load(a3config.TerrainArea);
-
-            var context = new BuildContext(catalog, progress, a3config.TerrainArea, osmSource, a3config.Imagery);
-            
-            var generator = new Arma3MapGenerator(assets, progress, projectDrive, projectDrive);
-
-            generator.WriteDirectlyWrp(a3config, context, a3config.TerrainArea);
-
-            await projectDrive.ProcessImageToPaa(progress);
+            var context = await generator.GenerateWrp(progress, a3config);
 
             sw.Stop();
 
             var surface = a3config.SizeInMeters * a3config.SizeInMeters / 1000000d;
-            
+
             Console.WriteLine($"It took {sw.ElapsedMilliseconds} msec for {surface:0.0} Km², {sw.ElapsedMilliseconds / surface:0} msec/Km²");
 
-            var all = catalog.GetOfType<IGeoJsonData>(context).SelectMany(d => d.ToGeoJson()).ToList();
-            //var preview = new ModelPreviewHelper(library);
-            //var all = preview.ToGeoJson(new ForestGenerator(progress, assets).Generate(a3config, context)).ToList();
-            var json = JsonSerializer.Serialize(new FeatureCollection(all));
-            using (var reader = new StreamReader(typeof(Program).Assembly.GetManifestResourceStream("GameRealisticMap.Arma3.CommandLine.preview.html")!))
-            {
-                File.WriteAllText("preview.html", reader.ReadToEnd().Replace(@"{""type"":""FeatureCollection""}", json));
-            }
-            using (var reader = new StreamReader(typeof(Program).Assembly.GetManifestResourceStream("GameRealisticMap.Arma3.CommandLine.preview.js")!))
-            {
-                File.WriteAllText("preview.js", reader.ReadToEnd());
-            }
+            var all = context.Catalog.GetOfType<IGeoJsonData>(context).SelectMany(d => d.ToGeoJson()).ToList();
+
+            await PreviewRender.RenderHtml(new FeatureCollection(all), Path.GetFullPath("preview.html"));
 
             await Arma3ToolsHelper.BuildWithMikeroPboProject(a3config.PboPrefix, @"C:\temp\@ArmTest");
         }
-
     }
 }

@@ -14,6 +14,11 @@ namespace GameRealisticMap.Studio.Toolkit
 {
     public abstract class PersistedDocument2 : PersistedDocument
     {
+        public Task SaveDocument()
+        {
+            return ((ICommandHandler<SaveFileCommandDefinition>)this).Run(null);
+        }
+
         public override async Task<bool> CanCloseAsync(CancellationToken cancellationToken)
         {
             if (IsDirty)
@@ -25,7 +30,7 @@ namespace GameRealisticMap.Studio.Toolkit
                 }
                 if (response == MessageBoxResult.Yes)
                 {
-                    await ((ICommandHandler<SaveFileCommandDefinition>)this).Run(null);
+                    await SaveDocument();
                     return !IsNew;
                 }
             }

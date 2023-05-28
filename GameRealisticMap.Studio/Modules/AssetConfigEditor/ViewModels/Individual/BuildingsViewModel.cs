@@ -22,6 +22,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
         public ObservableCollection<BuildingItem> Items { get; }
 
         public RelayCommand RemoveItem { get; }
+        public bool IsEmpty { get { return Items.Count == 0; } }
 
         public override List<BuildingDefinition> ToDefinition()
         {

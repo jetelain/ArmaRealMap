@@ -222,8 +222,7 @@ namespace ArmToGrmA3
                 }
 
                 density = oldLibrary?.Density ?? 0.01d;
-                var itemSurface = oldLibrary.Objects.Sum(o => o.PlacementProbability.Value * Math.Pow(o.PlacementRadius.Value, 2) * Math.PI);
-                var maxDensity = 1 / itemSurface * 0.8d;
+                var maxDensity = DensityHelper.GetMaxDensity(items);
                 if (density > maxDensity)
                 {
                     density = maxDensity;

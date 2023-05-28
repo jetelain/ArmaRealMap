@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
-using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
@@ -27,7 +27,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         }
 
         public ObservableCollection<FillingItem> Items { get; }
+
         public RelayCommand RemoveItem { get; }
+
+        public bool IsEmpty { get { return Items.Count == 0; } }
 
         public override BasicCollectionDefinition ToDefinition()
         {
@@ -49,9 +52,15 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
             DefinitionHelper.EquilibrateProbabilities(Items);
         }
+
         public override void Equilibrate()
         {
             DefinitionHelper.EquilibrateProbabilities(Items);
+        }
+
+        protected override double GetMaxDensity()
+        {
+            return DensityHelper.GetMaxDensity(ToDefinition().Models);
         }
     }
 }

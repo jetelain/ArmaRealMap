@@ -14,6 +14,8 @@
             return Scope = new ProgressScope(Scope, this, name);
         }
 
+        public string Prefix => Scope.Prefix;
+
         public abstract IProgressInteger CreateStep(string name, int total);
 
         public abstract IProgressPercent CreateStepPercent(string name);

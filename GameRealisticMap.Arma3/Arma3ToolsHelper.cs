@@ -81,6 +81,8 @@ namespace GameRealisticMap.Arma3
                     FileName = imageToPaaExe,
                     RedirectStandardOutput = true,
                     Arguments = "\"" + x + "\"",
+                    WindowStyle= ProcessWindowStyle.Hidden,
+                    CreateNoWindow = true
                 })!;
                 proc.OutputDataReceived += (_, e) => Trace.WriteLine(e.Data);
                 proc.BeginOutputReadLine();

@@ -1,18 +1,10 @@
-﻿using System.Text;
-using BIS.WRP;
-using GameRealisticMap.Arma3.Assets;
+﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.Imagery;
 using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Arma3.ManMade;
-using GameRealisticMap.Arma3.Nature.Forests;
-using GameRealisticMap.Arma3.Nature.Lakes;
-using GameRealisticMap.Arma3.Nature.RockAreas;
-using GameRealisticMap.Arma3.Nature.Scrubs;
-using GameRealisticMap.Arma3.Nature.Trees;
-using GameRealisticMap.Arma3.Nature.Watercourses;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Roads;
+using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3
@@ -20,71 +12,81 @@ namespace GameRealisticMap.Arma3
     public class Arma3MapGenerator
     {
         private readonly IArma3RegionAssets assets;
-        private readonly IProgressSystem progress;
-        private readonly IGameFileSystem gameFileSystem;
-        private readonly IGameFileSystemWriter gameFileSystemWriter;
-        private readonly List<ITerrainBuilderLayerGenerator> terrainBuilderLayerGenerators = new List<ITerrainBuilderLayerGenerator>();
+        private readonly ProjectDrive projectDrive;
 
-        public Arma3MapGenerator(
-            IArma3RegionAssets assets, 
-            IProgressSystem progress,
-            IGameFileSystem gameFileSystem, 
-            IGameFileSystemWriter gameFileSystemWriter)
+        public Arma3MapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive)
         {
             this.assets = assets;
-            this.progress = progress;
-            this.gameFileSystem = gameFileSystem;
-            this.gameFileSystemWriter = gameFileSystemWriter;
-
-            // All generators
-
-            // ManMade
-            terrainBuilderLayerGenerators.Add(new BuildingGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new OrientedObjectsGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new BridgeGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new FenceGenerator(progress, assets));
-            // TODO: railway
-
-            // Nature
-            terrainBuilderLayerGenerators.Add(new ForestEdgeGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new ForestGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new ForestRadialGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new LakeSurfaceGenerator(assets));
-            terrainBuilderLayerGenerators.Add(new RocksGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new ScrubGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new ScrubRadialGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new TreesGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new WatercourseGenerator(progress, assets));
-            terrainBuilderLayerGenerators.Add(new WatercourseRadialGenerator(progress, assets));
+            this.projectDrive = projectDrive;
         }
 
-        public void WriteDirectlyWrp(IArma3MapConfig config, IContext context, ITerrainArea area)
+        public async Task<BuildContext?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
         {
-            new GameConfigGenerator(assets, gameFileSystemWriter).Generate(config, context, area);
+            var generators = new Arma3LayerGeneratorCatalog(progress, assets);
+            progress.Total += 5 + generators.Generators.Count;
+
+            // Download from OSM
+            var loader = new OsmDataOverPassLoader(progress);
+            var osmSource = await loader.Load(a3config.TerrainArea);
+            progress.ReportOneDone();
+            if (progress.CancellationToken.IsCancellationRequested)
+            {
+                return null;
+            }
+
+            // Generate content
+            var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary);
+            var context = new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery);
+            GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators);
+            if (progress.CancellationToken.IsCancellationRequested)
+            {
+                return null;
+            }
+
+            // Convert PAA
+            await projectDrive.ProcessImageToPaa(progress);
+            progress.ReportOneDone();
+
+            return context;
+        }
+
+        public void GenerateWrp(IProgressTask progress, IArma3MapConfig config, IContext context, ITerrainArea area, Arma3LayerGeneratorCatalog generators)
+        {
+            // Game config
+            new GameConfigGenerator(assets, projectDrive).Generate(config, context, area);
 
             // Roads
-            var roadsCompiler = new RoadsCompiler(progress, gameFileSystemWriter, assets.RoadTypeLibrary);
+            var roadsCompiler = new RoadsCompiler(progress, projectDrive, assets.RoadTypeLibrary);
 
             roadsCompiler.Write(config, context.GetData<RoadsData>().Roads);
+            progress.ReportOneDone();
+            if (progress.CancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
 
             // Imagery
-            var imageryCompiler = new ImageryCompiler(assets.Materials, progress, gameFileSystemWriter);
+            var imageryCompiler = new ImageryCompiler(assets.Materials, progress, projectDrive);
 
-            var tiles = imageryCompiler.Compile(config, new ImagerySource(assets.Materials, progress, gameFileSystem, config, context));
+            var tiles = imageryCompiler.Compile(config, new ImagerySource(assets.Materials, progress, projectDrive, config, context));
+            progress.ReportOneDone();
+            if (progress.CancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
 
             // Objects + WRP
-            var wrpBuilder = new WrpCompiler(progress, gameFileSystemWriter);
+            var wrpBuilder = new WrpCompiler(progress, projectDrive);
 
             var grid = context.GetData<ElevationData>().Elevation;
 
-            wrpBuilder.Write(config, grid, tiles, GetObjects(config, context, grid));
-        }
-
-        private IEnumerable<EditableWrpObject> GetObjects(IArma3MapConfig config, IContext context, ElevationGrid elevationGrid)
-        {
-            return terrainBuilderLayerGenerators
+            var objects = generators.Generators
+                .Progress(progress)
                 .SelectMany(tb => tb.Generate(config, context))
-                .Select(o => o.ToWrpObject(elevationGrid));
+                .Select(o => o.ToWrpObject(grid));
+
+            wrpBuilder.Write(config, grid, tiles, objects);
+            progress.ReportOneDone();
         }
 
     }

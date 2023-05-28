@@ -138,16 +138,16 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             return collection;
         }
 
-        private Arma3Assets ToJson()
+        internal Arma3Assets ToJson()
         {
             EquilibrateProbabilities();
 
             var json = new Arma3Assets();
-            json.ClusterCollections = Filling.OfType<FillingAssetClusterViewModel>().GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
-            json.BasicCollections = Filling.OfType<FillingAssetBasicViewModel>().GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
-            json.Fences = Filling.OfType<FencesViewModel>().GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
-            json.Buildings = Individual.OfType<BuildingsViewModel>().OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
-            json.Objects = Individual.OfType<ObjectsViewModel>().OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
+            json.ClusterCollections = Filling.OfType<FillingAssetClusterViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
+            json.BasicCollections = Filling.OfType<FillingAssetBasicViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
+            json.Fences = Filling.OfType<FencesViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
+            json.Buildings = Individual.OfType<BuildingsViewModel>().Where(c => !c.IsEmpty).OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
+            json.Objects = Individual.OfType<ObjectsViewModel>().Where(c => !c.IsEmpty).OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
             var materialDefintions = Materials
                 .Where(m => m.SameAs == null)
                 .Select(m => new TerrainMaterialDefinition(m.ToDefinition(), Materials.Where(o => o == m || o.SameAs == m).Select(o => o.FillId).OrderBy(m => m).ToArray()))

@@ -18,6 +18,8 @@ namespace GameRealisticMap
             Imagery = imagery;
         }
 
+        public IBuidersCatalog Catalog => catalog;
+
         public ITerrainArea Area { get; }
 
         public IOsmDataSource OsmSource { get; }
