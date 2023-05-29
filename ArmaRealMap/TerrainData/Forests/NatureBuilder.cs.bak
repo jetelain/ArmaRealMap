@@ -162,7 +162,7 @@ namespace ArmaRealMap.TerrainData.Forests
             // Roads that have an edge effect of forest
             substractPolygons.AddRange(data.Roads
                 .Where(r => r.RoadType != RoadTypeId.Trail)
-                .SelectMany(r => TerrainPolygon.FromPath(r.Path.Points, RoadClearWidth(r))));
+                .SelectMany(r => TerrainPolygon.FromPath(r.Path.Points, r.RoadTypeInfos.ClearWidth)));
 
             // Priority shapes
             substractPolygons.AddRange(shapes
@@ -197,19 +197,6 @@ namespace ArmaRealMap.TerrainData.Forests
             }
             report.TaskDone();
             return polygonsCropped;
-        }
-
-        private static float RoadClearWidth(Road r)
-        {
-            if (r.RoadType < RoadTypeId.TwoLanesPrimaryRoad)
-            {
-                return r.Width + 6f;
-            }
-            if (r.RoadType < RoadTypeId.SingleLaneDirtPath)
-            {
-                return r.Width + 4f;
-            }
-            return r.Width + 2f;
         }
 
         public static void Remove<T>(TerrainObjectLayer objects, IEnumerable<T> toremoveList, Func<T, TerrainObject, bool> match)

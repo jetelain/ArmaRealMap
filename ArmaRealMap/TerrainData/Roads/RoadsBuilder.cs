@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using ArmaRealMap.Core.ObjectLibraries;
+using ArmaRealMap.Core.Roads;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
@@ -13,8 +14,6 @@ using ArmaRealMap.TerrainData.ElevationModel;
 using ArmaRealMap.TerrainData.Forests;
 using ArmaRealMap.TerrainData.Roads;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.ManMade;
-using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GeoAPI.Geometries;
 using NetTopologySuite.Features;
@@ -261,7 +260,7 @@ namespace ArmaRealMap.Roads
             var features = new List<Feature>();
             foreach (var road in data.Roads)
             {
-                if (road.SpecialSegment == WaySpecialSegment.Bridge && ElevationGridBuilder.GetBridgeCategory(road.RoadType, libs) != null)
+                if (road.SpecialSegment == RoadSpecialSegment.Bridge && ElevationGridBuilder.GetBridgeCategory(road.RoadType, libs) != null)
                 {
                     continue;
                 }
@@ -328,7 +327,13 @@ namespace ArmaRealMap.Roads
                             {
                                 foreach (var pathSegment in path.ClippedBy(area))
                                 {
-                                    data.Roads.Add(new Road(OsmCategorizer.ToRoadSpecialSegment(road.Tags), pathSegment, type));
+                                    data.Roads.Add(new Road()
+                                    {
+                                        Path = pathSegment,
+                                        RoadType = kind.Value,
+                                        RoadTypeInfos = type,
+                                        SpecialSegment = OsmCategorizer.ToRoadSpecialSegment(road.Tags)
+                                    });
                                 }
                             }
                         }

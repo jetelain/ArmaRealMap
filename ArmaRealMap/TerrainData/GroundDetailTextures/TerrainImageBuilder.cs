@@ -4,17 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ArmaRealMap.Core.Roads;
-using GameRealisticMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
+using GameRealisticMap.Geometries;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using GameRealisticMap.ManMade;
-using GameRealisticMap.ManMade.Roads;
 
 namespace ArmaRealMap.TerrainData.GroundDetailTextures
 {
@@ -176,11 +174,11 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
                             tile.Mutate(d =>
                             {
-                                foreach (var road in roads.Where(r => r.SpecialSegment != WaySpecialSegment.Bridge))
+                                foreach (var road in roads.Where(r => r.SpecialSegment != RoadSpecialSegment.Bridge))
                                 {
                                     foreach (var polygon in road.Polygons)
                                     {
-                                        DrawHelper.DrawPolygon(d, polygon, GetBrush((RoadTypeInfos)road.RoadTypeInfos), l => l.Select(p => area.TerrainToPixelsPoint(p) + pos));
+                                        DrawHelper.DrawPolygon(d, polygon, GetBrush(road.RoadTypeInfos), l => l.Select(p => area.TerrainToPixelsPoint(p) + pos));
                                     }
                                 }
                             });
