@@ -26,6 +26,8 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using ModelInfoLibrary = GameRealisticMap.Arma3.TerrainBuilder.ModelInfoLibrary;
 using OldModelInfoLibrary = ArmaRealMap.ModelInfoLibrary;
+using OldRoadTypeId = ArmaRealMap.Core.Roads.RoadTypeId;
+using NewRoadTypeId = GameRealisticMap.ManMade.Roads.RoadTypeId;
 
 namespace ArmToGrmA3
 {
@@ -116,10 +118,10 @@ namespace ArmToGrmA3
             newAssets.Buildings.Add(BuildingTypeId.RadioTower, ConvertBuilding(olibs.GetSingleLibrary(ObjectCategory.RadioTower), newModels, oldModels));
             newAssets.Buildings = newAssets.Buildings.OrderBy(o => o.Key).ToDictionary(p => p.Key, p => p.Value);
 
-            newAssets.Bridges.Add(RoadTypeId.TwoLanesMotorway, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgePrimaryRoad), newModels, oldModels));
-            newAssets.Bridges.Add(RoadTypeId.TwoLanesPrimaryRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgePrimaryRoad), newModels, oldModels));
-            newAssets.Bridges.Add(RoadTypeId.TwoLanesSecondaryRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgeSecondaryRoad), newModels, oldModels));
-            newAssets.Bridges.Add(RoadTypeId.TwoLanesConcreteRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgeConcreteRoad), newModels, oldModels));
+            newAssets.Bridges.Add(NewRoadTypeId.TwoLanesMotorway, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgePrimaryRoad), newModels, oldModels));
+            newAssets.Bridges.Add(NewRoadTypeId.TwoLanesPrimaryRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgePrimaryRoad), newModels, oldModels));
+            newAssets.Bridges.Add(NewRoadTypeId.TwoLanesSecondaryRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgeSecondaryRoad), newModels, oldModels));
+            newAssets.Bridges.Add(NewRoadTypeId.TwoLanesConcreteRoad, ConvertBridge(olibs.GetSingleLibrary(ObjectCategory.BridgeConcreteRoad), newModels, oldModels));
             newAssets.Bridges = newAssets.Bridges.OrderBy(o => o.Key).ToDictionary(p => p.Key, p => p.Value);
 
             newAssets.BasicCollections.Add(BasicCollectionId.ScrubAdditional, ConvertBasic(olibs.GetSingleLibrary(ObjectCategory.ScrubAdditionalObjects), newModels, oldModels));
@@ -365,14 +367,14 @@ namespace ArmToGrmA3
         {
             var rlib = new RoadTypeLibrary();
             rlib.LoadFromFile(globalConfig.RoadTypesFile, region);
-            var legacyRoadTypes = Enum.GetValues<RoadTypeId>().Where(r => r != RoadTypeId.ConcreteFootway && r != RoadTypeId.SingleLaneConcreteRoad);
-            newAssets.Roads.AddRange(legacyRoadTypes.Select(id => ConvertRoad(rlib.GetInfo(id, region))));
-            newAssets.Roads.Add(ExtrapolateRoad(rlib.GetInfo(RoadTypeId.TwoLanesConcreteRoad, region), RoadTypeId.SingleLaneConcreteRoad));
-            newAssets.Roads.Add(ExtrapolateRoad(rlib.GetInfo(RoadTypeId.TwoLanesConcreteRoad, region), RoadTypeId.ConcreteFootway));
+            var legacyRoadTypes = Enum.GetValues<OldRoadTypeId>();
+            newAssets.Roads.AddRange(legacyRoadTypes.Select(id => ConvertRoad(rlib.GetInfo(id, region), Enum.Parse<NewRoadTypeId>(id.ToString()))));
+            newAssets.Roads.Add(ExtrapolateRoad(rlib.GetInfo(OldRoadTypeId.TwoLanesConcreteRoad, region), NewRoadTypeId.SingleLaneConcreteRoad));
+            newAssets.Roads.Add(ExtrapolateRoad(rlib.GetInfo(OldRoadTypeId.TwoLanesConcreteRoad, region), NewRoadTypeId.ConcreteFootway));
             newAssets.Roads.Sort((a, b) => a.Id.CompareTo(b.Id));
         }
 
-        private static Arma3RoadTypeInfos ExtrapolateRoad(RoadTypeInfos source, RoadTypeId id)
+        private static Arma3RoadTypeInfos ExtrapolateRoad(RoadTypeInfos source, NewRoadTypeId id)
         {
             var def = new DefaultRoadTypeLibrary().GetInfo(id);
             return new Arma3RoadTypeInfos(id, 
@@ -385,9 +387,21 @@ namespace ArmToGrmA3
                 def.ClearWidth);
         }
 
-        private static Arma3RoadTypeInfos ConvertRoad(RoadTypeInfos roadTypeInfos)
+        private static Arma3RoadTypeInfos ConvertRoad(RoadTypeInfos roadTypeInfos, NewRoadTypeId newRoadTypeId)
         {
-            return new Arma3RoadTypeInfos(roadTypeInfos.Id, Color.Parse(roadTypeInfos.SatelliteColor), roadTypeInfos.TextureWidth, roadTypeInfos.Texture, roadTypeInfos.TextureEnd, roadTypeInfos.Material, roadTypeInfos.Width, roadTypeInfos.ClearWidth);
+            return new Arma3RoadTypeInfos(newRoadTypeId, Color.Parse(roadTypeInfos.SatelliteColor), roadTypeInfos.TextureWidth, roadTypeInfos.Texture, roadTypeInfos.TextureEnd, roadTypeInfos.Material, roadTypeInfos.Width, RoadClearWidth(roadTypeInfos));
+        }
+        private static float RoadClearWidth(RoadTypeInfos r)
+        {
+            if (r.Id < OldRoadTypeId.TwoLanesPrimaryRoad)
+            {
+                return r.Width + 6f;
+            }
+            if (r.Id < OldRoadTypeId.SingleLaneDirtPath)
+            {
+                return r.Width + 4f;
+            }
+            return r.Width + 2f;
         }
     }
 }
