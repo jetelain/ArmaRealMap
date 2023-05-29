@@ -1,4 +1,6 @@
-﻿namespace GameRealisticMap.Reporting
+﻿using System.Diagnostics;
+
+namespace GameRealisticMap.Reporting
 {
     public abstract class ProgressSystemBase : IProgressSystem
     {
@@ -19,5 +21,10 @@
         public abstract IProgressInteger CreateStep(string name, int total);
 
         public abstract IProgressPercent CreateStepPercent(string name);
+
+        public virtual void WriteLine(string message)
+        {
+            Trace.WriteLine(message);
+        }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics;
+using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.ManMade.Roads
 {
     internal static class RoadTypeIdHelper
     {
-        internal static RoadTypeId? FromOSM(TagsCollectionBase tags)
+        internal static RoadTypeId? FromOSM(TagsCollectionBase tags, IProgressSystem progress)
         {
             var type = tags.GetValue("highway");
             switch (type)
@@ -73,7 +74,7 @@ namespace GameRealisticMap.ManMade.Roads
             }
             if (!string.IsNullOrEmpty(type))
             {
-                Trace.WriteLine($"Unknown highway='{type}'");
+                progress.WriteLine($"Unknown highway='{type}'");
             }
             return null;
         }

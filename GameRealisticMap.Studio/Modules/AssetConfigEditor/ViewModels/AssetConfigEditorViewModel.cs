@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.ManMade.Buildings;
@@ -30,15 +31,15 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         private readonly IShell _shell;
         private readonly ICompositionTool _compositionTool;
 
-        public ObservableCollection<IAssetCategory> Filling { get; } = new ObservableCollection<IAssetCategory>();
+        public BindableCollection<IAssetCategory> Filling { get; } = new BindableCollection<IAssetCategory>();
 
-        public ObservableCollection<IAssetCategory> Individual { get; } = new ObservableCollection<IAssetCategory>();
+        public BindableCollection<IAssetCategory> Individual { get; } = new BindableCollection<IAssetCategory>();
 
-        public ObservableCollection<MaterialViewModel> Materials { get; } = new ObservableCollection<MaterialViewModel>();
+        public BindableCollection<MaterialViewModel> Materials { get; } = new BindableCollection<MaterialViewModel>();
 
-        public ObservableCollection<RoadViewModel> Roads { get; } = new ObservableCollection<RoadViewModel>();
+        public BindableCollection<RoadViewModel> Roads { get; } = new BindableCollection<RoadViewModel>();
 
-        public ObservableCollection<PondViewModel> Ponds { get; } = new ObservableCollection<PondViewModel>();
+        public BindableCollection<PondViewModel> Ponds { get; } = new BindableCollection<PondViewModel>();
 
         public bool IsLoading { get; set; }
 
@@ -84,35 +85,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             Roads.Clear();
             Materials.Clear();
             Ponds.Clear();
-            foreach (var id in Enum.GetValues<BasicCollectionId>())
-            {
-                foreach (var entry in AtLeastOne(arma3Assets.GetBasicCollections(id)))
-                {
-                    Filling.Add(new FillingAssetBasicViewModel(id, entry, this));
-                }
-            }
-            foreach (var id in Enum.GetValues<ClusterCollectionId>())
-            {
-                foreach (var entry in AtLeastOne(arma3Assets.GetClusterCollections(id)))
-                {
-                    Filling.Add(new FillingAssetClusterViewModel(id, entry, this));
-                }
-            }
-            foreach (var id in Enum.GetValues<FenceTypeId>())
-            {
-                foreach (var entry in AtLeastOne(arma3Assets.GetFences(id)))
-                {
-                    Filling.Add(new FencesViewModel(id, entry, this));
-                }
-            }
-            foreach (var id in Enum.GetValues<BuildingTypeId>())
-            {
-                Individual.Add(new BuildingsViewModel(id, arma3Assets.GetBuildings(id), this));
-            }
-            foreach (var id in Enum.GetValues<ObjectTypeId>())
-            {
-                Individual.Add(new ObjectsViewModel(id, arma3Assets.GetObjects(id), this));
-            }
+
+            Filling.AddRange(GetFilling(arma3Assets));
+            Individual.AddRange(GetIndividual(arma3Assets));
+
             foreach (var id in Enum.GetValues<TerrainMaterialUsage>().OrderByDescending(i => i))
             {
                 Materials.Add(new MaterialViewModel(id, arma3Assets.Materials.GetMaterialByUsage(id), this));
@@ -127,6 +103,49 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 Ponds.Add(new PondViewModel(id, arma3Assets.Ponds.Count == 0 ? null : arma3Assets.GetPond(id), _arma3Data.Library));
             }
             NotifyOfPropertyChange(nameof(TextureSizeInMeters));
+        }
+
+        private List<IAssetCategory> GetIndividual(Arma3Assets arma3Assets)
+        {
+            var list = new List<IAssetCategory>();
+            foreach (var id in Enum.GetValues<BuildingTypeId>())
+            {
+                list.Add(new BuildingsViewModel(id, arma3Assets.GetBuildings(id), this));
+            }
+            foreach (var id in Enum.GetValues<ObjectTypeId>())
+            {
+                list.Add(new ObjectsViewModel(id, arma3Assets.GetObjects(id), this));
+            }
+            list.Sort((a, b) => a.PageTitle.CompareTo(b.PageTitle));
+            return list;
+        }
+
+        private List<IAssetCategory> GetFilling(Arma3Assets arma3Assets)
+        {
+            var list = new List<IAssetCategory>();
+            foreach (var id in Enum.GetValues<BasicCollectionId>())
+            {
+                foreach (var entry in AtLeastOne(arma3Assets.GetBasicCollections(id)))
+                {
+                    list.Add(new FillingAssetBasicViewModel(id, entry, this));
+                }
+            }
+            foreach (var id in Enum.GetValues<ClusterCollectionId>())
+            {
+                foreach (var entry in AtLeastOne(arma3Assets.GetClusterCollections(id)))
+                {
+                    list.Add(new FillingAssetClusterViewModel(id, entry, this));
+                }
+            }
+            foreach (var id in Enum.GetValues<FenceTypeId>())
+            {
+                foreach (var entry in AtLeastOne(arma3Assets.GetFences(id)))
+                {
+                    list.Add(new FencesViewModel(id, entry, this));
+                }
+            }
+            list.Sort((a, b) => a.PageTitle.CompareTo(b.PageTitle));
+            return list;
         }
 
         private IEnumerable<T?> AtLeastOne<T>(IReadOnlyCollection<T> collection, T? one = null) where T : class

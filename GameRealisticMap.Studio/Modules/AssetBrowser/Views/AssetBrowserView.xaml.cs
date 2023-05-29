@@ -77,5 +77,19 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Views
                 }
             }
         }
+
+        private void MenuItem_Remove(object sender, RoutedEventArgs e)
+        {
+            (DataContext as AssetBrowserViewModel)?.RemoveAssetsAsync(Grid.SelectedItems.OfType<AssetViewModel>());
+        }
+
+        private void MenuItem_ChangeType(object sender, RoutedEventArgs e)
+        {
+            var category = ((FrameworkElement)e.OriginalSource).DataContext as CategoryOption;
+            if (category != null)
+            {
+                (DataContext as AssetBrowserViewModel)?.ChangeAssetsCategoryAsync(Grid.SelectedItems.OfType<AssetViewModel>(), category.Category);
+            }
+        }
     }
 }

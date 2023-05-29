@@ -18,6 +18,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         protected AssetBase(TId id, AssetConfigEditorViewModel parent)
         {
             FillId = id;
+            PageTitle = Labels.ResourceManager.GetString("Asset" + IdText) ?? IdText;
             DisplayName = parent.FileName + ": " + IdText;
             ParentEditor = parent;
             Edit = new AsyncCommand(() => parent.EditAssetCategory(this));
@@ -37,7 +38,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public virtual string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/{IdText}.png";
 
-        public virtual string TreeName => IdText;
+        public string PageTitle { get; }
+
+        public string TreeName => PageTitle;
 
         public string Label { get; set; } = string.Empty;
 

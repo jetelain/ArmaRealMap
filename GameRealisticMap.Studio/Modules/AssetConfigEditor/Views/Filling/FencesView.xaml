@@ -11,7 +11,7 @@
         <StackPanel Margin="10 0">
             <StackPanel Orientation="Horizontal" Margin="0 10">
                 <Button Padding="10" Command="{Binding Back}">🡰</Button>
-                <TextBlock FontSize="30" Margin="20 0" Text="{Binding IdText}" />
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding PageTitle}" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 10">

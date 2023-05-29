@@ -8,7 +8,8 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetBrowser.Views"
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="Root">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
@@ -101,6 +102,17 @@
                                 <TextBlock Margin="0 2" Text="{Binding HeightText}" Grid.Column="1" Grid.Row="3" />
                             </Grid>
                         </StackPanel.ToolTip>
+                        <StackPanel.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Change type"
+                                          ItemsSource="{Binding DataContext.SetCategories, Source={x:Reference Root}}"
+                                          DisplayMemberPath="Name"
+                                          Click="MenuItem_ChangeType">
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="Remove from list" Click="MenuItem_Remove" />
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
                         <Image Source="{Binding Preview}" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="UniformToFill" Width="250" />
                         <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
                     </StackPanel>

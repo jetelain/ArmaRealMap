@@ -8,14 +8,17 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
     internal class ProgressStep : PropertyChangedBase, IProgressInteger, IProgressPercent
     {
         private readonly int total;
+        private readonly ProgressTask task;
         private readonly Stopwatch elapsed;
         private readonly Stopwatch lastReport;
         private readonly object locker = new object();
         private int lastDone = 0;
 
-        public ProgressStep(string taskName, int total = 1)
+        public ProgressStep(string taskName, int total, ProgressTask task)
         {
             this.total = total;
+            this.task = task;
+            task.WriteLine($"**** Begin '{taskName}'");
             StepName = taskName;
             elapsed = Stopwatch.StartNew();
             lastReport = Stopwatch.StartNew();
@@ -72,6 +75,8 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
         public void TaskDone()
         {
+            elapsed.Stop();
+            task.WriteLine($"** '{StepName}' done in {elapsed.ElapsedMilliseconds} msec");
             if (elapsed.ElapsedMilliseconds < 5000)
             {
                 Left = $"Done in {elapsed.ElapsedMilliseconds} msec";

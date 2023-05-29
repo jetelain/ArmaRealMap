@@ -12,7 +12,7 @@
     <!--<PackageReference Include="Gemini.Modules.ErrorList" Version="1.0.60-beta" />-->
     <!--<PackageReference Include="Gemini.Modules.GraphEditor" Version="1.0.60-beta" />-->
     <!--<PackageReference Include="Gemini.Modules.Inspector" Version="1.0.60-beta" />-->
-    <!--<PackageReference Include="Gemini.Modules.Output" Version="1.0.60-beta" />-->
+    <PackageReference Include="Gemini.Modules.Output" Version="1.0.60-beta" />
     <!--<PackageReference Include="Gemini.Modules.PropertyGrid" Version="1.0.60-beta" />-->
     <PackageReference Include="GeminiWpf" Version="1.0.60-beta" />
     <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
@@ -38,6 +38,21 @@
     <None Remove="Modules\AssetBrowser\Data\520618345.txt" />
     <None Remove="Modules\AssetBrowser\Data\583496184.txt" />
     <None Remove="Modules\AssetBrowser\Data\671539540.txt" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Compile Update="Labels.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Labels.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+	
+  <ItemGroup>
+    <EmbeddedResource Update="Labels.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Labels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

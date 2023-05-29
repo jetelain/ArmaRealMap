@@ -7,5 +7,7 @@
         IProgressInteger CreateStep(string name, int total);
 
         IProgressPercent CreateStepPercent(string name);
+
+        void WriteLine(string message);
     }
 }

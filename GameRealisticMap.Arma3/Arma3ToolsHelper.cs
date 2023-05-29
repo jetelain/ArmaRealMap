@@ -84,7 +84,7 @@ namespace GameRealisticMap.Arma3
                     WindowStyle= ProcessWindowStyle.Hidden,
                     CreateNoWindow = true
                 })!;
-                proc.OutputDataReceived += (_, e) => Trace.WriteLine(e.Data);
+                proc.OutputDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data)) { system.WriteLine(e.Data); } };
                 proc.BeginOutputReadLine();
                 await proc.WaitForExitAsync().ConfigureAwait(false);
                 report.ReportOneDone();

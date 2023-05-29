@@ -219,10 +219,9 @@ namespace GameRealisticMap.ElevationModel.Constrained
                     initial[x, y] = elevation;
                     report.ReportOneDone();
                 }
-                Trace.WriteLine($"{changes} changes on elevation grid");
+                progress.WriteLine($"{changes} changes on elevation grid");
             }
             report.Dispose();
-            Trace.Flush();
         }
 
         private float SoftAround(float initialElevation, Vector2 point, ElevationGrid grid, List<ElevationConstraintNode> constraints)

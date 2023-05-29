@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using CoordinateSharp.Debuggers;
 using Gemini.Framework;
 using Gemini.Framework.Services;
+using Gemini.Modules.Output;
 
 namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 {
@@ -11,14 +13,19 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
     {
         private TaskState state =  TaskState.None;
         private ProgressTask? current = null;
+        private readonly IOutput output;
+        private readonly IShell shell;
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
 
         public BindableCollection<ProgressStep> Items { get; set; } = new BindableCollection<ProgressStep>();
 
-        public ProgressToolViewModel()
+        [ImportingConstructor]
+        public ProgressToolViewModel(IOutput output, IShell shell)
         {
             DisplayName = "Task Progress";
+            this.output = output;
+            this.shell = shell;
         }
 
         public TaskState State
@@ -39,6 +46,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
         public IProgressTaskUI StartTask(string name)
         {
+            output.Clear();
             Items.Clear();
 
             Percent = 0;
@@ -49,7 +57,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
             State = TaskState.Running;
 
-            return current = new ProgressTask(this);
+            return current = new ProgressTask(this, output);
         }
 
         public Task CancelTask()
@@ -72,7 +80,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
         public Task ShowTaskError()
         {
-
+            shell.ShowTool(output);
             return Task.CompletedTask;
         }
 

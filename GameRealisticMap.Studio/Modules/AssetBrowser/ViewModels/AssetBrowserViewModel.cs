@@ -18,7 +18,7 @@ using Gemini.Framework;
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
     [Export(typeof(AssetBrowserViewModel))]
-    internal class AssetBrowserViewModel : Document, IDisposable
+    internal class AssetBrowserViewModel : Document
     {
         private readonly IArma3DataModule _arma3DataModule;
         private readonly IArma3Previews _arma3Previews;
@@ -30,7 +30,8 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public BindableCollection<ModOption> Mods { get; } = new BindableCollection<ModOption>();
 
-        public BindableCollection<CategoryOption> Categories { get; } = new BindableCollection<CategoryOption>();
+        public List<CategoryOption> Categories { get; } = new List<CategoryOption>();
+        public List<CategoryOption> SetCategories { get; } = new List<CategoryOption>();
 
         public List<ModInfo> ActiveMods { get; set; } = new List<ModInfo>();
 
@@ -58,14 +59,24 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
             DisplayName = "Asset Browser - Arma 3";
             Mods.Add(new ModOption("All", ""));
+            SetCategories.AddRange(Enum.GetValues<AssetCatalogCategory>().Select(c => new CategoryOption(c.ToString(), c)).OrderBy(c => c.Name));
             Categories.Add(new CategoryOption("All", null));
-            Categories.AddRange(Enum.GetValues<AssetCatalogCategory>().Select(c => new CategoryOption(c.ToString(), c)));
+            Categories.AddRange(SetCategories);
 
             ImportA3 = new RelayCommand(DoImportA3);
             ImportUsualMod = new RelayCommand(DoImportUsualMod);
             ImportActiveMod = new RelayCommand(DoImportActiveMod);
 
             _arma3DataModule.Reloaded += Arma3DataModuleWasReloaded;
+        }
+
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        {
+            if (close)
+            {
+                _arma3DataModule.Reloaded -= Arma3DataModuleWasReloaded;
+            }
+            return base.OnDeactivateAsync(close, cancellationToken);
         }
 
         private void Arma3DataModuleWasReloaded(object? sender, EventArgs e)
@@ -224,9 +235,28 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return true;
         }
 
-        public void Dispose()
+        internal async Task ChangeAssetsCategoryAsync(IEnumerable<AssetViewModel> enumerable, AssetCatalogCategory? category)
         {
-            _arma3DataModule.Reloaded -= Arma3DataModuleWasReloaded;
+            foreach (var asset in enumerable)
+            {
+                asset.Category = category ?? asset.Category;
+            }
+            var target = AllAssets;
+            if (target != null)
+            {
+                Assets?.Refresh();
+                await _catalogService.SaveTo(AssetsCatalogPath, target.Select(i => i.Item).ToList());
+            }
+        }
+
+        internal async Task RemoveAssetsAsync(IEnumerable<AssetViewModel> enumerable)
+        {
+            var target = AllAssets;
+            if (target != null)
+            {
+                AllAssets?.RemoveRange(enumerable);
+                await _catalogService.SaveTo(AssetsCatalogPath, target.Select(i => i.Item).ToList());
+            }
         }
 
         private string filterText = string.Empty;

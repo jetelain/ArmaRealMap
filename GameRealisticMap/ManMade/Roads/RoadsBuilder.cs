@@ -99,7 +99,7 @@ namespace GameRealisticMap.ManMade.Roads
             using var report = progress.CreateStep("Interpret", osmRoads.Count);
             foreach (var road in osmRoads)
             {
-                var kind = RoadTypeIdHelper.FromOSM(road.Tags);
+                var kind = RoadTypeIdHelper.FromOSM(road.Tags, progress);
                 if (kind != null)
                 {
                     var type = library.GetInfo(kind.Value);

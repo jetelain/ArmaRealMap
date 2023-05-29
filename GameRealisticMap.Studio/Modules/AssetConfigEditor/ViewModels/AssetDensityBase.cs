@@ -46,6 +46,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         protected abstract double GetMaxDensity();
 
+        public string Preview => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Areas/{FillId}.png";
+
         public Task ComputeMaxDensity()
         {
             var max = Math.Round(GetMaxDensity(), 4);

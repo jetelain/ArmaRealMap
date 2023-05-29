@@ -39,7 +39,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
         {
             lock (this)
             {
-                previewsInProject = null;
+                previewsInProject = null; // Invalidate cache
             }
         }
 

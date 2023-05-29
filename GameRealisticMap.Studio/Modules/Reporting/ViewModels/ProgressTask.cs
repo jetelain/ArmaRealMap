@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using GameRealisticMap.Reporting;
+using Gemini.Modules.Output;
 
 namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 {
@@ -10,10 +11,12 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly ProgressToolViewModel viewModel;
         private readonly Stopwatch elapsed;
+        private readonly IOutput output;
         private int lastDone = 0;
 
-        public ProgressTask(ProgressToolViewModel viewModel)
+        public ProgressTask(ProgressToolViewModel viewModel, IOutput output)
         {
+            this.output = output;
             this.viewModel = viewModel;
             this.elapsed = Stopwatch.StartNew();
         }
@@ -28,14 +31,14 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
         public override IProgressInteger CreateStep(string name, int total)
         {
-            var report = new ProgressStep(Prefix + name, total);
+            var report = new ProgressStep(Prefix + name, total, this);
             viewModel.Items.Add(report);
             return report;
         }
 
         public override IProgressPercent CreateStepPercent(string name)
         {
-            var report = new ProgressStep(Prefix + name, 1000);
+            var report = new ProgressStep(Prefix + name, 1000, this);
             viewModel.Items.Add(report);
             return report;
         }
@@ -45,13 +48,17 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             elapsed.Stop();
             if (Error != null)
             {
+                WriteLine($"ERROR: {Error.Message}");
+                WriteLine($"Task FAILED after {elapsed.ElapsedMilliseconds / 1000d:0.0} seconds");
                 return;
             }
             if (cancellationTokenSource.IsCancellationRequested)
             {
+                WriteLine($"Task CANCELED after {elapsed.ElapsedMilliseconds / 1000d:0.0} seconds");
                 viewModel.State = TaskState.Canceled;
                 return;
             }
+            WriteLine($"Task done SUCCESSFULLY in {elapsed.ElapsedMilliseconds/1000d:0.0} seconds");
             viewModel.State = TaskState.Done;
             UpdateProgress(Total);
         }
@@ -91,6 +98,12 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         {
             viewModel.State = TaskState.Failed;
             Error = e;
+            WriteLine($"Exception: {e}");
+        }
+
+        public override void WriteLine(string message)
+        {
+            output.AppendLine(message ?? string.Empty);
         }
     }
 }

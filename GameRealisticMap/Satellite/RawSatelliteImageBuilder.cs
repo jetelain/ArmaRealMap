@@ -70,7 +70,7 @@ namespace GameRealisticMap.Satellite
         private Image<Rgb24> LoadImage(IBuildContext context, int tileSize, IProgressInteger report, Vector2 start, int done)
         {
             var imageryResolution = context.Imagery.Resolution;
-            using var src = new S2Cloudless();
+            using var src = new S2Cloudless(progress);
             var img = new Image<Rgb24>(tileSize, tileSize);
             var parallel = 16;
             var dh = img.Height / parallel;

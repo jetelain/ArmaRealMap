@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
+using GameRealisticMap.Reporting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.PixelFormats;
@@ -11,6 +12,7 @@ namespace GameRealisticMap.Satellite
         private const double Delta = 20_037_508.342_789;
 
         private readonly string cacheLocation = Path.Combine(Path.GetTempPath(), "GameRealisticMap", "S2Cloudless");
+        private readonly IProgressSystem progress;
         private readonly HttpClient httpClient;
         private readonly SemaphoreSlim downloadSemaphore = new SemaphoreSlim(1, 1);
         private readonly ConcurrentDictionary<(int,int), Task<Image<Rgb24>>> cache = new ConcurrentDictionary<(int, int), Task<Image<Rgb24>>>();
@@ -27,8 +29,9 @@ namespace GameRealisticMap.Satellite
         private const double rMajor = 6378137; //Equatorial Radius, WGS84
         private const double shift = Math.PI * rMajor;
 
-        public S2Cloudless()
+        public S2Cloudless(IProgressSystem progress)
         {
+            this.progress = progress;
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0");
         }
@@ -92,7 +95,7 @@ namespace GameRealisticMap.Satellite
 
         private async Task<byte[]> Load(Uri uri)
         {
-            Trace.WriteLine(uri);
+            progress.WriteLine(uri.OriginalString);
             int sleep = 10;
             while (sleep < 20000)
             {
@@ -103,7 +106,7 @@ namespace GameRealisticMap.Satellite
                 }
                 catch(Exception ex)
                 {
-                    Trace.WriteLine(ex.Message);
+                    progress.WriteLine(ex.Message);
                 }
                 sleep += 500;
             }
@@ -116,7 +119,7 @@ namespace GameRealisticMap.Satellite
             var filePath = FormattableString.Invariant($"{zoomLevel}/{tY}/{tX}.jpg");
 
             var cacheFile = System.IO.Path.Combine(cacheLocation, filePath);
-            Trace.WriteLine(cacheFile);
+            progress.WriteLine(cacheFile);
             if (!File.Exists(cacheFile))
             {
                 await downloadSemaphore.WaitAsync();
@@ -126,7 +129,7 @@ namespace GameRealisticMap.Satellite
                     {
                         Directory.CreateDirectory(Path.GetDirectoryName(cacheFile));
                         File.WriteAllBytes(cacheFile, await Load(new Uri(endPoint + filePath, UriKind.Absolute)));
-                        Trace.WriteLine("--> OK");
+                        progress.WriteLine("--> OK");
                     }
                 }
                 finally

@@ -170,7 +170,7 @@ namespace GameRealisticMap.ElevationModel
             foreach (var lake in lakesWithBorder)
             {
                 var isOK = DetectRealLake(elevationGrid, lakes, lake.Polygon, lake.BorderElevation);
-                Trace.WriteLine($"{lake.Polygon.Area} => {isOK}");
+                progress.WriteLine($"{lake.Polygon.Area} => {isOK}");
                 report.ReportOneDone();
             }
             return lakes;

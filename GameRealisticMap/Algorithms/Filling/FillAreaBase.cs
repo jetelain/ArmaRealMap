@@ -111,8 +111,7 @@ namespace GameRealisticMap.Algorithms.Filling
             }
             if (remainItems > 0)
             {
-                Trace.TraceWarning("Unable to generate all models for polygon '{0}': {1} remains on {2}", fillarea.Area.Polygon, remainItems, fillarea.ItemsToAdd);
-                Trace.Flush();
+                progress.WriteLine($"Warning: Unable to generate all models for polygon '{fillarea.Area.Polygon}': {remainItems} remains on {fillarea.ItemsToAdd}");
                 report.Report(Interlocked.Add(ref generatedItems, remainItems));
             }
         }

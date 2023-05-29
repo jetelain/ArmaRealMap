@@ -8,5 +8,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         void Equilibrate();
 
         string IdText { get; }
+
+        string PageTitle { get; }
     }
 }
