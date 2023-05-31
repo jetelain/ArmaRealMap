@@ -11,7 +11,7 @@ namespace GameRealisticMap.Algorithms
 
         public static double GetMaxDensity<TModelInfo>(IEnumerable<IClusterDefinition<TModelInfo>> clusters)
         {
-            return 1 / clusters.Sum(c => c.Models.Sum(o => o.Probability * c.Probability * Math.Pow(o.Radius, 2) * Math.PI) * 0.8d);
+            return 1 / clusters.Sum(c => c.Models.Sum(o => o.Probability * c.Probability * Math.Pow(o.Radius, 2) * Math.PI)) * 0.8d;
         }
     }
 }

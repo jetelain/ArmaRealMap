@@ -6,7 +6,7 @@ namespace GameRealisticMap.Nature.Watercourses
     internal class WatercourseRadialBuilder : BasicRadialBuilder<WatercourseRadialData, WatercoursesData>
     {
         public WatercourseRadialBuilder(IProgressSystem progress)
-            : base(progress, 1.5f)
+            : base(progress, WatercourseRadialData.Width)
         {
 
         }

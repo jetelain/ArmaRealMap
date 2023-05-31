@@ -28,7 +28,7 @@ namespace GameRealisticMap.Studio.Modules.Main
         public override void Initialize()
         {
             _mainWindow.Title = "GameRealisticMap Studio";
-            //_mainWindow.Icon = new BitmapImage(new("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/WindowIcon.png"));
+            _mainWindow.Icon = new BitmapImage(new("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MainWindowIcon.png"));
             //>>>PackageStore.GetPackage(new ("application:///"));
             _mainWindow.Shell.ToolBars.Visible = true;
         }

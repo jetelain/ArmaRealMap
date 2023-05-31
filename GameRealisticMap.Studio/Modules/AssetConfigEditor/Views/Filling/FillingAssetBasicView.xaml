@@ -4,12 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             xmlns:localf="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling"
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="2000" d:DesignWidth="800">
     <UserControl.Resources>
         <local:PercentValueConverter x:Key="PercentValueConverter" />
+        <localf:ColorToBrushConverter x:Key="BrushConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <ScrollViewer local:Behaviors.EnforceScroll="True" c:CompositionDragDrop.Importer="{Binding CompositionImporter}">
         <StackPanel Margin="10 0">
@@ -69,6 +72,29 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <TextBlock FontSize="25" Margin="0 20 0 0">Preview</TextBlock>
+            
+            <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                <Button Padding="5" cal:Message.Attach="GeneratePreview">Generate</Button>
+                <Button Margin="5 0" Padding="5" cal:Message.Attach="GenerateFullPreview">Generate with linked areas</Button>
+                <ProgressBar IsIndeterminate="{Binding IsGeneratingPreview}" Width="100" Margin="5 5" Visibility="{Binding IsGeneratingPreview, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Margin="5 0" Text="{Binding GeneratePreviewStatus}" VerticalAlignment="Center" />
+            </StackPanel>
+
+            <ItemsControl ItemsSource="{Binding PreviewItems}" Margin="10">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas Width="{x:Static localf:PreviewGrid.Size}" Height="{x:Static localf:PreviewGrid.Size}" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" ClipToBounds="True" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Path  Width="{x:Static localf:PreviewGrid.Size}" Height="{x:Static localf:PreviewGrid.Size}" Data="{Binding Path}" Fill="{Binding Color, Converter={StaticResource BrushConverter}}" ToolTip="{Binding Model.Name}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>

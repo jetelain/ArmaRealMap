@@ -32,6 +32,18 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
+                                <Path Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Data="{Binding PreviewVisualPath}" Fill="Gray" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding Composition.Items}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
                                 <Path Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Data="{Binding PreviewPath}" Fill="Black" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

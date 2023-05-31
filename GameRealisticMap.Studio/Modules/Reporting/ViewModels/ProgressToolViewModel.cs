@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using CoordinateSharp.Debuggers;
@@ -84,5 +85,9 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             return Task.CompletedTask;
         }
 
+        internal void WriteLine(string message)
+        {
+            OnUIThread(() => output.AppendLine(message ?? string.Empty));
+        }
     }
 }

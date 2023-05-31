@@ -40,9 +40,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public string PageTitle { get; }
 
-        public string TreeName => PageTitle;
-
-        public string Label { get; set; } = string.Empty;
+        public virtual string TreeName => PageTitle;
 
         public AssetConfigEditorViewModel ParentEditor { get; }
 

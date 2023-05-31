@@ -6,7 +6,7 @@ namespace GameRealisticMap.Nature.Scrubs
 {
     internal class ScrubRadialBuilder : BasicRadialBuilder<ScrubRadialData, ScrubData>
     {
-        public ScrubRadialBuilder(IProgressSystem progress) : base(progress, 15f)
+        public ScrubRadialBuilder(IProgressSystem progress) : base(progress, ScrubRadialData.Width)
         {
 
         }

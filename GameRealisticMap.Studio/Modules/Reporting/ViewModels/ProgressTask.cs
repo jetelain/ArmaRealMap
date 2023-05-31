@@ -103,7 +103,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
         public override void WriteLine(string message)
         {
-            output.AppendLine(message ?? string.Empty);
+            viewModel.WriteLine(message);
         }
     }
 }

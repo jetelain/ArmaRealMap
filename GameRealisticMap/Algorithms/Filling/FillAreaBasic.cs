@@ -18,12 +18,13 @@ namespace GameRealisticMap.Algorithms.Filling
             this.basicDefinitions = basicDefinitions;
         }
 
-        public override void FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
+        public override int FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
         {
             if (basicDefinitions.Count > 0)
             {
-                base.FillPolygons(objects, polygons);
+                return base.FillPolygons(objects, polygons);
             }
+            return 0;
         }
 
         internal override AreaFillingBase<TModelInfo> GenerateAreaSelectData(AreaDefinition fillarea)

@@ -133,10 +133,10 @@ namespace ArmToGrmA3
 
             newAssets.ClusterCollections.Add(ClusterCollectionId.Forest, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.ForestTree), newModels, oldModels));
             newAssets.ClusterCollections.Add(ClusterCollectionId.ForestRadial, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.ForestRadialEdge), newModels, oldModels));
-            newAssets.ClusterCollections.Add(ClusterCollectionId.ForestEdge, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.ForestEdge), newModels, oldModels));
+            newAssets.ClusterCollections.Add(ClusterCollectionId.ForestEdge, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.ForestEdge), newModels, oldModels, true));
             newAssets.ClusterCollections.Add(ClusterCollectionId.Scrub, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.Scrub), newModels, oldModels));
             newAssets.ClusterCollections.Add(ClusterCollectionId.ScrubRadial, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.ScrubRadialEdge), newModels, oldModels));
-            newAssets.ClusterCollections.Add(ClusterCollectionId.WatercourseRadial, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.WaterwayBorder), newModels, oldModels));
+            newAssets.ClusterCollections.Add(ClusterCollectionId.WatercourseRadial, ConvertCluster(olibs.GetSingleLibrary(ObjectCategory.WaterwayBorder), newModels, oldModels, true));
             newAssets.ClusterCollections = newAssets.ClusterCollections.OrderBy(o => o.Key).ToDictionary(p => p.Key, p => p.Value);
 
             newAssets.Fences.Add(FenceTypeId.Wall, ConvertFences(olibs.GetLibraries(ObjectCategory.Wall), newModels, oldModels));
@@ -203,7 +203,7 @@ namespace ArmToGrmA3
             return new List<BasicCollectionDefinition>() { new BasicCollectionDefinition(items, 1, oldLibrary?.Density ?? 0, oldLibrary?.Density ?? 0) };
         }
 
-        private static List<ClusterCollectionDefinition> ConvertCluster(ObjectLibrary? oldLibrary, ModelInfoLibrary models, OldModelInfoLibrary oldModels)
+        private static List<ClusterCollectionDefinition> ConvertCluster(ObjectLibrary? oldLibrary, ModelInfoLibrary models, OldModelInfoLibrary oldModels, bool isNarrow = false)
         {
             var items = new List<ClusterDefinition>();
             var density = 0d;
@@ -217,17 +217,25 @@ namespace ArmToGrmA3
                     var place = ObjectPlacementDetectedInfos.CreateFromODOL(models.ReadODOL(model.Path)!)!;
                     var composition = GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, -place.GeneralRadius.Center);
                     var probability = (old.PlacementProbability ?? defProbability) / sumExistingProbability;
+                    var radius = old.PlacementRadius ?? place.GeneralRadius.Radius;
                     items.Add(new ClusterDefinition(new ClusterItemDefinition(
-                        old.PlacementRadius ?? place.GeneralRadius.Radius,
-                        old.ReservedRadius ?? old.PlacementRadius ?? place.GeneralRadius.Radius,
+                        radius,
+                        isNarrow ? 0.1f : old.ReservedRadius ?? radius,
                         composition, old.MaxZ, old.MinZ, 1, null, null), probability));
                 }
 
-                density = oldLibrary?.Density ?? 0.01d;
-                var maxDensity = DensityHelper.GetMaxDensity(items);
-                if (density > maxDensity)
+                if (isNarrow)
                 {
-                    density = maxDensity;
+                    density = DensityHelper.GetMaxDensity(items) * 2f;
+                }
+                else
+                {
+                    density = oldLibrary?.Density ?? 0.01d;
+                    var maxDensity = DensityHelper.GetMaxDensity(items);
+                    if (density > maxDensity)
+                    {
+                        density = maxDensity;
+                    }
                 }
             }
             if (items.Count == 0)

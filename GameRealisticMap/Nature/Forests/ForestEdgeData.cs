@@ -6,6 +6,8 @@ namespace GameRealisticMap.Nature.Forests
 {
     public class ForestEdgeData : IBasicTerrainData
     {
+        public const float Width = 2f;
+
         [JsonConstructor]
         public ForestEdgeData(List<TerrainPolygon> edges, List<TerrainPolygon> mergedForests)
         {

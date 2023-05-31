@@ -24,7 +24,7 @@ namespace GameRealisticMap.Arma3.Assets.Filling
         public float Radius { get; }
 
         /// <summary>
-        /// Radius from the area limit (might be larger than Radius, but not smaller)
+        /// Radius from the area limit
         /// </summary>
         public float ExclusiveRadius { get; }
 

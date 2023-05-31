@@ -15,6 +15,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public FencesViewModel(FenceTypeId id, FenceDefinition? definition, AssetConfigEditorViewModel parent)
             : base(id, definition, parent)
         {
+            label = definition?.Label ?? string.Empty;
             if (definition != null)
             {
                 Items = new ObservableCollection<FenceItem>(definition.Straights.Select(d => new FenceItem(d)));
@@ -31,11 +32,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public string DensityText => string.Empty; // To avoid binding error
 
         public RelayCommand RemoveItem { get; }
+
         public bool IsEmpty { get { return Items.Count == 0; } }
 
         public override FenceDefinition ToDefinition()
         {
-            return new FenceDefinition(Probability, Items.Select(i => i.ToDefinition()).ToList());
+            return new FenceDefinition(Probability, Items.Select(i => i.ToDefinition()).ToList(), Label);
         }
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)

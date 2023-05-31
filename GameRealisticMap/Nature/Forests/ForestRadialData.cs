@@ -6,6 +6,8 @@ namespace GameRealisticMap.Nature.Forests
 {
     public class ForestRadialData : IBasicTerrainData
     {
+        public const float Width = 25f;
+
         [JsonConstructor]
         public ForestRadialData(List<TerrainPolygon> polygons)
         {

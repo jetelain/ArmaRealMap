@@ -6,6 +6,8 @@ namespace GameRealisticMap.Nature.Scrubs
 {
     public class ScrubRadialData : IBasicTerrainData
     {
+        public const float Width = 15f;
+
         [JsonConstructor]
         public ScrubRadialData(List<TerrainPolygon> polygons)
         {

@@ -5,6 +5,8 @@ namespace GameRealisticMap.Nature.Watercourses
 {
     public class WatercourseRadialData : IBasicTerrainData
     {
+        public const float Width = 2f;
+
         public WatercourseRadialData(List<TerrainPolygon> polygons)
         {
             Polygons = polygons;

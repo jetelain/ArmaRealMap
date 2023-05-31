@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
 using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
@@ -9,18 +8,19 @@ namespace GameRealisticMap.Algorithms.Filling
     public abstract class FillAreaBase<TModelInfo>
     {
         protected readonly IProgressSystem progress;
+        protected readonly CancellationToken cancellationToken;
 
         protected FillAreaBase(IProgressSystem progress)
         {
             this.progress = progress;
+            this.cancellationToken = (progress as IProgressTask)?.CancellationToken ?? CancellationToken.None;
         }
 
         internal abstract AreaFillingBase<TModelInfo> GenerateAreaSelectData(AreaDefinition fillarea);
 
-        public virtual void FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
+        public virtual int FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
         {
             var areas = GetFillAreas(polygons.ProgressStep(progress,"Areas"));
-
             using (var report = progress.CreateStep("Models", areas.Sum(a => a.ItemsToAdd)))
             {
                 var generatedItems = 0;
@@ -29,6 +29,7 @@ namespace GameRealisticMap.Algorithms.Filling
                 {
                     FillAreaList(toprocess, objects, report, ref generatedItems);
                 });
+                return generatedItems;
             }
         }
 
@@ -45,7 +46,7 @@ namespace GameRealisticMap.Algorithms.Filling
 
         private void FillAreaList(List<AreaFillingBase<TModelInfo>> areas, RadiusPlacedLayer<TModelInfo> objects, IProgressInteger report, ref int generatedItems)
         {
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 IDisposable? locker = null;
                 AreaFillingBase<TModelInfo>? areaToProcess = null;
@@ -79,15 +80,15 @@ namespace GameRealisticMap.Algorithms.Filling
         {
             var remainItems = fillarea.ItemsToAdd;
             var unChangedLoops = 0;
-            while (unChangedLoops < 10 && remainItems > 0)
+            while (unChangedLoops < 10 && remainItems > 0 && !cancellationToken.IsCancellationRequested)
             {
                 var wasChanged = false;
-                for (int i = 0; i < fillarea.ItemsToAdd && remainItems > 0; ++i)
+                for (int i = 0; i < Math.Max(10, fillarea.ItemsToAdd) && remainItems > 0; ++i)
                 {
                     var point = fillarea.Area.GetRandomPointInside();
                     var obj = fillarea.SelectObjectToInsert(point);
                     var candidate = Create(obj, point, 0, 0, GetScale(fillarea.Area.Random, obj));
-                    //FIXME: if (WillFit(candidate, fillarea.Area))
+                    if (WillFit(candidate, fillarea.Area))
                     {
                         var potentialConflits = objects.Search(candidate.MinPoint, candidate.MaxPoint);
                         if (HasRoom(candidate, potentialConflits))
@@ -136,11 +137,15 @@ namespace GameRealisticMap.Algorithms.Filling
 
         private static RadiusPlacedModel<TModelInfo> Create(IClusterItemDefinition<TModelInfo> obj, TerrainPoint point, float angle, float elevation = 0, float scale = 1)
         {
-            return new RadiusPlacedModel<TModelInfo>(new BoundingCircle(point, obj.ExclusiveRadius * scale, angle), elevation, scale, obj.Model);
+            return new RadiusPlacedModel<TModelInfo>(new BoundingCircle(point, obj.ExclusiveRadius * scale, angle), elevation, scale, obj.Model, obj.Radius * scale);
         }
 
-        private static bool WillFit(RadiusPlacedModel<TModelInfo> candidate, AreaDefinition fillarea)
+        protected virtual bool WillFit(RadiusPlacedModel<TModelInfo> candidate, AreaDefinition fillarea)
         {
+            if (candidate.ExclusiveRadius == 0)
+            {
+                return true;
+            }
             return fillarea.Polygon.AsPolygon.Contains(candidate.Polygon.AsPolygon);
         }
 

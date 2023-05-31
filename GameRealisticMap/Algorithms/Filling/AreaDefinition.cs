@@ -3,14 +3,14 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
-    internal class AreaDefinition : ITerrainEnvelope
+    public class AreaDefinition : ITerrainEnvelope
     {
         private readonly int rndX1;
         private readonly int rndX2;
         private readonly int rndY1;
         private readonly int rndY2;
 
-        public AreaDefinition(TerrainPolygon polygon)
+        internal AreaDefinition(TerrainPolygon polygon)
         {
             Polygon = polygon;
             MinPoint = polygon.MinPoint - new Vector2(2);
@@ -24,20 +24,20 @@ namespace GameRealisticMap.Algorithms.Filling
 
         public TerrainPolygon Polygon { get; }
 
-        public Random Random { get; }
+        internal Random Random { get; }
 
         public TerrainPoint MinPoint { get; }
 
         public TerrainPoint MaxPoint { get; }
 
-        public TerrainPoint GetRandomPoint()
+        internal TerrainPoint GetRandomPoint()
         {
             var x = Random.Next(rndX1, rndX2) / 100f;
             var y = Random.Next(rndY1, rndY2) / 100f;
             return new TerrainPoint(x, y);
         }
 
-        public TerrainPoint GetRandomPointInside()
+        internal TerrainPoint GetRandomPointInside()
         {
             var point = GetRandomPoint();
             while (!Polygon.Contains(point))

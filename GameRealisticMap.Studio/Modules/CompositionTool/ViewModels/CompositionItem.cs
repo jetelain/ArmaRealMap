@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
@@ -74,32 +75,47 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             get
             {
                 var polygons = IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToPolygons(ToTerrainBuilderObject());
-                var sb = new StringBuilder();
-                foreach(var polygon in polygons)
+                return ToPath(polygons);
+            }
+        }
+
+        public string PreviewVisualPath
+        {
+            get
+            {
+                var polygons = IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualPolygons(ToTerrainBuilderObject());
+                return ToPath(polygons);
+            }
+        }
+
+        private static string ToPath(IEnumerable<TerrainPolygon> polygons)
+        {
+            var sb = new StringBuilder();
+            foreach (var polygon in polygons)
+            {
+                for (int i = 0; i < polygon.Shell.Count; ++i)
                 {
-                    for(int i =0; i<polygon.Shell.Count;++i)
+                    if (sb.Length > 0)
                     {
-                        if (sb.Length > 0)
-                        {
-                            sb.Append(' ');
-                        }
-                        var point = polygon.Shell[i];
-                        if (i == 0)
-                        {
-                            sb.Append('M');
-                        } else
-                        {
-                            sb.Append('L');
-                        }
-                        sb.Append((point.X * CanvasGrid.Scale + CanvasGrid.HalfSize).ToString(CultureInfo.InvariantCulture));
-                        sb.Append(',');
-                        sb.Append((point.Y * -CanvasGrid.Scale + CanvasGrid.HalfSize).ToString(CultureInfo.InvariantCulture));
                         sb.Append(' ');
                     }
-                    sb.Append(" Z");
+                    var point = polygon.Shell[i];
+                    if (i == 0)
+                    {
+                        sb.Append('M');
+                    }
+                    else
+                    {
+                        sb.Append('L');
+                    }
+                    sb.Append((point.X * CanvasGrid.Scale + CanvasGrid.HalfSize).ToString(CultureInfo.InvariantCulture));
+                    sb.Append(',');
+                    sb.Append((point.Y * -CanvasGrid.Scale + CanvasGrid.HalfSize).ToString(CultureInfo.InvariantCulture));
+                    sb.Append(' ');
                 }
-                return sb.ToString();
+                sb.Append(" Z");
             }
+            return sb.ToString();
         }
     }
 }

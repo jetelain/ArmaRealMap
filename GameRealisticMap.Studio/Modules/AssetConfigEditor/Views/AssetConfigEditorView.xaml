@@ -19,6 +19,9 @@
                 <StackPanel Orientation="Horizontal" Margin="0 10">
                     <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
                 </StackPanel>
+                <!--<StackPanel Orientation="Horizontal" Margin="10 0">
+                    <Button Padding="5">Generate a demo world</Button>
+                </StackPanel>-->
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25">Filling objects</TextBlock>
@@ -29,8 +32,8 @@
                         </StackPanel>
                         <DataGrid ItemsSource="{Binding Filling}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Type" Binding="{Binding TreeName}" IsReadOnly="True" Width="200" />
-                                <DataGridTextColumn Header="Label" Binding="{Binding Label}" IsReadOnly="True" Width="200" />
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" Width="200" />
+                                <DataGridTextColumn Header="Label" Binding="{Binding Label}" Width="200" />
                                 <DataGridTextColumn Header="Probability" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
                                 <DataGridTextColumn Header="Density" Binding="{Binding DensityText}" IsReadOnly="True" Width="100" />
                                 <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="150" />
@@ -54,8 +57,7 @@
                     <StackPanel>
                         <DataGrid ItemsSource="{Binding Individual}" AutoGenerateColumns="false" Margin="0 10 0 0">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Type" Binding="{Binding TreeName}" IsReadOnly="True" Width="200" />
-                                <DataGridTextColumn Header="Label" Binding="{Binding Label}" IsReadOnly="True" Width="200" />
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" Width="200" />
                                 <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="300" />
                                 <DataGridTemplateColumn Width="75">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -81,7 +83,7 @@
                         </StackPanel>
                         <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Materials}" AutoGenerateColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" />
                                 <DataGridTextColumn Header="Texture" Binding="{Binding ColorTexture}" IsReadOnly="True" />
                                 <DataGridTemplateColumn Width="100">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -111,7 +113,7 @@
                     <StackPanel>
                         <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Roads}" AutoGenerateColumns="False" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" />
                                 <DataGridTextColumn Header="Texture" Binding="{Binding Texture}" IsReadOnly="True" />
                                 <DataGridTemplateColumn Width="100">
                                     <DataGridTemplateColumn.CellTemplate>
