@@ -12,6 +12,8 @@ namespace GameRealisticMap.Arma3.Nature.Lakes
 {
     public class LakeSurfaceGenerator : ITerrainBuilderLayerGenerator
     {
+        private static PondSizeId[] AllSizes = new[] { PondSizeId.Size5, PondSizeId.Size10, PondSizeId.Size20, PondSizeId.Size40, PondSizeId.Size80 };
+
         private readonly IArma3RegionAssets assets;
 
         public LakeSurfaceGenerator(IArma3RegionAssets assets)
@@ -23,12 +25,20 @@ namespace GameRealisticMap.Arma3.Nature.Lakes
         {
             var lakes = context.GetData<ElevationWithLakesData>().Lakes;
             var result = new List<TerrainBuilderObject>();
-            var minimalPondSize = PondSizeId.Size5;
-            foreach (var lake in lakes)
+            var minimalPondSize = GetMinimalPondSize();
+            if (minimalPondSize != null)
             {
-                GenerateTiles(result, lake.TerrainPolygon, lake.WaterElevation, minimalPondSize);
+                foreach (var lake in lakes)
+                {
+                    GenerateTiles(result, lake.TerrainPolygon, lake.WaterElevation, minimalPondSize.Value);
+                }
             }
             return result;
+        }
+
+        public PondSizeId? GetMinimalPondSize()
+        {
+            return AllSizes.Where(s => assets.GetPond(s) != null).Cast<PondSizeId?>().FirstOrDefault();
         }
 
         private void GenerateTiles(List<TerrainBuilderObject> result, TerrainPolygon polygon, float waterElevation, PondSizeId minimalPondSize)
@@ -66,6 +76,10 @@ namespace GameRealisticMap.Arma3.Nature.Lakes
         private void Process(List<TerrainBuilderObject> objects, bool[,] grid10, int w10, int h10, Vector2 min, PondSizeId pondSize, float waterElevation, int minimalTileSize)
         {
             var model = assets.GetPond(pondSize);
+            if (model == null)
+            {
+                return;
+            }
             var objSize = ((int)pondSize) / minimalTileSize;
             var hsize = ((int)pondSize) / 2f;
             for (int x = 0; x < w10; x += objSize)

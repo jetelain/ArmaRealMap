@@ -83,9 +83,13 @@ namespace GameRealisticMap.Arma3.Assets
             return objects;
         }
 
-        public ModelInfo GetPond(PondSizeId pondSize)
+        public ModelInfo? GetPond(PondSizeId pondSize)
         {
-            return Ponds[pondSize];
+            if (Ponds.TryGetValue(pondSize, out var value))
+            {
+                return value;
+            }
+            return null;
         }
 
         IRoadTypeLibrary<Arma3RoadTypeInfos> IArma3RegionAssets.RoadTypeLibrary => this;

@@ -26,7 +26,7 @@ namespace GameRealisticMap.Arma3.Assets
 
         IReadOnlyCollection<ClusterCollectionDefinition> GetClusterCollections(ClusterCollectionId clustersId);
 
-        ModelInfo GetPond(PondSizeId pondSize);
+        ModelInfo? GetPond(PondSizeId pondSize);
 
         BridgeDefinition? GetBridge(RoadTypeId roadType);
 
