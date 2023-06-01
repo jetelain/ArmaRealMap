@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameRealisticMap.Algorithms.Definitions;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
-    internal abstract class AssetProbabilityBase<TId, TDefinition> : AssetBase<TId, TDefinition>, IWithEditableProbability
+    internal abstract class AssetProbabilityBase<TId, TDefinition> : AssetBase<TId, TDefinition>, IWithEditableProbability, IFillAssetCategory
         where TId : struct, Enum
         where TDefinition : class, IWithProbability
     {
@@ -38,6 +39,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
                 }
                 return PageTitle + " - " + label;
             }
+        }
+
+        public object IdObj => FillId;
+
+        public bool IsSameFillId(object fillId)
+        {
+            return fillId is TId id && EqualityComparer<TId>.Default.Equals(id, FillId);
         }
     }
 }
