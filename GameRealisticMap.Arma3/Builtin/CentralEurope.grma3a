@@ -1,0 +1,1974 @@
+{
+  "BasicCollections": {},
+  "Bridges": {
+    "TwoLanesMotorway": {
+      "Single": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\bridges\\Bridge_HighWay_F.p3d",
+              "Transform": [-0,-3.3085892,-0]
+            }
+          ]
+        },
+        "Size": 44.2501
+      },
+      "Start": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_right_F.p3d",
+              "Transform": [-0,-3.3171349,-0]
+            }
+          ]
+        },
+        "Size": 22.1788
+      },
+      "Middle": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_center_F.p3d",
+              "Transform": [-0,-3.8190699,-0]
+            }
+          ]
+        },
+        "Size": 40.636
+      },
+      "End": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_left_F.p3d",
+              "Transform": [-0,-3.308694,-0]
+            }
+          ]
+        },
+        "Size": 22.1291
+      }
+    },
+    "TwoLanesPrimaryRoad": {
+      "Single": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\bridges\\Bridge_HighWay_F.p3d",
+              "Transform": [-0,-3.3085892,-0]
+            }
+          ]
+        },
+        "Size": 44.2501
+      },
+      "Start": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_right_F.p3d",
+              "Transform": [-0,-3.3171349,-0]
+            }
+          ]
+        },
+        "Size": 22.1788
+      },
+      "Middle": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_center_F.p3d",
+              "Transform": [-0,-3.8190699,-0]
+            }
+          ]
+        },
+        "Size": 40.636
+      },
+      "End": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_left_F.p3d",
+              "Transform": [-0,-3.308694,-0]
+            }
+          ]
+        },
+        "Size": 22.1291
+      }
+    },
+    "TwoLanesSecondaryRoad": {
+      "Single": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\bridges\\Bridge_Asphalt_F.p3d",
+              "Transform": [-0,-3.0325508,-0]
+            }
+          ]
+        },
+        "Size": 44.2341
+      },
+      "Start": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_right_F.p3d",
+              "Transform": [-0,-3.0320826,-0]
+            }
+          ]
+        },
+        "Size": 30.213799
+      },
+      "Middle": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_center_F.p3d",
+              "Transform": [-0,-3.0320814,-0]
+            }
+          ]
+        },
+        "Size": 24.2894
+      },
+      "End": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_left_F.p3d",
+              "Transform": [-0,-3.0320845,-0]
+            }
+          ]
+        },
+        "Size": 30.2295
+      }
+    },
+    "TwoLanesConcreteRoad": {
+      "Single": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\bridges\\Bridge_Concrete_F.p3d",
+              "Transform": [-0,-3.0325508,-0]
+            }
+          ]
+        },
+        "Size": 44.2341
+      },
+      "Start": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_right_F.p3d",
+              "Transform": [-0,-3.0320826,-0]
+            }
+          ]
+        },
+        "Size": 30.213799
+      },
+      "Middle": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_center_F.p3d",
+              "Transform": [-0,-3.0320814,-0]
+            }
+          ]
+        },
+        "Size": 24.2894
+      },
+      "End": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_left_F.p3d",
+              "Transform": [-0,-3.0320845,-0]
+            }
+          ]
+        },
+        "Size": 30.2295
+      }
+    }
+  },
+  "Buildings": {
+    "Church": [
+      {
+        "Size": [4.0430603,4.04908],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Chapel_02\\Chapel_02_yellow_F.p3d",
+              "Transform": [0.004149914,2.544855,-0.011299968]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [17.56517,31.591604],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\cultural\\Church_01\\Church_01_F.p3d",
+              "Transform": [0.005315304,10.51541,0.21310139]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [15.069973,18.414585],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\cultural\\Church_03\\Church_03_F.p3d",
+              "Transform": [0.9542124,7.238551,1.1661835]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.099999,38.1],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\cultural\\Church_02\\Church_02_F.p3d",
+              "Transform": [4.7683716E-07,3.9872024,0.28000164]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [32.843697,44.108917],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\cultural\\Cathedral_01\\Cathedral_01_F.p3d",
+              "Transform": [0,13.171472,-0.35548782]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [21.484402,18.269999],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\Cultural\\Church\\Church_01_V2_F.p3d",
+              "Transform": [-0.85356665,6.795067,9.536743E-07]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [6.1596785,4.4894996],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\Civ\\Chapels\\Chapel_Small_V1_F.p3d",
+              "Transform": [-0.023890018,0.9993,0.015000105]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [6.1596785,4.4894996],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\Civ\\Chapels\\Chapel_Small_V2_F.p3d",
+              "Transform": [-0.023890018,0.9993,0.015000105]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [20.3769,10.519941],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\Civ\\Chapels\\Chapel_V1_F.p3d",
+              "Transform": [-0.15685034,3.1099243,0]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [20.3769,10.519941],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\Civ\\Chapels\\Chapel_V2_F.p3d",
+              "Transform": [-0.15685034,3.1099243,0]
+            }
+          ]
+        }
+      }
+    ],
+    "RadioTower": [
+      {
+        "Size": [12.369526,12.794358],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\Transmitter_Tower\\TTowerBig_1_F.p3d",
+              "Transform": [-0.80976343,19.28492,-0.023213863]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.8914967,8.808186],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\Transmitter_Tower\\TTowerBig_2_F.p3d",
+              "Transform": [0.16545486,23.23133,0.11146569]
+            }
+          ]
+        }
+      }
+    ],
+    "Retail": [
+      {
+        "Size": [45.156303,43.154404],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\MultistoryBuilding_01\\MultistoryBuilding_01_F.p3d",
+              "Transform": [2.5468502,21.01875,-0.06910038]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [24.530401,34.344],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\MultistoryBuilding_03\\MultistoryBuilding_03_F.p3d",
+              "Transform": [0.18960094,25.907396,-1.3032007]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [29.874802,30.475899],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\MultistoryBuilding_04\\MultistoryBuilding_04_F.p3d",
+              "Transform": [-0.5036001,36.741116,-1.022449]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [23.77108,12.811543],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_01\\Shop_City_01_F.p3d",
+              "Transform": [0.15565252,5.18633,-0.5204663]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [24.240202,23.9773],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_02\\Shop_City_02_F.p3d",
+              "Transform": [0.45009995,4.432667,-0.34864998]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.672882,24.554302],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_03\\Shop_City_03_F.p3d",
+              "Transform": [0.021199703,5.116746,-0.6970506]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [17.02504,26.478302],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_04\\Shop_City_04_F.p3d",
+              "Transform": [-0.020780563,3.963379,-0.20985031]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [22.3138,34.899307],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_05\\Shop_City_05_F.p3d",
+              "Transform": [-0.0149998665,7.47762,0.9416466]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [25.4201,21.468],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_06\\Shop_City_06_F.p3d",
+              "Transform": [-0.0075502396,4.396245,-0.55529976]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.793911,19.136242],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_07\\Shop_City_07_F.p3d",
+              "Transform": [0.013995171,3.3181853,-0.20562029]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.137906,14.74386],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_01\\Shop_Town_01_F.p3d",
+              "Transform": [-0.002603054,3.3761964,-0.10016799]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.040591,15.775365],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_02\\Shop_Town_02_F.p3d",
+              "Transform": [0.018530846,2.2434855,0.090681076]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [14.80121,19.173851],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_03\\Shop_Town_03_F.p3d",
+              "Transform": [0.0019550323,3.500856,-0.23145485]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.625171,15.756191],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_04\\Shop_Town_04_F.p3d",
+              "Transform": [-0.024334908,2.5678701,-0.6750653]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.600851,3.763],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_05\\Shop_Town_05_addon_F.p3d",
+              "Transform": [-0.138695,1.0467963,-0.3440001]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [19.11292,17.729961],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_05\\Shop_Town_05_F.p3d",
+              "Transform": [0.007849693,2.8516068,-0.15982962]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [14.96302,28.328701],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Supermarket_01\\Supermarket_01_F.p3d",
+              "Transform": [0,1.7250259,0.5080509]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [20.282001,13.78697],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Warehouses\\Warehouse_03_F.p3d",
+              "Transform": [-0.052599907,2.4169838,-0.039414644]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.6606,12.999041],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Market\\MetalShelter_02_F.p3d",
+              "Transform": [4.7683716E-07,2.553995,-0.00049972534]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.676276,10.465401],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_blue_F.p3d",
+              "Transform": [0.1425929,3.1795251,-0.6663699]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.676276,10.465401],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_brown_F.p3d",
+              "Transform": [0.1425929,3.1795251,-0.6663699]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.676276,10.465401],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_pink_F.p3d",
+              "Transform": [0.1425929,3.1795251,-0.6663699]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.676276,10.465401],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_white_F.p3d",
+              "Transform": [0.1425929,3.1795251,-0.6663699]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.676276,10.465401],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_whiteblue_F.p3d",
+              "Transform": [0.1425929,3.1795251,-0.6663699]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.676276,10.465401],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_yellow_F.p3d",
+              "Transform": [0.1425929,3.1795251,-0.6663699]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [14.96302,28.328701],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\Commercial\\Supermarket_01\\Supermarket_01_malden_F.p3d",
+              "Transform": [0,1.7250259,0.5080509]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.41333,12.08242],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\commercial\\VillageStore_01\\VillageStore_01_F.p3d",
+              "Transform": [0.47630525,2.5885003,-1.4525299]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.385183,16.407478],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Hotel_01\\Hotel_01_F.p3d",
+              "Transform": [0.33981228,5.5141554,-0.34503317]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [21.212502,32.1193],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Hotel_02\\Hotel_02_F.p3d",
+              "Transform": [0.21714973,4.065503,-0.017349243]
+            }
+          ]
+        }
+      }
+    ],
+    "Residential": [
+      {
+        "Size": [11.12522,16.160662],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\house_big01\\i_House_Big_01_V2_F.p3d",
+              "Transform": [0.013639927,3.0663745,0.020850182]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.12522,16.160662],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\house_big01\\i_House_Big_01_V3_F.p3d",
+              "Transform": [0.013639927,3.0663745,0.020850182]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.12522,16.160662],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\house_big01\\u_House_Big_01_V1_F.p3d",
+              "Transform": [0.013639927,3.0663745,0.020850182]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.995032,13.930002],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Big02\\i_House_Big_02_V1_F.p3d",
+              "Transform": [0.017485142,2.8839676,0.42500043]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.995032,13.930002],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Big02\\i_House_Big_02_V2_F.p3d",
+              "Transform": [0.017485142,2.8839676,0.42500043]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.995032,13.930002],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Big02\\i_House_Big_02_V3_F.p3d",
+              "Transform": [0.017485142,2.8839676,0.42500043]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.010001,13.93],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Big02\\u_House_Big_02_V1_F.p3d",
+              "Transform": [0.009999752,2.655617,0.40499997]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.83934,10.880771],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Small01\\i_House_Small_01_V1_F.p3d",
+              "Transform": [0.21597958,1.342055,-0.81355524]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.83934,10.880771],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Small01\\i_House_Small_01_V2_F.p3d",
+              "Transform": [0.21597958,1.342055,-0.81355524]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.12522,16.160662],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\house_big01\\i_House_Big_01_V1_F.p3d",
+              "Transform": [0.013639927,3.0663745,0.020850182]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.83934,10.880771],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Small01\\i_House_Small_01_V3_F.p3d",
+              "Transform": [0.21597958,1.342055,-0.81355524]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.365391,7.4277897],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Small02\\i_House_Small_02_V1_F.p3d",
+              "Transform": [-0.036345005,1.1250416,0.035384774]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.365391,7.437154],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Small02\\i_House_Small_02_V2_F.p3d",
+              "Transform": [-0.036345005,1.1250416,0.04006684]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.365391,7.418377],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Small02\\i_House_Small_02_V3_F.p3d",
+              "Transform": [-0.036345005,1.1250416,0.030678153]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.365391,7.3914704],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Small02\\u_House_Small_02_V1_F.p3d",
+              "Transform": [-0.03634453,1.1250416,0.017225027]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.297692,12.525001],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Small03\\i_House_Small_03_V1_F.p3d",
+              "Transform": [-0.0064692497,0.31568825,0.8625002]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.378307,8.292955],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Stone_Big\\I_Stone_HouseBig_V1_F.p3d",
+              "Transform": [-0.57641053,1.8425143,-0.54336154]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.378307,8.292955],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Stone_Big\\I_Stone_HouseBig_V2_F.p3d",
+              "Transform": [-0.57641053,1.8425143,-0.54336154]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.378307,8.292955],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Stone_Big\\I_Stone_HouseBig_V3_F.p3d",
+              "Transform": [-0.57641053,1.8425143,-0.54336154]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.9000006,6.082934],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Stone_Shed\\I_Stone_Shed_V1_F.p3d",
+              "Transform": [-0.11999977,0.36194313,-0.7200978]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.83934,10.880771],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Small01\\u_House_Small_01_V1_F.p3d",
+              "Transform": [0.19273281,1.2046071,-0.81355524]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.700002,6.600004],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Addons\\i_Garage_V2_F.p3d",
+              "Transform": [-1.3600011,0.25492072,1.3113022E-06]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.700002,6.600004],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Addons\\i_Garage_V1_F.p3d",
+              "Transform": [-1.3600011,0.25492072,1.3113022E-06]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.9000006,6.082934],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Stone_Shed\\I_Stone_Shed_V2_F.p3d",
+              "Transform": [-0.11999977,0.36194313,-0.7200978]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.9000006,6.082934],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Stone_Shed\\I_Stone_Shed_V3_F.p3d",
+              "Transform": [-0.11999977,0.36194313,-0.7200978]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [20.2455,7.32436],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Stone_Small\\I_Stone_HouseSmall_V1_F.p3d",
+              "Transform": [-0.019450188,1.862368,-0.61309993]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [20.2455,7.32436],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Stone_Small\\I_Stone_HouseSmall_V2_F.p3d",
+              "Transform": [-0.019450188,1.862368,-0.61309993]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [20.2455,7.32436],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\Stone_Small\\I_Stone_HouseSmall_V3_F.p3d",
+              "Transform": [-0.019450188,1.862368,-0.61309993]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.469999,11.84745],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\WIP\\Unfinished_Building_01_F.p3d",
+              "Transform": [-0.0050001144,2.4835348,0.79122543]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.970001,12.695244],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\WIP\\Unfinished_Building_02_F.p3d",
+              "Transform": [-0.58499956,2.755276,0.12262225]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.82775,12.07504],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Shop01\\i_Shop_01_V1_F.p3d",
+              "Transform": [-0.0011248589,3.0661001,0.4769597]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.82775,12.075041],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Shop01\\i_Shop_01_V2_F.p3d",
+              "Transform": [-0.0011248589,3.0661001,0.47696018]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.82775,12.07504],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Shop01\\i_Shop_01_V3_F.p3d",
+              "Transform": [-0.0011248589,3.0661001,0.4769597]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.827751,12.07504],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Shop01\\u_Shop_01_V1_F.p3d",
+              "Transform": [-0.0011250973,3.18536,0.4769597]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.844711,10.465401],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Shop02\\i_Shop_02_V1_F.p3d",
+              "Transform": [0.22681046,3.1795251,-0.6663699]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.844711,10.465401],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Shop02\\i_Shop_02_V2_F.p3d",
+              "Transform": [0.22681046,3.1795251,-0.6663699]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.844711,10.465401],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Shop02\\i_Shop_02_V3_F.p3d",
+              "Transform": [0.22681046,3.1795251,-0.6663699]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.947823,10.584164],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\households\\House_Shop02\\u_Shop_02_V1_F.p3d",
+              "Transform": [0.27836132,3.1795251,-0.72575116]
+            }
+          ]
+        }
+      }
+    ],
+    "Industrial": [
+      {
+        "Size": [47.34871,49.264393],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_boilerBuilding_F.p3d",
+              "Transform": [1.4745064,17.67423,0.79640007]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [26.653702,32.217003],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_warehouse_F.p3d",
+              "Transform": [3.1904507,4.7020435,0.7002001]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [14.695002,29.941736],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_washer_F.p3d",
+              "Transform": [-0.013035774,5.2042665,-2.4976683]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.564293,10.564293],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SurfaceMine_01\\SM_01_reservoirTower_F.p3d",
+              "Transform": [0,10.363952,0]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [25.879902,11.607126],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SurfaceMine_01\\SM_01_shed_F.p3d",
+              "Transform": [-1.4511566,1.685302,-1.5817735]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.417304,29.709679],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_mainFactory_addon2_F.p3d",
+              "Transform": [-15.415091,10.594373,4.8670826]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [45.69561,31.146854],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_mainFactory_F.p3d",
+              "Transform": [1.8134451,10.524456,4.241428]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [23.057854,12.580131],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_smallFactory_F.p3d",
+              "Transform": [-0.08268738,1.8698694,0.13290453]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [26.4,36.185],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\Factory\\Factory_Main_F.p3d",
+              "Transform": [0.19999981,6.683112,1.0575008]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.298496,15.951361],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_bigTank_F.p3d",
+              "Transform": [-0.6122546,2.9275,-0.41602516]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.155481,9.172199],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_storageBin_small_F.p3d",
+              "Transform": [0,6.346678,0.081269264]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [19.731873,19.619923],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_storageBin_medium_F.p3d",
+              "Transform": [-0.78686476,5.3822055,-0.67213964]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [27.9612,27.982601],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_storageBin_big_F.p3d",
+              "Transform": [0.5581994,11.578563,-0.56889963]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [21.08036,36.44573],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_shed_F.p3d",
+              "Transform": [0.018165588,7.23241,-0.065603256]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [44.79711,28.208408],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\Port\\Warehouse_02_F.p3d",
+              "Transform": [-0.0064048767,5.2480106,1.7947345]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.460377,40.257828],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\Port\\Warehouse_01_F.p3d",
+              "Transform": [0.014157772,2.9970126,-0.010543823]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [32.894783,32.911594],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\Port\\StorageTank_01_small_F.p3d",
+              "Transform": [0.6126113,12.466569,0.621016]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [42.006,40.800003],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\Port\\StorageTank_01_large_F.p3d",
+              "Transform": [-0.60299873,8.515706,0]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.46187,6.56895],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_waterCooler_F.p3d",
+              "Transform": [-0.11348438,2.1569202,-0.7576549]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [3.687169,3.5956006],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_transformer_F.p3d",
+              "Transform": [0.036566854,1.6456327,0.3633263]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [23.057854,12.580131],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_smallFactory_F.p3d",
+              "Transform": [-0.08268738,2.0907102,0.13290453]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [45.69561,31.146854],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_mainFactory_F.p3d",
+              "Transform": [1.8134451,10.55747,4.241428]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.0269446,6.942228],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\DieselPowerPlant_01\\dp_smallTank_old_F.p3d",
+              "Transform": [-0.042366028,4.7934694,2.3841858E-07]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [25.879902,11.607126],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\Sheds\\i_Shed_Ind_old_F.p3d",
+              "Transform": [-1.4511566,1.5399702,-1.5817735]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [25.589401,30.969603],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\Sawmills\\Sawmill_01_F.p3d",
+              "Transform": [2.2850003,5.7621107,2.505]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.536551,15.491819],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\Power\\PowerStation_01_F.p3d",
+              "Transform": [0.80737555,1.8212602,-0.03483987]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.298496,15.951361],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\DieselPowerPlant_01\\dp_bigTank_old_F.p3d",
+              "Transform": [-0.6122546,2.9275,-0.41602516]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [45.69561,31.146854],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\DieselPowerPlant_01\\DPP_01_mainFactory_old_F.p3d",
+              "Transform": [1.8134451,10.55747,4.241428]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [45.04649,43.559982],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\CoalPlant_01\\CoalPlant_01_MainBuilding_F.p3d",
+              "Transform": [-5.227005,13.95036,4.926015]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [30.212852,49.3321],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\CementWorks\\CementWorks_01_grey_F.p3d",
+              "Transform": [3.7105103,4.8640833,-5.4540634]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [29.987291,48.974907],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\CementWorks\\CementWorks_01_brick_F.p3d",
+              "Transform": [3.7216406,4.8589354,-5.63266]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.35862,14.071051],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_clarifier_F.p3d",
+              "Transform": [-1.5668199,8.108506,0.37381458]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [19.807442,19.024183],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_crystallizer_F.p3d",
+              "Transform": [-0.4824257,9.054275,-0.33546543]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [18.06955,48.9406],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_diffuser_F.p3d",
+              "Transform": [0.28517485,8.00698,-0.29870033]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [29.9803,48.7333],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_generalBuilding_F.p3d",
+              "Transform": [-1.2193503,9.481325,0.13444996]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "ClusterCollections": {
+    "Forest": [
+      {
+        "Clusters": [
+          {
+            "Models": [
+              {
+                "Radius": 3.75,
+                "ExclusiveRadius": 3.75,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\tree\\t_malusdomestica_3s.p3d",
+                      "Transform": [-0.05922866,6.330764,-0.0554139]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.4
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.75,
+                "ExclusiveRadius": 3.75,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\tree\\t_fagussylvatica_3s.p3d",
+                      "Transform": [0.6740382,11.785852,-0.117666245]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.4
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.75,
+                "ExclusiveRadius": 3.75,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\plants_f\\tree\\t_PinusS2s_F.p3d",
+                      "Transform": [-0.09309697,6.903697,-0.1338292]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.2
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.008,
+        "MaxDensity": 0.008,
+        "Label": ""
+      }
+    ],
+    "ForestEdge": [
+      {
+        "Clusters": [
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 0.1,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                      "Transform": [0.008685879,1.7445197,0.092071]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.16666666666666666
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2,
+                "ExclusiveRadius": 0.1,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Corylus_heterophylla_1.p3d",
+                      "Transform": [0.17707007,1.2392049,0.027241528]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.16666666666666666
+          },
+          {
+            "Models": [
+              {
+                "Radius": 4,
+                "ExclusiveRadius": 0.1,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Corylus_heterophylla_2.p3d",
+                      "Transform": [2.9802322E-08,2.5002358,8.940697E-08]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.16666666666666666
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.5,
+                "ExclusiveRadius": 0.1,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\b_prunusSpinosa_1s.p3d",
+                      "Transform": [-2.2351742E-08,1.4469362,0]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.16666666666666666
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2,
+                "ExclusiveRadius": 0.1,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\b_sambucusNigra_1s.p3d",
+                      "Transform": [0.15002331,1.7176561,-0.020583801]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.16666666666666666
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3,
+                "ExclusiveRadius": 0.1,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\b_sambucusNigra_2s.p3d",
+                      "Transform": [0.24722251,2.555199,-7.450581E-09]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.16666666666666666
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.07,
+        "MaxDensity": 0.07,
+        "Label": ""
+      }
+    ]
+  },
+  "Materials": {
+    "TextureSizeInMeters": 4,
+    "Definitions": [
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_grassshort_centraleurope_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_grassshort_centraleurope_co.paa",
+          "Id": "9ACD32FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAbElEQVR4nFWOgQnAIAwEnyQG5+oCHaD77yBCYjWirQ+i4e5VuZ+rMSFSDVDBlz7LgiPecIa7EK1+MAcSne0QjsJf8LlktA/YnyEiuHiM+wYzAzMHHAnJfQoDrn2BlNIUSinIOW9BVVFr3V95AYNxLB7ChShIAAAAAElFTkSuQmCC"
+        },
+        "Usages": [
+          "Default",
+          "DefaultUrban",
+          "Grass",
+          "Meadow"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_dirt_centraleurope_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_dirt_centraleurope_co.paa",
+          "Id": "A52A2AFF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAY0lEQVR4nGVOiQ2AQAirQJjTDVzCqS/BE+5BT5uQBtq0yHnsFdXQhhSAM7OTs0NAvoCRuCzFMEo7TIRZPaWUntISIpoVaTRLsRs2fsRg4oUFX1jpiaPyb6i2rAKe3aOXXv84bufTJ3fzpb4XAAAAAElFTkSuQmCC"
+        },
+        "Usages": [
+          "DefaultIndustrial"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_forest_centraleurope_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_forest_centraleurope_co.paa",
+          "Id": "008000FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAa0lEQVR4nFWO0Q2AIAwFn9A2ruMIuv9ARqBqSzF4CeHjjhfo2LcbrcGPKpASnJz9kItSAOYuRhSPyKVhtwkLTQb0mxzYSoTUwnN4SYJzhP6HoNQ+q8uFGWLKLkvVHkKxvvMrSw8kAqb0RTMPfHcw1LwnidIAAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "ForestGround"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_sand_centraleurope_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_sand_centraleurope_co.paa",
+          "Id": "F4A460FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAO0lEQVR4nGPprC39zwAEfxmYgfAvEKICFpAEDEDYqEpYILoguhkwpIEKQAS6IjQrEBZgSkNNwAcoVwAASYMSiQJnGDYAAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "Sand"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_farmland_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_farmland_co.paa",
+          "Id": "FFFF00FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAeElEQVR4nFWOAQ7DMAgDXUKi/nV/2BP23qoRZCa02YoUkDjjWD/v12iKWeZsA6vMAPVrcfScVfAolS0vawG6/UA/AeFOizxB2LolbI2CgHvd6WLzFfEpLBScdNF1SejDUbaE4RSTGYQBj/XFP5yCG4QwM/jKYRR8Aa5xN2waz7JaAAAAAElFTkSuQmCC"
+        },
+        "Usages": [
+          "FarmLand"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_wetland_centraleurope_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_wetland_centraleurope_co.paa",
+          "Id": "ADD8E6FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAdElEQVR4nF2OSw6DMAxEh9ig3qX7rnr/MyHo4HryIWqfFNnKvDj29+sZm20Y8NrBAGxBrW6L9YCw0nqFVvJk7wyCzHCI+eqKJuyfPqFKXRQP10RgTSnbs46crDXUdwcPCQ3LS5apaSdxCz9hzJ0cf4xQVXwBLKw3nYFeYMoAAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "RiverGround",
+          "LakeGround"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_rock_centraleurope_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_rock_centraleurope_co.paa",
+          "Id": "A9A9A9FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAApklEQVR4nE2O3QqCQBCFD7h6YyZLIUWLVDdBbys9YBCJshjqbmrRRe2MCQ7sD/N9cxiRZZcv/tU9G0D47rVTC4KuMJLobM2NZKvc30CXOZLNDmIOKUEXd04IFxFLgiBJuri6iT10VfIkQZKEHwSo9A3p4QzTVpBS4vPu4XnAa7AQpn3AukNwGa/RD+OCxtSwthmXjOIVQ5IIzIsFlZ5G6JKmUurI8g+qR1g8or6NNgAAAABJRU5ErkJggg=="
+        },
+        "Usages": [
+          "RockGround"
+        ]
+      }
+    ]
+  },
+  "Roads": [
+    {
+      "SatelliteColor": "4D4D4DFF",
+      "TextureWidth": 14,
+      "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_ca.paa",
+      "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_end_ca.paa",
+      "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat",
+      "Id": "TwoLanesMotorway",
+      "Width": 12,
+      "ClearWidth": 18
+    },
+    {
+      "SatelliteColor": "4D4D4DFF",
+      "TextureWidth": 14,
+      "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_ca.paa",
+      "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_end_ca.paa",
+      "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat",
+      "Id": "TwoLanesPrimaryRoad",
+      "Width": 12,
+      "ClearWidth": 16
+    },
+    {
+      "SatelliteColor": "4D4D4DFF",
+      "TextureWidth": 10,
+      "Texture": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road_ca.paa",
+      "TextureEnd": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road_end_ca.paa",
+      "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road.rvmat",
+      "Id": "TwoLanesSecondaryRoad",
+      "Width": 7.5,
+      "ClearWidth": 11.5
+    },
+    {
+      "SatelliteColor": "625F5BFF",
+      "TextureWidth": 9,
+      "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_ca.paa",
+      "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_end_ca.paa",
+      "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road.rvmat",
+      "Id": "TwoLanesConcreteRoad",
+      "Width": 7.5,
+      "ClearWidth": 11.5
+    },
+    {
+      "SatelliteColor": "625F5BFF",
+      "TextureWidth": 6.5,
+      "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_ca.paa",
+      "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_end_ca.paa",
+      "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road.rvmat",
+      "Id": "SingleLaneConcreteRoad",
+      "Width": 5.5,
+      "ClearWidth": 7.5
+    },
+    {
+      "SatelliteColor": "534C43FF",
+      "TextureWidth": 10,
+      "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_road_ca.paa",
+      "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_road_end_ca.paa",
+      "Material": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_road.rvmat",
+      "Id": "SingleLaneDirtRoad",
+      "Width": 6,
+      "ClearWidth": 10
+    },
+    {
+      "SatelliteColor": "534C43FF",
+      "TextureWidth": 7,
+      "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_path_ca.paa",
+      "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_path_end_ca.paa",
+      "Material": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_path.rvmat",
+      "Id": "SingleLaneDirtPath",
+      "Width": 4.5,
+      "ClearWidth": 6.5
+    },
+    {
+      "SatelliteColor": "625F5BFF",
+      "TextureWidth": 2.5,
+      "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_ca.paa",
+      "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_end_ca.paa",
+      "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road.rvmat",
+      "Id": "ConcreteFootway",
+      "Width": 2,
+      "ClearWidth": 3
+    },
+    {
+      "SatelliteColor": "534C43FF",
+      "TextureWidth": 2,
+      "Texture": "a3\\structures_f_exp\\data\\roads\\surf_exp_traildirt_trail_ca.paa",
+      "TextureEnd": "a3\\structures_f_exp\\data\\roads\\surf_exp_traildirt_trail_end_ca.paa",
+      "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_traildirt_trail.rvmat",
+      "Id": "Trail",
+      "Width": 1.5,
+      "ClearWidth": 3.5
+    }
+  ],
+  "Objects": {
+    "Bench": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\civilian\\accessories\\bench_05_f.p3d",
+              "Transform": [-0.003407836,0.19074778,-0.008297801]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\civilian\\accessories\\bench_04_f.p3d",
+              "Transform": [-0.000882864,0.36244345,-0.010998197]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\civilian\\accessories\\bench_03_f.p3d",
+              "Transform": [-0.012742877,0.42838788,-0.061768323]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_epc\\Civ\\Accessories\\Bench_02_F.p3d",
+              "Transform": [0,0.51086915,-0.088025995]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_epc\\Civ\\Accessories\\Bench_01_F.p3d",
+              "Transform": [0,0.51086915,-0.088025995]
+            }
+          ]
+        },
+        "Probability": 0.2
+      }
+    ],
+    "Tree": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\vegetation_f_enoch\\tree\\t_malusdomestica_3s.p3d",
+              "Transform": [-0.0023700371,6.330764,-0.05222494]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\vegetation_f_enoch\\tree\\t_pyruscommunis_3s.p3d",
+              "Transform": [0.021708231,6.2775784,0]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\vegetation_f_enoch\\tree\\t_fagussylvatica_3s.p3d",
+              "Transform": [0.6740382,11.785852,-0.117666245]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\plants_f\\tree\\t_FicusB2s_F.p3d",
+              "Transform": [0.010850966,3.9193487,-0.016891003]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\plants_f\\tree\\t_PinusS2s_F.p3d",
+              "Transform": [-0.09309697,6.903697,-0.1338292]
+            }
+          ]
+        },
+        "Probability": 0.2
+      }
+    ]
+  },
+  "Ponds": {
+    "Size5": "z\\arm\\addons\\common_v2\\data\\water\\arm_pond_blue_5.p3d",
+    "Size10": "z\\arm\\addons\\common_v2\\data\\water\\arm_pond_blue_10.p3d",
+    "Size20": "z\\arm\\addons\\common_v2\\data\\water\\arm_pond_blue_20.p3d",
+    "Size40": "z\\arm\\addons\\common_v2\\data\\water\\arm_pond_blue_40.p3d",
+    "Size80": "z\\arm\\addons\\common_v2\\data\\water\\arm_pond_blue_80.p3d"
+  },
+  "Fences": {
+    "Fence": [
+      {
+        "Probability": 1,
+        "Straights": [
+          {
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\structures_f\\walls\\Wired_Fence_8m_F.p3d",
+                  "Transform": [0.5600002,0.2760908,-0.050000004]
+                }
+              ]
+            },
+            "Size": 8
+          },
+          {
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\structures_f\\walls\\Wired_Fence_4m_F.p3d",
+                  "Transform": [-0.009083569,0.27785596,-0.028203338]
+                }
+              ]
+            },
+            "Size": 4
+          }
+        ],
+        "Label": ""
+      }
+    ]
+  },
+  "BaseWorldName": "arm_world_centraleurope",
+  "BaseDependency": "arm_centraleurope"
+}
