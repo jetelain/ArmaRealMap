@@ -2,7 +2,9 @@
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Reporting;
+using HugeImages;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.Imagery
 {
@@ -21,7 +23,7 @@ namespace GameRealisticMap.Arma3.Imagery
             this.context = context;
         }
 
-        public Image CreateIdMap()
+        public HugeImage<Rgba32> CreateIdMap()
         {
             return idMapRender.Render(config, context);
         }
@@ -31,7 +33,7 @@ namespace GameRealisticMap.Arma3.Imagery
             return satMapRender.RenderPictureMap(config, context, 2048);
         }
 
-        public Image CreateSatMap()
+        public HugeImage<Rgba32> CreateSatMap()
         {
             return satMapRender.Render(config, context);
         }

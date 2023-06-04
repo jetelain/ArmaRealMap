@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Reporting;
+﻿using System;
+using System.Threading.Tasks;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.Reporting
@@ -8,5 +9,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting
         bool IsRunning { get; }
 
         IProgressTaskUI StartTask(string name);
+
+        void RunTask(string name, Func<IProgressTaskUI, Task> run);
     }
 }

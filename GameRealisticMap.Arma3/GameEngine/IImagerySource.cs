@@ -1,14 +1,16 @@
-﻿using SixLabors.ImageSharp;
+﻿using HugeImages;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
     public interface IImagerySource
     {
-        Image CreateIdMap();
+        HugeImage<Rgba32> CreateIdMap();
 
         Image CreatePictureMap();
 
-        Image CreateSatMap();
+        HugeImage<Rgba32> CreateSatMap();
 
         Image CreateSatOut();
     }

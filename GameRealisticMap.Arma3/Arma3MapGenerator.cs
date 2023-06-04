@@ -6,6 +6,7 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
+using HugeImages.Storage;
 
 namespace GameRealisticMap.Arma3
 {
@@ -18,6 +19,28 @@ namespace GameRealisticMap.Arma3
         {
             this.assets = assets;
             this.projectDrive = projectDrive;
+        }
+
+        public async Task<IImagerySource?> GetImagerySource(IProgressTask progress, Arma3MapConfig a3config, IHugeImageStorage hugeImageStorage)
+        {
+            var context = await GetBuildContext(progress, a3config, hugeImageStorage); 
+            if (context == null)
+            {
+                return null;
+            }
+            return new ImagerySource(assets.Materials, progress, projectDrive, a3config, context);
+        }
+
+        public async Task<IBuildContext?> GetBuildContext(IProgressTask progress, Arma3MapConfig a3config, IHugeImageStorage hugeImageStorage)
+        {
+            var loader = new OsmDataOverPassLoader(progress);
+            var osmSource = await loader.Load(a3config.TerrainArea);
+            if (progress.CancellationToken.IsCancellationRequested)
+            {
+                return null;
+            }
+            var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary);
+            return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
         }
 
         public async Task<BuildContext?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
@@ -37,7 +60,8 @@ namespace GameRealisticMap.Arma3
             // Generate content
             var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary);
             var context = new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery);
-            GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators);
+            GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators); 
+            context.DisposeHugeImages();
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return null;

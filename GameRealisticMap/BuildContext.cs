@@ -1,5 +1,6 @@
 ﻿using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
+using HugeImages.Storage;
 
 namespace GameRealisticMap
 {
@@ -9,13 +10,14 @@ namespace GameRealisticMap
         private readonly IProgressSystem progress;
         private readonly IBuidersCatalog catalog;
 
-        public BuildContext(IBuidersCatalog catalog, IProgressSystem progress, ITerrainArea area, IOsmDataSource source, IImageryOptions imagery)
+        public BuildContext(IBuidersCatalog catalog, IProgressSystem progress, ITerrainArea area, IOsmDataSource source, IImageryOptions imagery, IHugeImageStorage? his = null)
         {
             this.progress = progress;
             this.catalog = catalog;
             Area = area;
             OsmSource = source;
             Imagery = imagery;
+            HugeImageStorage = his ?? new TemporaryHugeImageStorage();
         }
 
         public IBuidersCatalog Catalog => catalog;
@@ -25,6 +27,13 @@ namespace GameRealisticMap
         public IOsmDataSource OsmSource { get; }
 
         public IImageryOptions Imagery { get; }
+
+        public IHugeImageStorage HugeImageStorage { get; }
+
+        public void DisposeHugeImages()
+        {
+            (HugeImageStorage as IDisposable)?.Dispose();
+        }
 
         public T GetData<T>() 
             where T : class

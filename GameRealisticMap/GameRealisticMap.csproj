@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Preview\grm-preview.html" />
-    <None Remove="Preview\grm-preview.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="Preview\grm-preview.html" />
     <EmbeddedResource Include="Preview\grm-preview.js" />
   </ItemGroup>
@@ -24,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HugeImages\HugeImages\HugeImages.csproj" />
     <ProjectReference Include="..\mapkit\MapToolkit\MapToolkit.csproj" />
   </ItemGroup>
 

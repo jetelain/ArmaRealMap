@@ -9,18 +9,18 @@
 
         public static IEnumerable<T> ProgressStep<T>(this List<T> input, IProgressSystem progress, string name)
         {
-            using (var report = progress.CreateStep(name, input.Count))
-            {
-                return Progress(input, report);
-            }
+            return Progress(input, progress.CreateStep(name, input.Count));
         }
 
-        public static IEnumerable<T> Progress<T>(this IEnumerable<T> input, IProgressInteger report)
+        private static IEnumerable<T> Progress<T>(IEnumerable<T> input, IProgressInteger report)
         {
-            foreach (var item in input)
+            using (report)
             {
-                yield return item;
-                report.ReportOneDone();
+                foreach (var item in input)
+                {
+                    yield return item;
+                    report.ReportOneDone();
+                }
             }
         }
 

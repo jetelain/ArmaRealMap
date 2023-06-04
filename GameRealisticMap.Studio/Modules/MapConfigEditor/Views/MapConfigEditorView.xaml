@@ -20,6 +20,10 @@
                         <ContextMenu>
                             <MenuItem Header="Generate with elevation" cal:Message.Attach="GeneratePreviewNormal"></MenuItem>
                             <MenuItem Header="Generate areas only (faster)" cal:Message.Attach="GeneratePreviewFast"></MenuItem>
+                            <Separator />
+                            <MenuItem Header="Generate raw satellite image" cal:Message.Attach="GenerateRawSatMap"></MenuItem>
+                            <MenuItem Header="Generate satellite image" cal:Message.Attach="GenerateSatMap"></MenuItem>
+                            <MenuItem Header="Generate id map image" cal:Message.Attach="GenerateIdMap"></MenuItem>
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>

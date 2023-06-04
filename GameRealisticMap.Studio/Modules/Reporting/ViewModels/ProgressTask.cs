@@ -11,12 +11,10 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly ProgressToolViewModel viewModel;
         private readonly Stopwatch elapsed;
-        private readonly IOutput output;
         private int lastDone = 0;
 
-        public ProgressTask(ProgressToolViewModel viewModel, IOutput output)
+        public ProgressTask(ProgressToolViewModel viewModel)
         {
-            this.output = output;
             this.viewModel = viewModel;
             this.elapsed = Stopwatch.StartNew();
         }
@@ -60,6 +58,10 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             }
             WriteLine($"Task done SUCCESSFULLY in {elapsed.ElapsedMilliseconds/1000d:0.0} seconds");
             viewModel.State = TaskState.Done;
+            if (Total == 0)
+            {
+                Total = 1;
+            }
             UpdateProgress(Total);
         }
 

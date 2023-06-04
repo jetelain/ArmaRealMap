@@ -3,6 +3,8 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
+using HugeImages;
+using HugeImages.Processing;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Png;
@@ -22,10 +24,10 @@ namespace GameRealisticMap.Arma3.Imagery
             this.gameFileSystem = gameFileSystem;
         }
 
-        public override Image<Rgba32> Render(IArma3MapConfig config, IContext context)
+        public override HugeImage<Rgba32> Render(IArma3MapConfig config, IContext context)
         {
             var image = base.Render(config, context);
-            image.Mutate(d => d.GaussianBlur(1.5f));
+            image.MutateAllAsync(d => d.GaussianBlur(1.5f)).GetAwaiter().GetResult();
             return image;
         }
 

@@ -1,11 +1,16 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using CoordinateSharp.Debuggers;
+using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 using Gemini.Modules.Output;
+using HugeImages.Storage;
 
 namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 {
@@ -58,7 +63,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
             State = TaskState.Running;
 
-            return current = new ProgressTask(this, output);
+            return current = new ProgressTask(this);
         }
 
         public Task CancelTask()
@@ -88,6 +93,28 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         internal void WriteLine(string message)
         {
             OnUIThread(() => output.AppendLine(message ?? string.Empty));
+        }
+
+        public void RunTask(string name, Func<IProgressTaskUI, Task> run)
+        {
+            if (!IsRunning)
+            {
+                shell.ShowTool(this);
+                _ = Task.Run(() => DoRunTask(name, run));
+            }
+        }
+
+        private async Task DoRunTask(string name, Func<IProgressTaskUI, Task> run)
+        {
+            using var task = StartTask(name);
+            try
+            {
+                await run(task);
+            }
+            catch (Exception ex)
+            {
+                task.Failed(ex);
+            }
         }
     }
 }

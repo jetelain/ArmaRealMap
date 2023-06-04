@@ -42,6 +42,8 @@ namespace GameRealisticMap.Arma3.CommandLine
 
             sw.Stop();
 
+            context?.DisposeHugeImages();
+
             var surface = a3config.SizeInMeters * a3config.SizeInMeters / 1000000d;
 
             Console.WriteLine($"It took {sw.ElapsedMilliseconds} msec for {surface:0.0} Km², {sw.ElapsedMilliseconds / surface:0} msec/Km²");

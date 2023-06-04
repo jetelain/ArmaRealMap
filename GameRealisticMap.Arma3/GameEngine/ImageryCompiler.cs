@@ -1,6 +1,8 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Reporting;
+using HugeImages;
+using HugeImages.Processing;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -88,7 +90,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             }
         }
 
-        private void GenerateSatMapTiles(IArma3MapConfig config, Image satMap, ImageryTiler tiler)
+        private void GenerateSatMapTiles(IArma3MapConfig config, HugeImage<Rgba32> satMap, ImageryTiler tiler)
         {
             using var report = progress.CreateStep("SatMapTiling", tiler.Segments.Length);
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
@@ -98,16 +100,16 @@ namespace GameRealisticMap.Arma3.GameEngine
                     for (var y = 0; y < tiler.Segments.GetLength(1); ++y)
                     {
                         var seg = tiler.Segments[x, y];
-                        var pos = -seg.ImageTopLeft;
-                        tile.Mutate(c => c.DrawImage(satMap, pos, 1.0f));
-                        ImageryTileHelper.FillEdges(tiler.FullImageSize, x, tiler.Segments.GetLength(0), tile, y, pos);
+                        var pos = seg.ImageTopLeft;
+                        tile.Mutate(c => c.DrawHugeImage(satMap, pos, 1.0f));
+                        ImageryTileHelper.FillEdges(tiler.FullImageSize, x, tiler.Segments.GetLength(0), tile, y, -pos);
                         gameFileSystemWriter.WritePngImage($"{config.PboPrefix}\\data\\layers\\S_{x:000}_{y:000}_lco.png", tile);
                     }
                 }
             });
         }
 
-        private void GenerateIdMapTilesAndRvMat(IArma3MapConfig config, Image idmap, ImageryTiler tiler)
+        private void GenerateIdMapTilesAndRvMat(IArma3MapConfig config, HugeImage<Rgba32> idmap, ImageryTiler tiler)
         {
             using var report = progress.CreateStep("IdMapTiling", tiler.Segments.Length);
             var textureScale = GetTextureScale(config);
@@ -120,9 +122,9 @@ namespace GameRealisticMap.Arma3.GameEngine
                         for (var y = 0; y < tiler.Segments.GetLength(1); ++y)
                         {
                             var seg = tiler.Segments[x, y];
-                            var pos = -seg.ImageTopLeft;
-                            sourceTile.Mutate(c => c.DrawImage(idmap, pos, 1.0f));
-                            ImageryTileHelper.FillEdges(tiler.FullImageSize, x, tiler.Segments.GetLength(0), sourceTile, y, pos);
+                            var pos = seg.ImageTopLeft;
+                            sourceTile.Mutate(c => c.DrawHugeImage(idmap, pos, 1.0f));
+                            ImageryTileHelper.FillEdges(tiler.FullImageSize, x, tiler.Segments.GetLength(0), sourceTile, y, -pos);
                             var tex = ReduceColors(sourceTile, targetTile);
                             var rvmat = MakeRvMat(seg, config, tex.Select(t => t.Material), textureScale);
                             gameFileSystemWriter.WritePngImage($"{config.PboPrefix}\\data\\layers\\M_{x:000}_{y:000}_lca.png", targetTile);

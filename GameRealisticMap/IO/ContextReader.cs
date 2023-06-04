@@ -1,10 +1,14 @@
-﻿namespace GameRealisticMap.IO
+﻿using HugeImages.Storage;
+
+namespace GameRealisticMap.IO
 {
     internal class ContextReader : IContext, IDataBuilderVisitor<Task>
     {
         private readonly Dictionary<Type, object> cache = new Dictionary<Type, object>();
         private readonly IPackageReader package;
         private readonly IBuidersCatalog catalog;
+
+        public IHugeImageStorage HugeImageStorage => throw new NotImplementedException();
 
         public ContextReader(IPackageReader package, IBuidersCatalog catalog)
         {

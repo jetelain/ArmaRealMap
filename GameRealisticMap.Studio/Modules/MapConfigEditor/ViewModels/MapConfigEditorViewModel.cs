@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Preview;
+using GameRealisticMap.Satellite;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
@@ -17,6 +19,7 @@ using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework.Services;
+using HugeImages.Storage;
 using MapControl;
 using Microsoft.Win32;
 
@@ -180,12 +183,8 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         public Task GeneratePreview(bool ignoreElevation = false)
         {
-            var progress = IoC.Get<IProgressTool>();
-            if (!progress.IsRunning)
-            {
-                _shell.ShowTool(progress);
-                _ = Task.Run(() => DoGeneratePreview(progress, ignoreElevation));
-            }
+            IoC.Get<IProgressTool>()
+                .RunTask("Generate Preview", t => DoGeneratePreview(t, ignoreElevation));
             return Task.CompletedTask;
         }
 
@@ -193,21 +192,13 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         public Task GeneratePreviewNormal() => GeneratePreview(false);
 
-        private async Task DoGeneratePreview(IProgressTool progressTool, bool ignoreElevation)
+        private async Task DoGeneratePreview(IProgressTaskUI task, bool ignoreElevation)
         {
-            using var task = progressTool.StartTask("Generate Preview");
-            try
-            {
-                var a3config = Config.ToArma3MapConfig();
-                var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery);
-                var target = Path.Combine(Path.GetTempPath(), "grm-preview.html");
-                await render.RenderHtml(task, target, ignoreElevation);
-                task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = target });
-            }
-            catch(Exception ex)
-            {
-                task.Failed(ex);
-            }
+            var a3config = Config.ToArma3MapConfig();
+            var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery);
+            var target = Path.Combine(Path.GetTempPath(), "grm-preview.html");
+            await render.RenderHtml(task, target, ignoreElevation);
+            task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = target });
         }
 
         public Task ChooseAssetConfig()
@@ -277,37 +268,25 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         public Task GenerateMap()
         {
-            var progress = IoC.Get<IProgressTool>();
-            if (!progress.IsRunning)
-            {
-                _shell.ShowTool(progress);
-                _ = Task.Run(() => DoGenerateMap(progress));
-            }
+            IoC.Get<IProgressTool>()
+                .RunTask("Generate Map", DoGenerateMap);
             return Task.CompletedTask;
         }
 
-        private async Task DoGenerateMap(IProgressTool progressTool)
+        private async Task DoGenerateMap(IProgressTaskUI task)
         {
-            using var task = progressTool.StartTask("Generate Map");
-            try
-            {
-                var projectDrive = _arma3DataModule.ProjectDrive;
-                var library = _arma3DataModule.Library;
+            var projectDrive = _arma3DataModule.ProjectDrive;
+            var library = _arma3DataModule.Library;
 
-                var a3config = Config.ToArma3MapConfig();
+            var a3config = Config.ToArma3MapConfig();
 
-                Arma3Assets assets = await GetAssets(library, a3config);
+            Arma3Assets assets = await GetAssets(library, a3config);
 
-                var generator = new Arma3MapGenerator(assets, projectDrive);
+            var generator = new Arma3MapGenerator(assets, projectDrive);
 
-                await generator.GenerateWrp(task, a3config);
+            await generator.GenerateWrp(task, a3config);
 
-                task.DisplayResult = null;
-            }
-            catch (Exception ex)
-            {
-                task.Failed(ex);
-            }
+            task.DisplayResult = null;
         }
 
         private async Task<Arma3Assets> GetAssets(ModelInfoLibrary library, Arma3MapConfig a3config)
@@ -325,6 +304,72 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             }
 
             return await Arma3Assets.LoadFromFile(library, file);
+        }
+
+        public Task GenerateSatMap()
+        {
+            IoC.Get<IProgressTool>()
+                .RunTask("Generate Sat Map", (t) => DoImagery(t, s => s.CreateSatMap().OffloadAsync()));
+            return Task.CompletedTask;
+        }
+        public Task GenerateRawSatMap()
+        {
+            IoC.Get<IProgressTool>()
+                .RunTask("Generate Raw Sat Map", DoRawSat);
+            return Task.CompletedTask;
+        }
+
+        public Task GenerateIdMap()
+        {
+            IoC.Get<IProgressTool>()
+                .RunTask("Generate Id Map", (t) => DoImagery(t, s => s.CreateIdMap().OffloadAsync()));
+            return Task.CompletedTask;
+        }
+
+        private async Task DoImagery(IProgressTaskUI task, Func<IImagerySource,Task> action)
+        {
+            var projectDrive = _arma3DataModule.ProjectDrive;
+            var library = _arma3DataModule.Library;
+
+            var a3config = Config.ToArma3MapConfig();
+
+            Arma3Assets assets = await GetAssets(library, a3config);
+
+            var generator = new Arma3MapGenerator(assets, projectDrive);
+
+            var target = Path.Combine(Path.GetTempPath(), a3config.WorldName);
+
+            Directory.CreateDirectory(target);
+
+            var source = await generator.GetImagerySource(task, a3config, new PersistentHugeImageStorage(target));
+            if (source != null)
+            {
+                await action(source);
+            }
+            task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = target });
+        }
+
+        private async Task DoRawSat(IProgressTaskUI task)
+        {
+            var projectDrive = _arma3DataModule.ProjectDrive;
+            var library = _arma3DataModule.Library;
+
+            var a3config = Config.ToArma3MapConfig();
+
+            Arma3Assets assets = await GetAssets(library, a3config);
+
+            var generator = new Arma3MapGenerator(assets, projectDrive);
+
+            var target = Path.Combine(Path.GetTempPath(), a3config.WorldName);
+            Directory.CreateDirectory(target);
+
+            var source = await generator.GetBuildContext(task, a3config, new PersistentHugeImageStorage(target));
+
+            if (source != null)
+            {
+                await source.GetData<RawSatelliteImageData>().Image.OffloadAsync();
+            }
+            task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = target });
         }
     }
 }

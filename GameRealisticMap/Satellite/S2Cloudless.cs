@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
 using GameRealisticMap.Reporting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
@@ -15,11 +14,11 @@ namespace GameRealisticMap.Satellite
         private readonly IProgressSystem progress;
         private readonly HttpClient httpClient;
         private readonly SemaphoreSlim downloadSemaphore = new SemaphoreSlim(1, 1);
-        private readonly ConcurrentDictionary<(int,int), Task<Image<Rgb24>>> cache = new ConcurrentDictionary<(int, int), Task<Image<Rgb24>>>();
+        private readonly ConcurrentDictionary<(int,int), Task<Image<Rgba32>>> cache = new ConcurrentDictionary<(int, int), Task<Image<Rgba32>>>();
 
         private int estimatedCachePressure = 0;
 
-        private const int MaxCachePressure = 10000; // Arround 2 GiB : 10000 * 197 KB per tile
+        private const int MaxCachePressure = 5000; // Arround 2 GiB : 10000 * 197 KB per tile
 
         private static readonly int zoomLevel = 15; // best compromise, almost equal to zoomLevel 16 result, 20% faster to process
         private static readonly int halfTileCount = (int)Math.Pow(2, zoomLevel) / 2;
@@ -46,7 +45,7 @@ namespace GameRealisticMap.Satellite
 
         public int ZoomLevel => zoomLevel;
 
-        public async Task<Rgb24> GetPixel(GeoAPI.Geometries.Coordinate coordinate)
+        public async Task<Rgba32> GetPixel(GeoAPI.Geometries.Coordinate coordinate)
         {
             var meters = LatLonToWebMercator(coordinate);
 
@@ -64,7 +63,7 @@ namespace GameRealisticMap.Satellite
 
             if (estimatedCachePressure > MaxCachePressure)
             {
-                await downloadSemaphore.WaitAsync();
+                await downloadSemaphore.WaitAsync().ConfigureAwait(false);
                 try
                 {
                     if (estimatedCachePressure > MaxCachePressure)
@@ -99,7 +98,7 @@ namespace GameRealisticMap.Satellite
             int sleep = 10;
             while (sleep < 20000)
             {
-                await Task.Delay(sleep);
+                await Task.Delay(sleep).ConfigureAwait(false);
                 try
                 {
                     return await httpClient.GetByteArrayAsync(uri).ConfigureAwait(false);
@@ -114,7 +113,7 @@ namespace GameRealisticMap.Satellite
         }
 
 
-        private async Task<Image<Rgb24>> LoadTile(int tX, int tY)
+        private async Task<Image<Rgba32>> LoadTile(int tX, int tY)
         {
             var filePath = FormattableString.Invariant($"{zoomLevel}/{tY}/{tX}.jpg");
 
@@ -122,13 +121,13 @@ namespace GameRealisticMap.Satellite
             progress.WriteLine(cacheFile);
             if (!File.Exists(cacheFile))
             {
-                await downloadSemaphore.WaitAsync();
+                await downloadSemaphore.WaitAsync().ConfigureAwait(false);
                 try
                 {
                     if (!File.Exists(cacheFile))
                     {
                         Directory.CreateDirectory(Path.GetDirectoryName(cacheFile));
-                        File.WriteAllBytes(cacheFile, await Load(new Uri(endPoint + filePath, UriKind.Absolute)));
+                        File.WriteAllBytes(cacheFile, await Load(new Uri(endPoint + filePath, UriKind.Absolute)).ConfigureAwait(false));
                         progress.WriteLine("--> OK");
                     }
                 }
@@ -140,7 +139,7 @@ namespace GameRealisticMap.Satellite
 
             try
             {
-                var image = await Image.LoadAsync<Rgb24>(cacheFile, new JpegDecoder()).ConfigureAwait(false);
+                var image = await Image.LoadAsync<Rgba32>(cacheFile, new JpegDecoder()).ConfigureAwait(false);
                 Interlocked.Increment(ref estimatedCachePressure);
                 return image;
             }
