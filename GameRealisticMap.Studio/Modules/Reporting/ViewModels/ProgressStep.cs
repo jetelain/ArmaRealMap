@@ -18,7 +18,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         {
             this.total = total;
             this.task = task;
-            task.WriteLine($"**** Begin '{taskName}'");
+            task.WriteLine($"**** Begin '{taskName}' ({total} items to process)");
             StepName = taskName;
             elapsed = Stopwatch.StartNew();
             lastReport = Stopwatch.StartNew();
@@ -59,11 +59,11 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
                             var milisecondsLeft = elapsed.ElapsedMilliseconds * (total - done) / done;
                             if (milisecondsLeft > 120000d)
                             {
-                                Left = $"{Math.Round(milisecondsLeft / 60000d)} min left";
+                                Left = $"{milisecondsLeft / 60000d:0.0} min left";
                             }
                             else
                             {
-                                Left = $"{Math.Ceiling(milisecondsLeft / 1000d)} sec left";
+                                Left = $"{milisecondsLeft / 1000d:0.0} sec left";
                             }
                         }
                         NotifyOfPropertyChange(nameof(Percent));
@@ -76,14 +76,18 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         public void TaskDone()
         {
             elapsed.Stop();
-            task.WriteLine($"** '{StepName}' done in {elapsed.ElapsedMilliseconds} msec");
+            task.WriteLine($"** '{StepName}' done in {elapsed.Elapsed}");
             if (elapsed.ElapsedMilliseconds < 5000)
             {
                 Left = $"Done in {elapsed.ElapsedMilliseconds} msec";
             }
+            else if (elapsed.ElapsedMilliseconds > 120000)
+            {
+                Left = $"Done in {elapsed.ElapsedMilliseconds / 60000d:0.0} min";
+            }
             else
             {
-                Left = $"Done in {Math.Ceiling(elapsed.ElapsedMilliseconds / 1000d)} sec";
+                Left = $"Done in {elapsed.ElapsedMilliseconds / 1000d:0.0} sec";
             }
             Percent = 100.0;
             NotifyOfPropertyChange(nameof(Percent));

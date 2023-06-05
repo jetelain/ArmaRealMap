@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Threading;
 using GameRealisticMap.Reporting;
-using Gemini.Modules.Output;
 
 namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 {

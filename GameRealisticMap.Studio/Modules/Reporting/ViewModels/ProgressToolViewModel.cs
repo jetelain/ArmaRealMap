@@ -1,16 +1,10 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using CoordinateSharp.Debuggers;
-using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Arma3;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 using Gemini.Modules.Output;
-using HugeImages.Storage;
 
 namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 {

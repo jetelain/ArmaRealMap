@@ -163,6 +163,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(SouthWest));
             NotifyOfPropertyChange(nameof(Center));
             NotifyOfPropertyChange(nameof(MapSize));
+            NotifyOfPropertyChange(nameof(GridSize));
             NotifyOfPropertyChange(nameof(GridCellSize));
             NotifyOfPropertyChange(nameof(Locations));
             NotifyOfPropertyChange(nameof(AssetConfigFile));
