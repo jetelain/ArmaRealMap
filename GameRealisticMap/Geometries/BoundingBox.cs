@@ -21,7 +21,9 @@ namespace GameRealisticMap.Geometries
             Height = ch;
             Angle = ca;
             Points = points;
-            terrainPolygon = new Lazy<TerrainPolygon>(() => new TerrainPolygon(Points.Concat(Points.Take(1)).ToList(), TerrainPolygon.NoHoles));
+            terrainPolygon = new Lazy<TerrainPolygon>(() => new TerrainPolygon(Points.Concat(Points.Take(1)).ToList()));
+            MinPoint = new TerrainPoint(Points.Min(p => p.X), Points.Min(p => p.Y));
+            MaxPoint =new TerrainPoint(Points.Max(p => p.X), Points.Max(p => p.Y));
         }
 
         [JsonConstructor]
@@ -73,10 +75,10 @@ namespace GameRealisticMap.Geometries
         public TerrainPolygon Polygon => terrainPolygon.Value;
 
         [JsonIgnore]
-        public TerrainPoint MinPoint => new TerrainPoint(Points.Min(p => p.X), Points.Min(p => p.Y));
+        public TerrainPoint MinPoint { get; }
 
         [JsonIgnore]
-        public TerrainPoint MaxPoint => new TerrainPoint(Points.Max(p => p.X), Points.Max(p => p.Y));
+        public TerrainPoint MaxPoint { get; }
 
         [JsonIgnore]
         public float Surface => Width * Height;

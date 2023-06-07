@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 
 namespace GameRealisticMap.ManMade.Buildings
 {
-    internal class BuildingCandidate
+    internal class BuildingCandidate : ITerrainEnvelope
     {
         public BuildingCandidate(TerrainPolygon polygon, BuildingTypeId? category)
         {
@@ -24,7 +24,11 @@ namespace GameRealisticMap.ManMade.Buildings
 
         public BoxSide EntranceSide { get; set; }
 
-        public void Add(BuildingCandidate other)
+        public TerrainPoint MinPoint => Box.MinPoint;
+
+        public TerrainPoint MaxPoint => Box.MaxPoint;
+
+        public void AddAndMerge(BuildingCandidate other)
         {
             Polygons.AddRange(other.Polygons);
             Box = Box.Add(other.Box);

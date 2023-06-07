@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 
 namespace GameRealisticMap.Geometries
 {
@@ -11,23 +6,24 @@ namespace GameRealisticMap.Geometries
     {
         private static readonly BoxSide[] sides = new[] { BoxSide.Top, BoxSide.Right, BoxSide.Bottom, BoxSide.Left };
 
-        public static BoxSide GetClosest(BoundingBox box, IEnumerable<TerrainPath> allPaths, float maxDistance)
+        public static BoxSide GetClosest(BoundingBox box, TerrainSpacialIndex<TerrainPath> all, float maxDistance)
         {
-            return GetClosestList(box, allPaths.Select(path => (path, 1f)), maxDistance).FirstOrDefault();
+            return GetClosestList(box, all, maxDistance, p=> p, p =>1).FirstOrDefault();
         }
 
-        public static IEnumerable<BoxSide> GetClosestList(BoundingBox box, IEnumerable<(TerrainPath,float)> allPaths, float maxDistance)
+        public static IEnumerable<BoxSide> GetClosestList<T>(BoundingBox box, TerrainSpacialIndex<T> all, float maxDistance, Func<T,TerrainPath> path, Func<T,float> factor)
+            where T : class, ITerrainEnvelope
         {
             var envelope = box.WithMargin(maxDistance * 1.5f);
 
-            var paths = allPaths.Where(p => p.Item1.EnveloppeIntersects(envelope)).ToList();
+            var paths = all.Where(envelope, p => path(p).EnveloppeIntersects(envelope)).ToList();
 
-            if ( paths.Count == 0 )
+            if (paths.Count == 0)
             {
                 return Enumerable.Empty<BoxSide>();
             }
 
-            var sidesDistance = GetSidesPoints(box).Select(s => paths.Min(p => p.Item1.Distance(s) * p.Item2)).ToList();
+            var sidesDistance = GetSidesPoints(box).Select(s => paths.Min(p => path(p).Distance(s) * factor(p))).ToList();
 
             return sides
                 .Select((s, i) => new { Side = s, Distance = sidesDistance[i] })
@@ -36,27 +32,19 @@ namespace GameRealisticMap.Geometries
                 .Select(i => i.Side);
         }
 
-        public static BoxSide GetFurthest(BoundingBox box, IEnumerable<TerrainPath> allPaths, float minDistance)
+        public static BoxSide GetFurthest(BoundingBox box, TerrainSpacialIndex<TerrainPath> allPaths, float minDistance)
         {
-            return GetFurthestList(box, allPaths, minDistance).FirstOrDefault();
+            return GetFurthestList(box, allPaths, minDistance, p => p, p => true).FirstOrDefault();
         }
 
-        public static IEnumerable<BoxSide> GetFurthestList(BoundingBox box, IEnumerable<TerrainPath> allPaths, float minDistance)
+        public static IEnumerable<BoxSide> GetFurthestList<T>(BoundingBox box, TerrainSpacialIndex<T> allPaths, float minDistance, Func<T,TerrainPath> getPath, Func<T,bool> filter)
+             where T : class, ITerrainEnvelope
         {
             var envelope = box.WithMargin(minDistance * 10f);
 
-            var paths = allPaths.Where(p => p.EnveloppeIntersects(envelope));
+            var paths = allPaths.Where(envelope, p => p.EnveloppeIntersects(envelope) && filter(p));
 
-            return GetFurthestListImpl(box, minDistance, paths.ToList());
-        }
-
-        public static IEnumerable<BoxSide> GetFurthestList(BoundingBox box, IEnumerable<TerrainPolygon> allPaths, float minDistance)
-        {
-            var envelope = box.WithMargin(minDistance * 10f);
-
-            var paths = allPaths.Where(p => p.EnveloppeIntersects(envelope));
-
-            return GetFurthestListImpl(box, minDistance, paths.Select(b => new TerrainPath(b.Shell)).ToList());
+            return GetFurthestListImpl(box, minDistance, paths.Select(b => getPath(b)).ToList());
         }
 
         private static IEnumerable<BoxSide> GetFurthestListImpl(BoundingBox box, float minDistance, List<TerrainPath> paths)

@@ -169,8 +169,10 @@ namespace GameRealisticMap.ElevationModel
 
             foreach (var lake in lakesWithBorder)
             {
-                var isOK = DetectRealLake(elevationGrid, lakes, lake.Polygon, lake.BorderElevation);
-                progress.WriteLine($"{lake.Polygon.Area} => {isOK}");
+                if (!DetectRealLake(elevationGrid, lakes, lake.Polygon, lake.BorderElevation))
+                {
+                    progress.WriteLine($"Lake with initial area {lake.Polygon.Area} cannot be generated. It might be too small.");
+                }
                 report.ReportOneDone();
             }
             return lakes;

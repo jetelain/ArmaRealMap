@@ -33,7 +33,7 @@ namespace GameRealisticMap.Geometries
 
         public List<TerrainPoint> Shell { get; }
 
-        public List<List<TerrainPoint>> Holes { get; }
+        public IReadOnlyList<List<TerrainPoint>> Holes { get; }
 
         [JsonIgnore]
         public TerrainPoint MinPoint { get; }
@@ -86,7 +86,7 @@ namespace GameRealisticMap.Geometries
                     {
                         if (line.Coordinates.Length > 4)
                         {
-                            return new[] { new TerrainPolygon(line.Coordinates.Select(project).ToList(), NoHoles) };
+                            return new[] { new TerrainPolygon(line.Coordinates.Select(project).ToList()) };
                         }
                     }
                     else
@@ -125,7 +125,7 @@ namespace GameRealisticMap.Geometries
         public static TerrainPolygon FromRectangleCentered(TerrainPoint center, Vector2 size, float degrees = 0.0f)
         {
             var points = GeometryHelper.RotatedRectangleDegrees(center.Vector, size, degrees).Select(v => new TerrainPoint(v));
-            return new TerrainPolygon(points.Concat(points.Take(1)).ToList(), NoHoles);
+            return new TerrainPolygon(points.Concat(points.Take(1)).ToList());
         }
 
         public static TerrainPolygon FromRectangle(TerrainPoint start, TerrainPoint end)
@@ -138,15 +138,13 @@ namespace GameRealisticMap.Geometries
                     end,
                     new TerrainPoint(start.X, end.Y),
                     start
-                },
-                NoHoles);
+                });
         }
 
         public static TerrainPolygon FromCircle(TerrainPoint origin, float radius)
         {
             return new TerrainPolygon(
-                GeometryHelper.SimpleCircle(origin.Vector, radius).Select(v => new TerrainPoint(v)).ToList(),
-                NoHoles);
+                GeometryHelper.SimpleCircle(origin.Vector, radius).Select(v => new TerrainPoint(v)).ToList());
         }
 
         public static IEnumerable<TerrainPolygon> FromPath(IEnumerable<TerrainPoint> points, float width)
@@ -268,7 +266,7 @@ namespace GameRealisticMap.Geometries
         public IEnumerable<TerrainPolygon> SubstractAll(IEnumerable<TerrainPolygon> others)
         {
             var result = new List<TerrainPolygon>() { this };
-            foreach(var other in others.Where(o => GeometryHelper.EnveloppeIntersects(this, o)))
+            foreach(var other in others.Where(o => this.EnveloppeIntersects(o)))
             {
                 var previousResult = result.ToList();
                 result.Clear();
@@ -276,17 +274,16 @@ namespace GameRealisticMap.Geometries
                 {
                     result.AddRange(subjet.Substract(other));
                 }
+                if ( result.Count == 0)
+                {
+                    return result;
+                }
             }
             return result;
         }
 
-        public IEnumerable<TerrainPolygon> Substract(TerrainPolygon other)
+        private IEnumerable<TerrainPolygon> Substract(TerrainPolygon other)
         {
-            if (!GeometryHelper.EnveloppeIntersects(this, other))
-            {
-                return new[] { this };
-            }
-
             var clipper = new Clipper();
             clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
             foreach (var hole in Holes)
@@ -312,16 +309,22 @@ namespace GameRealisticMap.Geometries
             }
         }
 
-        public static List<TerrainPolygon> MergeAll(List<TerrainPolygon> others, IProgressPercent? progress = null, double artefactFilter = 0.01f)
+        public static List<TerrainPolygon> MergeAll(IReadOnlyCollection<TerrainPolygon> others, IProgressInteger? progress = null, double artefactFilter = 0.01f)
         {
             return MergeAllNew(others, progress, artefactFilter);
         }
 
-        public static List<TerrainPolygon> MergeAllNew(List<TerrainPolygon> others, IProgressPercent? progress = null, double artefactFilter = 0.01f)
+        public static List<TerrainPolygon> MergeAllParallel(IReadOnlyCollection<TerrainPolygon> others, IProgressInteger? progress = null, double artefactFilter = 0.01f)
+        {
+            var scope = TerrainPolygonsHelper.GetEnvelope(others);
+            return GeometryHelper.ParallelMerge(scope, others, 100, l => MergeAllNew(l, null, artefactFilter), progress).GetAwaiter().GetResult();
+        }
+
+        public static List<TerrainPolygon> MergeAllNew(IReadOnlyCollection<TerrainPolygon> others, IProgressInteger? progress = null, double artefactFilter = 0.01f)
         {
             if (others.Count == 0)
             {
-                return others;
+                return new List<TerrainPolygon>(0);
             }
             var source = others.Where(p => p.Area > artefactFilter).ToList();
             var merged = new List<TerrainPolygon>(source.Take(1));
@@ -347,7 +350,7 @@ namespace GameRealisticMap.Geometries
                     merged.Add(polygon);
                 }
                 box = merged.GetEnvelope();
-                progress?.Report(position * 100d / source.Count);
+                progress?.ReportOneDone();
                 position++;
             }
             return merged;
@@ -458,14 +461,27 @@ namespace GameRealisticMap.Geometries
                 .Concat(result.Childs.SelectMany(c => c.Childs).SelectMany(FromPolyTreeNode));
         }
 
+        public IEnumerable<TerrainPolygon> ClippedByEnveloppe(ITerrainEnvelope other)
+        {
+            return ClippedBy(FromRectangle(other.MinPoint, other.MaxPoint));
+        }
+
         public IEnumerable<TerrainPolygon> ClippedBy(TerrainPolygon other)
         {
-            if (other.Holes.Count != 0)
+            var clipper = new Clipper();
+            clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);
+            foreach (var hole in Holes)
             {
-                throw new NotSupportedException();
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true); // EvenOdd will do the job
             }
-            var holes = Holes.SelectMany(r => ClipInternal(r, other.Shell)).ToList();
-            return ClipInternal(Shell, other.Shell).SelectMany(ext => MakePolygon(ext, holes)).ToList();
+            clipper.AddPath(other.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
+            foreach (var hole in other.Holes)
+            {
+                clipper.AddPath(hole.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true); // EvenOdd will do the job
+            }
+            var result = new PolyTree();
+            clipper.Execute(ClipType.ctIntersection, result);
+            return ToPolygons(result);
         }
 
         private static List<List<IntPoint>> ClipInternal(List<TerrainPoint> shell, List<TerrainPoint> clip)
@@ -512,7 +528,7 @@ namespace GameRealisticMap.Geometries
 
         public TerrainPolygon ToShell()
         {
-            return new TerrainPolygon(Shell, NoHoles);
+            return new TerrainPolygon(Shell);
         }
 
         private static IEnumerable<List<IntPoint>> OffsetInternal(List<TerrainPoint> p, double delta)
@@ -581,7 +597,7 @@ namespace GameRealisticMap.Geometries
                 clipper.Execute(ClipType.ctDifference, result);
                 return ToPolygons(result);
             }
-            return new[] { new TerrainPolygon(ToRing(ext), NoHoles) };
+            return new[] { new TerrainPolygon(ToRing(ext)) };
         }
 
         private static List<TerrainPoint> ToRing(List<IntPoint> points)

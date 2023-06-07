@@ -1,10 +1,61 @@
-﻿using GameRealisticMap.Reporting;
+﻿using System.Collections.Concurrent;
+using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Geometries
 {
     internal static class TerrainPolygonsHelper
     {
-        internal static IEnumerable<TerrainPolygon> RemoveOverlaps(this IEnumerable<TerrainPolygon> input, IProgressSystem progress, string stepName)
+        internal static IReadOnlyCollection<TerrainPolygon> SubstractAll(this IEnumerable<TerrainPolygon> input, IProgressSystem progress, string stepName, IReadOnlyCollection<TerrainPolygon> others)
+        {
+            return SubstractAll(input.ToList(), progress, stepName, others);
+        }
+
+        internal static IReadOnlyCollection<TerrainPolygon> SubstractAll(this List<TerrainPolygon> list, IProgressSystem progress, string stepName, IReadOnlyCollection<TerrainPolygon> others)
+        {
+#if PARALLEL
+            var result = new ConcurrentBag<TerrainPolygon>();
+            using (var report = progress.CreateStep(stepName+ " (Parallel)", list.Count))
+            {
+                Parallel.ForEach(list, polygon =>
+                {
+                    foreach(var resultPolygon in polygon.SubstractAllSplitted(others))
+                    {
+                        result.Add(resultPolygon);
+                    }
+                    report.ReportOneDone();
+                });
+            }
+            return result;
+#else
+            return
+                list.ProgressStep(progress, stepName)
+                .SelectMany(l => l.SubstractAll(others))
+                .ToList();
+#endif
+        }
+
+
+        internal static IEnumerable<TerrainPolygon> SubstractAllSplitted(this TerrainPolygon subject, IEnumerable<TerrainPolygon> others)
+        {
+            if (subject.EnveloppeArea < 1_000_000)
+            {
+                return subject.SubstractAll(others);
+            }
+            var quad = subject.SplitQuad().SelectMany(s => subject.ClippedByEnveloppe(s));
+            var result = new ConcurrentBag<TerrainPolygon>();
+            Parallel.ForEach(quad, polygon =>
+            {
+                foreach (var resultPolygon in polygon.SubstractAllSplitted(others))
+                {
+                    result.Add(resultPolygon);
+                }
+            });
+            return result;
+        }
+
+
+
+        internal static List<TerrainPolygon> RemoveOverlaps(this IEnumerable<TerrainPolygon> input, IProgressSystem progress, string stepName)
         {
             var list = input.ToList();
             using (var report = progress.CreateStep(stepName, list.Count))
@@ -13,7 +64,7 @@ namespace GameRealisticMap.Geometries
             }
         }
 
-        internal static IEnumerable<TerrainPolygon> RemoveOverlaps(IProgressInteger report, List<TerrainPolygon> input)
+        internal static List<TerrainPolygon> RemoveOverlaps(IProgressInteger report, List<TerrainPolygon> input)
         {
             foreach (var item in input.ToList())
             {

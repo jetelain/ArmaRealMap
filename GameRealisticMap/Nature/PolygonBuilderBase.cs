@@ -34,8 +34,7 @@ namespace GameRealisticMap.Nature
 
                 .RemoveOverlaps(progress, "Overlaps")
 
-                .ProgressStep(progress, "Priority")
-                .SelectMany(l => l.SubstractAll(priority))
+                .SubstractAll(progress, "Priority", priority)
                 .ToList();
 
             return MergeIfRequired(polygons);
@@ -43,10 +42,17 @@ namespace GameRealisticMap.Nature
 
         protected virtual List<TerrainPolygon> MergeIfRequired(List<TerrainPolygon> polygons)
         {
-            using (var step = progress.CreateStepPercent("Merge"))
+#if PARALLEL
+            using (progress.CreateStep("Merge (Parallel)", polygons.Count))
+            {
+                return TerrainPolygon.MergeAllParallel(polygons);
+            }
+#else
+            using (var step = progress.CreateStep("Merge (Plain)", polygons.Count))
             {
                 return TerrainPolygon.MergeAll(polygons, step);
             }
+#endif
         }
     }
 }

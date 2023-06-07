@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using ClipperLib;
+using GameRealisticMap.Reporting;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -54,6 +55,7 @@ namespace GameRealisticMap.Geometries
                 b.MaxPoint.X >= a.MinPoint.X &&
                 b.MaxPoint.Y >= a.MinPoint.Y;
         }
+
 
         public static Vector2[] RotatedRectangleDegrees(Vector2 center, Vector2 size, float degrees)
         {
@@ -162,20 +164,10 @@ namespace GameRealisticMap.Geometries
             return result;
         }
 
-        public static ITerrainEnvelope WithMargin(this ITerrainEnvelope geometry, float margin)
-        {
-            return WithMargin(geometry, new Vector2(margin));
-        }
-
-        public static ITerrainEnvelope WithMargin(this ITerrainEnvelope geometry, Vector2 margin)
-        {
-            return new GameRealisticMap.Geometries.Envelope(geometry.MinPoint - margin, geometry.MaxPoint + margin);
-        }
-
-        public static TerrainPoint KeepAway(TerrainPoint point, IEnumerable<ITerrainGeo> from, float minDistance = 2f)
+        public static TerrainPoint KeepAway(TerrainPoint point, TerrainSpacialIndex<ITerrainGeo> from, float minDistance = 2f)
         {
             var envelope = point.WithMargin(minDistance);
-            var near = from.Where(p => p.EnveloppeIntersects(envelope)).ToList();
+            var near = from.Where(envelope, p => p.EnveloppeIntersects(envelope)).ToList();
             foreach (var polygon in near)
             {
                 var distance = polygon.Distance(point);
@@ -211,5 +203,73 @@ namespace GameRealisticMap.Geometries
             return VectorHelper.GetAngleFromYAxisInDegrees(facingPoint.Vector - point.Vector);
         }
 
+        internal static async Task<List<T>> ParallelMerge<T>(ITerrainEnvelope scope, IReadOnlyCollection<T> items, int idealPartition, Func<IReadOnlyCollection<T>, List<T>> merge, IProgressInteger? progressInteger = null)
+            where T : class, ITerrainEnvelope
+        {
+            if (items.Count < idealPartition)
+            {
+                if (items.Count < 2)
+                {
+                    return items.ToList();
+                }
+                return await Task.Run(() => merge(items)).ConfigureAwait(false);
+            }
+            var midPoint = (scope.MaxPoint.Vector + scope.MinPoint.Vector) / 2;
+            var scopeA = new Envelope(new TerrainPoint(scope.MinPoint.X, scope.MinPoint.Y), new TerrainPoint(midPoint.X, midPoint.Y));
+            var scopeB = new Envelope(new TerrainPoint(scope.MinPoint.X, midPoint.Y), new TerrainPoint(midPoint.X, scope.MaxPoint.Y));
+            var scopeC = new Envelope(new TerrainPoint(midPoint.X, scope.MinPoint.Y), new TerrainPoint(scope.MaxPoint.X, midPoint.Y));
+            var scopeD = new Envelope(new TerrainPoint(midPoint.X, midPoint.Y), new TerrainPoint(scope.MaxPoint.X, scope.MaxPoint.Y));
+            var listA = new List<T>();
+            var listB = new List<T>();
+            var listC = new List<T>();
+            var listD = new List<T>();
+            var listE = new List<T>();
+            foreach (var item in items)
+            {
+                if (scopeA.EnveloppeContains(item))
+                {
+                    listA.Add(item);
+                }
+                else if (scopeB.EnveloppeContains(item))
+                {
+                    listB.Add(item);
+                }
+                else if (scopeC.EnveloppeContains(item))
+                {
+                    listC.Add(item);
+                }
+                else if (scopeD.EnveloppeContains(item))
+                {
+                    listD.Add(item);
+                }
+                else
+                {
+                    listE.Add(item);
+                }
+            }
+            var taskA = Task.Run(() => ParallelMerge(scopeA, listA, idealPartition, merge));
+            var taskB = Task.Run(() => ParallelMerge(scopeB, listB, idealPartition, merge));
+            var taskC = Task.Run(() => ParallelMerge(scopeC, listC, idealPartition, merge));
+            var taskD = Task.Run(() => ParallelMerge(scopeD, listD, idealPartition, merge));
+            await Task.WhenAll(taskA, taskB, taskC, taskD).ConfigureAwait(false);
+            var finished = new List<T>();
+            var becomeE = new List<T>();
+            foreach (var item in ((await taskA).Concat(await taskB).Concat(await taskC).Concat(await taskD)))
+            {
+                if (listE.Any(e => item.EnveloppeIntersects(e)))
+                {
+                    becomeE.Add(item);
+                }
+                else
+                {
+                    finished.Add(item);
+                    progressInteger?.ReportOneDone();
+                }
+            }
+            var resultE = merge(listE.Concat(becomeE).ToList());
+            finished.AddRange(resultE);
+            progressInteger?.Report(finished.Count);
+            return finished;
+        }
     }
 }

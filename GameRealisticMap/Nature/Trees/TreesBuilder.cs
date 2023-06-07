@@ -17,9 +17,9 @@ namespace GameRealisticMap.Nature.Trees
 
         public TreesData Build(IBuildContext context)
         {
-            var keepWay =
-                context.GetData<RoadsData>().Roads.SelectMany(b => b.Polygons)
-                .Concat(context.GetData<BuildingsData>().Buildings.Select(p => p.Box.Polygon));
+            var keepWay = new TerrainSpacialIndex<ITerrainGeo>(context.Area);
+            keepWay.AddRange(context.GetData<RoadsData>().Roads.SelectMany(b => b.Polygons));
+            keepWay.AddRange(context.GetData<BuildingsData>().Buildings.Select(p => p.Box.Polygon));
 
             var points = context.OsmSource.Nodes
                 .Where(n => n.Tags != null && n.Tags.GetValue("natural") == "tree")

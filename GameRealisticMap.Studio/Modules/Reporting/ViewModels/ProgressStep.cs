@@ -57,7 +57,11 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
                         if (done > 0)
                         {
                             var milisecondsLeft = elapsed.ElapsedMilliseconds * (total - done) / done;
-                            if (milisecondsLeft > 120000d)
+                            if (milisecondsLeft < 500)
+                            {
+                                Left = $"Almost done";
+                            }
+                            else if (milisecondsLeft > 120000d)
                             {
                                 Left = $"{milisecondsLeft / 60000d:0.0} min left";
                             }

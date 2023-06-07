@@ -44,7 +44,7 @@ namespace ArmaRealMap.TerrainData.DefaultAreas
                         var clip = TerrainPolygon.FromRectangle(p1, p2);
                         //list.AddRange(polygons.SelectMany(p => p.ClippedBy(clip)));
 
-                        var filter = allPolys.Where(o => GeometryHelper.EnveloppeIntersects(clip, o)).ToList();
+                        var filter = allPolys.Where(o => clip.EnveloppeIntersects(o)).ToList();
                         list.AddRange(clip.SubstractAll(filter));
                         report.ReportOneDone();
                     }

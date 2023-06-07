@@ -44,21 +44,24 @@ namespace GameRealisticMap.Nature
         public TEdge Build(IBuildContext context)
         {
             var forest = context.GetData<TSource>();
-            var priority = GetPriority(context);
+
+            var priority = GetPriority(context).ToList();
 
             var radial = forest.Polygons
                 .ProgressStep(progress, "Crown")
                 .SelectMany(e => e.OuterCrown(width))
                 .SelectMany(poly => poly.ClippedBy(context.Area.TerrainBounds))
 
-                .ProgressStep(progress, "Priority")
-                .SelectMany(l => l.SubstractAll(priority))
+                .SubstractAll(progress, "Priority", priority)
                 .ToList();
 
-            using var step = progress.CreateStepPercent("Merge");
-
+#if PARALLEL
+            using var step = progress.CreateStep("Merge (Parallel)", radial.Count);
+            var final = TerrainPolygon.MergeAllParallel(radial, step);
+#else            
+            using var step = progress.CreateStep("Merge (Plain)", radial.Count);
             var final = TerrainPolygon.MergeAll(radial, step);
-
+#endif
             return CreateWrapper(final);
         }
     }

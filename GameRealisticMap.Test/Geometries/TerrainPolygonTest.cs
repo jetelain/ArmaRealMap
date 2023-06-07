@@ -6,14 +6,9 @@ namespace GameRealisticMap.Test.Geometries
     {
         private static TerrainPolygon Square100x100()
         {
-            return new TerrainPolygon(new List<TerrainPoint>() {
-                new TerrainPoint(100,100),
-                new TerrainPoint(0,100),
-                new TerrainPoint(0,0),
-                new TerrainPoint(100,0),
-                new TerrainPoint(100,100)
-            }, new List<List<TerrainPoint>>());
+            return new TerrainPolygon(new List<TerrainPoint>() { new (100,100), new (0,100), new (0,0), new (100,0), new (100,100) });
         }
+
         private static TerrainPolygon Square100x100WithHole()
         {
             return new TerrainPolygon(new List<TerrainPoint>() {
@@ -30,6 +25,32 @@ namespace GameRealisticMap.Test.Geometries
                 new TerrainPoint(25,75),
                 new TerrainPoint(75,75)
             } });
+        }
+
+        private static TerrainPolygon Square50x50()
+        {
+            return new TerrainPolygon(new() { new(75, 75), new(75, 25), new(25, 25), new(25, 75), new(75, 75) });
+        }
+
+        private static TerrainPolygon Square10x10()
+        {
+            return new TerrainPolygon(new() { new(55, 55), new(55, 45), new(45, 45), new(45, 55), new(55, 55) });
+        }
+
+        private static TerrainPolygon Square50x50WithHole()
+        {
+            return new TerrainPolygon(new() { new(75, 75), new(75, 25), new(25, 25), new(25, 75), new(75, 75) }, 
+                new() { new() { new(55, 55), new(55, 45), new(45, 45), new(45, 55), new(55, 55) } });
+        }
+
+        private static List<TerrainPolygon> SquareBands100x100WithHole()
+        {
+            return new List<TerrainPolygon> {
+                new (new() { new(0, 0), new(100, 0), new(100, 25), new(0, 25), new(0, 0) }),
+                new (new() { new(0, 75), new(100, 75), new(100, 100), new(0, 100), new(0, 75) }),
+                new (new() { new(0, 0), new(0, 100), new(25,100), new(25, 0), new(0, 0) }),
+                new (new() { new(75, 0), new(75, 100), new(100, 100), new(100, 0), new(75, 0) }),
+            };
         }
 
         [Fact]
@@ -82,7 +103,6 @@ namespace GameRealisticMap.Test.Geometries
                 new TerrainPoint(95,5),
                 new TerrainPoint(5,5)
             }, Assert.Single(innerPoly.Holes));
-
 
             innerPoly = innerPolyList[1];
             Assert.Equal(new TerrainPoint(20, 20), innerPoly.MinPoint);
@@ -231,5 +251,68 @@ namespace GameRealisticMap.Test.Geometries
             Assert.Equal(5, polygon.Distance(new(30, 50)));
             Assert.Equal(5, polygon.Distance(new(70, 50)));
         }
+
+
+        [Fact]
+        public void TerrainPolygon_SubstractAll()
+        {
+            var result = Square100x100().SubstractAll(new[] { Square50x50() });
+            var polygon = Assert.Single(result);
+            Assert.Equal(new TerrainPoint(0, 0), polygon.MinPoint);
+            Assert.Equal(new TerrainPoint(100, 100), polygon.MaxPoint);
+            Assert.Single(polygon.Holes);
+            Assert.Equal("POLYGON ((100 100, 0 100, 0 0, 100 0, 100 100), (25 25, 25 75, 75 75, 75 25, 25 25))", polygon.ToString());
+
+            result = Square100x100().SubstractAll(SquareBands100x100WithHole());
+            polygon = Assert.Single(result);
+            Assert.Equal(new TerrainPoint(25, 25), polygon.MinPoint);
+            Assert.Equal(new TerrainPoint(75, 75), polygon.MaxPoint);
+            Assert.Equal("POLYGON ((75 75, 25 75, 25 25, 75 25, 75 75))", polygon.ToString());
+
+            result = Square50x50().SubstractAll(new[] { Square100x100() });
+            Assert.Empty(result);
+
+            result = Square100x100().SubstractAll(new[] { Square100x100WithHole() });
+            polygon = Assert.Single(result);
+            Assert.Equal(new TerrainPoint(25, 25), polygon.MinPoint);
+            Assert.Equal(new TerrainPoint(75, 75), polygon.MaxPoint);
+            Assert.Equal("POLYGON ((75 75, 25 75, 25 25, 75 25, 75 75))", polygon.ToString());
+        }
+
+        [Fact]
+        public void TerrainPolygon_MergeAll()
+        {
+            var result = TerrainPolygon.MergeAll(new[] { Square100x100(), Square50x50() });
+            var polygon = Assert.Single(result);
+            Assert.Equal(new TerrainPoint(0, 0), polygon.MinPoint);
+            Assert.Equal(new TerrainPoint(100, 100), polygon.MaxPoint);
+            Assert.Equal("POLYGON ((100 100, 0 100, 0 0, 100 0, 100 100))", polygon.ToString());
+
+            result = TerrainPolygon.MergeAll(new[] { Square100x100WithHole(), Square50x50(), Square10x10() });
+            polygon = Assert.Single(result);
+            Assert.Equal(new TerrainPoint(0, 0), polygon.MinPoint);
+            Assert.Equal(new TerrainPoint(100, 100), polygon.MaxPoint);
+            Assert.Equal("POLYGON ((100 100, 0 100, 0 0, 100 0, 100 100))", polygon.ToString());
+
+            result = TerrainPolygon.MergeAll(SquareBands100x100WithHole());
+            polygon = Assert.Single(result);
+            Assert.Equal(new TerrainPoint(0, 0), polygon.MinPoint);
+            Assert.Equal(new TerrainPoint(100, 100), polygon.MaxPoint);
+            Assert.Single(polygon.Holes);
+            Assert.Equal("POLYGON ((0 100, 0 0, 100 0, 100 100, 0 100), (75 25, 25 25, 25 75, 75 75, 75 25))", polygon.ToString());
+
+            result = TerrainPolygon.MergeAll(SquareBands100x100WithHole().Concat(new []{ Square10x10() }).ToList());
+            Assert.Equal(2, result.Count);
+            polygon = result[0];
+            Assert.Equal(new TerrainPoint(0, 0), polygon.MinPoint);
+            Assert.Equal(new TerrainPoint(100, 100), polygon.MaxPoint);
+            Assert.Single(polygon.Holes);
+            Assert.Equal("POLYGON ((100 100, 0 100, 0 0, 100 0, 100 100), (25 25, 25 75, 75 75, 75 25, 25 25))", polygon.ToString());
+            polygon = result[1];
+            Assert.Equal(new TerrainPoint(45, 45), polygon.MinPoint);
+            Assert.Equal(new TerrainPoint(55, 55), polygon.MaxPoint);
+            Assert.Equal("POLYGON ((55 55, 45 55, 45 45, 55 45, 55 55))", polygon.ToString());
+        }
+
     }
 }
