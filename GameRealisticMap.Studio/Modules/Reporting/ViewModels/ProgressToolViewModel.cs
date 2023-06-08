@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Gemini.Framework;
 using Gemini.Framework.Services;
@@ -15,6 +18,8 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         private ProgressTask? current = null;
         private readonly IOutput output;
         private readonly IShell shell;
+        private readonly PerformanceCounter cpuCounter;
+        private readonly DispatcherTimer timer;
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
 
@@ -26,6 +31,23 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             DisplayName = "Task Progress";
             this.output = output;
             this.shell = shell;
+
+            cpuCounter = new PerformanceCounter("Process", "% Processor Time",  Assembly.GetEntryAssembly()?.GetAssemblyName() ?? "_Total", true);
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(500);
+            timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object? sender, EventArgs e)
+        {
+            try
+            {
+                CpuUsage = cpuCounter.NextValue() / Environment.ProcessorCount;
+                NotifyOfPropertyChange(nameof(CpuUsage));
+            }
+            catch (InvalidOperationException)
+            {
+            }
         }
 
         public TaskState State
@@ -33,8 +55,22 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             get { return state; }
             set
             {
-                state = value;
-                NotifyOfPropertyChange();
+                if (value != state)
+                {
+                    state = value;
+                    NotifyOfPropertyChange();
+                    if (state == TaskState.Running)
+                    {
+                        if (!timer.IsEnabled)
+                        {
+                            timer.Start();
+                        }
+                    }
+                    else if ( timer.IsEnabled )
+                    {
+                        timer.Stop();
+                    }
+                }
             }
         }
 
@@ -43,6 +79,8 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         public string TaskName { get; set; } = string.Empty;
 
         public bool IsRunning => state == TaskState.Running || state == TaskState.Canceling;
+
+        public float CpuUsage { get; private set; }
 
         public IProgressTaskUI StartTask(string name)
         {

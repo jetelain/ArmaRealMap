@@ -44,6 +44,26 @@
         </Grid>
 
         <StackPanel Orientation="Horizontal" Margin="10 0 10 10" HorizontalAlignment="Right" Grid.Row="1">
+
+            <Grid Width="50">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding State}" Value="Running">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <ProgressBar Value="{Binding CpuUsage, Mode=OneWay}" Minimum="0" Maximum="100"  Foreground="CadetBlue" Margin="10 0" Orientation="Vertical">
+                </ProgressBar>
+                <TextBlock HorizontalAlignment="Center" Margin="5">
+                    CPU
+                </TextBlock>
+
+            </Grid>
+
             <Button Padding="5" cal:Message.Attach="CancelTask">
                 <Button.Style>
                     <Style TargetType="Button">
