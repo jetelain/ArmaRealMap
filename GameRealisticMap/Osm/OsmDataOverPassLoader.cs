@@ -25,15 +25,17 @@ namespace GameRealisticMap.Osm
 
             report.ReportOneDone();
 
+            progress.WriteLine($"Load {cacheFileName}");
             return OsmDataSource.CreateFromXml(cacheFileName);
         }
 
-        private async Task DownloadFromOverPass(LatLngBounds box, string cacheFileName)
+        private async Task DownloadFromOverPass(LatLngBounds box, string cacheFileName, double margin = 0.03)
         {
             if (!File.Exists(cacheFileName) || (File.GetLastWriteTimeUtc(cacheFileName) < DateTime.UtcNow.AddDays(-cacheDays)))
             {
                 Directory.CreateDirectory(cacheDirectory);
-                var uri = FormattableString.Invariant($"https://overpass-api.de/api/map?bbox={box.Left - 0.025},{box.Bottom - 0.025},{box.Right + 0.025},{box.Top + 0.025}");
+                var uri = FormattableString.Invariant($"https://overpass-api.de/api/map?bbox={box.Left - margin},{box.Bottom - margin},{box.Right + margin},{box.Top + margin}");
+                progress.WriteLine($"Get {uri}");
                 using (var client = new HttpClient())
                 {
                     using (var target = File.Create(cacheFileName))
