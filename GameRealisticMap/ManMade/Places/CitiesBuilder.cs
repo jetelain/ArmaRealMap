@@ -27,24 +27,27 @@ namespace GameRealisticMap.ManMade.Places
                     var radius = 0f;
                     var boundaryPolygon = new List<TerrainPolygon>();
                     var center = context.Area.LatLngToTerrainPoint(node.GetCoordinate());
-                    var tags = new TagsCollection(node.Tags);
-
-                    var boundary = boundaries.Where(r => r.Members.Any(m => m.Id == node.Id)).FirstOrDefault();
-                    if (boundary != null)
+                    if (context.Area.IsInside(center))
                     {
-                        tags.AddOrReplace(boundary.Tags);
+                        var tags = new TagsCollection(node.Tags);
 
-                        radius = GetRadius(context, center, boundary);
+                        var boundary = boundaries.Where(r => r.Members.Any(m => m.Id == node.Id)).FirstOrDefault();
+                        if (boundary != null)
+                        {
+                            tags.AddOrReplace(boundary.Tags);
 
-                        boundaryPolygon.AddRange(context.OsmSource.Interpret(boundary)
-                            .SelectMany(g => TerrainPolygon.FromGeometry(g, context.Area.LatLngToTerrainPoint))
-                            .SelectMany(p => p.Intersection(context.Area.TerrainBounds)));
+                            radius = GetRadius(context, center, boundary);
+
+                            boundaryPolygon.AddRange(context.OsmSource.Interpret(boundary)
+                                .SelectMany(g => TerrainPolygon.FromGeometry(g, context.Area.LatLngToTerrainPoint))
+                                .SelectMany(p => p.Intersection(context.Area.TerrainBounds)));
+                        }
+
+                        var name = tags.GetValue("name");
+                        var population = GetNumber(tags.GetValue("population"));
+
+                        result.Add(new City(center, boundaryPolygon, name, typeId.Value, radius, population));
                     }
-
-                    var name = tags.GetValue("name");
-                    var population = GetNumber(tags.GetValue("population"));
-
-                    result.Add(new City(center, boundaryPolygon, name, typeId.Value, radius, population));
                 }
             }
             return new CitiesData(result);

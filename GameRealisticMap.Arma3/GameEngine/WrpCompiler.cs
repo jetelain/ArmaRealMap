@@ -12,11 +12,15 @@ namespace GameRealisticMap.Arma3.GameEngine
         private readonly IProgressSystem progress;
         private readonly IGameFileSystemWriter fileSystemWriter;
 
+        private readonly HashSet<string> models = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         public WrpCompiler(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter)
         {
             this.progress = progress;
             this.fileSystemWriter = fileSystemWriter;
         }
+
+        public IReadOnlyCollection<string> UsedModels => models;
 
         public void Write(IArma3MapConfig config, ElevationGrid elevationGrid, IEnumerable<EditableWrpObject> objects)
         {
@@ -30,6 +34,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             foreach(var obj in objects)
             {
                 obj.ObjectID = wrp.Objects.Count + 1;
+                models.Add(obj.Model);
                 wrp.Objects.Add(obj);
             }
 

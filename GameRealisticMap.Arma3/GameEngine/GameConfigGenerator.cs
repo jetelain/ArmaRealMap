@@ -31,7 +31,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             if (!gameFileSystemWriter.FileExists(configCpp))
             {
-                gameFileSystemWriter.WriteTextFile(configCpp, GenerateConfigCpp(config));
+                gameFileSystemWriter.WriteTextFile(configCpp, GenerateConfigCpp(config, context.GetData<CitiesData>()));
             }
 
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\mapinfos.hpp", GenerateMapInfos(config, area));
@@ -107,8 +107,10 @@ class Grid {{
 ");
         }
 
-        private string GenerateConfigCpp(IArma3MapConfig config)
+        private string GenerateConfigCpp(IArma3MapConfig config, CitiesData cities)
         {
+            var name = cities.Cities.OrderByDescending(c => c.Population).ThenByDescending(c => c.Radius).FirstOrDefault()?.Name ?? config.WorldName;
+
             return $@"class CfgPatches
 {{
 	class arm_{config.WorldName}
@@ -129,7 +131,7 @@ class CfgWorlds
 	class {config.WorldName}: {assets.BaseWorldName}
 	{{
 		cutscenes[] = {{}};
-		description = ""{config.WorldName}, ArmaRealMap"";
+		description = ""{name}, ArmaRealMap"";
 		worldName = ""{config.PboPrefix}\{config.WorldName}.wrp"";
 		author = """";
 		icon = """";
@@ -180,6 +182,7 @@ class CfgWorlds
 	radiusA={city.Radius:0};
 	radiusB={city.Radius:0};
 	angle=0;
+    arm_population = {city.Population};
 }};"));
                 id++;
             }

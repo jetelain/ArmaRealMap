@@ -67,7 +67,7 @@ namespace GameRealisticMap.Arma3
         public async Task<BuildContext?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
         {
             var generators = new Arma3LayerGeneratorCatalog(progress, assets);
-            progress.Total += 5 + generators.Generators.Count;
+            progress.Total += 6 + generators.Generators.Count;
 
             // Download from OSM
             var loader = new OsmDataOverPassLoader(progress);
@@ -134,6 +134,22 @@ namespace GameRealisticMap.Arma3
                 .Where(o => IsStrictlyInside(o, size));
 
             wrpBuilder.Write(config, grid, tiles, objects);
+            progress.ReportOneDone();
+
+            UnpackModels(progress, wrpBuilder.UsedModels);
+        }
+
+        private void UnpackModels(IProgressTask progress, IReadOnlyCollection<string> usedModels)
+        {
+            using var report = progress.CreateStep("UnpackModels", usedModels.Count);
+            foreach(var model in usedModels)
+            {
+                if (!projectDrive.EnsureLocalFileCopy(model))
+                {
+                    throw new ApplicationException($"File '{model}' is missing. Have you added all required mods in application configuration?");
+                }
+                report.ReportOneDone();
+            }
             progress.ReportOneDone();
         }
 
