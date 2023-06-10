@@ -146,9 +146,9 @@ namespace GameRealisticMap.Geometries
                 other.MaxPoint.Y >= MinPoint.Y;
         }
 
-        internal GeoJSON.Text.Geometry.LineString ToGeoJson()
+        internal GeoJSON.Text.Geometry.LineString ToGeoJson(Func<TerrainPoint, GeoJSON.Text.Geometry.IPosition> project)
         {
-            return new GeoJSON.Text.Geometry.LineString(Points);
+            return new GeoJSON.Text.Geometry.LineString(Points.Select(project).ToList());
         }
 
         public float Distance(TerrainPoint p)

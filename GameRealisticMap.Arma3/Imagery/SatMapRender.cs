@@ -17,14 +17,16 @@ namespace GameRealisticMap.Arma3.Imagery
     internal class SatMapRender
     {
         private readonly FakeSatRender fakeSatRender;
+        private readonly IProgressSystem progress;
 
-        public SatMapRender(FakeSatRender fakeSatRender)
+        public SatMapRender(FakeSatRender fakeSatRender, IProgressSystem progress)
         {
             this.fakeSatRender = fakeSatRender;
+            this.progress = progress;
         }
 
         public SatMapRender(TerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystem gameFileSystem)
-            : this(new FakeSatRender(materialLibrary, progress, gameFileSystem))
+            : this(new FakeSatRender(materialLibrary, progress, gameFileSystem), progress)
         {
 
         }
@@ -59,7 +61,7 @@ namespace GameRealisticMap.Arma3.Imagery
         private void DrawRoads(IArma3MapConfig config, IContext context, HugeImage<Rgba32> result)
         {
             var roads = context.GetData<RoadsData>().Roads;
-
+            using var report = progress.CreateStep("DrawRoads", 1);
             result.MutateAllAsync(d =>
             {
                 foreach (var road in roads.Where(r => r.SpecialSegment != WaySpecialSegment.Bridge))
@@ -83,6 +85,7 @@ namespace GameRealisticMap.Arma3.Imagery
             {
                 using (var fakeSat = fakeSatRender.Render(config, context))
                 {
+                    using var report = progress.CreateStep("FakeSatBlend", 1);
                     await satMap.MutateAllAsync(async d =>
                     {
                          await d.DrawHugeImageAsync(fakeSat, Point.Empty, config.FakeSatBlend);

@@ -21,6 +21,8 @@ namespace GameRealisticMap.Nature
         {
             var priority = GetPriority(context).ToList();
 
+            var clip = GetClipArea(context);
+
             var polygons = context.OsmSource.All
                 .Where(s => s.Tags != null && IsTargeted(s.Tags))
 
@@ -30,7 +32,7 @@ namespace GameRealisticMap.Nature
                 .Concat(additionals)
 
                 .ProgressStep(progress, "Crop")
-                .SelectMany(poly => poly.ClippedBy(context.Area.TerrainBounds))
+                .SelectMany(poly => poly.ClippedBy(clip))
 
                 .RemoveOverlaps(progress, "Overlaps")
 
@@ -38,6 +40,11 @@ namespace GameRealisticMap.Nature
                 .ToList();
 
             return MergeIfRequired(polygons);
+        }
+
+        protected virtual TerrainPolygon GetClipArea(IBuildContext context)
+        {
+            return context.Area.TerrainBounds;
         }
 
         protected virtual List<TerrainPolygon> MergeIfRequired(List<TerrainPolygon> polygons)

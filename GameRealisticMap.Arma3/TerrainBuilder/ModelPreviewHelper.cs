@@ -24,7 +24,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 
         private IEnumerable<Feature> ToFeatures(List<TerrainPolygon> terrainPolygons, Matrix4x4 matrix)
         {
-            return terrainPolygons.Select(p => new Feature(Transform(p, matrix).ToGeoJson()));
+            return terrainPolygons.Select(p => new Feature(Transform(p, matrix).ToGeoJson(p => p)));
         }
 
         public IEnumerable<TerrainPolygon> ToPolygons(TerrainBuilderObject obj)
@@ -100,7 +100,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 x.Add(x[0]);
                 list.Add(new TerrainPolygon(x));
             }
-            return TerrainPolygon.MergeAll(list);
+            return TerrainPolygon.MergeAllParallel(list);
         }
 
 
@@ -125,7 +125,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 x.Add(x[0]);
                 list.Add(new TerrainPolygon(x));
             }
-            return TerrainPolygon.MergeAll(list);
+            return TerrainPolygon.MergeAllParallel(list);
         }
     }
 }

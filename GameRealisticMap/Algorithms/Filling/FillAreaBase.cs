@@ -146,7 +146,7 @@ namespace GameRealisticMap.Algorithms.Filling
             {
                 return true;
             }
-            return fillarea.Polygon.AsPolygon.Contains(candidate.Polygon.AsPolygon);
+            return fillarea.Polygon.DistanceFromBoundary(candidate.Center) >= candidate.ExclusiveRadius;
         }
 
         private static bool HasRoom(RadiusPlacedModel<TModelInfo> candidate, IReadOnlyList<RadiusPlacedModel<TModelInfo>> potentialConflits)

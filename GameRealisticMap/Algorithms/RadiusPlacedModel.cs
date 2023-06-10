@@ -24,8 +24,6 @@ namespace GameRealisticMap.Algorithms
 
         public TerrainPoint MaxPoint { get; }
 
-        public TerrainPolygon Polygon => boundingCircle.Polygon;
-
         public float Angle => boundingCircle.Angle;
 
         public float Radius { get; }

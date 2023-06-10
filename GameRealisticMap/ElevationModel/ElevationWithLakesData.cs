@@ -1,4 +1,6 @@
-﻿using GeoJSON.Text.Feature;
+﻿using GameRealisticMap.Geometries;
+using GeoJSON.Text.Feature;
+using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ElevationModel
 {
@@ -15,11 +17,11 @@ namespace GameRealisticMap.ElevationModel
 
         public List<LakeWithElevation> Lakes { get; }
 
-        public IEnumerable<Feature> ToGeoJson()
+        public IEnumerable<Feature> ToGeoJson(Func<TerrainPoint, IPosition> project)
         {
             var properties = new Dictionary<string, object>();
             properties.Add("type", "realLake");
-            return Lakes.Select(l => new Feature(l.TerrainPolygon.ToGeoJson(), properties));
+            return Lakes.Select(l => new Feature(l.TerrainPolygon.ToGeoJson(project), properties));
         }
     }
 }

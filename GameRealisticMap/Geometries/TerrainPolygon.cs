@@ -645,14 +645,22 @@ namespace GameRealisticMap.Geometries
             return AsPolygon.ToString();
         }
 
-        public GeoJSON.Text.Geometry.Polygon ToGeoJson()
+        public GeoJSON.Text.Geometry.Polygon ToGeoJson(Func<TerrainPoint, GeoJSON.Text.Geometry.IPosition> project)
         {
-            return new GeoJSON.Text.Geometry.Polygon(new[] { new GeoJSON.Text.Geometry.LineString(Shell) }.Concat(Holes.Select(h => new GeoJSON.Text.Geometry.LineString(h))));
+            return new GeoJSON.Text.Geometry.Polygon(
+                new[] { new GeoJSON.Text.Geometry.LineString(Shell.Select(project).ToList()) }.Concat(Holes.Select(h => new GeoJSON.Text.Geometry.LineString(h.Select(project).ToList()))));
         }
 
         public float Distance(TerrainPoint point)
         {
             return (float)AsPolygon.Distance(new Point(point.X, point.Y));
+        }
+
+        public float DistanceFromBoundary(TerrainPoint p)
+        {
+            var px = new Point(p.X, p.Y);
+            var shells = new[] { new DistanceOp(AsPolygon.Shell, px) }.Concat(AsPolygon.Holes.Select(h => new DistanceOp(h, px)));
+            return (float)shells.Min(s => s.Distance());
         }
 
         public TerrainPoint NearestPointBoundary(TerrainPoint p)

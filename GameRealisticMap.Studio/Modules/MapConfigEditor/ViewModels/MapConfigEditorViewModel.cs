@@ -79,7 +79,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             get { return Config.GridCellSize; }
             set
             {
-                Config.GridCellSize = value;
+                Config.GridCellSize = NormalizeCellSize(value);
                 NotifyOfPropertyChange(nameof(MapSize));
                 NotifyOfPropertyChange(nameof(GridCellSize));
                 NotifyOfPropertyChange(nameof(Locations));
@@ -115,13 +115,20 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                         break;
                     }
                 }
-                Config.GridCellSize = value / Config.GridSize;
+                Config.GridCellSize = NormalizeCellSize(value / Config.GridSize);
                 NotifyOfPropertyChange(nameof(MapSize));
                 NotifyOfPropertyChange(nameof(GridSize));
                 NotifyOfPropertyChange(nameof(GridCellSize));
                 NotifyOfPropertyChange(nameof(Locations));
                 IsDirty = true;
             }
+        }
+
+        private float NormalizeCellSize(float v)
+        {
+            return MathF.Round(v * 8) / 8;
+            // 0.125 precision
+            // Map size is enforced as multiple of 32 meters
         }
 
         public IEnumerable<Location> Locations
@@ -166,6 +173,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(GridSize));
             NotifyOfPropertyChange(nameof(GridCellSize));
             NotifyOfPropertyChange(nameof(Locations));
+            NotifyOfPropertyChange(nameof(BoundingBox));
             NotifyOfPropertyChange(nameof(AssetConfigFile));
         }
 
@@ -274,20 +282,41 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             return Task.CompletedTask;
         }
 
-        private async Task DoGenerateMap(IProgressTaskUI task)
+        public Task GenerateMod()
         {
-            var projectDrive = _arma3DataModule.ProjectDrive;
-            var library = _arma3DataModule.Library;
+            Arma3ToolsHelper.EnsureProjectDrive();
 
+            IoC.Get<IProgressTool>()
+                .RunTask("Generate Mod", DoGenerateMod);
+
+            return Task.CompletedTask;
+        }
+        
+
+        private async Task DoGenerateMod(IProgressTaskUI task)
+        {
             var a3config = Config.ToArma3MapConfig();
 
-            Arma3Assets assets = await GetAssets(library, a3config);
+            var assets = await GetAssets(_arma3DataModule.Library, a3config);
 
-            var generator = new Arma3MapGenerator(assets, projectDrive);
+            var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive);
+
+            await generator.GenerateMod(task, a3config);
+
+            task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = a3config.TargetModDirectory });
+        }
+
+        private async Task DoGenerateMap(IProgressTaskUI task)
+        {
+            var a3config = Config.ToArma3MapConfig();
+
+            var assets = await GetAssets(_arma3DataModule.Library, a3config);
+
+            var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive);
 
             await generator.GenerateWrp(task, a3config);
 
-            task.DisplayResult = null;
+            task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = _arma3DataModule.ProjectDrive.GetFullPath(a3config.PboPrefix) });
         }
 
         private async Task<Arma3Assets> GetAssets(ModelInfoLibrary library, Arma3MapConfig a3config)

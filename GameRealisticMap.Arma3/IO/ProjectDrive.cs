@@ -20,7 +20,7 @@ namespace GameRealisticMap.Arma3.IO
 
         public IGameFileSystem? SecondarySource => secondarySource;
 
-        private string GetFullPath(string path)
+        public string GetFullPath(string path)
         {
             if (path.StartsWith("\\", StringComparison.Ordinal))
             {

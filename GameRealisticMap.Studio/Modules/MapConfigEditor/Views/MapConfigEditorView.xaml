@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.MapConfigEditor.Views"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1200" d:DesignWidth="800">
     <ScrollViewer HorizontalScrollBarVisibility="Hidden" IsTabStop="False">
         <StackPanel  Orientation="Vertical">
 
@@ -28,16 +28,17 @@
                     </Button.ContextMenu>
                 </Button>
                 <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMap">Generate Map for Arma 3</Button>
+                <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMod">Generate Mod for Arma 3</Button>
             </StackPanel>
 
-            <StackPanel Margin="10" Orientation="Horizontal" >
+            <StackPanel Margin="5" Orientation="Horizontal" >
                 <Label Width="200">Coordinates of center of map</Label>
                 <TextBox Width="200" Text="{Binding Center,Mode=TwoWay}" />
                 <Label>or south west of map</Label>
                 <TextBox Width="200" Text="{Binding SouthWest,Mode=TwoWay}" />
             </StackPanel>
 
-            <StackPanel Margin="10" Orientation="Horizontal" >
+            <StackPanel Margin="5" Orientation="Horizontal" >
                 <Label Width="200">Map size (square)</Label>
                 <ComboBox SelectedValue="{Binding GridSize,Mode=TwoWay}" ItemsSource="{Binding GridSizes}" />
                 <TextBlock Margin="10 0" FontSize="18">×</TextBlock>
@@ -48,7 +49,7 @@
                 <TextBlock Margin="10 0">meters</TextBlock>
             </StackPanel>
 
-            <StackPanel Margin="10" Orientation="Horizontal" >
+            <StackPanel Margin="5" Orientation="Horizontal" >
                 <Label Width="200">Assets configuration / style of map</Label>
                 <ComboBox Width="400" Text="{Binding AssetConfigFile,Mode=TwoWay}" IsEditable="True" />
                 <Button Padding="10 0" Margin="10 0" cal:Message.Attach="ChooseAssetConfig">...</Button>
@@ -85,16 +86,28 @@
                     </StackPanel>
                 </StackPanel>
             </Expander>
- 
-            <TextBlock Margin="5">
-            To select an area on the map : <LineBreak />
-            - From a corner, press Ctrl Key then press Left Mouse Button<LineBreak />
-            - From center, press Alt Key then press Left Mouse Button.
-            </TextBlock>
 
-            <!--https://www.openstreetmap.org/edit#map=14/47.5534/6.9822-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
 
-            <map:Map x:Name="MapControl"
+                <StackPanel Grid.Column="1" Margin="7">
+                    <TextBlock Margin="0 0 0 20" TextWrapping="Wrap">
+To select an area on the map : <LineBreak />
+- From a corner, press Ctrl Key then press Left Mouse Button<LineBreak />
+- From center, press Alt Key then press Left Mouse Button.
+                    </TextBlock>
+                    <TextBlock>
+                        <Hyperlink NavigateUri="https://www.openstreetmap.org/" RequestNavigate="Hyperlink_RequestNavigate">View on OpenStreetMap.org</Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="0 20" TextWrapping="Wrap">
+© OpenStreetMap contributors. See https://openstreetmap.org/
+                    </TextBlock>
+                </StackPanel>
+
+                <map:Map x:Name="MapControl"
                  Height="600"
                  MinZoomLevel="2" MaxZoomLevel="21" ZoomLevel="2"
                  Center="53.5,8.2" ManipulationMode="All"
@@ -102,19 +115,16 @@
                  MouseUp="Map_MouseUp"
                  MouseMove="Map_MouseMove"
                  MouseWheel="MapControl_MouseWheel">
-
-                <map:MapTileLayer
+                    <map:MapTileLayer
                 TileSource="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
                 SourceName="OpenStreetMap"
                 Description="© [OpenStreetMap contributors](https://www.openstreetmap.org/copyright)"/>
+                    <map:MapPolyline Stroke="Red" StrokeThickness="2" Locations="{Binding Locations}" />
+                    <map:MapPolyline Stroke="Blue" StrokeThickness="2" Visibility="Collapsed" x:Name="RectanglePreview" />
+                </map:Map>
+            </Grid>
 
-                <map:MapPolyline Stroke="Red" StrokeThickness="2" Locations="{Binding Locations}" />
-
-                <map:MapPolyline Stroke="Blue" StrokeThickness="2" Visibility="Collapsed" x:Name="RectanglePreview" />
-
-            </map:Map>
-
-            <TextBlock>© OpenStreetMap contributors. See https://www.openstreetmap.org/copyright</TextBlock>
+            <!--https://www.openstreetmap.org/edit#map=14/47.5534/6.9822-->
 
         </StackPanel>
     </ScrollViewer>

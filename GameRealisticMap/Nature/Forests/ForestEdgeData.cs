@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
+using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Forests
 {
@@ -19,7 +20,7 @@ namespace GameRealisticMap.Nature.Forests
 
         public List<TerrainPolygon> MergedForests { get; }
 
-        public IEnumerable<Feature> ToGeoJson()
+        public IEnumerable<Feature> ToGeoJson(Func<TerrainPoint, IPosition> project)
         {
             var properties = new Dictionary<string, object>() {
                 {"type", "forestEdge" }
@@ -27,7 +28,7 @@ namespace GameRealisticMap.Nature.Forests
             var properties2 = new Dictionary<string, object>() {
                 {"type", "forestMerged" }
             };
-            return Polygons.Select(b => new Feature(b.ToGeoJson(), properties)).Concat(MergedForests.Select(b => new Feature(b.ToGeoJson(), properties2)));
+            return Polygons.Select(b => new Feature(b.ToGeoJson(project), properties)).Concat(MergedForests.Select(b => new Feature(b.ToGeoJson(project), properties2)));
         }
     }
 }

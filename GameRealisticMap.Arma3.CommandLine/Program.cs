@@ -48,11 +48,11 @@ namespace GameRealisticMap.Arma3.CommandLine
 
             Console.WriteLine($"It took {sw.ElapsedMilliseconds} msec for {surface:0.0} Km², {sw.ElapsedMilliseconds / surface:0} msec/Km²");
 
-            var all = context.Catalog.GetOfType<IGeoJsonData>(context).SelectMany(d => d.ToGeoJson()).ToList();
+            var all = context.Catalog.GetOfType<IGeoJsonData>(context).SelectMany(d => d.ToGeoJson(p => p)).ToList();
 
             await PreviewRender.RenderHtml(new FeatureCollection(all), Path.GetFullPath("preview.html"));
 
-            await Arma3ToolsHelper.BuildWithMikeroPboProject(a3config.PboPrefix, @"C:\temp\@ArmTest");
+            await Arma3ToolsHelper.BuildWithMikeroPboProject(a3config.PboPrefix, @"C:\temp\@ArmTest", progress);
         }
     }
 }

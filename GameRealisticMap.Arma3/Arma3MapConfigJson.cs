@@ -21,6 +21,8 @@
 
         public string? AssetConfigFile { get; set; }
 
+        public string? TargetModDirectory { get; set; }
+
         public Arma3MapConfig ToArma3MapConfig()
         {
             return new Arma3MapConfig(this);

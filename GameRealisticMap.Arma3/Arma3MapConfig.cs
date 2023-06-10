@@ -40,6 +40,15 @@ namespace GameRealisticMap.Arma3
             }
 
             AssetConfigFile = arma3MapConfigJson.AssetConfigFile!;
+
+            if (string.IsNullOrEmpty(arma3MapConfigJson.TargetModDirectory))
+            {
+                TargetModDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameRealisticMap", "Arma3", "Mods", $"@{WorldName}");
+            }
+            else
+            {
+                TargetModDirectory = arma3MapConfigJson.TargetModDirectory;
+            }
         }
 
         public static string GetAutomaticWorldName(ITerrainArea area)
@@ -66,5 +75,6 @@ namespace GameRealisticMap.Arma3
         public string WorldName { get; }
 
         public string AssetConfigFile { get; }
+        public string TargetModDirectory { get; }
     }
 }

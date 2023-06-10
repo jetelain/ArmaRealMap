@@ -24,7 +24,7 @@ namespace GameRealisticMap
     {
         private readonly Dictionary<Type, IBuilderAdapter> builders = new Dictionary<Type, IBuilderAdapter>();
 
-        public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library)
+        public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library, bool useFullGeoJson = false)
         {
             Register(new RawSatelliteImageBuilder(progress));
             Register(new RawElevationBuilder(progress));
@@ -50,7 +50,7 @@ namespace GameRealisticMap
             Register(new OrientedObjectBuilder(progress));
             Register(new RailwaysBuilder(progress));
             Register(new CitiesBuilder(progress));
-            Register(new ElevationBuilder(progress));
+            Register(new ElevationBuilder(progress, useFullGeoJson));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)

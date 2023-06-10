@@ -20,6 +20,14 @@ namespace GameRealisticMap.Nature.Lakes
             return new LakesData(polygons);
         }
 
+        protected override TerrainPolygon GetClipArea(IBuildContext context)
+        {
+            return base.GetClipArea(context).Offset(-25).First(); 
+            // Having lakes on edge tends to crash Mikero's MakePbo / tends binarize to produce corrupted WRP files
+            // It's not yet clear which tools is getting things wrong
+            // It's linked to the map=river of pond models
+        }
+
         protected override bool IsTargeted(TagsCollectionBase tags)
         {
             var water = tags.GetValue("water");

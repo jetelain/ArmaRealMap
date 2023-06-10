@@ -24,6 +24,8 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             lastReport = Stopwatch.StartNew();
         }
 
+        public bool IsIndeterminate => total == 1 && Percent == 0;
+
         public int Total => total;
 
         public double Percent { get; private set; }
@@ -96,6 +98,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             Percent = 100.0;
             NotifyOfPropertyChange(nameof(Percent));
             NotifyOfPropertyChange(nameof(Left));
+            NotifyOfPropertyChange(nameof(IsIndeterminate));
         }
 
         public void Dispose()

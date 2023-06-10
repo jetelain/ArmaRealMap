@@ -15,13 +15,13 @@ namespace GameRealisticMap.Nature.Trees
 
         public List<TerrainPoint> Points { get; }
 
-        public IEnumerable<Feature> ToGeoJson()
+        public IEnumerable<Feature> ToGeoJson(Func<TerrainPoint, IPosition> project)
         {
             var properties = new Dictionary<string, object>() {
                 {"type", "tree" }
             };
 
-            return Points.Select(p => new Feature(new Point(p), properties));
+            return Points.Select(p => new Feature(new Point(project(p)), properties));
         }
     }
 }

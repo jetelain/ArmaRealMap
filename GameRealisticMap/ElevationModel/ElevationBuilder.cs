@@ -17,10 +17,12 @@ namespace GameRealisticMap.ElevationModel
     internal class ElevationBuilder : IDataBuilder<ElevationData>, IDataSerializer<ElevationData>
     {
         private readonly IProgressSystem progress;
+        private readonly bool useGeoJson;
 
-        public ElevationBuilder(IProgressSystem progress)
+        public ElevationBuilder(IProgressSystem progress, bool useGeoJson = false)
         {
             this.progress = progress;
+            this.useGeoJson = useGeoJson;
         }
 
         public ElevationData Build(IBuildContext context)
@@ -42,13 +44,17 @@ namespace GameRealisticMap.ElevationModel
 
             constraintGrid.SolveAndApplyOnGrid();
 
-            var contour = new ContourGraph();
-            using (var report = progress.CreateStepPercent("Contours"))
+            if (useGeoJson)
             {
-                contour.Add(constraintGrid.Grid.ToDataCell(), new ContourLevelGenerator(1, 1), false, report);
+                var contour = new ContourGraph();
+                using (var report = progress.CreateStepPercent("Contours"))
+                {
+                    contour.Add(constraintGrid.Grid.ToDataCell(), new ContourLevelGenerator(1, 1), false, report);
+                }
+                return new ElevationData(constraintGrid.Grid, contour.Lines.Select(l => new TerrainPath(l.Points.Select(p => new TerrainPoint((float)p.Longitude, (float)p.Latitude)).ToList())));
             }
 
-            return new ElevationData(constraintGrid.Grid, contour.Lines.Select(l => new LineString(l.Points)));
+            return new ElevationData(constraintGrid.Grid, null);
         }
 
         private void ProcessWays(ElevationConstraintGrid constraintGrid, IEnumerable<IWay> ways)
@@ -165,13 +171,13 @@ namespace GameRealisticMap.ElevationModel
 
         public async ValueTask<ElevationData> Read(IPackageReader package, IContext context)
         {
-            var contours = await package.ReadJson<IEnumerable<Feature>>("Contours.json");
+            var contours = await package.ReadJson<List<TerrainPath>>("Contours.json");
 
             using var stream = package.ReadFile("Elevation.ddc");
             
             var grid = new ElevationGrid(DemDataCell.Load(stream).To<float>().AsPixelIsPoint());
 
-            return new ElevationData(grid, contours.Select(c => c.Geometry).Cast<LineString>());
+            return new ElevationData(grid, contours);
         }
 
         public async Task Write(IPackageWriter package, ElevationData data)
@@ -180,7 +186,7 @@ namespace GameRealisticMap.ElevationModel
             {
                 data.Elevation.ToDataCell().Save(stream);
             }
-            await package.WriteJson("Contours.json", data.ToGeoJson());
+            await package.WriteJson("Contours.json", data.Contours);
         }
     }
 }

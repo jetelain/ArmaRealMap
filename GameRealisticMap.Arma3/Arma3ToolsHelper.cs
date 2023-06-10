@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Management;
 using System.Runtime.Versioning;
 using GameRealisticMap.Reporting;
 using Microsoft.Win32;
@@ -92,20 +91,33 @@ namespace GameRealisticMap.Arma3
         }
 
         [SupportedOSPlatform("windows")]
-        public static async Task<int> BuildWithMikeroPboProject(string pboPrefix, string targetMod)
+        public static async Task BuildWithMikeroPboProject(string pboPrefix, string targetMod, IProgressSystem progress)
         {
-            EnsureProjectDrive();
-            var process = Process.Start(new ProcessStartInfo()
+            using (progress.CreateStep("PboProject", 1))
             {
-                FileName = GetPboProjectPath(),
-                Arguments = @$"-R -E=""arma3"" -W -P -M=""{targetMod}"" ""P:\{pboPrefix}"""
-            });
-            if (process == null)
-            {
-                return -1;
+                EnsureProjectDrive();
+                var psi = new ProcessStartInfo()
+                {
+                    FileName = GetPboProjectPath(),
+                    Arguments = @$"-E=""arma3"" +N -W -P -M=""{targetMod}"" ""P:\{pboPrefix}""",
+                };
+                progress.WriteLine($"{psi.FileName} {psi.Arguments}");
+                var process = Process.Start(psi);
+                if (process == null)
+                {
+                    throw new ApplicationException("PboProject was not found.");
+                }
+                await process.WaitForExitAsync();
+                if (process.ExitCode != 0)
+                {
+                    var log = Path.Combine(@"P:\temp", Path.GetFileName(pboPrefix) + ".packing.log");
+                    if (File.Exists(log))
+                    {
+                        progress.WriteLine(File.ReadAllText(log));
+                    }
+                    throw new ApplicationException($"PboProject exited with code {process.ExitCode}.");
+                }
             }
-            await process.WaitForExitAsync();
-            return process.ExitCode;
         }
 
         public static string GetPboProjectPath()

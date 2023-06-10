@@ -1,4 +1,6 @@
-﻿using GameRealisticMap.Arma3.Assets;
+﻿using System.Runtime.Versioning;
+using BIS.WRP;
+using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.Imagery;
 using GameRealisticMap.Arma3.IO;
@@ -41,6 +43,25 @@ namespace GameRealisticMap.Arma3
             }
             var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary);
             return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
+        }
+
+        [SupportedOSPlatform("windows")]
+        public async Task GenerateMod(IProgressTask progress, Arma3MapConfig a3config)
+        {
+            progress.Total += 1;
+
+            await GenerateWrp(progress, a3config);
+
+            if (progress.CancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
+            // TODO: Unpack all missing P3D + PAA
+
+            Directory.CreateDirectory(a3config.TargetModDirectory);
+            await Arma3ToolsHelper.BuildWithMikeroPboProject(a3config.PboPrefix, a3config.TargetModDirectory, progress);
+            progress.ReportOneDone();
         }
 
         public async Task<BuildContext?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
@@ -104,14 +125,22 @@ namespace GameRealisticMap.Arma3
 
             var grid = context.GetData<ElevationData>().Elevation;
 
+            var size = area.SizeInMeters;
+
             var objects = generators.Generators
                 .Progress(progress)
                 .SelectMany(tb => tb.Generate(config, context))
-                .Select(o => o.ToWrpObject(grid));
+                .Select(o => o.ToWrpObject(grid))
+                .Where(o => IsStrictlyInside(o, size));
 
             wrpBuilder.Write(config, grid, tiles, objects);
             progress.ReportOneDone();
         }
 
+        private bool IsStrictlyInside(EditableWrpObject o, float size)
+        {
+            return o.Transform.TranslateX >= 0 && o.Transform.TranslateX < size 
+                && o.Transform.TranslateZ >= 0 && o.Transform.TranslateZ < size;
+        }
     }
 }

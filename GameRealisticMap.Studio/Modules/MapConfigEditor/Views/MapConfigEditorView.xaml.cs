@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -27,6 +30,38 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.Views
         public MapConfigEditorView()
         {
             InitializeComponent();
+
+            DataContextChanged += MapConfigEditorView_DataContextChanged;
+        }
+
+        private void MapConfigEditorView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = e.OldValue as INotifyPropertyChanged;
+            if (viewModel != null)
+            {
+                viewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            }
+            viewModel = e.NewValue as INotifyPropertyChanged;
+            if (viewModel != null)
+            {
+                viewModel.PropertyChanged += ViewModel_PropertyChanged;
+            }
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if ( e.PropertyName == "Locations")
+            {
+                var viewModel = (DataContext as MapConfigEditorViewModel);
+                if (viewModel != null)
+                {
+                    var points = viewModel.Locations;
+                    if (points.Any())
+                    {
+                        MapControl.ZoomToBounds(new BoundingBox(points.Min(p => p.Latitude), points.Min(p => p.Longitude), points.Max(p => p.Latitude), points.Max(p => p.Longitude)));
+                    }
+                }
+            }
         }
 
         private void Map_MouseDown(object sender, MouseButtonEventArgs e)
@@ -122,6 +157,11 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.Views
         private void MapControl_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = FormattableString.Invariant($"https://www.openstreetmap.org/#map={Math.Round(MapControl.ZoomLevel)}/{MapControl.Center.Latitude}/{MapControl.Center.Longitude}") });
         }
     }
 }

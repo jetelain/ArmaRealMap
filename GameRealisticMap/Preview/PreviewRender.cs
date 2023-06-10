@@ -1,9 +1,11 @@
 ﻿using System.Text.Json;
 using GameRealisticMap.ElevationModel;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GeoJSON.Text.Feature;
+using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Preview
 {
@@ -35,7 +37,7 @@ namespace GameRealisticMap.Preview
                     filter = (t) => t != typeof(ElevationData);
                 }
 
-                var catalog = new BuildersCatalog(progress, library);
+                var catalog = new BuildersCatalog(progress, library, true);
                 var count = catalog.CountOfType<IGeoJsonData>(filter);
                 progress.Total = count + 2;
 
@@ -51,7 +53,7 @@ namespace GameRealisticMap.Preview
                 var list = new List<Feature>();
                 foreach (var data in catalog.GetOfType<IGeoJsonData>(context, filter))
                 {
-                    list.AddRange(data.ToGeoJson());
+                    list.AddRange(data.ToGeoJson(p => p));
                     progress.ReportOneDone();
                     if (progress.CancellationToken.IsCancellationRequested)
                     {
@@ -74,6 +76,12 @@ namespace GameRealisticMap.Preview
                 progress.Dispose();
             }
         }
+
+        //private IPosition Project(TerrainPoint point)
+        //{
+        //    var p = terrainArea.TerrainPointToLatLng(point);
+        //    return new Position(p.Y, p.X);
+        //}
 
         public static async Task RenderHtml(FeatureCollection collection, string targetFile)
         {
