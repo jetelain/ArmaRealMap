@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\grms.ico</ApplicationIcon>
+	<Company>GameRealisticMap</Company>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,14 +33,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Modules\AssetBrowser\Data\*.txt" />
   </ItemGroup>
-	
-  <ItemGroup>
-    <None Remove="Modules\AssetBrowser\Data\2288691268.txt" />
-    <None Remove="Modules\AssetBrowser\Data\2782382831.txt" />
-    <None Remove="Modules\AssetBrowser\Data\520618345.txt" />
-    <None Remove="Modules\AssetBrowser\Data\583496184.txt" />
-    <None Remove="Modules\AssetBrowser\Data\671539540.txt" />
-  </ItemGroup>
+
 	
   <ItemGroup>
     <Content Include="Resources\grms.ico" />
