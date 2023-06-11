@@ -3,7 +3,7 @@ using CommandLine.Text;
 
 namespace ArmaRealMap
 {
-    internal abstract class OptionsBase
+    public abstract class OptionsBase
     {
         [Option('g', "global", Required = false, HelpText = "Global configuration file.")]
         public string Global { get; set; }

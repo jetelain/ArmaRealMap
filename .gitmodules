@@ -4,3 +4,6 @@
 [submodule "bis-file-formats"]
 	path = bis-file-formats
 	url = https://github.com/jetelain/bis-file-formats.git
+[submodule "HugeImages"]
+	path = HugeImages
+	url = https://github.com/jetelain/HugeImages.git

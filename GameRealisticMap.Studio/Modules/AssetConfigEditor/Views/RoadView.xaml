@@ -1,0 +1,141 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.RoadView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:TexturePreviewConverter x:Key="TexturePreviewConverter" />
+        <local:MultipleConverter Scale="10" x:Key="X10" />
+    </UserControl.Resources>
+    <ScrollViewer local:Behaviors.EnforceScroll="True">
+        <StackPanel Margin="10 0">
+            <StackPanel Orientation="Horizontal" Margin="0 10">
+                <Button Padding="10" Command="{Binding Back}">🡰</Button>
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding PageTitle}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+            </StackPanel>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="530" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel>
+                    <TextBlock FontSize="25">Road configuration</TextBlock>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="100">ClearWidth</Label>
+                        <TextBox Width="50" Text="{Binding ClearWidth,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="100">Width</Label>
+                        <TextBox Width="50" Text="{Binding Width,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="100">TextureWidth</Label>
+                        <TextBox Width="50" Text="{Binding TextureWidth,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="100">Texture</Label>
+                        <TextBox Width="400" Text="{Binding Texture,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="100">TextureEnd</Label>
+                        <TextBox Width="400" Text="{Binding TextureEnd,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="100">Material</Label>
+                        <TextBox Width="400" Text="{Binding Material,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="100">SatelliteColor</Label>
+                        <toolkit:ColorPicker 
+                    SelectedColor="{Binding SatelliteColor,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
+                    Width="100"
+                    UsingAlphaChannel="False" />
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid Grid.Column="1">
+                    <StackPanel Height="300">
+                        <Image Source="{Binding TextureEnd, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                        <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                    </StackPanel>
+                    <Border Height="300" BorderBrush="Red" BorderThickness="1" Grid.Column="1" Width="{Binding Width, Converter={StaticResource X10}}" />
+                    <Border Height="300" BorderBrush="Green" BorderThickness="1" Grid.Column="1" Width="{Binding ClearWidth, Converter={StaticResource X10}}" />
+                </Grid>
+            </Grid>
+  
+            <TextBlock FontSize="25" Padding="0 15 0 5">Bridge elements</TextBlock>
+            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Element" Binding="{Binding Label}" Width="200" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                    <DataGridTemplateColumn Width="200">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image c:CompositionPreview.Source="{Binding Composition}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Size" Binding="{Binding Size}" Width="100" />
+
+                    <DataGridTemplateColumn Width="75">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">Change</Button>
+                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Edit</Button>
+                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.ClearItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Clear</Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\grms.ico</ApplicationIcon>
+	<Company>GameRealisticMap</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--<PackageReference Include="Gemini.Modules.CodeEditor" Version="1.0.60-beta" />-->
+    <!--<PackageReference Include="Gemini.Modules.ErrorList" Version="1.0.60-beta" />-->
+    <!--<PackageReference Include="Gemini.Modules.GraphEditor" Version="1.0.60-beta" />-->
+    <!--<PackageReference Include="Gemini.Modules.Inspector" Version="1.0.60-beta" />-->
+    <PackageReference Include="Gemini.Modules.Output" Version="1.0.60-beta" />
+    <!--<PackageReference Include="Gemini.Modules.PropertyGrid" Version="1.0.60-beta" />-->
+    <PackageReference Include="GeminiWpf" Version="1.0.60-beta" />
+    <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
+    <PackageReference Include="XAML.MapControl" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
+    <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <Resource Include="Resources\**\*.png" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <EmbeddedResource Include="Modules\AssetBrowser\Data\*.txt" />
+  </ItemGroup>
+
+	
+  <ItemGroup>
+    <Content Include="Resources\grms.ico" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Compile Update="Labels.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Labels.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+	
+  <ItemGroup>
+    <EmbeddedResource Update="Labels.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Labels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

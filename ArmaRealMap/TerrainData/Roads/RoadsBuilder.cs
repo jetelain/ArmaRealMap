@@ -6,20 +6,22 @@ using System.Linq;
 using System.Numerics;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.Core.Roads;
-using ArmaRealMap.Geometries;
 using ArmaRealMap.GroundTextureDetails;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.TerrainData;
+using ArmaRealMap.TerrainData.ElevationModel;
 using ArmaRealMap.TerrainData.Forests;
 using ArmaRealMap.TerrainData.Roads;
+using GameRealisticMap.Geometries;
+using GameRealisticMap.Osm;
+using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using OsmSharp;
 using OsmSharp.Complete;
 using OsmSharp.Db;
-using OsmSharp.Geo;
 using OsmSharp.Streams;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -218,25 +220,25 @@ namespace ArmaRealMap.Roads
 
         private static void MergeInto(Road target, Road source)
         {
-            if (target.Path.LastPoint == source.Path.FirstPoint)
+            if (TerrainPoint.Equals(target.Path.LastPoint, source.Path.FirstPoint))
             {
                 var a = target.Path.Points.ToList();
                 var b = source.Path.Points.ToList();
                 target.Path = new TerrainPath(a.Concat(b.Skip(1)).ToList());
             }
-            else if (target.Path.FirstPoint == source.Path.LastPoint)
+            else if (TerrainPoint.Equals(target.Path.FirstPoint, source.Path.LastPoint))
             {
                 var a = source.Path.Points.ToList();
                 var b = target.Path.Points.ToList();
                 target.Path = new TerrainPath(a.Concat(b.Skip(1)).ToList());
             }
-            else if (target.Path.LastPoint == source.Path.LastPoint)
+            else if (TerrainPoint.Equals(target.Path.LastPoint, source.Path.LastPoint))
             {
                 var a = target.Path.Points.ToList();
                 var b = Enumerable.Reverse(source.Path.Points).ToList();
                 target.Path = new TerrainPath(a.Concat(b.Skip(1)).ToList());
             }
-            else if (target.Path.FirstPoint == source.Path.FirstPoint)
+            else if (TerrainPoint.Equals(target.Path.FirstPoint, source.Path.FirstPoint))
             {
                 var a = Enumerable.Reverse(target.Path.Points).ToList();
                 var b = source.Path.Points.ToList();
@@ -250,7 +252,7 @@ namespace ArmaRealMap.Roads
 
         private static List<Road> ConnectedAt(Road self, IEnumerable<Road> roads, TerrainPoint point)
         {
-            return roads.Where(r => r != self && r.RoadType == self.RoadType && r.SpecialSegment == self.SpecialSegment && (r.Path.FirstPoint == point || r.Path.LastPoint == point)).ToList();
+            return roads.Where(r => r != self && r.RoadType == self.RoadType && r.SpecialSegment == self.SpecialSegment && (TerrainPoint.Equals(r.Path.FirstPoint, point) || TerrainPoint.Equals(r.Path.LastPoint, point))).ToList();
         }
 
         private static void SaveRoadsShp(MapData data, MapConfig config, ObjectLibraries libs)
@@ -267,7 +269,7 @@ namespace ArmaRealMap.Roads
                 var path = road.Path;
                 if (road.RoadType < RoadTypeId.SingleLaneDirtPath)
                 {
-                    path = PreventSplines(road.Path, road.Width * 1.5f);
+                    path = road.Path.PreventSplines(road.Width * 1.5f);
                 }
                 features.Add(new Feature(path.ToLineString(p => new Coordinate(p.X + 200000, p.Y)), attributesTable));
             }
@@ -317,7 +319,7 @@ namespace ArmaRealMap.Roads
                     var type = library.GetInfo(kind.Value, data.Config.Terrain);
                     var complete = road.CreateComplete(db);
                     var count = 0;
-                    foreach (var feature in interpret.Interpret(complete))
+                    foreach (var feature in interpret.Interpret(complete).Features)
                     {
                         foreach (var path in TerrainPath.FromGeometry(feature.Geometry, data.MapInfos.LatLngToTerrainPoint))
                         {
@@ -348,46 +350,5 @@ namespace ArmaRealMap.Roads
             report.TaskDone();
         }
 
-        public static TerrainPath PreventSplines(TerrainPath source, float threshold)
-        {
-            return new TerrainPath(PreventSplines(source.Points, threshold));
-        }
-
-        public static List<TerrainPoint> PreventSplines(List<TerrainPoint> source, float threshold)
-        {
-            if (source.Count <= 2)
-            {
-                return source;
-            }
-            var points = new List<TerrainPoint>() { source[0], source[1] };
-            foreach (var point in source.Skip(2))
-            {
-                // A -> B -> C
-                var prevPoint = points[points.Count - 1];
-                var next = point.Vector - prevPoint.Vector; // C - B
-                var prev = prevPoint.Vector - points[points.Count - 2].Vector; // B - A
-                var nextImpacted = next.Length() > threshold;
-                var prevImpacted = prev.Length() > threshold;
-                if (nextImpacted || prevImpacted)
-                {
-                    var angle = Math.Abs(Math.Atan2(next.Y, next.X) - Math.Atan2(prev.Y, prev.X));
-                    if (angle > Math.PI / 4)
-                    {
-                        if (prevImpacted)
-                        {
-                            points.RemoveAt(points.Count - 1);
-                            points.Add(prevPoint - (prev * threshold / prev.Length()));
-                            points.Add(prevPoint);
-                        }
-                        if (nextImpacted)
-                        {
-                            points.Add(prevPoint + (next * threshold / next.Length()));
-                        }
-                    }
-                }
-                points.Add(point);
-            }
-            return points;
-        }
     }
 }

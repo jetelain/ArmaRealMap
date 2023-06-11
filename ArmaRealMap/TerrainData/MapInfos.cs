@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using CoordinateSharp;
 using SixLabors.ImageSharp;
+using GameRealisticMap;
 
 namespace ArmaRealMap
 {
-    public class MapInfos
+    public class MapInfos : ITerrainArea
     {
         private static readonly EagerLoad eagerUTM = new EagerLoad(false) { UTM_MGRS = true, Extensions = new EagerLoad_Extensions() { MGRS = false } };
 
@@ -38,12 +39,20 @@ namespace ArmaRealMap
 
         public TerrainPolygon Polygon { get; private set; }
 
+        public TerrainPolygon TerrainBounds => Polygon;
+
+        public float GridCellSize => CellSize;
+
+        public int GridSize => Size;
+
+        public float SizeInMeters => Width;
+
         internal bool IsInside(TerrainPoint p)
         {
             return p.X > P1.X && p.X < P2.X &&
                    p.Y > P1.Y && p.Y < P2.Y;
         }
-        internal bool IsInside(NetTopologySuite.Geometries.Coordinate p)
+        internal bool IsInside(GeoAPI.Geometries.Coordinate p)
         {
             return p.X > P1.X && p.X < P2.X &&
                    p.Y > P1.Y && p.Y < P2.Y;
@@ -91,7 +100,7 @@ namespace ArmaRealMap
             };
         }
 
-        public PointF LatLngToPixelsPoint(NetTopologySuite.Geometries.Coordinate n)
+        public PointF LatLngToPixelsPoint(GeoAPI.Geometries.Coordinate n)
         {
             var coord = new Coordinate(n.Y, n.X, eagerUTM);
             if (coord.UTM.LongZone != StartPointUTM.LongZone)
@@ -104,12 +113,12 @@ namespace ArmaRealMap
             );
         }
 
-        public IEnumerable<PointF> LatLngToPixelsPoints(IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
+        public IEnumerable<PointF> LatLngToPixelsPoints(IEnumerable<GeoAPI.Geometries.Coordinate> nodes)
         {
             return nodes.Select(LatLngToPixelsPoint);
         }
 
-        public TerrainPoint LatLngToTerrainPoint(NetTopologySuite.Geometries.Coordinate n)
+        public TerrainPoint LatLngToTerrainPoint(GeoAPI.Geometries.Coordinate n)
         {
             var coord = new Coordinate(n.Y, n.X, eagerUTM);
             if (coord.UTM.LongZone != StartPointUTM.LongZone)
@@ -119,7 +128,7 @@ namespace ArmaRealMap
             return new TerrainPoint((float)(coord.UTM.Easting - StartPointUTM.Easting), (float)(coord.UTM.Northing - StartPointUTM.Northing));
         }
 
-        public IEnumerable<TerrainPoint> LatLngToTerrainPoints(IEnumerable<NetTopologySuite.Geometries.Coordinate> nodes)
+        public IEnumerable<TerrainPoint> LatLngToTerrainPoints(IEnumerable<GeoAPI.Geometries.Coordinate> nodes)
         {
             return nodes.Select(LatLngToTerrainPoint);
         }
@@ -137,7 +146,7 @@ namespace ArmaRealMap
             return points.Select(TerrainToPixelsPoint);
         }
 
-        public PointF TerrainToPixelsPoint(NetTopologySuite.Geometries.Coordinate point)
+        public PointF TerrainToPixelsPoint(GeoAPI.Geometries.Coordinate point)
         {
             return new PointF(
                 (float)(point.X / ImageryResolution),
@@ -145,7 +154,7 @@ namespace ArmaRealMap
             );
         }
 
-        public IEnumerable<PointF> TerrainToPixelsPoints(IEnumerable<NetTopologySuite.Geometries.Coordinate> points)
+        public IEnumerable<PointF> TerrainToPixelsPoints(IEnumerable<GeoAPI.Geometries.Coordinate> points)
         {
             return points.Select(TerrainToPixelsPoint);
         }
@@ -192,6 +201,12 @@ namespace ArmaRealMap
             );
 
 
+        }
+
+        public GeoAPI.Geometries.Coordinate TerrainPointToLatLng(TerrainPoint point)
+        {
+            var coord = TerrainToLatLong(StartPointUTM, point.X, point.Y, eagerNONE);
+            return new GeoAPI.Geometries.Coordinate(coord.Longitude.ToDouble(), coord.Latitude.ToDouble());
         }
     }
 }

@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.Explorer.Views.ExplorerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Explorer.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <TreeView ItemsSource="{Binding Items}" x:Name="Tree">
+        <TreeView.Resources>
+            <Style TargetType="{x:Type TreeViewItem}">
+                <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick"/>
+            </Style>
+        </TreeView.Resources>
+
+        <TreeView.ItemTemplateSelector>
+            <local:TreeItemDataTemplateSelector>
+
+                <local:TreeItemDataTemplateSelector.Basic>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal" Initialized="StackPanel_Initialized">
+                            <Image Source="{Binding Icon}" Height="20" Width="20" Margin="3"/>
+                            <TextBlock Text="{Binding TreeName}" VerticalAlignment="Center" Margin="6 3" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </local:TreeItemDataTemplateSelector.Basic>
+
+                <local:TreeItemDataTemplateSelector.Counter>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal" Initialized="StackPanel_Initialized">
+                            <Image Source="{Binding Icon}" Height="20" Width="20" Margin="3"/>
+                            <TextBlock Text="{Binding TreeName}" VerticalAlignment="Center" Margin="6 3" />
+                            <Border Margin="3 6" CornerRadius="6">
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Items.Count}" Value="0">
+                                                <Setter Property="Background" Value="LightGray" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                        <Setter Property="Background" Value="Gray" />
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock Text="{Binding Items.Count}" Foreground="White" Margin="4 0 5 0" FontSize="8" VerticalAlignment="Center" />
+                            </Border>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </local:TreeItemDataTemplateSelector.Counter>
+            </local:TreeItemDataTemplateSelector>
+        </TreeView.ItemTemplateSelector>
+    </TreeView>
+</UserControl>

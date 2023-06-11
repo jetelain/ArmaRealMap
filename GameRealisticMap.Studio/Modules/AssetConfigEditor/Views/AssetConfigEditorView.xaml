@@ -1,0 +1,178 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.AssetConfigEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:CollectionCountValueConverter x:Key="CollectionCountValueConverter" />
+        <local:PercentValueConverter x:Key="PercentValueConverter" />
+        <local:TexturePreviewConverter x:Key="TexturePreviewConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" local:Behaviors.EnforceScroll="True">
+        <Grid>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 10">
+                    <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
+                </StackPanel>
+                <!--<StackPanel Orientation="Horizontal" Margin="10 0">
+                    <Button Padding="5">Generate a demo world</Button>
+                </StackPanel>-->
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25">Filling objects</TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 10">
+                            <Button Padding="5" b:ButtonBehaviors.OpenContextOnClick="True">
+                                Add a variation
+                                <Button.ContextMenu>
+                                    <ContextMenu ItemsSource="{Binding AdditionalFillings}">
+                                        <ContextMenu.ItemTemplate>
+                                            <DataTemplate>
+                                                <MenuItem Header="{Binding Label}" Command="{Binding}" />
+                                            </DataTemplate>
+                                        </ContextMenu.ItemTemplate>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                        </StackPanel>
+                        <DataGrid ItemsSource="{Binding Filling}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" Width="200" />
+                                <DataGridTextColumn Header="Label" Binding="{Binding Label}" Width="200" />
+                                <DataGridTextColumn Header="Probability" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
+                                <DataGridTextColumn Header="Density" Binding="{Binding DensityText}" IsReadOnly="True" Width="100" />
+                                <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="150" />
+                                <DataGridTemplateColumn Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveFilling, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Remove</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+
+
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25">Individual objects</TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <DataGrid ItemsSource="{Binding Individual}" AutoGenerateColumns="false" Margin="0 10 0 0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" Width="200" />
+                                <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="300" />
+                                <DataGridTemplateColumn Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25">Ground textures</TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <StackPanel Margin="10" Orientation="Horizontal" >
+                            <Label Width="200">Texture size</Label>
+                            <TextBox Width="100" Text="{Binding TextureSizeInMeters,Mode=TwoWay}" />
+                            <TextBlock Padding="5 0 0 0">meters</TextBlock>
+                        </StackPanel>
+                        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Materials}" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Texture" Binding="{Binding ColorTexture}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding ColorTexture, Converter={StaticResource TexturePreviewConverter}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Same as" Binding="{Binding SameAs.IdText}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+
+
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25">Roads and bridges</TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Roads}" AutoGenerateColumns="False" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Texture" Binding="{Binding Texture}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Width" Binding="{Binding Width}" />
+                                <DataGridTextColumn Header="Texture Width" Binding="{Binding TextureWidth}" />
+                                <DataGridTextColumn Header="Clear Width" Binding="{Binding ClearWidth}" />
+                                <DataGridTemplateColumn Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25">Water tiles</TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <DataGrid Margin="0 10 0 0" ItemsSource="{Binding Ponds}" AutoGenerateColumns="False" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding IdText}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Model" Binding="{Binding Model}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+            <TextBlock
+                FontSize="20"
+                Background="#bfff"
+                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Padding="50">Loading...</TextBlock>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

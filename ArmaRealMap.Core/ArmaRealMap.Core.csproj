@@ -4,4 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
+  </ItemGroup>
+
 </Project>

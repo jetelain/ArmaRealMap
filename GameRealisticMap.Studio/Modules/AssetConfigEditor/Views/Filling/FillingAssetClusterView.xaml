@@ -1,0 +1,127 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling.FillingAssetClusterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
+             xmlns:localf="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:PercentValueConverter x:Key="PercentValueConverter" />
+        <localf:ColorToBrushConverter x:Key="BrushConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <ScrollViewer local:Behaviors.EnforceScroll="True" c:CompositionDragDrop.Importer="{Binding CompositionImporter}">
+        <StackPanel Margin="10 0">
+            <StackPanel Orientation="Horizontal" Margin="0 10">
+                <Button Padding="10" Command="{Binding Back}">🡰</Button>
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding PageTitle}" />
+            </StackPanel>
+
+            <Image Source="{Binding Preview}" Height="128" HorizontalAlignment="Center" />
+            
+            <TextBlock FontSize="25">Filling options</TextBlock>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Probability of this collection</Label>
+                <TextBox Width="50" Text="{Binding Probability,Mode=TwoWay,Converter={StaticResource PercentValueConverter}}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">Density</Label>
+                <TextBlock VerticalAlignment="Center" Margin="0 0 5 0">Random from</TextBlock>
+                <TextBox Width="100" Text="{Binding MinDensity,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                <TextBlock VerticalAlignment="Center" Margin="5 0">to</TextBlock>
+                <TextBox Width="100" Text="{Binding MaxDensity,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                <TextBlock VerticalAlignment="Center" Margin="5 0 0 0">objects/m²</TextBlock>
+                <Button cal:Message.Attach="ComputeMaxDensity" Margin="15 0 5 0">Compute maximum</Button>
+                <TextBlock VerticalAlignment="Center" Text="{Binding ComputedMaxDensity}" />
+            </StackPanel>
+
+            <TextBlock FontSize="25">Filling seeds/objects</TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="0 10">
+                <Button Padding="5" Command="{Binding AddEmptySeed}">Add an empty seed</Button>
+                <Button Padding="5" Margin="5 0" Command="{Binding CompositionImporter.AddSingle}">Add a seed from an object</Button>
+            </StackPanel>
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <StackPanel Margin="0 0 0 10">
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="20" Text="{Binding Label}"/>
+                                <Label  Margin="20 5 0 5">Probability</Label>
+                                <TextBox VerticalContentAlignment="Center" Margin="0 7 0 5" Text="{Binding Probability, Converter={StaticResource PercentValueConverter}}" MinWidth="50" local:Behaviors.UndoRedoManager="{Binding DataContext.UndoRedoManager, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10 5 0 10">
+                                <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">Add an object</Button>
+                                <Button Padding="5" Margin="5 0 0 0" Command="{Binding CompositionImporter.AddComposition}">Add a composition</Button>
+                                <Button Padding="5" Margin="5 0 0 0" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveSeed, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Remove seed</Button>
+                            </StackPanel>
+                            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" c:CompositionDragDrop.Importer="{Binding CompositionImporter}" local:Behaviors.UndoRedoManager="{Binding DataContext.UndoRedoManager, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Margin="10 0 0 0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                                    <DataGridTemplateColumn Width="200">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image c:CompositionPreview.Source="{Binding Composition}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Probability" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="75" />
+                                    <DataGridTextColumn Header="Radius" Binding="{Binding Radius}" Width="65" />
+                                    <DataGridTextColumn Header="Fit Radius" Binding="{Binding ExclusiveRadius}" Width="65" />
+                                    <DataGridTextColumn Header="Max Z" Binding="{Binding MaxZ}" Width="65" />
+                                    <DataGridTextColumn Header="Min Z" Binding="{Binding MinZ}" Width="65" />
+                                    <DataGridTextColumn Header="Max Scale" Binding="{Binding MaxScale}" Width="65" />
+                                    <DataGridTextColumn Header="Min Scale" Binding="{Binding MinScale}" Width="65" />
+                                    <DataGridTemplateColumn Width="75">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel>
+                                                    <Button Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Edit</Button>
+                                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}">Remove</Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+            <TextBlock FontSize="25" Margin="0 20 0 0">Preview</TextBlock>
+
+            <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                <Button Padding="5" cal:Message.Attach="GeneratePreview">Generate</Button>
+                <Button Margin="5 0" Padding="5" cal:Message.Attach="GenerateFullPreview">Generate with linked areas</Button>
+                <ProgressBar IsIndeterminate="{Binding IsGeneratingPreview}" Width="100" Margin="5 5" Visibility="{Binding IsGeneratingPreview, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Margin="5 0" Text="{Binding GeneratePreviewStatus}" VerticalAlignment="Center" />
+            </StackPanel>
+
+            <Grid Width="{x:Static localf:PreviewGrid.Size}" Height="{x:Static localf:PreviewGrid.Size}" ClipToBounds="True">
+                <Rectangle Fill="White" Width="{Binding PreviewBoxWidthPixels}" Height="{x:Static localf:PreviewGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <ItemsControl ItemsSource="{Binding PreviewItems}" Margin="10">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Width="{x:Static localf:PreviewGrid.Size}" Height="{x:Static localf:PreviewGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Path  Width="{x:Static localf:PreviewGrid.Size}" Height="{x:Static localf:PreviewGrid.Size}" Data="{Binding Path}" Fill="{Binding Color, Converter={StaticResource BrushConverter}}" ToolTip="{Binding Model.Name}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+            
+
+
+        </StackPanel>
+
+    </ScrollViewer>
+</UserControl>

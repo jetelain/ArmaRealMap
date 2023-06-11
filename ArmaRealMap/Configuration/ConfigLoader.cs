@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace ArmaRealMap.Configuration
 {
-    internal class ConfigLoader
+    public class ConfigLoader
     {
         internal static JsonSerializerOptions SerializerOptions = new JsonSerializerOptions()
         {
@@ -16,7 +16,7 @@ namespace ArmaRealMap.Configuration
             WriteIndented = true
         };
 
-        internal static GlobalConfig LoadGlobal(string globalConfigFile)
+        public static GlobalConfig LoadGlobal(string globalConfigFile)
         {
             var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ArmaRealMap");
             if (string.IsNullOrEmpty(globalConfigFile))
@@ -139,6 +139,15 @@ namespace ArmaRealMap.Configuration
                 }
             }
         }
-
+        public static void SyncLibraries(GlobalConfig global)
+        {
+            if (global.SyncWithAssetManager)
+            {
+                UpdateFile(global.LibrariesFile, global.AssetManager + "ObjectLibraries/Export");
+                UpdateFile(global.ModelsInfoFile, global.AssetManager + "Assets/ModelsInfo");
+                UpdateFile(global.TerrainMaterialFile, global.AssetManager + "data/terrains.json");
+                UpdateFile(global.RoadTypesFile, global.AssetManager + "data/roads.json");
+            }
+        }
     }
 }

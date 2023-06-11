@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<DefineConstants>PARALLEL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Preview\grm-preview.html" />
+    <EmbeddedResource Include="Preview\grm-preview.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoordinateSharp" Version="2.18.1.1" />
+    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
+    <PackageReference Include="OsmSharp" Version="6.2.0" />
+    <PackageReference Include="OsmSharp.Geo" Version="6.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HugeImages\HugeImages\HugeImages.csproj" />
+    <ProjectReference Include="..\mapkit\MapToolkit\MapToolkit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ManMade\Powerlines\" />
+  </ItemGroup>
+
+</Project>

@@ -2,13 +2,14 @@
 using System.Linq;
 using System.Text.Json.Serialization;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using ArmaRealMap.Osm;
 using NetTopologySuite.Geometries;
+using GeoAPI.Geometries;
 
 namespace ArmaRealMap
 {
-    internal class Building : ITerrainGeometry
+    internal class Building : ITerrainEnvelope
     {
         public Building(OsmShape area, TerrainPoint[] points)
         {
@@ -19,7 +20,7 @@ namespace ArmaRealMap
 
         public Building(BuildingJson json)
         {
-            Box = new BoundingBox(json.Box);
+            Box = json.Box;
             Category = json.Category;
         }
 
@@ -38,7 +39,7 @@ namespace ArmaRealMap
         public ObjectCategory? Category { get; set; }
 
         [JsonIgnore]
-        public Polygon Poly => Box.Poly;
+        public IPolygon Poly => Box.Poly;
 
         [JsonIgnore]
         public TerrainPoint MinPoint => Box.MinPoint;
@@ -58,7 +59,7 @@ namespace ArmaRealMap
             return new BuildingJson()
             {
                 Category = Category,
-                Box = Box.ToJson()
+                Box = Box
             };
         }
     }

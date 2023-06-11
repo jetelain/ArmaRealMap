@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ArmaRealMap.Core.Roads;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 
 namespace ArmaRealMap.Roads
 {
-    public class Road : ITerrainGeometry
+    public class Road : ITerrainEnvelope
     {
         public RoadTypeId RoadType { get; set; }
 

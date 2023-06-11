@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -18,7 +17,7 @@ namespace ArmaRealMap.Osm
             //DrawHelper.FillGeometry(img, solidBrush, shape.Geometry, mapInfos.LatLngToPixelsPoints);
         }
 
-        private static void DrawGeometry(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, Geometry geometry, float defaultWidth, DrawingOptions shapeGraphicsOptions)
+        private static void DrawGeometry(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, IGeometry geometry, float defaultWidth, DrawingOptions shapeGraphicsOptions)
         {
             if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
             {

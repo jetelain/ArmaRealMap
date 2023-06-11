@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace ArmaRealMap.TerrainData.Roads
 {
-    internal class RoadTypeLibrary
+    public class RoadTypeLibrary
     {
         private static readonly JsonSerializerOptions options = new JsonSerializerOptions
         {

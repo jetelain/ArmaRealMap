@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using ArmaRealMap.Core.ObjectLibraries;
 using ArmaRealMap.Core.Roads;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
 using ArmaRealMap.Osm;
 using ArmaRealMap.Roads;
@@ -72,7 +72,7 @@ namespace ArmaRealMap.TerrainData.Forests
             {
                 return;
             }
-            var radialEdges = CropPolygonsToTerrain(data, polygons.SelectMany(e => e.Crown2(width)));
+            var radialEdges = CropPolygonsToTerrain(data, polygons.SelectMany(e => e.OuterCrown(width)));
             var substractPolygons = GetPriorityPolygons(data, shapes, OsmShapeCategory.Dirt);
             var radialCleaned = Subtract(radialEdges, substractPolygons);
             var final = TerrainPolygon.MergeAll(radialCleaned);
@@ -213,7 +213,7 @@ namespace ArmaRealMap.TerrainData.Forests
         }
 
         public static void Remove<T>(TerrainObjectLayer objects, IEnumerable<T> toremoveList, Func<T, TerrainObject, bool> match)
-            where T : ITerrainGeometry
+            where T : ITerrainEnvelope
         {
             var list = toremoveList.ToList();
 

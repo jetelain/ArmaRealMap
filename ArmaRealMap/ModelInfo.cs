@@ -1,7 +1,6 @@
-﻿using System;
-using System.Numerics;
-using ArmaRealMap.ElevationModel;
-using ArmaRealMap.Geometries;
+﻿using System.Numerics;
+using GameRealisticMap.ElevationModel;
+using GameRealisticMap.Geometries;
 
 namespace ArmaRealMap
 {

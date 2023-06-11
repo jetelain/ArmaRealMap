@@ -1,0 +1,3280 @@
+{
+  "BasicCollections": {
+    "ForestAdditional": [
+      {
+        "Models": [
+          {
+            "Radius": 2,
+            "ExclusiveRadius": 2,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\d_fagussylvatica_fallenb.p3d",
+                  "Transform": [-0.04369515,0.64545107,-0.05769752]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 1,
+            "ExclusiveRadius": 1,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\d_fagussylvatica_fallenc.p3d",
+                  "Transform": [0.035479963,0.14717056,-0.0668105]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 7,
+            "ExclusiveRadius": 7,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_argo\\Trees\\t_Ficus_3D_F.p3d",
+                  "Transform": [0.06779495,3.6723325,-0.7371372]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 1.6,
+            "ExclusiveRadius": 1.6,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_argo\\Bushes\\b_OpuntiaFicusIndica3s_F.p3d",
+                  "Transform": [-0.20123184,0.82360774,-0.13524202]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 2.4,
+            "ExclusiveRadius": 2.4,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\plants_f\\Bush\\b_ficusC2d_F.p3d",
+                  "Transform": [0,1.3238448,-0.17194727]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 3.4,
+            "ExclusiveRadius": 3.4,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                  "Transform": [0.008685879,1.7445197,0.092071]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 2.8,
+            "ExclusiveRadius": 2.8,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_salix2s_w50_h75_d.p3d",
+                  "Transform": [-0.25221798,1.873155,0.24503627]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.001,
+        "MaxDensity": 0.001,
+        "Label": ""
+      }
+    ],
+    "Rocks": [
+      {
+        "Models": [
+          {
+            "Radius": 7,
+            "ExclusiveRadius": 12,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpRock_monolith.p3d",
+                  "Transform": [-1.2891188,6.8098783,-1.681613]
+                }
+              ]
+            },
+            "MaxZ": -14.5,
+            "MinZ": -16,
+            "Probability": 0.25
+          },
+          {
+            "Radius": 17.5,
+            "ExclusiveRadius": 25,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpRock_wallH.p3d",
+                  "Transform": [2.650001,9.885805,-3.3769572]
+                }
+              ]
+            },
+            "MaxZ": -17,
+            "MinZ": -21,
+            "Probability": 0.75
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.001,
+        "MaxDensity": 0.001,
+        "Label": ""
+      }
+    ],
+    "RocksAdditional": [
+      {
+        "Models": [
+          {
+            "Radius": 1.6,
+            "ExclusiveRadius": 1.6,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_01.p3d",
+                  "Transform": [-0.082173765,0.33187583,-0.5007098]
+                }
+              ]
+            },
+            "MaxZ": -1,
+            "MinZ": -0.5,
+            "Probability": 0.10000000000000002
+          },
+          {
+            "Radius": 1.6,
+            "ExclusiveRadius": 1.6,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_01_LC.p3d",
+                  "Transform": [-0.082173765,0.33187583,-0.5007098]
+                }
+              ]
+            },
+            "MaxZ": -1.5,
+            "MinZ": -0.5,
+            "Probability": 0.10000000000000002
+          },
+          {
+            "Radius": 2,
+            "ExclusiveRadius": 2,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_02.p3d",
+                  "Transform": [0.5612264,0.24236673,-0.45463246]
+                }
+              ]
+            },
+            "MaxZ": -2,
+            "MinZ": -1,
+            "Probability": 0.10000000000000002
+          },
+          {
+            "Radius": 2,
+            "ExclusiveRadius": 2,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_02_LC.p3d",
+                  "Transform": [0.5612264,0.24236673,-0.45463246]
+                }
+              ]
+            },
+            "MaxZ": -2,
+            "MinZ": -1,
+            "Probability": 0.10000000000000002
+          },
+          {
+            "Radius": 0.9,
+            "ExclusiveRadius": 0.9,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_03.p3d",
+                  "Transform": [-0.04886137,0.15710568,-0.35490757]
+                }
+              ]
+            },
+            "MaxZ": -1,
+            "MinZ": -0.5,
+            "Probability": 0.10000000000000002
+          },
+          {
+            "Radius": 0.9,
+            "ExclusiveRadius": 0.9,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_03_LC.p3d",
+                  "Transform": [-0.04886137,0.15710568,-0.35490757]
+                }
+              ]
+            },
+            "MaxZ": -1,
+            "MinZ": -0.5,
+            "Probability": 0.10000000000000002
+          },
+          {
+            "Radius": 2,
+            "ExclusiveRadius": 2,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\plants_f\\Bush\\b_NeriumO2d_F.p3d",
+                  "Transform": [1.4901161E-08,0.85831237,0.19092858]
+                }
+              ]
+            },
+            "Probability": 0.10000000000000002
+          },
+          {
+            "Radius": 2.5,
+            "ExclusiveRadius": 2.5,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_exp\\Shrub\\b_NeriumO2d_tanoa_F.p3d",
+                  "Transform": [2.9802322E-08,0.84270203,0.19092861]
+                }
+              ]
+            },
+            "Probability": 0.10000000000000002
+          },
+          {
+            "Radius": 1.6,
+            "ExclusiveRadius": 1.6,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_argo\\Bushes\\b_OpuntiaFicusIndica3s_F.p3d",
+                  "Transform": [-0.20123184,0.82360774,-0.13524202]
+                }
+              ]
+            },
+            "Probability": 0.10000000000000002
+          },
+          {
+            "Radius": 3.4,
+            "ExclusiveRadius": 3.4,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                  "Transform": [0.008685879,1.7445197,0.092071]
+                }
+              ]
+            },
+            "Probability": 0.10000000000000002
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.0001,
+        "MaxDensity": 0.0001,
+        "Label": ""
+      }
+    ],
+    "DefaultAreas": [
+      {
+        "Models": [
+          {
+            "Radius": 5,
+            "ExclusiveRadius": 5,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_exp\\Shrub\\b_NeriumO2d_tanoa_F.p3d",
+                  "Transform": [2.9802322E-08,0.84270203,0.19092861]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          },
+          {
+            "Radius": 5,
+            "ExclusiveRadius": 5,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_exp\\Shrub\\b_FicusC2d_tanoa_F.p3d",
+                  "Transform": [0,1.3238448,-0.17194727]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          },
+          {
+            "Radius": 16,
+            "ExclusiveRadius": 16,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_exp\\Tree\\t_Albizia_F.p3d",
+                  "Transform": [0.2528708,-1.5408344,0.22325015]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          },
+          {
+            "Radius": 3,
+            "ExclusiveRadius": 3,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_argo\\Bushes\\b_OpuntiaFicusIndica3s_F.p3d",
+                  "Transform": [-0.20123184,0.82360774,-0.13524202]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          },
+          {
+            "Radius": 3,
+            "ExclusiveRadius": 3,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\plants_f\\Bush\\b_NeriumO2d_F.p3d",
+                  "Transform": [1.4901161E-08,0.85831237,0.19092858]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          },
+          {
+            "Radius": 5,
+            "ExclusiveRadius": 5,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                  "Transform": [0.008685879,1.7445197,0.092071]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          },
+          {
+            "Radius": 4.5,
+            "ExclusiveRadius": 4.5,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w100_h62.p3d",
+                  "Transform": [0.5043728,2.476447,-0.90779924]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          },
+          {
+            "Radius": 3.4,
+            "ExclusiveRadius": 3.4,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w100_h75.p3d",
+                  "Transform": [0.24652189,2.2854872,-0.8640282]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          },
+          {
+            "Radius": 4.8,
+            "ExclusiveRadius": 4.8,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w100_h75.p3d",
+                  "Transform": [1.2400682,2.4894803,-0.7909709]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          },
+          {
+            "Radius": 4.4,
+            "ExclusiveRadius": 4.4,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_salix2s_w50_h75.p3d",
+                  "Transform": [-0.7859787,2.7906609,0.08989909]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          },
+          {
+            "Radius": 4.4,
+            "ExclusiveRadius": 4.4,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_salix2s_w50_h75_f150.p3d",
+                  "Transform": [-0.7859787,2.7906609,0.08989909]
+                }
+              ]
+            },
+            "Probability": 0.0909090909090909
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.00015,
+        "MaxDensity": 0.00015,
+        "Label": ""
+      }
+    ]
+  },
+  "Bridges": {
+    "TwoLanesMotorway": {
+      "Single": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\bridges\\Bridge_HighWay_F.p3d",
+              "Transform": [-0,-3.3085892,-0]
+            }
+          ]
+        },
+        "Size": 44.2501
+      },
+      "Start": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_right_F.p3d",
+              "Transform": [-0,-3.3171349,-0]
+            }
+          ]
+        },
+        "Size": 22.1788
+      },
+      "Middle": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_center_F.p3d",
+              "Transform": [-0,-3.8190699,-0]
+            }
+          ]
+        },
+        "Size": 40.636
+      },
+      "End": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_left_F.p3d",
+              "Transform": [-0,-3.308694,-0]
+            }
+          ]
+        },
+        "Size": 22.1291
+      }
+    },
+    "TwoLanesPrimaryRoad": {
+      "Single": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\bridges\\Bridge_HighWay_F.p3d",
+              "Transform": [-0,-3.3085892,-0]
+            }
+          ]
+        },
+        "Size": 44.2501
+      },
+      "Start": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_right_F.p3d",
+              "Transform": [-0,-3.3171349,-0]
+            }
+          ]
+        },
+        "Size": 22.1788
+      },
+      "Middle": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_center_F.p3d",
+              "Transform": [-0,-3.8190699,-0]
+            }
+          ]
+        },
+        "Size": 40.636
+      },
+      "End": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_left_F.p3d",
+              "Transform": [-0,-3.308694,-0]
+            }
+          ]
+        },
+        "Size": 22.1291
+      }
+    },
+    "TwoLanesSecondaryRoad": {
+      "Single": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\bridges\\Bridge_Asphalt_F.p3d",
+              "Transform": [-0,-3.0325508,-0]
+            }
+          ]
+        },
+        "Size": 44.2341
+      },
+      "Start": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_right_F.p3d",
+              "Transform": [-0,-3.0320826,-0]
+            }
+          ]
+        },
+        "Size": 30.213799
+      },
+      "Middle": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_center_F.p3d",
+              "Transform": [-0,-3.0320814,-0]
+            }
+          ]
+        },
+        "Size": 24.2894
+      },
+      "End": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_left_F.p3d",
+              "Transform": [-0,-3.0320845,-0]
+            }
+          ]
+        },
+        "Size": 30.2295
+      }
+    },
+    "TwoLanesConcreteRoad": {
+      "Single": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\bridges\\Bridge_Concrete_F.p3d",
+              "Transform": [-0,-3.0325508,-0]
+            }
+          ]
+        },
+        "Size": 44.2341
+      },
+      "Start": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_right_F.p3d",
+              "Transform": [-0,-3.0320826,-0]
+            }
+          ]
+        },
+        "Size": 30.213799
+      },
+      "Middle": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_center_F.p3d",
+              "Transform": [-0,-3.0320814,-0]
+            }
+          ]
+        },
+        "Size": 24.2894
+      },
+      "End": {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_left_F.p3d",
+              "Transform": [-0,-3.0320845,-0]
+            }
+          ]
+        },
+        "Size": 30.2295
+      }
+    }
+  },
+  "Buildings": {
+    "Hut": [
+      {
+        "Size": [5.985412,5.8854623],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut01.p3d",
+              "Transform": [0.018224955,2.0133095,-0.08984494]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.985412,5.8854623],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut01A.p3d",
+              "Transform": [0.018224955,2.0133095,-0.08984494]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.985412,5.8854623],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut01B.p3d",
+              "Transform": [0.018224955,2.0133095,-0.08984494]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.985412,5.8854623],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut01C.p3d",
+              "Transform": [0.018224955,2.0133095,-0.08984494]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.985412,5.8854623],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut02.p3d",
+              "Transform": [0.018224955,1.701313,-0.08984494]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.985412,5.8854623],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut02A.p3d",
+              "Transform": [0.018224955,1.701313,-0.08984494]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.985412,5.8854623],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut02B.p3d",
+              "Transform": [0.018224955,1.701313,-0.08984494]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.985412,5.8854623],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut02C.p3d",
+              "Transform": [0.018224955,1.701313,-0.08984494]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.182495,7.0625553],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut03.p3d",
+              "Transform": [0.021870017,2.0133095,-0.107813835]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.182495,7.0625553],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut03A.p3d",
+              "Transform": [0.021870017,2.0133095,-0.107813835]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.182495,7.0625553],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut03B.p3d",
+              "Transform": [0.021870017,2.0133095,-0.107813835]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.182495,7.0625553],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut03C.p3d",
+              "Transform": [0.021870017,2.0133095,-0.107813835]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.182495,7.0625553],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut04.p3d",
+              "Transform": [0.021870017,1.701313,-0.107813835]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.182495,7.0625553],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut04A.p3d",
+              "Transform": [0.021870017,1.701313,-0.107813835]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.182495,7.0625553],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut04B.p3d",
+              "Transform": [0.021870017,1.701313,-0.107813835]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.182495,7.0625553],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut04C.p3d",
+              "Transform": [0.021870017,1.701313,-0.107813835]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.978118,8.828194],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut05.p3d",
+              "Transform": [0.027337551,2.0133095,-0.13476753]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.978118,8.828194],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut05A.p3d",
+              "Transform": [0.027337551,2.0133095,-0.13476753]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.978118,8.828194],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut05B.p3d",
+              "Transform": [0.027337551,2.0133095,-0.13476753]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.978118,8.828194],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\houses\\arm_hut05C.p3d",
+              "Transform": [0.027337551,2.0133095,-0.13476753]
+            }
+          ]
+        }
+      }
+    ],
+    "RadioTower": [
+      {
+        "Size": [12.369526,12.794358],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\Transmitter_Tower\\TTowerBig_1_F.p3d",
+              "Transform": [-0.80976343,19.28492,-0.023213863]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.8914967,8.808186],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\Transmitter_Tower\\TTowerBig_2_F.p3d",
+              "Transform": [0.16545486,23.23133,0.11146569]
+            }
+          ]
+        }
+      }
+    ],
+    "Residential": [
+      {
+        "Size": [9.833408,6.7720428],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses\\jbad_house2_basehide.p3d",
+              "Transform": [0.69670486,-0.88353014,0.0347898]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.140293,11.019215],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses\\jbad_house3.p3d",
+              "Transform": [2.5701468,1.1817496,-1.450393]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [14.279198,9.053124],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses\\jbad_house5.p3d",
+              "Transform": [0.4112258,0.07535362,0.52623796]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.849999,6.66],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses\\jbad_house_1.p3d",
+              "Transform": [0.6950002,-0.88353014,0.09000015]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.570906,11.7],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_c\\jbad_house_c_5.p3d",
+              "Transform": [1.0704525,1.128645,0.20000029]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.570906,11.7],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_c\\jbad_house_c_5_v1.p3d",
+              "Transform": [1.0704525,1.7979357,0.20000029]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.570906,11.7],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_c\\jbad_house_c_5_v2.p3d",
+              "Transform": [1.0704525,1.6933632,0.20000029]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.36,5.843152],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_old\\jbad_house_1_old.p3d",
+              "Transform": [0.02000022,0.9126984,0.33000004]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.963392,5.6033106],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_old\\jbad_house_3_old.p3d",
+              "Transform": [0.3440144,0.40358496,-0.46652448]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.963392,5.6033106],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_old\\jbad_house_3_old_h.p3d",
+              "Transform": [0.3440144,0.40358496,-0.46652448]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [15.404481,7.59173],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_old\\jbad_house_4_old.p3d",
+              "Transform": [0.115940094,1.8611171,-0.36643505]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [13.7803,7.030592],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_old\\jbad_house_6_old.p3d",
+              "Transform": [0.10015035,1.86044,0.015295982]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [13.4038,12.30434],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_old\\jbad_house_7_old.p3d",
+              "Transform": [-1.7573695,1.0878351,1.3077097]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.017499,14.2699995],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_old\\jbad_house_8_old.p3d",
+              "Transform": [-4.9687495,1.99022,-1.6150002]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.570906,11.7],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\afghan_houses_c\\jbad_house_c_5_v3.p3d",
+              "Transform": [1.0704525,1.7979357,0.20000029]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.088484,5.713232],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\shops\\jbad_grainstore.p3d",
+              "Transform": [-0.008845568,1.8050728,0.17429304]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.088484,5.713232],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\shops\\jbad_grainstore2.p3d",
+              "Transform": [-0.008845568,1.8050728,0.17429304]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.133509,5.713232],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "Jbad_Structures\\shops\\jbad_grainstore3.p3d",
+              "Transform": [0.013666868,1.8050728,0.17429304]
+            }
+          ]
+        }
+      }
+    ],
+    "Industrial": [
+      {
+        "Size": [47.34871,49.264393],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_boilerBuilding_F.p3d",
+              "Transform": [1.4745064,17.67423,0.79640007]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [26.653702,32.217003],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_warehouse_F.p3d",
+              "Transform": [3.1904507,4.7020435,0.7002001]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [14.695002,29.941736],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_washer_F.p3d",
+              "Transform": [-0.013035774,5.2042665,-2.4976683]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.564293,10.564293],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SurfaceMine_01\\SM_01_reservoirTower_F.p3d",
+              "Transform": [0,10.363952,0]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [25.879902,11.607126],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SurfaceMine_01\\SM_01_shed_F.p3d",
+              "Transform": [-1.4511566,1.685302,-1.5817735]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.417304,29.709679],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_mainFactory_addon2_F.p3d",
+              "Transform": [-15.415091,10.594373,4.8670826]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [45.69561,31.146854],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_mainFactory_F.p3d",
+              "Transform": [1.8134451,10.524456,4.241428]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [23.057854,12.580131],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_smallFactory_F.p3d",
+              "Transform": [-0.08268738,1.8698694,0.13290453]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [26.4,36.185],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\Factory\\Factory_Main_F.p3d",
+              "Transform": [0.19999981,6.683112,1.0575008]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.298496,15.951361],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_bigTank_F.p3d",
+              "Transform": [-0.6122546,2.9275,-0.41602516]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.155481,9.172199],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_storageBin_small_F.p3d",
+              "Transform": [0,6.346678,0.081269264]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [19.731873,19.619923],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_storageBin_medium_F.p3d",
+              "Transform": [-0.78686476,5.3822055,-0.67213964]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [27.9612,27.982601],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_storageBin_big_F.p3d",
+              "Transform": [0.5581994,11.578563,-0.56889963]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [21.08036,36.44573],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_shed_F.p3d",
+              "Transform": [0.018165588,7.23241,-0.065603256]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [44.79711,28.208408],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\Port\\Warehouse_02_F.p3d",
+              "Transform": [-0.0064048767,5.2480106,1.7947345]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.460377,40.257828],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\Port\\Warehouse_01_F.p3d",
+              "Transform": [0.014157772,2.9970126,-0.010543823]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [32.894783,32.911594],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\Port\\StorageTank_01_small_F.p3d",
+              "Transform": [0.6126113,12.466569,0.621016]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [42.006,40.800003],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\Port\\StorageTank_01_large_F.p3d",
+              "Transform": [-0.60299873,8.515706,0]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.46187,6.56895],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_waterCooler_F.p3d",
+              "Transform": [-0.11348438,2.1569202,-0.7576549]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [3.687169,3.5956006],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_transformer_F.p3d",
+              "Transform": [0.036566854,1.6456327,0.3633263]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [23.057854,12.580131],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_smallFactory_F.p3d",
+              "Transform": [-0.08268738,2.0907102,0.13290453]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [45.69561,31.146854],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_mainFactory_F.p3d",
+              "Transform": [1.8134451,10.55747,4.241428]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.0269446,6.942228],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\DieselPowerPlant_01\\dp_smallTank_old_F.p3d",
+              "Transform": [-0.042366028,4.7934694,2.3841858E-07]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [25.879902,11.607126],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\Sheds\\i_Shed_Ind_old_F.p3d",
+              "Transform": [-1.4511566,1.5399702,-1.5817735]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [25.589401,30.969603],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\Sawmills\\Sawmill_01_F.p3d",
+              "Transform": [2.2850003,5.7621107,2.505]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.536551,15.491819],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\Power\\PowerStation_01_F.p3d",
+              "Transform": [0.80737555,1.8212602,-0.03483987]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.298496,15.951361],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\DieselPowerPlant_01\\dp_bigTank_old_F.p3d",
+              "Transform": [-0.6122546,2.9275,-0.41602516]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [45.69561,31.146854],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\DieselPowerPlant_01\\DPP_01_mainFactory_old_F.p3d",
+              "Transform": [1.8134451,10.55747,4.241428]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [45.04649,43.559982],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\CoalPlant_01\\CoalPlant_01_MainBuilding_F.p3d",
+              "Transform": [-5.227005,13.95036,4.926015]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [30.212852,49.3321],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\CementWorks\\CementWorks_01_grey_F.p3d",
+              "Transform": [3.7105103,4.8640833,-5.4540634]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [29.987291,48.974907],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\CementWorks\\CementWorks_01_brick_F.p3d",
+              "Transform": [3.7216406,4.8589354,-5.63266]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.35862,14.071051],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_clarifier_F.p3d",
+              "Transform": [-1.5668199,8.108506,0.37381458]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [19.807442,19.024183],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_crystallizer_F.p3d",
+              "Transform": [-0.4824257,9.054275,-0.33546543]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [18.06955,48.9406],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_diffuser_F.p3d",
+              "Transform": [0.28517485,8.00698,-0.29870033]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [29.9803,48.7333],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_generalBuilding_F.p3d",
+              "Transform": [-1.2193503,9.481325,0.13444996]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "ClusterCollections": {
+    "Forest": [
+      {
+        "Clusters": [
+          {
+            "Models": [
+              {
+                "Radius": 7.3,
+                "ExclusiveRadius": 7.3,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_exp\\Tree\\t_Ficus_small_F.p3d",
+                      "Transform": [0.80565137,4.967709,-0.46518815]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 4.5,
+                "ExclusiveRadius": 4.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w100_h62.p3d",
+                      "Transform": [0.5043728,2.476447,-0.90779924]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.7,
+                "ExclusiveRadius": 1.7,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w37_h37.p3d",
+                      "Transform": [0.1891397,1.4858681,-0.3404245]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.3,
+                "ExclusiveRadius": 2.3,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w50_h50.p3d",
+                      "Transform": [0.2521864,1.9811575,-0.45389962]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w56_h47.p3d",
+                      "Transform": [0.28370962,1.8573351,-0.51063704]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w56_h56.p3d",
+                      "Transform": [0.28370962,2.2288022,-0.51063704]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.8,
+                "ExclusiveRadius": 2.8,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w62_h50.p3d",
+                      "Transform": [0.3152329,1.9811575,-0.56737435]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.8,
+                "ExclusiveRadius": 2.8,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w62_h62.p3d",
+                      "Transform": [0.3152329,2.476447,-0.56737435]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h47.p3d",
+                      "Transform": [0.3782794,1.8573351,-0.680849]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h50.p3d",
+                      "Transform": [0.3782794,1.9811575,-0.680849]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h56.p3d",
+                      "Transform": [0.3782794,2.2288022,-0.680849]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h62.p3d",
+                      "Transform": [0.3782794,2.476447,-0.680849]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w100_h62.p3d",
+                      "Transform": [0.24652189,1.9045725,-0.8640282]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w100_h75.p3d",
+                      "Transform": [0.24652189,2.2854872,-0.8640282]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.7,
+                "ExclusiveRadius": 1.7,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w50_h50.p3d",
+                      "Transform": [0.23277679,1.7062416,-0.09254834]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.1,
+                "ExclusiveRadius": 2.1,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w62_h50.p3d",
+                      "Transform": [0.154076,1.9045725,-0.5400179]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.1,
+                "ExclusiveRadius": 2.1,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w62_h62.p3d",
+                      "Transform": [0.154076,1.523658,-0.5400179]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w75_h50.p3d",
+                      "Transform": [0.18489146,1.523658,-0.6480213]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w75_h62.p3d",
+                      "Transform": [0.18489146,1.9045725,-0.6480213]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w75_h75.p3d",
+                      "Transform": [0.18489146,2.2854872,-0.6480213]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 4.8,
+                "ExclusiveRadius": 4.8,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w100_h75.p3d",
+                      "Transform": [1.2400682,2.4894803,-0.7909709]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3,
+                "ExclusiveRadius": 3,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w62_h62.p3d",
+                      "Transform": [0.77504265,2.074567,-0.4943568]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.6,
+                "ExclusiveRadius": 3.6,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w75_h62.p3d",
+                      "Transform": [0.9300512,2.074567,-0.59322816]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.6,
+                "ExclusiveRadius": 3.6,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w75_h75.p3d",
+                      "Transform": [0.9300512,2.4894803,-0.59322816]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.3,
+                "ExclusiveRadius": 3.3,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_salix2s_w37_h37.p3d",
+                      "Transform": [-0.5894841,2.0929954,0.06742436]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 4.4,
+                "ExclusiveRadius": 4.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_salix2s_w50_h75.p3d",
+                      "Transform": [-0.7859787,2.7906609,0.08989909]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.8,
+                "ExclusiveRadius": 2.8,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_salix2s_w50_h75_d.p3d",
+                      "Transform": [-0.25221798,1.873155,0.24503627]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          },
+          {
+            "Models": [
+              {
+                "Radius": 4.4,
+                "ExclusiveRadius": 4.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_salix2s_w50_h75_f150.p3d",
+                      "Transform": [-0.7859787,2.7906609,0.08989909]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.03571428571428573
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.015,
+        "MaxDensity": 0.015,
+        "Label": ""
+      }
+    ],
+    "ForestRadial": [
+      {
+        "Clusters": [
+          {
+            "Models": [
+              {
+                "Radius": 1.7,
+                "ExclusiveRadius": 1.7,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w37_h37.p3d",
+                      "Transform": [0.1891397,1.4858681,-0.3404245]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w75_h50.p3d",
+                      "Transform": [0.18489146,1.523658,-0.6480213]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.7,
+                "ExclusiveRadius": 1.7,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w50_h50.p3d",
+                      "Transform": [0.23277679,1.7062416,-0.09254834]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.1,
+                "ExclusiveRadius": 2.1,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w62_h50.p3d",
+                      "Transform": [0.154076,1.9045725,-0.5400179]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.3,
+                "ExclusiveRadius": 2.3,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w50_h50.p3d",
+                      "Transform": [0.2521864,1.9811575,-0.45389962]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w56_h47.p3d",
+                      "Transform": [0.28370962,1.8573351,-0.51063704]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h47.p3d",
+                      "Transform": [0.3782794,1.8573351,-0.680849]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h50.p3d",
+                      "Transform": [0.3782794,1.9811575,-0.680849]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.8,
+                "ExclusiveRadius": 2.8,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w62_h50.p3d",
+                      "Transform": [0.3152329,1.9811575,-0.56737435]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3,
+                "ExclusiveRadius": 3,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w62_h62.p3d",
+                      "Transform": [0.77504265,2.074567,-0.4943568]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.6,
+                "ExclusiveRadius": 3.6,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w75_h62.p3d",
+                      "Transform": [0.9300512,2.074567,-0.59322816]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2,
+                "ExclusiveRadius": 2,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\plants_f\\Bush\\b_NeriumO2d_F.p3d",
+                      "Transform": [1.4901161E-08,0.85831237,0.19092858]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                      "Transform": [0.008685879,1.7445197,0.092071]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_exp\\Shrub\\b_NeriumO2d_tanoa_F.p3d",
+                      "Transform": [2.9802322E-08,0.84270203,0.19092861]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.07142857142857145
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.0075,
+        "MaxDensity": 0.0075,
+        "Label": ""
+      }
+    ],
+    "Scrub": [
+      {
+        "Clusters": [
+          {
+            "Models": [
+              {
+                "Radius": 4,
+                "ExclusiveRadius": 4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_exp\\Shrub\\b_NeriumO2d_tanoa_F.p3d",
+                      "Transform": [2.9802322E-08,0.84270203,0.19092861]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.24999999627470976
+          },
+          {
+            "Models": [
+              {
+                "Radius": 4,
+                "ExclusiveRadius": 4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\plants_f\\Bush\\b_NeriumO2d_F.p3d",
+                      "Transform": [1.4901161E-08,0.85831237,0.19092858]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.24999999627470976
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2,
+                "ExclusiveRadius": 2,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_argo\\Bushes\\b_OpuntiaFicusIndica3s_F.p3d",
+                      "Transform": [-0.20123184,0.82360774,-0.13524202]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.15000000372529024
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.7,
+                "ExclusiveRadius": 1.7,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w37_h37.p3d",
+                      "Transform": [0.1891397,1.4858681,-0.3404245]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.05
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.7,
+                "ExclusiveRadius": 1.7,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w50_h50.p3d",
+                      "Transform": [0.23277679,1.7062416,-0.09254834]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.05
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                      "Transform": [0.008685879,1.7445197,0.092071]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.15000000372529024
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w75_h50.p3d",
+                      "Transform": [0.18489146,1.523658,-0.6480213]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.05
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h47.p3d",
+                      "Transform": [0.3782794,1.8573351,-0.680849]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.05
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.0035,
+        "MaxDensity": 0.0035,
+        "Label": ""
+      }
+    ],
+    "ScrubRadial": [
+      {
+        "Clusters": [
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                      "Transform": [0.008685879,1.7445197,0.092071]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.25
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2,
+                "ExclusiveRadius": 2,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\plants_f\\Bush\\b_NeriumO2d_F.p3d",
+                      "Transform": [1.4901161E-08,0.85831237,0.19092858]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.25
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_exp\\Shrub\\b_NeriumO2d_tanoa_F.p3d",
+                      "Transform": [2.9802322E-08,0.84270203,0.19092861]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.25
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.6,
+                "ExclusiveRadius": 1.6,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_argo\\Bushes\\b_OpuntiaFicusIndica3s_F.p3d",
+                      "Transform": [-0.20123184,0.82360774,-0.13524202]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.25
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.0015,
+        "MaxDensity": 0.0015,
+        "Label": ""
+      }
+    ],
+    "WatercourseRadial": [
+      {
+        "Clusters": [
+          {
+            "Models": [
+              {
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_exp\\Shrub\\b_NeriumO2d_tanoa_F.p3d",
+                      "Transform": [2.9802322E-08,0.84270203,0.19092861]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3.4,
+                "ExclusiveRadius": 3.4,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                      "Transform": [0.008685879,1.7445197,0.092071]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.7,
+                "ExclusiveRadius": 1.7,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w37_h37.p3d",
+                      "Transform": [0.1891397,1.4858681,-0.3404245]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2,
+                "ExclusiveRadius": 2,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\plants_f\\Bush\\b_NeriumO2d_F.p3d",
+                      "Transform": [1.4901161E-08,0.85831237,0.19092858]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.7,
+                "ExclusiveRadius": 1.7,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w50_h50.p3d",
+                      "Transform": [0.23277679,1.7062416,-0.09254834]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Models": [
+              {
+                "Radius": 3,
+                "ExclusiveRadius": 3,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w62_h62.p3d",
+                      "Transform": [0.77504265,2.074567,-0.4943568]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Models": [
+              {
+                "Radius": 2.3,
+                "ExclusiveRadius": 2.3,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w50_h50.p3d",
+                      "Transform": [0.2521864,1.9811575,-0.45389962]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.14285714285714285
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.042562923850923313,
+        "MaxDensity": 0.042562923850923313,
+        "Label": ""
+      }
+    ]
+  },
+  "Materials": {
+    "TextureSizeInMeters": 4,
+    "Definitions": [
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_dirt_sahel_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_dirt_sahel_co.paa",
+          "Id": "A52A2AFF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAaUlEQVR4nF2PgQ3AIAgEX6TTdIdO0f0XacTyCqb1EwwInK/e19lrqWi9wboBRTwq4DWlPNjkEGX4yO90bO2yZ5J8UcUTDjFk4W09Mwly/PGsSRkeuEWFKYSXXNKBS/eZR5MU3b+V5hDmX7OBNtHPTy7zAAAAAElFTkSuQmCC"
+        },
+        "Usages": [
+          "Default",
+          "DefaultUrban",
+          "DefaultIndustrial"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_forest_sahel_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_forest_sahel_co.paa",
+          "Id": "008000FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAaUlEQVR4nF2PgQ3AIAgEX6TTdIdO0f0XacTyCqb1EwwInK/e19lrqWi9wboBRTwq4DWlPNjkEGX4yO90bO2yZ5J8UcUTDjFk4W09Mwly/PGsSRkeuEWFKYSXXNKBS/eZR5MU3b+V5hDmX7OBNtHPTy7zAAAAAElFTkSuQmCC"
+        },
+        "Usages": [
+          "ForestGround"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_sand_sahel_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_sand_sahel_co.paa",
+          "Id": "F4A460FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAFklEQVR4nGOpSHX/z4AHsDAQAMNDAQBBuwJEQhYxTgAAAABJRU5ErkJggg=="
+        },
+        "Usages": [
+          "Sand"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_grassshort_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_grassshort_co.paa",
+          "Id": "9ACD32FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAbElEQVR4nFWOgQnAIAwEnyQG5+oCHaD77yBCYjWirQ+i4e5VuZ+rMSFSDVDBlz7LgiPecIa7EK1+MAcSne0QjsJf8LlktA/YnyEiuHiM+wYzAzMHHAnJfQoDrn2BlNIUSinIOW9BVVFr3V95AYNxLB7ChShIAAAAAElFTkSuQmCC"
+        },
+        "Usages": [
+          "Grass",
+          "Meadow"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_farmland_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_farmland_co.paa",
+          "Id": "FFFF00FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAeElEQVR4nFWOAQ7DMAgDXUKi/nV/2BP23qoRZCa02YoUkDjjWD/v12iKWeZsA6vMAPVrcfScVfAolS0vawG6/UA/AeFOizxB2LolbI2CgHvd6WLzFfEpLBScdNF1SejDUbaE4RSTGYQBj/XFP5yCG4QwM/jKYRR8Aa5xN2waz7JaAAAAAElFTkSuQmCC"
+        },
+        "Usages": [
+          "FarmLand"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_wetland_sahel_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_wetland_sahel_co.paa",
+          "Id": "ADD8E6FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAa0lEQVR4nHWOQQrAMAgEBW3ooQ/tC/qCPrmHIDGpmka8dCFscBZXuq9zQFIbGP9jByD4UVHy1BwQAUB0YOI2Q+RgSQMGsoi7zmn2SmUoG8a2zgK04PJ5QNEOdveANPEXt3x1XmEgKnLItqi/ucosivci4SIAAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "RiverGround",
+          "LakeGround"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_rock_sahel_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_rock_sahel_co.paa",
+          "Id": "A9A9A9FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAcUlEQVR4nF1PQQ6AIAxbZBASfY4v8BP+/wWejEQylILgdAmsod1aeF3mi3LFuNMwWEAyxpHIWTo3YO3YCV2MSz/+MWu1JrENtkXg3NQ9RQ6qmSRn8lUQwtYD1mlsezKkFAuJjkPkPyJuk/gFPGuWN9cNufU6sqAaqKwAAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "RockGround"
+        ]
+      }
+    ]
+  },
+  "Roads": [
+    {
+      "SatelliteColor": "4D4D4DFF",
+      "TextureWidth": 14,
+      "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_ca.paa",
+      "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_end_ca.paa",
+      "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat",
+      "Id": "TwoLanesMotorway",
+      "Width": 12,
+      "ClearWidth": 18
+    },
+    {
+      "SatelliteColor": "4D4D4DFF",
+      "TextureWidth": 14,
+      "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_ca.paa",
+      "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_end_ca.paa",
+      "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat",
+      "Id": "TwoLanesPrimaryRoad",
+      "Width": 12,
+      "ClearWidth": 16
+    },
+    {
+      "SatelliteColor": "4D4D4DFF",
+      "TextureWidth": 10,
+      "Texture": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road_ca.paa",
+      "TextureEnd": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road_end_ca.paa",
+      "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road.rvmat",
+      "Id": "TwoLanesSecondaryRoad",
+      "Width": 7.5,
+      "ClearWidth": 11.5
+    },
+    {
+      "SatelliteColor": "5A4936FF",
+      "TextureWidth": 12,
+      "Texture": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_ca.paa",
+      "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_end_ca.paa",
+      "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road.rvmat",
+      "Id": "TwoLanesConcreteRoad",
+      "Width": 7.5,
+      "ClearWidth": 11.5
+    },
+    {
+      "SatelliteColor": "5A4936FF",
+      "TextureWidth": 9,
+      "Texture": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_ca.paa",
+      "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_end_ca.paa",
+      "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road.rvmat",
+      "Id": "SingleLaneConcreteRoad",
+      "Width": 5.5,
+      "ClearWidth": 7.5
+    },
+    {
+      "SatelliteColor": "5A4936FF",
+      "TextureWidth": 9.5,
+      "Texture": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_ca.paa",
+      "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_end_ca.paa",
+      "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road.rvmat",
+      "Id": "SingleLaneDirtRoad",
+      "Width": 6,
+      "ClearWidth": 10
+    },
+    {
+      "SatelliteColor": "5A4936FF",
+      "TextureWidth": 7,
+      "Texture": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_roaddirt_path_ca.paa",
+      "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_roaddirt_path_end_ca.paa",
+      "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_roaddirt_path.rvmat",
+      "Id": "SingleLaneDirtPath",
+      "Width": 4.5,
+      "ClearWidth": 6.5
+    },
+    {
+      "SatelliteColor": "5A4936FF",
+      "TextureWidth": 3.5,
+      "Texture": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_ca.paa",
+      "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road_end_ca.paa",
+      "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_dirt_road.rvmat",
+      "Id": "ConcreteFootway",
+      "Width": 2,
+      "ClearWidth": 3
+    },
+    {
+      "SatelliteColor": "5A4936FF",
+      "TextureWidth": 2,
+      "Texture": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_path_ca.paa",
+      "TextureEnd": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_path_end_ca.paa",
+      "Material": "z\\arm\\addons\\common\\data\\roads\\arm_sahel_path.rvmat",
+      "Id": "Trail",
+      "Width": 1.5,
+      "ClearWidth": 3.5
+    }
+  ],
+  "Objects": {
+    "Bench": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\civilian\\accessories\\bench_05_f.p3d",
+              "Transform": [-0.003407836,0.19074778,-0.008297801]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\civilian\\accessories\\bench_04_f.p3d",
+              "Transform": [-0.000882864,0.36244345,-0.010998197]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\civilian\\accessories\\bench_03_f.p3d",
+              "Transform": [-0.012742877,0.42838788,-0.061768323]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_epc\\Civ\\Accessories\\Bench_02_F.p3d",
+              "Transform": [0,0.51086915,-0.088025995]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_epc\\Civ\\Accessories\\Bench_01_F.p3d",
+              "Transform": [0,0.51086915,-0.088025995]
+            }
+          ]
+        },
+        "Probability": 0.2
+      }
+    ],
+    "WaterWell": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "jbad_misc\\misc_well\\jbad_misc_well_l.p3d",
+              "Transform": [-0.012710156,0.7473922,0.17444214]
+            }
+          ]
+        },
+        "Probability": 0.5
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "jbad_misc\\misc_well\\jbad_misc_well_c.p3d",
+              "Transform": [0.1607629,0.8886691,0.17896345]
+            }
+          ]
+        },
+        "Probability": 0.5
+      }
+    ],
+    "Tree": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w100_h62.p3d",
+              "Transform": [0.40779096,2.476447,-0.7130274]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w37_h37.p3d",
+              "Transform": [0.177673,1.4858681,-0.29693794]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w50_h50.p3d",
+              "Transform": [0.2321688,1.9811575,-0.3648206]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w56_h47.p3d",
+              "Transform": [0.28251052,1.8573351,-0.43673456]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w56_h56.p3d",
+              "Transform": [0.20431572,2.2288022,-0.40339786]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w62_h50.p3d",
+              "Transform": [0.29021096,1.9811575,-0.45602578]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w62_h62.p3d",
+              "Transform": [0.25486937,2.476447,-0.44564214]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h47.p3d",
+              "Transform": [0.3766807,1.8573351,-0.58231276]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h50.p3d",
+              "Transform": [0.34825328,1.9811575,-0.5472309]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h56.p3d",
+              "Transform": [0.27242094,2.2288022,-0.53786385]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_amygdalusc2s_w75_h62.p3d",
+              "Transform": [0.30584323,2.476447,-0.53477055]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w100_h62.p3d",
+              "Transform": [0.5517839,1.9045725,-0.14951329]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w100_h75.p3d",
+              "Transform": [0.5371027,2.2854872,-0.115377635]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w50_h50.p3d",
+              "Transform": [0.21576183,1.7062416,-0.016831327]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w62_h50.p3d",
+              "Transform": [0.34486493,1.9045725,-0.093445815]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w62_h62.p3d",
+              "Transform": [0.3679923,1.523658,-0.12851967]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w75_h50.p3d",
+              "Transform": [0.44159073,1.523658,-0.1542236]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w75_h62.p3d",
+              "Transform": [0.4138379,1.9045725,-0.11213496]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_malus1s_w75_h75.p3d",
+              "Transform": [0.40282702,2.2854872,-0.086533226]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w100_h75.p3d",
+              "Transform": [0.67650956,2.4894803,-0.7787711]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w62_h62.p3d",
+              "Transform": [0.42281848,2.074567,-0.48673195]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w75_h62.p3d",
+              "Transform": [0.5073822,2.074567,-0.5840784]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_pistacial2s_w75_h75.p3d",
+              "Transform": [0.5073822,2.4894803,-0.5840784]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_salix2s_w37_h37.p3d",
+              "Transform": [0.0035666376,2.0929954,0.23451707]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_salix2s_w50_h75.p3d",
+              "Transform": [-0.13040727,2.7906609,0.074406534]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "z\\arm\\addons\\common\\data\\trees\\arm_s_salix2s_w50_h75_f150.p3d",
+              "Transform": [-0.13040727,2.7906609,0.074406534]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\vegetation_f_exp\\Tree\\t_Albizia_F.p3d",
+              "Transform": [-0.055886753,-1.5408344,0.04011801]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\vegetation_f_exp\\Tree\\t_Ficus_small_F.p3d",
+              "Transform": [-0.015470477,4.967709,-0.044340186]
+            }
+          ]
+        },
+        "Probability": 0.03571428571428573
+      }
+    ]
+  },
+  "Ponds": {
+    "Size5": "z\\arm\\addons\\common\\data\\water\\arm_pond_5.p3d",
+    "Size10": "z\\arm\\addons\\common\\data\\water\\arm_pond_10.p3d",
+    "Size20": "z\\arm\\addons\\common\\data\\water\\arm_pond_20.p3d",
+    "Size40": "z\\arm\\addons\\common\\data\\water\\arm_pond_40.p3d",
+    "Size80": "z\\arm\\addons\\common\\data\\water\\arm_pond_80.p3d"
+  },
+  "Fences": {
+    "Wall": [
+      {
+        "Probability": 1,
+        "Straights": [
+          {
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "Jbad_Structures\\walls\\wall_l\\jbad_wallend.p3d",
+                  "Transform": [-0.03411007,0.13480854,-0.21]
+                }
+              ]
+            },
+            "Size": 5
+          },
+          {
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "Jbad_Structures\\walls\\wall_l\\jbad_wall_l_2m5.p3d",
+                  "Transform": [1.2485414,0.13480854,-0.21]
+                }
+              ]
+            },
+            "Size": 2.5
+          }
+        ],
+        "Label": ""
+      }
+    ],
+    "Fence": [
+      {
+        "Probability": 0.5,
+        "Straights": [
+          {
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "Jbad_Structures\\walls\\wall_l\\jbad_wall_fenw2_6.p3d",
+                  "Transform": [2.9912653,0.36525968,-0.02719947]
+                }
+              ]
+            },
+            "Size": 6.5
+          }
+        ],
+        "Label": ""
+      },
+      {
+        "Probability": 0.5,
+        "Straights": [
+          {
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\structures_f\\walls\\Mound01_8m_F.p3d",
+                  "Transform": [0.019380093,0.14620379,0.0068031056]
+                }
+              ]
+            },
+            "Size": 9
+          },
+          {
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\structures_f\\walls\\Mound02_8m_F.p3d",
+                  "Transform": [-0.13372946,-0.21048918,0.006826458]
+                }
+              ]
+            },
+            "Size": 9
+          }
+        ],
+        "Label": ""
+      }
+    ]
+  },
+  "BaseWorldName": "arm_world_sahel",
+  "BaseDependency": "arm_sahel"
+}

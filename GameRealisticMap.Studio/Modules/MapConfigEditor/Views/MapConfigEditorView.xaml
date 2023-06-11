@@ -1,0 +1,131 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.MapConfigEditor.Views.MapConfigEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:map="clr-namespace:MapControl;assembly=MapControl.WPF"
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.MapConfigEditor.Views"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="1200" d:DesignWidth="800">
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" IsTabStop="False">
+        <StackPanel  Orientation="Vertical">
+
+
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Button Margin="10" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
+                    Generate Preview
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Generate with elevation" cal:Message.Attach="GeneratePreviewNormal"></MenuItem>
+                            <MenuItem Header="Generate areas only (faster)" cal:Message.Attach="GeneratePreviewFast"></MenuItem>
+                            <Separator />
+                            <MenuItem Header="Generate raw satellite image" cal:Message.Attach="GenerateRawSatMap"></MenuItem>
+                            <MenuItem Header="Generate satellite image" cal:Message.Attach="GenerateSatMap"></MenuItem>
+                            <MenuItem Header="Generate id map image" cal:Message.Attach="GenerateIdMap"></MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMap">Generate Map for Arma 3</Button>
+                <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMod">Generate Mod for Arma 3</Button>
+            </StackPanel>
+
+            <StackPanel Margin="5" Orientation="Horizontal" >
+                <Label Width="200">Coordinates of center of map</Label>
+                <TextBox Width="200" Text="{Binding Center,Mode=TwoWay}" />
+                <Label>or south west of map</Label>
+                <TextBox Width="200" Text="{Binding SouthWest,Mode=TwoWay}" />
+            </StackPanel>
+
+            <StackPanel Margin="5" Orientation="Horizontal" >
+                <Label Width="200">Map size (square)</Label>
+                <ComboBox SelectedValue="{Binding GridSize,Mode=TwoWay}" ItemsSource="{Binding GridSizes}" />
+                <TextBlock Margin="10 0" FontSize="18">×</TextBlock>
+                <TextBox Width="50" Text="{Binding GridCellSize,Mode=TwoWay}" />
+                <TextBlock Margin="10 0">meters</TextBlock>
+                <TextBlock Margin="10 0" FontSize="18">➜</TextBlock>
+                <TextBox Width="75" Text="{Binding MapSize,Mode=TwoWay}" />
+                <TextBlock Margin="10 0">meters</TextBlock>
+            </StackPanel>
+
+            <StackPanel Margin="5" Orientation="Horizontal" >
+                <Label Width="200">Assets configuration / style of map</Label>
+                <ComboBox Width="400" Text="{Binding AssetConfigFile,Mode=TwoWay}" IsEditable="True" />
+                <Button Padding="10 0" Margin="10 0" cal:Message.Attach="ChooseAssetConfig">...</Button>
+                <Button Padding="10 0" Margin="10 0" cal:Message.Attach="EditAssetConfig">Edit</Button>
+                <!--<Button Padding="10 0" cal:Message.Attach="CreateAssetConfig">New</Button>-->
+            </StackPanel>
+
+            <Expander Margin="10">
+                <Expander.Header>
+                    Advanced parameters
+                </Expander.Header>
+                <StackPanel  Orientation="Vertical">
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="200">WorldName</Label>
+                        <TextBox Width="200" Text="{Binding Config.WorldName,Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="200">PboPrefix</Label>
+                        <TextBox Width="200" Text="{Binding Config.PboPrefix,Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="200">TileSize</Label>
+                        <TextBox Width="200" Text="{Binding Config.TileSize,Mode=TwoWay}" />
+                        <TextBlock Margin="10 0">pixels</TextBlock>
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="200">Resolution</Label>
+                        <TextBox Width="200" Text="{Binding Config.Resolution,Mode=TwoWay}" />
+                        <TextBlock Margin="10 0">meters per pixels</TextBlock>
+                    </StackPanel>
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="200">FakeSatBlend</Label>
+                        <TextBox Width="200" Text="{Binding Config.FakeSatBlend,Mode=TwoWay}" />
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="1" Margin="7">
+                    <TextBlock Margin="0 0 0 20" TextWrapping="Wrap">
+To select an area on the map : <LineBreak />
+- From a corner, press Ctrl Key then press Left Mouse Button<LineBreak />
+- From center, press Alt Key then press Left Mouse Button.
+                    </TextBlock>
+                    <TextBlock>
+                        <Hyperlink NavigateUri="https://www.openstreetmap.org/" RequestNavigate="Hyperlink_RequestNavigate">View on OpenStreetMap.org</Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="0 20" TextWrapping="Wrap">
+© OpenStreetMap contributors. See https://openstreetmap.org/
+                    </TextBlock>
+                </StackPanel>
+
+                <map:Map x:Name="MapControl"
+                 Height="600"
+                 MinZoomLevel="2" MaxZoomLevel="21" ZoomLevel="2"
+                 Center="53.5,8.2" ManipulationMode="All"
+                 MouseDown="Map_MouseDown"
+                 MouseUp="Map_MouseUp"
+                 MouseMove="Map_MouseMove"
+                 MouseWheel="MapControl_MouseWheel">
+                    <map:MapTileLayer
+                TileSource="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                SourceName="OpenStreetMap"
+                Description="© [OpenStreetMap contributors](https://www.openstreetmap.org/copyright)"/>
+                    <map:MapPolyline Stroke="Red" StrokeThickness="2" Locations="{Binding Locations}" />
+                    <map:MapPolyline Stroke="Blue" StrokeThickness="2" Visibility="Collapsed" x:Name="RectanglePreview" />
+                </map:Map>
+            </Grid>
+
+            <!--https://www.openstreetmap.org/edit#map=14/47.5534/6.9822-->
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

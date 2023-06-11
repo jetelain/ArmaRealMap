@@ -1,0 +1,9 @@
+﻿EMOGLOBINSKY\EM_buildings\em_building_02.p3d
+EMOGLOBINSKY\EM_buildings\em_building_03.p3d
+EMOGLOBINSKY\EM_buildings\em_building_04.p3d
+EMOGLOBINSKY\EM_buildings\em_building_05.p3d
+EMOGLOBINSKY\EM_buildings\em_heliport_01.p3d
+EMOGLOBINSKY\EM_buildings\em_mansion_01.p3d
+EMOGLOBINSKY\EM_buildings\em_mansion_01_reversed.p3d
+EMOGLOBINSKY\EM_buildings\em_medical_center_01.p3d
+EMOGLOBINSKY\EM_buildings\em_tree_aspen_A.p3d

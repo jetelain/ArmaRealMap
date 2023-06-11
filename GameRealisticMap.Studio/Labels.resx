@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AssetAgricultural" xml:space="preserve">
+    <value>Agricultural Building</value>
+  </data>
+  <data name="AssetBasket" xml:space="preserve">
+    <value>Basket</value>
+  </data>
+  <data name="AssetBench" xml:space="preserve">
+    <value>Bench</value>
+  </data>
+  <data name="AssetBusStopShelter" xml:space="preserve">
+    <value>Bus top Shelter</value>
+  </data>
+  <data name="AssetChurch" xml:space="preserve">
+    <value>Church Building</value>
+  </data>
+  <data name="AssetCommercial" xml:space="preserve">
+    <value>Commercial Building</value>
+  </data>
+  <data name="AssetDefaultAreas" xml:space="preserve">
+    <value>Default Areas</value>
+  </data>
+  <data name="AssetFence" xml:space="preserve">
+    <value>Fence</value>
+  </data>
+  <data name="AssetFireHydrant" xml:space="preserve">
+    <value>Fire Hydrant</value>
+  </data>
+  <data name="AssetForest" xml:space="preserve">
+    <value>Forest Trees</value>
+  </data>
+  <data name="AssetForestAdditional" xml:space="preserve">
+    <value>Forest Additional</value>
+  </data>
+  <data name="AssetForestEdge" xml:space="preserve">
+    <value>Forest Edge</value>
+  </data>
+  <data name="AssetForestRadial" xml:space="preserve">
+    <value>Forest Radial</value>
+  </data>
+  <data name="AssetHedge" xml:space="preserve">
+    <value>Hedge</value>
+  </data>
+  <data name="AssetHistoricalFort" xml:space="preserve">
+    <value>Historical Fort</value>
+  </data>
+  <data name="AssetHut" xml:space="preserve">
+    <value>Hut</value>
+  </data>
+  <data name="AssetIndividualGarage" xml:space="preserve">
+    <value>Individual Garage</value>
+  </data>
+  <data name="AssetIndustrial" xml:space="preserve">
+    <value>Industrial</value>
+  </data>
+  <data name="AssetInformationBoard" xml:space="preserve">
+    <value>Information Board</value>
+  </data>
+  <data name="AssetMapConfig" xml:space="preserve">
+    <value>Map Config</value>
+  </data>
+  <data name="AssetMaterials" xml:space="preserve">
+    <value>Materials</value>
+  </data>
+  <data name="AssetMilitary" xml:space="preserve">
+    <value>Military</value>
+  </data>
+  <data name="AssetNature" xml:space="preserve">
+    <value>Nature</value>
+  </data>
+  <data name="AssetObjects" xml:space="preserve">
+    <value>Objects</value>
+  </data>
+  <data name="AssetPicnicTable" xml:space="preserve">
+    <value>Picnic Table</value>
+  </data>
+  <data name="AssetPostBox" xml:space="preserve">
+    <value>Post Box</value>
+  </data>
+  <data name="AssetRadioTower" xml:space="preserve">
+    <value>Radio Tower</value>
+  </data>
+  <data name="AssetRecyclingContainer" xml:space="preserve">
+    <value>Recycling Container</value>
+  </data>
+  <data name="AssetResidential" xml:space="preserve">
+    <value>Residential</value>
+  </data>
+  <data name="AssetRetail" xml:space="preserve">
+    <value>Retail Building</value>
+  </data>
+  <data name="AssetRoad" xml:space="preserve">
+    <value>Road</value>
+  </data>
+  <data name="AssetRocks" xml:space="preserve">
+    <value>Rocks</value>
+  </data>
+  <data name="AssetRocksAdditional" xml:space="preserve">
+    <value>Rocks Additional</value>
+  </data>
+  <data name="AssetScrub" xml:space="preserve">
+    <value>Scrub</value>
+  </data>
+  <data name="AssetScrubAdditional" xml:space="preserve">
+    <value>Scrub Additional</value>
+  </data>
+  <data name="AssetScrubRadial" xml:space="preserve">
+    <value>Scrub Radial</value>
+  </data>
+  <data name="AssetSculpture" xml:space="preserve">
+    <value>Sculpture</value>
+  </data>
+  <data name="AssetShed" xml:space="preserve">
+    <value>Shed</value>
+  </data>
+  <data name="AssetStatue" xml:space="preserve">
+    <value>Statue</value>
+  </data>
+  <data name="AssetTree" xml:space="preserve">
+    <value>Tree</value>
+  </data>
+  <data name="AssetWall" xml:space="preserve">
+    <value>Wall</value>
+  </data>
+  <data name="AssetWarMemorial" xml:space="preserve">
+    <value>War Memorial</value>
+  </data>
+  <data name="AssetWatercourse" xml:space="preserve">
+    <value>Watercourse</value>
+  </data>
+  <data name="AssetWatercourseRadial" xml:space="preserve">
+    <value>Watercourse Radial</value>
+  </data>
+  <data name="AssetWaterTower" xml:space="preserve">
+    <value>Water Tower</value>
+  </data>
+  <data name="AssetWaterWell" xml:space="preserve">
+    <value>Water Well</value>
+  </data>
+  <data name="AssetWaysideCross" xml:space="preserve">
+    <value>Wayside Cross</value>
+  </data>
+</root>

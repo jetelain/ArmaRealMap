@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
 
 namespace ArmaRealMap.TerrainData

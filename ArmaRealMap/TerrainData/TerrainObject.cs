@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Globalization;
 using System.Numerics;
-using ArmaRealMap.Geometries;
+using GameRealisticMap.Geometries;
 using ArmaRealMap.Libraries;
+using GeoAPI.Geometries;
 
 namespace ArmaRealMap
 {
-    public class TerrainObject : ITerrainGeometry
+    public class TerrainObject : ITerrainEnvelope
     {
         private readonly SingleObjetInfos objectInfos;
         private readonly IBoundingShape box;
@@ -35,7 +36,7 @@ namespace ArmaRealMap
 
         public TerrainPoint MaxPoint => box.MaxPoint;
 
-        public NetTopologySuite.Geometries.Polygon Poly => box.Poly;
+        public IPolygon Poly => box.Poly;
 
         public IBoundingShape Box => box;
 

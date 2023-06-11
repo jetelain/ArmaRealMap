@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using ArmaRealMap.Core.ObjectLibraries;
-using ArmaRealMap.Geometries;
-using NetTopologySuite.Geometries;
+using GameRealisticMap.Geometries;
+using GeoAPI.Geometries;
 using OsmSharp;
 
 namespace ArmaRealMap.Osm
@@ -11,11 +11,11 @@ namespace ArmaRealMap.Osm
     {
         internal readonly OsmShapeCategory Category;
         internal readonly OsmGeo OsmGeo;
-        internal readonly Geometry Geometry;
+        internal readonly IGeometry Geometry;
         private readonly Lazy<IEnumerable<TerrainPolygon>> terrainPolygon;
         private readonly Lazy<IEnumerable<TerrainPath>> terrainPath;
 
-        public OsmShape(OsmShapeCategory category, OsmGeo osmGeo, Geometry geometry, MapInfos mapInfos)
+        public OsmShape(OsmShapeCategory category, OsmGeo osmGeo, IGeometry geometry, MapInfos mapInfos)
         {
             this.Category = category;
             this.OsmGeo = osmGeo;
@@ -30,6 +30,6 @@ namespace ArmaRealMap.Osm
 
         public IEnumerable<TerrainPath> TerrainPaths => terrainPath.Value;
 
-        public bool IsPath => Geometry.OgcGeometryType == OgcGeometryType.LineString && !((LineString)Geometry).IsClosed;
+        public bool IsPath => Geometry.OgcGeometryType == OgcGeometryType.LineString && !((ILineString)Geometry).IsClosed;
     }
 }
