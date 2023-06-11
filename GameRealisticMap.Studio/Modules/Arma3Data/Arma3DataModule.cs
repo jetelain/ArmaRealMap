@@ -48,6 +48,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
 
         private void Initialize(WorkspaceSettings settings)
         {
+            Settings = settings;
+
             ProjectDrive = settings.CreateProjectDrive();
 
             Library = new ModelInfoLibrary(ProjectDrive);

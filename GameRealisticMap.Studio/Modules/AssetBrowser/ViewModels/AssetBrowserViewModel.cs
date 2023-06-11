@@ -40,7 +40,8 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             new ModInfo("JBAD", string.Empty, "520618345"),
             new ModInfo("Em Buildings", string.Empty, "671539540"),
             new ModInfo("Mount Buildings", string.Empty, "2782382831"),
-            new ModInfo("RHS TERRACORE", string.Empty, "2288691268")
+            new ModInfo("RHS TERRACORE", string.Empty, "2288691268"),
+            new ModInfo("ARM", string.Empty, "2982306133")
         };
 
         public string AssetsCatalogPath { get; set; } = System.IO.Path.Combine(

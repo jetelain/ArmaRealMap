@@ -28,6 +28,8 @@ using ModelInfoLibrary = GameRealisticMap.Arma3.TerrainBuilder.ModelInfoLibrary;
 using OldModelInfoLibrary = ArmaRealMap.ModelInfoLibrary;
 using OldRoadTypeId = ArmaRealMap.Core.Roads.RoadTypeId;
 using NewRoadTypeId = GameRealisticMap.ManMade.Roads.RoadTypeId;
+using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Geometries;
 
 namespace ArmToGrmA3
 {
@@ -38,7 +40,7 @@ namespace ArmToGrmA3
     {
         static async Task Main(string[] args)
         {
-            await ExtractScreenShotsFromDB("c:\\temp\\");
+            //await ExtractScreenShotsFromDB("c:\\temp\\");
             await ConvertToAssetConfiguration("c:\\temp\\");
         }
 
@@ -168,7 +170,7 @@ namespace ArmToGrmA3
             var items = new List<StraightSegmentDefinition>();
             foreach (var old in objects)
             {
-                var model = models.ResolveByPath(oldModels.ResolveByName(old.Name).Path);
+                var model = models.ResolveByPath(FixModelPath(oldModels.ResolveByName(old.Name).Path));
                 var place = ObjectPlacementDetectedInfos.CreateFromODOL(models.ReadODOL(model.Path)!)!;
                 var composition = GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, -place.GeneralRadius.Center);
                 var probability = (old.PlacementProbability ?? defProbability) / sumExistingProbability;
@@ -186,7 +188,7 @@ namespace ArmToGrmA3
                 var sumExistingProbability = oldLibrary.Objects.Select(o => o.PlacementProbability ?? defProbability).Sum();
                 foreach (var old in oldLibrary.Objects)
                 {
-                    var model = models.ResolveByPath(oldModels.ResolveByName(old.Name).Path);
+                    var model = models.ResolveByPath(FixModelPath(oldModels.ResolveByName(old.Name).Path));
                     var place = ObjectPlacementDetectedInfos.CreateFromODOL(models.ReadODOL(model.Path)!)!;
                     var composition = GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, -place.GeneralRadius.Center);
                     var probability = (old.PlacementProbability ?? defProbability) / sumExistingProbability;
@@ -203,6 +205,19 @@ namespace ArmToGrmA3
             return new List<BasicCollectionDefinition>() { new BasicCollectionDefinition(items, 1, oldLibrary?.Density ?? 0, oldLibrary?.Density ?? 0) };
         }
 
+        private static string FixModelPath(string path)
+        {
+            if (path.StartsWith("z\\arm\\addons\\common\\"))
+            {
+                if (path.Contains("\\clutter\\"))
+                {
+                    return path.Replace("\\common\\", "\\common_v2\\");
+                }
+                return path.Replace("\\common\\", "\\sahel\\");
+            }
+            return path;
+        }
+
         private static List<ClusterCollectionDefinition> ConvertCluster(ObjectLibrary? oldLibrary, ModelInfoLibrary models, OldModelInfoLibrary oldModels, bool isNarrow = false)
         {
             var items = new List<ClusterDefinition>();
@@ -213,7 +228,7 @@ namespace ArmToGrmA3
                 var sumExistingProbability = oldLibrary.Objects.Select(o => o.PlacementProbability ?? defProbability).Sum();
                 foreach (var old in oldLibrary.Objects)
                 {
-                    var model = models.ResolveByPath(oldModels.ResolveByName(old.Name).Path);
+                    var model = models.ResolveByPath(FixModelPath(oldModels.ResolveByName(old.Name).Path));
                     var place = ObjectPlacementDetectedInfos.CreateFromODOL(models.ReadODOL(model.Path)!)!;
                     var composition = GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, -place.GeneralRadius.Center);
                     var probability = (old.PlacementProbability ?? defProbability) / sumExistingProbability;
@@ -256,7 +271,7 @@ namespace ArmToGrmA3
 
         private static StraightSegmentDefinition ConvertBridgeSegment(SingleObjetInfos single, ModelInfoLibrary newModels, OldModelInfoLibrary oldModels)
         {
-            var model = newModels.ResolveByPath(oldModels.ResolveByName(single.Name).Path);
+            var model = newModels.ResolveByPath(FixModelPath(oldModels.ResolveByName(single.Name).Path));
             return new StraightSegmentDefinition(GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, new Vector2(-single.CX, -single.CY), single.CZ), single.Depth);
         }
 
@@ -264,11 +279,11 @@ namespace ArmToGrmA3
         {
             if (region == TerrainRegion.Sahel)
             {
-                newAssets.Ponds.Add(PondSizeId.Size5, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_5.p3d"));
-                newAssets.Ponds.Add(PondSizeId.Size10, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_10.p3d"));
-                newAssets.Ponds.Add(PondSizeId.Size20, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_20.p3d"));
-                newAssets.Ponds.Add(PondSizeId.Size40, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_40.p3d"));
-                newAssets.Ponds.Add(PondSizeId.Size80, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_80.p3d"));
+                newAssets.Ponds.Add(PondSizeId.Size5, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_sahel_5.p3d"));
+                newAssets.Ponds.Add(PondSizeId.Size10, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_sahel_10.p3d"));
+                newAssets.Ponds.Add(PondSizeId.Size20, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_sahel_20.p3d"));
+                newAssets.Ponds.Add(PondSizeId.Size40, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_sahel_40.p3d"));
+                newAssets.Ponds.Add(PondSizeId.Size80, newModels.ResolveByPath(@"z\arm\addons\sahel\data\water\arm_pond_sahel_80.p3d"));
             }
             else
             {
@@ -287,7 +302,7 @@ namespace ArmToGrmA3
             {
                 foreach (var old in oldLibrary.Objects)
                 {
-                    var model = models.ResolveByPath(oldModels.ResolveByName(old.Name).Path);
+                    var model = models.ResolveByPath(FixModelPath(oldModels.ResolveByName(old.Name).Path));
                     var place = ObjectPlacementDetectedInfos.CreateFromModel(model, models)!;
                     if (place != null)
                     {
@@ -299,8 +314,21 @@ namespace ArmToGrmA3
                         Console.Error.WriteLine($"{model.Path} is ignored, it has no Geometry LOD");
                     }
                 }
-
-                // TODO: Compositions
+                foreach (var old in oldLibrary.Compositions)
+                {
+                    var tbobjs = new List<TerrainBuilderObject>();
+                    foreach (var item in old.Objects)
+                    {
+                        tbobjs.Add(new TerrainBuilderObject(
+                            models.ResolveByPath(FixModelPath(oldModels.ResolveByName(item.Name).Path)), 
+                            new TerrainPoint(item.X, item.Y), 
+                            item.Z,
+                            GameRealisticMap.Arma3.TerrainBuilder.ElevationMode.Relative, 
+                            item.Angle));
+                    }
+                    var composition = GameRealisticMap.Arma3.Assets.Composition.CreateFrom(tbobjs);
+                    result.Add(new BuildingDefinition(new Vector2(old.Width, old.Depth), composition));
+                }
             }
             return result;
         }
@@ -314,7 +342,7 @@ namespace ArmToGrmA3
                 var sumExistingProbability = oldLibrary.Objects.Select(o => o.PlacementProbability ?? defProbability).Sum();
                 foreach(var old in oldLibrary.Objects)
                 {
-                    var model = models.ResolveByPath(oldModels.ResolveByName(old.Name).Path);
+                    var model = models.ResolveByPath(FixModelPath(oldModels.ResolveByName(old.Name).Path));
                     var place = ObjectPlacementDetectedInfos.CreateFromModel(model, models)!;
                     var composition = GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, -place.TrunkRadius.Center);
                     result.Add(new ObjectDefinition(composition, (old.PlacementProbability ?? defProbability) / sumExistingProbability));

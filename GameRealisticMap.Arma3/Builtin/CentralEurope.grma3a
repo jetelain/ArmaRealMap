@@ -1541,7 +1541,7 @@
           {
             "Models": [
               {
-                "Radius": 2,
+                "Radius": 1,
                 "ExclusiveRadius": 0.1,
                 "Model": {
                   "Objects": [
