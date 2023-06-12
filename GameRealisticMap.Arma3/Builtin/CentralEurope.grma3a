@@ -200,39 +200,6 @@
         }
       },
       {
-        "Size": [17.56517,31.591604],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\cultural\\Church_01\\Church_01_F.p3d",
-              "Transform": [0.005315304,10.51541,0.21310139]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [15.069973,18.414585],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\cultural\\Church_03\\Church_03_F.p3d",
-              "Transform": [0.9542124,7.238551,1.1661835]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.099999,38.1],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\cultural\\Church_02\\Church_02_F.p3d",
-              "Transform": [4.7683716E-07,3.9872024,0.28000164]
-            }
-          ]
-        }
-      },
-      {
         "Size": [32.843697,44.108917],
         "Composition": {
           "Objects": [
@@ -288,6 +255,182 @@
         }
       },
       {
+        "Size": [4.0430603,4.04908],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Chapel_02\\Chapel_02_white_F.p3d",
+              "Transform": [0.004149914,2.544855,-0.011299968]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.28116,26.42598],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_F.p3d",
+              "Transform": [-0.024385452,13.686882,0.23089552]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.28116,26.42598],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_lightyellow_F.p3d",
+              "Transform": [-0.024385452,13.686882,0.23089552]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.281158,26.425987],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_F.p3d",
+              "Transform": [-0.024386883,12.408145,0.23089218]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.281158,26.425987],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_lightyellow_F.p3d",
+              "Transform": [-0.024386883,12.408145,0.23089218]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.281158,26.425987],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_red_F.p3d",
+              "Transform": [-0.024386883,12.408145,0.23089218]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.281158,26.425987],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_white_F.p3d",
+              "Transform": [-0.024386883,12.408145,0.23089218]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.281158,26.425987],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_white_red_F.p3d",
+              "Transform": [-0.024386883,12.408145,0.23089218]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.281158,26.425987],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_yellow_F.p3d",
+              "Transform": [-0.024386883,12.408145,0.23089218]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.281158,26.425987],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_lightblue_F.p3d",
+              "Transform": [-0.024386883,12.408145,0.23089218]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.28116,26.42598],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_red_F.p3d",
+              "Transform": [-0.024385452,13.686882,0.23089552]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.28116,26.42598],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_lightblue_F.p3d",
+              "Transform": [-0.024385452,13.686882,0.23089552]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.28116,26.42598],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_white_F.p3d",
+              "Transform": [-0.024385452,13.686882,0.23089552]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.28116,26.42598],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_white_red_F.p3d",
+              "Transform": [-0.024385452,13.686882,0.23089552]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.28116,26.42598],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_yellow_F.p3d",
+              "Transform": [-0.024385452,13.686882,0.23089552]
+      }
+          ]
+        }
+      },
+      {
+        "Size": [16.50594,10.70631],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Church_05\\Church_05_F.p3d",
+              "Transform": [0.7323699,6.3102884,-1.5880948]
+            }
+          ]
+        }
+      },
+      {
         "Size": [20.3769,10.519941],
         "Composition": {
           "Objects": [
@@ -321,42 +464,20 @@
             }
           ]
         }
+      },
+      {
+        "Size": [0.8237531,0.76],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\transmitter_tower\\ttowersmall_1_f.p3d",
+              "Transform": [0.026425079,4.983772,0.011623442]
+            }
+          ]
+        }
       }
     ],
     "Retail": [
-      {
-        "Size": [45.156303,43.154404],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\MultistoryBuilding_01\\MultistoryBuilding_01_F.p3d",
-              "Transform": [2.5468502,21.01875,-0.06910038]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [24.530401,34.344],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\MultistoryBuilding_03\\MultistoryBuilding_03_F.p3d",
-              "Transform": [0.18960094,25.907396,-1.3032007]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [29.874802,30.475899],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\MultistoryBuilding_04\\MultistoryBuilding_04_F.p3d",
-              "Transform": [-0.5036001,36.741116,-1.022449]
-            }
-          ]
-        }
-      },
       {
         "Size": [23.77108,12.811543],
         "Composition": {
@@ -479,17 +600,6 @@
         }
       },
       {
-        "Size": [8.600851,3.763],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_05\\Shop_Town_05_addon_F.p3d",
-              "Transform": [-0.138695,1.0467963,-0.3440001]
-            }
-          ]
-        }
-      },
-      {
         "Size": [19.11292,17.729961],
         "Composition": {
           "Objects": [
@@ -507,28 +617,6 @@
             {
               "Model": "a3\\structures_f_exp\\commercial\\Supermarket_01\\Supermarket_01_F.p3d",
               "Transform": [0,1.7250259,0.5080509]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [20.282001,13.78697],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Warehouses\\Warehouse_03_F.p3d",
-              "Transform": [-0.052599907,2.4169838,-0.039414644]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [9.6606,12.999041],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Market\\MetalShelter_02_F.p3d",
-              "Transform": [4.7683716E-07,2.553995,-0.00049972534]
             }
           ]
         }
@@ -617,28 +705,6 @@
             {
               "Model": "a3\\structures_f_enoch\\commercial\\VillageStore_01\\VillageStore_01_F.p3d",
               "Transform": [0.47630525,2.5885003,-1.4525299]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [16.385183,16.407478],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Hotel_01\\Hotel_01_F.p3d",
-              "Transform": [0.33981228,5.5141554,-0.34503317]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [21.212502,32.1193],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Hotel_02\\Hotel_02_F.p3d",
-              "Transform": [0.21714973,4.065503,-0.017349243]
             }
           ]
         }
@@ -1064,6 +1130,74 @@
         }
       }
     ],
+    "Commercial": [
+      {
+        "Size": [31.604763,21.54572],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\civ\\offices\\offices_01_v1_f.p3d",
+              "Transform": [0.18491793,7.9754276,2.1844406]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.385183,16.407478],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Hotel_01\\Hotel_01_F.p3d",
+              "Transform": [0.33981228,5.5141554,-0.34503317]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [21.212502,32.1193],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\Hotel_02\\Hotel_02_F.p3d",
+              "Transform": [0.21714973,4.065503,-0.017349243]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [24.530401,34.344],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\MultistoryBuilding_03\\MultistoryBuilding_03_F.p3d",
+              "Transform": [0.18960094,25.907396,-1.3032007]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [45.156303,43.154404],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\MultistoryBuilding_01\\MultistoryBuilding_01_F.p3d",
+              "Transform": [2.5468502,21.01875,-0.06910038]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [29.874802,30.475899],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\commercial\\MultistoryBuilding_04\\MultistoryBuilding_04_F.p3d",
+              "Transform": [-0.5036001,36.741116,-1.022449]
+            }
+          ]
+        }
+      }
+    ],
     "Industrial": [
       {
         "Size": [47.34871,49.264393],
@@ -1446,6 +1580,291 @@
             {
               "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_generalBuilding_F.p3d",
               "Transform": [-1.2193503,9.481325,0.13444996]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [20.7288,10.048221],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\coalplant_01\\coalplant_01_loadinghouse_f.p3d",
+              "Transform": [0.13880062,2.93072,-1.11618]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [26.4,36.184998],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\mines\\mine_01_warehouse_f.p3d",
+              "Transform": [0.19999981,6.68311,1.0574999]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.536551,15.491819],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\Power\\PowerStation_01_F.p3d",
+              "Transform": [0.80737555,1.8212602,-0.03483987]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [38.371002,21.9785],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\factory_02_f.p3d",
+              "Transform": [4.7724004,6.01772,-0.8668494]
+            }
+          ]
+        }
+      }
+    ],
+    "Shed": [
+      {
+        "Size": [5.54815,3.4075305],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Sheds\\Shed_11_F.p3d",
+              "Transform": [0.5201651,1.0752552,-0.5795852]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [4.8529415,3.344458],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Sheds\\Shed_13_F.p3d",
+              "Transform": [-2.3385496,1.2812784,0.00015902519]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [6.4801702,9.487421],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Sheds\\Shed_14_F.p3d",
+              "Transform": [-0.0048549175,1.45157,0.33481002]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [2.735283,3.9253201],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Sheds\\Shed_12_F.p3d",
+              "Transform": [-1.1815186,1.0038055,-1.81956]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [4.67387,4.70337],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Sheds\\Shed_10_F.p3d",
+              "Transform": [0.6631551,0.20635009,-1.1283251]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.4832506,2.7893932],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Sheds\\Shed_09_F.p3d",
+              "Transform": [-0.5236149,1.6127286,-1.2553536]
+            }
+          ]
+        }
+      }
+    ],
+    "Agricultural": [
+      {
+        "Size": [8.273781,15.569559],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\farms\\barn_02_f.p3d",
+              "Transform": [-0.25345373,4.203348,2.096816]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.54504,16.44588],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\farms\\barn_03_small_f.p3d",
+              "Transform": [-0.00022006035,2.9516726,0.054769993]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [14.244261,41.855],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\farms\\barn_03_large_f.p3d",
+              "Transform": [0.058419704,3.1641603,0.23620033]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [24.371414,51.4385],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\farms\\barn_04_f.p3d",
+              "Transform": [-0.84141254,5.4405365,3.2250519]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [2.1983562,2.2331328],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Accessories\\ChickenCoop_01_F.p3d",
+              "Transform": [0.012853742,0.7543627,0.023703873]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [1.9203451,1.5371011],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\props_f_enoch\\civilian\\forest\\feedrack_01_f.p3d",
+              "Transform": [-0.023055553,0.7586855,-0.004888475]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [4.51582,4.50292],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\props_f_enoch\\civilian\\forest\\feedshack_01_f.p3d",
+              "Transform": [0.014139891,1.9832226,-0.0002799034]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [2.6939309,4.166652],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\agriculture\\feedstorage_01_f.p3d",
+              "Transform": [0.008457303,4.552713,-0.15592891]
+            }
+          ]
+        }
+      }
+    ],
+    "WaterTower": [
+      {
+        "Size": [18.425093,20.771553],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\farms\\watertower_02_f.p3d",
+              "Transform": [9.536743E-07,16.160215,0]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.564293,10.564293],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\industrial\\SurfaceMine_01\\SM_01_reservoirTower_F.p3d",
+              "Transform": [0,10.363952,0]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.564293,10.564293],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\reservoirtank\\reservoirtower_f.p3d",
+              "Transform": [0,10.206881,0]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.669304,9.669304],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\reservoirtank\\reservoirtank_v1_f.p3d",
+              "Transform": [0,13.38175,0]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.669304,9.669304],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\infrastructure\\watersupply\\reservoirtank_01_military_f.p3d",
+              "Transform": [0,13.38175,0]
+            }
+          ]
+        }
+      }
+    ],
+    "BusStopShelter": [
+      {
+        "Size": [4.8766837,2.4456396],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Accessories\\BusStop_02_shelter_F.p3d",
+              "Transform": [0.0001347065,1.0111115,1.1329439]
+            }
+          ]
+        }
+      }
+    ],
+    "IndividualGarage": [
+      {
+        "Size": [16.04025,9.52725],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\garages\\garagerow_01_small_f.p3d",
+              "Transform": [-0.69767475,1.5881983,-0.6941252]
             }
           ]
         }
@@ -1872,6 +2291,253 @@
         "Probability": 0.2
       }
     ],
+    "Basket": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_epc\\civ\\garbage\\garbagebin_01_f.p3d",
+              "Transform": [-0.00500001,0.5140827,-0.04257924]
+            }
+          ]
+        },
+        "Probability": 0.5
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\civilian\\accessories\\garbagebin_02_f.p3d",
+              "Transform": [-0.0015052855,0.50030136,-0.00038837828]
+            }
+          ]
+        },
+        "Probability": 0.5
+      }
+    ],
+    "RecyclingContainer": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_epb\\civ\\garbage\\garbagecontainer_open_f.p3d",
+              "Transform": [0,0.7345009,0.15007089]
+            }
+          ]
+        },
+        "Probability": 0.3333333333333333
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_epb\\civ\\garbage\\garbagecontainer_closed_f.p3d",
+              "Transform": [0,0.77997756,-0.009931311]
+            }
+          ]
+        },
+        "Probability": 0.3333333333333333
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_heli\\civ\\garbage\\wheeliebin_01_f.p3d",
+              "Transform": [-0.00022661686,0.51693934,-0.047117267]
+            }
+          ]
+        },
+        "Probability": 0.3333333333333333
+      }
+    ],
+    "WaterWell": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Accessories\\StoneWell_01_F.p3d",
+              "Transform": [-0.0018213168,0.26106638,-0.005258471]
+            }
+          ]
+        },
+        "Probability": 0.5
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Accessories\\ConcreteWell_02_F.p3d",
+              "Transform": [0.015246868,0.7254929,-0.016696043]
+            }
+          ]
+        },
+        "Probability": 0.5
+      }
+    ],
+    "PicnicTable": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_exp\\civilian\\accessories\\picnictable_01_f.p3d",
+              "Transform": [0.009365082,0.26013952,-0.011310101]
+            }
+          ]
+        },
+        "Probability": 0.5
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\props_f_enoch\\civilian\\camping\\woodentable_02_large_f.p3d",
+              "Transform": [-0.0023150444,0.47835764,-0.02917993]
+            }
+          ]
+        },
+        "Probability": 0.5
+      }
+    ],
+    "InformationBoard": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\civ\\infoboards\\noticeboard_f.p3d",
+              "Transform": [0.00020051003,0.791426,-0.00417355]
+            }
+          ]
+        },
+        "Probability": 1
+      }
+    ],
+    "WaysideCross": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Calvary_04\\Calvary_04_F.p3d",
+              "Transform": [-0.0021926463,1.362864,-0.0061311126]
+            }
+          ]
+        },
+        "Probability": 0.3333333333333333
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Calvary_04\\Calvary_04_EnochSaints_F.p3d",
+              "Transform": [-0.0021926463,1.362864,-0.0061311126]
+            }
+          ]
+        },
+        "Probability": 0.3333333333333333
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Calvary_03\\Calvary_03_F.p3d",
+              "Transform": [-0.0026402324,1.4441341,-0.0021998882]
+            }
+          ]
+        },
+        "Probability": 0.3333333333333333
+      }
+    ],
+    "Statue": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\cultural\\statues\\statue_01_f.p3d",
+              "Transform": [0.017722825,1.2258248,-0.01157219]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\cultural\\statues\\statue_02_f.p3d",
+              "Transform": [0.004628837,1.5199927,-0.00027525425]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Statues\\Statue_03_F.p3d",
+              "Transform": [-0.0028441884,1.323556,-0.092923164]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\civ\\statues\\maroula_f.p3d",
+              "Transform": [0.27918506,1.4933124,0.05829315]
+            }
+          ]
+        },
+        "Probability": 0.2
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\cultural\\statues\\monument_01_f.p3d",
+              "Transform": [0.051350832,2.4200878,0.011321783]
+            }
+          ]
+        },
+        "Probability": 0.2
+      }
+    ],
+    "WarMemorial": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\civ\\dead\\grave_memorial_f.p3d",
+              "Transform": [-0.10749984,0.2083576,-0.20249993]
+            }
+          ]
+        },
+        "Probability": 0.3333333333333333
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\civ\\dead\\grave_obelisk_f.p3d",
+              "Transform": [-0.014999986,3.0786254,-0.01000005]
+            }
+          ]
+        },
+        "Probability": 0.3333333333333333
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Statues\\Monument_02_F.p3d",
+              "Transform": [0.00030440092,1.612504,-0.0008198023]
+            }
+          ]
+        },
+        "Probability": 0.3333333333333333
+      }
+    ],
     "Tree": [
       {
         "Composition": {
@@ -1928,6 +2594,19 @@
         },
         "Probability": 0.2
       }
+    ],
+    "Sculpture": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\cultural\\Statues\\OldSculpture_01_F.p3d",
+              "Transform": [-0.081264794,1.4047977,-0.06838256]
+            }
+          ]
+        },
+        "Probability": 1
+      }
     ]
   },
   "Ponds": {
@@ -1970,5 +2649,10 @@
     ]
   },
   "BaseWorldName": "arm_world_centraleurope",
-  "BaseDependency": "arm_centraleurope"
+  "BaseDependency": "arm_centraleurope",
+  "Dependencies": [
+    {
+      "SteamId": "2982306133"
+    }
+  ]
 }

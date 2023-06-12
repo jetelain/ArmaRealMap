@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             xmlns:cal="http://caliburnmicro.com"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -20,9 +21,28 @@
                 <StackPanel Orientation="Horizontal" Margin="0 10">
                     <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
                 </StackPanel>
+
+                <Border Margin="10" Padding="10" BorderBrush="Red" BorderThickness="2" Visibility="{Binding HasMissingMods, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                    <StackPanel>
+                        <TextBlock FontSize="20" Foreground="Red">Some mods are missing</TextBlock>
+                        <TextBlock Margin="0 5">Please install them with Steam, then reload this file.</TextBlock>
+                        <ItemsControl ItemsSource="{Binding MissingMods}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontSize="15" Margin="0 5">
+                                    <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="{Binding SteamUri}">Mod #<TextBlock Text="{Binding SteamId}" /></Hyperlink>
+                                </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button HorizontalAlignment="Left" Margin="0 5 0 0" Padding="5" cal:Message.Attach="Reload">Reload</Button>
+                    </StackPanel>
+                </Border>
+
                 <!--<StackPanel Orientation="Horizontal" Margin="10 0">
                     <Button Padding="5">Generate a demo world</Button>
                 </StackPanel>-->
+                
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25">Filling objects</TextBlock>
@@ -168,11 +188,32 @@
                         </DataGrid>
                     </StackPanel>
                 </Expander>
+
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25">Configuration</TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <TextBlock Margin="10">Base world defines light, sky, procedural objects on ground, and many other aspects. Everything can be overriden in a map with config.cpp.</TextBlock>
+                        <StackPanel Margin="10 5" Orientation="Horizontal" >
+                            <Label Width="200">CfgWorlds base world name</Label>
+                            <TextBox Width="300" Text="{Binding BaseDependency,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                        </StackPanel>
+                        <StackPanel Margin="10 5" Orientation="Horizontal" >
+                            <Label Width="200">CfgPatches defining base world</Label>
+                            <TextBox Width="300" Text="{Binding BaseWorldName,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Expander>
+
             </StackPanel>
             <TextBlock
                 FontSize="20"
                 Background="#bfff"
                 Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Padding="50">Loading...</TextBlock>
         </Grid>
+
+
+
     </ScrollViewer>
 </UserControl>

@@ -13,6 +13,7 @@ using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
@@ -94,7 +95,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 if ( installed == null )
                 {
                     // Not installed
-                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName = "steam://url/CommunityFilePage/" + mod.SteamId });
+                    ShellHelper.OpenUri("steam://url/CommunityFilePage/" + mod.SteamId);
                     return;
                 }
                 // Not active, activate him

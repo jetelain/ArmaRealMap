@@ -59,5 +59,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public abstract void Equilibrate();
 
         public abstract TDefinition ToDefinition();
+
+        public abstract IEnumerable<string> GetModels();
     }
 }

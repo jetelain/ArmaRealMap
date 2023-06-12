@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Filling;
+using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual;
 using GameRealisticMap.Studio.Modules.CompositionTool;
@@ -60,7 +62,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 new ExplorerTreeItem("Ground materials", Materials, "Materials"),
                 new ExplorerTreeItem("Roads and bridges", Roads, "Road")
             };
-            UndoRedoManager.PropertyChanged += (_,_) => IsDirty = true;
+            UndoRedoManager.PropertyChanged += (_, _) => IsDirty = true;
             AdditionalFillings = AdditionalFilling.Create(this);
             RemoveFilling = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item));
         }
@@ -86,11 +88,69 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             IsLoading = true;
             NotifyOfPropertyChange(nameof(IsLoading));
-            using var stream = File.OpenRead(filePath);
-            FromJson(await JsonSerializer.DeserializeAsync<Arma3Assets>(stream, Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library)) ?? new Arma3Assets());
+
+            Arma3Assets json;
+            try
+            {
+                json = await Arma3Assets.LoadFromFile(_arma3Data.Library, filePath);
+            }
+            catch (ApplicationException)
+            {
+                json = await AutoEnableMods(filePath);
+            }
+            FromJson(json);
             await _arma3Data.SaveLibraryCache();
+
             IsLoading = false;
             NotifyOfPropertyChange(nameof(IsLoading));
+        }
+
+        private async Task<Arma3Assets> AutoEnableMods(string filePath)
+        {
+            var deps = await Arma3Assets.LoadDependenciesFromFile(filePath); 
+
+            var activeMods = _arma3Data.ActiveMods.ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var mods = IoC.Get<IArma3ModsService>();
+            var toEnablePaths = new List<string>();
+            var toInstallSteamId = new List<string>();
+            foreach (var dependency in deps.Dependencies)
+            {
+                var mod = mods.GetMod(dependency.SteamId);
+                if (mod == null)
+                {
+                    // => NOT INSTALLED, must prompt user
+                    toInstallSteamId.Add(dependency.SteamId);
+                }
+                else if (!activeMods.Contains(mod.Path))
+                {
+                    // => NOT ENABLED
+                    toEnablePaths.Add(mod.Path);
+                }
+            }
+            if (toEnablePaths.Count > 0)
+            {
+                await _arma3Data.ChangeActiveMods(_arma3Data.ActiveMods.Concat(toEnablePaths));
+            }
+            if (toInstallSteamId != null)
+            {
+                MissingMods = toInstallSteamId.Select(m => new MissingMod(m)).ToList();
+                NotifyOfPropertyChange(nameof(HasMissingMods));
+                NotifyOfPropertyChange(nameof(MissingMods));
+            }
+            try
+            {
+                // Last attempt
+                return await Arma3Assets.LoadFromFile(_arma3Data.Library, filePath);
+            }
+            catch (ApplicationException)
+            {
+                return await Arma3Assets.LoadFromFile(_arma3Data.Library, filePath, true);
+            }
+        }
+
+        internal Task CopyFrom(string filePath)
+        {
+            return DoLoad(filePath);
         }
 
         private void FromJson(Arma3Assets arma3Assets)
@@ -118,6 +178,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 Ponds.Add(new PondViewModel(id, arma3Assets.Ponds.Count == 0 ? null : arma3Assets.GetPond(id), _arma3Data.Library));
             }
             NotifyOfPropertyChange(nameof(TextureSizeInMeters));
+            BaseWorldName = arma3Assets.BaseWorldName;
+            BaseDependency = arma3Assets.BaseDependency;
         }
 
         private List<IAssetCategory> GetIndividual(Arma3Assets arma3Assets)
@@ -175,7 +237,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         internal Arma3Assets ToJson()
         {
             EquilibrateProbabilities();
-
             var json = new Arma3Assets();
             json.ClusterCollections = Filling.OfType<FillingAssetClusterViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
             json.BasicCollections = Filling.OfType<FillingAssetBasicViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
@@ -194,12 +255,21 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .OrderBy(k => k.Key)
                 .ToDictionary(k => k.Key, k => k.Bridge!);
             json.Ponds = Ponds.ToDictionary(p => p.Id, k => k.ToDefinition());
+            json.BaseDependency = baseDependency;
+            json.BaseWorldName = baseWorldName;
+            json.Dependencies = ComputeModDependencies().Select(GetSteamId).Where(s => s != null).Select(m => new ModDependencyDefinition(m!)).ToList();
             return json;
+        }
+
+        private string? GetSteamId(string m)
+        {
+            // FIXME: it assumes workshop directory
+            return Path.GetFileName(Path.GetDirectoryName(m))!; 
         }
 
         private void EquilibrateProbabilities()
         {
-            foreach(var list in Filling.OfType<FillingAssetClusterViewModel>().GroupBy(c => c.FillId))
+            foreach (var list in Filling.OfType<FillingAssetClusterViewModel>().GroupBy(c => c.FillId))
             {
                 DefinitionHelper.EquilibrateProbabilities(list.ToList());
             }
@@ -211,7 +281,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 DefinitionHelper.EquilibrateProbabilities(list.ToList());
             }
-            foreach(var item in Filling.Concat(Individual))
+            foreach (var item in Filling.Concat(Individual))
             {
                 item.Equilibrate();
             }
@@ -239,6 +309,49 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             _shell.ShowTool(_compositionTool);
             _compositionTool.Current = document;
             _compositionTool.UndoRedoManager = UndoRedoManager;
+        }
+
+        private string baseWorldName = string.Empty;
+        public string BaseWorldName
+        {
+            get { return baseWorldName; }
+            set { baseWorldName = value; NotifyOfPropertyChange(); }
+        }
+
+        private string baseDependency = string.Empty;
+        public string BaseDependency
+        {
+            get { return baseDependency; }
+            set { baseDependency = value; NotifyOfPropertyChange(); }
+        }
+
+        public bool HasMissingMods => MissingMods.Count > 0;
+        public List<MissingMod> MissingMods { get; private set; } = new List<MissingMod>();
+
+        public IEnumerable<string> ListReferencedModels()
+        {
+            return Filling.SelectMany(f => f.GetModels())
+                .Concat(Individual.SelectMany(f => f.GetModels()))
+                .Concat(Roads.SelectMany(f => f.GetModels()))
+                .Concat(Ponds.Where(p => !string.IsNullOrEmpty(p.Model)).Select(p => p.Model!))
+                .Distinct(StringComparer.OrdinalIgnoreCase);
+        }
+
+        public IEnumerable<string> ComputeModDependencies()
+        {
+            return (_arma3Data.ProjectDrive.SecondarySource as PboFileSystem)?.GetModPaths(ListReferencedModels()) ?? Enumerable.Empty<string>();
+        }
+
+        public async Task Reload()
+        {
+            if (!IsNew)
+            {
+                MissingMods.Clear();
+                NotifyOfPropertyChange(nameof(HasMissingMods));
+                NotifyOfPropertyChange(nameof(MissingMods));
+
+                await DoLoad(FilePath);
+            }
         }
     }
 }

@@ -89,5 +89,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             }
             return base.GenerateFullPreviewItems();
         }
+
+        public override IEnumerable<string> GetModels()
+        {
+            return Items.SelectMany(i => i.Composition.Items.Select(i => i.Model.Path));
+        }
     }
 }

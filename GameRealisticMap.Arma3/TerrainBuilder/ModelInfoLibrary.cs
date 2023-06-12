@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Text.Json;
 using BIS.Core.Streams;
 using BIS.P3D;
@@ -39,19 +40,28 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 
         public ModelInfo ResolveByPath(string path)
         {
-            var model = indexByName.Values.FirstOrDefault(m => string.Equals(m.Path, path, StringComparison.OrdinalIgnoreCase));
+            if (!TryResolveByPath(path, out var model))
+            {
+                throw new ApplicationException($"ODOL file for model '{path}' was not found, unable to use it");
+            }
+            return model;
+        }
+
+        public bool TryResolveByPath(string path, [MaybeNullWhen(false)] out ModelInfo model)
+        {
+            model = indexByName.Values.FirstOrDefault(m => string.Equals(m.Path, path, StringComparison.OrdinalIgnoreCase));
             if (model == null)
             {
                 var odol = ReadModelInfoOnly(path);
                 if (odol == null)
                 {
-                    throw new ApplicationException($"ODOL file for model '{path}' was not found, unable to use it");
+                    return false;
                 }
                 var name = UniqueName(Path.GetFileNameWithoutExtension(path));
                 model = new ModelInfo(name, path, odol.BoundingCenter.Vector3);
                 indexByName.Add(name, model);
             }
-            return model;
+            return true;
         }
 
         private string UniqueName(string initialName)

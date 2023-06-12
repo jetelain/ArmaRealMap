@@ -1,4 +1,5 @@
 ﻿using System.Windows.Documents;
+using GameRealisticMap.Studio.Toolkit;
 
 namespace GameRealisticMap.Studio.Behaviors
 {
@@ -14,7 +15,7 @@ namespace GameRealisticMap.Studio.Behaviors
 
         private static void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName = e.Uri.OriginalString });
+            ShellHelper.OpenUri(e.Uri);
         }
     }
 }

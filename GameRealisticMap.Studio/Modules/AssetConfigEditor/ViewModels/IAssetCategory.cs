@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
+﻿using System.Collections.Generic;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
@@ -10,5 +11,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         string IdText { get; }
 
         string PageTitle { get; }
+
+        IEnumerable<string> GetModels();
     }
 }

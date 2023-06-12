@@ -51,9 +51,12 @@
 
             <StackPanel Margin="5" Orientation="Horizontal" >
                 <Label Width="200">Assets configuration / style of map</Label>
-                <ComboBox Width="400" Text="{Binding AssetConfigFile,Mode=TwoWay}" IsEditable="True" />
+                <ComboBox Width="400" 
+                          Text="{Binding AssetConfigFile,Mode=TwoWay}" 
+                          IsEditable="True"
+                          ItemsSource="{Binding BuiltinAssetConfigFiles}" />
                 <Button Padding="10 0" Margin="10 0" cal:Message.Attach="ChooseAssetConfig">...</Button>
-                <Button Padding="10 0" Margin="10 0" cal:Message.Attach="EditAssetConfig">Edit</Button>
+                <Button Padding="10 0" cal:Message.Attach="EditAssetConfig">Edit</Button>
                 <!--<Button Padding="10 0" cal:Message.Attach="CreateAssetConfig">New</Button>-->
             </StackPanel>
 
@@ -62,25 +65,25 @@
                     Advanced parameters
                 </Expander.Header>
                 <StackPanel  Orientation="Vertical">
-                    <StackPanel Margin="10" Orientation="Horizontal" >
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">WorldName</Label>
                         <TextBox Width="200" Text="{Binding Config.WorldName,Mode=TwoWay}" />
                     </StackPanel>
-                    <StackPanel Margin="10" Orientation="Horizontal" >
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">PboPrefix</Label>
                         <TextBox Width="200" Text="{Binding Config.PboPrefix,Mode=TwoWay}" />
                     </StackPanel>
-                    <StackPanel Margin="10" Orientation="Horizontal" >
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">TileSize</Label>
                         <TextBox Width="200" Text="{Binding Config.TileSize,Mode=TwoWay}" />
                         <TextBlock Margin="10 0">pixels</TextBlock>
                     </StackPanel>
-                    <StackPanel Margin="10" Orientation="Horizontal" >
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">Resolution</Label>
                         <TextBox Width="200" Text="{Binding Config.Resolution,Mode=TwoWay}" />
                         <TextBlock Margin="10 0">meters per pixels</TextBlock>
                     </StackPanel>
-                    <StackPanel Margin="10" Orientation="Horizontal" >
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">FakeSatBlend</Label>
                         <TextBox Width="200" Text="{Binding Config.FakeSatBlend,Mode=TwoWay}" />
                     </StackPanel>
