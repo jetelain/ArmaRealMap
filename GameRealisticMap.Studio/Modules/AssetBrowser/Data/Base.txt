@@ -251,15 +251,6 @@ a3\rocks_f\blunt\bluntstone_01.p3d
 a3\rocks_f\blunt\bluntstone_02.p3d
 a3\rocks_f\blunt\bluntstone_03.p3d
 a3\rocks_f\blunt\bluntstones_erosion.p3d
-a3\rocks_f\sharprock_apart.p3d
-a3\rocks_f\sharprock_monolith.p3d
-a3\rocks_f\sharprock_spike.p3d
-a3\rocks_f\sharprock_wallh.p3d
-a3\rocks_f\sharprock_wallv.p3d
-a3\rocks_f\sharpstone_01.p3d
-a3\rocks_f\sharpstone_02.p3d
-a3\rocks_f\sharpstone_03.p3d
-a3\rocks_f\sharpstones_erosion.p3d
 a3\rocks_f\small_stone_01_f.p3d
 a3\rocks_f\small_stone_02_f.p3d
 a3\rocks_f\water\w_sharprock_apart.p3d
