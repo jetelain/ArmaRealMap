@@ -57,17 +57,18 @@
                         <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://run/233800">Launch to approve license</Hyperlink></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
-                        <TextBlock HorizontalAlignment="Center" FontSize="20">Mikero's Pbo Project</TextBlock>
-                        <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsPboProjectNotInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">❌ Not installed</TextBlock>
-                        <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsPboProjectInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">✔ Installed</TextBlock>
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="https://mikero.bytex.digital/">Download from official site (free)</Hyperlink></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Column="3">
                         <TextBlock HorizontalAlignment="Center" FontSize="20">Work Drive (P:)</TextBlock>
                         <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsProjectDriveNotCreated, Converter={StaticResource BooleanToVisibilityConverter}}">❌ Not found</TextBlock>
                         <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsProjectDriveCreated, Converter={StaticResource BooleanToVisibilityConverter}}">✔ Found</TextBlock>
                         <TextBlock HorizontalAlignment="Center"><Hyperlink Command="{Binding SetupArma3WorkDriveCommand}" >Setup with Arma3 Tools</Hyperlink></TextBlock>
                         <TextBlock HorizontalAlignment="Center" TextAlignment="Center" FontStyle="Italic">You can also mount drive<LineBreak />with your custom tool</TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3">
+                        <TextBlock HorizontalAlignment="Center" FontSize="20">Mikero's Pbo Project</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" Foreground="DarkOrange" Visibility="{Binding IsPboProjectNotInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">⚠ Recommanded</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsPboProjectInstalled, Converter={StaticResource BooleanToVisibilityConverter}}">✔ Installed</TextBlock>
+                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="https://mikero.bytex.digital/">Download from official site (free)</Hyperlink></TextBlock>
+                        <TextBlock HorizontalAlignment="Center" TextAlignment="Center" FontStyle="Italic">This tool will allow you<LineBreak />to generate ready-to-use mod.</TextBlock>
                     </StackPanel>
                 </Grid>
                 <TextBlock FontSize="20" Margin="0 10">Getting Started</TextBlock>
@@ -86,7 +87,7 @@
                             </StackPanel>
                         </Button>
                         <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
-                            An assets configuration defines the textures and objects to use to generate a map. You can create your our own configuration or use one the built-in configuration.
+                            An assets configuration defines the textures and objects to use to generate a map. You can create your our own configuration or use one of the built-in configuration.
                         </TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Center">
