@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Filling;
@@ -35,7 +36,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public BindableCollection<IFillAssetCategory> Filling { get; } = new BindableCollection<IFillAssetCategory>();
 
-        public BindableCollection<IAssetCategory> Individual { get; } = new BindableCollection<IAssetCategory>();
+        public BindableCollection<IFillAssetCategory> Fences { get; } = new BindableCollection<IFillAssetCategory>();
+
+        public BindableCollection<BuildingsViewModel> Buildings { get; } = new BindableCollection<BuildingsViewModel>();
+
+        public BindableCollection<ObjectsViewModel> Objects { get; } = new BindableCollection<ObjectsViewModel>();
 
         public BindableCollection<MaterialViewModel> Materials { get; } = new BindableCollection<MaterialViewModel>();
 
@@ -43,11 +48,20 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public BindableCollection<PondViewModel> Ponds { get; } = new BindableCollection<PondViewModel>();
 
-        public List<AdditionalFilling> AdditionalFillings { get; }
+        public List<ICommandWithLabel> AdditionalFilling { get; }
+
+        public List<ICommandWithLabel> AdditionalFences { get; }
 
         public RelayCommand RemoveFilling { get; }
 
+        public RelayCommand RemoveFence { get; }
+
         public bool IsLoading { get; set; }
+
+        public List<ImportConfigCommand> BuiltinAssetConfigFiles { get; }
+
+        bool canCopyFrom;
+        public bool CanCopyFrom { get => canCopyFrom; set { if (canCopyFrom != value) { canCopyFrom = value; NotifyOfPropertyChange(); } } }
 
         public AssetConfigEditorViewModel(IArma3DataModule arma3Data, IShell shell, ICompositionTool compositionTool)
         {
@@ -56,22 +70,52 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             _compositionTool = compositionTool;
             Children = new List<IExplorerTreeItem>()
             {
-                new ExplorerTreeItem("Natural areas and fences", Filling,"Nature"),
-                new ExplorerTreeItem("Buildings", Individual.OfType<BuildingsViewModel>(), "Buildings"),
-                new ExplorerTreeItem("Objects", Individual.OfType<ObjectsViewModel>(), "Objects"),
+                new ExplorerTreeItem("Natural areas", Filling, "Nature"),
+                new ExplorerTreeItem("Fences, walls", Fences, "Fence"),
+                new ExplorerTreeItem("Buildings", Buildings, "Buildings"),
+                new ExplorerTreeItem("Objects", Objects, "Objects"),
                 new ExplorerTreeItem("Ground materials", Materials, "Materials"),
                 new ExplorerTreeItem("Roads and bridges", Roads, "Road")
             };
-            UndoRedoManager.PropertyChanged += (_, _) => IsDirty = true;
-            AdditionalFillings = AdditionalFilling.Create(this);
-            RemoveFilling = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item));
+            UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; CanCopyFrom = IsNew && !UndoRedoManager.CanUndo && !UndoRedoManager.CanRedo; };
+            AdditionalFilling = CreateNatureFilling();
+            AdditionalFences = CreateFences();
+            RemoveFilling = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item, Filling));
+            RemoveFence = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item, Fences));
+            BuiltinAssetConfigFiles = Arma3Assets.GetBuiltinList().Select(builtin => new ImportConfigCommand(builtin, this)).ToList();
         }
 
-        private void DoRemoveFilling(IFillAssetCategory item)
+        internal List<ICommandWithLabel> CreateNatureFilling()
         {
-            if (Filling.Count(f => f != item && f.IsSameFillId(item.IdObj)) >= 1)
+            var list = new List<ICommandWithLabel>();
+            foreach (var id in Enum.GetValues<BasicCollectionId>())
             {
-                Filling.RemoveUndoable(UndoRedoManager, item);
+                list.Add(new AdditionalFilling<FillingAssetBasicViewModel>(id.ToString(), () => new FillingAssetBasicViewModel(id, null, this), Filling, UndoRedoManager));
+            }
+            foreach (var id in Enum.GetValues<ClusterCollectionId>())
+            {
+                list.Add(new AdditionalFilling<FillingAssetClusterViewModel>(id.ToString(), () => new FillingAssetClusterViewModel(id, null, this), Filling, UndoRedoManager));
+            }
+            list.Sort((a, b) => a.Label.CompareTo(b.Label));
+            return list;
+        }
+
+        internal List<ICommandWithLabel> CreateFences()
+        {
+            var list = new List<ICommandWithLabel>();
+            foreach (var id in Enum.GetValues<FenceTypeId>())
+            {
+                list.Add(new AdditionalFilling<FencesViewModel>(id.ToString(), () => new FencesViewModel(id, null, this), Fences, UndoRedoManager));
+            }
+            list.Sort((a, b) => a.Label.CompareTo(b.Label));
+            return list;
+        }
+
+        private void DoRemoveFilling(IFillAssetCategory item, BindableCollection<IFillAssetCategory> list)
+        {
+            if (list.Count(f => f != item && f.IsSameFillId(item.IdObj)) >= 1)
+            {
+                list.RemoveUndoable(UndoRedoManager, item);
             }
         }
 
@@ -156,13 +200,17 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         private void FromJson(Arma3Assets arma3Assets)
         {
             Filling.Clear();
-            Individual.Clear();
+            Fences.Clear();
+            Buildings.Clear();
+            Objects.Clear();
             Roads.Clear();
             Materials.Clear();
             Ponds.Clear();
 
             Filling.AddRange(GetFilling(arma3Assets));
-            Individual.AddRange(GetIndividual(arma3Assets));
+            Fences.AddRange(GetFences(arma3Assets));
+            Objects.AddRange(GetObjects(arma3Assets));
+            Buildings.AddRange(GetBuildings(arma3Assets));
 
             foreach (var id in Enum.GetValues<TerrainMaterialUsage>().OrderByDescending(i => i))
             {
@@ -178,20 +226,28 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 Ponds.Add(new PondViewModel(id, arma3Assets.Ponds.Count == 0 ? null : arma3Assets.GetPond(id), _arma3Data.Library));
             }
             NotifyOfPropertyChange(nameof(TextureSizeInMeters));
+            NotifyOfPropertyChange(nameof(CanCopyFrom));
             BaseWorldName = arma3Assets.BaseWorldName;
             BaseDependency = arma3Assets.BaseDependency;
         }
 
-        private List<IAssetCategory> GetIndividual(Arma3Assets arma3Assets)
+        private List<ObjectsViewModel> GetObjects(Arma3Assets arma3Assets)
         {
-            var list = new List<IAssetCategory>();
-            foreach (var id in Enum.GetValues<BuildingTypeId>())
-            {
-                list.Add(new BuildingsViewModel(id, arma3Assets.GetBuildings(id), this));
-            }
+            var list = new List<ObjectsViewModel>();
             foreach (var id in Enum.GetValues<ObjectTypeId>())
             {
                 list.Add(new ObjectsViewModel(id, arma3Assets.GetObjects(id), this));
+            }
+            list.Sort((a, b) => a.PageTitle.CompareTo(b.PageTitle));
+            return list;
+        }
+
+        private List<BuildingsViewModel> GetBuildings(Arma3Assets arma3Assets)
+        {
+            var list = new List<BuildingsViewModel>();
+            foreach (var id in Enum.GetValues<BuildingTypeId>())
+            {
+                list.Add(new BuildingsViewModel(id, arma3Assets.GetBuildings(id), this));
             }
             list.Sort((a, b) => a.PageTitle.CompareTo(b.PageTitle));
             return list;
@@ -214,6 +270,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                     list.Add(new FillingAssetClusterViewModel(id, entry, this));
                 }
             }
+            list.Sort((a, b) => a.PageTitle.CompareTo(b.PageTitle));
+            return list;
+        }
+
+        private List<FencesViewModel> GetFences(Arma3Assets arma3Assets)
+        {
+            var list = new List<FencesViewModel>();
             foreach (var id in Enum.GetValues<FenceTypeId>())
             {
                 foreach (var entry in AtLeastOne(arma3Assets.GetFences(id)))
@@ -240,9 +303,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             var json = new Arma3Assets();
             json.ClusterCollections = Filling.OfType<FillingAssetClusterViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
             json.BasicCollections = Filling.OfType<FillingAssetBasicViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
-            json.Fences = Filling.OfType<FencesViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
-            json.Buildings = Individual.OfType<BuildingsViewModel>().Where(c => !c.IsEmpty).OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
-            json.Objects = Individual.OfType<ObjectsViewModel>().Where(c => !c.IsEmpty).OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
+            json.Fences = Fences.Cast<FencesViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
+            json.Buildings = Buildings.Where(c => !c.IsEmpty).OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
+            json.Objects = Objects.Where(c => !c.IsEmpty).OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
             var materialDefintions = Materials
                 .Where(m => m.SameAs == null)
                 .Select(m => new TerrainMaterialDefinition(m.ToDefinition(), Materials.Where(o => o == m || o.SameAs == m).Select(o => o.FillId).OrderBy(m => m).ToArray()))
@@ -277,11 +340,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 DefinitionHelper.EquilibrateProbabilities(list.ToList());
             }
-            foreach (var list in Filling.OfType<FencesViewModel>().GroupBy(c => c.FillId))
+            foreach (var list in Fences.Cast<FencesViewModel>().GroupBy(c => c.FillId))
             {
                 DefinitionHelper.EquilibrateProbabilities(list.ToList());
             }
-            foreach (var item in Filling.Concat(Individual))
+            foreach (var item in Filling.Concat(Fences).Concat(Buildings.Cast<IAssetCategory>()).Concat(Objects))
             {
                 item.Equilibrate();
             }
@@ -290,6 +353,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         protected override Task DoNew()
         {
             FromJson(new Arma3Assets());
+            CanCopyFrom = true;
             return Task.CompletedTask;
         }
 
@@ -297,6 +361,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             using var stream = File.Create(filePath);
             await JsonSerializer.SerializeAsync(stream, ToJson(), Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library));
+            CanCopyFrom = false;
         }
 
         internal Task EditAssetCategory(IDocument document)
@@ -331,7 +396,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public IEnumerable<string> ListReferencedModels()
         {
             return Filling.SelectMany(f => f.GetModels())
-                .Concat(Individual.SelectMany(f => f.GetModels()))
+                .Concat(Fences.SelectMany(f => f.GetModels()))
+                .Concat(Buildings.SelectMany(f => f.GetModels()))
+                .Concat(Objects.SelectMany(f => f.GetModels()))
                 .Concat(Roads.SelectMany(f => f.GetModels()))
                 .Concat(Ponds.Where(p => !string.IsNullOrEmpty(p.Model)).Select(p => p.Model!))
                 .Distinct(StringComparer.OrdinalIgnoreCase);

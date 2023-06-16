@@ -39,44 +39,64 @@
                     </StackPanel>
                 </Border>
 
-                <!--<StackPanel Orientation="Horizontal" Margin="10 0">
-                    <Button Padding="5">Generate a demo world</Button>
-                </StackPanel>-->
-                
+                <StackPanel Orientation="Horizontal" Margin="10 0" Visibility="{Binding CanCopyFrom, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                    <TextBlock VerticalAlignment="Center" FontSize="15">⚡ Quick start from :</TextBlock>
+                    <ItemsControl ItemsSource="{Binding BuiltinAssetConfigFiles}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel  Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding}" Padding="10 5" Margin="5 0">
+                                    <TextBlock FontSize="15" Text="{Binding Label}"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
-                        <TextBlock FontSize="25">Filling objects</TextBlock>
+                        <TextBlock FontSize="25">Nature</TextBlock>
                     </Expander.Header>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 10">
                             <Button Padding="5" b:ButtonBehaviors.OpenContextOnClick="True">
                                 Add a variation
                                 <Button.ContextMenu>
-                                    <ContextMenu ItemsSource="{Binding AdditionalFillings}">
+                                    <ContextMenu ItemsSource="{Binding AdditionalFilling}">
                                         <ContextMenu.ItemTemplate>
                                             <DataTemplate>
-                                                <MenuItem Header="{Binding Label}" Command="{Binding}" />
+                                                <TextBlock Text="{Binding Label}" />
                                             </DataTemplate>
                                         </ContextMenu.ItemTemplate>
+                                        <ContextMenu.ItemContainerStyle>
+                                            <Style TargetType="{x:Type MenuItem}">
+                                                <Setter Property="Command" Value="{Binding}"/>
+                                            </Style>
+                                        </ContextMenu.ItemContainerStyle>
                                     </ContextMenu>
                                 </Button.ContextMenu>
                             </Button>
                         </StackPanel>
                         <DataGrid ItemsSource="{Binding Filling}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" Width="200" />
-                                <DataGridTextColumn Header="Label" Binding="{Binding Label}" Width="200" />
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" Width="150" />
+                                <DataGridTextColumn Header="Label" Binding="{Binding Label}" Width="150" />
                                 <DataGridTextColumn Header="Probability" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
                                 <DataGridTextColumn Header="Density" Binding="{Binding DensityText}" IsReadOnly="True" Width="100" />
-                                <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="150" />
-                                <DataGridTemplateColumn Width="75">
+                                <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Width="75">
+                                <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Padding="2" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveFilling, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Remove</Button>
@@ -91,14 +111,84 @@
 
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
-                        <TextBlock FontSize="25">Individual objects</TextBlock>
+                        <TextBlock FontSize="25">Fences</TextBlock>
                     </Expander.Header>
                     <StackPanel>
-                        <DataGrid ItemsSource="{Binding Individual}" AutoGenerateColumns="false" Margin="0 10 0 0">
+                        <StackPanel Orientation="Horizontal" Margin="0 10">
+                            <Button Padding="5" b:ButtonBehaviors.OpenContextOnClick="True">
+                                Add a variation
+                                <Button.ContextMenu>
+                                    <ContextMenu ItemsSource="{Binding AdditionalFences}">
+                                        <ContextMenu.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Label}" />
+                                            </DataTemplate>
+                                        </ContextMenu.ItemTemplate>
+                                        <ContextMenu.ItemContainerStyle>
+                                            <Style TargetType="{x:Type MenuItem}">
+                                                <Setter Property="Command" Value="{Binding}"/>
+                                            </Style>
+                                        </ContextMenu.ItemContainerStyle>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                        </StackPanel>
+                        <DataGrid ItemsSource="{Binding Fences}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" Width="200" />
-                                <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="300" />
-                                <DataGridTemplateColumn Width="75">
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" Width="150" />
+                                <DataGridTextColumn Header="Label" Binding="{Binding Label}" Width="150" />
+                                <DataGridTextColumn Header="Probability" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
+                                <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTemplateColumn Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveFence, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Remove</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+                
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25">Buildings</TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <DataGrid ItemsSource="{Binding Buildings}" AutoGenerateColumns="false" Margin="0 10 0 0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" Width="150" />
+                                <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTemplateColumn Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+                
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25">Objects</TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <DataGrid ItemsSource="{Binding Objects}" AutoGenerateColumns="false" Margin="0 10 0 0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type" Binding="{Binding PageTitle}" IsReadOnly="True" Width="150" />
+                                <DataGridTextColumn Header="Objects" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
@@ -132,7 +222,7 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="Same as" Binding="{Binding SameAs.IdText}" IsReadOnly="True" />
-                                <DataGridTemplateColumn Width="75">
+                                <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
@@ -164,7 +254,7 @@
                                 <DataGridTextColumn Header="Width" Binding="{Binding Width}" />
                                 <DataGridTextColumn Header="Texture Width" Binding="{Binding TextureWidth}" />
                                 <DataGridTextColumn Header="Clear Width" Binding="{Binding ClearWidth}" />
-                                <DataGridTemplateColumn Width="75">
+                                <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">Edit</Button>
@@ -210,7 +300,7 @@
             <TextBlock
                 FontSize="20"
                 Background="#bfff"
-                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Padding="50">Loading...</TextBlock>
+                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Padding="50" Grid.ColumnSpan="2">Loading...</TextBlock>
         </Grid>
 
 
