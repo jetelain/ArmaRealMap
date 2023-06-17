@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Windows.Data;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
@@ -11,7 +12,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
             var proba = value as double?;
             if (proba != null)
             {
-                return $"{proba * 100} %";
+                return ((FormattableString)$"{proba * 100} %").ToString(culture);
             }
             return string.Empty;
         }

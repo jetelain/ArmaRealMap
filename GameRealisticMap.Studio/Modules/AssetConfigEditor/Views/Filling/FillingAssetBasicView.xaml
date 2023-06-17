@@ -42,6 +42,7 @@
             <StackPanel Orientation="Horizontal" Margin="0 10">
                 <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">Add an object</Button>
                 <Button Padding="5" Margin="10 0" Command="{Binding CompositionImporter.AddComposition}">Add a composition</Button>
+                <Button Padding="5" cal:Message.Attach="MakeItemsEquiprobable">Make objects equiprobable</Button>
             </StackPanel>
             <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                 <DataGrid.Columns>

@@ -14,7 +14,7 @@
         <localf:ColorToBrushConverter x:Key="BrushConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
-    <ScrollViewer local:Behaviors.EnforceScroll="True" c:CompositionDragDrop.Importer="{Binding CompositionImporter}">
+    <ScrollViewer local:Behaviors.EnforceScroll="True" c:CompositionDragDrop.Importer="{Binding CompositionImporter}" Name="ScrollViewer">
         <StackPanel Margin="10 0">
             <StackPanel Orientation="Horizontal" Margin="0 10">
                 <Button Padding="10" Command="{Binding Back}">🡰</Button>
@@ -43,8 +43,9 @@
             <StackPanel Orientation="Horizontal" Margin="0 10">
                 <Button Padding="5" Command="{Binding AddEmptySeed}">Add an empty seed</Button>
                 <Button Padding="5" Margin="5 0" Command="{Binding CompositionImporter.AddSingle}">Add a seed from an object</Button>
+                <Button Padding="5" cal:Message.Attach="MakeItemsEquiprobable">Make seeds equiprobable</Button>
             </StackPanel>
-            <ItemsControl ItemsSource="{Binding Items}">
+            <ItemsControl ItemsSource="{Binding Items}" Name="ItemsControl">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
 
@@ -58,6 +59,7 @@
                             <StackPanel Orientation="Horizontal" Margin="10 5 0 10">
                                 <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">Add an object</Button>
                                 <Button Padding="5" Margin="5 0 0 0" Command="{Binding CompositionImporter.AddComposition}">Add a composition</Button>
+                                <Button Padding="5" Margin="5 0 0 0" cal:Message.Attach="MakeItemsEquiprobable" cal:Action.Target="{Binding}">Make objects equiprobable</Button>
                                 <Button Padding="5" Margin="5 0 0 0" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveSeed, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Remove seed</Button>
                             </StackPanel>
                             <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" c:CompositionDragDrop.Importer="{Binding CompositionImporter}" local:Behaviors.UndoRedoManager="{Binding DataContext.UndoRedoManager, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Margin="10 0 0 0">

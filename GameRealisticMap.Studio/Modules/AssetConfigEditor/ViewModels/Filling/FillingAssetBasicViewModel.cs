@@ -14,7 +14,7 @@ using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
-    internal class FillingAssetBasicViewModel : AssetDensityBase<BasicCollectionId, BasicCollectionDefinition>, IExplorerTreeItemCounter
+    internal class FillingAssetBasicViewModel : AssetDensityBase<BasicCollectionId, BasicCollectionDefinition, FillingItem>, IExplorerTreeItemCounter
     {
         public FillingAssetBasicViewModel(BasicCollectionId id, BasicCollectionDefinition? definition, AssetConfigEditorViewModel shell)
             : base(id, definition, shell)
@@ -31,11 +31,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             RemoveItem = new RelayCommand(item => Items.RemoveUndoable(UndoRedoManager, (FillingItem)item));
         }
 
-        public ObservableCollection<FillingItem> Items { get; }
+        public override ObservableCollection<FillingItem> Items { get; }
 
         public RelayCommand RemoveItem { get; }
 
-        public bool IsEmpty { get { return Items.Count == 0; } }
+
 
         public override BasicCollectionDefinition ToDefinition()
         {

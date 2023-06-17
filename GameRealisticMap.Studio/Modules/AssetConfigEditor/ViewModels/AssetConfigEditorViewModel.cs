@@ -77,7 +77,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 new ExplorerTreeItem("Ground materials", Materials, "Materials"),
                 new ExplorerTreeItem("Roads and bridges", Roads, "Road")
             };
-            UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; CanCopyFrom = IsNew && !UndoRedoManager.CanUndo && !UndoRedoManager.CanRedo; };
+            UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; CanCopyFrom = false; };
             AdditionalFilling = CreateNatureFilling();
             AdditionalFences = CreateFences();
             RemoveFilling = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item, Filling));
@@ -194,6 +194,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         internal Task CopyFrom(string filePath)
         {
+            CanCopyFrom = false;
             return DoLoad(filePath);
         }
 
@@ -226,7 +227,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 Ponds.Add(new PondViewModel(id, arma3Assets.Ponds.Count == 0 ? null : arma3Assets.GetPond(id), _arma3Data.Library));
             }
             NotifyOfPropertyChange(nameof(TextureSizeInMeters));
-            NotifyOfPropertyChange(nameof(CanCopyFrom));
             BaseWorldName = arma3Assets.BaseWorldName;
             BaseDependency = arma3Assets.BaseDependency;
         }

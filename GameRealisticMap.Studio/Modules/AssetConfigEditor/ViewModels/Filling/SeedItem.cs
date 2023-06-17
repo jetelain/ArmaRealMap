@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
-using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
@@ -15,14 +16,52 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
     internal class SeedItem : PropertyChangedBase, IWithEditableProbability, IModelImporterTarget, IExplorerTreeItem, IExplorerTreeItemCounter
     {
+        private readonly string ordinalName;
+
         public SeedItem(ClusterDefinition c, int index, FillingAssetClusterViewModel parent)
         {
             _parent = parent;
             Items = new ObservableCollection<FillingItem>(c.Models.Select(m => new FillingItem(m)));
             _probability = c.Probability;
-            Label = $"Seed #{index + 1}";
+            ordinalName = $"Seed #{index + 1}";
             CompositionImporter = new CompositionImporter(this);
             RemoveItem = new RelayCommand(item => Items.RemoveUndoable(parent.UndoRedoManager,(FillingItem)item));
+            Items.CollectionChanged += Items_CollectionChanged;
+            Label = GetDistinctName();
+        }
+
+        private void Items_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            var newName = GetDistinctName();
+            if (newName!= Label)
+            {
+                Label = newName;
+                NotifyOfPropertyChange(nameof(Label));
+                NotifyOfPropertyChange(nameof(TreeName));
+            }
+        }
+
+        private string GetDistinctName()
+        {
+            if (Items.Count == 0)
+            {
+                return ordinalName;
+            }
+            var str = NameHelper.LargestCommon(Items.SelectMany(i => i.Composition.Names).Distinct().Select(StripPrefix).ToList());
+            if (string.IsNullOrEmpty(str))
+            {
+                return ordinalName;
+            }
+            return ordinalName + " : " + str;
+        }
+
+        private string StripPrefix(string name)
+        {
+            if (name.StartsWith("t_", StringComparison.OrdinalIgnoreCase) || name.StartsWith("b_", StringComparison.OrdinalIgnoreCase))
+            {
+                return name.Substring(2);
+            }
+            return name;
         }
 
         private readonly FillingAssetClusterViewModel _parent;
@@ -67,6 +106,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             DefinitionHelper.EquilibrateProbabilities(Items);
             return new ClusterDefinition(Items.Select(i => i.ToDefinition()).ToList(), Probability);
+        }
+        public Task MakeItemsEquiprobable()
+        {
+            DefinitionHelper.Equiprobable(Items, _parent.UndoRedoManager);
+            return Task.CompletedTask;
         }
     }
 }
