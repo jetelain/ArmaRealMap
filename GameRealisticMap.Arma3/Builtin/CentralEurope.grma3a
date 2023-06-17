@@ -14,7 +14,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.87433666,
@@ -27,7 +27,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 7,
@@ -40,7 +40,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 1,
@@ -53,7 +53,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 1,
@@ -66,7 +66,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.895141,
@@ -79,7 +79,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.5551461,
@@ -92,7 +92,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 2.5,
@@ -105,7 +105,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 2.5,
@@ -118,7 +118,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.25367832,
@@ -131,7 +131,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.2606,
@@ -144,7 +144,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.58676094,
@@ -157,7 +157,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.7087436,
@@ -170,7 +170,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.7087436,
@@ -183,7 +183,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.58676094,
@@ -196,7 +196,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.24300002,
@@ -209,7 +209,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.16200002,
@@ -222,7 +222,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.43200007,
@@ -235,7 +235,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.45630005,
@@ -248,7 +248,7 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.27,
@@ -261,12 +261,254 @@
                 }
               ]
             },
-            "Probability": 0.05000000000000002
+            "Probability": 0.04761904761904764
+          },
+          {
+            "Radius": 1.0727149,
+            "ExclusiveRadius": 1.0727149,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\RM_boulder3.p3d",
+                  "Transform": [-0.09127036,-0.016930997,0.008524092]
+                }
+              ]
+            },
+            "Probability": 0.04761904761904764
           }
         ],
         "Probability": 1,
         "MinDensity": 0.0025,
         "MaxDensity": 0.0025,
+        "Label": ""
+      }
+    ],
+    "ScrubAdditional": [
+      {
+        "Models": [
+          {
+            "Radius": 0.7087436,
+            "ExclusiveRadius": 0.7087436,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\Bare_boulder_01_F.p3d",
+                  "Transform": [-0.049100652,0.039969355,0.013419186]
+                }
+              ]
+            },
+            "Probability": 0.16666666666666666
+          },
+          {
+            "Radius": 0.58676094,
+            "ExclusiveRadius": 0.58676094,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\Bare_boulder_02_F.p3d",
+                  "Transform": [0.092377044,-0.0035730153,0.06595774]
+                }
+              ]
+            },
+            "Probability": 0.16666666666666666
+          },
+          {
+            "Radius": 1.0727149,
+            "ExclusiveRadius": 1.0727149,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\Bare_boulder_03_F.p3d",
+                  "Transform": [-0.09127036,-0.016930997,0.008524092]
+                }
+              ]
+            },
+            "Probability": 0.16666666666666666
+          },
+          {
+            "Radius": 0.58676094,
+            "ExclusiveRadius": 0.58676094,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\RM_boulder2.p3d",
+                  "Transform": [0.092377044,-0.0035730153,0.06595774]
+                }
+              ]
+            },
+            "Probability": 0.16666666666666666
+          },
+          {
+            "Radius": 1.2310212,
+            "ExclusiveRadius": 1.2310212,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\d_fagussylvatica_fallenc.p3d",
+                  "Transform": [0.035479963,0.14717056,-0.0668105]
+                }
+              ]
+            },
+            "Probability": 0.16666666666666666
+          },
+          {
+            "Radius": 0.70710677,
+            "ExclusiveRadius": 0.70710677,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_exp\\Shrub\\b_FicusC2d_tanoa_F.p3d",
+                  "Transform": [0,1.3238448,-0.17194727]
+                }
+              ]
+            },
+            "Probability": 0.16666666666666666
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.002,
+        "MaxDensity": 0.002,
+        "Label": ""
+      }
+    ],
+    "Rocks": [
+      {
+        "Models": [
+          {
+            "Radius": 17.5,
+            "ExclusiveRadius": 30,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpRock_wallH.p3d",
+                  "Transform": [2.650001,9.885805,-3.3769572]
+                }
+              ]
+            },
+            "MaxZ": -17,
+            "MinZ": -21,
+            "Probability": 0.5
+          },
+          {
+            "Radius": 7,
+            "ExclusiveRadius": 12,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpRock_monolith.p3d",
+                  "Transform": [-1.2891188,6.8098783,-1.681613]
+                }
+              ]
+            },
+            "MaxZ": -14.5,
+            "MinZ": -16,
+            "Probability": 0.5
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.001,
+        "MaxDensity": 0.001,
+        "Label": ""
+      }
+    ],
+    "RocksAdditional": [
+      {
+        "Models": [
+          {
+            "Radius": 1.5990242,
+            "ExclusiveRadius": 1.5990242,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_01_LC.p3d",
+                  "Transform": [-0.082173765,0.33187583,-0.5007098]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 1.5990242,
+            "ExclusiveRadius": 1.5990242,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_01.p3d",
+                  "Transform": [-0.082173765,0.33187583,-0.5007098]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 2.0126712,
+            "ExclusiveRadius": 2.0126712,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_02_LC.p3d",
+                  "Transform": [0.5612264,0.24236673,-0.45463246]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 2.0126712,
+            "ExclusiveRadius": 2.0126712,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_02.p3d",
+                  "Transform": [0.5612264,0.24236673,-0.45463246]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 0.98446184,
+            "ExclusiveRadius": 0.98446184,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_03_LC.p3d",
+                  "Transform": [-0.04886137,0.15710568,-0.35490757]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 0.98446184,
+            "ExclusiveRadius": 0.98446184,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStone_03.p3d",
+                  "Transform": [-0.04886137,0.15710568,-0.35490757]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          },
+          {
+            "Radius": 0.4582295,
+            "ExclusiveRadius": 0.4582295,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\bush\\b_betula_nana.p3d",
+                  "Transform": [-0.102039665,0.5126306,-0.0719093]
+                }
+              ]
+            },
+            "Probability": 0.14285714285714285
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.005,
+        "MaxDensity": 0.005,
         "Label": ""
       }
     ]
@@ -2527,7 +2769,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.11111111111111108
               },
               {
                 "Radius": 0.75797105,
@@ -2540,7 +2782,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.11111111111111108
               },
               {
                 "Radius": 0.75797105,
@@ -2553,7 +2795,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.11111111111111108
               },
               {
                 "Radius": 1.8355818,
@@ -2566,7 +2808,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.11111111111111108
               },
               {
                 "Radius": 1.8355818,
@@ -2579,7 +2821,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.11111111111111108
               },
               {
                 "Radius": 1.8492303,
@@ -2592,7 +2834,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.11111111111111108
               },
               {
                 "Radius": 1.9087677,
@@ -2605,7 +2847,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.11111111111111108
               },
               {
                 "Radius": 1.8355818,
@@ -2618,7 +2860,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.11111111111111108
               },
               {
                 "Radius": 4.370433,
@@ -2631,7 +2873,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.11111111111111108
               }
             ],
             "Probability": 0.125
@@ -2899,6 +3141,253 @@
         "MaxDensity": 0.07,
         "Label": ""
       }
+    ],
+    "Scrub": [
+      {
+        "Clusters": [
+          {
+            "Models": [
+              {
+                "Radius": 0.4582295,
+                "ExclusiveRadius": 0.4582295,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_betula_nana.p3d",
+                      "Transform": [-0.102039665,0.5126306,-0.0719093]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.2
+          },
+          {
+            "Models": [
+              {
+                "Radius": 0.16200002,
+                "ExclusiveRadius": 0.16200002,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_rosacanina_1s.p3d",
+                      "Transform": [-1.8626451E-08,0.9401325,-2.513816E-08]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              },
+              {
+                "Radius": 0.27,
+                "ExclusiveRadius": 0.27,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_rosacanina_2s.p3d",
+                      "Transform": [0.02261934,1.4826465,0.10555714]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              }
+            ],
+            "Probability": 0.2
+          },
+          {
+            "Models": [
+              {
+                "Radius": 0.43200007,
+                "ExclusiveRadius": 0.43200007,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\b_sambucusNigra_1s.p3d",
+                      "Transform": [0.15002331,1.7176561,-0.020583801]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              },
+              {
+                "Radius": 0.45630005,
+                "ExclusiveRadius": 0.45630005,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\b_sambucusNigra_2s.p3d",
+                      "Transform": [0.24722251,2.555199,-2.9802322E-08]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              }
+            ],
+            "Probability": 0.2
+          },
+          {
+            "Models": [
+              {
+                "Radius": 0.7071068,
+                "ExclusiveRadius": 0.7071068,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\clutter\\c_beech_mid.p3d",
+                      "Transform": [-0.05663526,0.40428793,0.08658312]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              },
+              {
+                "Radius": 1.1961223,
+                "ExclusiveRadius": 1.1961223,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\clutter\\c_beech_big.p3d",
+                      "Transform": [0.0626028,0.7662968,-0.32063955]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              }
+            ],
+            "Probability": 0.2
+          },
+          {
+            "Models": [
+              {
+                "Radius": 0.42000002,
+                "ExclusiveRadius": 0.42000002,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Corylus_heterophylla_1.p3d",
+                      "Transform": [0.17707008,1.2392049,0.027241543]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.2
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.005,
+        "MaxDensity": 0.005,
+        "Label": ""
+      }
+    ],
+    "ScrubRadial": [
+      {
+        "Clusters": [
+          {
+            "Models": [
+              {
+                "Radius": 0.4582295,
+                "ExclusiveRadius": 0.4582295,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_betula_nana.p3d",
+                      "Transform": [-0.102039665,0.5126306,-0.0719093]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.25
+          },
+          {
+            "Models": [
+              {
+                "Radius": 0.16200002,
+                "ExclusiveRadius": 0.16200002,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_rosacanina_1s.p3d",
+                      "Transform": [-1.5874281E-08,0.9401325,-2.6077032E-08]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              },
+              {
+                "Radius": 0.27,
+                "ExclusiveRadius": 0.27,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_rosacanina_2s.p3d",
+                      "Transform": [0.02261934,1.4826465,0.10555714]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              }
+            ],
+            "Probability": 0.25
+          },
+          {
+            "Models": [
+              {
+                "Radius": 0.43200007,
+                "ExclusiveRadius": 0.43200007,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\b_sambucusNigra_1s.p3d",
+                      "Transform": [0.15002331,1.7176561,-0.020583801]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.25
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.1961223,
+                "ExclusiveRadius": 1.1961223,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\clutter\\c_beech_big.p3d",
+                      "Transform": [0.0626028,0.7662968,-0.32063955]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              },
+              {
+                "Radius": 0.7071068,
+                "ExclusiveRadius": 0.7071068,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\clutter\\c_beech_mid.p3d",
+                      "Transform": [-0.05663526,0.40428793,0.08658312]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              }
+            ],
+            "Probability": 0.25
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.0025,
+        "MaxDensity": 0.0025,
+        "Label": ""
+      }
     ]
   },
   "Materials": {
@@ -2990,73 +3479,73 @@
   "Roads": [
     {
       "SatelliteColor": "4D4D4DFF",
-      "TextureWidth": 14,
+      "TextureWidth": 12.5,
       "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_ca.paa",
       "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_end_ca.paa",
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat",
       "Id": "TwoLanesMotorway",
-      "Width": 12,
-      "ClearWidth": 18
+      "Width": 10,
+      "ClearWidth": 15
     },
     {
       "SatelliteColor": "4D4D4DFF",
-      "TextureWidth": 14,
+      "TextureWidth": 12.5,
       "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_ca.paa",
       "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway_end_ca.paa",
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat",
       "Id": "TwoLanesPrimaryRoad",
-      "Width": 12,
-      "ClearWidth": 16
+      "Width": 10,
+      "ClearWidth": 14
     },
     {
       "SatelliteColor": "4D4D4DFF",
-      "TextureWidth": 10,
-      "Texture": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road_ca.paa",
-      "TextureEnd": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road_end_ca.paa",
-      "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road.rvmat",
+      "TextureWidth": 9,
+      "Texture": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_main_road_ca.paa",
+      "TextureEnd": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_main_road_end_ca.paa",
+      "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_main_road.rvmat",
       "Id": "TwoLanesSecondaryRoad",
       "Width": 7.5,
       "ClearWidth": 11.5
     },
     {
       "SatelliteColor": "625F5BFF",
-      "TextureWidth": 9,
+      "TextureWidth": 8.5,
       "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_ca.paa",
       "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_end_ca.paa",
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road.rvmat",
       "Id": "TwoLanesConcreteRoad",
-      "Width": 7.5,
-      "ClearWidth": 11.5
+      "Width": 7,
+      "ClearWidth": 10
     },
     {
       "SatelliteColor": "625F5BFF",
-      "TextureWidth": 6.5,
+      "TextureWidth": 5,
       "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_ca.paa",
       "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road_end_ca.paa",
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road.rvmat",
       "Id": "SingleLaneConcreteRoad",
-      "Width": 5.5,
-      "ClearWidth": 7.5
+      "Width": 4,
+      "ClearWidth": 6
     },
     {
       "SatelliteColor": "534C43FF",
-      "TextureWidth": 10,
+      "TextureWidth": 5,
       "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_road_ca.paa",
       "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_road_end_ca.paa",
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_road.rvmat",
       "Id": "SingleLaneDirtRoad",
-      "Width": 6,
-      "ClearWidth": 10
+      "Width": 3.5,
+      "ClearWidth": 5
     },
     {
       "SatelliteColor": "534C43FF",
-      "TextureWidth": 7,
+      "TextureWidth": 4.5,
       "Texture": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_path_ca.paa",
       "TextureEnd": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_path_end_ca.paa",
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_path.rvmat",
       "Id": "SingleLaneDirtPath",
-      "Width": 4.5,
-      "ClearWidth": 6.5
+      "Width": 3.5,
+      "ClearWidth": 6
     },
     {
       "SatelliteColor": "625F5BFF",

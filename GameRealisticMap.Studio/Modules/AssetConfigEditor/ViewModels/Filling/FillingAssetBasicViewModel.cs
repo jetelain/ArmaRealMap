@@ -83,6 +83,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             {
                 return FullPreviewGenerator.Forest(this);
             }
+            if (FullPreviewGenerator.IsScrub(this))
+            {
+                return FullPreviewGenerator.Scrub(this);
+            }
             if (FullPreviewGenerator.IsRocks(this))
             {
                 return FullPreviewGenerator.Rocks(this);

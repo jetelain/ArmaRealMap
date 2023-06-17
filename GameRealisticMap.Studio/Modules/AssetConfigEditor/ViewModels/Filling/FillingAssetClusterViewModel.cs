@@ -125,6 +125,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             {
                 return FullPreviewGenerator.Forest(this);
             }
+            if (FullPreviewGenerator.IsScrub(this))
+            {
+                return FullPreviewGenerator.Scrub(this);
+            }
             return base.GenerateFullPreviewItems();
         }
 
