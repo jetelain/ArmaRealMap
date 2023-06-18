@@ -122,8 +122,28 @@ namespace GameRealisticMap.Arma3.IO
             {
                 return entry.OpenRead();
             }
-
             return null;
+        }
+
+        public string? GetPboFile(string path)
+        {
+            LazyBuildIndex();
+            if (index.TryGetValue(path, out var entry))
+            {
+                return (entry as PBOFileExisting)?.PboFile;
+            }
+            return null;
+        }
+
+        public IEnumerable<string> GetModPaths(IEnumerable<string> path)
+        {
+            return path
+                .Where(p => !p.StartsWith("a3\\", StringComparison.OrdinalIgnoreCase))
+                .Select(GetPboFile)
+                .Where(pbo => pbo != null)
+                .Distinct()
+                .Select(pbo => mods.FirstOrDefault(mod => pbo!.StartsWith(mod + "\\", StringComparison.OrdinalIgnoreCase)))
+                .Distinct()!;
         }
 
         public IEnumerable<string> FindAll(string pattern)

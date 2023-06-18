@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GameRealisticMap.Studio.Toolkit;
 
 namespace GameRealisticMap.Studio.Modules.Main.Views
 {
@@ -23,10 +24,6 @@ namespace GameRealisticMap.Studio.Modules.Main.Views
         public HomeView()
         {
             InitializeComponent();
-        }
-        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
-        {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName = e.Uri.OriginalString });
         }
     }
 }

@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using Caliburn.Micro;
-using GameRealisticMap.Studio.Modules.AssetConfigEditor.Views;
 using GameRealisticMap.Studio.Modules.CompositionTool.Behaviors;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
-using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 using MahApps.Metro.Controls;
+using Xceed.Wpf.Toolkit.Core.Utilities;
 
 namespace GameRealisticMap.Studio.Modules.Explorer.Views
 {
@@ -24,18 +25,60 @@ namespace GameRealisticMap.Studio.Modules.Explorer.Views
             InitializeComponent();
         }
 
-        private void TreeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void TreeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var fw = sender as TreeViewItem;
             if (fw != null && fw.IsSelected)
             {
                 if (fw.DataContext is IDocument doc)
                 {
-                    _ = IoC.Get<IShell>().OpenDocumentAsync(doc);
                     e.Handled = true;
+                    await IoC.Get<IShell>().OpenDocumentAsync(doc);
+                    if (await GetView(doc) is IScrollableView scrollable)
+                    {
+                        scrollable.ScrollIntoView(null);
+                    }
+                }
+                else 
+                {
+                    var parentFw = VisualTreeHelperEx.FindAncestorByType<TreeViewItem>(VisualTreeHelper.GetParent(fw));
+                    if (parentFw?.DataContext is IDocument parent)
+                    {
+                        e.Handled = true;
+                        await IoC.Get<IShell>().OpenDocumentAsync(parent);
+                        if (await GetView(parent) is IScrollableView scrollable)
+                        {
+                            scrollable.ScrollIntoView(fw.DataContext);
+                        }
+                    }
                 }
             }
         }
+        private static async Task<object?> GetView(object viewModel)
+        {
+            if (viewModel is IViewAware viewAware)
+            {
+                return await GetView(viewAware);
+            }
+            return null;
+        }
+
+        private static async Task<object?> GetView(IViewAware viewAware)
+        {
+            var view = viewAware.GetView();
+            if (view == null)
+            {
+                // View is not yet attached
+                var t = new TaskCompletionSource();
+                var x = new EventHandler<ViewAttachedEventArgs>((_, _) => t.SetResult());
+                viewAware.ViewAttached += x;
+                await t.Task;
+                viewAware.ViewAttached -= x;
+                view = viewAware.GetView();
+            }
+            return view;
+        }
+
         private void StackPanel_Initialized(object sender, EventArgs e)
         {
             var fw = sender as FrameworkElement;

@@ -95,7 +95,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             }
             foreach (var face in geoLod.Polygons.Faces)
             {
-                var points = face.VertexIndices.Select(i => geoLod.Vertices[i]).Select(p => p.Vector3 + p3d.ModelInfo.BoundingCenter.Vector3);
+                var points = face.VertexIndices.Select(i => geoLod.Vertices[i]).Select(p => p.Vector3);
                 var x = points.Select(p => new TerrainPoint(p.X, p.Z)).ToList();
                 x.Add(x[0]);
                 list.Add(new TerrainPolygon(x));
@@ -120,7 +120,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             }
             foreach (var face in visualLod.Polygons.Faces)
             {
-                var points = face.VertexIndices.Select(i => visualLod.Vertices[i]).Select(p => p.Vector3 + p3d.ModelInfo.BoundingCenter.Vector3);
+                var points = face.VertexIndices.Select(i => visualLod.Vertices[i]).Select(p => p.Vector3);
                 var x = points.Select(p => new TerrainPoint(p.X, p.Z)).ToList();
                 x.Add(x[0]);
                 list.Add(new TerrainPolygon(x));

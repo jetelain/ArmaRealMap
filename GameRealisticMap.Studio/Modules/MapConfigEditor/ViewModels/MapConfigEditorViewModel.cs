@@ -36,6 +36,8 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             _arma3DataModule = arma3DataModule;
         }
 
+        public List<string> BuiltinAssetConfigFiles { get; } = Arma3Assets.GetBuiltinList();
+
         public Arma3MapConfigJson Config { get; set; } = new Arma3MapConfigJson();
 
         public int[] GridSizes { get; } = new int[] { 256, 512, 1024, 2048, 4096, 8192 };
@@ -180,7 +182,10 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         protected override Task DoNew()
         {
             Config = new Arma3MapConfigJson();
+            var assetConfig = _shell.Documents.OfType<AssetConfigEditorViewModel>().Select(r => r.FilePath ?? r.FileName).FirstOrDefault();
+            Config.AssetConfigFile = assetConfig ?? BuiltinAssetConfigFiles.FirstOrDefault() ?? string.Empty;
             NotifyOfPropertyChange(nameof(Config));
+            NotifyOfPropertyChange(nameof(AssetConfigFile));
             return Task.CompletedTask;
         }
 
@@ -207,7 +212,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery);
             var target = Path.Combine(Path.GetTempPath(), "grm-preview.html");
             await render.RenderHtml(task, target, ignoreElevation);
-            task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = target });
+            task.DisplayResult = () => ShellHelper.OpenUri(target);
         }
 
         public Task ChooseAssetConfig()
@@ -231,20 +236,35 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 if (doc == null)
                 {
                     var fullpath = GetAssetFullPath(file);
-                    if (fullpath != null && File.Exists(fullpath))
+                    if (fullpath != null)
                     {
                         var provider = IoC.Get<AssetConfigEditorProvider>();
-                        doc = (AssetConfigEditorViewModel)provider.Create();
-                        await provider.Open(doc, fullpath);
+
+                        if (fullpath.StartsWith(Arma3Assets.BuiltinPrefix))
+                        {
+                            doc = (AssetConfigEditorViewModel)provider.Create();
+                            var newName = Path.GetFileNameWithoutExtension(FileName) + "-assets.grma3a";
+                            await provider.New(doc, newName);
+                            await doc.CopyFrom(fullpath);
+                            AssetConfigFile = newName;
+                        }
+                        else if (File.Exists(fullpath))
+                        {
+                            doc = (AssetConfigEditorViewModel)provider.Create();
+                            await provider.Open(doc, fullpath);
+                        }
                     }
                 }
-                await _shell.OpenDocumentAsync(doc);
+                if (doc != null)
+                {
+                    await _shell.OpenDocumentAsync(doc);
+                }
             }
         }
 
         public string? GetAssetFullPath(string path)
         {
-            if (Path.IsPathRooted(path))
+            if (path.StartsWith(Arma3Assets.BuiltinPrefix) || Path.IsPathRooted(path))
             {
                 return path;
             }
@@ -303,7 +323,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             await generator.GenerateMod(task, a3config);
 
-            task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = a3config.TargetModDirectory });
+            task.DisplayResult = () => ShellHelper.OpenUri(a3config.TargetModDirectory);
         }
 
         private async Task DoGenerateMap(IProgressTaskUI task)
@@ -316,13 +336,13 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             await generator.GenerateWrp(task, a3config);
 
-            task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = _arma3DataModule.ProjectDrive.GetFullPath(a3config.PboPrefix) });
+            task.DisplayResult = () => ShellHelper.OpenUri(_arma3DataModule.ProjectDrive.GetFullPath(a3config.PboPrefix));
         }
 
         private async Task<Arma3Assets> GetAssets(ModelInfoLibrary library, Arma3MapConfig a3config)
         {
             var doc = GetAssetConfigEditor(a3config.AssetConfigFile);
-            if ( doc != null)
+            if (doc != null)
             {
                 return doc.ToJson();
             }
@@ -376,7 +396,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             {
                 await action(source);
             }
-            task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = target });
+            task.DisplayResult = () => ShellHelper.OpenUri(target);
         }
 
         private async Task DoRawSat(IProgressTaskUI task)
@@ -399,7 +419,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             {
                 await source.GetData<RawSatelliteImageData>().Image.OffloadAsync();
             }
-            task.DisplayResult = () => Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = target });
+            task.DisplayResult = () => ShellHelper.OpenUri(target);
         }
     }
 }

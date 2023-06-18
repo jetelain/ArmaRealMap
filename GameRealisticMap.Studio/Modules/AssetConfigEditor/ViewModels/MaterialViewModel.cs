@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
@@ -147,6 +148,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public override void AddComposition(Composition model, ObjectPlacementDetectedInfos detected)
         {
 
+        }
+
+        public override IEnumerable<string> GetModels()
+        {
+            return Enumerable.Empty<string>();
         }
     }
 }

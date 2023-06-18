@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameRealisticMap.Studio.UndoRedo;
+using Gemini.Modules.UndoRedo;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
@@ -48,5 +50,17 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 }
             }
         }
+        internal static void Equiprobable(IReadOnlyList<IWithEditableProbability> items, IUndoRedoManager undoRedoManager)
+        {
+            if (items.Count > 0)
+            {
+                var probability = 1d / items.Count;
+                foreach (var item in items)
+                {
+                    undoRedoManager.ChangeProperty(item, i => i.Probability, probability);
+                }
+            }
+        }
+
     }
 }

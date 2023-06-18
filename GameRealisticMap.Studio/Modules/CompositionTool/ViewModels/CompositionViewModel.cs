@@ -76,15 +76,17 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             }
         }
 
-        public string Name
+        public string Name => string.Join(", ", Names);
+
+        public IEnumerable<string> Names
         {
             get
             {
                 if (_items != null)
                 {
-                    return string.Join(", ", _items.Select(o => o.Model.Name));
+                    return _items.Select(o => o.Model.Name);
                 }
-                return string.Join(", ", composition.Objects.Select(o => o.Model.Name));
+                return composition.Objects.Select(o => o.Model.Name);
             }
         }
 

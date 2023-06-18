@@ -13,6 +13,7 @@ using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
@@ -40,7 +41,8 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             new ModInfo("JBAD", string.Empty, "520618345"),
             new ModInfo("Em Buildings", string.Empty, "671539540"),
             new ModInfo("Mount Buildings", string.Empty, "2782382831"),
-            new ModInfo("RHS TERRACORE", string.Empty, "2288691268")
+            new ModInfo("RHS TERRACORE", string.Empty, "2288691268"),
+            new ModInfo("ARM", string.Empty, "2982306133")
         };
 
         public string AssetsCatalogPath { get; set; } = System.IO.Path.Combine(
@@ -93,7 +95,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 if ( installed == null )
                 {
                     // Not installed
-                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() { UseShellExecute = true, FileName = "steam://url/CommunityFilePage/" + mod.SteamId });
+                    ShellHelper.OpenUri("steam://url/CommunityFilePage/" + mod.SteamId);
                     return;
                 }
                 // Not active, activate him

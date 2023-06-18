@@ -7,6 +7,7 @@ using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Forests;
+using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
@@ -120,5 +121,55 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             return layer.SelectMany(c => c.Model.ToTerrainBuilderObjects(c)).ToList();
         }
 
+        public static bool IsScrub(FillingAssetBasicViewModel additional)
+        {
+            return additional.FillId == BasicCollectionId.ScrubAdditional;
+        }
+
+        public static bool IsScrub(FillingAssetClusterViewModel additional)
+        {
+            return additional.FillId == ClusterCollectionId.Scrub || additional.FillId == ClusterCollectionId.ScrubRadial;
+        }
+
+        public static List<TerrainBuilderObject> Scrub(FillingAssetClusterViewModel scrubsOrRadial)
+        {
+            var others = scrubsOrRadial.ParentEditor.Filling.OfType<FillingAssetClusterViewModel>();
+            var additional = scrubsOrRadial.ParentEditor.Filling.OfType<FillingAssetBasicViewModel>().First(c => c.FillId == BasicCollectionId.ScrubAdditional);
+            var shift = 0f;
+            if (scrubsOrRadial.FillId == ClusterCollectionId.ScrubRadial)
+            {
+                shift = ScrubRadialData.Width / 2;
+            }
+            return Scrub(shift, additional,
+                GetOther(scrubsOrRadial, others, ClusterCollectionId.Scrub),
+                GetOther(scrubsOrRadial, others, ClusterCollectionId.ScrubRadial));
+        }
+        public static List<TerrainBuilderObject> Scrub(FillingAssetBasicViewModel additional)
+        {
+            var others = additional.ParentEditor.Filling.OfType<FillingAssetClusterViewModel>();
+            return Scrub(0, additional,
+                others.First(c => c.FillId == ClusterCollectionId.Scrub),
+                others.First(c => c.FillId == ClusterCollectionId.ScrubRadial));
+        }
+
+        public static List<TerrainBuilderObject> Scrub(
+            float shift,
+            FillingAssetBasicViewModel additional,
+            FillingAssetClusterViewModel scrubs,
+            FillingAssetClusterViewModel radial)
+        {
+            var center = (float)PreviewGrid.SizeInMeters / 2 + shift;
+            var radialPolygon = TerrainPolygon.FromRectangle(new TerrainPoint(center - ScrubRadialData.Width, 0), new TerrainPoint(center, (float)PreviewGrid.SizeInMeters));
+            var scrubsPolygon = TerrainPolygon.FromRectangle(new TerrainPoint(center, 0), new TerrainPoint((float)PreviewGrid.SizeInMeters, (float)PreviewGrid.SizeInMeters));
+
+            var forestLayer = new RadiusPlacedLayer<Composition>(new Vector2((float)PreviewGrid.SizeInMeters, (float)PreviewGrid.SizeInMeters));
+            scrubs.CreatePreviewGenerator().FillPolygons(forestLayer, new List<TerrainPolygon>() { scrubsPolygon });
+            additional.CreatePreviewGenerator().FillPolygons(forestLayer, new List<TerrainPolygon>() { scrubsPolygon });
+
+            var radialLayer = new RadiusPlacedLayer<Composition>(new Vector2((float)PreviewGrid.SizeInMeters, (float)PreviewGrid.SizeInMeters));
+            radial.CreatePreviewGenerator().FillPolygons(radialLayer, new List<TerrainPolygon>() { radialPolygon });
+
+            return forestLayer.Concat(radialLayer).SelectMany(c => c.Model.ToTerrainBuilderObjects(c)).ToList();
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using CoordinateSharp;
 using GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels;
+using GameRealisticMap.Studio.Toolkit;
 using MapControl;
 using MapControl.Caching;
 
@@ -161,7 +162,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.Views
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-            Process.Start(new ProcessStartInfo() { UseShellExecute = true, FileName = FormattableString.Invariant($"https://www.openstreetmap.org/#map={Math.Round(MapControl.ZoomLevel)}/{MapControl.Center.Latitude}/{MapControl.Center.Longitude}") });
+            ShellHelper.OpenUri(FormattableString.Invariant($"https://www.openstreetmap.org/#map={Math.Round(MapControl.ZoomLevel)}/{MapControl.Center.Latitude}/{MapControl.Center.Longitude}"));
         }
     }
 }

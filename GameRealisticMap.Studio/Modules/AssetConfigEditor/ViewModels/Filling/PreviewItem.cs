@@ -6,8 +6,6 @@ using System.Windows.Media;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling;
-using GameRealisticMap.Studio.Modules.CompositionTool.Views;
-using GameRealisticMap.Studio.Toolkit;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {

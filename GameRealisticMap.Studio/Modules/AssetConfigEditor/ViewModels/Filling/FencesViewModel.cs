@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
@@ -48,6 +49,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public override void Equilibrate()
         {
 
+        }
+
+        public override IEnumerable<string> GetModels()
+        {
+            return Items.SelectMany(i => i.Composition.Items.Select(i => i.Model.Path));
         }
     }
 }
