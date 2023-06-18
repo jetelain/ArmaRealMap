@@ -14,7 +14,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.87433666,
@@ -27,7 +27,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 7,
@@ -40,7 +40,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 1,
@@ -53,7 +53,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 1,
@@ -66,7 +66,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.895141,
@@ -79,7 +79,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.5551461,
@@ -92,7 +92,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 2.5,
@@ -105,7 +105,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 2.5,
@@ -118,7 +118,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.25367832,
@@ -131,7 +131,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.2606,
@@ -144,7 +144,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.58676094,
@@ -157,7 +157,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.7087436,
@@ -170,7 +170,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.7087436,
@@ -183,7 +183,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.58676094,
@@ -196,7 +196,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.24300002,
@@ -209,7 +209,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.16200002,
@@ -222,7 +222,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.43200007,
@@ -235,7 +235,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.45630005,
@@ -248,7 +248,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 0.27,
@@ -261,7 +261,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           },
           {
             "Radius": 1.0727149,
@@ -274,7 +274,7 @@
                 }
               ]
             },
-            "Probability": 0.04761904761904764
+            "Probability": 0.0476190476190476
           }
         ],
         "Probability": 1,
@@ -2364,7 +2364,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Accessories\\BusStop_02_shelter_F.p3d",
-              "Transform": [0.05000007,1.0111115,-0.13692391]
+              "Transform": [-1,0,8.742278E-08,0,1,0,-8.742278E-08,0,-1,-0.05000007,1.0111115,0.13692391]
             }
           ]
         }
@@ -2391,8 +2391,8 @@
           {
             "Models": [
               {
-                "Radius": 0.52361834,
-                "ExclusiveRadius": 0.52361834,
+                "Radius": 0.5,
+                "ExclusiveRadius": 0.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2404,8 +2404,8 @@
                 "Probability": 0.16666666666666666
               },
               {
-                "Radius": 1.3724076,
-                "ExclusiveRadius": 1.3724076,
+                "Radius": 0.7,
+                "ExclusiveRadius": 0.7,
                 "Model": {
                   "Objects": [
                     {
@@ -2417,8 +2417,8 @@
                 "Probability": 0.16666666666666666
               },
               {
-                "Radius": 1.7558544,
-                "ExclusiveRadius": 1.7558544,
+                "Radius": 1,
+                "ExclusiveRadius": 1,
                 "Model": {
                   "Objects": [
                     {
@@ -2430,8 +2430,8 @@
                 "Probability": 0.16666666666666666
               },
               {
-                "Radius": 2.174083,
-                "ExclusiveRadius": 2.174083,
+                "Radius": 1,
+                "ExclusiveRadius": 1,
                 "Model": {
                   "Objects": [
                     {
@@ -2443,8 +2443,8 @@
                 "Probability": 0.16666666666666666
               },
               {
-                "Radius": 2.1606503,
-                "ExclusiveRadius": 2.1606503,
+                "Radius": 1,
+                "ExclusiveRadius": 1,
                 "Model": {
                   "Objects": [
                     {
@@ -2456,8 +2456,8 @@
                 "Probability": 0.16666666666666666
               },
               {
-                "Radius": 3.7339115,
-                "ExclusiveRadius": 3.7339115,
+                "Radius": 2,
+                "ExclusiveRadius": 2,
                 "Model": {
                   "Objects": [
                     {
@@ -2474,8 +2474,8 @@
           {
             "Models": [
               {
-                "Radius": 6.05075,
-                "ExclusiveRadius": 6.05075,
+                "Radius": 3,
+                "ExclusiveRadius": 3,
                 "Model": {
                   "Objects": [
                     {
@@ -2487,8 +2487,8 @@
                 "Probability": 0.5
               },
               {
-                "Radius": 4.6243987,
-                "ExclusiveRadius": 4.6243987,
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2505,8 +2505,8 @@
           {
             "Models": [
               {
-                "Radius": 3.3871882,
-                "ExclusiveRadius": 3.3871882,
+                "Radius": 1.5,
+                "ExclusiveRadius": 1.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2518,8 +2518,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 1.4038448,
-                "ExclusiveRadius": 1.4038448,
+                "Radius": 1,
+                "ExclusiveRadius": 1,
                 "Model": {
                   "Objects": [
                     {
@@ -2531,8 +2531,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 1.1472217,
-                "ExclusiveRadius": 1.1472217,
+                "Radius": 1.2,
+                "ExclusiveRadius": 1.2,
                 "Model": {
                   "Objects": [
                     {
@@ -2544,8 +2544,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 4.7716284,
-                "ExclusiveRadius": 4.7716284,
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2557,8 +2557,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 4.7716284,
-                "ExclusiveRadius": 4.7716284,
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2570,8 +2570,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 4.781458,
-                "ExclusiveRadius": 4.781458,
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2583,8 +2583,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 3.691143,
-                "ExclusiveRadius": 3.691143,
+                "Radius": 2,
+                "ExclusiveRadius": 2,
                 "Model": {
                   "Objects": [
                     {
@@ -2596,8 +2596,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 3.241555,
-                "ExclusiveRadius": 3.241555,
+                "Radius": 1.5,
+                "ExclusiveRadius": 1.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2609,8 +2609,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 1.6777444,
-                "ExclusiveRadius": 1.6777444,
+                "Radius": 1.5,
+                "ExclusiveRadius": 1.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2622,8 +2622,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 5.6291566,
-                "ExclusiveRadius": 5.6291566,
+                "Radius": 3,
+                "ExclusiveRadius": 3,
                 "Model": {
                   "Objects": [
                     {
@@ -2635,8 +2635,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 4.6732736,
-                "ExclusiveRadius": 4.6732736,
+                "Radius": 2.5,
+                "ExclusiveRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2648,8 +2648,8 @@
                 "Probability": 0.08333333333333333
               },
               {
-                "Radius": 6.293062,
-                "ExclusiveRadius": 6.293062,
+                "Radius": 3,
+                "ExclusiveRadius": 3,
                 "Model": {
                   "Objects": [
                     {
@@ -2666,8 +2666,8 @@
           {
             "Models": [
               {
-                "Radius": 6.9038734,
-                "ExclusiveRadius": 6.9038734,
+                "Radius": 5,
+                "ExclusiveRadius": 5,
                 "Model": {
                   "Objects": [
                     {
@@ -2679,8 +2679,8 @@
                 "Probability": 0.5
               },
               {
-                "Radius": 10.677524,
-                "ExclusiveRadius": 10.677524,
+                "Radius": 7,
+                "ExclusiveRadius": 7,
                 "Model": {
                   "Objects": [
                     {
@@ -2697,8 +2697,8 @@
           {
             "Models": [
               {
-                "Radius": 2.3812003,
-                "ExclusiveRadius": 2.3812003,
+                "Radius": 2,
+                "ExclusiveRadius": 2,
                 "Model": {
                   "Objects": [
                     {
@@ -2710,8 +2710,8 @@
                 "Probability": 0.5
               },
               {
-                "Radius": 3.618365,
-                "ExclusiveRadius": 3.618365,
+                "Radius": 3,
+                "ExclusiveRadius": 3,
                 "Model": {
                   "Objects": [
                     {
@@ -2728,8 +2728,8 @@
           {
             "Models": [
               {
-                "Radius": 1.7986201,
-                "ExclusiveRadius": 1.7986201,
+                "Radius": 1.5,
+                "ExclusiveRadius": 1.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2741,8 +2741,8 @@
                 "Probability": 0.5
               },
               {
-                "Radius": 2.7468116,
-                "ExclusiveRadius": 2.7468116,
+                "Radius": 2,
+                "ExclusiveRadius": 2,
                 "Model": {
                   "Objects": [
                     {
@@ -2759,8 +2759,8 @@
           {
             "Models": [
               {
-                "Radius": 0.9478207,
-                "ExclusiveRadius": 0.9478207,
+                "Radius": 0.9,
+                "ExclusiveRadius": 0.9,
                 "Model": {
                   "Objects": [
                     {
@@ -2769,11 +2769,11 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.11111111111111113
               },
               {
-                "Radius": 0.75797105,
-                "ExclusiveRadius": 0.75797105,
+                "Radius": 0.7,
+                "ExclusiveRadius": 0.7,
                 "Model": {
                   "Objects": [
                     {
@@ -2782,11 +2782,11 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.11111111111111113
               },
               {
-                "Radius": 0.75797105,
-                "ExclusiveRadius": 0.75797105,
+                "Radius": 0.7,
+                "ExclusiveRadius": 0.7,
                 "Model": {
                   "Objects": [
                     {
@@ -2795,11 +2795,11 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.11111111111111113
               },
               {
-                "Radius": 1.8355818,
-                "ExclusiveRadius": 1.8355818,
+                "Radius": 1,
+                "ExclusiveRadius": 1,
                 "Model": {
                   "Objects": [
                     {
@@ -2808,11 +2808,11 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.11111111111111113
               },
               {
-                "Radius": 1.8355818,
-                "ExclusiveRadius": 1.8355818,
+                "Radius": 1,
+                "ExclusiveRadius": 1,
                 "Model": {
                   "Objects": [
                     {
@@ -2821,11 +2821,11 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.11111111111111113
               },
               {
-                "Radius": 1.8492303,
-                "ExclusiveRadius": 1.8492303,
+                "Radius": 1.2,
+                "ExclusiveRadius": 1.2,
                 "Model": {
                   "Objects": [
                     {
@@ -2834,11 +2834,11 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.11111111111111113
               },
               {
-                "Radius": 1.9087677,
-                "ExclusiveRadius": 1.9087677,
+                "Radius": 1.5,
+                "ExclusiveRadius": 1.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2847,11 +2847,11 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.11111111111111113
               },
               {
-                "Radius": 1.8355818,
-                "ExclusiveRadius": 1.8355818,
+                "Radius": 1.5,
+                "ExclusiveRadius": 1.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2860,11 +2860,11 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.11111111111111113
               },
               {
-                "Radius": 4.370433,
-                "ExclusiveRadius": 4.370433,
+                "Radius": 3,
+                "ExclusiveRadius": 3,
                 "Model": {
                   "Objects": [
                     {
@@ -2873,7 +2873,7 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.11111111111111113
               }
             ],
             "Probability": 0.125
@@ -2911,8 +2911,8 @@
           }
         ],
         "Probability": 1,
-        "MinDensity": 0.012,
-        "MaxDensity": 0.012,
+        "MinDensity": 0.025,
+        "MaxDensity": 0.025,
         "Label": ""
       }
     ],
@@ -2922,8 +2922,8 @@
           {
             "Models": [
               {
-                "Radius": 0.27,
-                "ExclusiveRadius": 0.27,
+                "Radius": 0.2,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
@@ -2935,8 +2935,8 @@
                 "Probability": 0.5
               },
               {
-                "Radius": 0.27,
-                "ExclusiveRadius": 0.27,
+                "Radius": 0.2,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
@@ -2948,13 +2948,13 @@
                 "Probability": 0.5
               }
             ],
-            "Probability": 0.25
+            "Probability": 0.2
           },
           {
             "Models": [
               {
-                "Radius": 0.24300002,
-                "ExclusiveRadius": 0.24300002,
+                "Radius": 0.2,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
@@ -2966,8 +2966,8 @@
                 "Probability": 0.5
               },
               {
-                "Radius": 1.4038448,
-                "ExclusiveRadius": 1.4038448,
+                "Radius": 1,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
@@ -2984,8 +2984,8 @@
           {
             "Models": [
               {
-                "Radius": 0.984116,
-                "ExclusiveRadius": 0.984116,
+                "Radius": 0.5,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
@@ -3002,8 +3002,8 @@
           {
             "Models": [
               {
-                "Radius": 0.52361834,
-                "ExclusiveRadius": 0.52361834,
+                "Radius": 0.5,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
@@ -3016,11 +3016,29 @@
               }
             ],
             "Probability": 0.25
+          },
+          {
+            "Models": [
+              {
+                "Radius": 1.5,
+                "ExclusiveRadius": 0,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\tree\\t_pyruscommunis_2s.p3d",
+                      "Transform": [-0.029040007,3.6264021,0.09442985]
+                    }
+                  ]
+                },
+                "Probability": 1
+              }
+            ],
+            "Probability": 0.05
           }
         ],
         "Probability": 1,
-        "MinDensity": 0.005,
-        "MaxDensity": 0.005,
+        "MinDensity": 0.01,
+        "MaxDensity": 0.01,
         "Label": ""
       }
     ],
@@ -3030,44 +3048,21 @@
           {
             "Models": [
               {
-                "Radius": 2.5,
-                "ExclusiveRadius": 0.1,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
-                      "Transform": [0.37681502,1.7445197,-0.25731963]
-                    }
-                  ]
-                },
-                "Probability": 1
-              }
-            ],
-            "Probability": 0.16666666666666666
-          },
-          {
-            "Models": [
-              {
-                "Radius": 1,
-                "ExclusiveRadius": 0.1,
+                "Radius": 0.4,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
                       "Model": "a3\\vegetation_f_enoch\\Bush\\B_Corylus_heterophylla_1.p3d",
-                      "Transform": [0.0432577,1.2392049,0.18509251]
+                      "Transform": [0.04325772,1.2392049,0.18509252]
                     }
                   ]
                 },
-                "Probability": 1
-              }
-            ],
-            "Probability": 0.16666666666666666
-          },
-          {
-            "Models": [
+                "Probability": 0.8
+              },
               {
-                "Radius": 4,
-                "ExclusiveRadius": 0.1,
+                "Radius": 1.2,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
@@ -3076,69 +3071,95 @@
                     }
                   ]
                 },
-                "Probability": 1
+                "Probability": 0.2
               }
             ],
-            "Probability": 0.16666666666666666
+            "Probability": 0.25
           },
           {
             "Models": [
               {
-                "Radius": 1.5,
-                "ExclusiveRadius": 0.1,
+                "Radius": 0.1,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
-                      "Model": "a3\\vegetation_f_enoch\\Bush\\b_prunusSpinosa_1s.p3d",
-                      "Transform": [0.005039908,1.4469362,-0.00094509125]
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_rosacanina_1s.p3d",
+                      "Transform": [0.02649997,0.9401325,-0.027715053]
                     }
                   ]
                 },
-                "Probability": 1
-              }
-            ],
-            "Probability": 0.16666666666666666
-          },
-          {
-            "Models": [
+                "Probability": 0.5
+              },
               {
-                "Radius": 2,
-                "ExclusiveRadius": 0.1,
+                "Radius": 0.2,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
-                      "Model": "a3\\vegetation_f_enoch\\Bush\\b_sambucusNigra_1s.p3d",
-                      "Transform": [0.13961324,1.7176561,0.23911625]
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_rosacanina_2s.p3d",
+                      "Transform": [-0.06058064,1.4826465,3.2063574E-05]
                     }
                   ]
                 },
-                "Probability": 1
+                "Probability": 0.5
               }
             ],
-            "Probability": 0.16666666666666666
+            "Probability": 0.25
           },
           {
             "Models": [
               {
-                "Radius": 3,
-                "ExclusiveRadius": 0.1,
+                "Radius": 0.25,
+                "ExclusiveRadius": 0,
                 "Model": {
                   "Objects": [
                     {
                       "Model": "a3\\vegetation_f_enoch\\Bush\\b_sambucusNigra_2s.p3d",
-                      "Transform": [0.07018873,2.555199,0.16279507]
+                      "Transform": [0.07018873,2.555199,0.16279505]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              },
+              {
+                "Radius": 0.25,
+                "ExclusiveRadius": 0,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\Bush\\b_sambucusNigra_1s.p3d",
+                      "Transform": [0.13961323,1.7176561,0.23911622]
+                    }
+                  ]
+                },
+                "Probability": 0.5
+              }
+            ],
+            "Probability": 0.25
+          },
+          {
+            "Models": [
+              {
+                "Radius": 0.25,
+                "ExclusiveRadius": 0,
+                "Model": {
+                  "Objects": [
+                    {
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_betula_nana.p3d",
+                      "Transform": [-0.012429625,0.5126306,-0.04949426]
                     }
                   ]
                 },
                 "Probability": 1
               }
             ],
-            "Probability": 0.16666666666666666
+            "Probability": 0.25
           }
         ],
         "Probability": 1,
-        "MinDensity": 0.07,
-        "MaxDensity": 0.07,
+        "MinDensity": 0.5,
+        "MaxDensity": 0.5,
         "Label": ""
       }
     ],
@@ -3632,7 +3653,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_epc\\civ\\garbage\\garbagebin_01_f.p3d",
-              "Transform": [4.4703484E-08,0.5140827,0.008753657]
+              "Transform": [-1,0,8.742278E-08,0,1,0,-8.742278E-08,0,-1,0,0.5140827,0]
             }
           ]
         },
