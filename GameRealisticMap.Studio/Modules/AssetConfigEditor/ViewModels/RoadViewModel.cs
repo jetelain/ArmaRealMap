@@ -53,9 +53,54 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public float ClearWidth { get => clearWidth; set { clearWidth = value; NotifyOfPropertyChange(); } }
 
-        public float Width { get => width; set { width = value; NotifyOfPropertyChange(); } }
+        public float Width { get => width; set { width = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(LaneOffset)); } }
 
         public float TextureWidth { get => textureWidth; set { textureWidth = value; NotifyOfPropertyChange(); } }
+
+        public float LaneOffset
+        {
+            get
+            {
+                if (IsTwoLanes)
+                {
+                    return Width / 2;
+                }
+                return 0;
+            }
+        }
+
+        public bool IsTwoLanes
+        {
+            get
+            {
+                switch (FillId)
+                {
+                    case RoadTypeId.TwoLanesMotorway:
+                    case RoadTypeId.TwoLanesPrimaryRoad:
+                    case RoadTypeId.TwoLanesSecondaryRoad:
+                    case RoadTypeId.TwoLanesConcreteRoad:
+                        return true;
+                }
+                return false;
+            } 
+        }
+
+        public bool IsOneLane => !IsPedestrian;
+
+        public bool IsPedestrian
+        {
+            get
+            {
+                switch (FillId)
+                {
+                    case RoadTypeId.ConcreteFootway:
+                    case RoadTypeId.Trail:
+                        return true;
+                }
+                return false;
+            }
+        }
+
 
         public string Texture { get => texture; set { texture = value; NotifyOfPropertyChange(); } }
 
@@ -97,6 +142,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 item.AddComposition(model, detected);
             }
+        }
+        public override IEnumerable<string> GetModels()
+        {
+            return Items.SelectMany(i => i.Composition.Items.Select(i => i.Model.Path));
         }
     }
 }

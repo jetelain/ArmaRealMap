@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
@@ -16,9 +17,10 @@ using GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
-    internal abstract class AssetDensityBase<TId, TDefinition> : AssetProbabilityBase<TId, TDefinition>, IWithEditableProbability
+    internal abstract class AssetDensityBase<TId, TDefinition, TItem> : AssetProbabilityBase<TId, TDefinition>, IWithEditableProbability
         where TId : struct, Enum
         where TDefinition : class, IWithDensity, IWithProbability
+        where TItem : class, IWithEditableProbability
     {
 
         protected AssetDensityBase(TId id, TDefinition? definition, AssetConfigEditorViewModel parent)
@@ -55,6 +57,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
                 return $"{MinDensity} to {MaxDensity} objects/m²";
             }
         }
+
+        public abstract ObservableCollection<TItem> Items { get; }
+
+        public bool IsEmpty => Items.Count == 0;
 
         protected abstract double GetMaxDensity();
 
@@ -150,6 +156,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             var (obj, status) = GeneratePreviewItems();
             return obj;
+        }
+
+        public Task MakeItemsEquiprobable()
+        {
+            DefinitionHelper.Equiprobable(Items, UndoRedoManager);
+            return Task.CompletedTask;
         }
     }
 }

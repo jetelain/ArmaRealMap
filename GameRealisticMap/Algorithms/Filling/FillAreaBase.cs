@@ -38,8 +38,11 @@ namespace GameRealisticMap.Algorithms.Filling
             var areas = new ConcurrentBag<AreaFillingBase<TModelInfo>>();
             Parallel.ForEach(polygons, new ParallelOptions() { MaxDegreeOfParallelism = Math.Max(2, Environment.ProcessorCount * 3 / 4) }, poly =>
             {
-                var definition = new AreaDefinition(poly);
-                areas.Add(GenerateAreaSelectData(definition));
+                if (poly.Area > 1)
+                {
+                    var definition = new AreaDefinition(poly);
+                    areas.Add(GenerateAreaSelectData(definition));
+                }
             });
             return areas.ToList();
         }

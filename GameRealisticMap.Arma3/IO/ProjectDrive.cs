@@ -48,6 +48,7 @@ namespace GameRealisticMap.Arma3.IO
             {
                 if (fallBack != null)
                 {
+                    Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
                     using (var target = File.Create(fullPath))
                     {
                         fallBack.CopyTo(target);

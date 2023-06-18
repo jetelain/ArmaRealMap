@@ -43,5 +43,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
         {
 
         }
+        public override IEnumerable<string> GetModels()
+        {
+            return Items.SelectMany(i => i.Composition.Items.Select(i => i.Model.Path));
+        }
     }
 }

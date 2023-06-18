@@ -10,7 +10,10 @@
              d:DesignHeight="800" d:DesignWidth="800">
     <UserControl.Resources>
         <local:TexturePreviewConverter x:Key="TexturePreviewConverter" />
-        <local:MultipleConverter Scale="10" x:Key="X10" />
+        <local:MultipleConverter Scale="15" x:Key="X15" />
+        <local:MarginConverter Scale="15" x:Key="Margin15" />
+        <local:MarginConverter Scale="15" x:Key="Margin15R" Right="True" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <ScrollViewer local:Behaviors.EnforceScroll="True">
         <StackPanel Margin="10 0">
@@ -61,50 +64,59 @@
                 </StackPanel>
 
                 <Grid Grid.Column="1">
-                    <StackPanel Height="300">
+                    <StackPanel Height="500">
                         <Image Source="{Binding TextureEnd, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                         <Image Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
-                           Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                           Width="{Binding TextureWidth, Converter={StaticResource X15}}" />
                     </StackPanel>
-                    <Border Height="300" BorderBrush="Red" BorderThickness="1" Grid.Column="1" Width="{Binding Width, Converter={StaticResource X10}}" />
-                    <Border Height="300" BorderBrush="Green" BorderThickness="1" Grid.Column="1" Width="{Binding ClearWidth, Converter={StaticResource X10}}" />
+                    <Border Height="500" BorderBrush="Red" BorderThickness="1" Grid.Column="1" Width="{Binding Width, Converter={StaticResource X15}}" />
+                    <Border Height="500" BorderBrush="Green" BorderThickness="1" Grid.Column="1" Width="{Binding ClearWidth, Converter={StaticResource X15}}" />
+                    <Ellipse Width="15" Fill="Black" Height="10" Opacity="0.75" Visibility="{Binding IsPedestrian, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <Ellipse Width="6" Fill="Black" Height="6" Opacity="0.75" Visibility="{Binding IsPedestrian, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/CarTopView.png" Width="38" Margin="{Binding LaneOffset, Converter={StaticResource Margin15}}" VerticalAlignment="Bottom" Opacity="0.5" Visibility="{Binding IsOneLane, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/CarTopView.png" Width="38" Margin="{Binding LaneOffset, Converter={StaticResource Margin15R}}" VerticalAlignment="Bottom" Opacity="0.5" Visibility="{Binding IsTwoLanes, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                        <Image.RenderTransform>
+                            <RotateTransform Angle="180" CenterX="19" CenterY="0" />
+                        </Image.RenderTransform>
+                    </Image>
                 </Grid>
             </Grid>
   

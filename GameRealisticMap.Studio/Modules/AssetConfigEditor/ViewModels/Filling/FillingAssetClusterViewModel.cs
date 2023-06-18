@@ -18,7 +18,7 @@ using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
-    internal class FillingAssetClusterViewModel : AssetDensityBase<ClusterCollectionId, ClusterCollectionDefinition>
+    internal class FillingAssetClusterViewModel : AssetDensityBase<ClusterCollectionId, ClusterCollectionDefinition, SeedItem>
     {
         public FillingAssetClusterViewModel(ClusterCollectionId id, ClusterCollectionDefinition? definition, AssetConfigEditorViewModel shell)
             : base(id, definition, shell)
@@ -45,7 +45,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public override IEnumerable<IExplorerTreeItem> Children => Items;
 
-        public ObservableCollection<SeedItem> Items { get; }
+        public override ObservableCollection<SeedItem> Items { get; }
 
         public RelayCommand RemoveSeed { get; }
 
@@ -53,7 +53,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public double PreviewBoxWidthPixels { get; }
 
-        public bool IsEmpty { get { return Items.Count == 0; } }
 
         public override ClusterCollectionDefinition ToDefinition()
         {
@@ -126,7 +125,16 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             {
                 return FullPreviewGenerator.Forest(this);
             }
+            if (FullPreviewGenerator.IsScrub(this))
+            {
+                return FullPreviewGenerator.Scrub(this);
+            }
             return base.GenerateFullPreviewItems();
+        }
+
+        public override IEnumerable<string> GetModels()
+        {
+            return Items.SelectMany(i => i.Items.SelectMany(i => i.Composition.Items.Select(i => i.Model.Path)));
         }
     }
 }

@@ -69,7 +69,7 @@ namespace GameRealisticMap.Arma3.IO
         public async Task Save(string filename)
         {
             using var stream = File.Create(filename);
-            await JsonSerializer.SerializeAsync(stream, this).ConfigureAwait(false);
+            await JsonSerializer.SerializeAsync(stream, this, new JsonSerializerOptions() { WriteIndented = true }).ConfigureAwait(false);
         }
 
         public async Task Save(Stream stream)

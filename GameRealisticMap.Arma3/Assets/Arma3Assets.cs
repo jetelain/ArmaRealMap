@@ -13,8 +13,11 @@ using GameRealisticMap.ManMade.Roads.Libraries;
 
 namespace GameRealisticMap.Arma3.Assets
 {
-    public class Arma3Assets : IArma3RegionAssets, IRoadTypeLibrary<Arma3RoadTypeInfos>
+    public class Arma3Assets : Arma3AssetsDependenciesOnly, IArma3RegionAssets, IRoadTypeLibrary<Arma3RoadTypeInfos>
     {
+        public const string BuiltinPrefix = "builtin:";
+        private const string BuiltinNamespace = "GameRealisticMap.Arma3.Builtin.";
+
         public Dictionary<BasicCollectionId, List<BasicCollectionDefinition>> BasicCollections { get; set; } = new ();
         
         public Dictionary<RoadTypeId, BridgeDefinition> Bridges { get; set; } = new ();
@@ -32,6 +35,7 @@ namespace GameRealisticMap.Arma3.Assets
         public Dictionary<PondSizeId, ModelInfo> Ponds { get; set; } = new ();
 
         public Dictionary<FenceTypeId, List<FenceDefinition>> Fences { get; set; } = new();
+
 
         public IReadOnlyCollection<BasicCollectionDefinition> GetBasicCollections(BasicCollectionId basicId)
         {
@@ -98,14 +102,14 @@ namespace GameRealisticMap.Arma3.Assets
 
         public string BaseDependency { get; set; } = "arm_centraleurope";
         
-        public static JsonSerializerOptions CreateJsonSerializerOptions(IModelInfoLibrary library)
+        public static JsonSerializerOptions CreateJsonSerializerOptions(IModelInfoLibrary library, bool allowUnresolvedModel = false)
         {
             return new JsonSerializerOptions()
             {
                 Converters =
                 {
                     new JsonStringEnumConverter(),
-                    new ModelInfoReferenceConverter(library)
+                    new ModelInfoReferenceConverter(library, allowUnresolvedModel)
                 },
                 WriteIndented = true
             };
@@ -116,14 +120,68 @@ namespace GameRealisticMap.Arma3.Assets
             return Lookup(Fences, typeId);
         }
 
-        public static async Task<Arma3Assets> LoadFromFile(ModelInfoLibrary library, string path)
+        public static List<string> GetBuiltinList()
         {
-            Arma3Assets? assets;
-            using (var source = File.OpenRead(path))
+            return typeof(Arma3Assets).Assembly.GetManifestResourceNames()
+                .Where(r => r.StartsWith(BuiltinNamespace, StringComparison.Ordinal))
+                .Select(r => BuiltinPrefix + r.Substring(BuiltinNamespace.Length))
+                .OrderBy(r => r)
+                .ToList();
+        }
+
+        public static async Task<Arma3Assets> LoadFromFile(ModelInfoLibrary library, string path, bool allowUnresolvedModel = false)
+        {
+            Arma3Assets? assets = null;
+
+            if (path.StartsWith(BuiltinPrefix))
             {
-                assets = await JsonSerializer.DeserializeAsync<Arma3Assets>(source, CreateJsonSerializerOptions(library));
+                var filename = path.Substring(BuiltinPrefix.Length);
+                using (var source = typeof(Arma3Assets).Assembly.GetManifestResourceStream(BuiltinNamespace + filename))
+                {
+                    if (source == null)
+                    {
+                        throw new FileNotFoundException($"Builtin file '{filename}' does not exists (name is case sensitive).");
+                    }
+                    assets = await JsonSerializer.DeserializeAsync<Arma3Assets>(source, CreateJsonSerializerOptions(library, allowUnresolvedModel));
+                }
+            }
+            else
+            {
+                using (var source = File.OpenRead(path))
+                {
+                    assets = await JsonSerializer.DeserializeAsync<Arma3Assets>(source, CreateJsonSerializerOptions(library, allowUnresolvedModel));
+                }
             }
             if ( assets == null)
+            {
+                throw new IOException("Invalid JSON file");
+            }
+            return assets;
+        }
+
+        public static async Task<Arma3AssetsDependenciesOnly> LoadDependenciesFromFile(string path)
+        {
+            Arma3AssetsDependenciesOnly? assets = null;
+            if (path.StartsWith(BuiltinPrefix))
+            {
+                var filename = path.Substring(BuiltinPrefix.Length);
+                using (var source = typeof(Arma3Assets).Assembly.GetManifestResourceStream(BuiltinNamespace + filename))
+                {
+                    if (source == null)
+                    {
+                        throw new FileNotFoundException($"Builtin file '{filename}' does not exists (name is case sensitive).");
+                    }
+                    assets = await JsonSerializer.DeserializeAsync<Arma3AssetsDependenciesOnly>(source);
+                }
+            }
+            else
+            {
+                using (var source = File.OpenRead(path))
+                {
+                    assets = await JsonSerializer.DeserializeAsync<Arma3AssetsDependenciesOnly>(source);
+                }
+            }
+            if (assets == null)
             {
                 throw new IOException("Invalid JSON file");
             }

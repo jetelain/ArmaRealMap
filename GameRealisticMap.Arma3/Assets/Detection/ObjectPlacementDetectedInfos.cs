@@ -90,6 +90,8 @@ namespace GameRealisticMap.Arma3.Assets.Detection
 
         private static List<Vector3> GetPointsInComponent(Vector3 boundingCenter, LOD geoLod)
         {
+            var fixY = new Vector3(0, boundingCenter.Y, 0);
+
             return
                 // Get faces of components
                 geoLod.NamedSelections
@@ -102,7 +104,7 @@ namespace GameRealisticMap.Arma3.Assets.Detection
                 .Select(i => geoLod.Vertices[i])
 
                 // Return vertices corrected by BoundingCenter
-                .Select(v => v.Vector3 + boundingCenter)
+                .Select(v => v.Vector3 + fixY)
                 .ToList();
         }
 
