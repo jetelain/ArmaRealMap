@@ -28,7 +28,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         [ImportingConstructor]
         public ProgressToolViewModel(IOutput output, IShell shell)
         {
-            DisplayName = "Task Progress";
+            DisplayName = Labels.TaskProgress;
             this.output = output;
             this.shell = shell;
 

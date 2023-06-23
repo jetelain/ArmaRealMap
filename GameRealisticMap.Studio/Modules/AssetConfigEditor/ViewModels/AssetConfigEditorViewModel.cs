@@ -70,12 +70,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             _compositionTool = compositionTool;
             Children = new List<IExplorerTreeItem>()
             {
-                new ExplorerTreeItem("Natural areas", Filling, "Nature"),
-                new ExplorerTreeItem("Fences, walls", Fences, "Fence"),
-                new ExplorerTreeItem("Buildings", Buildings, "Buildings"),
-                new ExplorerTreeItem("Objects", Objects, "Objects"),
-                new ExplorerTreeItem("Ground materials", Materials, "Materials"),
-                new ExplorerTreeItem("Roads and bridges", Roads, "Road")
+                new ExplorerTreeItem(Labels.NaturalAreas, Filling, "Nature"),
+                new ExplorerTreeItem(Labels.FencesWalls, Fences, "Fence"),
+                new ExplorerTreeItem(Labels.Buildings, Buildings, "Buildings"),
+                new ExplorerTreeItem(Labels.AssetObjects, Objects, "Objects"),
+                new ExplorerTreeItem(Labels.GroundMaterials, Materials, "Materials"),
+                new ExplorerTreeItem(Labels.RoadsAndBridges, Roads, "Road")
             };
             UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; CanCopyFrom = false; };
             AdditionalFilling = CreateNatureFilling();

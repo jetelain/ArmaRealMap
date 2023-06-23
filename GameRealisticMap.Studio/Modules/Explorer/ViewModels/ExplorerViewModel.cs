@@ -18,7 +18,7 @@ namespace GameRealisticMap.Studio.Modules.Explorer.ViewModels
         public ExplorerViewModel(IShell shell) 
         {
             _shell = shell;
-            DisplayName = "Explorer";
+            DisplayName = Labels.Explorer;
             Items = CollectionViewSource.GetDefaultView(_shell.Documents);
             Items.Filter = o => o is IExplorerRootTreeItem;
 

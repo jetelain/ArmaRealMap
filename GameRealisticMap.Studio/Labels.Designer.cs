@@ -61,6 +61,60 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Active mods.
+        /// </summary>
+        public static string ActiveMods {
+            get {
+                return ResourceManager.GetString("ActiveMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Add a composition.
+        /// </summary>
+        public static string AddAComposition {
+            get {
+                return ResourceManager.GetString("AddAComposition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Add an empty seed.
+        /// </summary>
+        public static string AddAnEmptySeed {
+            get {
+                return ResourceManager.GetString("AddAnEmptySeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Add an object.
+        /// </summary>
+        public static string AddAnObject {
+            get {
+                return ResourceManager.GetString("AddAnObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Add a seed from an object.
+        /// </summary>
+        public static string AddASeedFromAnObject {
+            get {
+                return ResourceManager.GetString("AddASeedFromAnObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Add a variation.
+        /// </summary>
+        public static string AddAVariation {
+            get {
+                return ResourceManager.GetString("AddAVariation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Advanced parameters.
         /// </summary>
         public static string AdvancedParameters {
@@ -70,11 +124,56 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Almost done.
+        /// </summary>
+        public static string AlmostDone {
+            get {
+                return ResourceManager.GetString("AlmostDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Arma 3 Map Config.
         /// </summary>
         public static string Arma3MapConfig {
             get {
                 return ResourceManager.GetString("Arma3MapConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à CfgPatches defining base world.
+        /// </summary>
+        public static string ArmaBaseWorldDependency {
+            get {
+                return ResourceManager.GetString("ArmaBaseWorldDependency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Base world defines light, sky, procedural objects on ground, and many other aspects. Everything can be overriden in a map with config.cpp..
+        /// </summary>
+        public static string ArmaBaseWorldHint {
+            get {
+                return ResourceManager.GetString("ArmaBaseWorldHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à CfgWorlds base world name.
+        /// </summary>
+        public static string ArmaBaseWorldName {
+            get {
+                return ResourceManager.GetString("ArmaBaseWorldName", resourceCulture);
             }
         }
         
@@ -385,6 +484,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Assets Browser.
+        /// </summary>
+        public static string AssetsBrowser {
+            get {
+                return ResourceManager.GetString("AssetsBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Assets configuration / style of map.
         /// </summary>
         public static string AssetsConfiguration {
@@ -520,6 +628,51 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Bridge elements.
+        /// </summary>
+        public static string BridgeElements {
+            get {
+                return ResourceManager.GetString("BridgeElements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à End.
+        /// </summary>
+        public static string BridgeEnd {
+            get {
+                return ResourceManager.GetString("BridgeEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Middle.
+        /// </summary>
+        public static string BridgeMiddle {
+            get {
+                return ResourceManager.GetString("BridgeMiddle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Single.
+        /// </summary>
+        public static string BridgeSingle {
+            get {
+                return ResourceManager.GetString("BridgeSingle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Start.
+        /// </summary>
+        public static string BridgeStart {
+            get {
+                return ResourceManager.GetString("BridgeStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Browse Assets.
         /// </summary>
         public static string BrowseAssets {
@@ -538,7 +691,115 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à You can use map below to select an area (Ctrl+Press, or Alt+Press).
+        ///   Recherche une chaîne localisée semblable à Buildings.
+        /// </summary>
+        public static string Buildings {
+            get {
+                return ResourceManager.GetString("Buildings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Change.
+        /// </summary>
+        public static string Change {
+            get {
+                return ResourceManager.GetString("Change", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Clear.
+        /// </summary>
+        public static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Width without objets.
+        /// </summary>
+        public static string ClearWidth {
+            get {
+                return ResourceManager.GetString("ClearWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Color Id.
+        /// </summary>
+        public static string ColorId {
+            get {
+                return ResourceManager.GetString("ColorId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Color Texture.
+        /// </summary>
+        public static string ColorTexture {
+            get {
+                return ResourceManager.GetString("ColorTexture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Clipboard does not contains recognized data.
+        /// </summary>
+        public static string CompositionClipboardInvalid {
+            get {
+                return ResourceManager.GetString("CompositionClipboardInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Unable to detect size and position.
+        /// </summary>
+        public static string CompositionClipboardUnknownSize {
+            get {
+                return ResourceManager.GetString("CompositionClipboardUnknownSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Objects position.
+        /// </summary>
+        public static string CompositionToolTitle {
+            get {
+                return ResourceManager.GetString("CompositionToolTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Compute maximum.
+        /// </summary>
+        public static string ComputeMaximum {
+            get {
+                return ResourceManager.GetString("ComputeMaximum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Configuration.
+        /// </summary>
+        public static string Configuration {
+            get {
+                return ResourceManager.GetString("Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à You can use map below to select an area (Ctrl+Mouse, or Alt+Mouse).
         /// </summary>
         public static string CoordinatesHint {
             get {
@@ -561,6 +822,24 @@ namespace GameRealisticMap.Studio {
         public static string CoordinatesSouthWestOfMap {
             get {
                 return ResourceManager.GetString("CoordinatesSouthWestOfMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0} items.
+        /// </summary>
+        public static string CountItems {
+            get {
+                return ResourceManager.GetString("CountItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à none.
+        /// </summary>
+        public static string CountNone {
+            get {
+                return ResourceManager.GetString("CountNone", resourceCulture);
             }
         }
         
@@ -601,6 +880,60 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Data seems valid..
+        /// </summary>
+        public static string DataSeemsValid {
+            get {
+                return ResourceManager.GetString("DataSeemsValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Density.
+        /// </summary>
+        public static string Density {
+            get {
+                return ResourceManager.GetString("Density", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0:0.00} msec/100 m². Density is OK..
+        /// </summary>
+        public static string DensityResultsOK {
+            get {
+                return ResourceManager.GetString("DensityResultsOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0:0.00} msec/100 m². Density is too high, should reduce it to {1}.
+        /// </summary>
+        public static string DensityResultsTooHigh {
+            get {
+                return ResourceManager.GetString("DensityResultsTooHigh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Depth.
+        /// </summary>
+        public static string Depth {
+            get {
+                return ResourceManager.GetString("Depth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Detected type.
+        /// </summary>
+        public static string DetectedType {
+            get {
+                return ResourceManager.GetString("DetectedType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Download from official site (free).
         /// </summary>
         public static string DownloadFromOfficialSiteFree {
@@ -615,6 +948,69 @@ namespace GameRealisticMap.Studio {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Explorer.
+        /// </summary>
+        public static string Explorer {
+            get {
+                return ResourceManager.GetString("Explorer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Fences, walls.
+        /// </summary>
+        public static string FencesWalls {
+            get {
+                return ResourceManager.GetString("FencesWalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Filling objects.
+        /// </summary>
+        public static string FillingObjects {
+            get {
+                return ResourceManager.GetString("FillingObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Filling options.
+        /// </summary>
+        public static string FillingOptions {
+            get {
+                return ResourceManager.GetString("FillingOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Filling seeds/objects.
+        /// </summary>
+        public static string FillingSeedsObjects {
+            get {
+                return ResourceManager.GetString("FillingSeedsObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Filter.
+        /// </summary>
+        public static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Area Radius.
+        /// </summary>
+        public static string FitRadius {
+            get {
+                return ResourceManager.GetString("FitRadius", resourceCulture);
             }
         }
         
@@ -673,6 +1069,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate Preview with linked areas.
+        /// </summary>
+        public static string GeneratePreviewWithLinkedAreas {
+            get {
+                return ResourceManager.GetString("GeneratePreviewWithLinkedAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Generate raw satellite image.
         /// </summary>
         public static string GenerateRawSatelliteImage {
@@ -700,6 +1105,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generating preview....
+        /// </summary>
+        public static string GeneratingPreview {
+            get {
+                return ResourceManager.GetString("GeneratingPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Getting Started.
         /// </summary>
         public static string GettingStarted {
@@ -714,6 +1128,15 @@ namespace GameRealisticMap.Studio {
         public static string GettingStartedDescription {
             get {
                 return ResourceManager.GetString("GettingStartedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ground materials.
+        /// </summary>
+        public static string GroundMaterials {
+            get {
+                return ResourceManager.GetString("GroundMaterials", resourceCulture);
             }
         }
         
@@ -745,6 +1168,42 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import assets.
+        /// </summary>
+        public static string ImportAssets {
+            get {
+                return ResourceManager.GetString("ImportAssets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import from clipboad.
+        /// </summary>
+        public static string ImportFromClipboad {
+            get {
+                return ResourceManager.GetString("ImportFromClipboad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à In VR world place wanted objects, then use export for Terrain Builder, and copy value..
+        /// </summary>
+        public static string ImportFromClipboardArma3Hint1 {
+            get {
+                return ResourceManager.GetString("ImportFromClipboardArma3Hint1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Native export may give strange results, for a better result use.
+        /// </summary>
+        public static string ImportFromClipboardArma3Hint2 {
+            get {
+                return ResourceManager.GetString("ImportFromClipboardArma3Hint2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ✔ Installed.
         /// </summary>
         public static string Installed {
@@ -763,6 +1222,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Label.
+        /// </summary>
+        public static string Label {
+            get {
+                return ResourceManager.GetString("Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Launch to approve license.
         /// </summary>
         public static string LaunchApproveLicense {
@@ -777,6 +1245,42 @@ namespace GameRealisticMap.Studio {
         public static string LicenseNotApproved {
             get {
                 return ResourceManager.GetString("LicenseNotApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Loading....
+        /// </summary>
+        public static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Loading objects shapes....
+        /// </summary>
+        public static string LoadingObjectsShapes {
+            get {
+                return ResourceManager.GetString("LoadingObjectsShapes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Make objects equiprobable.
+        /// </summary>
+        public static string MakeObjectsEquiprobable {
+            get {
+                return ResourceManager.GetString("MakeObjectsEquiprobable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Make seeds equiprobable.
+        /// </summary>
+        public static string MakeSeedsEquiprobable {
+            get {
+                return ResourceManager.GetString("MakeSeedsEquiprobable", resourceCulture);
             }
         }
         
@@ -801,11 +1305,119 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Matching.
+        /// </summary>
+        public static string Matching {
+            get {
+                return ResourceManager.GetString("Matching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Material.
+        /// </summary>
+        public static string Material {
+            get {
+                return ResourceManager.GetString("Material", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Max Scale.
+        /// </summary>
+        public static string MaxScale {
+            get {
+                return ResourceManager.GetString("MaxScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Max Z.
+        /// </summary>
+        public static string MaxZ {
+            get {
+                return ResourceManager.GetString("MaxZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à meters.
         /// </summary>
         public static string MetersUnit {
             get {
                 return ResourceManager.GetString("MetersUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Min Scale.
+        /// </summary>
+        public static string MinScale {
+            get {
+                return ResourceManager.GetString("MinScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0:0.0} min left.
+        /// </summary>
+        public static string MinutesLeft {
+            get {
+                return ResourceManager.GetString("MinutesLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Min Z.
+        /// </summary>
+        public static string MinZ {
+            get {
+                return ResourceManager.GetString("MinZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Please install them with Steam, then reload this file..
+        /// </summary>
+        public static string MissingModsHint {
+            get {
+                return ResourceManager.GetString("MissingModsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Model.
+        /// </summary>
+        public static string Model {
+            get {
+                return ResourceManager.GetString("Model", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Natural areas.
+        /// </summary>
+        public static string NaturalAreas {
+            get {
+                return ResourceManager.GetString("NaturalAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Normal Texture.
+        /// </summary>
+        public static string NormalTexture {
+            get {
+                return ResourceManager.GetString("NormalTexture", resourceCulture);
             }
         }
         
@@ -828,6 +1440,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à objects/m².
+        /// </summary>
+        public static string ObjectsPerM2 {
+            get {
+                return ResourceManager.GetString("ObjectsPerM2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Open Arma3 Launcher.
         /// </summary>
         public static string OpenArma3Launcher {
@@ -837,11 +1458,110 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Open result.
+        /// </summary>
+        public static string OpenResult {
+            get {
+                return ResourceManager.GetString("OpenResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Preview.
+        /// </summary>
+        public static string Preview {
+            get {
+                return ResourceManager.GetString("Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Probability.
+        /// </summary>
+        public static string Probability {
+            get {
+                return ResourceManager.GetString("Probability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Probability of this variation.
+        /// </summary>
+        public static string ProbabilityOfThisCollection {
+            get {
+                return ResourceManager.GetString("ProbabilityOfThisCollection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à ⚡ Quick start from :.
+        /// </summary>
+        public static string QuickStartFrom {
+            get {
+                return ResourceManager.GetString("QuickStartFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Radius.
+        /// </summary>
+        public static string Radius {
+            get {
+                return ResourceManager.GetString("Radius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Random from.
+        /// </summary>
+        public static string RandomFrom {
+            get {
+                return ResourceManager.GetString("RandomFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à to.
+        /// </summary>
+        public static string RandomTo {
+            get {
+                return ResourceManager.GetString("RandomTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0} to {1} objects/m².
+        /// </summary>
+        public static string RangeObjectsPerM2 {
+            get {
+                return ResourceManager.GetString("RangeObjectsPerM2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ⟳ Refresh.
         /// </summary>
         public static string Refresh {
             get {
                 return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Remove.
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Remove seed.
+        /// </summary>
+        public static string RemoveSeed {
+            get {
+                return ResourceManager.GetString("RemoveSeed", resourceCulture);
             }
         }
         
@@ -864,6 +1584,69 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Road configuration.
+        /// </summary>
+        public static string RoadConfiguration {
+            get {
+                return ResourceManager.GetString("RoadConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à RV Material.
+        /// </summary>
+        public static string RoadRvMaterial {
+            get {
+                return ResourceManager.GetString("RoadRvMaterial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Roads and bridges.
+        /// </summary>
+        public static string RoadsAndBridges {
+            get {
+                return ResourceManager.GetString("RoadsAndBridges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Satellite Render Color.
+        /// </summary>
+        public static string RoadSatelliteColor {
+            get {
+                return ResourceManager.GetString("RoadSatelliteColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Same as.
+        /// </summary>
+        public static string SameAs {
+            get {
+                return ResourceManager.GetString("SameAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0:0.0} sec left.
+        /// </summary>
+        public static string SecondsLeft {
+            get {
+                return ResourceManager.GetString("SecondsLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Seed #{0}.
+        /// </summary>
+        public static string SeedNumber {
+            get {
+                return ResourceManager.GetString("SeedNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Setup with Arma3 Tools.
         /// </summary>
         public static string SetupWithArma3Tools {
@@ -873,11 +1656,110 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Show error.
+        /// </summary>
+        public static string ShowError {
+            get {
+                return ResourceManager.GetString("ShowError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Size.
+        /// </summary>
+        public static string Size {
+            get {
+                return ResourceManager.GetString("Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Some mods are missing.
+        /// </summary>
+        public static string SomeModsAreMissing {
+            get {
+                return ResourceManager.GetString("SomeModsAreMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Task Progress.
+        /// </summary>
+        public static string TaskProgress {
+            get {
+                return ResourceManager.GetString("TaskProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Texture.
+        /// </summary>
+        public static string Texture {
+            get {
+                return ResourceManager.GetString("Texture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Texture End.
+        /// </summary>
+        public static string TextureEnd {
+            get {
+                return ResourceManager.GetString("TextureEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Texture size.
+        /// </summary>
+        public static string TextureSize {
+            get {
+                return ResourceManager.GetString("TextureSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Texture Width.
+        /// </summary>
+        public static string TextureWidth {
+            get {
+                return ResourceManager.GetString("TextureWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à This tool will allow you to generate ready-to-use mod..
         /// </summary>
         public static string ThisToolWillAllowYouToGenerateReadyToUseMod {
             get {
                 return ResourceManager.GetString("ThisToolWillAllowYouToGenerateReadyToUseMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Type.
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use same texte as.
+        /// </summary>
+        public static string UseSameTexteAs {
+            get {
+                return ResourceManager.GetString("UseSameTexteAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Usual terrain mods.
+        /// </summary>
+        public static string UsualTerrainMods {
+            get {
+                return ResourceManager.GetString("UsualTerrainMods", resourceCulture);
             }
         }
         
@@ -896,6 +1778,24 @@ namespace GameRealisticMap.Studio {
         public static string WarnRecommanded {
             get {
                 return ResourceManager.GetString("WarnRecommanded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Water tiles.
+        /// </summary>
+        public static string WaterTiles {
+            get {
+                return ResourceManager.GetString("WaterTiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Width.
+        /// </summary>
+        public static string Width {
+            get {
+                return ResourceManager.GetString("Width", resourceCulture);
             }
         }
         

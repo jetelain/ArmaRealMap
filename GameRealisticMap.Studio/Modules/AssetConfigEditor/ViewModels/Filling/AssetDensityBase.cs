@@ -52,9 +52,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             {
                 if (MaxDensity == MinDensity)
                 {
-                    return $"{MaxDensity} objects/m²";
+                    return $"{MaxDensity} {Labels.ObjectsPerM2}";
                 }
-                return $"{MinDensity} to {MaxDensity} objects/m²";
+                return string.Format(Labels.RangeObjectsPerM2, MinDensity, MaxDensity);
             }
         }
 
@@ -95,11 +95,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             string generatePreviewInfo;
             if ( effective < wanted )
             {
-                generatePreviewInfo = $"{sw.ElapsedMilliseconds * 100d / area:0.00} msec/100 m². Density is too high, should reduce it to {effective / area}";
+                generatePreviewInfo = string.Format(Labels.DensityResultsTooHigh, sw.ElapsedMilliseconds * 100d / area, effective / area);
             }
             else
             {
-                generatePreviewInfo = $"{sw.ElapsedMilliseconds * 100d / area:0.00} msec/100 m². Density is OK.";
+                generatePreviewInfo = string.Format(Labels.DensityResultsOK, sw.ElapsedMilliseconds * 100d / area);
             }
             return (layer.SelectMany(c => c.Model.ToTerrainBuilderObjects(c)).ToList(), generatePreviewInfo);
         }
@@ -107,7 +107,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         protected void SetPreview(List<TerrainBuilderObject> objects, string status = "")
         {
             var helper = IoC.Get<IArma3DataModule>().ModelPreviewHelper;
-            GeneratePreviewStatus = "Loading objects shapes...";
+            GeneratePreviewStatus = Labels.LoadingObjectsShapes;
             PreviewItems =
                 objects.SelectMany(o => helper.ToVisualPolygons(o).Select(p => new PreviewItem(p, o.Model, o.Scale, true)))
                 .Concat(objects.SelectMany(o => helper.ToPolygons(o).Select(p => new PreviewItem(p, o.Model, o.Scale, false))))
@@ -134,7 +134,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             if (!IsGeneratingPreview)
             {
-                GeneratePreviewStatus = "Generating preview...";
+                GeneratePreviewStatus = Labels.GeneratingPreview;
                 IsGeneratingPreview = true;
                 Task.Run(() => { var (obj, status) = GeneratePreviewItems(); SetPreview(obj, status); });
             }
@@ -145,7 +145,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             if (!IsGeneratingPreview)
             {
-                GeneratePreviewStatus = "Generating preview...";
+                GeneratePreviewStatus = Labels.GeneratingPreview;
                 IsGeneratingPreview = true;
                 Task.Run(() => SetPreview(GenerateFullPreviewItems()));
             }

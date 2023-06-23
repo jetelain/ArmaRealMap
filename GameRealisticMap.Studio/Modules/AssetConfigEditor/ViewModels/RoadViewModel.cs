@@ -41,10 +41,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             }
             Items = new List<BridgeViewModel>()
             {
-                new BridgeViewModel("Single", bridgeDefinition?.Single),
-                new BridgeViewModel("Start", bridgeDefinition?.Start),
-                new BridgeViewModel("Middle", bridgeDefinition?.Middle),
-                new BridgeViewModel("End", bridgeDefinition?.End)
+                new BridgeViewModel(Labels.BridgeSingle, bridgeDefinition?.Single),
+                new BridgeViewModel(Labels.BridgeStart, bridgeDefinition?.Start),
+                new BridgeViewModel(Labels.BridgeMiddle, bridgeDefinition?.Middle),
+                new BridgeViewModel(Labels.BridgeEnd, bridgeDefinition?.End)
             };
             ClearItem = new RelayCommand(item => ((BridgeViewModel)item).Clear());
         }

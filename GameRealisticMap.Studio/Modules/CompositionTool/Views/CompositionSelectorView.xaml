@@ -4,6 +4,7 @@
     xmlns:cal="http://www.caliburnproject.org"
     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:geminibehaviors="clr-namespace:Gemini.Framework.Behaviors;assembly=Gemini"
+    xmlns:r="clr-namespace:GameRealisticMap.Studio"
     xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
     x:Class="GameRealisticMap.Studio.Modules.CompositionTool.Views.CompositionSelectorView" 
     Background="{DynamicResource EnvironmentWindowBackground}"
@@ -11,7 +12,7 @@
     Width="760" Height="500" MinWidth="512" MinHeight="300" 
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="False"
-    Title="Add a composition">
+    Title="{x:Static r:Labels.AddAComposition}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -41,24 +42,31 @@
                 <StackPanel>
                     <GroupBox>
                         <GroupBox.Header>
-                            <TextBlock FontSize="20">Import from clipboad</TextBlock>
+                            <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.ImportFromClipboad}"/></TextBlock>
                         </GroupBox.Header>
                         <StackPanel>
-                            <TextBlock Margin="10">In VR world place wanted objects, then use export for Terrain Builder, and copy value.
-                                <LineBreak />Native export may give strange results, for a better result use <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/1174073713">[E2TB] Export to Terrain Builder</Hyperlink>.
+                            <TextBlock Margin="10">
+                                <Run Text="{x:Static r:Labels.ImportFromClipboardArma3Hint1}"/>
+                                <LineBreak /><Run Text="{x:Static r:Labels.ImportFromClipboardArma3Hint2}"/> <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/1174073713">[E2TB] Export to Terrain Builder</Hyperlink>.
                             </TextBlock>
 
                             <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardNotValid, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardRefresh">⟳ Refresh</Button>
+                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardRefresh">
+                                    <Run Text="{x:Static r:Labels.Refresh}"/>
+                                </Button>
                                 <TextBlock VerticalAlignment="Center" Foreground="Red" Margin="0 0 10 0">❌</TextBlock>
                                 <TextBlock VerticalAlignment="Center" Text="{Binding ClipboardError}"/>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardValid, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardRefresh">⟳ Refresh</Button>
-                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardImport">Import from clipboard</Button>
+                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardRefresh">
+                                    <Run Text="{x:Static r:Labels.Refresh}"/>
+                                </Button>
+                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardImport">
+                                    <Run Text="{x:Static r:Labels.ImportFromClipboad}"/>
+                                </Button>
                                 <TextBlock VerticalAlignment="Center" Foreground="Green" Margin="0 0 10 0">✔</TextBlock>
-                                <TextBlock VerticalAlignment="Center">Data seems valid.</TextBlock>
+                                <TextBlock VerticalAlignment="Center"><Run Text="{x:Static r:Labels.DataSeemsValid}"/></TextBlock>
                             </StackPanel>
      
                         </StackPanel>
@@ -88,7 +96,9 @@
             </Grid.ColumnDefinitions>
 
             <!--<Button Grid.Column="0" IsDefault="True" cal:Message.Attach="SaveChanges">OK</Button>-->
-            <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">Cancel</Button>
+            <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">
+                <Run Text="{x:Static r:Labels.Cancel}"/>
+            </Button>
         </Grid>
     </Grid>
 </Window>

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -20,7 +21,9 @@
 
 
             <StackPanel Margin="10" Orientation="Horizontal" >
-                <Label Width="200">Use same texte as</Label>
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.UseSameTexteAs}"/>
+                </Label>
                 <ComboBox 
                     Width="200" 
                     ItemsSource="{Binding Others}"
@@ -28,7 +31,9 @@
             </StackPanel>
 
             <StackPanel Margin="10" Orientation="Horizontal" >
-                <Label Width="200">Id</Label>
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.ColorId}"/>
+                </Label>
                 <toolkit:ColorPicker 
                     SelectedColor="{Binding ColorId,Mode=TwoWay}" 
                     Width="100"
@@ -39,12 +44,16 @@
             </StackPanel>
             
             <StackPanel Margin="10" Orientation="Horizontal" >
-                <Label Width="200">Color Texture</Label>
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.ColorTexture}"/>
+                </Label>
                 <TextBox Width="400" Text="{Binding ColorTexture,Mode=TwoWay}" IsEnabled="{Binding IsNotSameAs}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
             
             <StackPanel Margin="10" Orientation="Horizontal" >
-                <Label Width="200">Normal Texture</Label>
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.NormalTexture}"/>
+                </Label>
                 <TextBox Width="400" Text="{Binding NormalTexture,Mode=TwoWay}" IsEnabled="{Binding IsNotSameAs}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
             </StackPanel>
 

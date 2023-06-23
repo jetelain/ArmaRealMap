@@ -59,10 +59,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             _catalogService = catalogService;
             _modsService = arma3ModsService;
 
-            DisplayName = "Asset Browser - Arma 3";
-            Mods.Add(new ModOption("All", ""));
+            DisplayName = Labels.AssetsBrowser + " - Arma 3";
+            Mods.Add(new ModOption(Labels.All, ""));
             SetCategories.AddRange(Enum.GetValues<AssetCatalogCategory>().Select(c => new CategoryOption(c.ToString(), c)).OrderBy(c => c.Name));
-            Categories.Add(new CategoryOption("All", null));
+            Categories.Add(new CategoryOption(Labels.All, null));
             Categories.AddRange(SetCategories);
 
             ImportA3 = new RelayCommand(DoImportA3);

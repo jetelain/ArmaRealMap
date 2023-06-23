@@ -19,7 +19,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Commands
 
         public override string Text
         {
-            get { return "Assets Browser"; }
+            get { return Labels.AssetsBrowser; }
         }
 
         public override Uri IconSource => new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Objects.png");

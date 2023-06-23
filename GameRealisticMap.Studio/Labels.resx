@@ -385,7 +385,7 @@
     <value>Edit</value>
   </data>
   <data name="CoordinatesHint" xml:space="preserve">
-    <value>You can use map below to select an area (Ctrl+Press, or Alt+Press)</value>
+    <value>You can use map below to select an area (Ctrl+Mouse, or Alt+Mouse)</value>
   </data>
   <data name="MapUsageHint" xml:space="preserve">
     <value>To select an area on the map :
@@ -400,5 +400,305 @@
   </data>
   <data name="AssetConfigFileIsMissing" xml:space="preserve">
     <value>Asset config file is missing.</value>
+  </data>
+  <data name="AlmostDone" xml:space="preserve">
+    <value>Almost done</value>
+  </data>
+  <data name="MinutesLeft" xml:space="preserve">
+    <value>{0:0.0} min left</value>
+  </data>
+  <data name="SecondsLeft" xml:space="preserve">
+    <value>{0:0.0} sec left</value>
+  </data>
+  <data name="TaskProgress" xml:space="preserve">
+    <value>Task Progress</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="OpenResult" xml:space="preserve">
+    <value>Open result</value>
+  </data>
+  <data name="ShowError" xml:space="preserve">
+    <value>Show error</value>
+  </data>
+  <data name="Explorer" xml:space="preserve">
+    <value>Explorer</value>
+  </data>
+  <data name="CompositionToolTitle" xml:space="preserve">
+    <value>Objects position</value>
+  </data>
+  <data name="CompositionClipboardInvalid" xml:space="preserve">
+    <value>Clipboard does not contains recognized data</value>
+  </data>
+  <data name="CompositionClipboardUnknownSize" xml:space="preserve">
+    <value>Unable to detect size and position</value>
+  </data>
+  <data name="ImportFromClipboad" xml:space="preserve">
+    <value>Import from clipboad</value>
+  </data>
+  <data name="DataSeemsValid" xml:space="preserve">
+    <value>Data seems valid.</value>
+  </data>
+  <data name="ImportFromClipboardArma3Hint1" xml:space="preserve">
+    <value>In VR world place wanted objects, then use export for Terrain Builder, and copy value.</value>
+  </data>
+  <data name="ImportFromClipboardArma3Hint2" xml:space="preserve">
+    <value>Native export may give strange results, for a better result use</value>
+  </data>
+  <data name="AddAComposition" xml:space="preserve">
+    <value>Add a composition</value>
+  </data>
+  <data name="AssetsBrowser" xml:space="preserve">
+    <value>Assets Browser</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="DetectedType" xml:space="preserve">
+    <value>Detected type</value>
+  </data>
+  <data name="Matching" xml:space="preserve">
+    <value>Matching</value>
+  </data>
+  <data name="ImportAssets" xml:space="preserve">
+    <value>Import assets</value>
+  </data>
+  <data name="UsualTerrainMods" xml:space="preserve">
+    <value>Usual terrain mods</value>
+  </data>
+  <data name="ActiveMods" xml:space="preserve">
+    <value>Active mods</value>
+  </data>
+  <data name="SomeModsAreMissing" xml:space="preserve">
+    <value>Some mods are missing</value>
+  </data>
+  <data name="MissingModsHint" xml:space="preserve">
+    <value>Please install them with Steam, then reload this file.</value>
+  </data>
+  <data name="QuickStartFrom" xml:space="preserve">
+    <value>⚡ Quick start from :</value>
+  </data>
+  <data name="NaturalAreas" xml:space="preserve">
+    <value>Natural areas</value>
+  </data>
+  <data name="AddAVariation" xml:space="preserve">
+    <value>Add a variation</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Label" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="Probability" xml:space="preserve">
+    <value>Probability</value>
+  </data>
+  <data name="Density" xml:space="preserve">
+    <value>Density</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="FencesWalls" xml:space="preserve">
+    <value>Fences, walls</value>
+  </data>
+  <data name="Buildings" xml:space="preserve">
+    <value>Buildings</value>
+  </data>
+  <data name="TextureSize" xml:space="preserve">
+    <value>Texture size</value>
+  </data>
+  <data name="GroundMaterials" xml:space="preserve">
+    <value>Ground materials</value>
+  </data>
+  <data name="Texture" xml:space="preserve">
+    <value>Texture</value>
+  </data>
+  <data name="SameAs" xml:space="preserve">
+    <value>Same as</value>
+  </data>
+  <data name="RoadsAndBridges" xml:space="preserve">
+    <value>Roads and bridges</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="TextureWidth" xml:space="preserve">
+    <value>Texture Width</value>
+  </data>
+  <data name="ClearWidth" xml:space="preserve">
+    <value>Width without objets</value>
+  </data>
+  <data name="WaterTiles" xml:space="preserve">
+    <value>Water tiles</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="ArmaBaseWorldHint" xml:space="preserve">
+    <value>Base world defines light, sky, procedural objects on ground, and many other aspects. Everything can be overriden in a map with config.cpp.</value>
+  </data>
+  <data name="ArmaBaseWorldName" xml:space="preserve">
+    <value>CfgWorlds base world name</value>
+  </data>
+  <data name="ArmaBaseWorldDependency" xml:space="preserve">
+    <value>CfgPatches defining base world</value>
+  </data>
+  <data name="AddAnObject" xml:space="preserve">
+    <value>Add an object</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="FillingOptions" xml:space="preserve">
+    <value>Filling options</value>
+  </data>
+  <data name="ProbabilityOfThisCollection" xml:space="preserve">
+    <value>Probability of this variation</value>
+  </data>
+  <data name="RandomFrom" xml:space="preserve">
+    <value>Random from</value>
+  </data>
+  <data name="RandomTo" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="ObjectsPerM2" xml:space="preserve">
+    <value>objects/m²</value>
+  </data>
+  <data name="ComputeMaximum" xml:space="preserve">
+    <value>Compute maximum</value>
+  </data>
+  <data name="FillingObjects" xml:space="preserve">
+    <value>Filling objects</value>
+  </data>
+  <data name="MakeObjectsEquiprobable" xml:space="preserve">
+    <value>Make objects equiprobable</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="GeneratePreviewWithLinkedAreas" xml:space="preserve">
+    <value>Generate Preview with linked areas</value>
+  </data>
+  <data name="FillingSeedsObjects" xml:space="preserve">
+    <value>Filling seeds/objects</value>
+  </data>
+  <data name="AddAnEmptySeed" xml:space="preserve">
+    <value>Add an empty seed</value>
+  </data>
+  <data name="AddASeedFromAnObject" xml:space="preserve">
+    <value>Add a seed from an object</value>
+  </data>
+  <data name="MakeSeedsEquiprobable" xml:space="preserve">
+    <value>Make seeds equiprobable</value>
+  </data>
+  <data name="RemoveSeed" xml:space="preserve">
+    <value>Remove seed</value>
+  </data>
+  <data name="Radius" xml:space="preserve">
+    <value>Radius</value>
+  </data>
+  <data name="FitRadius" xml:space="preserve">
+    <value>Area Radius</value>
+  </data>
+  <data name="MaxZ" xml:space="preserve">
+    <value>Max Z</value>
+  </data>
+  <data name="MinZ" xml:space="preserve">
+    <value>Min Z</value>
+  </data>
+  <data name="MaxScale" xml:space="preserve">
+    <value>Max Scale</value>
+  </data>
+  <data name="MinScale" xml:space="preserve">
+    <value>Min Scale</value>
+  </data>
+  <data name="Depth" xml:space="preserve">
+    <value>Depth</value>
+  </data>
+  <data name="CountNone" xml:space="preserve">
+    <value>none</value>
+  </data>
+  <data name="CountItems" xml:space="preserve">
+    <value>{0} items</value>
+  </data>
+  <data name="BridgeSingle" xml:space="preserve">
+    <value>Single</value>
+  </data>
+  <data name="BridgeStart" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="BridgeMiddle" xml:space="preserve">
+    <value>Middle</value>
+  </data>
+  <data name="BridgeEnd" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="TextureEnd" xml:space="preserve">
+    <value>Texture End</value>
+  </data>
+  <data name="Material" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="RoadSatelliteColor" xml:space="preserve">
+    <value>Satellite Render Color</value>
+  </data>
+  <data name="RoadRvMaterial" xml:space="preserve">
+    <value>RV Material</value>
+  </data>
+  <data name="BridgeElements" xml:space="preserve">
+    <value>Bridge elements</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="RoadConfiguration" xml:space="preserve">
+    <value>Road configuration</value>
+  </data>
+  <data name="UseSameTexteAs" xml:space="preserve">
+    <value>Use same texte as</value>
+  </data>
+  <data name="ColorTexture" xml:space="preserve">
+    <value>Color Texture</value>
+  </data>
+  <data name="NormalTexture" xml:space="preserve">
+    <value>Normal Texture</value>
+  </data>
+  <data name="ColorId" xml:space="preserve">
+    <value>Color Id</value>
+  </data>
+  <data name="LoadingObjectsShapes" xml:space="preserve">
+    <value>Loading objects shapes...</value>
+  </data>
+  <data name="GeneratingPreview" xml:space="preserve">
+    <value>Generating preview...</value>
+  </data>
+  <data name="DensityResultsTooHigh" xml:space="preserve">
+    <value>{0:0.00} msec/100 m². Density is too high, should reduce it to {1}</value>
+  </data>
+  <data name="DensityResultsOK" xml:space="preserve">
+    <value>{0:0.00} msec/100 m². Density is OK.</value>
+  </data>
+  <data name="RangeObjectsPerM2" xml:space="preserve">
+    <value>{0} to {1} objects/m²</value>
+  </data>
+  <data name="SeedNumber" xml:space="preserve">
+    <value>Seed #{0}</value>
   </data>
 </root>
