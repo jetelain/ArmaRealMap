@@ -19,7 +19,7 @@ namespace GameRealisticMap.Studio.Modules.Main.Commands
 
         public override string Text
         {
-            get { return "Home"; }
+            get { return Labels.Home; }
         }
 
         public override string ToolTip

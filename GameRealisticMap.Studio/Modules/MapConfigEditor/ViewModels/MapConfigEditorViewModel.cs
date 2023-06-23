@@ -198,7 +198,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public Task GeneratePreview(bool ignoreElevation = false)
         {
             IoC.Get<IProgressTool>()
-                .RunTask("Generate Preview", t => DoGeneratePreview(t, ignoreElevation));
+                .RunTask(Labels.GeneratePreview, t => DoGeneratePreview(t, ignoreElevation));
             return Task.CompletedTask;
         }
 
@@ -298,7 +298,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public Task GenerateMap()
         {
             IoC.Get<IProgressTool>()
-                .RunTask("Generate Map", DoGenerateMap);
+                .RunTask(Labels.GenerateMapForArma3, DoGenerateMap);
             return Task.CompletedTask;
         }
 
@@ -307,7 +307,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             Arma3ToolsHelper.EnsureProjectDrive();
 
             IoC.Get<IProgressTool>()
-                .RunTask("Generate Mod", DoGenerateMod);
+                .RunTask(Labels.GenerateModForArma3, DoGenerateMod);
 
             return Task.CompletedTask;
         }
@@ -350,7 +350,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             var file = GetAssetFullPath(a3config.AssetConfigFile);
             if (string.IsNullOrEmpty(file))
             {
-                throw new ApplicationException("Asset config file is missing.");
+                throw new ApplicationException(Labels.AssetConfigFileIsMissing);
             }
 
             return await Arma3Assets.LoadFromFile(library, file);
@@ -359,20 +359,20 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public Task GenerateSatMap()
         {
             IoC.Get<IProgressTool>()
-                .RunTask("Generate Sat Map", (t) => DoImagery(t, s => s.CreateSatMap().OffloadAsync()));
+                .RunTask(Labels.GenerateSatelliteImage, (t) => DoImagery(t, s => s.CreateSatMap().OffloadAsync()));
             return Task.CompletedTask;
         }
         public Task GenerateRawSatMap()
         {
             IoC.Get<IProgressTool>()
-                .RunTask("Generate Raw Sat Map", DoRawSat);
+                .RunTask(Labels.GenerateRawSatelliteImage, DoRawSat);
             return Task.CompletedTask;
         }
 
         public Task GenerateIdMap()
         {
             IoC.Get<IProgressTool>()
-                .RunTask("Generate Id Map", (t) => DoImagery(t, s => s.CreateIdMap().OffloadAsync()));
+                .RunTask(Labels.GenerateIdMapImage, (t) => DoImagery(t, s => s.CreateIdMap().OffloadAsync()));
             return Task.CompletedTask;
         }
 

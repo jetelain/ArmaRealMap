@@ -26,7 +26,7 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
         public HomeViewModel(IShell shell)
         {
             _shell = shell;
-            DisplayName = "Home";
+            DisplayName = Labels.Home;
             SetupArma3WorkDriveCommand = new RelayCommand(_ => Arma3ToolsHelper.EnsureProjectDrive(false));
         }
 

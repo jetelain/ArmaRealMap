@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,288 +117,288 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AdvancedParameters" xml:space="preserve">
+    <value>Paramètres avancés</value>
+  </data>
+  <data name="Arma3MapConfig" xml:space="preserve">
+    <value>Configuration de Carte Arma 3</value>
+  </data>
   <data name="AssetAgricultural" xml:space="preserve">
-    <value>Agricultural Building</value>
+    <value>Batiment agricole</value>
   </data>
   <data name="AssetBasket" xml:space="preserve">
-    <value>Basket</value>
+    <value>Poubelle</value>
   </data>
   <data name="AssetBench" xml:space="preserve">
-    <value>Bench</value>
+    <value>Banc</value>
   </data>
   <data name="AssetBusStopShelter" xml:space="preserve">
-    <value>Bus top Shelter</value>
+    <value>Abribus</value>
   </data>
   <data name="AssetChurch" xml:space="preserve">
-    <value>Church Building</value>
+    <value>Eglise</value>
   </data>
   <data name="AssetCommercial" xml:space="preserve">
-    <value>Commercial Building</value>
+    <value>Batiment de bureau</value>
+  </data>
+  <data name="AssetConfigFileIsMissing" xml:space="preserve">
+    <value>Le fichier de style de carte est manquant.</value>
   </data>
   <data name="AssetDefaultAreas" xml:space="preserve">
-    <value>Default Areas</value>
-  </data>
-  <data name="AssetFence" xml:space="preserve">
-    <value>Fence</value>
+    <value>Zones par défaut</value>
   </data>
   <data name="AssetFireHydrant" xml:space="preserve">
-    <value>Fire Hydrant</value>
+    <value>Bouche d'incendie</value>
   </data>
   <data name="AssetForest" xml:space="preserve">
-    <value>Forest Trees</value>
+    <value>Forêt - Arbres</value>
   </data>
   <data name="AssetForestAdditional" xml:space="preserve">
-    <value>Forest Additional</value>
+    <value>Forêt - Objets additionels</value>
   </data>
   <data name="AssetForestEdge" xml:space="preserve">
-    <value>Forest Edge</value>
+    <value>Forêt - Bordure</value>
   </data>
   <data name="AssetForestRadial" xml:space="preserve">
-    <value>Forest Radial</value>
+    <value>Forêt - A proximité</value>
   </data>
   <data name="AssetHedge" xml:space="preserve">
-    <value>Hedge</value>
+    <value>Haie</value>
   </data>
   <data name="AssetHistoricalFort" xml:space="preserve">
-    <value>Historical Fort</value>
+    <value>Fort historique</value>
   </data>
   <data name="AssetHut" xml:space="preserve">
-    <value>Hut</value>
+    <value>Hutte</value>
   </data>
   <data name="AssetIndividualGarage" xml:space="preserve">
-    <value>Individual Garage</value>
+    <value>Garage individuel de voiture</value>
   </data>
   <data name="AssetIndustrial" xml:space="preserve">
-    <value>Industrial</value>
+    <value>Batiment industriel</value>
   </data>
   <data name="AssetInformationBoard" xml:space="preserve">
-    <value>Information Board</value>
-  </data>
-  <data name="AssetMapConfig" xml:space="preserve">
-    <value>Map Config</value>
+    <value>Panneau d'information</value>
   </data>
   <data name="AssetMaterials" xml:space="preserve">
-    <value>Materials</value>
+    <value>Surface du sol</value>
   </data>
   <data name="AssetMilitary" xml:space="preserve">
-    <value>Military</value>
+    <value>Batiment militaire</value>
   </data>
   <data name="AssetNature" xml:space="preserve">
     <value>Nature</value>
   </data>
   <data name="AssetObjects" xml:space="preserve">
-    <value>Objects</value>
+    <value>Objets</value>
   </data>
   <data name="AssetPicnicTable" xml:space="preserve">
-    <value>Picnic Table</value>
+    <value>Table de picnic</value>
   </data>
   <data name="AssetPostBox" xml:space="preserve">
-    <value>Post Box</value>
+    <value>Boite aux lettres</value>
   </data>
   <data name="AssetRadioTower" xml:space="preserve">
-    <value>Radio Tower</value>
+    <value>Tour radio</value>
   </data>
   <data name="AssetRecyclingContainer" xml:space="preserve">
-    <value>Recycling Container</value>
+    <value>Conteneur de recyclage</value>
   </data>
   <data name="AssetResidential" xml:space="preserve">
-    <value>Residential</value>
+    <value>Batiment résidentiel</value>
   </data>
   <data name="AssetRetail" xml:space="preserve">
-    <value>Retail Building</value>
+    <value>Batiment de vente</value>
   </data>
   <data name="AssetRoad" xml:space="preserve">
-    <value>Road</value>
+    <value>Route</value>
   </data>
   <data name="AssetRocks" xml:space="preserve">
-    <value>Rocks</value>
+    <value>Zone rocheuses</value>
   </data>
   <data name="AssetRocksAdditional" xml:space="preserve">
-    <value>Rocks Additional</value>
+    <value>Objets additonels de zone rocheuse</value>
+  </data>
+  <data name="AssetsConfiguration" xml:space="preserve">
+    <value>Style de carte</value>
   </data>
   <data name="AssetScrub" xml:space="preserve">
-    <value>Scrub</value>
+    <value>Brousailles</value>
   </data>
   <data name="AssetScrubAdditional" xml:space="preserve">
-    <value>Scrub Additional</value>
+    <value>Brousailles - Objets additionels</value>
   </data>
   <data name="AssetScrubRadial" xml:space="preserve">
-    <value>Scrub Radial</value>
+    <value>Brousailles - A proximité</value>
   </data>
   <data name="AssetSculpture" xml:space="preserve">
     <value>Sculpture</value>
   </data>
   <data name="AssetShed" xml:space="preserve">
-    <value>Shed</value>
+    <value>Abri (jardin)</value>
   </data>
   <data name="AssetStatue" xml:space="preserve">
     <value>Statue</value>
   </data>
   <data name="AssetTree" xml:space="preserve">
-    <value>Tree</value>
+    <value>Arbre</value>
   </data>
   <data name="AssetWall" xml:space="preserve">
-    <value>Wall</value>
-  </data>
-  <data name="AssetWarMemorial" xml:space="preserve">
-    <value>War Memorial</value>
+    <value>Mur</value>
   </data>
   <data name="AssetWatercourse" xml:space="preserve">
-    <value>Watercourse</value>
+    <value>Cours d'eau</value>
   </data>
   <data name="AssetWatercourseRadial" xml:space="preserve">
-    <value>Watercourse Radial</value>
+    <value>Cours d'eau - A proximité</value>
   </data>
   <data name="AssetWaterTower" xml:space="preserve">
-    <value>Water Tower</value>
+    <value>Chateau d'eau</value>
   </data>
   <data name="AssetWaterWell" xml:space="preserve">
-    <value>Water Well</value>
-  </data>
-  <data name="AssetWaysideCross" xml:space="preserve">
-    <value>Wayside Cross</value>
-  </data>
-  <data name="Found" xml:space="preserve">
-    <value>✔ Found</value>
-  </data>
-  <data name="HomeIntro" xml:space="preserve">
-    <value>Toolchain to generate real scale gaming maps from OpenStreetMap data.</value>
-  </data>
-  <data name="HomeIntroLimit" xml:space="preserve">
-    <value>Current version supports only Arma 3</value>
-  </data>
-  <data name="Installed" xml:space="preserve">
-    <value>✔ Installed</value>
-  </data>
-  <data name="InstallWithSteam" xml:space="preserve">
-    <value>Install with Steam</value>
-  </data>
-  <data name="LaunchApproveLicense" xml:space="preserve">
-    <value>Launch to approve license</value>
-  </data>
-  <data name="LicenseNotApproved" xml:space="preserve">
-    <value>❌ License not approved</value>
-  </data>
-  <data name="NotFound" xml:space="preserve">
-    <value>❌ Not found</value>
-  </data>
-  <data name="NotInstalled" xml:space="preserve">
-    <value>❌ Not installed</value>
-  </data>
-  <data name="OpenArma3Launcher" xml:space="preserve">
-    <value>Open Arma3 Launcher</value>
-  </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>⟳ Refresh</value>
-  </data>
-  <data name="RequiredTools" xml:space="preserve">
-    <value>Required Tools</value>
-  </data>
-  <data name="RequiredToolsDescription" xml:space="preserve">
-    <value>In order to configure or generate a map, some additional tools and configurations are required.</value>
-  </data>
-  <data name="WarnRecommanded" xml:space="preserve">
-    <value>⚠ Recommanded</value>
-  </data>
-  <data name="SetupWithArma3Tools" xml:space="preserve">
-    <value>Setup with Arma3 Tools</value>
-  </data>
-  <data name="YouCanAlsoMountDriveWithYourCustomTool" xml:space="preserve">
-    <value>You can also mount drive with your custom tool</value>
-  </data>
-  <data name="DownloadFromOfficialSiteFree" xml:space="preserve">
-    <value>Download from official site (free)</value>
-  </data>
-  <data name="ThisToolWillAllowYouToGenerateReadyToUseMod" xml:space="preserve">
-    <value>This tool will allow you to generate ready-to-use mod.</value>
-  </data>
-  <data name="GettingStarted" xml:space="preserve">
-    <value>Getting Started</value>
-  </data>
-  <data name="GettingStartedDescription" xml:space="preserve">
-    <value>Create a Map configuration and an Asset configuration to use with.</value>
-  </data>
-  <data name="CreateAnAssetsConfiguration" xml:space="preserve">
-    <value>Create an Assets Configuration</value>
-  </data>
-  <data name="CreateAnAssetsConfigurationDescription" xml:space="preserve">
-    <value>An assets configuration defines the textures and objects to use to generate a map. You can create your our own configuration or use one of the built-in configuration.</value>
+    <value>Puis (eau)</value>
   </data>
   <data name="BrowseAssets" xml:space="preserve">
-    <value>Browse Assets</value>
+    <value>Parcourir les objets</value>
   </data>
-  <data name="BrowseAssetsDescription" xml:space="preserve">
-    <value>Browse all available objects to pick the best ones to complete your assets configuration.</value>
+  <data name="AssetFence" xml:space="preserve">
+    <value>Cloture</value>
   </data>
-  <data name="CreateAMapConfiguration" xml:space="preserve">
-    <value>Create a Map Configuration</value>
-  </data>
-  <data name="CreateAMapConfigurationDescription" xml:space="preserve">
-    <value>A map configuration defines a square to extract from OpenStreeMap, and associate an assets configuration to use for the generation process.</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>Home</value>
-  </data>
-  <data name="Arma3MapConfig" xml:space="preserve">
-    <value>Arma 3 Map Config</value>
-  </data>
-  <data name="GeneratePreview" xml:space="preserve">
-    <value>Generate Preview</value>
-  </data>
-  <data name="GenerateWithElevation" xml:space="preserve">
-    <value>Generate with elevation</value>
-  </data>
-  <data name="GenerateAreasOnly" xml:space="preserve">
-    <value>Generate areas only (faster)</value>
-  </data>
-  <data name="GenerateRawSatelliteImage" xml:space="preserve">
-    <value>Generate raw satellite image</value>
-  </data>
-  <data name="GenerateSatelliteImage" xml:space="preserve">
-    <value>Generate satellite image</value>
-  </data>
-  <data name="GenerateIdMapImage" xml:space="preserve">
-    <value>Generate id map image</value>
-  </data>
-  <data name="GenerateMapForArma3" xml:space="preserve">
-    <value>Generate Map for Arma 3</value>
-  </data>
-  <data name="GenerateModForArma3" xml:space="preserve">
-    <value>Generate Mod for Arma 3</value>
+  <data name="AssetWarMemorial" xml:space="preserve">
+    <value>Monument du souvenir</value>
   </data>
   <data name="CoordinatesOfCenterOfMap" xml:space="preserve">
-    <value>Coordinates of center of map</value>
+    <value>Coordonées du centre de la carte</value>
   </data>
   <data name="CoordinatesSouthWestOfMap" xml:space="preserve">
-    <value>or south west of map</value>
+    <value>ou coordonées du sud-ouest de la carte</value>
   </data>
-  <data name="MapSizeSquare" xml:space="preserve">
-    <value>Map size (square)</value>
+  <data name="CreateAMapConfiguration" xml:space="preserve">
+    <value>Créer une Configuration de carte</value>
   </data>
-  <data name="MetersUnit" xml:space="preserve">
-    <value>meters</value>
+  <data name="CreateAMapConfigurationDescription" xml:space="preserve">
+    <value>Une configuration de carte définit un carré à extraire d'OpenStreetMap et lui associe un style de carte à utiliser pour le processus de génération.</value>
   </data>
-  <data name="AssetsConfiguration" xml:space="preserve">
-    <value>Assets configuration / style of map</value>
+  <data name="CreateAnAssetsConfiguration" xml:space="preserve">
+    <value>Créer un style de carte</value>
+  </data>
+  <data name="CreateAnAssetsConfigurationDescription" xml:space="preserve">
+    <value>Un style de carte définit les textures et objets à utiliser pour générer une carte. Vous pouvez créer votre propre style ou utilise d'un des style fourni.</value>
+  </data>
+  <data name="DownloadFromOfficialSiteFree" xml:space="preserve">
+    <value>Télécharger depuis le site officiel (gratuit)</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Modifier</value>
   </data>
-  <data name="CoordinatesHint" xml:space="preserve">
-    <value>You can use map below to select an area (Ctrl+Press, or Alt+Press)</value>
+  <data name="Found" xml:space="preserve">
+    <value>✔ Trouvé</value>
+  </data>
+  <data name="GenerateAreasOnly" xml:space="preserve">
+    <value>Générer les zones (le plus rapide)</value>
+  </data>
+  <data name="GenerateIdMapImage" xml:space="preserve">
+    <value>Générer l'image id map</value>
+  </data>
+  <data name="GenerateMapForArma3" xml:space="preserve">
+    <value>Générer un fichier carte pour Arma 3</value>
+  </data>
+  <data name="GenerateModForArma3" xml:space="preserve">
+    <value>Générer un mod pour Arma 3</value>
+  </data>
+  <data name="GeneratePreview" xml:space="preserve">
+    <value>Générer un aperçu</value>
+  </data>
+  <data name="GenerateRawSatelliteImage" xml:space="preserve">
+    <value>Générer l'image satellite brute</value>
+  </data>
+  <data name="GenerateSatelliteImage" xml:space="preserve">
+    <value>Générer l'image satellite</value>
+  </data>
+  <data name="GenerateWithElevation" xml:space="preserve">
+    <value>Générer les zones avec le dénivellé</value>
+  </data>
+  <data name="GettingStarted" xml:space="preserve">
+    <value>Démarrer</value>
+  </data>
+  <data name="GettingStartedDescription" xml:space="preserve">
+    <value>Créer une configuration de carte et un style qui va avec.</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Acceuil</value>
+  </data>
+  <data name="HomeIntro" xml:space="preserve">
+    <value>Chaine d'outil pour générer des cartes de jeu à l'échelle réelle depuis les données d'OpenStreetMap.</value>
+  </data>
+  <data name="HomeIntroLimit" xml:space="preserve">
+    <value>La version actuelle ne prends en charge que Arma 3</value>
+  </data>
+  <data name="Installed" xml:space="preserve">
+    <value>✔ Installé</value>
+  </data>
+  <data name="InstallWithSteam" xml:space="preserve">
+    <value>Installer avec Steam</value>
+  </data>
+  <data name="LaunchApproveLicense" xml:space="preserve">
+    <value>Lancer pour approuver la licence</value>
+  </data>
+  <data name="LicenseNotApproved" xml:space="preserve">
+    <value>❌ Licence non approuvée</value>
+  </data>
+  <data name="MapSizeSquare" xml:space="preserve">
+    <value>Taille de la carte (carré)</value>
+  </data>
+  <data name="MetersUnit" xml:space="preserve">
+    <value>mètres</value>
   </data>
   <data name="MapUsageHint" xml:space="preserve">
-    <value>To select an area on the map :
-- From a corner, press Ctrl Key then press Left Mouse Button
-- From center, press Alt Key then press Left Mouse Button.</value>
+    <value>Pour choisir une zone :
+- Depuis un coin, appuyer sur la touche Ctrl, puis appuyer sur le bouton gauche de la souris ;
+- Depuis le centre, appuyer sur la touche Atl, puis appuyer sur le bouton gauche de la souris.</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>❌ Non trouvé</value>
+  </data>
+  <data name="NotInstalled" xml:space="preserve">
+    <value>❌ Non installé</value>
+  </data>
+  <data name="OpenArma3Launcher" xml:space="preserve">
+    <value>Ouvrir le lanceur Arma 3</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>⟳ Actualiser</value>
+  </data>
+  <data name="RequiredTools" xml:space="preserve">
+    <value>Outils requis</value>
+  </data>
+  <data name="SetupWithArma3Tools" xml:space="preserve">
+    <value>Configurer avec les outils Arma 3</value>
   </data>
   <data name="ViewOnOpenStreetMapOrg" xml:space="preserve">
-    <value>View on OpenStreetMap.org</value>
+    <value>Voir sur OpenStreetMap.org</value>
   </data>
-  <data name="AdvancedParameters" xml:space="preserve">
-    <value>Advanced parameters</value>
+  <data name="WarnRecommanded" xml:space="preserve">
+    <value>⚠ Recommandé</value>
   </data>
-  <data name="AssetConfigFileIsMissing" xml:space="preserve">
-    <value>Asset config file is missing.</value>
+  <data name="YouCanAlsoMountDriveWithYourCustomTool" xml:space="preserve">
+    <value>Vous pouvez aussi monter le disque avec un autre outil personnalisé</value>
+  </data>
+  <data name="RequiredToolsDescription" xml:space="preserve">
+    <value>Pour pouvoir configurer ou générer une carte, quelques outils supplémentaires sont requis.</value>
+  </data>
+  <data name="ThisToolWillAllowYouToGenerateReadyToUseMod" xml:space="preserve">
+    <value>Cet outil vous permet de générer des mods prêts à l'emploi.</value>
+  </data>
+  <data name="CoordinatesHint" xml:space="preserve">
+    <value>Vous pouvez utiliser la carte en dessous pour selectionner une zone (Ctrl+Souris, ou Alt+Souris)</value>
+  </data>
+  <data name="BrowseAssetsDescription" xml:space="preserve">
+    <value>Parcourir tous les objets disponibles pour choisir les plus adaptés pour votre style de carte.</value>
+  </data>
+  <data name="AssetMapConfig" xml:space="preserve">
+    <value>Paramètres de carte</value>
+  </data>
+  <data name="AssetWaysideCross" xml:space="preserve">
+    <value>Croix de chemin</value>
   </data>
 </root>

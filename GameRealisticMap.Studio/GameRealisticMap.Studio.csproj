@@ -50,7 +50,7 @@
 	
   <ItemGroup>
     <EmbeddedResource Update="Labels.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Labels.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
