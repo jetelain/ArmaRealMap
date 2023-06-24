@@ -232,6 +232,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Urban footway.
+        /// </summary>
+        public static string AssetConcreteFootway {
+            get {
+                return ResourceManager.GetString("AssetConcreteFootway", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Asset config file is missing..
         /// </summary>
         public static string AssetConfigFileIsMissing {
@@ -241,11 +250,47 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default ground.
+        /// </summary>
+        public static string AssetDefault {
+            get {
+                return ResourceManager.GetString("AssetDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Default Areas.
         /// </summary>
         public static string AssetDefaultAreas {
             get {
                 return ResourceManager.GetString("AssetDefaultAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default ground - Industrial.
+        /// </summary>
+        public static string AssetDefaultIndustrial {
+            get {
+                return ResourceManager.GetString("AssetDefaultIndustrial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default ground - Urban.
+        /// </summary>
+        public static string AssetDefaultUrban {
+            get {
+                return ResourceManager.GetString("AssetDefaultUrban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Farm land ground.
+        /// </summary>
+        public static string AssetFarmLand {
+            get {
+                return ResourceManager.GetString("AssetFarmLand", resourceCulture);
             }
         }
         
@@ -295,11 +340,29 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Forest ground.
+        /// </summary>
+        public static string AssetForestGround {
+            get {
+                return ResourceManager.GetString("AssetForestGround", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Forest Radial.
         /// </summary>
         public static string AssetForestRadial {
             get {
                 return ResourceManager.GetString("AssetForestRadial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Grass ground.
+        /// </summary>
+        public static string AssetGrass {
+            get {
+                return ResourceManager.GetString("AssetGrass", resourceCulture);
             }
         }
         
@@ -358,6 +421,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Lake ground.
+        /// </summary>
+        public static string AssetLakeGround {
+            get {
+                return ResourceManager.GetString("AssetLakeGround", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Map Config.
         /// </summary>
         public static string AssetMapConfig {
@@ -372,6 +444,15 @@ namespace GameRealisticMap.Studio {
         public static string AssetMaterials {
             get {
                 return ResourceManager.GetString("AssetMaterials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Meadow ground.
+        /// </summary>
+        public static string AssetMeadow {
+            get {
+                return ResourceManager.GetString("AssetMeadow", resourceCulture);
             }
         }
         
@@ -457,11 +538,29 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à River ground.
+        /// </summary>
+        public static string AssetRiverGround {
+            get {
+                return ResourceManager.GetString("AssetRiverGround", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Road.
         /// </summary>
         public static string AssetRoad {
             get {
                 return ResourceManager.GetString("AssetRoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Rock area ground.
+        /// </summary>
+        public static string AssetRockGround {
+            get {
+                return ResourceManager.GetString("AssetRockGround", resourceCulture);
             }
         }
         
@@ -480,6 +579,15 @@ namespace GameRealisticMap.Studio {
         public static string AssetRocksAdditional {
             get {
                 return ResourceManager.GetString("AssetRocksAdditional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Sand ground.
+        /// </summary>
+        public static string AssetSand {
+            get {
+                return ResourceManager.GetString("AssetSand", resourceCulture);
             }
         }
         
@@ -547,6 +655,33 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Urban road - 1 Lane.
+        /// </summary>
+        public static string AssetSingleLaneConcreteRoad {
+            get {
+                return ResourceManager.GetString("AssetSingleLaneConcreteRoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Path road.
+        /// </summary>
+        public static string AssetSingleLaneDirtPath {
+            get {
+                return ResourceManager.GetString("AssetSingleLaneDirtPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Dirt road.
+        /// </summary>
+        public static string AssetSingleLaneDirtRoad {
+            get {
+                return ResourceManager.GetString("AssetSingleLaneDirtRoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Statue.
         /// </summary>
         public static string AssetStatue {
@@ -556,11 +691,56 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Trail.
+        /// </summary>
+        public static string AssetTrail {
+            get {
+                return ResourceManager.GetString("AssetTrail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Tree.
         /// </summary>
         public static string AssetTree {
             get {
                 return ResourceManager.GetString("AssetTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Urban road - 2 Lanes.
+        /// </summary>
+        public static string AssetTwoLanesConcreteRoad {
+            get {
+                return ResourceManager.GetString("AssetTwoLanesConcreteRoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Motorway - 2 Lanes.
+        /// </summary>
+        public static string AssetTwoLanesMotorway {
+            get {
+                return ResourceManager.GetString("AssetTwoLanesMotorway", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Primary road - 2 Lanes.
+        /// </summary>
+        public static string AssetTwoLanesPrimaryRoad {
+            get {
+                return ResourceManager.GetString("AssetTwoLanesPrimaryRoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Secondary road - 2 Lanes.
+        /// </summary>
+        public static string AssetTwoLanesSecondaryRoad {
+            get {
+                return ResourceManager.GetString("AssetTwoLanesSecondaryRoad", resourceCulture);
             }
         }
         

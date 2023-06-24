@@ -701,4 +701,64 @@
   <data name="DensityResultsTooHigh" xml:space="preserve">
     <value>{0:0.00} msec/100 m². La densité est trop élevée, vous devriez la réduire à {1}</value>
   </data>
+  <data name="AssetConcreteFootway" xml:space="preserve">
+    <value>Chemin piéton urbain</value>
+  </data>
+  <data name="AssetDefault" xml:space="preserve">
+    <value>Par défaut</value>
+  </data>
+  <data name="AssetDefaultIndustrial" xml:space="preserve">
+    <value>Par défaut - Zones industrielles</value>
+  </data>
+  <data name="AssetDefaultUrban" xml:space="preserve">
+    <value>Par défaut - Zones urbaines</value>
+  </data>
+  <data name="AssetFarmLand" xml:space="preserve">
+    <value>Champs agricoles</value>
+  </data>
+  <data name="AssetForestGround" xml:space="preserve">
+    <value>Forêt</value>
+  </data>
+  <data name="AssetGrass" xml:space="preserve">
+    <value>Herbe</value>
+  </data>
+  <data name="AssetLakeGround" xml:space="preserve">
+    <value>Fond des lacs</value>
+  </data>
+  <data name="AssetMeadow" xml:space="preserve">
+    <value>Prairies</value>
+  </data>
+  <data name="AssetRiverGround" xml:space="preserve">
+    <value>Fond des rivières</value>
+  </data>
+  <data name="AssetRockGround" xml:space="preserve">
+    <value>Sol des zones rocheuses</value>
+  </data>
+  <data name="AssetSand" xml:space="preserve">
+    <value>Sable</value>
+  </data>
+  <data name="AssetSingleLaneConcreteRoad" xml:space="preserve">
+    <value>Urbain - 1 voie</value>
+  </data>
+  <data name="AssetSingleLaneDirtPath" xml:space="preserve">
+    <value>Chemin carrossable</value>
+  </data>
+  <data name="AssetTrail" xml:space="preserve">
+    <value>Chemin</value>
+  </data>
+  <data name="AssetTwoLanesConcreteRoad" xml:space="preserve">
+    <value>Urbain - 2 voies</value>
+  </data>
+  <data name="AssetTwoLanesMotorway" xml:space="preserve">
+    <value>Autoroute - 2 voies</value>
+  </data>
+  <data name="AssetTwoLanesPrimaryRoad" xml:space="preserve">
+    <value>Nationale - 2 voies</value>
+  </data>
+  <data name="AssetTwoLanesSecondaryRoad" xml:space="preserve">
+    <value>Départementale - 2 voies</value>
+  </data>
+  <data name="AssetSingleLaneDirtRoad" xml:space="preserve">
+    <value>Route de terre</value>
+  </data>
 </root>

@@ -238,7 +238,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="{x:Static r:Labels.SameAs}" Binding="{Binding SameAs.IdText}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="{x:Static r:Labels.SameAs}" Binding="{Binding SameAs.PageTitle}" IsReadOnly="True" />
                                 <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

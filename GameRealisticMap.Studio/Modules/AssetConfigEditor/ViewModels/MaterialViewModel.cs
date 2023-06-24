@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Media;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
@@ -32,7 +30,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public List<string> Others =>
             ParentEditor.Materials.Where(m => m != this && m.SameAs == null)
-            .Select(m => m.IdText)
+            .Select(m => m.PageTitle)
             .Concat(new[] { string.Empty })
             .ToList();
 
@@ -72,8 +70,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public string SameAsText
         {
-            get { return SameAs?.IdText ?? string.Empty; }
-            set { SameAs = ParentEditor.Materials.FirstOrDefault(m => m != this && m.IdText == value); }
+            get { return SameAs?.PageTitle ?? string.Empty; }
+            set { SameAs = ParentEditor.Materials.FirstOrDefault(m => m != this && m.PageTitle == value); }
         }
 
         private Color _colorId;

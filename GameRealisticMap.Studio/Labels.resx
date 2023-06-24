@@ -701,4 +701,64 @@
   <data name="SeedNumber" xml:space="preserve">
     <value>Seed #{0}</value>
   </data>
+  <data name="AssetConcreteFootway" xml:space="preserve">
+    <value>Urban footway</value>
+  </data>
+  <data name="AssetDefault" xml:space="preserve">
+    <value>Default ground</value>
+  </data>
+  <data name="AssetDefaultIndustrial" xml:space="preserve">
+    <value>Default ground - Industrial</value>
+  </data>
+  <data name="AssetDefaultUrban" xml:space="preserve">
+    <value>Default ground - Urban</value>
+  </data>
+  <data name="AssetFarmLand" xml:space="preserve">
+    <value>Farm land ground</value>
+  </data>
+  <data name="AssetForestGround" xml:space="preserve">
+    <value>Forest ground</value>
+  </data>
+  <data name="AssetGrass" xml:space="preserve">
+    <value>Grass ground</value>
+  </data>
+  <data name="AssetLakeGround" xml:space="preserve">
+    <value>Lake ground</value>
+  </data>
+  <data name="AssetMeadow" xml:space="preserve">
+    <value>Meadow ground</value>
+  </data>
+  <data name="AssetRiverGround" xml:space="preserve">
+    <value>River ground</value>
+  </data>
+  <data name="AssetRockGround" xml:space="preserve">
+    <value>Rock area ground</value>
+  </data>
+  <data name="AssetSand" xml:space="preserve">
+    <value>Sand ground</value>
+  </data>
+  <data name="AssetSingleLaneConcreteRoad" xml:space="preserve">
+    <value>Urban road - 1 Lane</value>
+  </data>
+  <data name="AssetSingleLaneDirtPath" xml:space="preserve">
+    <value>Path road</value>
+  </data>
+  <data name="AssetSingleLaneDirtRoad" xml:space="preserve">
+    <value>Dirt road</value>
+  </data>
+  <data name="AssetTrail" xml:space="preserve">
+    <value>Trail</value>
+  </data>
+  <data name="AssetTwoLanesConcreteRoad" xml:space="preserve">
+    <value>Urban road - 2 Lanes</value>
+  </data>
+  <data name="AssetTwoLanesMotorway" xml:space="preserve">
+    <value>Motorway - 2 Lanes</value>
+  </data>
+  <data name="AssetTwoLanesPrimaryRoad" xml:space="preserve">
+    <value>Primary road - 2 Lanes</value>
+  </data>
+  <data name="AssetTwoLanesSecondaryRoad" xml:space="preserve">
+    <value>Secondary road - 2 Lanes</value>
+  </data>
 </root>
