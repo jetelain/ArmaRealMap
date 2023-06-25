@@ -764,4 +764,20 @@
   <data name="Arma3AssetsConfiguration" xml:space="preserve">
     <value>Arma 3 Assets Configuration</value>
   </data>
+  <data name="ViewResultInWebBrowser" xml:space="preserve">
+    <value>View Result in Web Browser</value>
+  </data>
+  <data name="ViewInFileExplorer" xml:space="preserve">
+    <value>View in File Explorer</value>
+  </data>
+  <data name="OpenArma3LauncherWithGeneratedModHint" xml:space="preserve">
+    <value>In Mods section, select preset \"GRM - {0}\".
+You may eventually enable other mods.</value>
+  </data>
+  <data name="DoneSuccessfullyInSeconds" xml:space="preserve">
+    <value>✔ Done successfully in {0:0.0} seconds</value>
+  </data>
+  <data name="YouCanNowPrompt" xml:space="preserve">
+    <value>You can now:</value>
+  </data>
 </root>

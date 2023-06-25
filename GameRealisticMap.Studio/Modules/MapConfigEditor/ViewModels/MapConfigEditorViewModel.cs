@@ -212,7 +212,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery);
             var target = Path.Combine(Path.GetTempPath(), "grm-preview.html");
             await render.RenderHtml(task, target, ignoreElevation);
-            task.DisplayResult = () => ShellHelper.OpenUri(target);
+            task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewResultInWebBrowser);
         }
 
         public Task ChooseAssetConfig()
@@ -323,8 +323,9 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             await generator.GenerateMod(task, a3config);
 
-            task.DisplayResult = () => ShellHelper.OpenUri(a3config.TargetModDirectory); 
-            
+            task.AddSuccessAction(() => ShellHelper.OpenUri(a3config.TargetModDirectory), Labels.ViewInFileExplorer); 
+            task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, a3config.WorldName));
+
             await CreateLauncherPresetAsync(assets, a3config.TargetModDirectory, a3config.WorldName);
         }
 
@@ -338,7 +339,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             await generator.GenerateWrp(task, a3config);
 
-            task.DisplayResult = () => ShellHelper.OpenUri(_arma3DataModule.ProjectDrive.GetFullPath(a3config.PboPrefix));
+            task.AddSuccessAction(() => ShellHelper.OpenUri(_arma3DataModule.ProjectDrive.GetFullPath(a3config.PboPrefix)), Labels.ViewInFileExplorer);
         }
 
         private async Task<Arma3Assets> GetAssets(ModelInfoLibrary library, Arma3MapConfig a3config)
@@ -398,7 +399,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             {
                 await action(source);
             }
-            task.DisplayResult = () => ShellHelper.OpenUri(target);
+            task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);
         }
 
         private async Task DoRawSat(IProgressTaskUI task)
@@ -421,7 +422,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             {
                 await source.GetData<RawSatelliteImageData>().Image.OffloadAsync();
             }
-            task.DisplayResult = () => ShellHelper.OpenUri(target);
+            task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);
         }
 
         private async Task CreateLauncherPresetAsync(Arma3Assets assets, string modpath, string name)

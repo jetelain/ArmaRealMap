@@ -18,6 +18,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         private ProgressTask? current = null;
         private readonly IOutput output;
         private readonly IShell shell;
+        private readonly IWindowManager windowManager;
         private readonly PerformanceCounter cpuCounter;
         private readonly DispatcherTimer timer;
 
@@ -26,11 +27,12 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         public BindableCollection<ProgressStep> Items { get; set; } = new BindableCollection<ProgressStep>();
 
         [ImportingConstructor]
-        public ProgressToolViewModel(IOutput output, IShell shell)
+        public ProgressToolViewModel(IOutput output, IShell shell, IWindowManager windowManager)
         {
             DisplayName = Labels.TaskProgress;
             this.output = output;
             this.shell = shell;
+            this.windowManager = windowManager;
 
             cpuCounter = new PerformanceCounter("Process", "% Processor Time",  Assembly.GetEntryAssembly()?.GetAssemblyName() ?? "_Total", true);
             timer = new DispatcherTimer();
@@ -95,7 +97,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
             State = TaskState.Running;
 
-            return current = new ProgressTask(this);
+            return current = new ProgressTask(this, name);
         }
 
         public Task CancelTask()
@@ -111,7 +113,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         {
             if (current != null)
             {
-                current.DisplayResult?.Invoke();
+                return windowManager.ShowDialogAsync(new SuccessViewModel(current));
             }
             return Task.CompletedTask;
         }
@@ -138,7 +140,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
         private async Task DoRunTask(string name, Func<IProgressTaskUI, Task> run)
         {
-            using var task = StartTask(name);
+            using var task = (ProgressTask)StartTask(name);
             try
             {
                 await run(task);
@@ -146,6 +148,10 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             catch (Exception ex)
             {
                 task.Failed(ex);
+            }
+            //if ( task.Error == null && !task.CancellationToken.IsCancellationRequested)
+            {
+                OnUIThread(() => windowManager.ShowDialogAsync(new SuccessViewModel(task)));
             }
         }
     }
