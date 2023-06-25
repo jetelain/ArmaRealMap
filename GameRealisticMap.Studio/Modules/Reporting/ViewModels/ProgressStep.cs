@@ -61,15 +61,15 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
                             var milisecondsLeft = elapsed.ElapsedMilliseconds * (total - done) / done;
                             if (milisecondsLeft < 500)
                             {
-                                Left = $"Almost done";
+                                Left = Labels.AlmostDone;
                             }
                             else if (milisecondsLeft > 120000d)
                             {
-                                Left = $"{milisecondsLeft / 60000d:0.0} min left";
+                                Left = string.Format(Labels.MinutesLeft, milisecondsLeft / 60000d);
                             }
                             else
                             {
-                                Left = $"{milisecondsLeft / 1000d:0.0} sec left";
+                                Left = string.Format(Labels.SecondsLeft, milisecondsLeft / 1000d);
                             }
                         }
                         NotifyOfPropertyChange(nameof(Percent));

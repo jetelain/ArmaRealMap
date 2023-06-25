@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
@@ -15,9 +11,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
             var count = value as int?;
             if (count != null && count.Value > 0)
             {
-                return $"{count} items";
+                return string.Format(Labels.CountItems, count);
             }
-            return "none";
+            return Labels.CountNone;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

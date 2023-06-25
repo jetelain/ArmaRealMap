@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Reporting.Views"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -81,7 +82,7 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
-                Cancel
+                <Run Text="{x:Static r:Labels.Cancel}" />
             </Button>
             <Button Padding="5" cal:Message.Attach="ShowTaskResult">
                 <Button.Style>
@@ -94,7 +95,7 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
-                Open result
+                <Run Text="{x:Static r:Labels.OpenResult}"/>
             </Button>
             <Button Padding="5" cal:Message.Attach="ShowTaskError">
                 <Button.Style>
@@ -107,7 +108,7 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
-                Show error
+                <Run Text="{x:Static r:Labels.ShowError}"/>
             </Button>
         </StackPanel>
 

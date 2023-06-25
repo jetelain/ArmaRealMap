@@ -19,7 +19,7 @@ namespace GameRealisticMap.Studio.Modules.Explorer.Commands
 
         public override string Text
         {
-            get { return "Explorer"; }
+            get { return Labels.Explorer ; }
         }
 
         public override string ToolTip

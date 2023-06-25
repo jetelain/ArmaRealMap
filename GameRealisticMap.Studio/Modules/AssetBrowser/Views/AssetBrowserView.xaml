@@ -7,6 +7,7 @@
              xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetBrowser.Views"
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="Root">
@@ -27,17 +28,21 @@
             </Grid.ColumnDefinitions>
         
             <StackPanel Orientation="Horizontal">
-                <Label>Filter</Label>
+                <Label>
+                    <Run Text="{x:Static r:Labels.Filter}"/>
+                </Label>
                 <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=500}" Width="200" />
-                <Label>Detected type</Label>
+                <Label>
+                    <Run Text="{x:Static r:Labels.DetectedType}"/>
+                </Label>
                 <ComboBox SelectedValue="{Binding FilterCategory}" ItemsSource="{Binding Categories}" SelectedValuePath="Category" DisplayMemberPath="Name" />
                 <Label>DLC/Mod</Label>
                 <ComboBox SelectedValue="{Binding FilterModId}" ItemsSource="{Binding Mods}" SelectedValuePath="ModId" DisplayMemberPath="Name" />
 
-                <TextBlock Margin="5">Matching:</TextBlock>
+                <TextBlock Margin="5"><Run Text="{x:Static r:Labels.Matching}"/>:</TextBlock>
                 <TextBlock Margin="5" Text="{Binding Assets.Count}" />
 
-                <TextBlock Margin="5">All:</TextBlock>
+                <TextBlock Margin="5"><Run Text="{x:Static r:Labels.All}"/>:</TextBlock>
                 <TextBlock Margin="5" Text="{Binding AllAssets.Count}" />
                 
             </StackPanel>
@@ -46,13 +51,13 @@
                 <ProgressBar Visibility="{Binding IsImporting, Converter={StaticResource BooleanToVisibilityConverter}}" IsIndeterminate="{Binding IsImporting}" Width="100" Margin="0 5 10 5" />
 
                 <Button Padding="15 0" b:ButtonBehaviors.OpenContextOnClick="True">
-                    Import assets
+                    <Run Text="{x:Static r:Labels.ImportAssets}"/>
                     <Button.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Arma 3" Command="{Binding ImportA3}" CommandParameter="Base" />
                             <MenuItem Header="Arma 3: Livonia" Command="{Binding ImportA3}" CommandParameter="Livonia" />
                             <MenuItem Header="Arma 3: Tanoa" Command="{Binding ImportA3}" CommandParameter="Tanoa" />
-                            <MenuItem Header="Usual terrain mods" ItemsSource="{Binding UsualMods}">
+                            <MenuItem Header="{x:Static r:Labels.UsualTerrainMods}" ItemsSource="{Binding UsualMods}">
                                 <MenuItem.ItemContainerStyle>
                                     <Style>
                                         <Setter Property="MenuItem.Header" Value="{Binding Name}" />
@@ -61,7 +66,7 @@
                                     </Style>
                                 </MenuItem.ItemContainerStyle>
                             </MenuItem>
-                            <MenuItem Header="Active mods" ItemsSource="{Binding ActiveMods}">
+                            <MenuItem Header="{x:Static r:Labels.ActiveMods}" ItemsSource="{Binding ActiveMods}">
                                 <MenuItem.ItemContainerStyle>
                                     <Style>
                                         <Setter Property="MenuItem.Header" Value="{Binding Name}"/>

@@ -7,6 +7,7 @@
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.MapConfigEditor.Views"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
              mc:Ignorable="d" 
              d:DesignHeight="1200" d:DesignWidth="800">
     <ScrollViewer HorizontalScrollBarVisibility="Hidden" IsTabStop="False">
@@ -15,54 +16,69 @@
 
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Button Margin="10" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
-                    Generate Preview
+                    <Run Text="{x:Static r:Labels.GeneratePreview}" />
                     <Button.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Generate with elevation" cal:Message.Attach="GeneratePreviewNormal"></MenuItem>
-                            <MenuItem Header="Generate areas only (faster)" cal:Message.Attach="GeneratePreviewFast"></MenuItem>
+                            <MenuItem Header="{x:Static r:Labels.GenerateWithElevation}" cal:Message.Attach="GeneratePreviewNormal"></MenuItem>
+                            <MenuItem Header="{x:Static r:Labels.GenerateAreasOnly}" cal:Message.Attach="GeneratePreviewFast"></MenuItem>
                             <Separator />
-                            <MenuItem Header="Generate raw satellite image" cal:Message.Attach="GenerateRawSatMap"></MenuItem>
-                            <MenuItem Header="Generate satellite image" cal:Message.Attach="GenerateSatMap"></MenuItem>
-                            <MenuItem Header="Generate id map image" cal:Message.Attach="GenerateIdMap"></MenuItem>
+                            <MenuItem Header="{x:Static r:Labels.GenerateRawSatelliteImage}" cal:Message.Attach="GenerateRawSatMap"></MenuItem>
+                            <MenuItem Header="{x:Static r:Labels.GenerateSatelliteImage}" cal:Message.Attach="GenerateSatMap"></MenuItem>
+                            <MenuItem Header="{x:Static r:Labels.GenerateIdMapImage}" cal:Message.Attach="GenerateIdMap"></MenuItem>
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>
-                <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMap">Generate Map for Arma 3</Button>
-                <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMod">Generate Mod for Arma 3</Button>
+                <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMap">
+                    <Run Text="{x:Static r:Labels.GenerateMapForArma3}"/>
+                </Button>
+                <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMod">
+                    <Run Text="{x:Static r:Labels.GenerateModForArma3}"/>
+                </Button>
             </StackPanel>
 
             <StackPanel Margin="5" Orientation="Horizontal" >
-                <Label Width="200">Coordinates of center of map</Label>
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.CoordinatesOfCenterOfMap}" />
+                </Label>
                 <TextBox Width="200" Text="{Binding Center,Mode=TwoWay}" />
-                <Label>or south west of map</Label>
+                <Label>
+                    <Run Text="{x:Static r:Labels.CoordinatesSouthWestOfMap}"/>
+                </Label>
                 <TextBox Width="200" Text="{Binding SouthWest,Mode=TwoWay}" />
+                <TextBlock Text="{x:Static r:Labels.CoordinatesHint}" />
             </StackPanel>
 
             <StackPanel Margin="5" Orientation="Horizontal" >
-                <Label Width="200">Map size (square)</Label>
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.MapSizeSquare}"/>
+                </Label>
                 <ComboBox SelectedValue="{Binding GridSize,Mode=TwoWay}" ItemsSource="{Binding GridSizes}" />
                 <TextBlock Margin="10 0" FontSize="18">×</TextBlock>
                 <TextBox Width="50" Text="{Binding GridCellSize,Mode=TwoWay}" />
-                <TextBlock Margin="10 0">meters</TextBlock>
+                <TextBlock Margin="10 0"><Run Text="{x:Static r:Labels.MetersUnit}"/></TextBlock>
                 <TextBlock Margin="10 0" FontSize="18">➜</TextBlock>
                 <TextBox Width="75" Text="{Binding MapSize,Mode=TwoWay}" />
-                <TextBlock Margin="10 0">meters</TextBlock>
+                <TextBlock Margin="10 0"><Run Text="{x:Static r:Labels.MetersUnit}"/></TextBlock>
             </StackPanel>
 
             <StackPanel Margin="5" Orientation="Horizontal" >
-                <Label Width="200">Assets configuration / style of map</Label>
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.AssetsConfiguration}" />
+                </Label>
                 <ComboBox Width="400" 
                           Text="{Binding AssetConfigFile,Mode=TwoWay}" 
                           IsEditable="True"
                           ItemsSource="{Binding BuiltinAssetConfigFiles}" />
                 <Button Padding="10 0" Margin="10 0" cal:Message.Attach="ChooseAssetConfig">...</Button>
-                <Button Padding="10 0" cal:Message.Attach="EditAssetConfig">Edit</Button>
+                <Button Padding="10 0" cal:Message.Attach="EditAssetConfig">
+                    <Run Text="{x:Static r:Labels.Edit}"/>
+                </Button>
                 <!--<Button Padding="10 0" cal:Message.Attach="CreateAssetConfig">New</Button>-->
             </StackPanel>
 
             <Expander Margin="10">
                 <Expander.Header>
-                    Advanced parameters
+                    <TextBlock Text="{x:Static r:Labels.AdvancedParameters}" />
                 </Expander.Header>
                 <StackPanel  Orientation="Vertical">
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
@@ -97,13 +113,9 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="1" Margin="7">
-                    <TextBlock Margin="0 0 0 20" TextWrapping="Wrap">
-To select an area on the map : <LineBreak />
-- From a corner, press Ctrl Key then press Left Mouse Button<LineBreak />
-- From center, press Alt Key then press Left Mouse Button.
-                    </TextBlock>
+                    <TextBlock Margin="0 0 0 20" TextWrapping="Wrap" Text="{x:Static r:Labels.MapUsageHint}" />
                     <TextBlock>
-                        <Hyperlink NavigateUri="https://www.openstreetmap.org/" RequestNavigate="Hyperlink_RequestNavigate">View on OpenStreetMap.org</Hyperlink>
+                        <Hyperlink NavigateUri="https://www.openstreetmap.org/" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static r:Labels.ViewOnOpenStreetMapOrg}" /></Hyperlink>
                     </TextBlock>
                     <TextBlock Margin="0 20" TextWrapping="Wrap">
 © OpenStreetMap contributors. See https://openstreetmap.org/

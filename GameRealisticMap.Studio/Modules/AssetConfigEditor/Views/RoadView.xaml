@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
@@ -27,35 +28,49 @@
                     <ColumnDefinition MinWidth="530" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                
+
                 <StackPanel>
-                    <TextBlock FontSize="25">Road configuration</TextBlock>
+                    <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.RoadConfiguration}"/></TextBlock>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">ClearWidth</Label>
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.ClearWidth}" />
+                        </Label>
                         <TextBox Width="50" Text="{Binding ClearWidth,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">Width</Label>
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.Width}" />
+                        </Label>
                         <TextBox Width="50" Text="{Binding Width,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">TextureWidth</Label>
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.TextureWidth}" />
+                        </Label>
                         <TextBox Width="50" Text="{Binding TextureWidth,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">Texture</Label>
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.Texture}" />
+                        </Label>
                         <TextBox Width="400" Text="{Binding Texture,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">TextureEnd</Label>
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.TextureEnd}" />
+                        </Label>
                         <TextBox Width="400" Text="{Binding TextureEnd,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">Material</Label>
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.RoadRvMaterial}" />
+                        </Label>
                         <TextBox Width="400" Text="{Binding Material,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">SatelliteColor</Label>
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.RoadSatelliteColor}" />
+                        </Label>
                         <toolkit:ColorPicker 
                     SelectedColor="{Binding SatelliteColor,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
                     Width="100"
@@ -119,12 +134,12 @@
                     </Image>
                 </Grid>
             </Grid>
-  
-            <TextBlock FontSize="25" Padding="0 15 0 5">Bridge elements</TextBlock>
+
+            <TextBlock FontSize="25" Padding="0 15 0 5"><Run Text="{x:Static r:Labels.BridgeElements}" /></TextBlock>
             <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Element" Binding="{Binding Label}" Width="200" />
-                    <DataGridTextColumn Header="Name" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.Type}" Binding="{Binding Label}" Width="200" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.Name}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
                     <DataGridTemplateColumn Width="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -132,15 +147,21 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Size" Binding="{Binding Size}" Width="100" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.Size}" Binding="{Binding Size}" Width="100" />
 
                     <DataGridTemplateColumn Width="75">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">Change</Button>
-                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Edit</Button>
-                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.ClearItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">Clear</Button>
+                                    <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">
+                                        <Run Text="{x:Static r:Labels.Change}"/>
+                                    </Button>
+                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                        <Run Text="{x:Static r:Labels.Edit}"/>
+                                    </Button>
+                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.ClearItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                        <Run Text="{x:Static r:Labels.Clear}"/>
+                                    </Button>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

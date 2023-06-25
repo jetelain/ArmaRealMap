@@ -33,7 +33,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
         public Task ClipboardRefresh()
         {
             clipboardComposition = null;
-            ClipboardError = "Clipboard does not contains recognized data";
+            ClipboardError = Labels.CompositionClipboardInvalid;
 
             var value = Clipboard.GetText();
             if (!string.IsNullOrEmpty(value))
@@ -48,7 +48,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
                         clipboardDetected = ObjectPlacementDetectedInfos.CreateFromComposition(clipboardComposition, library);
                         if (clipboardDetected == null)
                         {
-                            ClipboardError = "Unable to detect size and position";
+                            ClipboardError = Labels.CompositionClipboardUnknownSize;
                         }
                         else
                         {

@@ -30,7 +30,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor
         {
             get
             {
-                yield return new EditorFileType("Arma 3 Map Config", ".grma3m", new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png"));
+                yield return new EditorFileType(Labels.Arma3MapConfig, ".grma3m", new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png"));
             }
         }
 

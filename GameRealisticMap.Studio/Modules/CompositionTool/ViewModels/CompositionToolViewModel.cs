@@ -21,7 +21,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
         public CompositionToolViewModel(IArma3DataModule arma3DataModule, IWindowManager windowManager)
         {
             Importer = new CompositionImporter(this, arma3DataModule, windowManager);
-            DisplayName = "Objects position";
+            DisplayName = Labels.CompositionToolTitle;
             RemoveItem = new RelayCommand(i => Current!.Composition.RemoveItem((CompositionItem)i, UndoRedoManager!));
         }
 

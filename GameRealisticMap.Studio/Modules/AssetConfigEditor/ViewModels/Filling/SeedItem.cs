@@ -23,7 +23,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             _parent = parent;
             Items = new ObservableCollection<FillingItem>(c.Models.Select(m => new FillingItem(m)));
             _probability = c.Probability;
-            ordinalName = $"Seed #{index + 1}";
+            ordinalName = string.Format(Labels.SeedNumber, index + 1);
             CompositionImporter = new CompositionImporter(this);
             RemoveItem = new RelayCommand(item => Items.RemoveUndoable(parent.UndoRedoManager,(FillingItem)item));
             Items.CollectionChanged += Items_CollectionChanged;
