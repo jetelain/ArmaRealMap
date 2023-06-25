@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
@@ -323,7 +323,9 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             await generator.GenerateMod(task, a3config);
 
-            task.DisplayResult = () => ShellHelper.OpenUri(a3config.TargetModDirectory);
+            task.DisplayResult = () => ShellHelper.OpenUri(a3config.TargetModDirectory); 
+            
+            await CreateLauncherPresetAsync(assets, a3config.TargetModDirectory, a3config.WorldName);
         }
 
         private async Task DoGenerateMap(IProgressTaskUI task)
@@ -420,6 +422,44 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 await source.GetData<RawSatelliteImageData>().Image.OffloadAsync();
             }
             task.DisplayResult = () => ShellHelper.OpenUri(target);
+        }
+
+        private async Task CreateLauncherPresetAsync(Arma3Assets assets, string modpath, string name)
+        {
+            // Ensure that local mod is registred within launcher
+            Arma3LauncherLocalMods mods;
+            var local = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Arma 3 Launcher", "Local.json");
+            if (File.Exists(local))
+            {
+                using (var stream = File.OpenRead(local))
+                {
+                    mods = (await JsonSerializer.DeserializeAsync<Arma3LauncherLocalMods>(stream))!;
+                }
+                if (!mods.knownLocalMods.Contains(modpath, StringComparer.OrdinalIgnoreCase))
+                {
+                    mods.knownLocalMods.Add(modpath);
+                    mods.userDirectories.Add(modpath);
+                    using (var stream = File.Create(local))
+                    {
+                        await JsonSerializer.SerializeAsync(stream, mods);
+                    }
+                }
+            }
+
+            // Create a ready-to-use preset
+            var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Arma 3 Launcher", "Presets");
+            var preset = Path.Combine(directory, "GRM - " + name + ".preset2");
+            if (!File.Exists(preset))
+            {            
+                var doc = new XDocument(new XElement("addons-presets",
+                    new XElement("last-update", DateTime.Now),
+                    new XElement("published-ids",
+                        assets.Dependencies.Select(d => new XElement("id", "steam:" + d.SteamId))
+                        .Concat(new[] { new XElement("id", "local:" + modpath.ToUpperInvariant().TrimEnd('\\') + "\\") })),
+                    new XElement("dlcs-appids")));
+                Directory.CreateDirectory(directory);
+                doc.Save(preset);
+            }
         }
     }
 }
