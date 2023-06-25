@@ -142,6 +142,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Arma 3 Assets Configuration.
+        /// </summary>
+        public static string Arma3AssetsConfiguration {
+            get {
+                return ResourceManager.GetString("Arma3AssetsConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Arma 3 Map Config.
         /// </summary>
         public static string Arma3MapConfig {

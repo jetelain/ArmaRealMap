@@ -761,4 +761,7 @@
   <data name="AssetTwoLanesSecondaryRoad" xml:space="preserve">
     <value>Secondary road - 2 Lanes</value>
   </data>
+  <data name="Arma3AssetsConfiguration" xml:space="preserve">
+    <value>Arma 3 Assets Configuration</value>
+  </data>
 </root>

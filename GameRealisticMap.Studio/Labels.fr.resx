@@ -761,4 +761,7 @@
   <data name="AssetSingleLaneDirtRoad" xml:space="preserve">
     <value>Route de terre</value>
   </data>
+  <data name="Arma3AssetsConfiguration" xml:space="preserve">
+    <value>Style de carte Arma 3</value>
+  </data>
 </root>
