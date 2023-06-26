@@ -768,7 +768,7 @@
     <value>✔ Terminé avec succès en {0:0.0} secondes</value>
   </data>
   <data name="OpenArma3LauncherWithGeneratedModHint" xml:space="preserve">
-    <value>Dans la section Mods, choisir la configuration \"GRM - {0}\".
+    <value>Dans la section Mods, choisir la configuration "GRM - {0}".
 Vous pouvez éventuellement activer d'autres mods.</value>
   </data>
   <data name="ViewInFileExplorer" xml:space="preserve">

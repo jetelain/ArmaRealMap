@@ -771,7 +771,7 @@
     <value>View in File Explorer</value>
   </data>
   <data name="OpenArma3LauncherWithGeneratedModHint" xml:space="preserve">
-    <value>In Mods section, select preset \"GRM - {0}\".
+    <value>In Mods section, select preset "GRM - {0}".
 You may eventually enable other mods.</value>
   </data>
   <data name="DoneSuccessfullyInSeconds" xml:space="preserve">

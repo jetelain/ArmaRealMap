@@ -1656,7 +1656,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à In Mods section, select preset \&quot;GRM - {0}\&quot;.
+        ///   Recherche une chaîne localisée semblable à In Mods section, select preset &quot;GRM - {0}&quot;.
         ///You may eventually enable other mods..
         /// </summary>
         public static string OpenArma3LauncherWithGeneratedModHint {
