@@ -1123,6 +1123,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à ✔ Done successfully in {0:0.0} seconds.
+        /// </summary>
+        public static string DoneSuccessfullyInSeconds {
+            get {
+                return ResourceManager.GetString("DoneSuccessfullyInSeconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Download from official site (free).
         /// </summary>
         public static string DownloadFromOfficialSiteFree {
@@ -1647,6 +1656,16 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à In Mods section, select preset &quot;GRM - {0}&quot;.
+        ///You may eventually enable other mods..
+        /// </summary>
+        public static string OpenArma3LauncherWithGeneratedModHint {
+            get {
+                return ResourceManager.GetString("OpenArma3LauncherWithGeneratedModHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Open result.
         /// </summary>
         public static string OpenResult {
@@ -1953,11 +1972,29 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à View in File Explorer.
+        /// </summary>
+        public static string ViewInFileExplorer {
+            get {
+                return ResourceManager.GetString("ViewInFileExplorer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à View on OpenStreetMap.org.
         /// </summary>
         public static string ViewOnOpenStreetMapOrg {
             get {
                 return ResourceManager.GetString("ViewOnOpenStreetMapOrg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à View Result in Web Browser.
+        /// </summary>
+        public static string ViewResultInWebBrowser {
+            get {
+                return ResourceManager.GetString("ViewResultInWebBrowser", resourceCulture);
             }
         }
         
@@ -1994,6 +2031,15 @@ namespace GameRealisticMap.Studio {
         public static string YouCanAlsoMountDriveWithYourCustomTool {
             get {
                 return ResourceManager.GetString("YouCanAlsoMountDriveWithYourCustomTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à You can now:.
+        /// </summary>
+        public static string YouCanNowPrompt {
+            get {
+                return ResourceManager.GetString("YouCanNowPrompt", resourceCulture);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using GameRealisticMap.Reporting;
@@ -10,21 +11,27 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly ProgressToolViewModel viewModel;
         private readonly Stopwatch elapsed;
+
         private int lastDone = 0;
 
-        public ProgressTask(ProgressToolViewModel viewModel)
+        public ProgressTask(ProgressToolViewModel viewModel, string name)
         {
             this.viewModel = viewModel;
             this.elapsed = Stopwatch.StartNew();
+            this.TaskName = name;
         }
 
         public int Total { get; set; } = 0;
 
+        public string TaskName { get; }
+
         public CancellationToken CancellationToken => cancellationTokenSource.Token;
 
-        public Action? DisplayResult { get; set; }
+        public List<SuccessAction> SuccessActions { get; } = new List<SuccessAction>();
 
         public Exception? Error { get; set; }
+
+        public double ElapsedSeconds => elapsed.ElapsedMilliseconds / 1000d;
 
         public override IProgressInteger CreateStep(string name, int total)
         {
@@ -105,6 +112,11 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         public override void WriteLine(string message)
         {
             viewModel.WriteLine(message);
+        }
+
+        public void AddSuccessAction(Action action, string label, string description = "")
+        {
+            SuccessActions.Add(new SuccessAction(action, label, description));
         }
     }
 }

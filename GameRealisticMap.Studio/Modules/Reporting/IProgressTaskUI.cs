@@ -9,6 +9,6 @@ namespace GameRealisticMap.Studio.Modules.Reporting
 {
     internal interface IProgressTaskUI : IProgressTask
     {
-        Action? DisplayResult { get; set; }
+        void AddSuccessAction(Action action, string label, string description = "");
     }
 }

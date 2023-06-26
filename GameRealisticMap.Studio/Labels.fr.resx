@@ -764,4 +764,20 @@
   <data name="Arma3AssetsConfiguration" xml:space="preserve">
     <value>Style de carte Arma 3</value>
   </data>
+  <data name="DoneSuccessfullyInSeconds" xml:space="preserve">
+    <value>✔ Terminé avec succès en {0:0.0} secondes</value>
+  </data>
+  <data name="OpenArma3LauncherWithGeneratedModHint" xml:space="preserve">
+    <value>Dans la section Mods, choisir la configuration "GRM - {0}".
+Vous pouvez éventuellement activer d'autres mods.</value>
+  </data>
+  <data name="ViewInFileExplorer" xml:space="preserve">
+    <value>Voir dans l'explorateur de fichiers</value>
+  </data>
+  <data name="ViewResultInWebBrowser" xml:space="preserve">
+    <value>Voir le résultat dans le navigateur web</value>
+  </data>
+  <data name="YouCanNowPrompt" xml:space="preserve">
+    <value>Vous pouvez maintenant :</value>
+  </data>
 </root>
