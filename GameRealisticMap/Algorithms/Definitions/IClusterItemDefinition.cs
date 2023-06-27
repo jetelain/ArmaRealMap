@@ -4,7 +4,7 @@
     {
         float Radius { get; }
 
-        float ExclusiveRadius { get; }
+        float FitRadius { get; }
 
         TModelInfo Model { get; }
 

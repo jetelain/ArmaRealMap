@@ -53,8 +53,8 @@
                         <Line X1="{x:Static local:CanvasGrid.HalfSize}" X2="{x:Static local:CanvasGrid.HalfSize}" Y1="0" Y2="{x:Static local:CanvasGrid.Size}"  Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Stroke="Red" StrokeThickness="1" />
                     </Canvas>
                     <Ellipse 
-                        Width="{Binding Radius.ExclusiveRadius, Converter={StaticResource MetersToPixelsConverterX2}}" 
-                        Height="{Binding Radius.ExclusiveRadius, Converter={StaticResource MetersToPixelsConverterX2}}"
+                        Width="{Binding Radius.FitRadius, Converter={StaticResource MetersToPixelsConverterX2}}" 
+                        Height="{Binding Radius.FitRadius, Converter={StaticResource MetersToPixelsConverterX2}}"
                         Visibility="{Binding HasRadius, Converter={StaticResource BoolToVisibilityConverter}}" 
                         StrokeThickness="2" Stroke="Green" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <Ellipse 

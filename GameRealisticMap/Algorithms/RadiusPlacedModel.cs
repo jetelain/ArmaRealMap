@@ -28,7 +28,7 @@ namespace GameRealisticMap.Algorithms
 
         public float Radius { get; }
 
-        public float ExclusiveRadius => boundingCircle.Radius;
+        public float FitRadius => boundingCircle.Radius;
 
         public TerrainPoint Center => boundingCircle.Center;
 

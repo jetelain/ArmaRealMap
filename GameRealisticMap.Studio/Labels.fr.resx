@@ -579,7 +579,7 @@
     <value>Graines/objets de remplissage</value>
   </data>
   <data name="FitRadius" xml:space="preserve">
-    <value>Rayon de zone</value>
+    <value>Rayon d'ajustement</value>
   </data>
   <data name="GeneratePreviewWithLinkedAreas" xml:space="preserve">
     <value>Générer un aperçu avec les zones associées</value>

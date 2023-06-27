@@ -11,7 +11,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public FillingItem(ClusterItemDefinition d)
         {
             _radius = d.Radius;
-            _exclusiveRadius = d.ExclusiveRadius;
+            _fitRadius = d.FitRadius;
             Composition = new CompositionViewModel(d.Model);
             MaxZ = d.MaxZ;
             MinZ = d.MinZ;
@@ -23,8 +23,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public float _radius;
         public float Radius { get { return _radius; } set { _radius = value; NotifyOfPropertyChange(); } }
 
-        public float _exclusiveRadius;
-        public float ExclusiveRadius { get { return _exclusiveRadius; } set { _exclusiveRadius = value; NotifyOfPropertyChange(); } }
+        public float _fitRadius;
+        public float FitRadius { get { return _fitRadius; } set { _fitRadius = value; NotifyOfPropertyChange(); } }
 
         public CompositionViewModel Composition { get; }
 
@@ -45,7 +45,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public ClusterItemDefinition ToDefinition()
         {
-            return new ClusterItemDefinition(Radius, ExclusiveRadius, Composition.ToDefinition(), MaxZ, MinZ, Probability, MaxScale, MinScale);
+            return new ClusterItemDefinition(Radius, FitRadius, Composition.ToDefinition(), MaxZ, MinZ, Probability, MaxScale, MinScale);
         }
     }
 }

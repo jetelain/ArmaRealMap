@@ -10,6 +10,6 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
     {
         float Radius { get; set; }
 
-        float ExclusiveRadius { get; set; }
+        float FitRadius { get; set; }
     }
 }
