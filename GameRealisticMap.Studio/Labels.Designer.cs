@@ -1204,7 +1204,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Area Radius.
+        ///   Recherche une chaîne localisée semblable à Fit Radius.
         /// </summary>
         public static string FitRadius {
             get {

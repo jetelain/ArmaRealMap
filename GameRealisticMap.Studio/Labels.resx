@@ -612,7 +612,7 @@
     <value>Radius</value>
   </data>
   <data name="FitRadius" xml:space="preserve">
-    <value>Area Radius</value>
+    <value>Fit Radius</value>
   </data>
   <data name="MaxZ" xml:space="preserve">
     <value>Max Z</value>

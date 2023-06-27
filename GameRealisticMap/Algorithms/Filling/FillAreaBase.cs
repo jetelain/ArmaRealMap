@@ -140,7 +140,7 @@ namespace GameRealisticMap.Algorithms.Filling
 
         private static RadiusPlacedModel<TModelInfo> Create(IClusterItemDefinition<TModelInfo> obj, TerrainPoint point, float angle, float elevation = 0, float scale = 1)
         {
-            return new RadiusPlacedModel<TModelInfo>(new BoundingCircle(point, obj.ExclusiveRadius * scale, angle), elevation, scale, obj.Model, obj.Radius * scale);
+            return new RadiusPlacedModel<TModelInfo>(new BoundingCircle(point, obj.FitRadius * scale, angle), elevation, scale, obj.Model, obj.Radius * scale);
         }
 
         protected virtual bool WillFit(RadiusPlacedModel<TModelInfo> candidate, AreaDefinition fillarea)
