@@ -145,11 +145,11 @@ namespace GameRealisticMap.Algorithms.Filling
 
         protected virtual bool WillFit(RadiusPlacedModel<TModelInfo> candidate, AreaDefinition fillarea)
         {
-            if (candidate.ExclusiveRadius == 0)
+            if (candidate.FitRadius == 0)
             {
                 return true;
             }
-            return fillarea.Polygon.DistanceFromBoundary(candidate.Center) >= candidate.ExclusiveRadius;
+            return fillarea.Polygon.DistanceFromBoundary(candidate.Center) >= candidate.FitRadius;
         }
 
         private static bool HasRoom(RadiusPlacedModel<TModelInfo> candidate, IReadOnlyList<RadiusPlacedModel<TModelInfo>> potentialConflits)

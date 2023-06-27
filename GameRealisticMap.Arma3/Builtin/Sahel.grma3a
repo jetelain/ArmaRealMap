@@ -5,7 +5,7 @@
         "Models": [
           {
             "Radius": 2,
-            "ExclusiveRadius": 2,
+            "FitRadius": 2,
             "Model": {
               "Objects": [
                 {
@@ -18,7 +18,7 @@
           },
           {
             "Radius": 1,
-            "ExclusiveRadius": 1,
+            "FitRadius": 1,
             "Model": {
               "Objects": [
                 {
@@ -31,7 +31,7 @@
           },
           {
             "Radius": 7,
-            "ExclusiveRadius": 7,
+            "FitRadius": 7,
             "Model": {
               "Objects": [
                 {
@@ -44,7 +44,7 @@
           },
           {
             "Radius": 1.6,
-            "ExclusiveRadius": 1.6,
+            "FitRadius": 1.6,
             "Model": {
               "Objects": [
                 {
@@ -57,7 +57,7 @@
           },
           {
             "Radius": 2.4,
-            "ExclusiveRadius": 2.4,
+            "FitRadius": 2.4,
             "Model": {
               "Objects": [
                 {
@@ -70,7 +70,7 @@
           },
           {
             "Radius": 3.4,
-            "ExclusiveRadius": 3.4,
+            "FitRadius": 3.4,
             "Model": {
               "Objects": [
                 {
@@ -83,7 +83,7 @@
           },
           {
             "Radius": 2.8,
-            "ExclusiveRadius": 2.8,
+            "FitRadius": 2.8,
             "Model": {
               "Objects": [
                 {
@@ -106,7 +106,7 @@
         "Models": [
           {
             "Radius": 7,
-            "ExclusiveRadius": 12,
+            "FitRadius": 12,
             "Model": {
               "Objects": [
                 {
@@ -121,7 +121,7 @@
           },
           {
             "Radius": 17.5,
-            "ExclusiveRadius": 25,
+            "FitRadius": 25,
             "Model": {
               "Objects": [
                 {
@@ -146,7 +146,7 @@
         "Models": [
           {
             "Radius": 1.6,
-            "ExclusiveRadius": 1.6,
+            "FitRadius": 1.6,
             "Model": {
               "Objects": [
                 {
@@ -155,13 +155,13 @@
                 }
               ]
             },
-            "MaxZ": -1,
-            "MinZ": -0.5,
+            "MaxZ": -0.5,
+            "MinZ": -1,
             "Probability": 0.10000000000000002
           },
           {
             "Radius": 1.6,
-            "ExclusiveRadius": 1.6,
+            "FitRadius": 1.6,
             "Model": {
               "Objects": [
                 {
@@ -170,13 +170,13 @@
                 }
               ]
             },
-            "MaxZ": -1.5,
-            "MinZ": -0.5,
+            "MaxZ": -0.5,
+            "MinZ": -1.5,
             "Probability": 0.10000000000000002
           },
           {
             "Radius": 2,
-            "ExclusiveRadius": 2,
+            "FitRadius": 2,
             "Model": {
               "Objects": [
                 {
@@ -185,13 +185,13 @@
                 }
               ]
             },
-            "MaxZ": -2,
-            "MinZ": -1,
+            "MaxZ": -1,
+            "MinZ": -2,
             "Probability": 0.10000000000000002
           },
           {
             "Radius": 2,
-            "ExclusiveRadius": 2,
+            "FitRadius": 2,
             "Model": {
               "Objects": [
                 {
@@ -200,13 +200,13 @@
                 }
               ]
             },
-            "MaxZ": -2,
-            "MinZ": -1,
+            "MaxZ": -1,
+            "MinZ": -2,
             "Probability": 0.10000000000000002
           },
           {
             "Radius": 0.9,
-            "ExclusiveRadius": 0.9,
+            "FitRadius": 0.9,
             "Model": {
               "Objects": [
                 {
@@ -215,13 +215,13 @@
                 }
               ]
             },
-            "MaxZ": -1,
-            "MinZ": -0.5,
+            "MaxZ": -0.5,
+            "MinZ": -1,
             "Probability": 0.10000000000000002
           },
           {
             "Radius": 0.9,
-            "ExclusiveRadius": 0.9,
+            "FitRadius": 0.9,
             "Model": {
               "Objects": [
                 {
@@ -230,13 +230,13 @@
                 }
               ]
             },
-            "MaxZ": -1,
-            "MinZ": -0.5,
+            "MaxZ": -0.5,
+            "MinZ": -1,
             "Probability": 0.10000000000000002
           },
           {
             "Radius": 2,
-            "ExclusiveRadius": 2,
+            "FitRadius": 2,
             "Model": {
               "Objects": [
                 {
@@ -249,7 +249,7 @@
           },
           {
             "Radius": 2.5,
-            "ExclusiveRadius": 2.5,
+            "FitRadius": 2.5,
             "Model": {
               "Objects": [
                 {
@@ -262,7 +262,7 @@
           },
           {
             "Radius": 1.6,
-            "ExclusiveRadius": 1.6,
+            "FitRadius": 1.6,
             "Model": {
               "Objects": [
                 {
@@ -275,7 +275,7 @@
           },
           {
             "Radius": 3.4,
-            "ExclusiveRadius": 3.4,
+            "FitRadius": 3.4,
             "Model": {
               "Objects": [
                 {
@@ -298,7 +298,7 @@
         "Models": [
           {
             "Radius": 5,
-            "ExclusiveRadius": 5,
+            "FitRadius": 5,
             "Model": {
               "Objects": [
                 {
@@ -311,7 +311,7 @@
           },
           {
             "Radius": 5,
-            "ExclusiveRadius": 5,
+            "FitRadius": 5,
             "Model": {
               "Objects": [
                 {
@@ -324,7 +324,7 @@
           },
           {
             "Radius": 16,
-            "ExclusiveRadius": 16,
+            "FitRadius": 16,
             "Model": {
               "Objects": [
                 {
@@ -337,7 +337,7 @@
           },
           {
             "Radius": 3,
-            "ExclusiveRadius": 3,
+            "FitRadius": 3,
             "Model": {
               "Objects": [
                 {
@@ -350,7 +350,7 @@
           },
           {
             "Radius": 3,
-            "ExclusiveRadius": 3,
+            "FitRadius": 3,
             "Model": {
               "Objects": [
                 {
@@ -363,7 +363,7 @@
           },
           {
             "Radius": 5,
-            "ExclusiveRadius": 5,
+            "FitRadius": 5,
             "Model": {
               "Objects": [
                 {
@@ -376,7 +376,7 @@
           },
           {
             "Radius": 4.5,
-            "ExclusiveRadius": 4.5,
+            "FitRadius": 4.5,
             "Model": {
               "Objects": [
                 {
@@ -389,7 +389,7 @@
           },
           {
             "Radius": 3.4,
-            "ExclusiveRadius": 3.4,
+            "FitRadius": 3.4,
             "Model": {
               "Objects": [
                 {
@@ -402,7 +402,7 @@
           },
           {
             "Radius": 4.8,
-            "ExclusiveRadius": 4.8,
+            "FitRadius": 4.8,
             "Model": {
               "Objects": [
                 {
@@ -415,7 +415,7 @@
           },
           {
             "Radius": 4.4,
-            "ExclusiveRadius": 4.4,
+            "FitRadius": 4.4,
             "Model": {
               "Objects": [
                 {
@@ -428,7 +428,7 @@
           },
           {
             "Radius": 4.4,
-            "ExclusiveRadius": 4.4,
+            "FitRadius": 4.4,
             "Model": {
               "Objects": [
                 {
@@ -1578,7 +1578,7 @@
             "Models": [
               {
                 "Radius": 7.3,
-                "ExclusiveRadius": 7.3,
+                "FitRadius": 7.3,
                 "Model": {
                   "Objects": [
                     {
@@ -1596,7 +1596,7 @@
             "Models": [
               {
                 "Radius": 4.5,
-                "ExclusiveRadius": 4.5,
+                "FitRadius": 4.5,
                 "Model": {
                   "Objects": [
                     {
@@ -1614,7 +1614,7 @@
             "Models": [
               {
                 "Radius": 1.7,
-                "ExclusiveRadius": 1.7,
+                "FitRadius": 1.7,
                 "Model": {
                   "Objects": [
                     {
@@ -1632,7 +1632,7 @@
             "Models": [
               {
                 "Radius": 2.3,
-                "ExclusiveRadius": 2.3,
+                "FitRadius": 2.3,
                 "Model": {
                   "Objects": [
                     {
@@ -1650,7 +1650,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -1668,7 +1668,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -1686,7 +1686,7 @@
             "Models": [
               {
                 "Radius": 2.8,
-                "ExclusiveRadius": 2.8,
+                "FitRadius": 2.8,
                 "Model": {
                   "Objects": [
                     {
@@ -1704,7 +1704,7 @@
             "Models": [
               {
                 "Radius": 2.8,
-                "ExclusiveRadius": 2.8,
+                "FitRadius": 2.8,
                 "Model": {
                   "Objects": [
                     {
@@ -1722,7 +1722,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -1740,7 +1740,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -1758,7 +1758,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -1776,7 +1776,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -1794,7 +1794,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -1812,7 +1812,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -1830,7 +1830,7 @@
             "Models": [
               {
                 "Radius": 1.7,
-                "ExclusiveRadius": 1.7,
+                "FitRadius": 1.7,
                 "Model": {
                   "Objects": [
                     {
@@ -1848,7 +1848,7 @@
             "Models": [
               {
                 "Radius": 2.1,
-                "ExclusiveRadius": 2.1,
+                "FitRadius": 2.1,
                 "Model": {
                   "Objects": [
                     {
@@ -1866,7 +1866,7 @@
             "Models": [
               {
                 "Radius": 2.1,
-                "ExclusiveRadius": 2.1,
+                "FitRadius": 2.1,
                 "Model": {
                   "Objects": [
                     {
@@ -1884,7 +1884,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -1902,7 +1902,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -1920,7 +1920,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -1938,7 +1938,7 @@
             "Models": [
               {
                 "Radius": 4.8,
-                "ExclusiveRadius": 4.8,
+                "FitRadius": 4.8,
                 "Model": {
                   "Objects": [
                     {
@@ -1956,7 +1956,7 @@
             "Models": [
               {
                 "Radius": 3,
-                "ExclusiveRadius": 3,
+                "FitRadius": 3,
                 "Model": {
                   "Objects": [
                     {
@@ -1974,7 +1974,7 @@
             "Models": [
               {
                 "Radius": 3.6,
-                "ExclusiveRadius": 3.6,
+                "FitRadius": 3.6,
                 "Model": {
                   "Objects": [
                     {
@@ -1992,7 +1992,7 @@
             "Models": [
               {
                 "Radius": 3.6,
-                "ExclusiveRadius": 3.6,
+                "FitRadius": 3.6,
                 "Model": {
                   "Objects": [
                     {
@@ -2010,7 +2010,7 @@
             "Models": [
               {
                 "Radius": 3.3,
-                "ExclusiveRadius": 3.3,
+                "FitRadius": 3.3,
                 "Model": {
                   "Objects": [
                     {
@@ -2028,7 +2028,7 @@
             "Models": [
               {
                 "Radius": 4.4,
-                "ExclusiveRadius": 4.4,
+                "FitRadius": 4.4,
                 "Model": {
                   "Objects": [
                     {
@@ -2046,7 +2046,7 @@
             "Models": [
               {
                 "Radius": 2.8,
-                "ExclusiveRadius": 2.8,
+                "FitRadius": 2.8,
                 "Model": {
                   "Objects": [
                     {
@@ -2064,7 +2064,7 @@
             "Models": [
               {
                 "Radius": 4.4,
-                "ExclusiveRadius": 4.4,
+                "FitRadius": 4.4,
                 "Model": {
                   "Objects": [
                     {
@@ -2092,7 +2092,7 @@
             "Models": [
               {
                 "Radius": 1.7,
-                "ExclusiveRadius": 1.7,
+                "FitRadius": 1.7,
                 "Model": {
                   "Objects": [
                     {
@@ -2110,7 +2110,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2128,7 +2128,7 @@
             "Models": [
               {
                 "Radius": 1.7,
-                "ExclusiveRadius": 1.7,
+                "FitRadius": 1.7,
                 "Model": {
                   "Objects": [
                     {
@@ -2146,7 +2146,7 @@
             "Models": [
               {
                 "Radius": 2.1,
-                "ExclusiveRadius": 2.1,
+                "FitRadius": 2.1,
                 "Model": {
                   "Objects": [
                     {
@@ -2164,7 +2164,7 @@
             "Models": [
               {
                 "Radius": 2.3,
-                "ExclusiveRadius": 2.3,
+                "FitRadius": 2.3,
                 "Model": {
                   "Objects": [
                     {
@@ -2182,7 +2182,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2200,7 +2200,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -2218,7 +2218,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -2236,7 +2236,7 @@
             "Models": [
               {
                 "Radius": 2.8,
-                "ExclusiveRadius": 2.8,
+                "FitRadius": 2.8,
                 "Model": {
                   "Objects": [
                     {
@@ -2254,7 +2254,7 @@
             "Models": [
               {
                 "Radius": 3,
-                "ExclusiveRadius": 3,
+                "FitRadius": 3,
                 "Model": {
                   "Objects": [
                     {
@@ -2272,7 +2272,7 @@
             "Models": [
               {
                 "Radius": 3.6,
-                "ExclusiveRadius": 3.6,
+                "FitRadius": 3.6,
                 "Model": {
                   "Objects": [
                     {
@@ -2290,7 +2290,7 @@
             "Models": [
               {
                 "Radius": 2,
-                "ExclusiveRadius": 2,
+                "FitRadius": 2,
                 "Model": {
                   "Objects": [
                     {
@@ -2308,7 +2308,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -2326,7 +2326,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2354,7 +2354,7 @@
             "Models": [
               {
                 "Radius": 4,
-                "ExclusiveRadius": 4,
+                "FitRadius": 4,
                 "Model": {
                   "Objects": [
                     {
@@ -2372,7 +2372,7 @@
             "Models": [
               {
                 "Radius": 4,
-                "ExclusiveRadius": 4,
+                "FitRadius": 4,
                 "Model": {
                   "Objects": [
                     {
@@ -2390,7 +2390,7 @@
             "Models": [
               {
                 "Radius": 2,
-                "ExclusiveRadius": 2,
+                "FitRadius": 2,
                 "Model": {
                   "Objects": [
                     {
@@ -2408,7 +2408,7 @@
             "Models": [
               {
                 "Radius": 1.7,
-                "ExclusiveRadius": 1.7,
+                "FitRadius": 1.7,
                 "Model": {
                   "Objects": [
                     {
@@ -2426,7 +2426,7 @@
             "Models": [
               {
                 "Radius": 1.7,
-                "ExclusiveRadius": 1.7,
+                "FitRadius": 1.7,
                 "Model": {
                   "Objects": [
                     {
@@ -2444,7 +2444,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -2462,7 +2462,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2480,7 +2480,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -2508,7 +2508,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -2526,7 +2526,7 @@
             "Models": [
               {
                 "Radius": 2,
-                "ExclusiveRadius": 2,
+                "FitRadius": 2,
                 "Model": {
                   "Objects": [
                     {
@@ -2544,7 +2544,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2562,7 +2562,7 @@
             "Models": [
               {
                 "Radius": 1.6,
-                "ExclusiveRadius": 1.6,
+                "FitRadius": 1.6,
                 "Model": {
                   "Objects": [
                     {
@@ -2590,7 +2590,7 @@
             "Models": [
               {
                 "Radius": 2.5,
-                "ExclusiveRadius": 2.5,
+                "FitRadius": 2.5,
                 "Model": {
                   "Objects": [
                     {
@@ -2608,7 +2608,7 @@
             "Models": [
               {
                 "Radius": 3.4,
-                "ExclusiveRadius": 3.4,
+                "FitRadius": 3.4,
                 "Model": {
                   "Objects": [
                     {
@@ -2626,7 +2626,7 @@
             "Models": [
               {
                 "Radius": 1.7,
-                "ExclusiveRadius": 1.7,
+                "FitRadius": 1.7,
                 "Model": {
                   "Objects": [
                     {
@@ -2644,7 +2644,7 @@
             "Models": [
               {
                 "Radius": 2,
-                "ExclusiveRadius": 2,
+                "FitRadius": 2,
                 "Model": {
                   "Objects": [
                     {
@@ -2662,7 +2662,7 @@
             "Models": [
               {
                 "Radius": 1.7,
-                "ExclusiveRadius": 1.7,
+                "FitRadius": 1.7,
                 "Model": {
                   "Objects": [
                     {
@@ -2680,7 +2680,7 @@
             "Models": [
               {
                 "Radius": 3,
-                "ExclusiveRadius": 3,
+                "FitRadius": 3,
                 "Model": {
                   "Objects": [
                     {
@@ -2698,7 +2698,7 @@
             "Models": [
               {
                 "Radius": 2.3,
-                "ExclusiveRadius": 2.3,
+                "FitRadius": 2.3,
                 "Model": {
                   "Objects": [
                     {
@@ -3379,5 +3379,12 @@
   },
   "BaseWorldName": "arm_world_sahel",
   "BaseDependency": "arm_sahel",
-  "Dependencies": []
+  "Dependencies": [
+    {
+      "SteamId": "2982306133"
+    },
+    {
+      "SteamId": "520618345"
+    }
+  ]
 }
