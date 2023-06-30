@@ -61,6 +61,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à About.
+        /// </summary>
+        public static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Active mods.
         /// </summary>
         public static string ActiveMods {
@@ -1371,6 +1380,15 @@ namespace GameRealisticMap.Studio {
         public static string Help {
             get {
                 return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à https://github.com/jetelain/ArmaRealMap/wiki.
+        /// </summary>
+        public static string HelpHomeLink {
+            get {
+                return ResourceManager.GetString("HelpHomeLink", resourceCulture);
             }
         }
         

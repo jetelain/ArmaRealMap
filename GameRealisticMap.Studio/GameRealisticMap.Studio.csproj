@@ -8,6 +8,7 @@
     <ApplicationIcon>Resources\grms.ico</ApplicationIcon>
 	<Company>GameRealisticMap</Company>
 	<Platforms>AnyCPU;x64</Platforms>
+	<FileVersion>0.2</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,16 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Resource Include="Resources\**\*.png" />
-  </ItemGroup>
-	
-  <ItemGroup>
+	<Resource Include="Resources\**\*.png" />
     <EmbeddedResource Include="Modules\AssetBrowser\Data\*.txt" />
-  </ItemGroup>
-
-	
-  <ItemGroup>
     <Content Include="Resources\grms.ico" />
+    <EmbeddedResource Include="ThirdParty.txt" />
   </ItemGroup>
 	
   <ItemGroup>

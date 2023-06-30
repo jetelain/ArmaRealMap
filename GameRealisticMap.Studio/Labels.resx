@@ -792,4 +792,10 @@ You may eventually enable other mods.</value>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="HelpHomeLink" xml:space="preserve">
+    <value>https://github.com/jetelain/ArmaRealMap/wiki</value>
+  </data>
 </root>
