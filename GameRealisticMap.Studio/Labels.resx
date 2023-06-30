@@ -780,4 +780,22 @@ You may eventually enable other mods.</value>
   <data name="YouCanNowPrompt" xml:space="preserve">
     <value>You can now:</value>
   </data>
+  <data name="Arma3AssetConfigHelpLink" xml:space="preserve">
+    <value>https://github.com/jetelain/ArmaRealMap/wiki/Create-an-asset-configuration-for-Arma-3</value>
+  </data>
+  <data name="Arma3MapConfigHelpLink" xml:space="preserve">
+    <value>https://github.com/jetelain/ArmaRealMap/wiki/Create-a-map-for-Arma-3</value>
+  </data>
+  <data name="Arma3SetupHelpLink" xml:space="preserve">
+    <value>https://github.com/jetelain/ArmaRealMap/wiki/Install-required-tools-for-Arma-3</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="HelpHomeLink" xml:space="preserve">
+    <value>https://github.com/jetelain/ArmaRealMap/wiki</value>
+  </data>
 </root>

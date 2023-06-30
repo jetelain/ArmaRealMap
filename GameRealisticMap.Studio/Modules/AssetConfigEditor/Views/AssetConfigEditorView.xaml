@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1024">
     <UserControl.Resources>
         <local:CollectionCountValueConverter x:Key="CollectionCountValueConverter" />
         <local:PercentValueConverter x:Key="PercentValueConverter" />
@@ -19,8 +19,13 @@
     <ScrollViewer HorizontalScrollBarVisibility="Hidden" local:Behaviors.EnforceScroll="True">
         <Grid>
             <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0 10">
+                <StackPanel Margin="0 5" Orientation="Horizontal">
                     <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
+                    <TextBlock VerticalAlignment="Center" Margin="10 0" Grid.Column="1">
+                                <Hyperlink NavigateUri="{x:Static r:Links.Arma3AssetConfigHelp}" b:HyperLinkBehaviors.ShellExecute="True">
+                                   <Run Text="{x:Static r:Labels.Help}" />
+                                </Hyperlink>
+                    </TextBlock>
                 </StackPanel>
 
                 <Border Margin="10" Padding="10" BorderBrush="Red" BorderThickness="2" Visibility="{Binding HasMissingMods, Converter={StaticResource BooleanToVisibilityConverter}}" >
@@ -305,7 +310,7 @@
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Configuration}"/></TextBlock>
                     </Expander.Header>
                     <StackPanel>
-                        <TextBlock Margin="10"><Run Text="{x:Static r:Labels.ArmaBaseWorldHint}"/></TextBlock>
+                        <TextBlock Margin="10" TextWrapping="Wrap"><Run Text="{x:Static r:Labels.ArmaBaseWorldHint}"/></TextBlock>
                         <StackPanel Margin="10 5" Orientation="Horizontal" >
                             <Label Width="200">
                                 <Run Text="{x:Static r:Labels.ArmaBaseWorldName}"/>
