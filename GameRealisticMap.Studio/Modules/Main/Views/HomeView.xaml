@@ -30,7 +30,14 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock FontSize="20" Margin="0 0 0 10"><Run Text="{x:Static r:Labels.RequiredTools}" /></TextBlock>
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                            <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.RequiredTools}" /></TextBlock>
+                            <TextBlock VerticalAlignment="Center" Margin="10 5 0 0">
+                                <Hyperlink NavigateUri="{x:Static r:Links.Arma3SetupHelp}" b:HyperLinkBehaviors.ShellExecute="True">
+                                   <Run Text="{x:Static r:Labels.Help}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
                         <TextBlock><Run Text="{x:Static r:Labels.RequiredToolsDescription}" /></TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="1">

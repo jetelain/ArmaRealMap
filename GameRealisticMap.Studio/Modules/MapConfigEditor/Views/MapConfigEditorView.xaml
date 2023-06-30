@@ -13,9 +13,17 @@
     <ScrollViewer HorizontalScrollBarVisibility="Hidden" IsTabStop="False">
         <StackPanel  Orientation="Vertical">
 
-
-            <StackPanel Margin="10" Orientation="Horizontal" >
-                <Button Margin="10" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
+            <StackPanel Margin="0 5" Orientation="Horizontal">
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
+                <TextBlock VerticalAlignment="Center" Margin="10 0" Grid.Column="1">
+                                <Hyperlink NavigateUri="{x:Static r:Links.Arma3MapConfigHelp}" b:HyperLinkBehaviors.ShellExecute="True">
+                                   <Run Text="{x:Static r:Labels.Help}" />
+                                </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+            
+            <StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
+                <Button Margin="5" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
                     <Run Text="{x:Static r:Labels.GeneratePreview}" />
                     <Button.ContextMenu>
                         <ContextMenu>
@@ -28,10 +36,10 @@
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>
-                <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMap">
+                <Button Margin="5" Padding="10" cal:Message.Attach="GenerateMap">
                     <Run Text="{x:Static r:Labels.GenerateMapForArma3}"/>
                 </Button>
-                <Button Margin="10" Padding="10" cal:Message.Attach="GenerateMod">
+                <Button Margin="5" Padding="10" cal:Message.Attach="GenerateMod">
                     <Run Text="{x:Static r:Labels.GenerateModForArma3}"/>
                 </Button>
             </StackPanel>
@@ -45,8 +53,8 @@
                     <Run Text="{x:Static r:Labels.CoordinatesSouthWestOfMap}"/>
                 </Label>
                 <TextBox Width="200" Text="{Binding SouthWest,Mode=TwoWay}" />
-                <TextBlock Text="{x:Static r:Labels.CoordinatesHint}" />
             </StackPanel>
+            <TextBlock Margin="205 0 0 5" FontStyle="Italic"  Text="{x:Static r:Labels.CoordinatesHint}" />
 
             <StackPanel Margin="5" Orientation="Horizontal" >
                 <Label Width="200">

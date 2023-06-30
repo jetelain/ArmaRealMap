@@ -142,6 +142,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à https://github.com/jetelain/ArmaRealMap/wiki/Create-an-asset-configuration-for-Arma-3.
+        /// </summary>
+        public static string Arma3AssetConfigHelpLink {
+            get {
+                return ResourceManager.GetString("Arma3AssetConfigHelpLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Arma 3 Assets Configuration.
         /// </summary>
         public static string Arma3AssetsConfiguration {
@@ -156,6 +165,24 @@ namespace GameRealisticMap.Studio {
         public static string Arma3MapConfig {
             get {
                 return ResourceManager.GetString("Arma3MapConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à https://github.com/jetelain/ArmaRealMap/wiki/Create-a-map-for-Arma-3.
+        /// </summary>
+        public static string Arma3MapConfigHelpLink {
+            get {
+                return ResourceManager.GetString("Arma3MapConfigHelpLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à https://github.com/jetelain/ArmaRealMap/wiki/Install-required-tools-for-Arma-3.
+        /// </summary>
+        public static string Arma3SetupHelpLink {
+            get {
+                return ResourceManager.GetString("Arma3SetupHelpLink", resourceCulture);
             }
         }
         
@@ -1335,6 +1362,15 @@ namespace GameRealisticMap.Studio {
         public static string GroundMaterials {
             get {
                 return ResourceManager.GetString("GroundMaterials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Help.
+        /// </summary>
+        public static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
             }
         }
         
