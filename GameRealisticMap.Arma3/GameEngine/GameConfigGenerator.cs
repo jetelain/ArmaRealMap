@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Reporting;
-using OsmSharp.Streams;
-using OsmSharp;
 using GameRealisticMap.ManMade.Places;
 
 namespace GameRealisticMap.Arma3.GameEngine
@@ -109,7 +102,7 @@ class Grid {{
 
         private string GenerateConfigCpp(IArma3MapConfig config, CitiesData cities)
         {
-            var name = cities.Cities.OrderByDescending(c => c.Population).ThenByDescending(c => c.Radius).FirstOrDefault()?.Name ?? config.WorldName;
+            string name = GetFreindlyName(config, cities);
 
             return $@"class CfgPatches
 {{
@@ -131,7 +124,7 @@ class CfgWorlds
 	class {config.WorldName}: {assets.BaseWorldName}
 	{{
 		cutscenes[] = {{}};
-		description = ""{name}, ArmaRealMap"";
+		description = ""{name}, GameRealisticMap"";
 		worldName = ""{config.PboPrefix}\{config.WorldName}.wrp"";
 		author = """";
 		icon = """";
@@ -166,6 +159,11 @@ class CfgWorlds
 		pictureMap = ""{config.PboPrefix}\data\picturemap_ca.paa"";
 	}};
 }};";
+        }
+
+        internal static string GetFreindlyName(IArma3MapConfig config, CitiesData cities)
+        {
+            return cities.Cities.OrderByDescending(c => c.Population).ThenByDescending(c => c.Radius).FirstOrDefault()?.Name ?? config.WorldName;
         }
 
         internal string GenerateNames(CitiesData cities)

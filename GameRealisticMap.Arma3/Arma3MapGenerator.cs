@@ -5,6 +5,7 @@ using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.Imagery;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ElevationModel;
+using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
@@ -46,22 +47,31 @@ namespace GameRealisticMap.Arma3
         }
 
         [SupportedOSPlatform("windows")]
-        public async Task GenerateMod(IProgressTask progress, Arma3MapConfig a3config)
+        public async Task<string?> GenerateMod(IProgressTask progress, Arma3MapConfig a3config)
         {
             progress.Total += 1;
 
-            await GenerateWrp(progress, a3config);
-
+            var context = await GenerateWrp(progress, a3config);
             if (progress.CancellationToken.IsCancellationRequested)
             {
-                return;
+                return null;
             }
-
-            // TODO: Unpack all missing PAA
 
             Directory.CreateDirectory(a3config.TargetModDirectory);
             await Arma3ToolsHelper.BuildWithMikeroPboProject(a3config.PboPrefix, a3config.TargetModDirectory, progress);
             progress.ReportOneDone();
+
+            if (context == null || progress.CancellationToken.IsCancellationRequested)
+            { 
+                return null; 
+            }
+            var name = GameConfigGenerator.GetFreindlyName(a3config, context.GetData<CitiesData>());
+            var modCpp = Path.Combine(a3config.TargetModDirectory, "mod.cpp");
+            if (!File.Exists(modCpp))
+            {
+                File.WriteAllText(modCpp, $"name = \"{name}, GameRealisticMap\";");
+            }
+            return name;
         }
 
         public async Task<BuildContext?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
