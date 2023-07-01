@@ -807,4 +807,7 @@ You may eventually enable other mods.</value>
   <data name="DoneInSec" xml:space="preserve">
     <value>Done in {0:0.0} sec</value>
   </data>
+  <data name="AssetWatercourseAdditional" xml:space="preserve">
+    <value>Watercourse Additional</value>
+  </data>
 </root>

@@ -817,6 +817,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Watercourse Additional.
+        /// </summary>
+        public static string AssetWatercourseAdditional {
+            get {
+                return ResourceManager.GetString("AssetWatercourseAdditional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Watercourse Radial.
         /// </summary>
         public static string AssetWatercourseRadial {

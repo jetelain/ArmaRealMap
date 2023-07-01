@@ -807,4 +807,7 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="DoneInSec" xml:space="preserve">
     <value>Terminé en {0:0.0} sec</value>
   </data>
+  <data name="AssetWatercourseAdditional" xml:space="preserve">
+    <value>Cours d'eau - Objets additionnels</value>
+  </data>
 </root>

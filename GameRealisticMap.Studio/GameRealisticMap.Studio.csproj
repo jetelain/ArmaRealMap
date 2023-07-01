@@ -31,6 +31,7 @@
   <ItemGroup>
 	<Resource Include="Resources\**\*.png" />
     <EmbeddedResource Include="Modules\AssetBrowser\Data\*.txt" />
+    <None Remove="Resources\Icons\WatercourseAdditional.png" />
     <Content Include="Resources\grms.ico" />
     <EmbeddedResource Include="ThirdParty.txt" />
   </ItemGroup>
