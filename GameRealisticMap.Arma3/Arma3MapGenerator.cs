@@ -57,7 +57,7 @@ namespace GameRealisticMap.Arma3
                 return;
             }
 
-            // TODO: Unpack all missing P3D + PAA
+            // TODO: Unpack all missing PAA
 
             Directory.CreateDirectory(a3config.TargetModDirectory);
             await Arma3ToolsHelper.BuildWithMikeroPboProject(a3config.PboPrefix, a3config.TargetModDirectory, progress);
