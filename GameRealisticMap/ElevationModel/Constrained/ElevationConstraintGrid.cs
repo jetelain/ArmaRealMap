@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
@@ -22,7 +21,7 @@ namespace GameRealisticMap.ElevationModel.Constrained
         private readonly List<ElevationSmoothSegment> smoothSegments = new List<ElevationSmoothSegment>();
 
         public ElevationConstraintGrid(ITerrainArea area, ElevationGrid initial, IProgressSystem progress)
-            : base(Vector2.Zero, new Vector2(area.SizeInMeters))
+            : base(Vector2.Zero, new Vector2(area.SizeInMeters), area.GridSize / 4) // each index cell will contains 16 elevation cells
         {
             this.area = area;
             this.initial = initial;
@@ -196,17 +195,21 @@ namespace GameRealisticMap.ElevationModel.Constrained
             for (var i = 0; i < 20; ++i)
             {
                 changes = 0;
-                foreach (var (x, y, point, constraints) in listHard)
+
+                // Each cell with hard point is an independant result, so we can parallel them
+                Parallel.ForEach(listHard, tuple =>
                 {
+                    var (x, y, point, constraints) = tuple;
                     var intialElevation = initial[x, y];
                     var elevation = Estimate(point, constraints, intialElevation);
                     if (Math.Abs(elevation - intialElevation) > 0.05f)
                     {
-                        changes++;
+                        Interlocked.Increment(ref changes);
                     }
                     initial[x, y] = elevation;
                     report.ReportOneDone();
-                }
+                });
+
                 // Now that all hard points have been applied, try to smooth around soft points
                 foreach (var (x, y, point, constraints) in listSoft)
                 {

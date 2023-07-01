@@ -6,8 +6,6 @@ using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Reporting;
-using GeoJSON.Text.Feature;
-using GeoJSON.Text.Geometry;
 using MapToolkit.Contours;
 using MapToolkit.DataCells;
 using SixLabors.ImageSharp;
@@ -78,11 +76,12 @@ namespace GameRealisticMap.ElevationModel
 
         private void ProcessWatercourses(ElevationConstraintGrid constraintGrid, WatercoursesData waterData)
         {
+            var stepSize = GetStepSize(constraintGrid);
             var waterWaysPaths = waterData.Paths.Where(w => !w.IsTunnel).Where(w => w.Path.Length > 10f).ToList();
             using var report = progress.CreateStep("Waterways", waterWaysPaths.Count);
             foreach (var waterWay in waterWaysPaths)
             {
-                var points = GeometryHelper.PointsOnPath(waterWay.Path.Points, 2).Select(constraintGrid.NodeSoft).ToList();
+                var points = GeometryHelper.PointsOnPath(waterWay.Path.Points, stepSize).Select(constraintGrid.NodeSoft).ToList();
                 foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
                 {
                     if (segment.First != segment.Second)
@@ -123,11 +122,12 @@ namespace GameRealisticMap.ElevationModel
 
         private void ProcessRoadEmbankment(ElevationConstraintGrid constraintGrid, IWay road)
         {
+            var stepSize = GetStepSize(constraintGrid);
             // pin start/stop, imposed smoothing as SRTM precision is too low for this kind of elevation detail
             var start = constraintGrid.NodeHard(road.Path.FirstPoint).PinToInitial();
             var stop = constraintGrid.NodeHard(road.Path.LastPoint).PinToInitial();
             var lengthFromStart = 0f;
-            var points = GeometryHelper.PointsOnPath(road.Path.Points, 2).Select(constraintGrid.NodeHard).ToList();
+            var points = GeometryHelper.PointsOnPath(road.Path.Points, stepSize).Select(constraintGrid.NodeHard).ToList();
             var totalLength = points.Take(points.Count - 1).Zip(points.Skip(1)).Sum(segment => (segment.Second.Point.Vector - segment.First.Point.Vector).Length());
             var smooth = constraintGrid.CreateSmoothSegment(start, road.Width * 4f);
             foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
@@ -148,8 +148,9 @@ namespace GameRealisticMap.ElevationModel
         }
         private void ProcessNormalRoad(ElevationConstraintGrid constraintGrid, IWay road)
         {
+            var stepSize = GetStepSize(constraintGrid);
             var lengthFromStart = 0f;
-            var points = GeometryHelper.PointsOnPath(road.Path.Points, 2).Select(constraintGrid.NodeHard).ToList();
+            var points = GeometryHelper.PointsOnPath(road.Path.Points, stepSize).Select(constraintGrid.NodeHard).ToList();
             var smooth = constraintGrid.CreateSmoothSegment(constraintGrid.NodeHard(road.Path.FirstPoint), road.Width * 4f);
             foreach (var segment in points.Take(points.Count - 1).Zip(points.Skip(1)))
             {
@@ -161,6 +162,20 @@ namespace GameRealisticMap.ElevationModel
                     smooth.Add(lengthFromStart, segment.Second);
                 }
             }
+        }
+
+        /// <summary>
+        /// Compute the best value for call to <see cref="GeometryHelper.PointsOnPath"/>
+        /// </summary>
+        /// <param name="constraintGrid"></param>
+        /// <returns></returns>
+        private static float GetStepSize(ElevationConstraintGrid constraintGrid)
+        {
+            // Original value was 2, but algorithm was designed using Gossi (which have a 10m CellSize)
+            // Result was not really good with lower CellSize (Studio tries to keep cellsize between 2 and 8m)
+            // 1/4 of cell size let have at worst case 3 points within each cell wich is far enough to keep roads flat
+            // In the future, could be changed to 1/3, but need some automated tests to ensure result quality
+            return constraintGrid.Grid.CellSize.X / 4;
         }
 
         private void ProcessRoadBridge(IWay road, ElevationConstraintGrid constraintGrid)
