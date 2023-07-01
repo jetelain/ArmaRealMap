@@ -6,6 +6,8 @@ namespace GameRealisticMap.ManMade
     {
         float Width { get; }
 
+        float ClearWidth { get; }
+
         IEnumerable<TerrainPolygon> Polygons { get; }
 
         IEnumerable<TerrainPolygon> ClearPolygons { get; }

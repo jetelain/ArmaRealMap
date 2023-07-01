@@ -24,7 +24,7 @@ namespace GameRealisticMap.Reporting
 
         public virtual void WriteLine(string message)
         {
-            Trace.WriteLine(message);
+            Debug.WriteLine(message);
         }
     }
 }
