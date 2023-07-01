@@ -1159,6 +1159,33 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Done in {0:0.0} min.
+        /// </summary>
+        public static string DoneInMin {
+            get {
+                return ResourceManager.GetString("DoneInMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Done in {0} msec.
+        /// </summary>
+        public static string DoneInMsec {
+            get {
+                return ResourceManager.GetString("DoneInMsec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Done in {0:0.0} sec.
+        /// </summary>
+        public static string DoneInSec {
+            get {
+                return ResourceManager.GetString("DoneInSec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ✔ Done successfully in {0:0.0} seconds.
         /// </summary>
         public static string DoneSuccessfullyInSeconds {
