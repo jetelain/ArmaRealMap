@@ -100,7 +100,7 @@ namespace GameRealisticMap.Geometries
         }
 
 
-        public static IEnumerable<TerrainPoint> PointsOnPath(IEnumerable<TerrainPoint> points, float step = 1f)
+        public static List<TerrainPoint> PointsOnPath(IEnumerable<TerrainPoint> points, float step = 1f)
         {
             var prev = points.First();
             var result = new List<TerrainPoint>() { prev };

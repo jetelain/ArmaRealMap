@@ -165,7 +165,7 @@ namespace GameRealisticMap.Geometries
 
         public TerrainPath PreventSplines(float threshold)
         {
-            return new TerrainPath(PreventSplines(Points, threshold));
+            return new TerrainPath(GeometryHelper.PointsOnPath(PreventSplines(Points, threshold), threshold * 10));
         }
 
         public static List<TerrainPoint> PreventSplines(List<TerrainPoint> source, float threshold)
