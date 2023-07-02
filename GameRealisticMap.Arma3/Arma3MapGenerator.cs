@@ -1,4 +1,5 @@
-﻿using System.Runtime.Versioning;
+﻿using System.Linq;
+using System.Runtime.Versioning;
 using BIS.WRP;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
@@ -146,13 +147,26 @@ namespace GameRealisticMap.Arma3
             wrpBuilder.Write(config, grid, tiles, objects);
             progress.ReportOneDone();
 
-            UnpackModels(progress, wrpBuilder.UsedModels);
+            UnpackFiles(progress, GetRequiredFiles(wrpBuilder));
         }
 
-        private void UnpackModels(IProgressTask progress, IReadOnlyCollection<string> usedModels)
+        private List<string> GetRequiredFiles(WrpCompiler wrpBuilder)
         {
-            using var report = progress.CreateStep("UnpackModels", usedModels.Count);
-            foreach(var model in usedModels)
+            var materials = Enum.GetValues<TerrainMaterialUsage>().Select(u => assets.Materials.GetMaterialByUsage(u)).ToList();
+            var roads = Enum.GetValues<RoadTypeId>().Select(u => assets.RoadTypeLibrary.GetInfo(u)).ToList();
+            return wrpBuilder.UsedModels
+                .Concat(materials.Select(m => m.NormalTexture).Distinct())
+                .Concat(materials.Select(m => m.ColorTexture).Distinct())
+                .Concat(roads.Select(m => m.TextureEnd).Distinct())
+                .Concat(roads.Select(m => m.Texture).Distinct())
+                .Concat(roads.Select(m => m.Material).Distinct())
+                .ToList();
+        }
+
+        private void UnpackFiles(IProgressTask progress, IReadOnlyCollection<string> files)
+        {
+            using var report = progress.CreateStep("UnpackFiles", files.Count);
+            foreach(var model in files)
             {
                 if (!projectDrive.EnsureLocalFileCopy(model))
                 {
