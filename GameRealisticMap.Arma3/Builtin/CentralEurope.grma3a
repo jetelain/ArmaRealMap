@@ -14,7 +14,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.87433666,
@@ -27,7 +27,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 7,
@@ -40,7 +40,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 1,
@@ -53,7 +53,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 1,
@@ -66,7 +66,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.895141,
@@ -79,7 +79,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.5551461,
@@ -92,7 +92,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 2.5,
@@ -105,7 +105,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 2.5,
@@ -118,7 +118,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.25367832,
@@ -131,7 +131,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.2606,
@@ -144,7 +144,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.58676094,
@@ -157,7 +157,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.7087436,
@@ -170,7 +170,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.7087436,
@@ -183,7 +183,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.58676094,
@@ -196,7 +196,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.24300002,
@@ -209,7 +209,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.16200002,
@@ -222,7 +222,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.43200007,
@@ -235,7 +235,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.45630005,
@@ -248,7 +248,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.27,
@@ -261,7 +261,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 1.0727149,
@@ -274,7 +274,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           }
         ],
         "Probability": 1,
@@ -504,6 +504,81 @@
               ]
             },
             "Probability": 0.14285714285714285
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.005,
+        "MaxDensity": 0.005,
+        "Label": ""
+      }
+    ],
+    "WatercourseAdditional": [
+      {
+        "Models": [
+          {
+            "Radius": 0.7087436,
+            "FitRadius": 0.7087436,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\RM_boulder1.p3d",
+                  "Transform": [-0.12774141,0.039969355,0.0049680816]
+                }
+              ]
+            },
+            "Probability": 0.2
+          },
+          {
+            "Radius": 0.58676094,
+            "FitRadius": 0.58676094,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\RM_boulder2.p3d",
+                  "Transform": [0.26663712,-0.0035730153,0.027087819]
+                }
+              ]
+            },
+            "Probability": 0.2
+          },
+          {
+            "Radius": 1.0727149,
+            "FitRadius": 1.0727149,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\RM_boulder3.p3d",
+                  "Transform": [0.08386752,-0.016930997,-0.34778592]
+                }
+              ]
+            },
+            "Probability": 0.2
+          },
+          {
+            "Radius": 1.5952042,
+            "FitRadius": 1.5952042,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\RM_boulder4.p3d",
+                  "Transform": [-0.662418,0.05335903,0.29343617]
+                }
+              ]
+            },
+            "Probability": 0.2
+          },
+          {
+            "Radius": 4.968897,
+            "FitRadius": 4.968897,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStones_erosion.p3d",
+                  "Transform": [-0.0051677227,-0.0084655285,-0.09159243]
+                }
+              ]
+            },
+            "Probability": 0.2
           }
         ],
         "Probability": 1,
@@ -2391,19 +2466,6 @@
           {
             "Models": [
               {
-                "Radius": 0.5,
-                "FitRadius": 0.5,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_betula_pendula_1s.p3d",
-                      "Transform": [0.41026923,2.0279462,-0.13446805]
-                    }
-                  ]
-                },
-                "Probability": 0.16666666666666666
-              },
-              {
                 "Radius": 0.7,
                 "FitRadius": 0.7,
                 "Model": {
@@ -2414,33 +2476,7 @@
                     }
                   ]
                 },
-                "Probability": 0.16666666666666666
-              },
-              {
-                "Radius": 1,
-                "FitRadius": 1,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_betula_pendula_2s.p3d",
-                      "Transform": [-0.21359897,4.053295,0.2975098]
-                    }
-                  ]
-                },
-                "Probability": 0.16666666666666666
-              },
-              {
-                "Radius": 1,
-                "FitRadius": 1,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_betula_pendula_2w.p3d",
-                      "Transform": [-0.010146254,2.6284752,-0.14282665]
-                    }
-                  ]
-                },
-                "Probability": 0.16666666666666666
+                "Probability": 0.33333333333333337
               },
               {
                 "Radius": 1,
@@ -2453,7 +2489,7 @@
                     }
                   ]
                 },
-                "Probability": 0.16666666666666666
+                "Probability": 0.33333333333333337
               },
               {
                 "Radius": 2,
@@ -2466,10 +2502,10 @@
                     }
                   ]
                 },
-                "Probability": 0.16666666666666666
+                "Probability": 0.33333333333333337
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
@@ -2500,7 +2536,7 @@
                 "Probability": 0.5
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
@@ -2515,20 +2551,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
-              },
-              {
-                "Radius": 1,
-                "FitRadius": 1,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_fagussylvatica_1s.p3d",
-                      "Transform": [0.058181856,4.065751,-0.15075356]
-                    }
-                  ]
-                },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 1.2,
@@ -2541,7 +2564,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 2.5,
@@ -2554,7 +2577,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 2.5,
@@ -2567,7 +2590,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 2.5,
@@ -2580,7 +2603,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 2,
@@ -2593,7 +2616,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 1.5,
@@ -2606,7 +2629,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 1.5,
@@ -2619,7 +2642,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 3,
@@ -2632,7 +2655,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 2.5,
@@ -2645,7 +2668,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 3,
@@ -2658,10 +2681,10 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
@@ -2692,23 +2715,10 @@
                 "Probability": 0.5
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
-              {
-                "Radius": 2,
-                "FitRadius": 2,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_malusdomestica_2s.p3d",
-                      "Transform": [0.069520056,4.288282,-0.09381491]
-                    }
-                  ]
-                },
-                "Probability": 0.5
-              },
               {
                 "Radius": 3,
                 "FitRadius": 3,
@@ -2720,26 +2730,13 @@
                     }
                   ]
                 },
-                "Probability": 0.5
+                "Probability": 1
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
-              {
-                "Radius": 1.5,
-                "FitRadius": 1.5,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_pyruscommunis_2s.p3d",
-                      "Transform": [-0.029040009,3.6264021,0.09442985]
-                    }
-                  ]
-                },
-                "Probability": 0.5
-              },
               {
                 "Radius": 2,
                 "FitRadius": 2,
@@ -2751,52 +2748,13 @@
                     }
                   ]
                 },
-                "Probability": 0.5
+                "Probability": 1
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
-              {
-                "Radius": 0.9,
-                "FitRadius": 0.9,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_piceaabies_1f.p3d",
-                      "Transform": [0.027730048,3.5905395,0.0033199787]
-                    }
-                  ]
-                },
-                "Probability": 0.1111111111111111
-              },
-              {
-                "Radius": 0.7,
-                "FitRadius": 0.7,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_piceaabies_1s.p3d",
-                      "Transform": [5.9604645E-08,1.6482191,0.012940023]
-                    }
-                  ]
-                },
-                "Probability": 0.1111111111111111
-              },
-              {
-                "Radius": 0.7,
-                "FitRadius": 0.7,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_piceaabies_1sb.p3d",
-                      "Transform": [-0.01323998,1.5549216,0.08349499]
-                    }
-                  ]
-                },
-                "Probability": 0.1111111111111111
-              },
               {
                 "Radius": 1,
                 "FitRadius": 1,
@@ -2808,7 +2766,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.16666666666666666
               },
               {
                 "Radius": 1,
@@ -2821,7 +2779,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.16666666666666666
               },
               {
                 "Radius": 1.2,
@@ -2834,7 +2792,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.16666666666666666
               },
               {
                 "Radius": 1.5,
@@ -2847,7 +2805,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.16666666666666666
               },
               {
                 "Radius": 1.5,
@@ -2860,7 +2818,7 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.16666666666666666
               },
               {
                 "Radius": 3,
@@ -2873,46 +2831,15 @@
                     }
                   ]
                 },
-                "Probability": 0.1111111111111111
+                "Probability": 0.16666666666666666
               }
             ],
-            "Probability": 0.125
-          },
-          {
-            "Models": [
-              {
-                "Radius": 0.984116,
-                "FitRadius": 0.984116,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_pinussylvestris_1f.p3d",
-                      "Transform": [-0.04216498,1.9303465,0.024540123]
-                    }
-                  ]
-                },
-                "Probability": 0.5
-              },
-              {
-                "Radius": 0.62361467,
-                "FitRadius": 0.62361467,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_pinussylvestris_1s.p3d",
-                      "Transform": [0.0025699735,1.1259675,-0.0145199]
-                    }
-                  ]
-                },
-                "Probability": 0.5
-              }
-            ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           }
         ],
         "Probability": 1,
-        "MinDensity": 0.025,
-        "MaxDensity": 0.025,
+        "MinDensity": 0.02,
+        "MaxDensity": 0.02,
         "Label": ""
       }
     ],
@@ -3158,8 +3085,8 @@
           }
         ],
         "Probability": 1,
-        "MinDensity": 0.5,
-        "MaxDensity": 0.5,
+        "MinDensity": 0.2,
+        "MaxDensity": 0.2,
         "Label": ""
       }
     ],
