@@ -40,25 +40,25 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
         public ModelInfo Model { get; }
 
         private float _x;
-        public float X { get { return _x; } set { _x = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(PreviewPath)); } }
+        public float X { get { return _x; } set { _x = value; NotifyOfPropertyChange(); NotifyPreview(); } }
 
         private float _y;
-        public float Y { get { return _y; } set { _y = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(PreviewPath)); } }
+        public float Y { get { return _y; } set { _y = value; NotifyOfPropertyChange(); NotifyPreview(); } }
 
         private float _z;
-        public float Z { get { return _z; } set { _z = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(PreviewPath)); } }
+        public float Z { get { return _z; } set { _z = value; NotifyOfPropertyChange(); NotifyPreview(); } }
 
         private float _picth;
-        public float Pitch { get { return _picth; } set { _picth = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(PreviewPath)); } }
+        public float Pitch { get { return _picth; } set { _picth = value; NotifyOfPropertyChange(); NotifyPreview(); } }
 
         private float _yaw;
-        public float Yaw { get { return _yaw; } set { _yaw = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(PreviewPath)); } }
+        public float Yaw { get { return _yaw; } set { _yaw = value; NotifyOfPropertyChange(); NotifyPreview(); } }
 
         private float _roll;
-        public float Roll { get { return _roll; } set { _roll = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(PreviewPath)); } }
+        public float Roll { get { return _roll; } set { _roll = value; NotifyOfPropertyChange(); NotifyPreview(); } }
 
         private float _scale;
-        public float Scale { get { return _scale; } set { _scale = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(PreviewPath)); } }
+        public float Scale { get { return _scale; } set { _scale = value; NotifyOfPropertyChange(); NotifyPreview(); } }
 
         internal CompositionObject ToDefinition()
         {
@@ -70,24 +70,44 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             return new TerrainBuilderObject(Model, new TerrainPoint(X, Y), Z, ElevationMode.Absolute, Yaw, Pitch, Roll, Scale);
         }
 
-        public string PreviewPath
+        private void NotifyPreview()
+        {
+            NotifyOfPropertyChange(nameof(PreviewGeoAxisY));
+            NotifyOfPropertyChange(nameof(PreviewVisualAxisY));
+            NotifyOfPropertyChange(nameof(PreviewGeoAxisZ));
+            NotifyOfPropertyChange(nameof(PreviewVisualAxisZ));
+        }
+
+        public string PreviewGeoAxisY
         {
             get
             {
-                var polygons = IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToPolygons(ToTerrainBuilderObject());
-                return ToPath(polygons);
+                return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToGeoAxisY(ToTerrainBuilderObject()));
             }
         }
 
-        public string PreviewVisualPath
+        public string PreviewVisualAxisY
         {
             get
             {
-                var polygons = IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualPolygons(ToTerrainBuilderObject());
-                return ToPath(polygons);
+                return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualAxisY(ToTerrainBuilderObject()));
+            }
+        }
+        public string PreviewGeoAxisZ
+        {
+            get
+            {
+                return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToGeoAxisZ(ToTerrainBuilderObject()));
             }
         }
 
+        public string PreviewVisualAxisZ
+        {
+            get
+            {
+                return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualAxisZ(ToTerrainBuilderObject()));
+            }
+        }
         private static string ToPath(IEnumerable<TerrainPolygon> polygons)
         {
             var sb = new StringBuilder();

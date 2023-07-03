@@ -109,8 +109,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             var helper = IoC.Get<IArma3DataModule>().ModelPreviewHelper;
             GeneratePreviewStatus = Labels.LoadingObjectsShapes;
             PreviewItems =
-                objects.SelectMany(o => helper.ToVisualPolygons(o).Select(p => new PreviewItem(p, o.Model, o.Scale, true)))
-                .Concat(objects.SelectMany(o => helper.ToPolygons(o).Select(p => new PreviewItem(p, o.Model, o.Scale, false))))
+                objects.SelectMany(o => helper.ToVisualAxisY(o).Select(p => new PreviewItem(p, o.Model, o.Scale, true)))
+                .Concat(objects.SelectMany(o => helper.ToGeoAxisY(o).Select(p => new PreviewItem(p, o.Model, o.Scale, false))))
                 .ToList();
             GeneratePreviewStatus = status;
             IsGeneratingPreview = false;
