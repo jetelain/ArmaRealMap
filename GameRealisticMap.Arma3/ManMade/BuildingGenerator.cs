@@ -75,8 +75,7 @@ namespace GameRealisticMap.Arma3.ManMade
             if (candidates.Count > 0)
             {
                 var obj = PickOne(building, candidates);
-                var delta = obj.RotateToFit(building.Box, min, max);
-                var realbox = RealBoxAdjustedToRoad(roads, obj.Size, delta != 0.0f ? building.Box.RotateM90() : building.Box);
+                var realbox = RealBoxAdjustedToRoad(roads, obj.Size, GetFitBox(building, min, max, obj));
                 if (!wanted.Where(b => b != building).Any(b => b.Box.Poly.Intersects(realbox.Poly))
                     && !buildings.Any(b => b.Box.Poly.Intersects(realbox.Poly)))
                 {
@@ -94,8 +93,7 @@ namespace GameRealisticMap.Arma3.ManMade
             if (candidates.Count > 0)
             {
                 var obj = PickOne(building, candidates);
-                var delta = obj.RotateToFit(building.Box, min, max);
-                var box = delta != 0.0f ? building.Box.RotateM90() : building.Box;
+                var box = GetFitBox(building, min, max, obj);
                 if (box.Width < obj.Size.X || box.Height < obj.Size.Y) // Object is larger than wanted box
                 {
                     box = RealBoxAdjustedToRoad(roads, obj.Size, box);
@@ -104,6 +102,38 @@ namespace GameRealisticMap.Arma3.ManMade
                 return true;
             }
             return false;
+        }
+
+        internal static BoundingBox GetFitBox(Building building, float min, float max, BuildingDefinition obj)
+        {
+            // By convention, building entrance is at SOUTH (Bottom) of model
+
+            var fitsNotRotated = obj.FitsNotRotated(building.Box, min, max);
+            if (building.EntranceSide == BoxSide.Top && fitsNotRotated)
+            {
+                return building.Box.Rotate(180);
+            }
+            if (building.EntranceSide == BoxSide.Bottom && fitsNotRotated)
+            {
+                return building.Box;
+            }
+
+            var fits90Rotated = obj.Fits90Rotated(building.Box, min, max);
+            if (building.EntranceSide == BoxSide.Left && fits90Rotated)
+            {
+                return building.Box.Rotate(-90);
+            }
+            if (building.EntranceSide == BoxSide.Right && fits90Rotated)
+            {
+                return building.Box.Rotate(90);
+            }
+
+            // Fallback (legacy algorithm)
+            if (fits90Rotated)
+            {
+                return building.Box.Rotate(-90);
+            }
+            return building.Box;
         }
 
         private BuildingDefinition PickOne(Building building, List<BuildingDefinition> candidates)
@@ -115,7 +145,7 @@ namespace GameRealisticMap.Arma3.ManMade
 
         private List<BuildingDefinition> GetBuildings(Building building, float min, float max)
         {
-            var match = assets.GetBuildings(building.TypeId).Where(b => b.Fits(building.Box, min, max))
+            var match = assets.GetBuildings(building.TypeId).Where(b => b.FitsAny(building.Box, min, max))
                .ToList()
                .OrderBy(c => Math.Abs(c.Surface - building.Box.Surface))
                .ToList();

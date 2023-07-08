@@ -149,9 +149,10 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             {
                 task.Failed(ex);
             }
-            //if ( task.Error == null && !task.CancellationToken.IsCancellationRequested)
+            task.Dispose();
+            if ( task.Error == null && !task.CancellationToken.IsCancellationRequested)
             {
-                OnUIThread(() => windowManager.ShowDialogAsync(new SuccessViewModel(task)));
+                new System.Action(() => windowManager.ShowDialogAsync(new SuccessViewModel(task))).BeginOnUIThread();
             }
         }
     }

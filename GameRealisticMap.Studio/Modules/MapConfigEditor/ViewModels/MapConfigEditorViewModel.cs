@@ -321,12 +321,20 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive);
 
-            await generator.GenerateMod(task, a3config);
+            var name = await generator.GenerateMod(task, a3config);
 
-            task.AddSuccessAction(() => ShellHelper.OpenUri(a3config.TargetModDirectory), Labels.ViewInFileExplorer); 
-            task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, a3config.WorldName));
+            if (!string.IsNullOrEmpty(name))
+            {
+                if (name != a3config.WorldName)
+                {
+                    name = $"{name} - {a3config.WorldName}"; // use WorldName to make it unique
+                }
 
-            await CreateLauncherPresetAsync(assets, a3config.TargetModDirectory, a3config.WorldName);
+                task.AddSuccessAction(() => ShellHelper.OpenUri(a3config.TargetModDirectory), Labels.ViewInFileExplorer);
+                task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, name));
+
+                await CreateLauncherPresetAsync(assets, a3config.TargetModDirectory, name);
+            }
         }
 
         private async Task DoGenerateMap(IProgressTaskUI task)

@@ -6,6 +6,7 @@
         ScrubAdditional,
         Rocks,
         RocksAdditional,
-        DefaultAreas
+        DefaultAreas,
+        WatercourseAdditional
     }
 }

@@ -14,7 +14,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.87433666,
@@ -27,7 +27,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 7,
@@ -40,7 +40,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 1,
@@ -53,7 +53,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 1,
@@ -66,7 +66,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.895141,
@@ -79,7 +79,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.5551461,
@@ -92,7 +92,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 2.5,
@@ -105,7 +105,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 2.5,
@@ -118,7 +118,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.25367832,
@@ -131,7 +131,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.2606,
@@ -144,7 +144,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.58676094,
@@ -157,7 +157,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.7087436,
@@ -170,7 +170,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.7087436,
@@ -183,7 +183,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.58676094,
@@ -196,7 +196,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.24300002,
@@ -209,7 +209,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.16200002,
@@ -222,7 +222,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.43200007,
@@ -235,7 +235,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.45630005,
@@ -248,7 +248,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 0.27,
@@ -261,7 +261,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           },
           {
             "Radius": 1.0727149,
@@ -274,7 +274,7 @@
                 }
               ]
             },
-            "Probability": 0.0476190476190476
+            "Probability": 0.04761904761904764
           }
         ],
         "Probability": 1,
@@ -511,6 +511,81 @@
         "MaxDensity": 0.005,
         "Label": ""
       }
+    ],
+    "WatercourseAdditional": [
+      {
+        "Models": [
+          {
+            "Radius": 0.7087436,
+            "FitRadius": 0.7087436,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\RM_boulder1.p3d",
+                  "Transform": [-0.12774141,0.039969355,0.0049680816]
+                }
+              ]
+            },
+            "Probability": 0.2
+          },
+          {
+            "Radius": 0.58676094,
+            "FitRadius": 0.58676094,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\RM_boulder2.p3d",
+                  "Transform": [0.26663712,-0.0035730153,0.027087819]
+                }
+              ]
+            },
+            "Probability": 0.2
+          },
+          {
+            "Radius": 1.0727149,
+            "FitRadius": 1.0727149,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\RM_boulder3.p3d",
+                  "Transform": [0.08386752,-0.016930997,-0.34778592]
+                }
+              ]
+            },
+            "Probability": 0.2
+          },
+          {
+            "Radius": 1.5952042,
+            "FitRadius": 1.5952042,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f_enoch\\RM_boulder4.p3d",
+                  "Transform": [-0.662418,0.05335903,0.29343617]
+                }
+              ]
+            },
+            "Probability": 0.2
+          },
+          {
+            "Radius": 4.968897,
+            "FitRadius": 4.968897,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\rocks_f\\Sharp\\sharpStones_erosion.p3d",
+                  "Transform": [-0.0051677227,-0.0084655285,-0.09159243]
+                }
+              ]
+            },
+            "Probability": 0.2
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.005,
+        "MaxDensity": 0.005,
+        "Label": ""
+      }
     ]
   },
   "Bridges": {
@@ -735,50 +810,6 @@
         }
       },
       {
-        "Size": [6.1596785,4.4894996],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\Civ\\Chapels\\Chapel_Small_V1_F.p3d",
-              "Transform": [-1.9876103,0.9993,0.17085063]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [6.1596785,4.4894996],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\Civ\\Chapels\\Chapel_Small_V2_F.p3d",
-              "Transform": [-1.9876103,0.9993,0.17085063]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [20.3769,10.519941],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\Civ\\Chapels\\Chapel_V1_F.p3d",
-              "Transform": [-2.3075233,3.1099243,-0.01708126]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [4.0430603,4.04908],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_enoch\\cultural\\Chapel_02\\Chapel_02_white_F.p3d",
-              "Transform": [0.004777789,2.544855,-1.3209871]
-            }
-          ]
-        }
-      },
-      {
         "Size": [16.28116,26.42598],
         "Composition": {
           "Objects": [
@@ -942,17 +973,6 @@
             }
           ]
         }
-      },
-      {
-        "Size": [20.3769,10.519941],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\Civ\\Chapels\\Chapel_V2_F.p3d",
-              "Transform": [-2.3075233,3.1099243,-0.01708126]
-            }
-          ]
-        }
       }
     ],
     "RadioTower": [
@@ -992,210 +1012,12 @@
     ],
     "Retail": [
       {
-        "Size": [23.77108,12.811543],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_01\\Shop_City_01_F.p3d",
-              "Transform": [0.66717577,5.18633,-0.6970937]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [24.240202,23.9773],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_02\\Shop_City_02_F.p3d",
-              "Transform": [0.5796089,4.432667,0.29257298]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [16.672882,24.554302],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_03\\Shop_City_03_F.p3d",
-              "Transform": [-0.050270557,5.116746,0.15013742]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [17.02504,26.478302],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_04\\Shop_City_04_F.p3d",
-              "Transform": [-0.47995043,3.963379,0.0017886162]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [22.3138,34.899307],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_05\\Shop_City_05_F.p3d",
-              "Transform": [0.054749966,7.47762,-0.011052132]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [25.4201,21.468],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_06\\Shop_City_06_F.p3d",
-              "Transform": [0.15214968,4.396245,0.518672]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [9.793911,19.136242],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_City_07\\Shop_City_07_F.p3d",
-              "Transform": [0.5385866,3.3181853,0.5747905]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [11.137906,14.74386],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_01\\Shop_Town_01_F.p3d",
-              "Transform": [-0.010697365,3.3761964,0.27766347]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.040591,15.775365],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_02\\Shop_Town_02_F.p3d",
-              "Transform": [0.06594515,2.2434855,-1.3754992]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [14.80121,19.173851],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_03\\Shop_Town_03_F.p3d",
-              "Transform": [-0.09904623,3.500856,0.36349916]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [10.625171,15.756191],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_04\\Shop_Town_04_F.p3d",
-              "Transform": [-1.4305115E-06,2.5678701,0.1700728]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [19.11292,17.729961],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_05\\Shop_Town_05_F.p3d",
-              "Transform": [-0.010620117,2.8516068,-0.7938981]
-            }
-          ]
-        }
-      },
-      {
         "Size": [14.96302,28.328701],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_exp\\commercial\\Supermarket_01\\Supermarket_01_F.p3d",
               "Transform": [-1.1057394,1.7250259,0.013300419]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.676276,10.465401],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_blue_F.p3d",
-              "Transform": [0.96442485,3.1795251,-0.013689995]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.676276,10.465401],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_brown_F.p3d",
-              "Transform": [0.96442485,3.1795251,-0.013689995]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.676276,10.465401],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_pink_F.p3d",
-              "Transform": [0.96442485,3.1795251,-0.013689995]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.676276,10.465401],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_white_F.p3d",
-              "Transform": [0.96442485,3.1795251,-0.013689995]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.676276,10.465401],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_whiteblue_F.p3d",
-              "Transform": [0.96442485,3.1795251,-0.013689995]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.676276,10.465401],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_argo\\Commercial\\Shop_02\\i_Shop_02_b_yellow_F.p3d",
-              "Transform": [0.96442485,3.1795251,-0.013689995]
             }
           ]
         }
@@ -1221,335 +1043,14 @@
             }
           ]
         }
-      }
-    ],
-    "Residential": [
-      {
-        "Size": [11.12522,16.160662],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\house_big01\\i_House_Big_01_V2_F.p3d",
-              "Transform": [-0.13430429,3.0663745,-0.09662056]
-            }
-          ]
-        }
       },
       {
-        "Size": [11.12522,16.160662],
+        "Size": [8.82775,12.07504],
         "Composition": {
           "Objects": [
             {
-              "Model": "a3\\structures_f\\households\\house_big01\\i_House_Big_01_V3_F.p3d",
-              "Transform": [-0.13430429,3.0663745,-0.09662056]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [11.12522,16.160662],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\house_big01\\u_House_Big_01_V1_F.p3d",
-              "Transform": [-0.13430429,3.0663745,-0.09662056]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [9.995032,13.930002],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Big02\\i_House_Big_02_V1_F.p3d",
-              "Transform": [-0.11173749,2.8839676,-0.12396932]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [9.995032,13.930002],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Big02\\i_House_Big_02_V2_F.p3d",
-              "Transform": [-0.11173749,2.8839676,-0.12396932]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [9.995032,13.930002],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Big02\\i_House_Big_02_V3_F.p3d",
-              "Transform": [-0.11173749,2.8839676,-0.12396932]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [10.010001,13.93],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Big02\\u_House_Big_02_V1_F.p3d",
-              "Transform": [-0.17468786,2.655617,-0.14396977]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [10.83934,10.880771],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Small01\\i_House_Small_01_V1_F.p3d",
-              "Transform": [0.010065794,1.342055,-0.17769217]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [10.83934,10.880771],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Small01\\i_House_Small_01_V2_F.p3d",
-              "Transform": [0.010065794,1.342055,-0.17769217]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [11.12522,16.160662],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\house_big01\\i_House_Big_01_V1_F.p3d",
-              "Transform": [-0.13430429,3.0663745,-0.09662056]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [10.83934,10.880771],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Small01\\i_House_Small_01_V3_F.p3d",
-              "Transform": [0.010065794,1.342055,-0.17769217]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.365391,7.4277897],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Small02\\i_House_Small_02_V1_F.p3d",
-              "Transform": [-2.0125914,1.1250416,0.28974426]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.365391,7.437154],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Small02\\i_House_Small_02_V2_F.p3d",
-              "Transform": [-2.0125914,1.1250416,0.29442632]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.365391,7.418377],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Small02\\i_House_Small_02_V3_F.p3d",
-              "Transform": [-2.0125914,1.1250416,0.28503764]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.365391,7.3914704],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Small02\\u_House_Small_02_V1_F.p3d",
-              "Transform": [-2.0165708,1.1250416,0.2715845]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [12.297692,12.525001],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Small03\\i_House_Small_03_V1_F.p3d",
-              "Transform": [0.03722596,0.31568825,0.8068075]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [9.378307,8.292955],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Stone_Big\\I_Stone_HouseBig_V1_F.p3d",
-              "Transform": [-2.0509472,1.8425143,-1.9726034]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [9.378307,8.292955],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Stone_Big\\I_Stone_HouseBig_V2_F.p3d",
-              "Transform": [-2.0509472,1.8425143,-1.9726034]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [9.378307,8.292955],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Stone_Big\\I_Stone_HouseBig_V3_F.p3d",
-              "Transform": [-2.0509472,1.8425143,-1.9726034]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [7.9000006,6.082934],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Stone_Shed\\I_Stone_Shed_V1_F.p3d",
-              "Transform": [0.3176502,0.36194313,-1.9072229]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [10.83934,10.880771],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\House_Small01\\u_House_Small_01_V1_F.p3d",
-              "Transform": [0.060997725,1.2046071,-0.17769217]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [10.700002,6.600004],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Addons\\i_Garage_V2_F.p3d",
-              "Transform": [-0.48549032,0.25492072,-0.10000026]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [10.700002,6.600004],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Addons\\i_Garage_V1_F.p3d",
-              "Transform": [-0.48549032,0.25492072,-0.10000026]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [7.9000006,6.082934],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Stone_Shed\\I_Stone_Shed_V2_F.p3d",
-              "Transform": [0.3176502,0.36194313,-1.9072229]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [7.9000006,6.082934],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Stone_Shed\\I_Stone_Shed_V3_F.p3d",
-              "Transform": [0.3176502,0.36194313,-1.9072229]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [20.2455,7.32436],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Stone_Small\\I_Stone_HouseSmall_V1_F.p3d",
-              "Transform": [-0.010349274,1.862368,-2.1291943]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [20.2455,7.32436],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Stone_Small\\I_Stone_HouseSmall_V2_F.p3d",
-              "Transform": [-0.010349274,1.862368,-2.1291943]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [20.2455,7.32436],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\Stone_Small\\I_Stone_HouseSmall_V3_F.p3d",
-              "Transform": [-0.010349274,1.862368,-2.1291943]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [10.469999,11.84745],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\WIP\\Unfinished_Building_01_F.p3d",
-              "Transform": [0.26823974,2.4835348,-0.7835984]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [16.970001,12.695244],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\households\\WIP\\Unfinished_Building_02_F.p3d",
-              "Transform": [-0.019618511,2.755276,0.17116427]
+              "Model": "a3\\structures_f\\households\\House_Shop01\\i_Shop_01_V3_F.p3d",
+              "Transform": [-0.08245516,3.0661001,-1.9403691]
             }
           ]
         }
@@ -1560,84 +1061,429 @@
           "Objects": [
             {
               "Model": "a3\\structures_f\\households\\House_Shop01\\i_Shop_01_V1_F.p3d",
-              "Transform": [-0.08245492,3.0661001,-1.9403694]
+              "Transform": [-0.08245516,3.0661001,-1.9403691]
             }
           ]
         }
       },
       {
-        "Size": [8.82775,12.075041],
+        "Size": [6.0213523,4.264124],
         "Composition": {
           "Objects": [
             {
-              "Model": "a3\\structures_f\\households\\House_Shop01\\i_Shop_01_V2_F.p3d",
-              "Transform": [-0.08245492,3.0661001,-1.5980299]
+              "Model": "a3\\structures_f_enoch\\commercial\\fuelstation_03\\fuelstation_03_shop_f.p3d",
+              "Transform": [-0.013838291,1.6300635,0.13787305]
             }
           ]
         }
       },
       {
-        "Size": [8.82775,12.07504],
+        "Size": [13.990921,12.582411],
         "Composition": {
           "Objects": [
             {
-              "Model": "a3\\structures_f\\households\\House_Shop01\\i_Shop_01_V3_F.p3d",
-              "Transform": [-0.08245492,3.0661001,-1.9403694]
+              "Model": "a3\\structures_f_exp\\commercial\\fuelstation_01\\fuelstation_01_shop_f.p3d",
+              "Transform": [0,2.2905643,0.08564949]
             }
           ]
         }
       },
       {
-        "Size": [8.827751,12.07504],
+        "Size": [14.80121,19.173851],
         "Composition": {
           "Objects": [
             {
-              "Model": "a3\\structures_f\\households\\House_Shop01\\u_Shop_01_V1_F.p3d",
-              "Transform": [-0.08404517,3.18536,-1.9403694]
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_03\\Shop_Town_03_F.p3d",
+              "Transform": [-0.09904623,3.500856,0.3634987]
             }
           ]
         }
       },
       {
-        "Size": [12.844711,10.465401],
+        "Size": [11.137906,14.74386],
         "Composition": {
           "Objects": [
             {
-              "Model": "a3\\structures_f\\households\\House_Shop02\\i_Shop_02_V1_F.p3d",
-              "Transform": [1.0486424,3.1795251,-0.013689995]
+              "Model": "a3\\structures_f_exp\\commercial\\Shop_Town_01\\Shop_Town_01_F.p3d",
+              "Transform": [-0.010697365,3.3761964,0.27766347]
+            }
+          ]
+        }
+      }
+    ],
+    "Residential": [
+      {
+        "Size": [22.269402,15.922391],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Medical\\HealthCenter_01_F.p3d",
+              "Transform": [3.3252714,3.5480273,-0.4859109]
             }
           ]
         }
       },
       {
-        "Size": [12.844711,10.465401],
+        "Size": [12.79594,18.246552],
         "Composition": {
           "Objects": [
             {
-              "Model": "a3\\structures_f\\households\\House_Shop02\\i_Shop_02_V2_F.p3d",
-              "Transform": [1.0486424,3.1795251,-0.013689995]
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1B01_F.p3d",
+              "Transform": [-2.501421,2.9411201,-2.5446475]
             }
           ]
         }
       },
       {
-        "Size": [12.844711,10.465401],
+        "Size": [11.6625,8.901501],
         "Composition": {
           "Objects": [
             {
-              "Model": "a3\\structures_f\\households\\House_Shop02\\i_Shop_02_V3_F.p3d",
-              "Transform": [1.0486424,3.1795251,-0.013689995]
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W01_F.p3d",
+              "Transform": [-0.019055367,2.923916,-2.1897922]
             }
           ]
         }
       },
       {
-        "Size": [12.947823,10.584164],
+        "Size": [9.943331,9.22849],
         "Composition": {
           "Objects": [
             {
-              "Model": "a3\\structures_f\\households\\House_Shop02\\u_Shop_02_V1_F.p3d",
-              "Transform": [1.0813835,3.1795251,-0.07307124]
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W02_F.p3d",
+              "Transform": [-1.1524733,2.1721385,-1.5063242]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.2861404,18.04177],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W03_F.p3d",
+              "Transform": [0.81524384,2.6205072,0.016630173]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.911651,19.23731],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W04_F.p3d",
+              "Transform": [1.330606,2.6066918,0.037150383]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.860491,14.357071],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W05_F.p3d",
+              "Transform": [-1.4971011,3.0102348,0.85834503]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [16.56566,14.03772],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W07_F.p3d",
+              "Transform": [0.36903477,3.2281404,2.4074628]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [8.8668,14.643667],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W06_F.p3d",
+              "Transform": [-1.2730359,2.8004475,-0.9399185]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [13.682951,7.4527607],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W08_F.p3d",
+              "Transform": [-0.7836151,2.6498814,-1.2987643]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [11.316151,10.0467205],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W09_F.p3d",
+              "Transform": [2.0110188,2.5293403,-0.057814837]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.449031,10.588316],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W11_F.p3d",
+              "Transform": [1.798449,3.3474987,1.7467536]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [12.367341,6.543771],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W10_F.p3d",
+              "Transform": [0.08968544,2.0440803,1.8518219]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [13.370421,15.836],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W12_F.p3d",
+              "Transform": [-3.0642161,2.919,2.4031684]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.380588,7.2392483],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W13_F.p3d",
+              "Transform": [-0.03139162,1.9848171,0.38893902]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.171451,10.912431],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2B01_F.p3d",
+              "Transform": [0.58592033,4.293845,-0.04948473]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [24.318,19.202408],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2B02_F.p3d",
+              "Transform": [-0.06254959,6.50536,-0.09338951]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [18.013071,16.224682],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2B04_F.p3d",
+              "Transform": [-0.106365204,6.1739945,-0.27831316]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [17.570436,22.127102],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2B03_F.p3d",
+              "Transform": [-0.046409607,6.029831,-3.0494509]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [15.219371,9.625071],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2W01_F.p3d",
+              "Transform": [-0.14020014,3.2318,0.12154913]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [15.51247,10.65495],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2W02_F.p3d",
+              "Transform": [-2.4172056,4.8387303,-0.02666521]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [21.0016,11.313999],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2W03_F.p3d",
+              "Transform": [-0.009900093,6.043638,-2.3421803]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [23.644001,10.764],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2W04_F.p3d",
+              "Transform": [0.09410095,6.096164,-2.875116]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [13.935071,13.361641],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2W05_F.p3d",
+              "Transform": [2.2842565,3.924612,0.1094532]
+            }
+          ]
+        }
+      }
+    ],
+    "Military": [
+      {
+        "Size": [17.896461,10.96766],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\military\\Barracks\\Barracks_02_F.p3d",
+              "Transform": [2.026567,1.9471319,-0.013575077]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [18.66928,8.517902],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\military\\Barracks\\Barracks_03_F.p3d",
+              "Transform": [3.1741536,1.3683677,-0.019137144]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [18.63565,14.773991],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\military\\Barracks\\Barracks_04_F.p3d",
+              "Transform": [-0.014110565,2.2004333,-2.1811352]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [15.452191,7.07979],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\military\\Barracks\\Barracks_05_F.p3d",
+              "Transform": [2.0386233,2.023199,0.00021994114]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [32.1097,15.696634],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\military\\Barracks\\Barracks_06_F.p3d",
+              "Transform": [-0.31949806,5.6746554,1.8030612]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.503851,8.952991],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\military\\Barracks\\GuardHouse_02_F.p3d",
+              "Transform": [-1.433343,1.905235,-0.03837633]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [9.503851,8.952991],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\military\\Barracks\\GuardHouse_02_grey_F.p3d",
+              "Transform": [-1.433343,1.905235,-0.03837633]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [6.8607035,6.9418545],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\military\\Barracks\\GuardHouse_03_F.p3d",
+              "Transform": [0.0022292137,1.2137346,-0.0146256685]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [17.296774,27.258303],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\military\\Radar\\Radar_01_kitchen_F.p3d",
+              "Transform": [-0.14446545,4.185047,-2.088067]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [19.576202,22.32976],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\military\\Radar\\Radar_01_HQ_F.p3d",
+              "Transform": [1.6208005,5.090069,2.0600538]
             }
           ]
         }
@@ -1709,6 +1555,39 @@
             }
           ]
         }
+      },
+      {
+        "Size": [16.53766,14.55674],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\civilian\\Police\\PoliceStation_01_F.p3d",
+              "Transform": [1.778079,7.030095,-0.44087029]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [7.0250483,13.376501],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\garages\\garageoffice_01_f.p3d",
+              "Transform": [0.23139715,3.6166105,-1.9697411]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [26.000002,13.08761],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\garages\\garagerow_01_large_f.p3d",
+              "Transform": [-0.02049923,3.6416485,-0.682117]
+            }
+          ]
+        }
       }
     ],
     "Industrial": [
@@ -1746,34 +1625,12 @@
         }
       },
       {
-        "Size": [10.564293,10.564293],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\industrial\\SurfaceMine_01\\SM_01_reservoirTower_F.p3d",
-              "Transform": [0,10.363952,0]
-            }
-          ]
-        }
-      },
-      {
         "Size": [25.879902,11.607126],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_exp\\industrial\\SurfaceMine_01\\SM_01_shed_F.p3d",
               "Transform": [-3.5220065,1.685302,-3.4994688]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [11.417304,29.709679],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_mainFactory_addon2_F.p3d",
-              "Transform": [0.046203613,10.594373,-0.10334253]
             }
           ]
         }
@@ -1911,28 +1768,6 @@
         }
       },
       {
-        "Size": [9.46187,6.56895],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_waterCooler_F.p3d",
-              "Transform": [0.15719056,2.1569202,0.32435024]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [3.687169,3.5956006],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_transformer_F.p3d",
-              "Transform": [0.023783445,1.6456327,0.10117191]
-            }
-          ]
-        }
-      },
-      {
         "Size": [23.057854,12.580131],
         "Composition": {
           "Objects": [
@@ -2054,39 +1889,6 @@
         }
       },
       {
-        "Size": [16.35862,14.071051],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_clarifier_F.p3d",
-              "Transform": [0.09609008,8.108506,-0.65337396]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [19.807442,19.024183],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_crystallizer_F.p3d",
-              "Transform": [0.30189943,9.054275,-0.00914526]
-            }
-          ]
-        }
-      },
-      {
-        "Size": [18.06955,48.9406],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_diffuser_F.p3d",
-              "Transform": [0.44512987,8.00698,-0.059150696]
-            }
-          ]
-        }
-      },
-      {
         "Size": [29.9803,48.7333],
         "Composition": {
           "Objects": [
@@ -2137,6 +1939,116 @@
             {
               "Model": "a3\\structures_f_enoch\\industrial\\houses\\factory_02_f.p3d",
               "Transform": [0.6109996,6.01772,-1.6700492]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.2134323,7.1917944],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_01_f.p3d",
+              "Transform": [-2.6328392,1.066115,2.802205]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.2134323,7.1917944],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_01_grey_f.p3d",
+              "Transform": [-2.6328392,1.066115,2.802205]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.012707,9.010631],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_02_f.p3d",
+              "Transform": [-0.042010784,1.3650839,-0.07589722]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.012707,9.010631],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_02_grey_f.p3d",
+              "Transform": [-0.042010784,1.3650839,-0.07589722]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.1157503,13.113811],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_03_f.p3d",
+              "Transform": [0.0003157854,1.1736401,0.03205347]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.1157503,13.113811],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_03_grey_f.p3d",
+              "Transform": [0.0003157854,1.1736401,0.03205347]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.6523776,15.232668],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_04_f.p3d",
+              "Transform": [0.20105624,1.3495302,-0.09429932]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.6523776,15.232668],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_04_grey_f.p3d",
+              "Transform": [0.20105624,1.3495302,-0.09429932]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.124512,13.943658],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_05_f.p3d",
+              "Transform": [-1.5873363,1.3938496,-2.215897]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [10.124512,13.943658],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_05_grey_f.p3d",
+              "Transform": [-1.5873363,1.3938496,-2.215897]
             }
           ]
         }
@@ -2205,6 +2117,28 @@
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Sheds\\Shed_09_F.p3d",
               "Transform": [1.1920929E-07,1.6127286,-2.1470022]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [4.3847303,3.40105],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\farms\\greenhouse_01_damaged_f.p3d",
+              "Transform": [-0.18479013,1.4006516,0.042810082]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [4.3847303,3.40105],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\farms\\greenhouse_01_f.p3d",
+              "Transform": [-0.18479013,1.4006516,0.042810082]
             }
           ]
         }
@@ -2364,7 +2298,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Accessories\\BusStop_02_shelter_F.p3d",
-              "Transform": [-1,0,8.742278E-08,0,1,0,-8.742278E-08,0,-1,-0.05000007,1.0111115,0.13692391]
+              "Transform": [0.05000007,1.0111115,-0.13692391]
             }
           ]
         }
@@ -2391,19 +2325,6 @@
           {
             "Models": [
               {
-                "Radius": 0.5,
-                "FitRadius": 0.5,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_betula_pendula_1s.p3d",
-                      "Transform": [0.41026923,2.0279462,-0.13446805]
-                    }
-                  ]
-                },
-                "Probability": 0.16666666666666666
-              },
-              {
                 "Radius": 0.7,
                 "FitRadius": 0.7,
                 "Model": {
@@ -2414,33 +2335,7 @@
                     }
                   ]
                 },
-                "Probability": 0.16666666666666666
-              },
-              {
-                "Radius": 1,
-                "FitRadius": 1,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_betula_pendula_2s.p3d",
-                      "Transform": [-0.21359897,4.053295,0.2975098]
-                    }
-                  ]
-                },
-                "Probability": 0.16666666666666666
-              },
-              {
-                "Radius": 1,
-                "FitRadius": 1,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_betula_pendula_2w.p3d",
-                      "Transform": [-0.010146254,2.6284752,-0.14282665]
-                    }
-                  ]
-                },
-                "Probability": 0.16666666666666666
+                "Probability": 0.33333333333333337
               },
               {
                 "Radius": 1,
@@ -2453,7 +2348,7 @@
                     }
                   ]
                 },
-                "Probability": 0.16666666666666666
+                "Probability": 0.33333333333333337
               },
               {
                 "Radius": 2,
@@ -2466,10 +2361,10 @@
                     }
                   ]
                 },
-                "Probability": 0.16666666666666666
+                "Probability": 0.33333333333333337
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
@@ -2500,7 +2395,7 @@
                 "Probability": 0.5
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
@@ -2515,20 +2410,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
-              },
-              {
-                "Radius": 1,
-                "FitRadius": 1,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_fagussylvatica_1s.p3d",
-                      "Transform": [0.058181856,4.065751,-0.15075356]
-                    }
-                  ]
-                },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 1.2,
@@ -2541,7 +2423,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 2.5,
@@ -2554,7 +2436,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 2.5,
@@ -2567,7 +2449,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 2.5,
@@ -2580,7 +2462,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 2,
@@ -2593,7 +2475,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 1.5,
@@ -2606,7 +2488,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 1.5,
@@ -2619,7 +2501,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 3,
@@ -2632,7 +2514,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 2.5,
@@ -2645,7 +2527,7 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               },
               {
                 "Radius": 3,
@@ -2658,10 +2540,10 @@
                     }
                   ]
                 },
-                "Probability": 0.08333333333333333
+                "Probability": 0.0909090909090909
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
@@ -2692,23 +2574,10 @@
                 "Probability": 0.5
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
-              {
-                "Radius": 2,
-                "FitRadius": 2,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_malusdomestica_2s.p3d",
-                      "Transform": [0.069520056,4.288282,-0.09381491]
-                    }
-                  ]
-                },
-                "Probability": 0.5
-              },
               {
                 "Radius": 3,
                 "FitRadius": 3,
@@ -2720,26 +2589,13 @@
                     }
                   ]
                 },
-                "Probability": 0.5
+                "Probability": 1
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
-              {
-                "Radius": 1.5,
-                "FitRadius": 1.5,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_pyruscommunis_2s.p3d",
-                      "Transform": [-0.029040009,3.6264021,0.09442985]
-                    }
-                  ]
-                },
-                "Probability": 0.5
-              },
               {
                 "Radius": 2,
                 "FitRadius": 2,
@@ -2751,52 +2607,13 @@
                     }
                   ]
                 },
-                "Probability": 0.5
+                "Probability": 1
               }
             ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           },
           {
             "Models": [
-              {
-                "Radius": 0.9,
-                "FitRadius": 0.9,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_piceaabies_1f.p3d",
-                      "Transform": [0.027730048,3.5905395,0.0033199787]
-                    }
-                  ]
-                },
-                "Probability": 0.11111111111111108
-              },
-              {
-                "Radius": 0.7,
-                "FitRadius": 0.7,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_piceaabies_1s.p3d",
-                      "Transform": [5.9604645E-08,1.6482191,0.012940023]
-                    }
-                  ]
-                },
-                "Probability": 0.11111111111111108
-              },
-              {
-                "Radius": 0.7,
-                "FitRadius": 0.7,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_piceaabies_1sb.p3d",
-                      "Transform": [-0.01323998,1.5549216,0.08349499]
-                    }
-                  ]
-                },
-                "Probability": 0.11111111111111108
-              },
               {
                 "Radius": 1,
                 "FitRadius": 1,
@@ -2808,7 +2625,7 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.16666666666666666
               },
               {
                 "Radius": 1,
@@ -2821,7 +2638,7 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.16666666666666666
               },
               {
                 "Radius": 1.2,
@@ -2834,7 +2651,7 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.16666666666666666
               },
               {
                 "Radius": 1.5,
@@ -2847,7 +2664,7 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.16666666666666666
               },
               {
                 "Radius": 1.5,
@@ -2860,7 +2677,7 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.16666666666666666
               },
               {
                 "Radius": 3,
@@ -2873,46 +2690,15 @@
                     }
                   ]
                 },
-                "Probability": 0.11111111111111108
+                "Probability": 0.16666666666666666
               }
             ],
-            "Probability": 0.125
-          },
-          {
-            "Models": [
-              {
-                "Radius": 0.984116,
-                "FitRadius": 0.984116,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_pinussylvestris_1f.p3d",
-                      "Transform": [-0.04216498,1.9303465,0.024540123]
-                    }
-                  ]
-                },
-                "Probability": 0.5
-              },
-              {
-                "Radius": 0.62361467,
-                "FitRadius": 0.62361467,
-                "Model": {
-                  "Objects": [
-                    {
-                      "Model": "a3\\vegetation_f_enoch\\tree\\t_pinussylvestris_1s.p3d",
-                      "Transform": [0.0025699735,1.1259675,-0.0145199]
-                    }
-                  ]
-                },
-                "Probability": 0.5
-              }
-            ],
-            "Probability": 0.125
+            "Probability": 0.14285714285714288
           }
         ],
         "Probability": 1,
-        "MinDensity": 0.025,
-        "MaxDensity": 0.025,
+        "MinDensity": 0.02,
+        "MaxDensity": 0.02,
         "Label": ""
       }
     ],
@@ -3158,8 +2944,8 @@
           }
         ],
         "Probability": 1,
-        "MinDensity": 0.5,
-        "MaxDensity": 0.5,
+        "MinDensity": 0.2,
+        "MaxDensity": 0.2,
         "Label": ""
       }
     ],
@@ -3424,8 +3210,7 @@
         "Usages": [
           "Default",
           "DefaultUrban",
-          "Grass",
-          "Meadow"
+          "Grass"
         ]
       },
       {
@@ -3463,10 +3248,21 @@
       },
       {
         "Material": {
-          "NormalTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_farmland_nopx.paa",
-          "ColorTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_farmland_co.paa",
+          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_meadows_centraleurope_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_meadows_centraleurope_co.paa",
+          "Id": "6B8E23FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAKtJREFUeJwdjltuRCEMQw8QYG5X1W1U6v4XMOoDLoHU0w9IIlvHts+P9zj78PZowOGeN6FZO6xVsat1fsdgzCVhs92pljiecN/Yz/ymlJdQRUgSi6aJ4RCOvVwkkynI9dBKYd43KTV6S1jVhx8iFKAu0zutBTUpen9hljsrFsWMnIM42skyDlEubM7NozVFpH8CMp90C9o4oTZZ3X27jq0XXLWSI3Op7HMs/gAIU2LMIZxwAQAAAABJRU5ErkJggg=="
+        },
+        "Usages": [
+          "Meadow"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "a3\\map_enoch\\data\\gdt_enfield_nopx.paa",
+          "ColorTexture": "a3\\map_enoch\\data\\gdt_enfield_co.paa",
           "Id": "FFFF00FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAeElEQVR4nFWOAQ7DMAgDXUKi/nV/2BP23qoRZCa02YoUkDjjWD/v12iKWeZsA6vMAPVrcfScVfAolS0vawG6/UA/AeFOizxB2LolbI2CgHvd6WLzFfEpLBScdNF1SejDUbaE4RSTGYQBj/XFP5yCG4QwM/jKYRR8Aa5xN2waz7JaAAAAAElFTkSuQmCC"
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAHZJREFUeJw9jskVAzEIQyVwTWkgl/Tfz0DE4uEZzM4/v+8nSSAjASNkwTL1K3/WBW28agxWpgI1RATcrdt7i8SmjMzEkeJRwW1GaHUv67Ucd/aJ3CR78jJQG+r+Js1m9RJ0LIZs2uq+mzhXEMXAl1j0WPQLKf0D5Rs45TnR5HwAAAAASUVORK5CYII="
         },
         "Usages": [
           "FarmLand"

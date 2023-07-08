@@ -798,4 +798,16 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="HelpHomeLink" xml:space="preserve">
     <value>https://github.com/jetelain/ArmaRealMap/wiki/Home-FR</value>
   </data>
+  <data name="DoneInMin" xml:space="preserve">
+    <value>Terminé en {0:0.0} min</value>
+  </data>
+  <data name="DoneInMsec" xml:space="preserve">
+    <value>Terminé en {0} msec</value>
+  </data>
+  <data name="DoneInSec" xml:space="preserve">
+    <value>Terminé en {0:0.0} sec</value>
+  </data>
+  <data name="AssetWatercourseAdditional" xml:space="preserve">
+    <value>Cours d'eau - Objets additionnels</value>
+  </data>
 </root>

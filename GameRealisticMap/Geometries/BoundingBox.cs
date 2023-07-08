@@ -90,7 +90,17 @@ namespace GameRealisticMap.Geometries
 
         public BoundingBox RotateM90()
         {
-            return new BoundingBox(Center, Height, Width, Angle - 90, Points);
+            return Rotate(-90);
+        }
+
+        public BoundingBox Rotate(float degrees)
+        {
+            if (degrees % 90 == 0)
+            {
+                // Points are unchanged with 90/180/270 rotation
+                return new BoundingBox(Center, Height, Width, Angle + degrees, Points);
+            }
+            return new BoundingBox(Center, Height, Width, Angle + degrees);
         }
 
         public override string ToString()

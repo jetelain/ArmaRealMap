@@ -43,7 +43,7 @@ namespace GameRealisticMap.Arma3
 
             if (string.IsNullOrEmpty(arma3MapConfigJson.TargetModDirectory))
             {
-                TargetModDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameRealisticMap", "Arma3", "Mods", $"@{WorldName}");
+                TargetModDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "GameRealisticMap", "Arma3", "Mods", $"@{WorldName}");
             }
             else
             {

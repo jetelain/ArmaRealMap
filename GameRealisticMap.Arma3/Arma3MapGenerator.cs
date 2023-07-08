@@ -1,10 +1,12 @@
-﻿using System.Runtime.Versioning;
+﻿using System.Linq;
+using System.Runtime.Versioning;
 using BIS.WRP;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.Imagery;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ElevationModel;
+using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
@@ -46,22 +48,31 @@ namespace GameRealisticMap.Arma3
         }
 
         [SupportedOSPlatform("windows")]
-        public async Task GenerateMod(IProgressTask progress, Arma3MapConfig a3config)
+        public async Task<string?> GenerateMod(IProgressTask progress, Arma3MapConfig a3config)
         {
             progress.Total += 1;
 
-            await GenerateWrp(progress, a3config);
-
+            var context = await GenerateWrp(progress, a3config);
             if (progress.CancellationToken.IsCancellationRequested)
             {
-                return;
+                return null;
             }
-
-            // TODO: Unpack all missing P3D + PAA
 
             Directory.CreateDirectory(a3config.TargetModDirectory);
             await Arma3ToolsHelper.BuildWithMikeroPboProject(a3config.PboPrefix, a3config.TargetModDirectory, progress);
             progress.ReportOneDone();
+
+            if (context == null || progress.CancellationToken.IsCancellationRequested)
+            { 
+                return null; 
+            }
+            var name = GameConfigGenerator.GetFreindlyName(a3config, context.GetData<CitiesData>());
+            var modCpp = Path.Combine(a3config.TargetModDirectory, "mod.cpp");
+            if (!File.Exists(modCpp))
+            {
+                File.WriteAllText(modCpp, $"name = \"{name}, GameRealisticMap\";");
+            }
+            return name;
         }
 
         public async Task<BuildContext?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
@@ -136,13 +147,26 @@ namespace GameRealisticMap.Arma3
             wrpBuilder.Write(config, grid, tiles, objects);
             progress.ReportOneDone();
 
-            UnpackModels(progress, wrpBuilder.UsedModels);
+            UnpackFiles(progress, GetRequiredFiles(wrpBuilder));
         }
 
-        private void UnpackModels(IProgressTask progress, IReadOnlyCollection<string> usedModels)
+        private List<string> GetRequiredFiles(WrpCompiler wrpBuilder)
         {
-            using var report = progress.CreateStep("UnpackModels", usedModels.Count);
-            foreach(var model in usedModels)
+            var materials = Enum.GetValues<TerrainMaterialUsage>().Select(u => assets.Materials.GetMaterialByUsage(u)).ToList();
+            var roads = Enum.GetValues<RoadTypeId>().Select(u => assets.RoadTypeLibrary.GetInfo(u)).ToList();
+            return wrpBuilder.UsedModels
+                .Concat(materials.Select(m => m.NormalTexture).Distinct())
+                .Concat(materials.Select(m => m.ColorTexture).Distinct())
+                .Concat(roads.Select(m => m.TextureEnd).Distinct())
+                .Concat(roads.Select(m => m.Texture).Distinct())
+                .Concat(roads.Select(m => m.Material).Distinct())
+                .ToList();
+        }
+
+        private void UnpackFiles(IProgressTask progress, IReadOnlyCollection<string> files)
+        {
+            using var report = progress.CreateStep("UnpackFiles", files.Count);
+            foreach(var model in files)
             {
                 if (!projectDrive.EnsureLocalFileCopy(model))
                 {

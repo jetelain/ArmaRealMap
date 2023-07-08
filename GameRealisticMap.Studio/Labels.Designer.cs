@@ -817,6 +817,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Watercourse Additional.
+        /// </summary>
+        public static string AssetWatercourseAdditional {
+            get {
+                return ResourceManager.GetString("AssetWatercourseAdditional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Watercourse Radial.
         /// </summary>
         public static string AssetWatercourseRadial {
@@ -1155,6 +1164,33 @@ namespace GameRealisticMap.Studio {
         public static string DetectedType {
             get {
                 return ResourceManager.GetString("DetectedType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Done in {0:0.0} min.
+        /// </summary>
+        public static string DoneInMin {
+            get {
+                return ResourceManager.GetString("DoneInMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Done in {0} msec.
+        /// </summary>
+        public static string DoneInMsec {
+            get {
+                return ResourceManager.GetString("DoneInMsec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Done in {0:0.0} sec.
+        /// </summary>
+        public static string DoneInSec {
+            get {
+                return ResourceManager.GetString("DoneInSec", resourceCulture);
             }
         }
         

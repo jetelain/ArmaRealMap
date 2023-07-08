@@ -85,15 +85,15 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             task.WriteLine($"** '{StepName}' done in {elapsed.Elapsed}");
             if (elapsed.ElapsedMilliseconds < 5000)
             {
-                Left = $"Done in {elapsed.ElapsedMilliseconds} msec";
+                Left = string.Format(Labels.DoneInMsec, elapsed.ElapsedMilliseconds);
             }
             else if (elapsed.ElapsedMilliseconds > 120000)
             {
-                Left = $"Done in {elapsed.ElapsedMilliseconds / 60000d:0.0} min";
+                Left = string.Format(Labels.DoneInMin, elapsed.ElapsedMilliseconds / 60000d);
             }
             else
             {
-                Left = $"Done in {elapsed.ElapsedMilliseconds / 1000d:0.0} sec";
+                Left = string.Format(Labels.DoneInSec, elapsed.ElapsedMilliseconds / 1000d);
             }
             Percent = 100.0;
             NotifyOfPropertyChange(nameof(Percent));
