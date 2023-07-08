@@ -1267,17 +1267,6 @@
         }
       },
       {
-        "Size": [9.380588,7.2392483],
-        "Composition": {
-          "Objects": [
-            {
-              "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W13_F.p3d",
-              "Transform": [-0.03139162,1.9848171,0.38893902]
-            }
-          ]
-        }
-      },
-      {
         "Size": [10.171451,10.912431],
         "Composition": {
           "Objects": [
