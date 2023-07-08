@@ -61,9 +61,11 @@ namespace GameRealisticMap.ElevationModel
             // - (Flat area for parking lots ?)
             // - Forced elevation by config
 
-            FlatAreas(
+            FlatLargeAreasSmooth(
                 GetLargeBuildings(buildings)
                 .Concat(GetOutdoorPitch(context)), grid);
+
+            FlatSmallAreasHard(GetOtherBuildings(buildings), grid);
 
             return new ElevationWithLakesData(grid, lakes);
         }
@@ -111,6 +113,13 @@ namespace GameRealisticMap.ElevationModel
             return buildings.Buildings.Where(b => b.Box.Width * b.Box.Height >= largeBuildingArea).Select(b => b.Box.Polygon);
         }
 
+        private IEnumerable<TerrainPolygon> GetOtherBuildings(BuildingsData buildings)
+        {
+            var largeBuildingArea = 750f;
+
+            return buildings.Buildings.Where(b => b.Box.Width * b.Box.Height < largeBuildingArea).Select(b => b.Box.Polygon);
+        }
+
         /// <summary>
         /// Outdoor pitch are always flat
         /// </summary>
@@ -123,9 +132,9 @@ namespace GameRealisticMap.ElevationModel
                 .SelectMany(g => TerrainPolygon.FromGeometry(g, context.Area.LatLngToTerrainPoint));
         }
 
-        private void FlatAreas(IEnumerable<TerrainPolygon> flatAreas, ElevationGrid grid)
+        private void FlatLargeAreasSmooth(IEnumerable<TerrainPolygon> flatAreas, ElevationGrid grid)
         {
-            foreach (var flat in flatAreas.ProgressStep(progress, "Flat"))
+            foreach (var flat in flatAreas.ProgressStep(progress, "FlatLarge"))
             {
                 var avg = grid.GetAverageElevation(flat);
                 var mutate = grid.PrepareToMutate(flat.MinPoint - FlatAreaMargin, flat.MaxPoint + FlatAreaMargin, avg - 10, avg + 10);
@@ -144,6 +153,23 @@ namespace GameRealisticMap.ElevationModel
                         PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(mutate.ElevationToColor(avg)), mutate.ToPixels);
                     }
                     d.BoxBlur(1);
+                });
+                mutate.Apply();
+            }
+        }
+
+        private void FlatSmallAreasHard(IEnumerable<TerrainPolygon> flatAreas, ElevationGrid grid)
+        {
+            foreach (var flat in flatAreas.ProgressStep(progress, "FlatSmall"))
+            {
+                var avg = grid.GetAverageElevation(flat);
+                var mutate = grid.PrepareToMutate(flat.MinPoint - FlatAreaMargin, flat.MaxPoint + FlatAreaMargin, avg - 10, avg + 10);
+                mutate.Image.Mutate(d =>
+                {
+                    foreach (var scaled in flat.Offset(FlatAreaOffset))
+                    {
+                        PolygonDrawHelper.DrawPolygon(d, scaled, new SolidBrush(mutate.ElevationToColor(avg)), mutate.ToPixels);
+                    }
                 });
                 mutate.Apply();
             }
