@@ -18,7 +18,7 @@ GameRealisticMap Studio uses third-party libraries :
 - PdfSharpCore (MIT License)
 
 Note: While GameRealisticMap Studio is a free software with a permissive license, 
-it uses librairies (CoordinateSharp and SixLabors.ImageSharp) that prohibit commercial
+it uses libraries (CoordinateSharp and SixLabors.ImageSharp) that prohibit commercial
 redistribution and/or usage, except if you acquire a commercial license from their authors.
 
 # GeminiWpf
