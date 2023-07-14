@@ -810,4 +810,7 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="AssetWatercourseAdditional" xml:space="preserve">
     <value>Cours d'eau - Objets additionnels</value>
   </data>
+  <data name="SelectedAssetConfigMissingModsHint" xml:space="preserve">
+    <value>Le style de carte sélectionné nécessite des mods supplémentaires. Merci de les installer avec Steam:</value>
+  </data>
 </root>

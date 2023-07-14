@@ -1945,6 +1945,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Selected asset configuration requires additional mods. Please subscribe to them on Steam Workshop:.
+        /// </summary>
+        public static string SelectedAssetConfigMissingModsHint {
+            get {
+                return ResourceManager.GetString("SelectedAssetConfigMissingModsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Setup with Arma3 Tools.
         /// </summary>
         public static string SetupWithArma3Tools {

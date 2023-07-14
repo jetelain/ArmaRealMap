@@ -10,6 +10,9 @@
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              mc:Ignorable="d" 
              d:DesignHeight="1200" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Hidden" IsTabStop="False">
         <StackPanel  Orientation="Vertical">
 
@@ -84,6 +87,22 @@
                 <!--<Button Padding="10 0" cal:Message.Attach="CreateAssetConfig">New</Button>-->
             </StackPanel>
 
+            <Border Margin="10" Padding="10" BorderBrush="Red" BorderThickness="2" Visibility="{Binding HasMissingMods, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                <StackPanel>
+                    <TextBlock FontSize="15" Foreground="Red"><Run Text="{x:Static r:Labels.SomeModsAreMissing}"/></TextBlock>
+                    <TextBlock Margin="0 5"><Run Text="{x:Static r:Labels.SelectedAssetConfigMissingModsHint}"/></TextBlock>
+                    <ItemsControl ItemsSource="{Binding MissingMods}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock FontSize="15" Margin="0 5">
+                                    <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="{Binding SteamUri}">Mod #<TextBlock Text="{Binding SteamId}" /></Hyperlink>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+            
             <Expander Margin="10">
                 <Expander.Header>
                     <TextBlock Text="{x:Static r:Labels.AdvancedParameters}" />

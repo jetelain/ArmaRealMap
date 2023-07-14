@@ -13,6 +13,7 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Preview;
 using GameRealisticMap.Satellite;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
@@ -154,8 +155,36 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 Config.AssetConfigFile = value;
                 NotifyOfPropertyChange();
                 IsDirty = true;
+                _ = CheckDependencies();
             }
         }
+
+        private async Task CheckDependencies()
+        {
+            var file = AssetConfigFile;
+            MissingMods = new List<MissingMod>();
+            if (!string.IsNullOrEmpty(file))
+            {
+                var fullpath = GetAssetFullPath(file);
+                if (fullpath != null)
+                {
+                    try
+                    {
+                        var deps = await Arma3Assets.LoadDependenciesFromFile(fullpath);
+                        MissingMods = await MissingMod.DetectMissingMods(_arma3DataModule, IoC.Get<IArma3ModsService>(), deps);
+                    }
+                    catch
+                    {
+                        // Ignore all errors at this stage
+                    }
+                }
+            }
+            NotifyOfPropertyChange(nameof(HasMissingMods));
+            NotifyOfPropertyChange(nameof(MissingMods));
+        }
+
+        public bool HasMissingMods => MissingMods.Count > 0;
+        public List<MissingMod> MissingMods { get; private set; } = new List<MissingMod>();
 
         public string TreeName => DisplayName;
         public string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png";
@@ -177,16 +206,17 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(Locations));
             NotifyOfPropertyChange(nameof(BoundingBox));
             NotifyOfPropertyChange(nameof(AssetConfigFile));
+            await CheckDependencies();
         }
 
-        protected override Task DoNew()
+        protected override async Task DoNew()
         {
             Config = new Arma3MapConfigJson();
             var assetConfig = _shell.Documents.OfType<AssetConfigEditorViewModel>().Select(r => r.FilePath ?? r.FileName).FirstOrDefault();
             Config.AssetConfigFile = assetConfig ?? BuiltinAssetConfigFiles.FirstOrDefault() ?? string.Empty;
             NotifyOfPropertyChange(nameof(Config));
             NotifyOfPropertyChange(nameof(AssetConfigFile));
-            return Task.CompletedTask;
+            await CheckDependencies();
         }
 
         protected override async Task DoSave(string filePath)

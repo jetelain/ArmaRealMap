@@ -151,36 +151,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         private async Task<Arma3Assets> AutoEnableMods(string filePath)
         {
-            var deps = await Arma3Assets.LoadDependenciesFromFile(filePath); 
-
-            var activeMods = _arma3Data.ActiveMods.ToHashSet(StringComparer.OrdinalIgnoreCase);
-            var mods = IoC.Get<IArma3ModsService>();
-            var toEnablePaths = new List<string>();
-            var toInstallSteamId = new List<string>();
-            foreach (var dependency in deps.Dependencies)
-            {
-                var mod = mods.GetMod(dependency.SteamId);
-                if (mod == null)
-                {
-                    // => NOT INSTALLED, must prompt user
-                    toInstallSteamId.Add(dependency.SteamId);
-                }
-                else if (!activeMods.Contains(mod.Path))
-                {
-                    // => NOT ENABLED
-                    toEnablePaths.Add(mod.Path);
-                }
-            }
-            if (toEnablePaths.Count > 0)
-            {
-                await _arma3Data.ChangeActiveMods(_arma3Data.ActiveMods.Concat(toEnablePaths));
-            }
-            if (toInstallSteamId != null)
-            {
-                MissingMods = toInstallSteamId.Select(m => new MissingMod(m)).ToList();
-                NotifyOfPropertyChange(nameof(HasMissingMods));
-                NotifyOfPropertyChange(nameof(MissingMods));
-            }
+            var deps = await Arma3Assets.LoadDependenciesFromFile(filePath);
+            MissingMods = await MissingMod.DetectMissingMods(_arma3Data, IoC.Get<IArma3ModsService>(), deps);
+            NotifyOfPropertyChange(nameof(HasMissingMods));
+            NotifyOfPropertyChange(nameof(MissingMods));
             try
             {
                 // Last attempt
