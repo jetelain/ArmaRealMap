@@ -196,20 +196,14 @@ namespace TerrainBuilderUtil
                 if (File.Exists(file))
                 {
                     var infos = StreamHelper.Read<P3D>(file);
-                    if (infos.ODOL != null)
-                    {
-                        isSlopeLandContact = infos.ODOL.ModelInfo.LandContact != 0 && infos.ODOL.ModelInfo.LandContact != 255;
-                    }
-                    else if (infos.MLOD != null)
-                    {
-                        // TODO
-                    }
+                    var placement = infos.LODs.FirstOrDefault(l => l.Resolution == 1E+13f)?.NamedProperties?.FirstOrDefault(n => n.Item1 == "placement")?.Item2;
+                    isSlopeLandContact = !string.IsNullOrEmpty(placement) && placement.StartsWith("slope", StringComparison.OrdinalIgnoreCase);
+                }
+                else
+                {
+                    Console.WriteLine($"Model {model} was not found, unknown SlopeLandContact");
                 }
                 slopelandcontact.Add(model, isSlopeLandContact);
-                if (isSlopeLandContact)
-                {
-                    Console.WriteLine($"SlopeLandContact ==>> {model}");
-                }
             }
             return isSlopeLandContact;
         }
