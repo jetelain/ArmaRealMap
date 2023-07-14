@@ -810,4 +810,7 @@ You may eventually enable other mods.</value>
   <data name="AssetWatercourseAdditional" xml:space="preserve">
     <value>Watercourse Additional</value>
   </data>
+  <data name="SelectedAssetConfigMissingModsHint" xml:space="preserve">
+    <value>Selected asset configuration requires additional mods. Please subscribe to them on Steam Workshop:</value>
+  </data>
 </root>
