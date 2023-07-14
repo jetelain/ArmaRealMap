@@ -140,6 +140,8 @@ namespace TerrainBuilderUtil
                     case ".class":
                         models.Add((string)array[1], NormalizeModelPath((string)array[2]));
                         break;
+                    case ".map":
+                        break;
                     default:
                         var model = models[(string)array[0]];
                         exportData.Add.Add(new EditableWrpObject()
@@ -158,7 +160,7 @@ namespace TerrainBuilderUtil
         private static readonly Vector3 DefaultVectorDir = new Vector3(0, 0, 1); // North
         private static readonly Vector3 DefaultVectorUp = new Vector3(0, 1, 0); // Up
         private static readonly Vector3 DefaultVectorCross = Vector3.Cross(DefaultVectorDir, DefaultVectorUp);
-        private static readonly Dictionary<string, bool> slopelandcontact = new Dictionary<string, bool>();
+        private static readonly Dictionary<string, bool> slopelandcontact = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         private static Matrix4P GetTransform(bool useWorldPos, object[] array, string model)
         {
@@ -190,17 +192,24 @@ namespace TerrainBuilderUtil
         {
             if (!slopelandcontact.TryGetValue(model, out var isSlopeLandContact))
             {
-                var infos = StreamHelper.Read<P3D>(Path.Combine("P:", model));
-                if (infos.ODOL != null)
+                var file = Path.Combine("P:", model);
+                if (File.Exists(file))
                 {
-                    isSlopeLandContact = infos.ODOL.ModelInfo.LandContact > 0;
-                }
-                else if (infos.MLOD != null)
-                {
-                    // TODO
+                    var infos = StreamHelper.Read<P3D>(file);
+                    if (infos.ODOL != null)
+                    {
+                        isSlopeLandContact = infos.ODOL.ModelInfo.LandContact != 0 && infos.ODOL.ModelInfo.LandContact != 255;
+                    }
+                    else if (infos.MLOD != null)
+                    {
+                        // TODO
+                    }
                 }
                 slopelandcontact.Add(model, isSlopeLandContact);
-                Console.WriteLine($"{model}, IsSlopeLandContact={isSlopeLandContact}");
+                if (isSlopeLandContact)
+                {
+                    Console.WriteLine($"SlopeLandContact ==>> {model}");
+                }
             }
             return isSlopeLandContact;
         }
@@ -333,7 +342,7 @@ namespace TerrainBuilderUtil
             using (var writer = new StreamWriter(opts.Target, false))
             {
                 foreach (var add in exportData.Add)
-                {
+                {           
                     var yaw = (float)System.Math.Atan2(add.Transform.Matrix.M13, add.Transform.Matrix.M33) * 180 / Math.PI;
                     var pitch = (float)System.Math.Asin(-add.Transform.Matrix.M23) * 180 / Math.PI;
                     var roll = (float)System.Math.Atan2(add.Transform.Matrix.M21, add.Transform.Matrix.M22) * 180 / Math.PI;

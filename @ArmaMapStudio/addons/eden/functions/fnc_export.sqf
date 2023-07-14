@@ -12,6 +12,7 @@ private _toRemoveLayer = -1 add3DENLayer "Map integrable (to remove)";
 private _progress = 0;
 private _progressTotal = count _objects + count _systems;
 
+_data pushBack [".map", worldName, worldSize];
 
 {
 	if ( _x isKindOf "ModuleHideTerrainObjects_F" ) then {
