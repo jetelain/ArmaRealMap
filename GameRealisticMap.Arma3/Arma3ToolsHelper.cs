@@ -38,13 +38,34 @@ namespace GameRealisticMap.Arma3
         [SupportedOSPlatform("windows")]
         public static string GetArma3ToolsPath()
         {
-            return GetSteamAppLocation(233800);
+            return GetDirectoryPathOrNull(Registry.CurrentUser, @"SOFTWARE\Bohemia Interactive\arma 3 tools", "path")
+                ?? GetSteamAppLocation(233800);
         }
 
         [SupportedOSPlatform("windows")]
         public static string GetArma3Path()
         {
-            return GetSteamAppLocation(107410);
+            return 
+                GetDirectoryPathOrNull(Registry.LocalMachine, @"SOFTWARE\WOW6432Node\bohemia interactive\arma 3", "main") 
+                ?? GetDirectoryPathOrNull(Registry.LocalMachine, @"SOFTWARE\bohemia interactive\arma 3", "main")
+                ?? GetSteamAppLocation(107410);
+        }
+
+        [SupportedOSPlatform("windows")]
+        private static string? GetDirectoryPathOrNull(RegistryKey baseKey, string name, string value)
+        {
+            using (var key = baseKey.OpenSubKey(name))
+            {
+                if (key != null)
+                {
+                    var path = (key.GetValue(value) as string) ?? string.Empty;
+                    if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
+                    {
+                        return path;
+                    }
+                }
+            }
+            return null;
         }
 
         [SupportedOSPlatform("windows")]
