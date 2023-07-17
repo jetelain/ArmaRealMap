@@ -813,4 +813,13 @@ You may eventually enable other mods.</value>
   <data name="SelectedAssetConfigMissingModsHint" xml:space="preserve">
     <value>Selected asset configuration requires additional mods. Please subscribe to them on Steam Workshop:</value>
   </data>
+  <data name="UnsavedCloseConfirmText" xml:space="preserve">
+    <value>'{0}' may have some unsaved changes, do you want to save them?</value>
+  </data>
+  <data name="UnsavedCloseConfirmTitle" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>

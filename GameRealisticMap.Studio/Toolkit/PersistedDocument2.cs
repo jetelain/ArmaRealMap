@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Gemini.Framework;
 using Gemini.Framework.Commands;
 using Gemini.Modules.Shell.Commands;
-using MapControl;
 
 namespace GameRealisticMap.Studio.Toolkit
 {
@@ -23,7 +18,7 @@ namespace GameRealisticMap.Studio.Toolkit
         {
             if (IsDirty)
             {
-                var response = MessageBox.Show($"'{FileName}' may have some unsaved changes, do you want to save them?", "Confirm", MessageBoxButton.YesNoCancel);
+                var response = MessageBox.Show(string.Format(Labels.UnsavedCloseConfirmText, FileName), Labels.UnsavedCloseConfirmTitle, MessageBoxButton.YesNoCancel);
                 if (response == MessageBoxResult.Cancel)
                 {
                     return false;

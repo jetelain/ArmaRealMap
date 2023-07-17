@@ -11,6 +11,8 @@ namespace GameRealisticMap.Arma3.IO
             "map_", "missions_", "sounds_", "musics_", "dubbing_", 
             "editorpreviews_", "ui_", "functions_", "anims_", "air_", "armor_", "characters_", "boat_"
         };
+        private static readonly string[] PboWhiteList = new[] { "map_enoch_data.pbo", "map_data.pbo" };
+        
 
         private readonly IEnumerable<string> gamePaths;
         private readonly IEnumerable<string> mods;
@@ -65,7 +67,7 @@ namespace GameRealisticMap.Arma3.IO
         {
             foreach(var path in gamePaths)
             {
-                foreach(var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories).Where(f => ShouldRead(f, PboPrefixIgnore)))
+                foreach(var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories).Where(f => ShouldRead(f)))
                 {
                     AddCacheDefault(pboPath);
                 }
@@ -89,10 +91,14 @@ namespace GameRealisticMap.Arma3.IO
             }
         }
 
-        private bool ShouldRead(string file, string[] ignorePrefix)
+        private bool ShouldRead(string file)
         {
             var fileName = Path.GetFileName(file);
-            return !ignorePrefix.Any(suffix => fileName.StartsWith(suffix, StringComparison.OrdinalIgnoreCase));
+            if (PboWhiteList.Contains(fileName, StringComparer.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            return !PboPrefixIgnore.Any(suffix => fileName.StartsWith(suffix, StringComparison.OrdinalIgnoreCase));
         }
 
         private static bool ShouldBeCached(IPBOFileEntry entry)

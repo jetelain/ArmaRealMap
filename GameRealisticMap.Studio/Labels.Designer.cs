@@ -970,6 +970,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Color Id.
         /// </summary>
         public static string ColorId {
@@ -2049,6 +2058,24 @@ namespace GameRealisticMap.Studio {
         public static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à &apos;{0}&apos; may have some unsaved changes, do you want to save them?.
+        /// </summary>
+        public static string UnsavedCloseConfirmText {
+            get {
+                return ResourceManager.GetString("UnsavedCloseConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Confirm.
+        /// </summary>
+        public static string UnsavedCloseConfirmTitle {
+            get {
+                return ResourceManager.GetString("UnsavedCloseConfirmTitle", resourceCulture);
             }
         }
         
