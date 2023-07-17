@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
+using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Preview;
 using GameRealisticMap.Satellite;
@@ -347,6 +348,8 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         {
             var a3config = Config.ToArma3MapConfig();
 
+            ReportConfig(task, _arma3DataModule.ProjectDrive, a3config);
+
             var assets = await GetAssets(_arma3DataModule.Library, a3config);
 
             var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive);
@@ -370,6 +373,8 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         private async Task DoGenerateMap(IProgressTaskUI task)
         {
             var a3config = Config.ToArma3MapConfig();
+
+            ReportConfig(task, _arma3DataModule.ProjectDrive, a3config);
 
             var assets = await GetAssets(_arma3DataModule.Library, a3config);
 
@@ -461,6 +466,22 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 await source.GetData<RawSatelliteImageData>().Image.OffloadAsync();
             }
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);
+        }
+
+        private void ReportConfig(IProgressTaskUI task, ProjectDrive projectDrive, Arma3MapConfig a3config)
+        {
+            task.WriteLine($"MountPath='{projectDrive.MountPath}'");
+            if (projectDrive.SecondarySource is PboFileSystem pbo)
+            {
+                foreach(var path in pbo.GamePaths)
+                {
+                    task.WriteLine($"GamePaths+='{path}'");
+                }
+                foreach (var path in pbo.ModsPaths)
+                {
+                    task.WriteLine($"ModsPaths+='{path}'");
+                }
+            }
         }
 
         private async Task CreateLauncherPresetAsync(Arma3Assets assets, string modpath, string name)
