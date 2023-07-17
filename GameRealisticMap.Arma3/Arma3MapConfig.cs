@@ -15,9 +15,9 @@ namespace GameRealisticMap.Arma3
                 TerrainArea = TerrainAreaUTM.CreateFromSouthWest(arma3MapConfigJson.SouthWest!, arma3MapConfigJson.GridCellSize, arma3MapConfigJson.GridSize);
             }
 
-            TileSize = arma3MapConfigJson.TileSize;
-
             Resolution = arma3MapConfigJson.Resolution;
+
+            TileSize = arma3MapConfigJson.TileSize ?? DetectTileSize((int)Math.Ceiling(TerrainArea.SizeInMeters / Resolution));
 
             FakeSatBlend = arma3MapConfigJson.FakeSatBlend;
 
@@ -49,6 +49,15 @@ namespace GameRealisticMap.Arma3
             {
                 TargetModDirectory = arma3MapConfigJson.TargetModDirectory;
             }
+        }
+
+        private static int DetectTileSize(int imageSizeInPixels)
+        {
+            if (imageSizeInPixels > 15000)
+            {
+                return 1024;
+            }
+            return 512;
         }
 
         public static string GetAutomaticWorldName(ITerrainArea area)
