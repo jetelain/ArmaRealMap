@@ -27,6 +27,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.ViewModels
 
         public string ProjectDriveBasePath => _arma3.ProjectDrive.MountPath;
 
+        public string Arma3Path => Arma3ToolsHelper.GetArma3Path();
+
+        public string Arma3ToolsPath => Arma3ToolsHelper.GetArma3ToolsPath();
+
+        public string Arma3WorkshopPath => Arma3ToolsHelper.GetArma3WorkshopPath();
+        
         public void ApplyChanges()
         {
         }

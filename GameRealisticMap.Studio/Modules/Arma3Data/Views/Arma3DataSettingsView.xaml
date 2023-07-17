@@ -11,13 +11,38 @@
 
         <StackPanel Orientation="Horizontal">
             <Label>Project drive location</Label>
-            <Label>
+            <TextBlock VerticalAlignment="Center">
                 <Hyperlink NavigateUri="{Binding ProjectDriveBasePath}"  b:HyperLinkBehaviors.ShellExecute="True">
                     <TextBlock Text="{Binding ProjectDriveBasePath}" />
                 </Hyperlink>
-            </Label>
+            </TextBlock>
         </StackPanel>
 
-        
+        <StackPanel Orientation="Horizontal">
+            <Label>Game location</Label>
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink NavigateUri="{Binding Arma3Path}"  b:HyperLinkBehaviors.ShellExecute="True">
+                    <TextBlock Text="{Binding Arma3Path}" />
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <Label>Tools location</Label>
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink NavigateUri="{Binding Arma3ToolsPath}"  b:HyperLinkBehaviors.ShellExecute="True">
+                    <TextBlock Text="{Binding Arma3ToolsPath}" />
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <Label>Workshop location</Label>
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink NavigateUri="{Binding Arma3WorkshopPath}"  b:HyperLinkBehaviors.ShellExecute="True">
+                    <TextBlock Text="{Binding Arma3WorkshopPath}" />
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
     </StackPanel>
 </UserControl>
