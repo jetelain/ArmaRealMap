@@ -76,7 +76,7 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" IsCancel="True" cal:Message.Attach="Close">
-                <Run Text="Close"/>
+                <Run Text="{x:Static r:Labels.Close}"/>
             </Button>
         </Grid>
     </Grid>

@@ -819,4 +819,7 @@ You may eventually enable other mods.</value>
   <data name="UnsavedCloseConfirmTitle" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>
