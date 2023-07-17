@@ -2053,6 +2053,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à &apos;{0}&apos; may have some unsaved changes, do you want to save them?.
+        /// </summary>
+        public static string UnsavedCloseConfirmText {
+            get {
+                return ResourceManager.GetString("UnsavedCloseConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Confirm.
+        /// </summary>
+        public static string UnsavedCloseConfirmTitle {
+            get {
+                return ResourceManager.GetString("UnsavedCloseConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Use same texte as.
         /// </summary>
         public static string UseSameTexteAs {

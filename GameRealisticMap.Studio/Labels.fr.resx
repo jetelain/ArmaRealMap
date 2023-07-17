@@ -813,4 +813,10 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="SelectedAssetConfigMissingModsHint" xml:space="preserve">
     <value>Le style de carte sélectionné nécessite des mods supplémentaires. Merci de les installer avec Steam:</value>
   </data>
+  <data name="UnsavedCloseConfirmTitle" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="UnsavedCloseConfirmText" xml:space="preserve">
+    <value>'{0}' pourrait avoir des modifications non enregistrées, voulez-vous les enregistrer ?</value>
+  </data>
 </root>
