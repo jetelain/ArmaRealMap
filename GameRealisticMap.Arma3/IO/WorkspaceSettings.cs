@@ -63,6 +63,7 @@ namespace GameRealisticMap.Arma3.IO
 
         public async Task Save()
         {
+            Directory.CreateDirectory(Path.GetDirectoryName(DefaultLocation)!);
             await Save(DefaultLocation).ConfigureAwait(false);
         }
 
