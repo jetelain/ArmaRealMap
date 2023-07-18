@@ -35,13 +35,13 @@ namespace GameRealisticMap.Algorithms.Filling
 
         private List<AreaFillingBase<TModelInfo>> GetFillAreas(IEnumerable<TerrainPolygon> polygons)
         {
-            var areas = new ConcurrentBag<AreaFillingBase<TModelInfo>>();
+            var areas = new ConcurrentQueue<AreaFillingBase<TModelInfo>>();
             Parallel.ForEach(polygons, new ParallelOptions() { MaxDegreeOfParallelism = Math.Max(2, Environment.ProcessorCount * 3 / 4) }, poly =>
             {
                 if (poly.Area > 1)
                 {
                     var definition = new AreaDefinition(poly);
-                    areas.Add(GenerateAreaSelectData(definition));
+                    areas.Enqueue(GenerateAreaSelectData(definition));
                 }
             });
             return areas.ToList();

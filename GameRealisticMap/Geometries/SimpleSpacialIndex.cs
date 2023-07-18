@@ -48,7 +48,7 @@ namespace GameRealisticMap.Geometries
         }
 
         private readonly List<DataNode>[,] cells;
-        private readonly ConcurrentBag<DataNode> all = new ConcurrentBag<DataNode>();
+        private readonly ConcurrentQueue<DataNode> all = new ConcurrentQueue<DataNode>();
         private readonly List<LockArea> locks = new List<LockArea>();
 
         private readonly Vector2 start;
@@ -137,7 +137,7 @@ namespace GameRealisticMap.Geometries
         public void Insert(Vector2 start, Vector2 end, T value)
         {
             var node = new DataNode(value, start, end);
-            all.Add(node);
+            all.Enqueue(node);
             foreach (var cell in GetCells(node.start, node.end))
             {
                 cell.Add(node);
