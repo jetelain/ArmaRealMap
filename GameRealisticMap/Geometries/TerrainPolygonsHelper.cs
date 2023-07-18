@@ -13,14 +13,14 @@ namespace GameRealisticMap.Geometries
         internal static IReadOnlyCollection<TerrainPolygon> SubstractAll(this List<TerrainPolygon> list, IProgressSystem progress, string stepName, IReadOnlyCollection<TerrainPolygon> others)
         {
 #if PARALLEL
-            var result = new ConcurrentBag<TerrainPolygon>();
+            var result = new ConcurrentQueue<TerrainPolygon>();
             using (var report = progress.CreateStep(stepName+ " (Parallel)", list.Count))
             {
                 Parallel.ForEach(list, polygon =>
                 {
                     foreach(var resultPolygon in polygon.SubstractAllSplitted(others))
                     {
-                        result.Add(resultPolygon);
+                        result.Enqueue(resultPolygon);
                     }
                     report.ReportOneDone();
                 });
@@ -42,12 +42,12 @@ namespace GameRealisticMap.Geometries
                 return subject.SubstractAll(others);
             }
             var quad = subject.SplitQuad().SelectMany(s => subject.ClippedByEnveloppe(s));
-            var result = new ConcurrentBag<TerrainPolygon>();
+            var result = new ConcurrentQueue<TerrainPolygon>();
             Parallel.ForEach(quad, polygon =>
             {
                 foreach (var resultPolygon in polygon.SubstractAllSplitted(others))
                 {
-                    result.Add(resultPolygon);
+                    result.Enqueue(resultPolygon);
                 }
             });
             return result;

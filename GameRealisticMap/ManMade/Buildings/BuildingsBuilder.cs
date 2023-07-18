@@ -227,7 +227,7 @@ namespace GameRealisticMap.ManMade.Buildings
         private List<BuildingCandidate> RoadCrop(List<TerrainPolygon> removed, IReadOnlyCollection<BuildingCandidate> pass3, TerrainSpacialIndex<Road> roadsIndex)
         {
             using var report = progress.CreateStep("Roads", pass3.Count);
-            var pass4 = new ConcurrentBag<BuildingCandidate>();
+            var pass4 = new ConcurrentQueue<BuildingCandidate>();
 
             Parallel.ForEach(pass3, building =>
             {
@@ -242,13 +242,8 @@ namespace GameRealisticMap.ManMade.Buildings
                         var newbox = BoundingBox.ComputeInner(result[0].Shell.Skip(1));
                         if (newbox != null)
                         {
-                            if (newbox.Poly.Area < building.Box.Poly.Area / 5)
-                            {
-
-                            }
-
                             building.Box = newbox;
-                            pass4.Add(building);
+                            pass4.Enqueue(building);
                         }
                         else
                         {
@@ -262,7 +257,7 @@ namespace GameRealisticMap.ManMade.Buildings
                 }
                 else
                 {
-                    pass4.Add(building);
+                    pass4.Enqueue(building);
                 }
                 report.ReportOneDone();
             });
@@ -271,7 +266,7 @@ namespace GameRealisticMap.ManMade.Buildings
 
         private List<Building> DetectBuildingCategory(IEnumerable<IBuildingCategoryArea> categorizers, IReadOnlyCollection<BuildingCandidate> pass3)
         {
-            var pass4 = new ConcurrentBag<Building>();
+            var pass4 = new ConcurrentQueue<Building>();
             var metas = categorizers
                 .Where(b => b.BuildingType != BuildingTypeId.Residential)
                 .ToList();
@@ -291,7 +286,7 @@ namespace GameRealisticMap.ManMade.Buildings
                         building.Category = meta.BuildingType;
                     }
                 }
-                pass4.Add(building.ToBuilding());
+                pass4.Enqueue(building.ToBuilding());
                 report4.ReportOneDone();
             });
             return pass4.ToList();
