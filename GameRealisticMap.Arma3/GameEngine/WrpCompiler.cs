@@ -77,6 +77,8 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         public static int LandRange(float sizeInMeters)
         {
+            // Keep SizeInMeters / LandRange (WRP CellSize) close to 40m, never below 30m (except for really small maps)
+            // XXX: May use 2048 for above 61440
             if (sizeInMeters > 30720)
             {
                 return 1024;
