@@ -822,4 +822,13 @@ You may eventually enable other mods.</value>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="GenerateADemoWorld" xml:space="preserve">
+    <value>Generate a demo map</value>
+  </data>
+  <data name="GenerateDemoWrpFile" xml:space="preserve">
+    <value>Generate a map (wrp file)</value>
+  </data>
+  <data name="GenerateDemoMod" xml:space="preserve">
+    <value>Generate a mod (ready-to-use)</value>
+  </data>
 </root>

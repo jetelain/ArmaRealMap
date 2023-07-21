@@ -66,7 +66,7 @@ namespace GameRealisticMap.Arma3.ManMade
 
             objects.AddRange(definition.Start.Model.ToTerrainBuilderObjects(
                 new TerrainPoint(Vector2.Lerp(path.FirstPoint.Vector, path.LastPoint.Vector, stDelta)),
-                elevationStart + ((elevationEnd - elevationStart) * (1f - stDelta)),
+                elevationStart + ((elevationEnd - elevationStart) * (stDelta)),
                 angle,
                 pitch));
 
@@ -78,7 +78,7 @@ namespace GameRealisticMap.Arma3.ManMade
 
             objects.AddRange(definition.End.Model.ToTerrainBuilderObjects(
                 new TerrainPoint(Vector2.Lerp(path.FirstPoint.Vector, path.LastPoint.Vector, endDelta)),
-                elevationStart + ((elevationEnd - elevationStart) * (1f - endDelta)),
+                elevationStart + ((elevationEnd - elevationStart) * (endDelta)),
                 angle,
                 pitch));
         }

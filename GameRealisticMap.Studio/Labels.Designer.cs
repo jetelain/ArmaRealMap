@@ -1303,11 +1303,38 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate a demo map.
+        /// </summary>
+        public static string GenerateADemoWorld {
+            get {
+                return ResourceManager.GetString("GenerateADemoWorld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Generate areas only (faster).
         /// </summary>
         public static string GenerateAreasOnly {
             get {
                 return ResourceManager.GetString("GenerateAreasOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate a mod (ready-to-use).
+        /// </summary>
+        public static string GenerateDemoMod {
+            get {
+                return ResourceManager.GetString("GenerateDemoMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate a map (wrp file).
+        /// </summary>
+        public static string GenerateDemoWrpFile {
+            get {
+                return ResourceManager.GetString("GenerateDemoWrpFile", resourceCulture);
             }
         }
         

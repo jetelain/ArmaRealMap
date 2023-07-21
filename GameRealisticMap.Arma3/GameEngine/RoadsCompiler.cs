@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
@@ -44,7 +43,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                     continue;
                 }
                 var attributesTable = new AttributesTable();
-                attributesTable.Add("ID", ((int)road.RoadType)+1);
+                attributesTable.Add("ID", ((int)road.RoadType) + 1);
                 var path = road.Path;
                 if (road.RoadType < RoadTypeId.SingleLaneDirtPath)
                 {
@@ -54,11 +53,24 @@ namespace GameRealisticMap.Arma3.GameEngine
             }
             var shapeWriter = new ShapefileDataWriter(new ShapeFileWriter(fileSystemWriter, $"{config.PboPrefix}\\data\\roads\\roads"), new GeometryFactory(), Encoding.ASCII)
             {
-                Header = ShapefileDataWriter.GetHeader(features.First(), features.Count, Encoding.ASCII)
+                Header = GetHeader(features)
             };
             shapeWriter.Write(features);
         }
 
+        private static DbaseFileHeader GetHeader(List<Feature> features)
+        {
+            if (features.Count == 0)
+            {
+                DbaseFileHeader dbaseFileHeader = new DbaseFileHeader(Encoding.ASCII)
+                {
+                    NumRecords = features.Count
+                };
+                dbaseFileHeader.AddColumn("ID", 'N', 10, 0);
+                return dbaseFileHeader;
+            }
+            return ShapefileDataWriter.GetHeader(features.First(), features.Count, Encoding.ASCII);
+        }
 
         private void WriteRoadsLibCgf(IArma3MapConfig config)
         {
