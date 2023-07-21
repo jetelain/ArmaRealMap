@@ -145,16 +145,21 @@ namespace GameRealisticMap.Arma3
 
             var size = area.SizeInMeters;
 
-            var objects = generators.Generators
-                .Progress(progress)
-                .SelectMany(tb => tb.Generate(config, context))
-                .Select(o => o.ToWrpObject(grid))
+            var objects = GetObjects(progress, config, context, generators, grid)
                 .Where(o => IsStrictlyInside(o, size));
 
             wrpBuilder.Write(config, grid, tiles, objects);
             progress.ReportOneDone();
 
             UnpackFiles(progress, GetRequiredFiles(wrpBuilder));
+        }
+
+        protected virtual IEnumerable<EditableWrpObject> GetObjects(IProgressTask progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
+        {
+            return generators.Generators
+                            .Progress(progress)
+                            .SelectMany(tb => tb.Generate(config, context))
+                            .Select(o => o.ToWrpObject(grid));
         }
 
         private List<string> GetRequiredFiles(WrpCompiler wrpBuilder)

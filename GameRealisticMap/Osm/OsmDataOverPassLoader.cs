@@ -77,6 +77,7 @@ out;"); ;
                 progress.WriteLine($"{query}");
                 using (var client = new HttpClient())
                 {
+                    client.Timeout = TimeSpan.FromSeconds(195);
                     using var download = await client.PostAsync(uri, new FormUrlEncodedContent(new Dictionary<string, string>() { { "data", query } }));
                     using var stream = await download.Content.ReadAsStreamAsync(); 
                     using (var target = File.Create(cacheFileName))

@@ -44,6 +44,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                 }
                 var attributesTable = new AttributesTable();
                 attributesTable.Add("ID", ((int)road.RoadType) + 1);
+                attributesTable.Add("ORDER", ((int)road.RoadType) + 1);
                 var path = road.Path;
                 if (road.RoadType < RoadTypeId.SingleLaneDirtPath)
                 {

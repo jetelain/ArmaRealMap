@@ -76,6 +76,8 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             NotifyOfPropertyChange(nameof(PreviewVisualAxisY));
             NotifyOfPropertyChange(nameof(PreviewGeoAxisZ));
             NotifyOfPropertyChange(nameof(PreviewVisualAxisZ));
+            NotifyOfPropertyChange(nameof(PreviewGeoAxisX));
+            NotifyOfPropertyChange(nameof(PreviewVisualAxisX));
         }
 
         public string PreviewGeoAxisY
@@ -93,6 +95,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
                 return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualAxisY(ToTerrainBuilderObject()));
             }
         }
+
         public string PreviewGeoAxisZ
         {
             get
@@ -106,6 +109,23 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             get
             {
                 return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualAxisZ(ToTerrainBuilderObject()));
+            }
+        }
+
+
+        public string PreviewGeoAxisX
+        {
+            get
+            {
+                return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToGeoAxisX(ToTerrainBuilderObject()));
+            }
+        }
+
+        public string PreviewVisualAxisX
+        {
+            get
+            {
+                return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualAxisX(ToTerrainBuilderObject()));
             }
         }
         private static string ToPath(IEnumerable<TerrainPolygon> polygons)

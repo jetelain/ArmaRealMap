@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.Versioning;
+using BIS.WRP;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ElevationModel;
@@ -58,29 +59,54 @@ namespace GameRealisticMap.Arma3
             CreateSampleQuad(context, places, polygon => new FarmlandsData(polygon), new Vector2(0 * 512, 512));
             CreateSampleLakes(context, places, new Vector2(6 * 512, 0));
             CreateSampleWatercourses(context, places, new Vector2(7 * 512, 0));
+            CreateRoads(context, grid, places);
 
             places.Add(new City(new TerrainPoint(a3config.TerrainArea.SizeInMeters / 2, a3config.TerrainArea.SizeInMeters / 2), new List<TerrainPolygon>() { a3config.TerrainArea.TerrainBounds }, name + " DEMO", CityTypeId.City, 1024, 10000));
             context.SetData(new CitiesData(places));
 
-            CreateRoads(context,grid);
 
             return context;
         }
 
-        private void CreateRoads(BuildContext context, ElevationGrid grid)
+        protected override IEnumerable<EditableWrpObject> GetObjects(IProgressTask progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
+        {
+            return base.GetObjects(progress, config, context, generators, grid)
+                .Concat(GetDemoObjects(config, context, grid));
+        }
+
+        private IEnumerable<EditableWrpObject> GetDemoObjects(IArma3MapConfig config, IContext context, ElevationGrid grid)
+        {
+            var objects = new List<EditableWrpObject>();
+
+            return objects;
+        }
+
+        private void CreateRoads(BuildContext context, ElevationGrid grid, List<City> places)
         {
             var roads = new List<Road>();
             int index = 0;
             foreach(var typeid in Enum.GetValues<RoadTypeId>())
             {
-                CreateRoad(assets.RoadTypeLibrary.GetInfo(typeid), roads, grid, new Vector2(index * 512, 1024));
+                CreateRoad(assets.RoadTypeLibrary.GetInfo(typeid), roads, grid, new Vector2(index * 512, 1024), places);
                 index++;
+            }
+
+            var y = 1024f + 518f;
+
+            foreach (var typeid in Enum.GetValues<RoadTypeId>())
+            {
+                var type = assets.RoadTypeLibrary.GetInfo(typeid);
+
+                roads.Add(new Road(WaySpecialSegment.Normal, new TerrainPath(new(0, y), new(5120, y)), type));
+
+                y += type.ClearWidth + 10;
             }
             context.SetData(new RoadsData(roads));
         }
 
-        private void CreateRoad(IRoadTypeInfos typeid, List<Road> roads, ElevationGrid grid, Vector2 offset)
+        private void CreateRoad(IRoadTypeInfos typeid, List<Road> roads, ElevationGrid grid, Vector2 offset, List<City> places)
         {
+            places.Add(new City(new TerrainPoint(256, 512) + offset, new List<TerrainPolygon>(), typeid.Id.ToString(), CityTypeId.Village, 256, 0));
             CreateBridgePattern(typeid, roads, grid, 25, 128, new TerrainPoint(128, 128) + offset);
             CreateBridgePattern(typeid, roads, grid, 25, 128, new TerrainPoint(128 + 256, 128) + offset, 20f);
             CreateBridgePattern(typeid, roads, grid, 75, 256, new TerrainPoint(256, 385) + offset);

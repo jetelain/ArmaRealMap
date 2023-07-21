@@ -204,5 +204,15 @@ namespace GameRealisticMap.Geometries
             }
             return points;
         }
+
+        public TerrainPath ExtendBothEnds(float extendAtEachEnd)
+        {
+            var newStart = Points[0] + Vector2.Normalize(Points[0].Vector - Points[1].Vector) * extendAtEachEnd;
+            var newEnd = Points[Points.Count-1] + Vector2.Normalize(Points[Points.Count - 1].Vector - Points[Points.Count - 2].Vector) * extendAtEachEnd;
+            var points = Points.ToList();
+            points[0] = newStart;
+            points[Points.Count - 1] = newEnd;
+            return new TerrainPath(points);
+        }
     }
 }
