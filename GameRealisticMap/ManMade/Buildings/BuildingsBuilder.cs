@@ -21,7 +21,7 @@ namespace GameRealisticMap.ManMade.Buildings
             var roads = context.GetData<RoadsData>();
             var categorizers = context.GetData<CategoryAreaData>();
 
-            var removed = new List<TerrainPolygon>();
+            var removed = new ConcurrentStack<TerrainPolygon>();
 
             var pass1 = DetectBuildingsBoundingRects(context.OsmSource, context.Area);
             //Preview(data, removed, pass1, "buildings-pass1.png");
@@ -74,7 +74,7 @@ namespace GameRealisticMap.ManMade.Buildings
             });
         }
 
-        private List<BuildingCandidate> MergeSmallBuildings(IReadOnlyList<BuildingCandidate> pass1Builidings, List<TerrainPolygon> removed, ITerrainArea area)
+        private List<BuildingCandidate> MergeSmallBuildings(IReadOnlyList<BuildingCandidate> pass1Builidings, ConcurrentStack<TerrainPolygon> removed, ITerrainArea area)
         {
 
             var size = 6.5f;
@@ -93,8 +93,8 @@ namespace GameRealisticMap.ManMade.Buildings
             {
                 foreach (var building in heavy)
                 {
-                    removed.AddRange(small.RemoveAll(building, s => building.Poly.Contains(s.Poly)).SelectMany(b => b.Polygons));
-                    removed.AddRange(large.RemoveAll(building, s => building.Poly.Contains(s.Poly)).SelectMany(b => b.Polygons));
+                    removed.PushRange(small.RemoveAll(building, s => building.Poly.Contains(s.Poly)).SelectMany(b => b.Polygons).ToArray());
+                    removed.PushRange(large.RemoveAll(building, s => building.Poly.Contains(s.Poly)).SelectMany(b => b.Polygons).ToArray());
                     report2.ReportOneDone();
                 }
             }
@@ -175,13 +175,13 @@ namespace GameRealisticMap.ManMade.Buildings
             return pass3;
         }
 
-        private List<BuildingCandidate> RemoveCollidingBuildingsParallel(List<TerrainPolygon> removed, List<BuildingCandidate> pass2, ITerrainArea area)
+        private List<BuildingCandidate> RemoveCollidingBuildingsParallel(ConcurrentStack<TerrainPolygon> removed, List<BuildingCandidate> pass2, ITerrainArea area)
         {
             using var report = progress.CreateStep("Collide (Parallel)", pass2.Count);
             return GeometryHelper.ParallelMerge(new Envelope(TerrainPoint.Empty, new TerrainPoint(area.SizeInMeters, area.SizeInMeters)), pass2, 100, l => RemoveCollidingBuildings(removed, l.ToList()), report).Result.ToList();
         }
 
-        private List<BuildingCandidate> RemoveCollidingBuildings(List<TerrainPolygon> removed, IReadOnlyList<BuildingCandidate> pass2)
+        private List<BuildingCandidate> RemoveCollidingBuildings(ConcurrentStack<TerrainPolygon> removed, IReadOnlyList<BuildingCandidate> pass2)
         {
             var pass3 = pass2.OrderByDescending(l => l.Box.Width * l.Box.Height).ToList();
             var merged = 0;
@@ -202,7 +202,7 @@ namespace GameRealisticMap.ManMade.Buildings
                         {
                             todo.Remove(other);
                             pass3.Remove(other);
-                            removed.AddRange(other.Polygons);
+                            removed.PushRange(other.Polygons.ToArray());
                         }
                         else
                         {
@@ -224,7 +224,7 @@ namespace GameRealisticMap.ManMade.Buildings
         }
 
 
-        private List<BuildingCandidate> RoadCrop(List<TerrainPolygon> removed, IReadOnlyCollection<BuildingCandidate> pass3, TerrainSpacialIndex<Road> roadsIndex)
+        private List<BuildingCandidate> RoadCrop(ConcurrentStack<TerrainPolygon> removed, IReadOnlyCollection<BuildingCandidate> pass3, TerrainSpacialIndex<Road> roadsIndex)
         {
             using var report = progress.CreateStep("Roads", pass3.Count);
             var pass4 = new ConcurrentQueue<BuildingCandidate>();
@@ -247,12 +247,12 @@ namespace GameRealisticMap.ManMade.Buildings
                         }
                         else
                         {
-                            removed.AddRange(building.Polygons);
+                            removed.PushRange(building.Polygons.ToArray());
                         }
                     }
                     else
                     {
-                        removed.AddRange(building.Polygons);
+                        removed.PushRange(building.Polygons.ToArray());
                     }
                 }
                 else
