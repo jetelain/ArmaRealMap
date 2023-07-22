@@ -407,8 +407,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
             return Task.CompletedTask;
         }
+
         public Task GenerateDemoWrp()
         {
+            IoC.Get<IProgressTool>()
+                .RunTask(Labels.GenerateDemoWrpFile, DoGenerateWrp);
+
             return Task.CompletedTask;
         }
 
@@ -423,6 +427,18 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 task.AddSuccessAction(() => ShellHelper.OpenUri(config.TargetModDirectory), Labels.ViewInFileExplorer);
                 task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, name));
                 await Arma3LauncherHelper.CreateLauncherPresetAsync(assets.Dependencies, config.TargetModDirectory, "GRM - " + name);
+            }
+        }
+
+        private async Task DoGenerateWrp(IProgressTaskUI task)
+        {
+            var name = Path.GetFileNameWithoutExtension(FileName);
+            var assets = ToJson();
+            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, new StudioDemoNaming());
+            var config = await generator.GenerateWrp(task);
+            if (config != null)
+            {
+                task.AddSuccessAction(() => ShellHelper.OpenUri(_arma3Data.ProjectDrive.GetFullPath(config.PboPrefix)), Labels.ViewInFileExplorer);;
             }
         }
     }

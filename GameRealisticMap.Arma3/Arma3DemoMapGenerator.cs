@@ -165,7 +165,6 @@ namespace GameRealisticMap.Arma3
         {
             objects.Add(CreateArrow(terrainPoint, elevation));
             objects.Add(CreateReverseArrow(terrainPoint, elevation));
-            objects.Add(CreateArrow(terrainPoint, 15f)); // Ground
         }
 
         private void AddBuildingAdjustArrows(List<EditableWrpObject> objects, TerrainPoint terrainPoint)
@@ -173,7 +172,7 @@ namespace GameRealisticMap.Arma3
             objects.Add(CreateArrow(terrainPoint, 19.5f));
             objects.Add(CreateArrow(terrainPoint, 18f));
             objects.Add(CreateArrow(terrainPoint, 16.5f));
-            objects.Add(CreateArrow(terrainPoint, 15f)); // Ground
+            objects.Add(CreateArrow(terrainPoint, 15f));
         }
 
         private Arma3MapConfig CreateConfig()
