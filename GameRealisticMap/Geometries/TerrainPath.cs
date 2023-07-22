@@ -204,5 +204,34 @@ namespace GameRealisticMap.Geometries
             }
             return points;
         }
+
+        public TerrainPath ExtendBothEnds(float extendAtEachEnd)
+        {
+            var newStart = Points[0] + Vector2.Normalize(Points[0].Vector - Points[1].Vector) * extendAtEachEnd;
+            var newEnd = Points[Points.Count-1] + Vector2.Normalize(Points[Points.Count - 1].Vector - Points[Points.Count - 2].Vector) * extendAtEachEnd;
+            var points = Points.ToList();
+            points[0] = newStart;
+            points[Points.Count - 1] = newEnd;
+            return new TerrainPath(points);
+        }
+
+        public static TerrainPath FromRectangle(TerrainPoint start, TerrainPoint end)
+        {
+            return new TerrainPath(
+                new List<TerrainPoint>()
+                {
+                    start,
+                    new TerrainPoint(end.X, start.Y),
+                    end,
+                    new TerrainPoint(start.X, end.Y),
+                    start
+                });
+        }
+
+        public static TerrainPath FromCircle(TerrainPoint origin, float radius)
+        {
+            return new TerrainPath(
+                GeometryHelper.SimpleCircle(origin.Vector, radius).Select(v => new TerrainPoint(v)).ToList());
+        }
     }
 }

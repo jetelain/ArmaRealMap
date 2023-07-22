@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Runtime.Versioning;
+﻿using System.Runtime.Versioning;
 using BIS.WRP;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
@@ -16,7 +15,7 @@ namespace GameRealisticMap.Arma3
 {
     public class Arma3MapGenerator
     {
-        private readonly IArma3RegionAssets assets;
+        protected readonly IArma3RegionAssets assets;
         private readonly ProjectDrive projectDrive;
 
         public Arma3MapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive)
@@ -37,12 +36,16 @@ namespace GameRealisticMap.Arma3
 
         public async Task<IBuildContext?> GetBuildContext(IProgressTask progress, Arma3MapConfig a3config, IHugeImageStorage hugeImageStorage)
         {
-            var loader = new OsmDataOverPassLoader(progress);
-            var osmSource = await loader.Load(a3config.TerrainArea);
+            var osmSource = await LoadOsmData(progress, a3config);
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return null;
             }
+            return CreateBuildContext(progress, a3config, osmSource, hugeImageStorage);
+        }
+
+        protected virtual BuildContext CreateBuildContext(IProgressTask progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
+        {
             var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary);
             return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
         }
@@ -81,8 +84,7 @@ namespace GameRealisticMap.Arma3
             progress.Total += 6 + generators.Generators.Count;
 
             // Download from OSM
-            var loader = new OsmDataOverPassLoader(progress);
-            var osmSource = await loader.Load(a3config.TerrainArea);
+            var osmSource = await LoadOsmData(progress, a3config);
             progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
@@ -90,9 +92,8 @@ namespace GameRealisticMap.Arma3
             }
 
             // Generate content
-            var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary);
-            var context = new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery);
-            GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators); 
+            var context = CreateBuildContext(progress, a3config, osmSource);
+            GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators);
             context.DisposeHugeImages();
             if (progress.CancellationToken.IsCancellationRequested)
             {
@@ -104,6 +105,12 @@ namespace GameRealisticMap.Arma3
             progress.ReportOneDone();
 
             return context;
+        }
+
+        protected virtual async Task<IOsmDataSource> LoadOsmData(IProgressTask progress, Arma3MapConfig a3config)
+        {
+            var loader = new OsmDataOverPassLoader(progress);
+            return await loader.Load(a3config.TerrainArea);
         }
 
         public void GenerateWrp(IProgressTask progress, IArma3MapConfig config, IContext context, ITerrainArea area, Arma3LayerGeneratorCatalog generators)
@@ -138,16 +145,21 @@ namespace GameRealisticMap.Arma3
 
             var size = area.SizeInMeters;
 
-            var objects = generators.Generators
-                .Progress(progress)
-                .SelectMany(tb => tb.Generate(config, context))
-                .Select(o => o.ToWrpObject(grid))
+            var objects = GetObjects(progress, config, context, generators, grid)
                 .Where(o => IsStrictlyInside(o, size));
 
             wrpBuilder.Write(config, grid, tiles, objects);
             progress.ReportOneDone();
 
             UnpackFiles(progress, GetRequiredFiles(wrpBuilder));
+        }
+
+        protected virtual IEnumerable<EditableWrpObject> GetObjects(IProgressTask progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
+        {
+            return generators.Generators
+                            .Progress(progress)
+                            .SelectMany(tb => tb.Generate(config, context))
+                            .Select(o => o.ToWrpObject(grid));
         }
 
         private List<string> GetRequiredFiles(WrpCompiler wrpBuilder)

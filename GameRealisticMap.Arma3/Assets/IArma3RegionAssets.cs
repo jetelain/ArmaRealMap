@@ -19,7 +19,7 @@ namespace GameRealisticMap.Arma3.Assets
         string BaseDependency { get; }
 
         IReadOnlyCollection<BuildingDefinition> GetBuildings(BuildingTypeId buildingTypeId);
-
+        
         IReadOnlyCollection<ObjectDefinition> GetObjects(ObjectTypeId typeId);
 
         IReadOnlyCollection<BasicCollectionDefinition> GetBasicCollections(BasicCollectionId basicId);

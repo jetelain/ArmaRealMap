@@ -51,5 +51,11 @@ namespace GameRealisticMap
                 return builtData;
             }
         }
+
+        public void SetData<T>(T value)
+            where T : class
+        {
+            datas[typeof(T)] = value;
+        }
     }
 }

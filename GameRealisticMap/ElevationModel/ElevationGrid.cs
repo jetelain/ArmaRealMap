@@ -154,5 +154,16 @@ namespace GameRealisticMap.ElevationModel
             }
             return (float)(total / count);
         }
+
+        public void Fill(float value)
+        {
+            for (var y = 0; y < size; ++y)
+            {
+                for (var x = 0; x < size; ++x)
+                {
+                    elevationGrid[y, x] = value;
+                }
+            }
+        }
     }
 }

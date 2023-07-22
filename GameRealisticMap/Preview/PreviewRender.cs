@@ -83,6 +83,11 @@ namespace GameRealisticMap.Preview
         //    return new Position(p.Y, p.X);
         //}
 
+        public static async Task RenderHtml(BuildContext context, string targetFile)
+        {
+            await RenderHtml(new FeatureCollection(context.Catalog.GetOfType<IGeoJsonData>(context).SelectMany(b => b.ToGeoJson(p => p)).ToList()), targetFile);
+        }
+
         public static async Task RenderHtml(FeatureCollection collection, string targetFile)
         {
             using (var reader = new StreamReader(typeof(PreviewRender).Assembly.GetManifestResourceStream("GameRealisticMap.Preview.grm-preview.js")!))

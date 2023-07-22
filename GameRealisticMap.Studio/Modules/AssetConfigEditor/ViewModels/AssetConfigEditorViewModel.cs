@@ -6,8 +6,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Caliburn.Micro;
+using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Filling;
+using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Fences;
@@ -21,6 +23,7 @@ using GameRealisticMap.Studio.Modules.CompositionTool;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
+using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
@@ -392,6 +395,50 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 NotifyOfPropertyChange(nameof(MissingMods));
 
                 await DoLoad(FilePath);
+            }
+        }
+
+        public Task GenerateDemoMod()
+        {
+            Arma3ToolsHelper.EnsureProjectDrive();
+
+            IoC.Get<IProgressTool>()
+                .RunTask(Labels.GenerateDemoMod, DoGenerateMod);
+
+            return Task.CompletedTask;
+        }
+
+        public Task GenerateDemoWrp()
+        {
+            IoC.Get<IProgressTool>()
+                .RunTask(Labels.GenerateDemoWrpFile, DoGenerateWrp);
+
+            return Task.CompletedTask;
+        }
+
+        private async Task DoGenerateMod(IProgressTaskUI task)
+        {
+            var name = Path.GetFileNameWithoutExtension(FileName);
+            var assets = ToJson();
+            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, new StudioDemoNaming());
+            var config = await generator.GenerateMod(task);
+            if (config != null)
+            {
+                task.AddSuccessAction(() => ShellHelper.OpenUri(config.TargetModDirectory), Labels.ViewInFileExplorer);
+                task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, name));
+                await Arma3LauncherHelper.CreateLauncherPresetAsync(assets.Dependencies, config.TargetModDirectory, "GRM - " + name);
+            }
+        }
+
+        private async Task DoGenerateWrp(IProgressTaskUI task)
+        {
+            var name = Path.GetFileNameWithoutExtension(FileName);
+            var assets = ToJson();
+            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, new StudioDemoNaming());
+            var config = await generator.GenerateWrp(task);
+            if (config != null)
+            {
+                task.AddSuccessAction(() => ShellHelper.OpenUri(_arma3Data.ProjectDrive.GetFullPath(config.PboPrefix)), Labels.ViewInFileExplorer);;
             }
         }
     }

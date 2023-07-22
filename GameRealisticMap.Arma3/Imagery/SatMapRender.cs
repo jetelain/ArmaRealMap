@@ -38,7 +38,16 @@ namespace GameRealisticMap.Arma3.Imagery
 
         public Image RenderPictureMap(IArma3MapConfig config, IContext context, int size)
         {
-            var satMap = context.GetData<RawSatelliteImageData>().Image;
+            HugeImage<Rgba32> satMap;
+
+            if (config.FakeSatBlend == 1)
+            {
+                satMap = RenderBaseImageAsync(config, context).GetAwaiter().GetResult();
+            }
+            else
+            {
+                satMap = context.GetData<RawSatelliteImageData>().Image;
+            }
 
             // TODO: Add shadows based on elevation data
 

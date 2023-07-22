@@ -23,6 +23,12 @@ namespace GameRealisticMap.Geometries
                 return Enumerable.Empty<BoxSide>();
             }
 
+            return GetClosestList(box, paths, maxDistance, path, factor);
+        }
+
+        public static IEnumerable<BoxSide> GetClosestList<T>(BoundingBox box, IEnumerable<T> paths, float maxDistance, Func<T, TerrainPath> path, Func<T, float> factor)
+            where T : class, ITerrainEnvelope
+        {
             var sidesDistance = GetSidesPoints(box).Select(s => paths.Min(p => path(p).Distance(s) * factor(p))).ToList();
 
             return sides

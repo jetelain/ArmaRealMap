@@ -92,5 +92,19 @@ namespace GameRealisticMap.Test.Geometries
                 new TerrainPoint(20,20)
             }, 2));
         }
+
+        [Fact]
+        public void TerrainPath_ExtendBothEnds()
+        {
+            var path = new TerrainPath(new(0, 0), new(0, 10), new(10, 10));
+            var pathEx = path.ExtendBothEnds(5);
+            Assert.Equal(30, pathEx.Length);
+            Assert.Equal(new TerrainPoint[] { new(0, -5), new(0, 10), new(15, 10) }, pathEx.Points);
+
+            path = new TerrainPath(new(0, 5), new(0, 15));
+            pathEx = path.ExtendBothEnds(5);
+            Assert.Equal(20, pathEx.Length);
+            Assert.Equal(new TerrainPoint[] { new(0, 0), new(0, 20) }, pathEx.Points);
+        }
     }
 }

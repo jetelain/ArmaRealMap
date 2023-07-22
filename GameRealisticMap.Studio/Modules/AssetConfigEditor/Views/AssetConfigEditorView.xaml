@@ -26,8 +26,10 @@
                                    <Run Text="{x:Static r:Labels.Help}" />
                                 </Hyperlink>
                     </TextBlock>
+
                 </StackPanel>
 
+                
                 <Border Margin="10" Padding="10" BorderBrush="Red" BorderThickness="2" Visibility="{Binding HasMissingMods, Converter={StaticResource BooleanToVisibilityConverter}}" >
                     <StackPanel>
                         <TextBlock FontSize="20" Foreground="Red"><Run Text="{x:Static r:Labels.SomeModsAreMissing}"/></TextBlock>
@@ -47,6 +49,18 @@
                     </StackPanel>
                 </Border>
 
+                <StackPanel Margin="0 5" Orientation="Horizontal">
+                    <Button Margin="10 0" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
+                        <Run Text="{x:Static r:Labels.GenerateADemoWorld}" />
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{x:Static r:Labels.GenerateDemoWrpFile}" cal:Message.Attach="GenerateDemoWrp"></MenuItem>
+                                <MenuItem Header="{x:Static r:Labels.GenerateDemoMod}" cal:Message.Attach="GenerateDemoMod"></MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                </StackPanel>
+                
                 <StackPanel Orientation="Horizontal" Margin="10 0" Visibility="{Binding CanCopyFrom, Converter={StaticResource BooleanToVisibilityConverter}}">
 
                     <TextBlock VerticalAlignment="Center" FontSize="15"><Run Text="{x:Static r:Labels.QuickStartFrom}"/></TextBlock>

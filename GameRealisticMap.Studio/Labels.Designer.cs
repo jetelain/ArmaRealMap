@@ -1294,6 +1294,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Forest.
+        /// </summary>
+        public static string Forest {
+            get {
+                return ResourceManager.GetString("Forest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ✔ Found.
         /// </summary>
         public static string Found {
@@ -1303,11 +1312,38 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate a demo map.
+        /// </summary>
+        public static string GenerateADemoWorld {
+            get {
+                return ResourceManager.GetString("GenerateADemoWorld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Generate areas only (faster).
         /// </summary>
         public static string GenerateAreasOnly {
             get {
                 return ResourceManager.GetString("GenerateAreasOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate a mod (ready-to-use).
+        /// </summary>
+        public static string GenerateDemoMod {
+            get {
+                return ResourceManager.GetString("GenerateDemoMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate a map (wrp file).
+        /// </summary>
+        public static string GenerateDemoWrpFile {
+            get {
+                return ResourceManager.GetString("GenerateDemoWrpFile", resourceCulture);
             }
         }
         
@@ -1524,6 +1560,15 @@ namespace GameRealisticMap.Studio {
         public static string Label {
             get {
                 return ResourceManager.GetString("Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Lakes.
+        /// </summary>
+        public static string Lakes {
+            get {
+                return ResourceManager.GetString("Lakes", resourceCulture);
             }
         }
         
@@ -2130,6 +2175,15 @@ namespace GameRealisticMap.Studio {
         public static string WarnRecommanded {
             get {
                 return ResourceManager.GetString("WarnRecommanded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Watercourses.
+        /// </summary>
+        public static string Watercourses {
+            get {
+                return ResourceManager.GetString("Watercourses", resourceCulture);
             }
         }
         
