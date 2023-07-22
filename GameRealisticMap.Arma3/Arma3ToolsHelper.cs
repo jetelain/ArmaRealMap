@@ -104,7 +104,17 @@ namespace GameRealisticMap.Arma3
         [SupportedOSPlatform("windows")]
         internal static async Task RunBinarize(IProgressSystem system, string arguments)
         {
-            var rc = await Run(system, Path.Combine(GetArma3ToolsPath(), "Binarize", "binarize_x64.exe"), arguments);
+            var path = Path.Combine(GetArma3ToolsPath(), "Binarize", "binarize_x64.exe");
+            system.WriteLine($"\"{path}\" {arguments}");
+
+            var rc = await Run(system, Path.Combine(GetArma3ToolsPath(), "Binarize", "binarize_x64.exe"), arguments, output
+                 => !output.EndsWith("config class missing") 
+                 && !output.Contains("Cannot read registry key")
+                 && !output.Contains(":     ")
+                 && !output.Contains("Info: Persistence detected on")
+                 && !output.Contains("Creating process:")
+                 && output != "---------------------------------------------"
+                 );
             if (rc != 0)
             {
                 throw new ApplicationException($"Binarize exited with code {rc}.");
@@ -138,7 +148,7 @@ namespace GameRealisticMap.Arma3
             }).ConfigureAwait(false);
         }
 
-        internal static async Task<int> Run(IProgressSystem system, string executable, string arguments)
+        internal static async Task<int> Run(IProgressSystem system, string executable, string arguments, Func<string, bool>? outputFilter = null)
         {
             var options = new ProcessStartInfo()
             {
@@ -150,10 +160,9 @@ namespace GameRealisticMap.Arma3
                 Arguments = arguments,
                 UseShellExecute = false
             };
-            system.WriteLine($"\"{options.FileName}\" {options.Arguments}");
             var process = Process.Start(options)!;
-            process.OutputDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data)) { system.WriteLine(e.Data); } };
-            process.ErrorDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data)) { system.WriteLine(e.Data); } };
+            process.OutputDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data) && (outputFilter == null || outputFilter(e.Data))) { system.WriteLine(e.Data); } };
+            process.ErrorDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data) && (outputFilter == null || outputFilter(e.Data))) { system.WriteLine(e.Data); } };
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             await process.WaitForExitAsync().ConfigureAwait(false);

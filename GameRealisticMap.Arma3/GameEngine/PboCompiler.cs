@@ -54,7 +54,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
                 using (var task = progress.CreateStep("Binarize WRP", 1))
                 {
-                    await Arma3ToolsHelper.RunBinarize(progress, $"-always \"-textures={tempRoot}\" \"-binPath={projectRoot}\" \"{sourcePboPath}\" \"{tempPboPath}\"");
+                    await Arma3ToolsHelper.RunBinarize(progress, $"-always -textures={tempRoot} -binPath={projectRoot} \"{sourcePboPath}\" \"{tempPboPath}\"");
                 }
             }
             finally
@@ -100,7 +100,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             var addonsPath = Path.Combine(config.TargetModDirectory, "addons");
             Directory.CreateDirectory(addonsPath);
-            pbo.SaveTo(Path.Combine(addonsPath, Path.GetFileName(sourcePboPath) + "--GRM.pbo"));
+            pbo.SaveTo(Path.Combine(addonsPath, Path.GetFileName(sourcePboPath) + ".pbo"));
         }
 
         private static readonly HashSet<string> PackedFile = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
