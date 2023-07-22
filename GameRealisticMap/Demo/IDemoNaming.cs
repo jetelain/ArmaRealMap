@@ -7,6 +7,7 @@ namespace GameRealisticMap.Demo
 {
     public interface IDemoNaming
     {
+        string GetBuildingName(BuildingTypeId id);
         string GetFenceName(FenceTypeId id);
         string GetObjectName(ObjectTypeId id);
         string GetRoadName(RoadTypeId id);

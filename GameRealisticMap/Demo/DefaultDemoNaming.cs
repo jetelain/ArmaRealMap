@@ -7,6 +7,11 @@ namespace GameRealisticMap.Demo
 {
     public class DefaultDemoNaming : IDemoNaming
     {
+        public string GetBuildingName(BuildingTypeId id)
+        {
+            return id.ToString();
+        }
+
         public string GetFenceName(FenceTypeId id)
         {
             return id.ToString();

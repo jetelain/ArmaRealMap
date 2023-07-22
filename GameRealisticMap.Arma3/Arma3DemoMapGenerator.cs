@@ -4,6 +4,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Demo;
 using GameRealisticMap.ElevationModel;
+using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using HugeImages.Storage;
@@ -31,7 +32,9 @@ namespace GameRealisticMap.Arma3
         {
             var context = base.CreateBuildContext(progress, a3config, osmSource, hugeImageStorage);
 
-            new DemoMapGenerator(assets.RoadTypeLibrary, demoNaming).CreateInto(context, name);
+            var buildingSizes = Enum.GetValues<BuildingTypeId>().ToDictionary(id => id, id => assets.GetBuildings(id).Select(b => b.Size).ToList());
+
+            new DemoMapGenerator(assets.RoadTypeLibrary, demoNaming).CreateInto(context, name, buildingSizes);
 
             return context;
         }

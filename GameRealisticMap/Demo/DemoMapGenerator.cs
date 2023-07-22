@@ -15,6 +15,7 @@ using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
 using GameRealisticMap.Nature.Watercourses;
+using GameRealisticMap.Preview;
 using SixLabors.ImageSharp.Drawing;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
@@ -39,7 +40,11 @@ namespace GameRealisticMap.Demo
 
         public void CreateInto(BuildContext context, string name)
         {
+            CreateInto(context, name, new Dictionary<BuildingTypeId, List<Vector2>>()); // XXX: Create a typical building size database
+        }
 
+        public void CreateInto(BuildContext context, string name, Dictionary<BuildingTypeId,List<Vector2>> buildingTypicalSizes)
+        {
             var grid = new ElevationGrid(context.Area.GridSize, context.Area.GridCellSize);
             grid.Fill(15f);
             context.SetData(new RawElevationData(grid));
@@ -71,8 +76,86 @@ namespace GameRealisticMap.Demo
 
             places.Add(new City(new TerrainPoint(context.Area.SizeInMeters / 2, context.Area.SizeInMeters / 2), new List<TerrainPolygon>() { context.Area.TerrainBounds }, name + " DEMO", CityTypeId.City, 1024, 10000));
 
+            CreateBuildings(context, places, roads, context.Area, buildingTypicalSizes);
+
             context.SetData(new RoadsData(roads));
             context.SetData(new CitiesData(places));
+
+#if DEBUG
+            PreviewRender.RenderHtml(context, "demo.html").Wait();
+#endif
+        }
+
+        private void CreateBuildings(BuildContext context, List<City> places, List<Road> roads, ITerrainArea area, Dictionary<BuildingTypeId, List<Vector2>> buildingTypicalSizes)
+        {
+            var buildings = new List<Building>();
+
+            // 3072 + 128
+
+            var centerY = 2048 + 512f;
+            var x = 0f;
+
+            var secondary = roadTypeLibrary.GetInfo(RoadTypeId.TwoLanesSecondaryRoad);
+            var tertiary = roadTypeLibrary.GetInfo(RoadTypeId.TwoLanesConcreteRoad);
+
+            var mainRoad = new Road(WaySpecialSegment.Normal, new TerrainPath(new(0, centerY), new(area.SizeInMeters, centerY)), secondary);
+            roads.Add(mainRoad);
+
+            foreach (var pair in buildingTypicalSizes)
+            {
+                var id = pair.Key;
+                var hasLabel = false;
+
+                foreach (var size in pair.Value)
+                {
+                    var patternSize = size.X * 2 + tertiary.ClearWidth + 64;
+                    if (x + patternSize > area.SizeInMeters)
+                    {
+                        x = 0;
+                        centerY += 512f;
+                        mainRoad = new Road(WaySpecialSegment.Normal, new TerrainPath(new(0, centerY), new(area.SizeInMeters, centerY)), secondary);
+                        roads.Add(mainRoad);
+                        hasLabel = false;
+                    }
+
+                    if (!hasLabel)
+                    {
+                        places.Add(new City(new TerrainPoint(x + 4, centerY), new List<TerrainPolygon>(), demoNaming.GetBuildingName(id), CityTypeId.Village, 1, 0));
+                        hasLabel = true;
+                    }
+
+                    var centerX = x + (patternSize / 2);
+
+                    var perroad = new Road(WaySpecialSegment.Normal, new TerrainPath(new(centerX, centerY - 256), new(centerX, centerY + 256)), tertiary);
+                    roads.Add(perroad);
+
+                    var shiftX = size.X / 2 + tertiary.ClearWidth / 2 + 8;
+                    var shiftY = size.Y / 2 + secondary.ClearWidth / 2 + 1;
+                    AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX - shiftX, centerY - shiftY), size.X, size.Y, 0));
+                    AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX + shiftX, centerY - shiftY), size.X, size.Y, 0));
+                    AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX - shiftX, centerY + shiftY), size.X, size.Y, 0));
+                    AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX + shiftX, centerY + shiftY), size.X, size.Y, 0));
+
+                    shiftX = size.Y / 2 + tertiary.ClearWidth / 2 + 1;
+                    shiftY = 128;
+                    AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX - shiftX, centerY - shiftY), size.Y, size.X, 0));
+                    AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX + shiftX, centerY - shiftY), size.Y, size.X, 0));
+                    AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX - shiftX, centerY + shiftY), size.Y, size.X, 0));
+                    AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX + shiftX, centerY + shiftY), size.Y, size.X, 0));
+
+                    x += patternSize;
+                }
+                
+            }
+
+
+            context.SetData(new BuildingsData(buildings));
+        }
+
+        private static void AddRoad(List<Building> buildings, Road mainRoad, BuildingTypeId id, Road perroad, BoundingBox box)
+        {
+            var closestRoads = BoxSideHelper.GetClosestList(box, new[] { perroad, mainRoad }, 20, r => r.Path, r => r.Factor).ToList();
+            buildings.Add(new Building(box, id, new List<TerrainPolygon>() { box.Polygon }, closestRoads.FirstOrDefault()));
         }
 
         private void CreateSampleOriented(BuildContext context, List<Road> roads, List<City> places)

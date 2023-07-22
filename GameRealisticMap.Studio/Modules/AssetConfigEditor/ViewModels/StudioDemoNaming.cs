@@ -12,6 +12,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
     internal class StudioDemoNaming : IDemoNaming
     {
+        public string GetBuildingName(BuildingTypeId id)
+        {
+            var idText = id.ToString();
+            return Labels.ResourceManager.GetString("Asset" + idText) ?? idText;
+        }
+
         public string GetFenceName(FenceTypeId id)
         {
             var idText = id.ToString();
