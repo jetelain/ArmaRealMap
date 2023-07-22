@@ -285,8 +285,8 @@
   <data name="CreateAnAssetsConfigurationDescription" xml:space="preserve">
     <value>Un style de carte définit les textures et objets à utiliser pour générer une carte. Vous pouvez créer votre propre style ou utilise d'un des style fourni.</value>
   </data>
-  <data name="DownloadFromOfficialSiteFree" xml:space="preserve">
-    <value>Télécharger depuis le site officiel (gratuit)</value>
+  <data name="PboProjectDownload" xml:space="preserve">
+    <value>Télécharger Mikero's pboProject depuis le site officiel (gratuit)</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Modifier</value>
@@ -386,8 +386,8 @@
   <data name="RequiredToolsDescription" xml:space="preserve">
     <value>Pour pouvoir configurer ou générer une carte, quelques outils supplémentaires sont requis.</value>
   </data>
-  <data name="ThisToolWillAllowYouToGenerateReadyToUseMod" xml:space="preserve">
-    <value>Cet outil vous permet de générer des mods prêts à l'emploi.</value>
+  <data name="PboProjectText" xml:space="preserve">
+    <value>Mikero's pboProject permet de prendre en charge des cas avancés, mais il nécessite de la configuration et des connaissances supplémentaires. Cet outil est adapté uniquement pour les modders expérimentés.</value>
   </data>
   <data name="CoordinatesHint" xml:space="preserve">
     <value>Vous pouvez utiliser la carte en dessous pour sélectionner une zone (Ctrl+Souris, ou Alt+Souris)</value>
@@ -839,5 +839,17 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   </data>
   <data name="Watercourses" xml:space="preserve">
     <value>Cours d'eau</value>
+  </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="PBOGenerationTool" xml:space="preserve">
+    <value>Génération de PBO</value>
+  </data>
+  <data name="UseBuitinGenerator" xml:space="preserve">
+    <value>Utiliser l'outil intégré</value>
+  </data>
+  <data name="UsePBOProject" xml:space="preserve">
+    <value>Utiliser Mikero's pboProject</value>
   </data>
 </root>

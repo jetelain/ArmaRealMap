@@ -306,11 +306,11 @@
   <data name="YouCanAlsoMountDriveWithYourCustomTool" xml:space="preserve">
     <value>You can also mount drive with your custom tool</value>
   </data>
-  <data name="DownloadFromOfficialSiteFree" xml:space="preserve">
-    <value>Download from official site (free)</value>
+  <data name="PboProjectDownload" xml:space="preserve">
+    <value>Download Mikero's pboProject from official site (free)</value>
   </data>
-  <data name="ThisToolWillAllowYouToGenerateReadyToUseMod" xml:space="preserve">
-    <value>This tool will allow you to generate ready-to-use mod.</value>
+  <data name="PboProjectText" xml:space="preserve">
+    <value>Mikero's pboProject will support some advanced scenarios, but it needs additional configuration and knownledge. This tool is only suitable for experienced modders.</value>
   </data>
   <data name="GettingStarted" xml:space="preserve">
     <value>Getting Started</value>
@@ -842,5 +842,14 @@ You may eventually enable other mods.</value>
   </data>
   <data name="GeneralSettings" xml:space="preserve">
     <value>General</value>
+  </data>
+  <data name="UsePBOProject" xml:space="preserve">
+    <value>Use Mikero's pboProject</value>
+  </data>
+  <data name="UseBuitinGenerator" xml:space="preserve">
+    <value>Use Buitin Generator</value>
+  </data>
+  <data name="PBOGenerationTool" xml:space="preserve">
+    <value>PBO Generation Tool</value>
   </data>
 </root>

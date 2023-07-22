@@ -1213,15 +1213,6 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Download from official site (free).
-        /// </summary>
-        public static string DownloadFromOfficialSiteFree {
-            get {
-                return ResourceManager.GetString("DownloadFromOfficialSiteFree", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Edit.
         /// </summary>
         public static string Edit {
@@ -1828,6 +1819,33 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à PBO Generation Tool.
+        /// </summary>
+        public static string PBOGenerationTool {
+            get {
+                return ResourceManager.GetString("PBOGenerationTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Download Mikero&apos;s pboProject from official site (free).
+        /// </summary>
+        public static string PboProjectDownload {
+            get {
+                return ResourceManager.GetString("PboProjectDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Mikero&apos;s pboProject will support some advanced scenarios, but it needs additional configuration and knownledge. This tool is only suitable for experienced modders..
+        /// </summary>
+        public static string PboProjectText {
+            get {
+                return ResourceManager.GetString("PboProjectText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Preview.
         /// </summary>
         public static string Preview {
@@ -2098,15 +2116,6 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à This tool will allow you to generate ready-to-use mod..
-        /// </summary>
-        public static string ThisToolWillAllowYouToGenerateReadyToUseMod {
-            get {
-                return ResourceManager.GetString("ThisToolWillAllowYouToGenerateReadyToUseMod", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Type.
         /// </summary>
         public static string Type {
@@ -2130,6 +2139,24 @@ namespace GameRealisticMap.Studio {
         public static string UnsavedCloseConfirmTitle {
             get {
                 return ResourceManager.GetString("UnsavedCloseConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use Buitin Generator.
+        /// </summary>
+        public static string UseBuitinGenerator {
+            get {
+                return ResourceManager.GetString("UseBuitinGenerator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use Mikero&apos;s pboProject.
+        /// </summary>
+        public static string UsePBOProject {
+            get {
+                return ResourceManager.GetString("UsePBOProject", resourceCulture);
             }
         }
         

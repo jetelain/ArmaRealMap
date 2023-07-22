@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.IO;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using Gemini.Modules.Settings;
@@ -32,6 +33,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.ViewModels
 
         public bool UsePboProject { get; set; }
         public bool UseBuiltinTool { get { return !UsePboProject; } set { UsePboProject = !value; } }
+
+        public bool IsPboProjectInstalled => File.Exists(Arma3ToolsHelper.GetPboProjectPath());
 
         public void ApplyChanges()
         {
