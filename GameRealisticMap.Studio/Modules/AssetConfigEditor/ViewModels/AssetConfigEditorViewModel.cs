@@ -416,7 +416,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             var name = Path.GetFileNameWithoutExtension(FileName);
             var assets = ToJson();
-            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name);
+            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, new StudioDemoNaming());
             var config = await generator.GenerateMod(task);
             if (config != null)
             {

@@ -214,5 +214,24 @@ namespace GameRealisticMap.Geometries
             points[Points.Count - 1] = newEnd;
             return new TerrainPath(points);
         }
+
+        public static TerrainPath FromRectangle(TerrainPoint start, TerrainPoint end)
+        {
+            return new TerrainPath(
+                new List<TerrainPoint>()
+                {
+                    start,
+                    new TerrainPoint(end.X, start.Y),
+                    end,
+                    new TerrainPoint(start.X, end.Y),
+                    start
+                });
+        }
+
+        public static TerrainPath FromCircle(TerrainPoint origin, float radius)
+        {
+            return new TerrainPath(
+                GeometryHelper.SimpleCircle(origin.Vector, radius).Select(v => new TerrainPoint(v)).ToList());
+        }
     }
 }
