@@ -52,7 +52,6 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Center" FontSize="20">Arma 3</TextBlock>
@@ -71,17 +70,10 @@
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock HorizontalAlignment="Center" FontSize="20">Work Drive (P:)</TextBlock>
-                        <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsProjectDriveNotCreated, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.NotFound}" /> 
+                        <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsProjectDriveNotCreated, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.NotFound}" />
                         <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsProjectDriveCreated, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.Found}" />
                         <TextBlock HorizontalAlignment="Center"><Hyperlink Command="{Binding SetupArma3WorkDriveCommand}" ><Run Text="{x:Static r:Labels.SetupWithArma3Tools}" /></Hyperlink></TextBlock>
                         <TextBlock HorizontalAlignment="Center" TextAlignment="Center" FontStyle="Italic" TextWrapping="Wrap"><Run Text="{x:Static r:Labels.YouCanAlsoMountDriveWithYourCustomTool}" /></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Column="3">
-                        <TextBlock HorizontalAlignment="Center" FontSize="20">Mikero's Pbo Project</TextBlock>
-                        <TextBlock HorizontalAlignment="Center" Foreground="DarkOrange" Visibility="{Binding IsPboProjectNotInstalled, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.WarnRecommanded}" />
-                        <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsPboProjectInstalled, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.Installed}" />
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="https://mikero.bytex.digital/"><Run Text="{x:Static r:Labels.DownloadFromOfficialSiteFree}"/></Hyperlink></TextBlock>
-                        <TextBlock HorizontalAlignment="Center" TextAlignment="Center" FontStyle="Italic" TextWrapping="Wrap"><Run Text="{x:Static r:Labels.ThisToolWillAllowYouToGenerateReadyToUseMod}"/></TextBlock>
                     </StackPanel>
                 </Grid>
                 <TextBlock FontSize="20" Margin="0 10"><Run Text="{x:Static r:Labels.GettingStarted}" /></TextBlock>

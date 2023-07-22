@@ -12,6 +12,11 @@
             return Progress(input, progress.CreateStep(name, input.Count));
         }
 
+        public static IEnumerable<T> ProgressStep<T>(this IReadOnlyCollection<T> input, IProgressSystem progress, string name)
+        {
+            return Progress(input, progress.CreateStep(name, input.Count));
+        }
+
         private static IEnumerable<T> Progress<T>(IEnumerable<T> input, IProgressInteger report)
         {
             using (report)

@@ -26,7 +26,7 @@ namespace GameRealisticMap.Arma3.CommandLine
 
             var models = new ModelInfoLibrary(projectDrive);
 
-            var generator = new Arma3DemoMapGenerator(await Arma3Assets.LoadFromFile(models,"builtin:CentralEurope.grma3a"), projectDrive, "CentralEurope");
+            var generator = new Arma3DemoMapGenerator(await Arma3Assets.LoadFromFile(models,"builtin:CentralEurope.grma3a"), projectDrive, "CentralEurope",  new PboCompilerFactory(models, projectDrive));
 
             var config = await generator.GenerateMod(new ConsoleProgressSystem());
         }

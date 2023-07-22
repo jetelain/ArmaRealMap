@@ -420,7 +420,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             var name = Path.GetFileNameWithoutExtension(FileName);
             var assets = ToJson();
-            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, new StudioDemoNaming());
+            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
             var config = await generator.GenerateMod(task);
             if (config != null)
             {
@@ -434,7 +434,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             var name = Path.GetFileNameWithoutExtension(FileName);
             var assets = ToJson();
-            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, new StudioDemoNaming());
+            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
             var config = await generator.GenerateWrp(task);
             if (config != null)
             {

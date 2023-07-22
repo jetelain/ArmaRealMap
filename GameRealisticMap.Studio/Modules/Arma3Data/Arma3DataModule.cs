@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using Gemini.Framework;
@@ -40,6 +41,29 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
         public WorkspaceSettings? Settings { get; set; }
 
         public IEnumerable<string> ActiveMods  => (ProjectDrive.SecondarySource as PboFileSystem)?.ModsPaths ?? new List<string>();
+
+        public bool UsePboProject
+        {
+            get { return Settings?.UsePboProject ?? false; }
+            set 
+            {
+                if (value != UsePboProject)
+                {
+                    var settings = Settings ?? new WorkspaceSettings();
+                    settings.UsePboProject = value;
+                    CommitSettings(settings);
+                }
+            }
+        }
+
+        private void CommitSettings(WorkspaceSettings settings)
+        {
+            lock (this)
+            {
+                settings.Save();
+                Settings = settings;
+            }
+        }
 
         public override void Initialize()
         {
@@ -93,11 +117,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             {
                 var settings = Settings ?? new WorkspaceSettings();
                 settings.ModsPaths = mods.ToList();
-                await settings.Save().ConfigureAwait(false);
+                CommitSettings(settings);
 
-                Settings = settings;
                 await Reload().ConfigureAwait(false);
             }
+        }
+
+        public IPboCompilerFactory CreatePboCompilerFactory()
+        {
+            if (UsePboProject)
+            {
+                return new PboProjectFactory();
+            }
+            return new PboCompilerFactory(Library, ProjectDrive);
         }
     }
 }

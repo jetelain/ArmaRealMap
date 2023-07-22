@@ -35,8 +35,6 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
         public bool IsArma3ToolsInstalled => isArma3ToolsInstalled && isArma3ToolsAccepted;
         public bool IsArma3ToolsNotAccepted => !isArma3ToolsAccepted;
         public bool IsArma3ToolsNotInstalled => !isArma3ToolsInstalled;
-        public bool IsPboProjectInstalled { get; private set; }
-        public bool IsPboProjectNotInstalled => !IsPboProjectInstalled;
         public bool IsProjectDriveCreated { get; private set; }
         public bool IsProjectDriveNotCreated => !IsProjectDriveCreated;
 
@@ -84,7 +82,7 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
             {
                 isArma3ToolsAccepted = false;
             }
-            IsPboProjectInstalled = File.Exists(Arma3ToolsHelper.GetPboProjectPath());
+            
             IsProjectDriveCreated = Directory.Exists(Arma3ToolsHelper.GetProjectDrivePath());
 
             NotifyOfPropertyChange(nameof(IsArma3Installed));
@@ -92,8 +90,6 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
             NotifyOfPropertyChange(nameof(IsArma3ToolsNotAccepted));
             NotifyOfPropertyChange(nameof(IsArma3ToolsInstalled));
             NotifyOfPropertyChange(nameof(IsArma3ToolsNotInstalled));
-            NotifyOfPropertyChange(nameof(IsPboProjectInstalled));
-            NotifyOfPropertyChange(nameof(IsPboProjectNotInstalled));
             NotifyOfPropertyChange(nameof(IsProjectDriveCreated));
             NotifyOfPropertyChange(nameof(IsProjectDriveNotCreated));
 

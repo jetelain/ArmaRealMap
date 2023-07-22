@@ -17,11 +17,13 @@ namespace GameRealisticMap.Arma3
     {
         protected readonly IArma3RegionAssets assets;
         private readonly ProjectDrive projectDrive;
+        private readonly IPboCompilerFactory pboCompilerFactory;
 
-        public Arma3MapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive)
+        public Arma3MapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive, IPboCompilerFactory pboCompilerFactory)
         {
             this.assets = assets;
             this.projectDrive = projectDrive;
+            this.pboCompilerFactory = pboCompilerFactory;
         }
 
         public async Task<IImagerySource?> GetImagerySource(IProgressTask progress, Arma3MapConfig a3config, IHugeImageStorage hugeImageStorage)
@@ -55,21 +57,21 @@ namespace GameRealisticMap.Arma3
         {
             progress.Total += 1;
 
-            var context = await GenerateWrp(progress, a3config);
-            if (progress.CancellationToken.IsCancellationRequested)
+            var results = await GenerateWrp(progress, a3config);
+            if (results == null || progress.CancellationToken.IsCancellationRequested)
             {
                 return null;
             }
 
             Directory.CreateDirectory(a3config.TargetModDirectory);
-            await Arma3ToolsHelper.BuildWithMikeroPboProject(a3config.PboPrefix, a3config.TargetModDirectory, progress);
+            await pboCompilerFactory.Create(progress).BinarizeAndCreatePbo(a3config, results.UsedModels, results.UsedRvmat);
             progress.ReportOneDone();
 
-            if (context == null || progress.CancellationToken.IsCancellationRequested)
-            { 
-                return null; 
+            if (results == null || progress.CancellationToken.IsCancellationRequested)
+            {
+                return null;
             }
-            var name = GameConfigGenerator.GetFreindlyName(a3config, context.GetData<CitiesData>());
+            var name = GameConfigGenerator.GetFreindlyName(a3config, results.Context.GetData<CitiesData>());
             var modCpp = Path.Combine(a3config.TargetModDirectory, "mod.cpp");
             if (!File.Exists(modCpp))
             {
@@ -78,7 +80,7 @@ namespace GameRealisticMap.Arma3
             return name;
         }
 
-        public async Task<BuildContext?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
+        public async Task<WrpAndContextResults?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
         {
             var generators = new Arma3LayerGeneratorCatalog(progress, assets);
             progress.Total += 6 + generators.Generators.Count;
@@ -93,7 +95,7 @@ namespace GameRealisticMap.Arma3
 
             // Generate content
             var context = CreateBuildContext(progress, a3config, osmSource);
-            GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators);
+            var results = GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators);
             context.DisposeHugeImages();
             if (progress.CancellationToken.IsCancellationRequested)
             {
@@ -104,7 +106,7 @@ namespace GameRealisticMap.Arma3
             await projectDrive.ProcessImageToPaa(progress);
             progress.ReportOneDone();
 
-            return context;
+            return results;
         }
 
         protected virtual async Task<IOsmDataSource> LoadOsmData(IProgressTask progress, Arma3MapConfig a3config)
@@ -113,7 +115,7 @@ namespace GameRealisticMap.Arma3
             return await loader.Load(a3config.TerrainArea);
         }
 
-        public void GenerateWrp(IProgressTask progress, IArma3MapConfig config, IContext context, ITerrainArea area, Arma3LayerGeneratorCatalog generators)
+        public WrpAndContextResults? GenerateWrp(IProgressTask progress, Arma3MapConfig config, IContext context, ITerrainArea area, Arma3LayerGeneratorCatalog generators)
         {
             // Game config
             new GameConfigGenerator(assets, projectDrive).Generate(config, context, area);
@@ -125,7 +127,7 @@ namespace GameRealisticMap.Arma3
             progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
-                return;
+                return null;
             }
 
             // Imagery
@@ -135,7 +137,7 @@ namespace GameRealisticMap.Arma3
             progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
-                return;
+                return null;
             }
 
             // Objects + WRP
@@ -152,6 +154,8 @@ namespace GameRealisticMap.Arma3
             progress.ReportOneDone();
 
             UnpackFiles(progress, GetRequiredFiles(wrpBuilder));
+
+            return new WrpAndContextResults(config, context, wrpBuilder.UsedModels, wrpBuilder.UsedRvmat);
         }
 
         protected virtual IEnumerable<EditableWrpObject> GetObjects(IProgressTask progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
