@@ -96,19 +96,68 @@ namespace GameRealisticMap.Arma3
             };
             await Parallel.ForEachAsync(paths, options, async (x, _) =>
             {
-                var proc = Process.Start(new ProcessStartInfo()
-                {
-                    FileName = imageToPaaExe,
-                    RedirectStandardOutput = true,
-                    Arguments = "\"" + x + "\"",
-                    WindowStyle= ProcessWindowStyle.Hidden,
-                    CreateNoWindow = true
-                })!;
-                proc.OutputDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data)) { system.WriteLine(e.Data); } };
-                proc.BeginOutputReadLine();
-                await proc.WaitForExitAsync().ConfigureAwait(false);
+                await Run(system, imageToPaaExe, "\"" + x + "\"").ConfigureAwait(false);
                 report.ReportOneDone();
             }).ConfigureAwait(false);
+        }
+
+        [SupportedOSPlatform("windows")]
+        internal static async Task RunBinarize(IProgressSystem system, string arguments)
+        {
+            var rc = await Run(system, Path.Combine(GetArma3ToolsPath(), "Binarize", "binarize_x64.exe"), arguments);
+            if (rc != 0)
+            {
+                throw new ApplicationException($"Binarize exited with code {rc}.");
+            }
+        }
+
+        [SupportedOSPlatform("windows")]
+        internal static async Task RunConfigConverter(IProgressSystem system, string source, string target)
+        {
+            var rc = await Run(system, Path.Combine(GetArma3ToolsPath(), "CfgConvert", "CfgConvert.exe"), $"-bin -dst \"{target}\" \"{source}\"");
+            if (rc != 0)
+            {
+                throw new ApplicationException($"CfgConvert exited with code {rc}.");
+            }
+        }
+
+        [SupportedOSPlatform("windows")]
+        internal static async Task OptimizeRvmat(IProgressSystem system, IReadOnlyCollection<string> paths, string targetDirectory, int? maxDegreeOfParallelism = null)
+        {
+            Directory.CreateDirectory(targetDirectory);
+            string cfgConvert = Path.Combine(GetArma3ToolsPath(), "CfgConvert", "CfgConvert.exe");
+            using var report = system.CreateStep("Binarize RVMAT", paths.Count);
+            var options = new ParallelOptions()
+            {
+                MaxDegreeOfParallelism = maxDegreeOfParallelism ?? (Environment.ProcessorCount * 5 / 8) // ImageToPAA is very CPU aggressive
+            };
+            await Parallel.ForEachAsync(paths, options, async (path, _) =>
+            {
+                await Run(system, Path.Combine(GetArma3ToolsPath(), "CfgConvert", "CfgConvert.exe"), $"-bin -dst \"{Path.Combine(targetDirectory, Path.GetFileName(path))}\" \"{path}\"").ConfigureAwait(false);
+                report.ReportOneDone();
+            }).ConfigureAwait(false);
+        }
+
+        internal static async Task<int> Run(IProgressSystem system, string executable, string arguments)
+        {
+            var options = new ProcessStartInfo()
+            {
+                FileName = executable,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                Arguments = arguments,
+                UseShellExecute = false
+            };
+            system.WriteLine($"\"{options.FileName}\" {options.Arguments}");
+            var process = Process.Start(options)!;
+            process.OutputDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data)) { system.WriteLine(e.Data); } };
+            process.ErrorDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data)) { system.WriteLine(e.Data); } };
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            await process.WaitForExitAsync().ConfigureAwait(false);
+            return process.ExitCode;
         }
 
         [SupportedOSPlatform("windows")]

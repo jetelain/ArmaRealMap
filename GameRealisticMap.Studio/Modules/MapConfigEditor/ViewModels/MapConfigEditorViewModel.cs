@@ -353,7 +353,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var assets = await GetAssets(_arma3DataModule.Library, a3config);
 
-            var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive);
+            var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory());
 
             var name = await generator.GenerateMod(task, a3config);
 
@@ -377,7 +377,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var assets = await GetAssets(_arma3DataModule.Library, a3config);
 
-            var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive);
+            var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory());
 
             await generator.GenerateWrp(task, a3config);
 
@@ -430,7 +430,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             Arma3Assets assets = await GetAssets(library, a3config);
 
-            var generator = new Arma3MapGenerator(assets, projectDrive);
+            var generator = new Arma3MapGenerator(assets, projectDrive, _arma3DataModule.CreatePboCompilerFactory());
 
             var target = Path.Combine(Path.GetTempPath(), a3config.WorldName);
 
@@ -453,7 +453,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             Arma3Assets assets = await GetAssets(library, a3config);
 
-            var generator = new Arma3MapGenerator(assets, projectDrive);
+            var generator = new Arma3MapGenerator(assets, projectDrive, _arma3DataModule.CreatePboCompilerFactory());
 
             var target = Path.Combine(Path.GetTempPath(), a3config.WorldName);
             Directory.CreateDirectory(target);

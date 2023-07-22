@@ -3,6 +3,7 @@ using System.Runtime.Versioning;
 using BIS.WRP;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Demo;
 using GameRealisticMap.ElevationModel;
@@ -24,8 +25,8 @@ namespace GameRealisticMap.Arma3
         private readonly string name;
         private readonly IDemoNaming demoNaming;
 
-        public Arma3DemoMapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive, string name, IDemoNaming? demoNaming = null)
-            : base(assets, projectDrive)
+        public Arma3DemoMapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive, string name, IPboCompilerFactory pboCompilerFactory, IDemoNaming? demoNaming = null)
+            : base(assets, projectDrive, pboCompilerFactory)
         {
             this.name = name;
             this.demoNaming = demoNaming ?? new DefaultDemoNaming();

@@ -17,6 +17,8 @@ namespace GameRealisticMap.Arma3.IO
 
         public Dictionary<string, string> ProjectDriveMountPoints { get; set; } = new Dictionary<string, string>();
 
+        public bool UsePboProject { get; set; }
+
         [SupportedOSPlatform("windows")]
         public ProjectDrive CreateProjectDrive()
         {
@@ -61,21 +63,16 @@ namespace GameRealisticMap.Arma3.IO
             return await JsonSerializer.DeserializeAsync<WorkspaceSettings>(stream).ConfigureAwait(false) ?? new WorkspaceSettings();
         }
 
-        public async Task Save()
+        public void Save()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(DefaultLocation)!);
-            await Save(DefaultLocation).ConfigureAwait(false);
+            Save(DefaultLocation);
         }
 
-        public async Task Save(string filename)
+        public void Save(string filename)
         {
             using var stream = File.Create(filename);
-            await JsonSerializer.SerializeAsync(stream, this, new JsonSerializerOptions() { WriteIndented = true }).ConfigureAwait(false);
-        }
-
-        public async Task Save(Stream stream)
-        {
-            await JsonSerializer.SerializeAsync(stream, this).ConfigureAwait(false);
+            JsonSerializer.Serialize(stream, this, new JsonSerializerOptions() { WriteIndented = true });
         }
 
     }

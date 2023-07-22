@@ -44,5 +44,14 @@
                 </Hyperlink>
             </TextBlock>
         </StackPanel>
+        
+        <StackPanel Orientation="Horizontal">
+            <Label>PBO Generation Tool</Label>
+            <TextBlock VerticalAlignment="Center">
+                <RadioButton GroupName="PboCompiler" IsChecked="{Binding UseBuiltinTool}">Use Buitin Generator</RadioButton>
+                <RadioButton GroupName="PboCompiler" IsChecked="{Binding UsePboProject}">Use PBO Project</RadioButton>
+            </TextBlock>
+        </StackPanel>
+        
     </StackPanel>
 </UserControl>

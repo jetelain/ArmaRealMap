@@ -840,4 +840,7 @@ You may eventually enable other mods.</value>
   <data name="Watercourses" xml:space="preserve">
     <value>Watercourses</value>
   </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>General</value>
+  </data>
 </root>
