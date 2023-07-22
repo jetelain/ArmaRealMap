@@ -1,12 +1,16 @@
 ﻿using System;
 using GameRealisticMap.Demo;
 using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Forests;
+using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.RockAreas;
+using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
+using GameRealisticMap.Nature.Watercourses;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
@@ -51,7 +55,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             if ( type == typeof(ForestData))
             {
-                return Labels.AssetForest;
+                return Labels.Forest;
             }
             if (type == typeof(MeadowsData))
             {
@@ -65,7 +69,26 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 return Labels.AssetRocks;
             }
-            // ...
+            if (type == typeof(GrassData))
+            {
+                return Labels.AssetGrass;
+            }
+            if (type == typeof(LakesData))
+            {
+                return Labels.Lakes;
+            }
+            if (type == typeof(WatercoursesData))
+            {
+                return Labels.Watercourses;
+            }
+            if (type == typeof(FarmlandsData))
+            {
+                return Labels.AssetFarmLand;
+            }
+            if (type == typeof(ScrubData))
+            {
+                return Labels.AssetScrub;
+            }
             return type.Name.Replace("Data", "");
         }
     }

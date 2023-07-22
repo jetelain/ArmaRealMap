@@ -831,4 +831,13 @@ You may eventually enable other mods.</value>
   <data name="GenerateDemoMod" xml:space="preserve">
     <value>Generate a mod (ready-to-use)</value>
   </data>
+  <data name="Forest" xml:space="preserve">
+    <value>Forest</value>
+  </data>
+  <data name="Lakes" xml:space="preserve">
+    <value>Lakes</value>
+  </data>
+  <data name="Watercourses" xml:space="preserve">
+    <value>Watercourses</value>
+  </data>
 </root>

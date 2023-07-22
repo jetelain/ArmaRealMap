@@ -595,44 +595,44 @@
           "Objects": [
             {
               "Model": "a3\\structures_f\\bridges\\Bridge_HighWay_F.p3d",
-              "Transform": [0.0008945465,-3.3085892,0.07499981]
+              "Transform": [0.0008945465,-3.258589,0.07499981]
             }
           ]
         },
-        "Size": 44.2501
+        "Size": 40
       },
       "Start": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_right_F.p3d",
-              "Transform": [0.02676344,-3.3171349,-0.6463604]
+              "Transform": [0.02676344,-3.2671347,-1.6]
             }
           ]
         },
-        "Size": 22.1788
+        "Size": 19.8
       },
       "Middle": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_center_F.p3d",
-              "Transform": [0.03502512,-3.8190699,0.09825897]
+              "Transform": [0.03502512,-3.7690697,-0.05]
             }
           ]
         },
-        "Size": 40.636
+        "Size": 40.3
       },
       "End": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_left_F.p3d",
-              "Transform": [0.0008945465,-3.308694,0.9323082]
+              "Transform": [0.0008945465,-3.2586937,1.49]
             }
           ]
         },
-        "Size": 22.1291
+        "Size": 20
       }
     },
     "TwoLanesPrimaryRoad": {
@@ -641,44 +641,44 @@
           "Objects": [
             {
               "Model": "a3\\structures_f\\bridges\\Bridge_HighWay_F.p3d",
-              "Transform": [0.0008945465,-3.3085892,0.07499981]
+              "Transform": [0.0008945465,-3.258589,0.07499981]
             }
           ]
         },
-        "Size": 44.2501
+        "Size": 40
       },
       "Start": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_right_F.p3d",
-              "Transform": [0.02676344,-3.3171349,-0.6463604]
+              "Transform": [0.02676344,-3.2671347,-1.6]
             }
           ]
         },
-        "Size": 22.1788
+        "Size": 19.8
       },
       "Middle": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_center_F.p3d",
-              "Transform": [0.03502512,-3.8190699,0.09825897]
+              "Transform": [0.03502512,-3.7690697,-0.05]
             }
           ]
         },
-        "Size": 40.636
+        "Size": 40.3
       },
       "End": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Concrete_02_left_F.p3d",
-              "Transform": [0.0008945465,-3.308694,0.9323082]
+              "Transform": [0.0008945465,-3.2586937,1.49]
             }
           ]
         },
-        "Size": 22.1291
+        "Size": 20
       }
     },
     "TwoLanesSecondaryRoad": {
@@ -687,44 +687,44 @@
           "Objects": [
             {
               "Model": "a3\\structures_f\\bridges\\Bridge_Asphalt_F.p3d",
-              "Transform": [0.02192235,-3.0325508,0.52775955]
+              "Transform": [0.02192235,-3.0075507,0.52775955]
             }
           ]
         },
-        "Size": 44.2341
+        "Size": 42
       },
       "Start": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_right_F.p3d",
-              "Transform": [-0.018576622,-3.0320826,2.369604]
+              "Transform": [-0.018576622,-3.0070825,-1.25]
             }
           ]
         },
-        "Size": 30.213799
+        "Size": 28
       },
       "Middle": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_center_F.p3d",
-              "Transform": [0.004999876,-3.0320814,-0.005074024]
+              "Transform": [0.004999876,-3.0070813,-0.005074024]
             }
           ]
         },
-        "Size": 24.2894
+        "Size": 24
       },
       "End": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_left_F.p3d",
-              "Transform": [0.021921158,-3.0320845,-2.154234]
+              "Transform": [0.021921158,-3.0070844,1.25]
             }
           ]
         },
-        "Size": 30.2295
+        "Size": 28
       }
     },
     "TwoLanesConcreteRoad": {
@@ -733,44 +733,44 @@
           "Objects": [
             {
               "Model": "a3\\structures_f\\bridges\\Bridge_Concrete_F.p3d",
-              "Transform": [-0.005653143,-3.0325508,0.52775955]
+              "Transform": [-0.005653143,-3.0075507,0.52775955]
             }
           ]
         },
-        "Size": 44.2341
+        "Size": 42
       },
       "Start": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_right_F.p3d",
-              "Transform": [-0.018576622,-3.0320826,2.369604]
+              "Transform": [-0.018576622,-3.0070825,-1.25]
             }
           ]
         },
-        "Size": 30.213799
+        "Size": 28
       },
       "Middle": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_center_F.p3d",
-              "Transform": [0.004999876,-3.0320814,-0.005074024]
+              "Transform": [0.004999876,-3.0070813,-0.005074024]
             }
           ]
         },
-        "Size": 24.2894
+        "Size": 24
       },
       "End": {
         "Model": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Bridges\\Bridge_Asphalt_02_left_F.p3d",
-              "Transform": [0.021921158,-3.0320845,-2.154234]
+              "Transform": [0.021921158,-3.0070844,1.25]
             }
           ]
         },
-        "Size": 30.2295
+        "Size": 28
       }
     }
   },

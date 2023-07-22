@@ -831,4 +831,13 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="GenerateDemoWrpFile" xml:space="preserve">
     <value>Générer une carte (fichier wrp)</value>
   </data>
+  <data name="Forest" xml:space="preserve">
+    <value>Forêt</value>
+  </data>
+  <data name="Lakes" xml:space="preserve">
+    <value>Lacs</value>
+  </data>
+  <data name="Watercourses" xml:space="preserve">
+    <value>Cours d'eau</value>
+  </data>
 </root>

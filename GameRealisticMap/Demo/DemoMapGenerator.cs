@@ -90,9 +90,7 @@ namespace GameRealisticMap.Demo
         {
             var buildings = new List<Building>();
 
-            // 3072 + 128
-
-            var centerY = 2048 + 512f;
+            var centerY = 2048 + 412f;
             var x = 0f;
 
             var secondary = roadTypeLibrary.GetInfo(RoadTypeId.TwoLanesSecondaryRoad);
@@ -112,7 +110,7 @@ namespace GameRealisticMap.Demo
                     if (x + patternSize > area.SizeInMeters)
                     {
                         x = 0;
-                        centerY += 512f;
+                        centerY += 412f;
                         mainRoad = new Road(WaySpecialSegment.Normal, new TerrainPath(new(0, centerY), new(area.SizeInMeters, centerY)), secondary);
                         roads.Add(mainRoad);
                         hasLabel = false;
@@ -126,7 +124,7 @@ namespace GameRealisticMap.Demo
 
                     var centerX = x + (patternSize / 2);
 
-                    var perroad = new Road(WaySpecialSegment.Normal, new TerrainPath(new(centerX, centerY - 256), new(centerX, centerY + 256)), tertiary);
+                    var perroad = new Road(WaySpecialSegment.Normal, new TerrainPath(new(centerX, centerY - 206), new(centerX, centerY + 206)), tertiary);
                     roads.Add(perroad);
 
                     var shiftX = size.X / 2 + tertiary.ClearWidth / 2 + 8;
@@ -137,7 +135,7 @@ namespace GameRealisticMap.Demo
                     AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX + shiftX, centerY + shiftY), size.X, size.Y, 0));
 
                     shiftX = size.Y / 2 + tertiary.ClearWidth / 2 + 1;
-                    shiftY = 128;
+                    shiftY = 103;
                     AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX - shiftX, centerY - shiftY), size.Y, size.X, 0));
                     AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX + shiftX, centerY - shiftY), size.Y, size.X, 0));
                     AddRoad(buildings, mainRoad, id, perroad, new BoundingBox(new TerrainPoint(centerX - shiftX, centerY + shiftY), size.Y, size.X, 0));
@@ -301,7 +299,7 @@ namespace GameRealisticMap.Demo
 
         }
 
-        private static void CreateSampleWatercourses(BuildContext context, List<City> places, Vector2 offset)
+        private void CreateSampleWatercourses(BuildContext context, List<City> places, Vector2 offset)
         {
             var river = new List<Watercourse>() { new Watercourse( new TerrainPath(
                 new TerrainPoint(64, 64)+offset,
@@ -310,16 +308,16 @@ namespace GameRealisticMap.Demo
                 ), WatercourseTypeId.River) };
 
             context.SetData(new WatercoursesData(river, river.SelectMany(r => r.Polygons).ToList()));
-            places.Add(new City(new TerrainPoint(256, 256) + offset, new List<TerrainPolygon>() { TerrainPolygon.FromRectangle(new TerrainPoint(28, 28) + offset, new TerrainPoint(484, 484) + offset) }, "Watercourses", CityTypeId.Village, 256, 0));
+            places.Add(new City(new TerrainPoint(256, 256) + offset, new List<TerrainPolygon>() { TerrainPolygon.FromRectangle(new TerrainPoint(28, 28) + offset, new TerrainPoint(484, 484) + offset) }, demoNaming.GetSurfaceName(typeof(WatercoursesData)), CityTypeId.Village, 256, 0));
         }
 
-        private static void CreateSampleLakes(BuildContext context, List<City> places, Vector2 offset)
+        private void CreateSampleLakes(BuildContext context, List<City> places, Vector2 offset)
         {
             context.SetData(new LakesData(new List<TerrainPolygon>() {
                 TerrainPolygon.FromRectangle(new TerrainPoint(128, 128) + offset, new TerrainPoint(128 + 256, 256) + offset),
                 TerrainPolygon.FromRectangle(new TerrainPoint(128, 320) + offset, new TerrainPoint(128 + 64, 384) + offset)
             }));
-            places.Add(new City(new TerrainPoint(256, 256) + offset, new List<TerrainPolygon>() { TerrainPolygon.FromRectangle(new TerrainPoint(28, 28) + offset, new TerrainPoint(484, 484) + offset) }, "Lakes", CityTypeId.Village, 256, 0));
+            places.Add(new City(new TerrainPoint(256, 256) + offset, new List<TerrainPolygon>() { TerrainPolygon.FromRectangle(new TerrainPoint(28, 28) + offset, new TerrainPoint(484, 484) + offset) }, demoNaming.GetSurfaceName(typeof(LakesData)), CityTypeId.Village, 256, 0));
         }
 
         private void CreateSampleSingle<T>(BuildContext context, List<City> places, Func<List<TerrainPolygon>, T> value, Vector2 offset)
