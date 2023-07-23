@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
@@ -25,6 +26,17 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
         internal BuildingDefinition ToDefinition()
         {
             return new BuildingDefinition(new Vector2(_width, _depth), Composition.ToDefinition());
+        }
+
+        public void CompositionWasRotated(int degrees)
+        {
+            if (Math.Abs(degrees) == 90)
+            {
+                var oldWidth = Width;
+                var oldDepth = Depth;
+                Width = oldDepth;
+                Depth = oldWidth;
+            }
         }
     }
 }

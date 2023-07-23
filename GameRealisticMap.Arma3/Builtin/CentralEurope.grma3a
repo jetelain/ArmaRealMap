@@ -815,7 +815,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_F.p3d",
-              "Transform": [-0.03168392,13.686882,3.6181254]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031681076,13.686882,-3.6181254]
             }
           ]
         }
@@ -826,7 +826,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_lightyellow_F.p3d",
-              "Transform": [-0.03168392,13.686882,3.6181254]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031683605,13.686882,-3.6181254]
             }
           ]
         }
@@ -837,7 +837,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_F.p3d",
-              "Transform": [-0.031685352,12.408145,0.1734786]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031685337,12.408145,-0.1734786]
             }
           ]
         }
@@ -848,7 +848,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_lightyellow_F.p3d",
-              "Transform": [-0.031685352,12.408145,0.1734786]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031685337,12.408145,-0.1734786]
             }
           ]
         }
@@ -859,7 +859,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_red_F.p3d",
-              "Transform": [-0.031685352,12.408145,0.1734786]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031685337,12.408145,-0.1734786]
             }
           ]
         }
@@ -870,7 +870,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_white_F.p3d",
-              "Transform": [-0.031685352,12.408145,0.1734786]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031685337,12.408145,-0.1734786]
             }
           ]
         }
@@ -881,7 +881,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_white_red_F.p3d",
-              "Transform": [-0.031685352,12.408145,0.1734786]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031685337,12.408145,-0.1734786]
             }
           ]
         }
@@ -892,7 +892,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_yellow_F.p3d",
-              "Transform": [-0.031685352,12.408145,0.1734786]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031685337,12.408145,-0.1734786]
             }
           ]
         }
@@ -903,7 +903,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_small_lightblue_F.p3d",
-              "Transform": [-0.031685352,12.408145,0.1734786]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031685337,12.408145,-0.1734786]
             }
           ]
         }
@@ -914,7 +914,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_red_F.p3d",
-              "Transform": [-0.03168392,13.686882,3.6181254]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031683605,13.686882,-3.6181254]
             }
           ]
         }
@@ -925,7 +925,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_lightblue_F.p3d",
-              "Transform": [-0.03168392,13.686882,3.6181254]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031683605,13.686882,-3.6181254]
             }
           ]
         }
@@ -936,7 +936,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_white_F.p3d",
-              "Transform": [-0.03168392,13.686882,3.6181254]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031683605,13.686882,-3.6181254]
             }
           ]
         }
@@ -947,7 +947,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_white_red_F.p3d",
-              "Transform": [-0.03168392,13.686882,3.6181254]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031683605,13.686882,-3.6181254]
             }
           ]
         }
@@ -958,7 +958,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Church_04\\Church_04_yellow_F.p3d",
-              "Transform": [-0.03168392,13.686882,3.6181254]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.031683605,13.686882,-3.6181254]
             }
           ]
         }
@@ -977,12 +977,12 @@
     ],
     "RadioTower": [
       {
-        "Size": [12.369526,12.794358],
+        "Size": [14,14],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f\\ind\\Transmitter_Tower\\TTowerBig_1_F.p3d",
-              "Transform": [-0.80976343,19.28492,-0.033214092]
+              "Transform": [0,19.28492,0]
             }
           ]
         }
@@ -2300,7 +2300,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\garages\\garagerow_01_small_f.p3d",
-              "Transform": [0,1.5881983,2.3512523]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-2.0555301E-07,1.5881983,-2.3512523]
             }
           ]
         }
@@ -3392,7 +3392,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_exp\\civilian\\accessories\\bench_04_f.p3d",
-              "Transform": [0,0.36244345,-0.11203288]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,9.794226E-09,0.36244345,0.11203288]
             }
           ]
         },
@@ -3403,7 +3403,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_exp\\civilian\\accessories\\bench_03_f.p3d",
-              "Transform": [-0.006061822,0.42838788,0.019198164]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.0060618203,0.42838788,-0.019198164]
             }
           ]
         },
@@ -3414,7 +3414,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_epc\\Civ\\Accessories\\Bench_02_F.p3d",
-              "Transform": [0.002399981,0.51086915,-0.01058238]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-0.00239998,0.51086915,0.01058238]
             }
           ]
         },
@@ -3425,7 +3425,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_epc\\Civ\\Accessories\\Bench_01_F.p3d",
-              "Transform": [0.002399981,0.51086915,-0.01058238]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-0.00239998,0.51086915,0.01058238]
             }
           ]
         },
@@ -3545,7 +3545,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f\\civ\\infoboards\\noticeboard_f.p3d",
-              "Transform": [0.0002605468,0.791426,-1.816079E-07]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-0.0002605468,0.791426,1.8163068E-07]
             }
           ]
         },

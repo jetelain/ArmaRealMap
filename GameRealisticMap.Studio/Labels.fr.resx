@@ -861,4 +861,34 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="SelectAnImage" xml:space="preserve">
     <value>Sélectionner une image</value>
   </data>
+  <data name="CompositionFrontView" xml:space="preserve">
+    <value>Vue de face</value>
+  </data>
+  <data name="CompositionSideView" xml:space="preserve">
+    <value>Vue de coté</value>
+  </data>
+  <data name="CompositionTopView" xml:space="preserve">
+    <value>Vue du dessus</value>
+  </data>
+  <data name="Heading" xml:space="preserve">
+    <value>Cap</value>
+  </data>
+  <data name="Pitch" xml:space="preserve">
+    <value>Tangage</value>
+  </data>
+  <data name="Roll" xml:space="preserve">
+    <value>Roulis</value>
+  </data>
+  <data name="Scale" xml:space="preserve">
+    <value>Echelle</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>Pivoter 180°</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>Pivoter +90°</value>
+  </data>
+  <data name="RotateM90" xml:space="preserve">
+    <value>Pivoter -90°</value>
+  </data>
 </root>

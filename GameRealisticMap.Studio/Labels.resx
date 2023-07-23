@@ -861,4 +861,34 @@ You may eventually enable other mods.</value>
   <data name="SelectAnImage" xml:space="preserve">
     <value>Select an image</value>
   </data>
+  <data name="CompositionTopView" xml:space="preserve">
+    <value>Top view</value>
+  </data>
+  <data name="CompositionFrontView" xml:space="preserve">
+    <value>Front view</value>
+  </data>
+  <data name="CompositionSideView" xml:space="preserve">
+    <value>Side view</value>
+  </data>
+  <data name="Heading" xml:space="preserve">
+    <value>Heading</value>
+  </data>
+  <data name="Pitch" xml:space="preserve">
+    <value>Pitch</value>
+  </data>
+  <data name="Roll" xml:space="preserve">
+    <value>Roll</value>
+  </data>
+  <data name="Scale" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>Rotate 180°</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>Rotate +90°</value>
+  </data>
+  <data name="RotateM90" xml:space="preserve">
+    <value>Rotate -90°</value>
+  </data>
 </root>

@@ -47,5 +47,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             return new ClusterItemDefinition(Radius, FitRadius, Composition.ToDefinition(), MaxZ, MinZ, Probability, MaxScale, MinScale);
         }
+        public void CompositionWasRotated(int degrees)
+        {
+            // Nothing to do
+        }
     }
 }

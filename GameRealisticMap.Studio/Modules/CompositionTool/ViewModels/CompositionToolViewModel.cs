@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
@@ -72,6 +73,16 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             {
                 Current.Composition.AddRange(composition.Objects, UndoRedoManager!);
             }
+        }
+
+        public Task Rotate(int degrees)
+        {
+            if (Current != null)
+            {
+                Current.Composition.Rotate(degrees);
+                Current.CompositionWasRotated(degrees);
+            }
+            return Task.CompletedTask;
         }
     }
 }
