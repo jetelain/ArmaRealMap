@@ -131,8 +131,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             var cachePng = Path.Combine(PreviewCachePath, Path.ChangeExtension(texture, ".png"));
             if (File.Exists(cachePng))
             {
-                // TODO: ensure that file is still up to date
-                return new Uri(cachePng);
+                var dt = _dataModule.ProjectDrive.GetLastWriteTimeUtc(texture);
+                if ( dt == null || dt.Value < File.GetLastWriteTimeUtc(cachePng))
+                {
+                    return new Uri(cachePng);
+                }
             }
             using (var paaStream = _dataModule.ProjectDrive.OpenFileIfExists(texture))
             {

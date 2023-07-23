@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:cal="http://caliburnmicro.com"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -57,6 +58,20 @@
                 <TextBox Width="400" Text="{Binding NormalTexture,Mode=TwoWay}" IsEnabled="{Binding IsNotSameAs}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
             </StackPanel>
 
+
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.SatelliteRenderImage}" />
+                </Label>
+                <Image Source="{Binding FakeSatPreview}" Width="24" Height="24"  />
+                <Button Margin="10 0 0 0" cal:Message.Attach="RegenerateFakeSatImage" Padding="5 0">
+                    <Run Text="{x:Static r:Labels.GenerateFromTexture}" />
+                </Button>
+                <Button Margin="10 0 0 0" cal:Message.Attach="SelectFakeSatImage" Padding="5 0">
+                    <Run Text="{x:Static r:Labels.SelectAnImage}" />
+                </Button>
+            </StackPanel>
+            
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

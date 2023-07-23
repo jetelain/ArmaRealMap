@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Numerics;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
@@ -49,6 +51,15 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             NotifyOfPropertyChange(nameof(Name));
             NotifyOfPropertyChange(nameof(IsEmpty));
             NotifyOfPropertyChange(nameof(SingleModel));
+        }
+
+        internal void Rotate(int degrees)
+        {
+            var transform = Matrix4x4.CreateRotationY((float)(degrees * Math.PI / 180d));
+            foreach(var item in Items)
+            {
+                item.Transform(transform);
+            }
         }
 
         public ObservableCollection<CompositionItem> Items

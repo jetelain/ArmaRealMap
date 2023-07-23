@@ -31,5 +31,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             return new StraightSegmentDefinition(Composition.ToDefinition(), Size);
         }
+
+        public void CompositionWasRotated(int degrees)
+        {
+            // Nothing to do
+        }
     }
 }

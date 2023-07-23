@@ -1,20 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
+using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using Caliburn.Micro;
+using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using Microsoft.Win32;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using Color = System.Windows.Media.Color;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
     internal class MaterialViewModel : AssetBase<TerrainMaterialUsage, TerrainMaterial>
     {
         private byte[]? _fakeSatPngImage;
+        private BitmapFrame? _fakeSatPreview;
 
         public MaterialViewModel(TerrainMaterialUsage id, TerrainMaterial terrainMaterial, AssetConfigEditorViewModel parent)
             : base(id, parent)
@@ -23,7 +33,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             _sameAs = parent.Materials.FirstOrDefault(m => m.ColorId == ColorId);
             _colorTexture = terrainMaterial.ColorTexture;
             _normalTexture = terrainMaterial.NormalTexture;
-            _fakeSatPngImage = terrainMaterial.FakeSatPngImage;
+            FakeSatPngImage = terrainMaterial.FakeSatPngImage;
         }
 
         public override string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Generic.png";
@@ -96,7 +106,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             set
             {
                 _colorTexture = value;
-                _fakeSatPngImage = null; // RESET
+                GenerateFakeSatPngImage();
                 NotifyOfPropertyChange();
                 foreach (var sameAsSelf in ParentEditor.Materials.Where(m => m != this && m.SameAs == this))
                 {
@@ -121,21 +131,68 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             }
         }
 
+        private byte[]? FakeSatPngImage
+        {
+            get { return _fakeSatPngImage; }
+            set
+            {
+                _fakeSatPngImage = value;
+                if (_fakeSatPngImage != null)
+                {
+                    using (MemoryStream stream = new MemoryStream(_fakeSatPngImage))
+                    {
+                        _fakeSatPreview = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                    }
+                }
+                else
+                {
+                    _fakeSatPreview = null;
+                }
+                NotifyOfPropertyChange(nameof(FakeSatPreview));
+            }
+        }
+
+        public BitmapSource? FakeSatPreview => _fakeSatPreview;
+
         public override TerrainMaterial ToDefinition()
         {
-            if (_fakeSatPngImage == null)
+            return new TerrainMaterial(_normalTexture, _colorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), FakeSatPngImage);
+        }
+
+        private void GenerateFakeSatPngImage()
+        {
+            var uri = IoC.Get<IArma3Previews>().GetTexturePreview(_colorTexture);
+            if (uri != null && uri.IsFile)
             {
-                var uri = IoC.Get<IArma3Previews>().GetTexturePreview(_colorTexture);
-                if (uri != null && uri.IsFile)
-                {
-                    var img = Image.Load(uri.LocalPath);
-                    img.Mutate(d => d.Resize(8, 8));
-                    var mem = new MemoryStream();
-                    img.SaveAsPng(mem);
-                    _fakeSatPngImage = mem.ToArray();
-                }
+                SetFakeSatImageFromFile(uri.LocalPath);
             }
-            return new TerrainMaterial(_normalTexture, _colorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), _fakeSatPngImage);
+        }
+
+        public Task RegenerateFakeSatImage()
+        {
+            GenerateFakeSatPngImage();
+            return Task.CompletedTask;
+        }
+
+        public Task SelectFakeSatImage()
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "PNG Image|*.png";
+            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            if (dialog.ShowDialog() == true)
+            {
+                SetFakeSatImageFromFile(dialog.FileName);
+            }
+            return Task.CompletedTask;
+        }
+
+        private void SetFakeSatImageFromFile(string path)
+        {
+            var img = Image.Load(path);
+            img.Mutate(d => d.Resize(8, 8));
+            var mem = new MemoryStream();
+            img.SaveAsPng(mem);
+            FakeSatPngImage = mem.ToArray();
         }
 
         public override void Equilibrate()

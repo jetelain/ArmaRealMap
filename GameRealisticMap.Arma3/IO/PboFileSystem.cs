@@ -199,5 +199,15 @@ namespace GameRealisticMap.Arma3.IO
                 }
             }
         }
+
+        public DateTime? GetLastWriteTimeUtc(string path)
+        {
+            LazyBuildIndex();
+            if (index.TryGetValue(path, out var entry) && entry is PBOFileExisting pboEntry)
+            {
+                return File.GetLastWriteTimeUtc(pboEntry.PboFile);
+            }
+            return null;
+        }
     }
 }

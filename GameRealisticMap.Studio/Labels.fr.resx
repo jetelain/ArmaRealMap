@@ -852,4 +852,49 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="UsePBOProject" xml:space="preserve">
     <value>Utiliser Mikero's pboProject</value>
   </data>
+  <data name="GenerateFromTexture" xml:space="preserve">
+    <value>Générer à partir de la texture</value>
+  </data>
+  <data name="SatelliteRenderImage" xml:space="preserve">
+    <value>Image de rendu satellite</value>
+  </data>
+  <data name="SelectAnImage" xml:space="preserve">
+    <value>Sélectionner une image</value>
+  </data>
+  <data name="CompositionFrontView" xml:space="preserve">
+    <value>Vue de face</value>
+  </data>
+  <data name="CompositionSideView" xml:space="preserve">
+    <value>Vue de coté</value>
+  </data>
+  <data name="CompositionTopView" xml:space="preserve">
+    <value>Vue du dessus</value>
+  </data>
+  <data name="Heading" xml:space="preserve">
+    <value>Cap</value>
+  </data>
+  <data name="Pitch" xml:space="preserve">
+    <value>Tangage</value>
+  </data>
+  <data name="Roll" xml:space="preserve">
+    <value>Roulis</value>
+  </data>
+  <data name="Scale" xml:space="preserve">
+    <value>Echelle</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>Pivoter 180°</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>Pivoter +90°</value>
+  </data>
+  <data name="RotateM90" xml:space="preserve">
+    <value>Pivoter -90°</value>
+  </data>
+  <data name="LaunchArma3" xml:space="preserve">
+    <value>Lancer Arma 3</value>
+  </data>
+  <data name="LaunchArma3Hint" xml:space="preserve">
+    <value>Lancer Arma 3 avec le profil par défaut et les mods requis.</value>
+  </data>
 </root>
