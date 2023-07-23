@@ -1348,6 +1348,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate from texture.
+        /// </summary>
+        public static string GenerateFromTexture {
+            get {
+                return ResourceManager.GetString("GenerateFromTexture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Generate id map image.
         /// </summary>
         public static string GenerateIdMapImage {
@@ -2008,6 +2017,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Satellite render image.
+        /// </summary>
+        public static string SatelliteRenderImage {
+            get {
+                return ResourceManager.GetString("SatelliteRenderImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à {0:0.0} sec left.
         /// </summary>
         public static string SecondsLeft {
@@ -2022,6 +2040,15 @@ namespace GameRealisticMap.Studio {
         public static string SeedNumber {
             get {
                 return ResourceManager.GetString("SeedNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Select an image.
+        /// </summary>
+        public static string SelectAnImage {
+            get {
+                return ResourceManager.GetString("SelectAnImage", resourceCulture);
             }
         }
         

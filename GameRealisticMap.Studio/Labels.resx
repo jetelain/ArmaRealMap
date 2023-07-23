@@ -852,4 +852,13 @@ You may eventually enable other mods.</value>
   <data name="PBOGenerationTool" xml:space="preserve">
     <value>PBO Generation Tool</value>
   </data>
+  <data name="SatelliteRenderImage" xml:space="preserve">
+    <value>Satellite render image</value>
+  </data>
+  <data name="GenerateFromTexture" xml:space="preserve">
+    <value>Generate from texture</value>
+  </data>
+  <data name="SelectAnImage" xml:space="preserve">
+    <value>Select an image</value>
+  </data>
 </root>

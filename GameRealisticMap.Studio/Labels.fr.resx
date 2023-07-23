@@ -852,4 +852,13 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="UsePBOProject" xml:space="preserve">
     <value>Utiliser Mikero's pboProject</value>
   </data>
+  <data name="GenerateFromTexture" xml:space="preserve">
+    <value>Générer à partir de la texture</value>
+  </data>
+  <data name="SatelliteRenderImage" xml:space="preserve">
+    <value>Image de rendu satellite</value>
+  </data>
+  <data name="SelectAnImage" xml:space="preserve">
+    <value>Sélectionner une image</value>
+  </data>
 </root>
