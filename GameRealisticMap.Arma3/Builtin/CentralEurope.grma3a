@@ -799,12 +799,12 @@
         }
       },
       {
-        "Size": [21.484402,18.269999],
+        "Size": [18.269999,21.484402],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_argo\\Cultural\\Church\\Church_01_V2_F.p3d",
-              "Transform": [-4.1026597,6.795067,-0.030588627]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.030588089,6.795067,-4.1026597]
             }
           ]
         }
@@ -1157,34 +1157,34 @@
         }
       },
       {
-        "Size": [7.2861404,18.04177],
+        "Size": [18.04177,7.2861404],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W03_F.p3d",
-              "Transform": [0.81524384,2.6205072,0.016630173]
+              "Transform": [-4.371139E-08,0,-1,0,1,0,1,0,-4.371139E-08,0.016630137,2.6205072,-0.81524384]
             }
           ]
         }
       },
       {
-        "Size": [8.911651,19.23731],
+        "Size": [19.23731,8.911651],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W04_F.p3d",
-              "Transform": [1.330606,2.6066918,0.037150383]
+              "Transform": [-4.371139E-08,0,-1,0,1,0,1,0,-4.371139E-08,0.037150323,2.6066918,-1.330606]
             }
           ]
         }
       },
       {
-        "Size": [8.860491,14.357071],
+        "Size": [14.357071,8.860491],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W05_F.p3d",
-              "Transform": [-1.4971011,3.0102348,0.85834503]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,-0.858345,3.0102348,-1.4971011]
             }
           ]
         }
@@ -1201,12 +1201,12 @@
         }
       },
       {
-        "Size": [8.8668,14.643667],
+        "Size": [14.643667,8.8668],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W06_F.p3d",
-              "Transform": [-1.2730359,2.8004475,-0.9399185]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.9399186,2.8004475,-1.2730359]
             }
           ]
         }
@@ -1223,12 +1223,12 @@
         }
       },
       {
-        "Size": [11.316151,10.0467205],
+        "Size": [10.0467205,11.316151],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W09_F.p3d",
-              "Transform": [2.0110188,2.5293403,-0.057814837]
+              "Transform": [-4.371139E-08,0,-1,0,1,0,1,0,-4.371139E-08,-0.057814926,2.5293403,-2.0110188]
             }
           ]
         }
@@ -1239,7 +1239,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W11_F.p3d",
-              "Transform": [1.798449,3.3474987,1.7467536]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-1.7984492,3.3474987,-1.7467535]
             }
           ]
         }
@@ -1250,29 +1250,29 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W10_F.p3d",
-              "Transform": [0.08968544,2.0440803,1.8518219]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-0.089685604,2.0440803,-1.8518219]
             }
           ]
         }
       },
       {
-        "Size": [13.370421,15.836],
+        "Size": [15.836,13.370421],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_1W12_F.p3d",
-              "Transform": [-3.0642161,2.919,2.4031684]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,-2.4031682,2.919,-3.0642161]
             }
           ]
         }
       },
       {
-        "Size": [10.171451,10.912431],
+        "Size": [10.912431,10.171451],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2B01_F.p3d",
-              "Transform": [0.58592033,4.293845,-0.04948473]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.049484704,4.293845,0.58592033]
             }
           ]
         }
@@ -1322,12 +1322,12 @@
         }
       },
       {
-        "Size": [15.51247,10.65495],
+        "Size": [10.65495,15.51247],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Houses\\House_2W02_F.p3d",
-              "Transform": [-2.4172056,4.8387303,-0.02666521]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.026665317,4.8387303,-2.4172056]
             }
           ]
         }
@@ -1368,23 +1368,23 @@
     ],
     "Military": [
       {
-        "Size": [17.896461,10.96766],
+        "Size": [10.96766,17.896461],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\military\\Barracks\\Barracks_02_F.p3d",
-              "Transform": [2.026567,1.9471319,-0.013575077]
+              "Transform": [-4.371139E-08,0,-1,0,1,0,1,0,-4.371139E-08,-0.0135751655,1.9471319,-2.026567]
             }
           ]
         }
       },
       {
-        "Size": [18.66928,8.517902],
+        "Size": [8.517902,18.66928],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\military\\Barracks\\Barracks_03_F.p3d",
-              "Transform": [3.1741536,1.3683677,-0.019137144]
+              "Transform": [-4.371139E-08,0,-1,0,1,0,1,0,-4.371139E-08,-0.019137282,1.3683677,-3.1741536]
             }
           ]
         }
@@ -1401,12 +1401,12 @@
         }
       },
       {
-        "Size": [15.452191,7.07979],
+        "Size": [7.07979,15.452191],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\military\\Barracks\\Barracks_05_F.p3d",
-              "Transform": [2.0386233,2.023199,0.00021994114]
+              "Transform": [-4.371139E-08,0,-1,0,1,0,1,0,-4.371139E-08,0.00021985202,2.023199,-2.0386233]
             }
           ]
         }
@@ -1417,40 +1417,40 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\military\\Barracks\\Barracks_06_F.p3d",
-              "Transform": [-0.31949806,5.6746554,1.8030612]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.3194979,5.6746554,-1.8030612]
             }
           ]
         }
       },
       {
-        "Size": [9.503851,8.952991],
+        "Size": [8.952991,9.503851],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\military\\Barracks\\GuardHouse_02_F.p3d",
-              "Transform": [-1.433343,1.905235,-0.03837633]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.038376395,1.905235,-1.433343]
             }
           ]
         }
       },
       {
-        "Size": [9.503851,8.952991],
+        "Size": [8.952991,9.503851],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\military\\Barracks\\GuardHouse_02_grey_F.p3d",
-              "Transform": [-1.433343,1.905235,-0.03837633]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.038376395,1.905235,-1.433343]
             }
           ]
         }
       },
       {
-        "Size": [6.8607035,6.9418545],
+        "Size": [6.9418545,6.8607035],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\military\\Barracks\\GuardHouse_03_F.p3d",
-              "Transform": [0.0022292137,1.2137346,-0.0146256685]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.0146256685,1.2137346,0.0022292144]
             }
           ]
         }
@@ -1467,12 +1467,12 @@
         }
       },
       {
-        "Size": [19.576202,22.32976],
+        "Size": [22.32976,19.576202],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\military\\Radar\\Radar_01_HQ_F.p3d",
-              "Transform": [1.6208005,5.090069,2.0600538]
+              "Transform": [-4.371139E-08,0,-1,0,1,0,1,0,-4.371139E-08,2.0600538,5.090069,-1.6208006]
             }
           ]
         }
@@ -1502,12 +1502,12 @@
         }
       },
       {
-        "Size": [21.212502,32.1193],
+        "Size": [32.1193,21.212502],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_exp\\commercial\\Hotel_02\\Hotel_02_F.p3d",
-              "Transform": [-0.19574976,4.065503,-1.0002699]
+              "Transform": [-4.371139E-08,0,-1,0,1,0,1,0,-4.371139E-08,-1.0002699,4.065503,0.1957498]
             }
           ]
         }
@@ -1524,12 +1524,12 @@
         }
       },
       {
-        "Size": [45.156303,43.154404],
+        "Size": [43.154404,45.156303],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_exp\\commercial\\MultistoryBuilding_01\\MultistoryBuilding_01_F.p3d",
-              "Transform": [-0.63360023,21.01875,-0.014849663]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.014849691,21.01875,-0.63360023]
             }
           ]
         }
@@ -1619,7 +1619,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_exp\\industrial\\SurfaceMine_01\\SM_01_shed_F.p3d",
-              "Transform": [-3.5220065,1.685302,-3.4994688]
+              "Transform": [-3.5220065,1.785302,-3.4994688]
             }
           ]
         }
@@ -1630,7 +1630,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_mainFactory_F.p3d",
-              "Transform": [-0.07563877,10.524456,4.2545447]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.0756384,10.524456,-4.2545447]
             }
           ]
         }
@@ -1641,7 +1641,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f\\ind\\dieselpowerplant\\dp_smallFactory_F.p3d",
-              "Transform": [-0.011882305,1.8698694,1.1026294]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.011882208,1.8698694,-1.1026294]
             }
           ]
         }
@@ -1652,7 +1652,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f\\ind\\Factory\\Factory_Main_F.p3d",
-              "Transform": [-1.7628074,6.683112,0.8335371]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,1.7628073,6.683112,-0.8335373]
             }
           ]
         }
@@ -1762,7 +1762,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_smallFactory_F.p3d",
-              "Transform": [-0.011882305,2.0907102,1.1026294]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.011882208,2.0907102,-1.1026294]
             }
           ]
         }
@@ -1773,7 +1773,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_exp\\industrial\\DieselPowerPlant_01\\DPP_01_mainFactory_F.p3d",
-              "Transform": [-0.07563877,10.55747,4.2545447]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.0756384,10.55747,-4.2545447]
             }
           ]
         }
@@ -1795,7 +1795,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\Sheds\\i_Shed_Ind_old_F.p3d",
-              "Transform": [-3.5220065,1.5399702,-3.4994688]
+              "Transform": [-3.5220065,1.6399702,-3.4994688]
             }
           ]
         }
@@ -1812,12 +1812,12 @@
         }
       },
       {
-        "Size": [9.536551,15.491819],
+        "Size": [11.2,15.491819],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\Power\\PowerStation_01_F.p3d",
-              "Transform": [-1.6702949,1.8212602,-2.4640224]
+              "Transform": [-2.46,1.8212602,-2.46]
             }
           ]
         }
@@ -1839,7 +1839,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\DieselPowerPlant_01\\DPP_01_mainFactory_old_F.p3d",
-              "Transform": [-0.07563877,10.55747,4.2545447]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.0756384,10.55747,-4.2545447]
             }
           ]
         }
@@ -1861,7 +1861,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\CementWorks\\CementWorks_01_grey_F.p3d",
-              "Transform": [-2.9073005,4.8640833,3.5251102]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,2.9073002,4.8640833,-3.5251105]
             }
           ]
         }
@@ -1872,7 +1872,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\CementWorks\\CementWorks_01_brick_F.p3d",
-              "Transform": [-3.121913,4.8589354,3.355402]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,3.1219127,4.8589354,-3.3554022]
             }
           ]
         }
@@ -1883,7 +1883,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_exp\\industrial\\SugarCaneFactory_01\\SCF_01_generalBuilding_F.p3d",
-              "Transform": [-0.032318592,9.481325,0.9705]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.032318506,9.481325,-0.9705]
             }
           ]
         }
@@ -1905,18 +1905,18 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\mines\\mine_01_warehouse_f.p3d",
-              "Transform": [-1.7628074,6.68311,0.83354855]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,1.7628073,6.68311,-0.8335487]
             }
           ]
         }
       },
       {
-        "Size": [9.536551,15.491819],
+        "Size": [11.2,15.491819],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\Power\\PowerStation_01_F.p3d",
-              "Transform": [-1.6702949,1.8212602,-2.4640224]
+              "Transform": [-2.46,1.8212602,-2.46]
             }
           ]
         }
@@ -1933,89 +1933,89 @@
         }
       },
       {
-        "Size": [5.2134323,7.1917944],
+        "Size": [7.1917944,5.2134323],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_01_f.p3d",
-              "Transform": [-2.6328392,1.066115,2.802205]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,-2.802205,1.066115,-2.6328394]
             }
           ]
         }
       },
       {
-        "Size": [5.2134323,7.1917944],
+        "Size": [7.1917944,5.2134323],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_01_grey_f.p3d",
-              "Transform": [-2.6328392,1.066115,2.802205]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,-2.802205,1.066115,-2.6328394]
             }
           ]
         }
       },
       {
-        "Size": [5.012707,9.010631],
+        "Size": [9.010631,5.012707],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_02_f.p3d",
-              "Transform": [-0.042010784,1.3650839,-0.07589722]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.07589722,1.3650839,-0.04201078]
             }
           ]
         }
       },
       {
-        "Size": [5.012707,9.010631],
+        "Size": [9.010631,5.012707],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_02_grey_f.p3d",
-              "Transform": [-0.042010784,1.3650839,-0.07589722]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.07589722,1.3650839,-0.04201078]
             }
           ]
         }
       },
       {
-        "Size": [5.1157503,13.113811],
+        "Size": [13.113811,5.1157503],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_03_f.p3d",
-              "Transform": [0.0003157854,1.1736401,0.03205347]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,-0.03205347,1.1736401,0.000315784]
             }
           ]
         }
       },
       {
-        "Size": [5.1157503,13.113811],
+        "Size": [13.113811,5.1157503],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_03_grey_f.p3d",
-              "Transform": [0.0003157854,1.1736401,0.03205347]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,-0.03205347,1.1736401,0.000315784]
             }
           ]
         }
       },
       {
-        "Size": [5.6523776,15.232668],
+        "Size": [15.232668,5.6523776],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_04_f.p3d",
-              "Transform": [0.20105624,1.3495302,-0.09429932]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.09429931,1.3495302,0.20105624]
             }
           ]
         }
       },
       {
-        "Size": [5.6523776,15.232668],
+        "Size": [15.232668,5.6523776],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_04_grey_f.p3d",
-              "Transform": [0.20105624,1.3495302,-0.09429932]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.09429931,1.3495302,0.20105624]
             }
           ]
         }
@@ -2056,12 +2056,12 @@
         }
       },
       {
-        "Size": [4.8529415,3.344458],
+        "Size": [3.344458,4.8529415],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Sheds\\Shed_13_F.p3d",
-              "Transform": [-1.4124756,1.2812784,-0.009083748]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,0.009083809,1.2812784,-1.4124756]
             }
           ]
         }
@@ -2089,12 +2089,12 @@
         }
       },
       {
-        "Size": [4.67387,4.70337],
+        "Size": [4.70337,4.67387],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\civilian\\Sheds\\Shed_10_F.p3d",
-              "Transform": [-2.1098146,0.20635009,0.6160451]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,-0.616045,0.20635009,-2.1098146]
             }
           ]
         }
@@ -2111,23 +2111,23 @@
         }
       },
       {
-        "Size": [4.3847303,3.40105],
+        "Size": [3.40105,4.3847303],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\farms\\greenhouse_01_damaged_f.p3d",
-              "Transform": [-0.18479013,1.4006516,0.042810082]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,-0.042810075,1.4006516,-0.18479013]
             }
           ]
         }
       },
       {
-        "Size": [4.3847303,3.40105],
+        "Size": [3.40105,4.3847303],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\farms\\greenhouse_01_f.p3d",
-              "Transform": [-0.18479013,1.4006516,0.042810082]
+              "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,-0.042810075,1.4006516,-0.18479013]
             }
           ]
         }
@@ -2135,12 +2135,12 @@
     ],
     "Agricultural": [
       {
-        "Size": [8.273781,15.569559],
+        "Size": [15.569559,8.273781],
         "Composition": {
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\industrial\\farms\\barn_02_f.p3d",
-              "Transform": [0.077851295,4.203348,0.014415264]
+              "Transform": [-4.371139E-08,0,-1,0,1,0,1,0,-4.371139E-08,0.01441526,4.203348,-0.077851295]
             }
           ]
         }
@@ -2301,6 +2301,28 @@
             {
               "Model": "a3\\structures_f_enoch\\industrial\\garages\\garagerow_01_small_f.p3d",
               "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-2.0555301E-07,1.5881983,-2.3512523]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.2134323,7.1917944],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_01_f.p3d",
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,2.632839,1.066115,-2.8022053]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.2134323,7.1917944],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\industrial\\houses\\workshop_01_grey_f.p3d",
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,2.632839,1.066115,-2.8022053]
             }
           ]
         }
@@ -3580,7 +3602,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Calvary_03\\Calvary_03_F.p3d",
-              "Transform": [-0.0029366165,1.4441341,0.00047418475]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.0029366165,1.4441341,-0.000474185]
             }
           ]
         },
@@ -3593,7 +3615,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_argo\\cultural\\statues\\statue_01_f.p3d",
-              "Transform": [0.0923331,1.2258248,-0.032607682]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-0.0923331,1.2258248,0.03260769]
             }
           ]
         },
@@ -3604,7 +3626,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_argo\\cultural\\statues\\statue_02_f.p3d",
-              "Transform": [-0.13189292,1.5199927,0]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.13189292,1.5199927,-1.1530445E-08]
             }
           ]
         },
@@ -3615,7 +3637,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Statues\\Statue_03_F.p3d",
-              "Transform": [4.0978193E-08,1.323556,-4.4703484E-08]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-4.097819E-08,1.323556,4.4703487E-08]
             }
           ]
         },
@@ -3626,7 +3648,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f\\civ\\statues\\maroula_f.p3d",
-              "Transform": [5.066395E-06,1.4933124,3.144145E-06]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-5.0663953E-06,1.4933124,-3.1441446E-06]
             }
           ]
         },
@@ -3637,7 +3659,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_argo\\cultural\\statues\\monument_01_f.p3d",
-              "Transform": [-0.0024946332,2.4200878,-0.0026287436]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.0024946334,2.4200878,0.0026287434]
             }
           ]
         },
@@ -3672,7 +3694,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Statues\\Monument_02_F.p3d",
-              "Transform": [0.00060877204,1.612504,-0.0016396195]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,-0.0006087719,1.612504,0.0016396195]
             }
           ]
         },
@@ -3742,7 +3764,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Statues\\OldSculpture_01_F.p3d",
-              "Transform": [-0.006516576,1.4047977,-0.08052327]
+              "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.006516583,1.4047977,0.08052327]
             }
           ]
         },
