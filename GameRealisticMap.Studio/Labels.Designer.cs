@@ -1627,6 +1627,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Launch Arma 3.
+        /// </summary>
+        public static string LaunchArma3 {
+            get {
+                return ResourceManager.GetString("LaunchArma3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Launch Arma 3 with default profile and required mods..
+        /// </summary>
+        public static string LaunchArma3Hint {
+            get {
+                return ResourceManager.GetString("LaunchArma3Hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ❌ License not approved.
         /// </summary>
         public static string LicenseNotApproved {

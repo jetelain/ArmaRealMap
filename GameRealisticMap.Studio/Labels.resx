@@ -891,4 +891,10 @@ You may eventually enable other mods.</value>
   <data name="RotateM90" xml:space="preserve">
     <value>Rotate -90°</value>
   </data>
+  <data name="LaunchArma3" xml:space="preserve">
+    <value>Launch Arma 3</value>
+  </data>
+  <data name="LaunchArma3Hint" xml:space="preserve">
+    <value>Launch Arma 3 with default profile and required mods.</value>
+  </data>
 </root>

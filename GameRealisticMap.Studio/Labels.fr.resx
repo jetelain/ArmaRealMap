@@ -891,4 +891,10 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="RotateM90" xml:space="preserve">
     <value>Pivoter -90°</value>
   </data>
+  <data name="LaunchArma3" xml:space="preserve">
+    <value>Lancer Arma 3</value>
+  </data>
+  <data name="LaunchArma3Hint" xml:space="preserve">
+    <value>Lancer Arma 3 avec le profil par défaut et les mods requis.</value>
+  </data>
 </root>

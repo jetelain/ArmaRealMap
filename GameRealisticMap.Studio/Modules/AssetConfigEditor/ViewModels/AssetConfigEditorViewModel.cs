@@ -426,6 +426,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 task.AddSuccessAction(() => ShellHelper.OpenUri(config.TargetModDirectory), Labels.ViewInFileExplorer);
                 task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, name));
+                task.AddSuccessAction(() => Arma3Helper.Launch(assets.Dependencies, config.TargetModDirectory, config.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
                 await Arma3LauncherHelper.CreateLauncherPresetAsync(assets.Dependencies, config.TargetModDirectory, "GRM - " + name);
             }
         }
