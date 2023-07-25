@@ -1,4 +1,4 @@
-﻿Icons made by Freepik, Mihimihi and juicy_fish from https://www.flaticon.com/. Used under commercial license for use only in GameRealisticMap Studio.
+﻿Icons made by Freepik, Mihimihi, Smashicons and juicy_fish from https://www.flaticon.com/. Used under commercial license for use only in GameRealisticMap Studio.
 
 GameRealisticMap Studio uses third-party libraries :
 - GeminiWpf (Ms-PL)

@@ -8,6 +8,7 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
+using GameRealisticMap.Preview;
 using GameRealisticMap.Reporting;
 using HugeImages.Storage;
 
@@ -48,7 +49,7 @@ namespace GameRealisticMap.Arma3
 
         protected virtual BuildContext CreateBuildContext(IProgressTask progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
         {
-            var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary);
+            var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary, assets.Railways);
             return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
         }
 
@@ -101,6 +102,10 @@ namespace GameRealisticMap.Arma3
             {
                 return null;
             }
+
+#if DEBUG
+            PreviewRender.RenderHtml(context, "debug.html").Wait();
+#endif
 
             // Convert PAA
             await projectDrive.ProcessImageToPaa(progress);

@@ -8,25 +8,25 @@ using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
-namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
+namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Railways
 {
-    internal class RailwaysViewModel : AssetBase<RailwaysDefinition>, IExplorerTreeItemCounter
+    internal class RailwaysCrossingViewModel : AssetBase<List<RailwayCrossingDefinition>>, IExplorerTreeItemCounter
     {
-        public RailwaysViewModel(RailwaysDefinition? definition, AssetConfigEditorViewModel parent)
-            : base(parent, "Railways")
+        public RailwaysCrossingViewModel(List<RailwayCrossingDefinition>? definition, AssetConfigEditorViewModel parent)
+            : base(parent, "RailwaysCrossing")
         {
             if (definition != null)
             {
-                Items = new ObservableCollection<RailwayStraightItem>(definition.Straights.Select(d => new RailwayStraightItem(d)));
+                Items = new ObservableCollection<RailwayCrossingItem>(definition.Select(d => new RailwayCrossingItem(d)));
             }
             else
             {
                 Items = new();
             }
-            RemoveItem = new RelayCommand(item => Items.RemoveUndoable(UndoRedoManager, (RailwayStraightItem)item));
+            RemoveItem = new RelayCommand(item => Items.RemoveUndoable(UndoRedoManager, (RailwayCrossingItem)item));
         }
 
-        public ObservableCollection<RailwayStraightItem> Items { get; }
+        public ObservableCollection<RailwayCrossingItem> Items { get; }
 
         public string DensityText => string.Empty; // To avoid binding error
 
@@ -34,14 +34,14 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public bool IsEmpty { get { return Items.Count == 0; } }
 
-        public override RailwaysDefinition ToDefinition()
+        public override List<RailwayCrossingDefinition> ToDefinition()
         {
-            return new RailwaysDefinition(Items.Select(i => i.ToDefinition()).ToList());
+            return Items.Select(i => i.ToDefinition()).ToList();
         }
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.AddUndoable(UndoRedoManager, new RailwayStraightItem(new StraightSegmentDefinition(composition, detected.GeneralRadius.Radius)));
+            Items.AddUndoable(UndoRedoManager, new RailwayCrossingItem(new RailwayCrossingDefinition(composition, detected.GeneralRadius.Radius, detected.GeneralRadius.Radius/2)));
         }
 
         public override void Equilibrate()

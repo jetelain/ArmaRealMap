@@ -90,5 +90,10 @@ namespace GameRealisticMap.Geometries
         {
             return new TerrainPoint(left.Vector - right);
         }
+
+        public TerrainPoint ToIntPointPrecision()
+        {
+            return new TerrainPoint(ToIntPoint());
+        }
     }
 }

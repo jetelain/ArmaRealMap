@@ -37,7 +37,7 @@ namespace GameRealisticMap.Preview
                     filter = (t) => t != typeof(ElevationData);
                 }
 
-                var catalog = new BuildersCatalog(progress, library, true);
+                var catalog = new BuildersCatalog(progress, library, null, true);
                 var count = catalog.CountOfType<IGeoJsonData>(filter);
                 progress.Total = count + 2;
 
