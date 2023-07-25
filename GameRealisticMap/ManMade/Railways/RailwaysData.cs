@@ -5,7 +5,7 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Railways
 {
-    internal class RailwaysData : IGeoJsonData
+    public class RailwaysData : IGeoJsonData
     {
         [JsonConstructor]
         public RailwaysData(List<Railway> railways)

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
@@ -206,6 +205,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(TextureSizeInMeters));
             BaseWorldName = arma3Assets.BaseWorldName;
             BaseDependency = arma3Assets.BaseDependency;
+            Railways = new RailwaysViewModel(arma3Assets.Railways, this);
+            NotifyOfPropertyChange(nameof(Railways));
         }
 
         private List<ObjectsViewModel> GetObjects(Arma3Assets arma3Assets)
@@ -295,6 +296,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .OrderBy(k => k.Key)
                 .ToDictionary(k => k.Key, k => k.Bridge!);
             json.Ponds = Ponds.ToDictionary(p => p.Id, k => k.ToDefinition());
+            json.Railways = Railways?.ToDefinition();
             json.BaseDependency = baseDependency;
             json.BaseWorldName = baseWorldName;
             json.Dependencies = ComputeModDependencies().Select(GetSteamId).Where(s => s != null).Select(m => new ModDependencyDefinition(m!)).ToList();
@@ -367,7 +369,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             set { baseDependency = value; NotifyOfPropertyChange(); }
         }
 
+        public RailwaysViewModel? Railways { get; private set; }
+
         public bool HasMissingMods => MissingMods.Count > 0;
+
         public List<MissingMod> MissingMods { get; private set; } = new List<MissingMod>();
 
         public IEnumerable<string> ListReferencedModels()
@@ -378,6 +383,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .Concat(Objects.SelectMany(f => f.GetModels()))
                 .Concat(Roads.SelectMany(f => f.GetModels()))
                 .Concat(Ponds.Where(p => !string.IsNullOrEmpty(p.Model)).Select(p => p.Model!))
+                .Concat(Railways?.GetModels() ?? Enumerable.Empty<string>())
                 .Distinct(StringComparer.OrdinalIgnoreCase);
         }
 

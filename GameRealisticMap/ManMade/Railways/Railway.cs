@@ -4,7 +4,7 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.ManMade.Railways
 {
-    internal class Railway : ITerrainEnvelope, IWay
+    public class Railway : ITerrainEnvelope, IWay
     {
         [JsonConstructor]
         public Railway(WaySpecialSegment specialSegment, TerrainPath path)

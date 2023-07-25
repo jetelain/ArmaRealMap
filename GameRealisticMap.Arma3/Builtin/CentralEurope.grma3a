@@ -3860,6 +3860,65 @@
       }
     ]
   },
+  "Railways": {
+    "Straights": [
+      {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_2_F.p3d",
+              "Transform": [0,-0.20478594,0]
+            }
+          ]
+        },
+        "Size": 2
+      },
+      {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_4_F.p3d",
+              "Transform": [0,-0.20478594,0]
+            }
+          ]
+        },
+        "Size": 4
+      },
+      {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_8_F.p3d",
+              "Transform": [0,-0.20478594,0]
+            }
+          ]
+        },
+        "Size": 8
+      },
+      {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_25_F.p3d",
+              "Transform": [0,-0.20478594,0]
+            }
+          ]
+        },
+        "Size": 25
+      },
+      {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_40_F.p3d",
+              "Transform": [0,-0.20478594,0]
+            }
+          ]
+        },
+        "Size": 40
+      }
+    ]
+  },
   "BaseWorldName": "arm_world_centraleurope",
   "BaseDependency": "arm_centraleurope",
   "Dependencies": [
