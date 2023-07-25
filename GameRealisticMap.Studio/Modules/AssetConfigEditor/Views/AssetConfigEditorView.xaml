@@ -309,7 +309,7 @@
 
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
-                        <TextBlock FontSize="25"><Run Text="Railways"/></TextBlock>
+                        <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Railways}"/></TextBlock>
                     </Expander.Header>
                     <StackPanel>
                         <DataGrid ItemsSource="{Binding Railways}" AutoGenerateColumns="false" Margin="0 10 0 0">

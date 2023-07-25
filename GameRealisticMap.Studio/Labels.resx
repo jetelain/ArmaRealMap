@@ -897,4 +897,16 @@ You may eventually enable other mods.</value>
   <data name="LaunchArma3Hint" xml:space="preserve">
     <value>Launch Arma 3 with default profile and required mods.</value>
   </data>
+  <data name="AssetRailwaysCrossing" xml:space="preserve">
+    <value>Crossing</value>
+  </data>
+  <data name="AssetRailwaysStraight" xml:space="preserve">
+    <value>Straight rails</value>
+  </data>
+  <data name="Railways" xml:space="preserve">
+    <value>Railways</value>
+  </data>
+  <data name="MaxRoadSize" xml:space="preserve">
+    <value>Max Road Size</value>
+  </data>
 </root>

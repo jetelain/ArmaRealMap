@@ -897,4 +897,16 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="LaunchArma3Hint" xml:space="preserve">
     <value>Lancer Arma 3 avec le profil par défaut et les mods requis.</value>
   </data>
+  <data name="AssetRailwaysStraight" xml:space="preserve">
+    <value>Rails droits</value>
+  </data>
+  <data name="AssetRailwaysCrossing" xml:space="preserve">
+    <value>Passage à niveau</value>
+  </data>
+  <data name="Railways" xml:space="preserve">
+    <value>Voies ferrées</value>
+  </data>
+  <data name="MaxRoadSize" xml:space="preserve">
+    <value>Largeur max de route</value>
+  </data>
 </root>

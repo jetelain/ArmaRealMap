@@ -81,7 +81,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 new ExplorerTreeItem(Labels.AssetObjects, Objects, "Objects"),
                 new ExplorerTreeItem(Labels.GroundMaterials, Materials, "Materials"),
                 new ExplorerTreeItem(Labels.RoadsAndBridges, Roads, "Road"),
-                new ExplorerTreeItem("Railways", Railways, "Railways")
+                new ExplorerTreeItem(Labels.Railways, Railways, "Railways")
             };
             UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; CanCopyFrom = false; };
             AdditionalFilling = CreateNatureFilling();
