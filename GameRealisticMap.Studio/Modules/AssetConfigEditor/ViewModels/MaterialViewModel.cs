@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
-using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Studio.Modules.Arma3Data;
@@ -21,7 +17,7 @@ using Image = SixLabors.ImageSharp.Image;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
-    internal class MaterialViewModel : AssetBase<TerrainMaterialUsage, TerrainMaterial>
+    internal class MaterialViewModel : AssetIdBase<TerrainMaterialUsage, TerrainMaterial>
     {
         private byte[]? _fakeSatPngImage;
         private BitmapFrame? _fakeSatPreview;

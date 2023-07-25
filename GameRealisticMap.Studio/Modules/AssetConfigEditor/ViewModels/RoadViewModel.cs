@@ -10,7 +10,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
-    internal class RoadViewModel : AssetBase<RoadTypeId, Arma3RoadTypeInfos>
+    internal class RoadViewModel : AssetIdBase<RoadTypeId, Arma3RoadTypeInfos>
     {
         private static readonly DefaultRoadTypeLibrary defaultRoadTypeLibrary = new DefaultRoadTypeLibrary();
         private float clearWidth;
