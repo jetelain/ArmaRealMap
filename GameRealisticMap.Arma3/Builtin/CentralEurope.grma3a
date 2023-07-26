@@ -3860,6 +3860,107 @@
       }
     ]
   },
+  "Railways": {
+    "Straights": [
+      {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_2_F.p3d",
+              "Transform": [ 0, -0.20478594, 0 ]
+            }
+          ]
+        },
+        "Size": 2
+      },
+      {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_4_F.p3d",
+              "Transform": [ 0, -0.20478594, 0 ]
+            }
+          ]
+        },
+        "Size": 4
+      },
+      {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_8_F.p3d",
+              "Transform": [ 0, -0.20478594, 0 ]
+            }
+          ]
+        },
+        "Size": 8
+      },
+      {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_25_F.p3d",
+              "Transform": [ 0, -0.20478594, 0 ]
+            }
+          ]
+        },
+        "Size": 25
+      },
+      {
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_40_F.p3d",
+              "Transform": [ 0, -0.20478594, 0 ]
+            }
+          ]
+        },
+        "Size": 40
+      }
+    ],
+    "Crossings": [
+      {
+        "RoadMaxSize": 14,
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Up_25_F.p3d",
+              "Transform": [ 0, -0.51894, 25 ]
+            },
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Passing_25_F.p3d",
+              "Transform": [ 0, -0.46082354, 0 ]
+            },
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Down_25_F.p3d",
+              "Transform": [ 0, -0.5189457, -25 ]
+            }
+          ]
+        },
+        "Size": 75
+      },
+      {
+        "RoadMaxSize": 9,
+        "Model": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Up_25_F.p3d",
+              "Transform": [ 0, -0.51894, 17.5 ]
+            },
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Passing_10_F.p3d",
+              "Transform": [ 0, -0.46987486, 0 ]
+            },
+            {
+              "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Down_25_F.p3d",
+              "Transform": [ 0, -0.5189457, -17.5 ]
+            }
+          ]
+        },
+        "Size": 60
+      }
+    ]
+  },
   "BaseWorldName": "arm_world_centraleurope",
   "BaseDependency": "arm_centraleurope",
   "Dependencies": [

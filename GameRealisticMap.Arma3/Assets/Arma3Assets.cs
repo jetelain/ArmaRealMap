@@ -36,6 +36,7 @@ namespace GameRealisticMap.Arma3.Assets
 
         public Dictionary<FenceTypeId, List<FenceDefinition>> Fences { get; set; } = new();
 
+        public RailwaysDefinition? Railways { get; set; }
 
         public IReadOnlyCollection<BasicCollectionDefinition> GetBasicCollections(BasicCollectionId basicId)
         {

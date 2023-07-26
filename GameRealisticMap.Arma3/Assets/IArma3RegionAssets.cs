@@ -31,5 +31,7 @@ namespace GameRealisticMap.Arma3.Assets
         BridgeDefinition? GetBridge(RoadTypeId roadType);
 
         IReadOnlyCollection<FenceDefinition> GetFences(FenceTypeId typeId);
+
+        RailwaysDefinition? Railways { get; }
     }
 }

@@ -556,6 +556,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Crossing.
+        /// </summary>
+        public static string AssetRailwaysCrossing {
+            get {
+                return ResourceManager.GetString("AssetRailwaysCrossing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Straight rails.
+        /// </summary>
+        public static string AssetRailwaysStraight {
+            get {
+                return ResourceManager.GetString("AssetRailwaysStraight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Recycling Container.
         /// </summary>
         public static string AssetRecyclingContainer {
@@ -1728,6 +1746,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Max Road Size.
+        /// </summary>
+        public static string MaxRoadSize {
+            get {
+                return ResourceManager.GetString("MaxRoadSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Max Scale.
         /// </summary>
         public static string MaxScale {
@@ -1959,6 +1986,15 @@ namespace GameRealisticMap.Studio {
         public static string Radius {
             get {
                 return ResourceManager.GetString("Radius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Railways.
+        /// </summary>
+        public static string Railways {
+            get {
+                return ResourceManager.GetString("Railways", resourceCulture);
             }
         }
         

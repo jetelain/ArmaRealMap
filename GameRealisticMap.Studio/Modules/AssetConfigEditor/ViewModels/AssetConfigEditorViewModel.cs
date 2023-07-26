@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
@@ -19,6 +18,7 @@ using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Railways;
 using GameRealisticMap.Studio.Modules.CompositionTool;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer;
@@ -51,6 +51,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public BindableCollection<PondViewModel> Ponds { get; } = new BindableCollection<PondViewModel>();
 
+        public BindableCollection<IAssetCategory> Railways { get; } = new BindableCollection<IAssetCategory>();
+
         public List<ICommandWithLabel> AdditionalFilling { get; }
 
         public List<ICommandWithLabel> AdditionalFences { get; }
@@ -78,7 +80,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 new ExplorerTreeItem(Labels.Buildings, Buildings, "Buildings"),
                 new ExplorerTreeItem(Labels.AssetObjects, Objects, "Objects"),
                 new ExplorerTreeItem(Labels.GroundMaterials, Materials, "Materials"),
-                new ExplorerTreeItem(Labels.RoadsAndBridges, Roads, "Road")
+                new ExplorerTreeItem(Labels.RoadsAndBridges, Roads, "Road"),
+                new ExplorerTreeItem(Labels.Railways, Railways, "Railways")
             };
             UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; CanCopyFrom = false; };
             AdditionalFilling = CreateNatureFilling();
@@ -184,6 +187,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             Roads.Clear();
             Materials.Clear();
             Ponds.Clear();
+            Railways.Clear();
 
             Filling.AddRange(GetFilling(arma3Assets));
             Fences.AddRange(GetFences(arma3Assets));
@@ -206,6 +210,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(TextureSizeInMeters));
             BaseWorldName = arma3Assets.BaseWorldName;
             BaseDependency = arma3Assets.BaseDependency;
+            Railways.Add(new RailwaysStraightViewModel(arma3Assets.Railways?.Straights, this));
+            Railways.Add(new RailwaysCrossingViewModel(arma3Assets.Railways?.Crossings, this));
         }
 
         private List<ObjectsViewModel> GetObjects(Arma3Assets arma3Assets)
@@ -295,6 +301,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .OrderBy(k => k.Key)
                 .ToDictionary(k => k.Key, k => k.Bridge!);
             json.Ponds = Ponds.ToDictionary(p => p.Id, k => k.ToDefinition());
+            json.Railways = new RailwaysDefinition(
+                Railways.OfType<RailwaysStraightViewModel>().FirstOrDefault()?.ToDefinition() ?? new List<StraightSegmentDefinition>(),
+                Railways.OfType<RailwaysCrossingViewModel>().FirstOrDefault()?.ToDefinition() ?? new List<RailwayCrossingDefinition>()            
+                );
             json.BaseDependency = baseDependency;
             json.BaseWorldName = baseWorldName;
             json.Dependencies = ComputeModDependencies().Select(GetSteamId).Where(s => s != null).Select(m => new ModDependencyDefinition(m!)).ToList();
@@ -368,6 +378,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         }
 
         public bool HasMissingMods => MissingMods.Count > 0;
+
         public List<MissingMod> MissingMods { get; private set; } = new List<MissingMod>();
 
         public IEnumerable<string> ListReferencedModels()
@@ -378,6 +389,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .Concat(Objects.SelectMany(f => f.GetModels()))
                 .Concat(Roads.SelectMany(f => f.GetModels()))
                 .Concat(Ponds.Where(p => !string.IsNullOrEmpty(p.Model)).Select(p => p.Model!))
+                .Concat(Railways.SelectMany(f => f.GetModels()))
                 .Distinct(StringComparer.OrdinalIgnoreCase);
         }
 

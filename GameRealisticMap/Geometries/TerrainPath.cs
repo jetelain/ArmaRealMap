@@ -1,12 +1,15 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using ClipperLib;
+using GameRealisticMap.ManMade.Roads;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Distance;
 
 namespace GameRealisticMap.Geometries
 {
+    [DebuggerDisplay("{Length}m {FirstPoint} to {LastPoint}")]
     public class TerrainPath : ITerrainEnvelope, ITerrainGeo
     {
         private readonly Lazy<LineString> asLineString;
@@ -232,6 +235,13 @@ namespace GameRealisticMap.Geometries
         {
             return new TerrainPath(
                 GeometryHelper.SimpleCircle(origin.Vector, radius).Select(v => new TerrainPoint(v)).ToList());
+        }
+
+        public Vector2 GetNormalizedVectorAtIndex(int index)
+        {
+            var a = Points[Math.Max(index - 1, 0)];
+            var b = Points[Math.Min(index + 1, Points.Count - 1)];
+            return Vector2.Normalize(b.Vector - a.Vector);
         }
     }
 }

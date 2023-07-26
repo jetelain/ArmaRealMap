@@ -27,7 +27,7 @@ namespace GameRealisticMap.Arma3
             Generators.Add(new OrientedObjectsGenerator(progress, assets));
             Generators.Add(new BridgeGenerator(progress, assets));
             Generators.Add(new FenceGenerator(progress, assets));
-            // TODO: railway
+            Generators.Add(new RailwayGenerator(progress, assets));
 
             // Nature
             Generators.Add(new ForestEdgeGenerator(progress, assets));

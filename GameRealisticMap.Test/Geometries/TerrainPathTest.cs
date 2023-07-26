@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Numerics;
+using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Test.Geometries
 {
@@ -106,5 +107,20 @@ namespace GameRealisticMap.Test.Geometries
             Assert.Equal(20, pathEx.Length);
             Assert.Equal(new TerrainPoint[] { new(0, 0), new(0, 20) }, pathEx.Points);
         }
+
+        [Fact]
+        public void TerrainPath_GetNormalizedVectorAtIndex()
+        {
+            var path = new TerrainPath(new(0, 0), new(0, 10), new(10, 10), new (20,10));
+            Assert.Equal(new Vector2(0, 1), path.GetNormalizedVectorAtIndex(0));
+            Assert.Equal(new Vector2(0.70710677f, 0.70710677f), path.GetNormalizedVectorAtIndex(1));
+            Assert.Equal(new Vector2(1, 0), path.GetNormalizedVectorAtIndex(2));
+
+            path = new TerrainPath(new(0, 0), new(0, -10), new(-10, -10), new(-20, -10));
+            Assert.Equal(new Vector2(0, -1), path.GetNormalizedVectorAtIndex(0));
+            Assert.Equal(new Vector2(-0.70710677f, -0.70710677f), path.GetNormalizedVectorAtIndex(1));
+            Assert.Equal(new Vector2(-1, 0), path.GetNormalizedVectorAtIndex(2));
+        }
+        
     }
 }

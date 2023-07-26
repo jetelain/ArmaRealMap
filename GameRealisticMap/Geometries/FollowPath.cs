@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace GameRealisticMap.Geometries
 {
@@ -13,6 +14,7 @@ namespace GameRealisticMap.Geometries
         private float length;
         private float positionOnSegment;
         private bool hasReachedEnd;
+        private int index;
 
         public FollowPath(params TerrainPoint[] points)
             : this((IEnumerable<TerrainPoint>)points)
@@ -23,14 +25,17 @@ namespace GameRealisticMap.Geometries
         public FollowPath(IEnumerable<TerrainPoint> points)
         {
             enumerator = points.GetEnumerator();
+            index = 0;
             Init();
         }
 
         public virtual void Reset()
         {
             enumerator.Reset();
+            index = 0;
             Init();
         }
+
         private void Init()
         {
             IsAfterRightAngle = false;
@@ -61,6 +66,7 @@ namespace GameRealisticMap.Geometries
                 positionOnSegment = 0f;
                 return false;
             }
+            index++;
             point = enumerator.Current;
             delta = point.Vector - previousPoint.Vector;
             length = delta.Length();
@@ -84,8 +90,17 @@ namespace GameRealisticMap.Geometries
 
         public bool IsLast => hasReachedEnd;
 
+        /// <summary>
+        /// Index in original list
+        /// </summary>
+        public int Index => index;
+
         public bool Move(float step)
         {
+            if (IsAfterRightAngle)
+            {
+                index++;
+            }
             IsAfterRightAngle = false;
             if (hasReachedEnd)
             {
@@ -112,6 +127,7 @@ namespace GameRealisticMap.Geometries
                     var angle = Math.Abs(Math.Abs(Math.Acos(Vector2.Dot(Vector2.Normalize(delta), Vector2.Normalize(previousDelta)))) - (MathF.PI/2)); 
                     if ( angle < 0.1d )
                     {
+                        index--;
                         previousPosition = position;
                         position = previousPoint;
                         positionOnSegment = 0;
