@@ -45,7 +45,6 @@ namespace GameRealisticMap.Geometries
             previousPoint = null;
             if (enumerator.MoveNext())
             {
-                index++;
                 position = point = enumerator.Current;
                 delta = Vector2.Zero;
                 hasReachedEnd = false;
@@ -98,6 +97,10 @@ namespace GameRealisticMap.Geometries
 
         public bool Move(float step)
         {
+            if (IsAfterRightAngle)
+            {
+                index++;
+            }
             IsAfterRightAngle = false;
             if (hasReachedEnd)
             {
@@ -124,6 +127,7 @@ namespace GameRealisticMap.Geometries
                     var angle = Math.Abs(Math.Abs(Math.Acos(Vector2.Dot(Vector2.Normalize(delta), Vector2.Normalize(previousDelta)))) - (MathF.PI/2)); 
                     if ( angle < 0.1d )
                     {
+                        index--;
                         previousPosition = position;
                         position = previousPoint;
                         positionOnSegment = 0;

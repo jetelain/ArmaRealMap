@@ -90,9 +90,9 @@ namespace GameRealisticMap.ManMade.Railways
                     var part2Index = pathPart2.Index;
                     var point2 = pathPart2.Current;
 
-                    var seg1 = new TerrainPath(segment.Points.Take(indexInRailway - part1Index + 2).Concat(new[] { point1 }).ToList());
+                    var seg1 = new TerrainPath(segment.Points.Take(indexInRailway - part1Index + 1).Concat(new[] { point1 }).ToList());
                     var seg2 = new TerrainPath(point1, crossingPoint, point2);
-                    var seg3 = new TerrainPath(new[] { point2 }.Concat(segment.Points.Skip(indexInRailway - part2Index + 3)).ToList());
+                    var seg3 = new TerrainPath(new[] { point2 }.Concat(segment.Points.Skip(indexInRailway - part2Index + 2)).ToList());
 
                     AddNormalSegment(railways, crossing, roadsIndex, seg1);
 
