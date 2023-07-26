@@ -240,7 +240,7 @@ namespace GameRealisticMap.Geometries
         public Vector2 GetNormalizedVectorAtIndex(int index)
         {
             var a = Points[Math.Max(index - 1, 0)];
-            var b = Points[Math.Min(index + 2, Points.Count - 1)];
+            var b = Points[Math.Min(index + 1, Points.Count - 1)];
             return Vector2.Normalize(b.Vector - a.Vector);
         }
     }
