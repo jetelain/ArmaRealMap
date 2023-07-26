@@ -41,11 +41,14 @@ namespace GameRealisticMap.Arma3.ManMade
             }
         }
 
-        private static void ProgessBridge(List<TerrainBuilderObject> objects, IElevationGrid grid, BridgeDefinition definition, TerrainPath path)
+        public static void ProgessBridge(List<TerrainBuilderObject> objects, IElevationGrid grid, BridgeDefinition definition, TerrainPath path)
         {
+            var elevationDelta = grid.ElevationAt(path.FirstPoint)- grid.ElevationAt(path.LastPoint);
+
             var delta = path.FirstPoint.Vector - path.LastPoint.Vector;
             var angle = ((MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI) + 90f) % 360f;
-            var bridgeLength = path.Length;
+            var bridgeLength = elevationDelta == 0 ? path.Length : MathF.Sqrt((path.Length * path.Length) + (elevationDelta * elevationDelta));
+
             if (bridgeLength <= definition.Single.Size) // One object fits
             {
                 SinglePartBridge(objects, path, grid, definition.Single, angle);
@@ -70,12 +73,21 @@ namespace GameRealisticMap.Arma3.ManMade
                 angle,
                 pitch));
 
-            objects.AddRange(definition.Middle.Model.ToTerrainBuilderObjects(
-                new TerrainPoint(Vector2.Lerp(path.FirstPoint.Vector, path.LastPoint.Vector, 0.5f)),
-                (elevationStart + elevationEnd) / 2f,
-                angle,
-                pitch));
-
+            var middleSize = (bridgeLength - definition.Start.Size - definition.End.Size);
+            var middleParts = MathF.Ceiling(middleSize / definition.Middle.Size);
+            var mPartDelta = middleSize / bridgeLength / middleParts;
+            var mdelta = (definition.Start.Size / bridgeLength) + (mPartDelta/2);
+            for (int n =0; n< middleParts; n++)
+            {
+     
+                objects.AddRange(definition.Middle.Model.ToTerrainBuilderObjects(
+                    new TerrainPoint(Vector2.Lerp(path.FirstPoint.Vector, path.LastPoint.Vector, mdelta)),
+                    elevationStart + ((elevationEnd - elevationStart) * (mdelta)),
+                    angle,
+                    pitch));
+                mdelta += mPartDelta;
+            }
+            
             objects.AddRange(definition.End.Model.ToTerrainBuilderObjects(
                 new TerrainPoint(Vector2.Lerp(path.FirstPoint.Vector, path.LastPoint.Vector, endDelta)),
                 elevationStart + ((elevationEnd - elevationStart) * (endDelta)),
