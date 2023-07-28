@@ -105,7 +105,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
         public float Elevation => elevation;
 
         /// <summary>
-        /// "Yaw" in Terrain Builder
+        /// "Yaw" in Terrain Builder / Heading
         /// </summary>
         public float Yaw => yaw;
 
