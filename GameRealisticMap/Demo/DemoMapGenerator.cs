@@ -16,6 +16,7 @@ using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Preview;
+using NetTopologySuite.Utilities;
 using SixLabors.ImageSharp.Drawing;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
@@ -306,6 +307,25 @@ namespace GameRealisticMap.Demo
             CreateBridgePattern(typeid, roads, grid, 25, 128, new TerrainPoint(128 + 256, 128) + offset, 20f);
             CreateBridgePattern(typeid, roads, grid, 75, 256, new TerrainPoint(256, 385) + offset);
             CreateBridgePattern(typeid, roads, grid, 75, 256, new TerrainPoint(256, 512 + 385) + offset, 20f);
+            CreateLargeBridge(typeid, roads, grid, new TerrainPoint(256, 1024+64) + offset);
+        }
+
+        private void CreateLargeBridge(IRoadTypeInfos typeid, List<Road> roads, ElevationGrid grid, TerrainPoint basePoint)
+        {
+            var min = basePoint - new Vector2(0,32);
+            var max = basePoint + new Vector2(512,32);
+            using (var mutate = grid.PrepareToMutate(min, max, 5, 25))
+            {
+                mutate.Image.Mutate(d =>
+                {
+                    var p = mutate.ToPixel(min + new Vector2(25, 0));
+                    d.Fill(new SolidBrush(mutate.ElevationToColor(10f)), new RectangularPolygon(p.X, p.Y, 245f / grid.CellSize.X, 64f / grid.CellSize.X));
+                });
+                mutate.Apply();
+            }
+            roads.Add(new Road(WaySpecialSegment.Normal, new TerrainPath(basePoint + new Vector2(0, 0), basePoint + new Vector2(20, 0)), typeid));
+            roads.Add(new Road(WaySpecialSegment.Bridge, new TerrainPath(basePoint + new Vector2(20, 0), basePoint + new Vector2(270, 0)), typeid));
+            roads.Add(new Road(WaySpecialSegment.Normal, new TerrainPath(basePoint + new Vector2(270, 0), basePoint + new Vector2(290, 0)), typeid));
         }
 
         private void CreateBridgePattern(IRoadTypeInfos typeid, List<Road> roads, ElevationGrid grid, int bridgeGap, int radius, TerrainPoint center, float centerElevation = 15f)
