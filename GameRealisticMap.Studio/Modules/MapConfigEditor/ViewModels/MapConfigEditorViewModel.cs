@@ -21,6 +21,7 @@ using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
+using Gemini.Framework;
 using Gemini.Framework.Services;
 using HugeImages.Storage;
 using MapControl;
@@ -28,7 +29,7 @@ using Microsoft.Win32;
 
 namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 {
-    internal class MapConfigEditorViewModel : PersistedDocument2, IExplorerRootTreeItem
+    internal class MapConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem
     {
         private readonly IShell _shell;
         private readonly IArma3DataModule _arma3DataModule;

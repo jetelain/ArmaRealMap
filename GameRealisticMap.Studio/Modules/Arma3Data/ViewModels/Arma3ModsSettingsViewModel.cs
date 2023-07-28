@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
-using System.Windows.Documents;
+using System.Threading.Tasks;
 using Caliburn.Micro;
-using GameRealisticMap.Arma3;
-using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using Gemini.Modules.Settings;
 
 namespace GameRealisticMap.Studio.Modules.Arma3Data.ViewModels
 {
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    [Export(typeof(ISettingsEditor))]
-    internal class Arma3ModsSettingsViewModel : PropertyChangedBase, ISettingsEditor
+    [Export(typeof(ISettingsEditorAsync))]
+    internal class Arma3ModsSettingsViewModel : PropertyChangedBase, ISettingsEditorAsync
     {
         private readonly IArma3DataModule _arma3;
         private readonly IArma3ModsService _modsService;
@@ -52,11 +49,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.ViewModels
                 .ToList();
         }
 
-        public void ApplyChanges()
+        public async Task ApplyChangesAsync()
         {
             if ( mods != null)
             {
-                _ = _arma3.ChangeActiveMods(mods.Where(m => m.IsActive).Select(m => m.Path));
+                await _arma3.ChangeActiveMods(mods.Where(m => m.IsActive).Select(m => m.Path));
             }
         }
     }

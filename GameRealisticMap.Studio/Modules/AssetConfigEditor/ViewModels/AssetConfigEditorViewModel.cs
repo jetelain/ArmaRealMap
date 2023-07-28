@@ -31,7 +31,7 @@ using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
-    internal class AssetConfigEditorViewModel : PersistedDocument2, IExplorerRootTreeItem
+    internal class AssetConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem
     {
         private readonly IArma3DataModule _arma3Data;
         private readonly IShell _shell;
