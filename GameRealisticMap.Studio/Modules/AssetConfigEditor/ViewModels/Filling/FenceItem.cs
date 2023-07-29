@@ -6,9 +6,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
     internal class FenceItem : PropertyChangedBase, IWithComposition, IWithCompositionRectangle
     {
-        public FenceItem(StraightSegmentDefinition d)
+        public FenceItem(FenceSegmentDefinition d)
         {
             _size = d.Size;
+            _proportion = d.Proportion;
             Composition = new CompositionViewModel(d.Model);
         }
 
@@ -19,6 +20,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             set { _size = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Width)); NotifyOfPropertyChange(nameof(Depth)); }
         }
 
+        private float _proportion;
+        public float Proportion
+        {
+            get { return _proportion; }
+            set { _proportion = value; NotifyOfPropertyChange(); }
+        }
+
         public CompositionViewModel Composition { get; protected set; }
 
         // TODO: Fences should be oriented North-South and not West-East
@@ -27,9 +35,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public virtual float Width { get => Size; set => Size = value; }
 
-        internal StraightSegmentDefinition ToDefinition()
+        internal FenceSegmentDefinition ToDefinition()
         {
-            return new StraightSegmentDefinition(Composition.ToDefinition(), Size);
+            return new FenceSegmentDefinition(Composition.ToDefinition(), Size, Proportion);
         }
 
         public void CompositionWasRotated(int degrees)

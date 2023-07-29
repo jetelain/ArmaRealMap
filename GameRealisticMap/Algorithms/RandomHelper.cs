@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Algorithms.Definitions;
+﻿using System.Linq;
+using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Algorithms
@@ -68,6 +69,31 @@ namespace GameRealisticMap.Algorithms
                 return densityDefinition.MinDensity;
             }
             return densityDefinition.MinDensity + (densityDefinition.MaxDensity - densityDefinition.MinDensity) * random.NextDouble();
+        }
+
+        public static T? GetRandomWithProportion<T>(this IEnumerable<T> list, Random random) where T : IWithProportion
+        {
+            var value = random.NextDouble();
+            var matching = list.ToList();
+            if (matching.Count == 1)
+            {
+                return matching[0];
+            }
+            if (matching.Count == 0)
+            {
+                return default(T);
+            }
+            var sumOfProportions = matching.Sum(i => i.Proportion);
+            var shift = 0d;
+            foreach (var item in matching)
+            {
+                shift += item.Proportion / sumOfProportions;
+                if (shift > value)
+                {
+                    return item;
+                }
+            }
+            return default(T);
         }
 
     }

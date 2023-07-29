@@ -23,6 +23,21 @@
                     <Run Text="{x:Static r:Labels.AddAComposition}"/>
                 </Button>
             </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+                <Label VerticalAlignment="Top">
+                    <Run Text="Proportion mode" />
+                </Label>
+                <StackPanel>
+                    <TextBlock Margin="5">
+                        <RadioButton GroupName="Proportion" IsChecked="{Binding IsProportionPerSize}"><Run Text="Proportion is by size, generator will always use the largest elements when possible (default)." /></RadioButton>
+                    </TextBlock>
+                    <TextBlock Margin="5">
+                        <RadioButton GroupName="Proportion" IsChecked="{Binding IsProportionForFullList}"><Run Text="Proportion is global to the list, generator will use any element even if a larger one would have been possible." /></RadioButton>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+            
             <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="{x:Static r:Labels.Name}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
@@ -34,6 +49,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTextColumn Header="{x:Static r:Labels.Size}" Binding="{Binding Size}" Width="100" />
+                    <DataGridTextColumn Header="Proportion" Binding="{Binding Proportion}" Width="100" />
                     <DataGridTemplateColumn Width="75">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
-using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
@@ -13,10 +12,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
     internal class FencesViewModel : AssetProbabilityBase<FenceTypeId, FenceDefinition>, IExplorerTreeItemCounter
     {
+        private bool isProportionForFullList;
+
         public FencesViewModel(FenceTypeId id, FenceDefinition? definition, AssetConfigEditorViewModel parent)
             : base(id, definition, parent)
         {
             label = definition?.Label ?? string.Empty;
+            isProportionForFullList = definition?.IsProportionForFullList ?? false;
             if (definition != null)
             {
                 Items = new ObservableCollection<FenceItem>(definition.Straights.Select(d => new FenceItem(d)));
@@ -36,14 +38,26 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public bool IsEmpty { get { return Items.Count == 0; } }
 
+        public bool IsProportionForFullList
+        {
+            get { return isProportionForFullList; }
+            set { isProportionForFullList = value; NotifyOfPropertyChange(); }
+        }
+
+        public bool IsProportionPerSize
+        {
+            get { return !isProportionForFullList; }
+            set { isProportionForFullList = !value; }
+        }
+
         public override FenceDefinition ToDefinition()
         {
-            return new FenceDefinition(Probability, Items.Select(i => i.ToDefinition()).ToList(), Label);
+            return new FenceDefinition(Probability, Items.Select(i => i.ToDefinition()).ToList(), isProportionForFullList, Label);
         }
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.AddUndoable(UndoRedoManager, new FenceItem(new StraightSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
+            Items.AddUndoable(UndoRedoManager, new FenceItem(new FenceSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
         }
 
         public override void Equilibrate()
