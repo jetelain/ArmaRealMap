@@ -4,12 +4,12 @@ namespace GameRealisticMap.Arma3.Assets
 {
     public class FenceDefinition : ISegmentsProportionDefinition<Composition>
     {
-        public FenceDefinition(double probability, List<FenceSegmentDefinition> straights, bool isProportionForFullList = false, string label = "")
+        public FenceDefinition(double probability, List<FenceSegmentDefinition> straights, bool useAnySize = false, string label = "")
         {
             Probability = probability;
             Straights = straights;
             Label = label;
-            IsProportionForFullList = isProportionForFullList;
+            UseAnySize = useAnySize;
         }
 
         public double Probability { get; }
@@ -18,7 +18,7 @@ namespace GameRealisticMap.Arma3.Assets
 
         public string Label { get; }
 
-        public bool IsProportionForFullList { get; }
+        public bool UseAnySize { get; }
 
         IEnumerable<IStraightSegmentProportionDefinition<Composition>> ISegmentsProportionDefinition<Composition>.Straights => Straights;
     }

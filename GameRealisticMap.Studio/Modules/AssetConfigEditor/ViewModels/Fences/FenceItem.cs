@@ -2,7 +2,7 @@
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 
-namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
+namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 {
     internal class FenceItem : PropertyChangedBase, IWithComposition, IWithCompositionRectangle
     {
@@ -14,8 +14,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         }
 
         private float _size;
-        public float Size 
-        { 
+        public float Size
+        {
             get { return _size; }
             set { _size = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Width)); NotifyOfPropertyChange(nameof(Depth)); }
         }

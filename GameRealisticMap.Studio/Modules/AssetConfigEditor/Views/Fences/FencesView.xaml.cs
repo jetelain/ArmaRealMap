@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling
+namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Fences
 {
     /// <summary>
     /// Logique d'interaction pour FencesView.xaml

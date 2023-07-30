@@ -16,6 +16,7 @@ using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Railways;

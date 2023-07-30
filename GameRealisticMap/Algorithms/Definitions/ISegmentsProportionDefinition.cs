@@ -4,6 +4,6 @@
     {
         IEnumerable<IStraightSegmentProportionDefinition<TModelInfo>> Straights { get; }
 
-        bool IsProportionForFullList { get; }
+        bool UseAnySize { get; }
     }
 }

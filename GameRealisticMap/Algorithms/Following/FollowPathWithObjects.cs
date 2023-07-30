@@ -24,7 +24,7 @@ namespace GameRealisticMap.Algorithms.Following
             var straights = lib.Straights;
 
             var maxSize = straights.Max(t => t.Size);
-            var wantedObjects = lib.IsProportionForFullList ? straights.ToList() : straights.Where(t => t.Size == maxSize).ToList();
+            var wantedObjects = lib.UseAnySize ? straights.ToList() : straights.Where(t => t.Size == maxSize).ToList();
             var wantedObject = wantedObjects.GetRandomWithProportion(random) ?? wantedObjects.First();
 
             while (follow.Move(wantedObject.Size))
@@ -66,10 +66,13 @@ namespace GameRealisticMap.Algorithms.Following
 
         public static void PlaceOnPath<TModel>(IEnumerable<IStraightSegmentDefinition<TModel>> straights, List<PlacedModel<TModel>> layer, IEnumerable<TerrainPoint> path)
         {
+            PlaceOnPath(straights,layer, new FollowPath(path));
+        }
+
+        public static void PlaceOnPath<TModel>(IEnumerable<IStraightSegmentDefinition<TModel>> straights, List<PlacedModel<TModel>> layer, FollowPath follow)
+        {
             var width = straights.Max(t => t.Size);
             var maxObj = straights.First(t => t.Size == width);
-
-            var follow = new FollowPath(path);
 
             while (follow.Move(width))
             {
