@@ -226,7 +226,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         protected override async Task DoSave(string filePath)
         {
             using var stream = File.Create(filePath);
-            await JsonSerializer.SerializeAsync(stream, Config);
+            await SaveTo(stream);
         }
 
         public Task GeneratePreview(bool ignoreElevation = false)

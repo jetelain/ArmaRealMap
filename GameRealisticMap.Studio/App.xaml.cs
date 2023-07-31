@@ -51,7 +51,7 @@ namespace GameRealisticMap.Studio
 
         public static string GetLogsPath()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameRealisticMap", "logs");
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameRealisticMap", "Logs");
         }
 
         public static string? GetAppVersion()
