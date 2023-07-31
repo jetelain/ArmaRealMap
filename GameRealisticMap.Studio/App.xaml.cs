@@ -31,7 +31,7 @@ namespace GameRealisticMap.Studio
 
         private static void InitLogging()
         {
-            var logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameRealisticMap", "logs");
+            string logDirectory = GetLogsPath();
 
             Directory.CreateDirectory(logDirectory);
 
@@ -47,6 +47,11 @@ namespace GameRealisticMap.Studio
             });
 
             logger.Info("Started Version {0}", GetAppVersion());
+        }
+
+        public static string GetLogsPath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameRealisticMap", "logs");
         }
 
         public static string? GetAppVersion()

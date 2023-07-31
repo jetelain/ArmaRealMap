@@ -23,6 +23,7 @@ using GameRealisticMap.Studio.Modules.CompositionTool;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
+using GameRealisticMap.Studio.Modules.Main;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using GameRealisticMap.Studio.UndoRedo;
@@ -31,7 +32,7 @@ using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
-    internal class AssetConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem
+    internal class AssetConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem, IMainDocument
     {
         private readonly IArma3DataModule _arma3Data;
         private readonly IShell _shell;
@@ -347,7 +348,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         protected override async Task DoSave(string filePath)
         {
             using var stream = File.Create(filePath);
-            await JsonSerializer.SerializeAsync(stream, ToJson(), Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library));
+            await SaveTo(stream);
             CanCopyFrom = false;
         }
 
@@ -453,6 +454,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 task.AddSuccessAction(() => ShellHelper.OpenUri(_arma3Data.ProjectDrive.GetFullPath(config.PboPrefix)), Labels.ViewInFileExplorer);;
             }
+        }
+        public async Task SaveTo(Stream stream)
+        {
+            await JsonSerializer.SerializeAsync(stream, ToJson(), Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library)).ConfigureAwait(false);
         }
     }
 }
