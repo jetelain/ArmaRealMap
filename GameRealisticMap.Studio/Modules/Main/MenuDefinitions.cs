@@ -21,6 +21,9 @@ namespace GameRealisticMap.Studio.Main.Explorer
         public static readonly MenuItemDefinition HelpMenuItem = new CommandMenuItemDefinition<HelpCommandDefinition>(HelpMenuGroup, 0);
 
         [Export]
-        public static readonly MenuItemDefinition AboutMenuItem = new CommandMenuItemDefinition<AboutCommandDefinition>(HelpMenuGroup, 1);
+        public static readonly MenuItemDefinition ExportLogsItem = new CommandMenuItemDefinition<ExportLogsCommandDefinition>(HelpMenuGroup, 1);
+
+        [Export]
+        public static readonly MenuItemDefinition AboutMenuItem = new CommandMenuItemDefinition<AboutCommandDefinition>(HelpMenuGroup, 2);
     }
 }

@@ -12,7 +12,7 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 
             using var stream = typeof(AboutViewModel).Assembly.GetManifestResourceStream("GameRealisticMap.Studio.ThirdParty.txt")!;
             ThirdParty = new StreamReader(stream).ReadToEnd();
-            Version = "Version " + typeof(AboutViewModel).Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
+            Version = "Version " + App.GetAppVersion();
             DisplayName = Labels.About;
         }
 

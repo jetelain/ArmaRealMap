@@ -909,4 +909,7 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="MaxRoadSize" xml:space="preserve">
     <value>Largeur max de route</value>
   </data>
+  <data name="GenerateAnErrorReport" xml:space="preserve">
+    <value>Générer un rapport d'erreur...</value>
+  </data>
 </root>
