@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using GameRealisticMap.Reporting;
+using NLog;
 
 namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 {
     internal class ProgressTask : ProgressSystemBase, IProgressTaskUI
     {
+        private static readonly Logger logger = LogManager.GetLogger("Task");
+
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly ProgressToolViewModel viewModel;
         private readonly Stopwatch elapsed;
@@ -19,6 +22,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             this.viewModel = viewModel;
             this.elapsed = Stopwatch.StartNew();
             this.TaskName = name;
+            logger.Info("Task '{0}'", name);
         }
 
         public int Total { get; set; } = 0;
@@ -75,6 +79,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         {
             cancellationTokenSource.Cancel();
             viewModel.State = TaskState.Canceling;
+            logger.Info("Cancel requested");
         }
 
         public void ReportOneDone()
@@ -106,11 +111,13 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         {
             viewModel.State = TaskState.Failed;
             Error = e;
-            WriteLine($"Exception: {e}");
+            viewModel.WriteLine($"Exception: {e}");
+            logger.Error(e);
         }
 
         public override void WriteLine(string message)
         {
+            logger.Debug(message);
             viewModel.WriteLine(message);
         }
 
