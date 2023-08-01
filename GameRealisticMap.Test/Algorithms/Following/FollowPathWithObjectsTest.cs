@@ -100,6 +100,60 @@ namespace GameRealisticMap.Test.Algorithms.Following
         }
 
         [Fact]
+        public void PlaceOnPathRightAngle_Corner_Square()
+        {
+            var definition = new TestSegmentsDefinition(
+                new TestCornerOrEndSegmentDefinition("Left"),
+                new TestCornerOrEndSegmentDefinition("Right"),
+                null,
+                new TestStraightSegmentDefinition("Size5", 5));
+
+            var list = new List<PlacedModel<string>>();
+            FollowPathWithObjects.PlaceOnPathRightAngle(new[] { definition }, list, TerrainPath.FromRectangle(new TerrainPoint(8, 8), new TerrainPoint(18, 18)).Points);
+            
+            Assert.Equal(12, list.Count);
+
+            var item = list[0];
+            Assert.Equal(new TerrainPoint(10.5f, 8), item.Center);
+            Assert.Equal("Size5", item.Model);
+            Assert.Equal(180, item.Angle);
+
+            item = list[1];
+            Assert.Equal(new TerrainPoint(15.5f, 8), item.Center);
+            Assert.Equal("Size5", item.Model);
+            Assert.Equal(180, item.Angle);
+
+            item = list[2];
+            Assert.Equal(new TerrainPoint(18, 8), item.Center);
+            Assert.Equal("Right", item.Model);
+            Assert.Equal(0, item.Angle);
+
+            // ----
+
+            item = list[3];
+            Assert.Equal(new TerrainPoint(18, 10.5f), item.Center);
+            Assert.Equal("Size5", item.Model);
+            Assert.Equal(270, item.Angle);
+
+            item = list[4];
+            Assert.Equal(new TerrainPoint(18, 15.5f), item.Center);
+            Assert.Equal("Size5", item.Model);
+            Assert.Equal(270, item.Angle);
+
+            item = list[5];
+            Assert.Equal(new TerrainPoint(18, 18), item.Center);
+            Assert.Equal("Right", item.Model);
+            Assert.Equal(90, item.Angle);
+
+            // ----
+
+            item = list[11];
+            Assert.Equal(new TerrainPoint(8, 8), item.Center);
+            Assert.Equal("Right", item.Model);
+            Assert.Equal(-90, item.Angle);
+        }
+
+        [Fact]
         public void PlaceOnPathRightAngle_Ends()
         {
             var definition = new TestSegmentsDefinition(

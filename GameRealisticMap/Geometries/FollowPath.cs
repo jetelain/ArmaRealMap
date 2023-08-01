@@ -75,7 +75,7 @@ namespace GameRealisticMap.Geometries
 
         public TerrainPoint Current => position ?? TerrainPoint.Empty;
 
-        public TerrainPoint Previous => previousPosition ?? TerrainPoint.Empty;
+        public TerrainPoint Previous => previousPosition;
 
         public Vector2 Vector => Vector2.Normalize(delta);
 
@@ -126,7 +126,7 @@ namespace GameRealisticMap.Geometries
                 if (KeepRightAngles)
                 {
                     var angle = Math.Abs(Math.Abs(Math.Acos(Vector2.Dot(Vector2.Normalize(delta), Vector2.Normalize(previousDelta)))) - (MathF.PI/2)); 
-                    if ( angle < 0.1d )
+                    if ( angle < 0.1d && !position!.Equals(previousPoint))
                     {
                         index--;
                         previousPosition = position;

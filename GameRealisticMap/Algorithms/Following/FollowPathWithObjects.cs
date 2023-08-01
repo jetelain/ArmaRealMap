@@ -6,15 +6,15 @@ namespace GameRealisticMap.Algorithms.Following
 {
     public static class FollowPathWithObjects
     {
-        public static void PlaceOnPathRightAngle<TModel>(IReadOnlyCollection<ISegmentsDefinition<TModel>> lib, List<PlacedModel<TModel>> layer, IEnumerable<TerrainPoint> path)
+        public static void PlaceOnPathRightAngle<TModel>(IReadOnlyCollection<ISegmentsDefinition<TModel>> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
         {
-            if (lib.Count != 0)
+            if (lib.Count != 0 && path.Count > 1)
             {
                 PlaceOnPathRightAngle(lib.GetRandom(path.First()), layer, path);
             }
         }
 
-        public static void PlaceOnPathRightAngle<TModel>(ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IEnumerable<TerrainPoint> path)
+        public static void PlaceOnPathRightAngle<TModel>(ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
         {
             var follow = new FollowPath(path);
             follow.KeepRightAngles = true;
@@ -28,6 +28,9 @@ namespace GameRealisticMap.Algorithms.Following
             var wantedObject = wantedObjects.GetRandomWithProportion(random) ?? wantedObjects.First();
             var previousDeltaAngle = 0d;
             var isFirst = true;
+
+            var isLoop = path[0].Equals(path[path.Count - 1]);
+
             while (follow.Move(wantedObject.Size))
             {
                 var delta = Vector2.Normalize(follow.Current.Vector - follow.Previous.Vector);
@@ -36,7 +39,7 @@ namespace GameRealisticMap.Algorithms.Following
 
                 if (isFirst)
                 {
-                    if (lib.Ends.Count > 0)
+                    if (lib.Ends.Count > 0 && !isLoop)
                     {
                         layer.Add(new PlacedModel<TModel>(lib.Ends.GetRandom(random).Model, follow.Previous, (float)deltaAngle));
                     }
@@ -79,7 +82,13 @@ namespace GameRealisticMap.Algorithms.Following
                 }
             }
 
-            if (lib.Ends.Count > 0)
+            if (isLoop)
+            {
+                var delta = Vector2.Normalize(path[1].Vector - path[0].Vector);
+                var deltaAngle = MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI;
+                AddCorner(lib, layer, path[0], random, previousDeltaAngle, deltaAngle);
+            }
+            else if (lib.Ends.Count > 0)
             {
                 layer.Add(new PlacedModel<TModel>(lib.Ends.GetRandom(random).Model, follow.Current, (float)previousDeltaAngle));
             }
@@ -89,15 +98,20 @@ namespace GameRealisticMap.Algorithms.Following
         {
             if (!follow.IsLast && !follow.IsFirst)
             {
-                var cornerAngle = deltaAngle - previousDeltaAngle;
-                if (cornerAngle > 45 && lib.RightCorners.Count > 0)
-                {
-                    layer.Add(new PlacedModel<TModel>(lib.RightCorners.GetRandom(random).Model, follow.Previous, (float)previousDeltaAngle));
-                }
-                else if (cornerAngle < -45 && lib.LeftCorners.Count > 0)
-                {
-                    layer.Add(new PlacedModel<TModel>(lib.LeftCorners.GetRandom(random).Model, follow.Previous, (float)previousDeltaAngle));
-                }
+                AddCorner(lib, layer, follow.Previous, random, previousDeltaAngle, deltaAngle);
+            }
+        }
+
+        private static void AddCorner<TModel>(ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, TerrainPoint point, Random random, double previousDeltaAngle, float deltaAngle)
+        {
+            var cornerAngle = deltaAngle - previousDeltaAngle;
+            if (cornerAngle > 45 && lib.RightCorners.Count > 0)
+            {
+                layer.Add(new PlacedModel<TModel>(lib.RightCorners.GetRandom(random).Model, point, (float)previousDeltaAngle));
+            }
+            else if (cornerAngle < -45 && lib.LeftCorners.Count > 0)
+            {
+                layer.Add(new PlacedModel<TModel>(lib.LeftCorners.GetRandom(random).Model, point, (float)previousDeltaAngle));
             }
         }
 

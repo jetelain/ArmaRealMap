@@ -146,5 +146,50 @@ namespace GameRealisticMap.Test.Geometries
 
             Assert.False(follow.Move(3f));
         }
+
+
+        [Fact]
+        public void FollowPath_KeepRightAngles_ExactMatch()
+        {
+            var follow = new FollowPath(
+                new TerrainPoint(0, 0),
+                new TerrainPoint(0, 10),
+                new TerrainPoint(10, 10));
+            follow.KeepRightAngles = true;
+
+            Assert.Null(follow.Previous);
+            Assert.Equal(new TerrainPoint(0, 0), follow.Current);
+            Assert.False(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+            Assert.Equal(1, follow.Index);
+
+            Assert.True(follow.Move(5f));
+            Assert.Equal(new TerrainPoint(0, 0), follow.Previous);
+            Assert.Equal(new TerrainPoint(0, 5), follow.Current);
+            Assert.False(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+            Assert.Equal(1, follow.Index);
+
+            Assert.True(follow.Move(5f));
+            Assert.Equal(new TerrainPoint(0, 5), follow.Previous);
+            Assert.Equal(new TerrainPoint(0, 10), follow.Current);
+            Assert.False(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+            Assert.Equal(1, follow.Index);
+
+            Assert.True(follow.Move(5f));
+            Assert.Equal(new TerrainPoint(0, 10), follow.Previous);
+            Assert.Equal(new TerrainPoint(5, 10), follow.Current);
+            Assert.False(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+            Assert.Equal(2, follow.Index);
+            Assert.True(follow.Move(5f));
+
+            Assert.Equal(new TerrainPoint(5, 10), follow.Previous);
+            Assert.Equal(new TerrainPoint(10, 10), follow.Current);
+            Assert.False(follow.IsAfterRightAngle);
+            Assert.False(follow.IsLast);
+            Assert.Equal(2, follow.Index);
+        }
     }
 }

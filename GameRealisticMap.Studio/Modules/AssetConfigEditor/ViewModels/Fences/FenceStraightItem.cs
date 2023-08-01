@@ -4,9 +4,9 @@ using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 {
-    internal class FenceItem : PropertyChangedBase, IWithComposition, IWithCompositionRectangle
+    internal class FenceStraightItem : PropertyChangedBase, IWithComposition, IWithCompositionRectangle
     {
-        public FenceItem(FenceStraightSegmentDefinition d)
+        public FenceStraightItem(FenceStraightSegmentDefinition d)
         {
             _size = d.Size;
             _proportion = d.Proportion;

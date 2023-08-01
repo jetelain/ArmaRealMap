@@ -8,64 +8,121 @@
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <ScrollViewer local:Behaviors.EnforceScroll="True" c:CompositionDragDrop.Importer="{Binding Straights.CompositionImporter}">
+    <ScrollViewer local:Behaviors.EnforceScroll="True">
         <StackPanel Margin="10 0">
             <StackPanel Orientation="Horizontal" Margin="0 10">
                 <Button Padding="10" Command="{Binding Back}">🡰</Button>
                 <TextBlock FontSize="30" Margin="20 0" Text="{Binding PageTitle}" />
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0 10">
-                <Button Padding="5" Command="{Binding Straights.CompositionImporter.AddSingle}">
-                    <Run Text="{x:Static r:Labels.AddAnObject}"/>
-                </Button>
-                <Button Padding="5" Margin="10 0" Command="{Binding Straights.CompositionImporter.AddComposition}">
-                    <Run Text="{x:Static r:Labels.AddAComposition}"/>
-                </Button>
-            </StackPanel>
-            
-            <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-                <Label VerticalAlignment="Top">
-                    <Run Text="Filling strategy" />
-                </Label>
-                <StackPanel>
-                    <TextBlock Margin="5">
-                        <RadioButton GroupName="Strategy" IsChecked="{Binding UseLargestFirst}"><Run Text="Use largest elements when possible (default)." /></RadioButton>
-                    </TextBlock>
-                    <TextBlock Margin="5">
-                        <RadioButton GroupName="Strategy" IsChecked="{Binding UseAnySize}"><Run Text="Use any element, even if a larger one would have been possible." /></RadioButton>
-                    </TextBlock>
+            <StackPanel c:CompositionDragDrop.Importer="{Binding Straights.CompositionImporter}">
+
+                <TextBlock FontSize="25" Padding="0 15 0 5" Text="{Binding Straights.Label}" />
+
+                <StackPanel Orientation="Horizontal" Margin="0 10">
+                    <Button Padding="5" Command="{Binding Straights.CompositionImporter.AddSingle}">
+                        <Run Text="{x:Static r:Labels.AddAnObject}"/>
+                    </Button>
+                    <Button Padding="5" Margin="10 0" Command="{Binding Straights.CompositionImporter.AddComposition}">
+                        <Run Text="{x:Static r:Labels.AddAComposition}"/>
+                    </Button>
                 </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+                    <Label VerticalAlignment="Top">
+                        <Run Text="Filling strategy" />
+                    </Label>
+                    <StackPanel>
+                        <TextBlock Margin="5">
+                        <RadioButton GroupName="Strategy" IsChecked="{Binding UseLargestFirst}"><Run Text="Use largest elements when possible (default)." /></RadioButton>
+                        </TextBlock>
+                        <TextBlock Margin="5">
+                        <RadioButton GroupName="Strategy" IsChecked="{Binding UseAnySize}"><Run Text="Use any element, even if a larger one would have been possible." /></RadioButton>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <DataGrid ItemsSource="{Binding Straights.Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{x:Static r:Labels.Name}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                        <DataGridTemplateColumn Width="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image c:CompositionPreview.Source="{Binding Composition}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{x:Static r:Labels.Size}" Binding="{Binding Size}" Width="100" />
+                        <DataGridTextColumn Header="Proportion" Binding="{Binding Proportion}" Width="100" />
+                        <DataGridTemplateColumn Width="75">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Button Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                            <Run Text="{x:Static r:Labels.Edit}"/>
+                                        </Button>
+                                        <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.Straights.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                            <Run Text="{x:Static r:Labels.Remove}"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
 
-            <DataGrid ItemsSource="{Binding Straights.Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="{x:Static r:Labels.Name}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
-                    <DataGridTemplateColumn Width="200">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image c:CompositionPreview.Source="{Binding Composition}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="{x:Static r:Labels.Size}" Binding="{Binding Size}" Width="100" />
-                    <DataGridTextColumn Header="Proportion" Binding="{Binding Proportion}" Width="100" />
-                    <DataGridTemplateColumn Width="75">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <Button Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
-                                        <Run Text="{x:Static r:Labels.Edit}"/>
-                                    </Button>
-                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.Straights.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
-                                        <Run Text="{x:Static r:Labels.Remove}"/>
-                                    </Button>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+            <ItemsControl ItemsSource="{Binding CornersAndEnds}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel c:CompositionDragDrop.Importer="{Binding CompositionImporter}">
+                            <TextBlock FontSize="25" Padding="0 15 0 5" Text="{Binding Label}" />
+
+                            <StackPanel Orientation="Horizontal" Margin="0 10">
+                                <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">
+                                    <Run Text="{x:Static r:Labels.AddAnObject}"/>
+                                </Button>
+                                <Button Padding="5" Margin="10 0" Command="{Binding CompositionImporter.AddComposition}">
+                                    <Run Text="{x:Static r:Labels.AddAComposition}"/>
+                                </Button>
+                            </StackPanel>
+
+                            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="{x:Static r:Labels.Name}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                                    <DataGridTemplateColumn Width="200">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image c:CompositionPreview.Source="{Binding Composition}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability}" Width="100" />
+                                    <DataGridTemplateColumn Width="75">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel>
+                                                    <Button Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                                        <Run Text="{x:Static r:Labels.Edit}"/>
+                                                    </Button>
+                                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}, AncestorLevel=2}}">
+                                                        <Run Text="{x:Static r:Labels.Remove}"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+
+
+
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>
