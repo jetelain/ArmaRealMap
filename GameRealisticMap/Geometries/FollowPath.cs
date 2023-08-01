@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace GameRealisticMap.Geometries
 {
@@ -74,9 +73,9 @@ namespace GameRealisticMap.Geometries
             return true;
         }
 
-        public TerrainPoint Current => position;
+        public TerrainPoint Current => position ?? TerrainPoint.Empty;
 
-        public TerrainPoint Previous => previousPosition;
+        public TerrainPoint Previous => previousPosition ?? TerrainPoint.Empty;
 
         public Vector2 Vector => Vector2.Normalize(delta);
 
@@ -89,6 +88,8 @@ namespace GameRealisticMap.Geometries
         public bool IsAfterRightAngle { get; private set; }
 
         public bool IsLast => hasReachedEnd;
+
+        public bool IsFirst => index <=1;
 
         /// <summary>
         /// Index in original list

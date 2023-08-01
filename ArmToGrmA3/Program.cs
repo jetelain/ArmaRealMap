@@ -163,18 +163,18 @@ namespace ArmToGrmA3
             return fences;
         }
 
-        private static List<FenceSegmentDefinition> ConvertToSegments(List<SingleObjetInfos> objects, ModelInfoLibrary models, OldModelInfoLibrary oldModels)
+        private static List<FenceStraightSegmentDefinition> ConvertToSegments(List<SingleObjetInfos> objects, ModelInfoLibrary models, OldModelInfoLibrary oldModels)
         {
             var defProbability = 1d / objects.Count;
             var sumExistingProbability = objects.Select(o => o.PlacementProbability ?? defProbability).Sum();
-            var items = new List<FenceSegmentDefinition>();
+            var items = new List<FenceStraightSegmentDefinition>();
             foreach (var old in objects)
             {
                 var model = models.ResolveByPath(FixModelPath(oldModels.ResolveByName(old.Name).Path));
                 var place = ObjectPlacementDetectedInfos.CreateFromODOL(models.ReadODOL(model.Path)!)!;
                 var composition = GameRealisticMap.Arma3.Assets.Composition.CreateSingleFrom(model, -place.GeneralRadius.Center);
                 var probability = (old.PlacementProbability ?? defProbability) / sumExistingProbability;
-                items.Add(new FenceSegmentDefinition(composition, (old.PlacementRadius ?? place.GeneralRadius.Radius) * 2));
+                items.Add(new FenceStraightSegmentDefinition(composition, (old.PlacementRadius ?? place.GeneralRadius.Radius) * 2));
             }
             return items;
         }

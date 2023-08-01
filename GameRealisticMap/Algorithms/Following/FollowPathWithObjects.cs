@@ -6,7 +6,7 @@ namespace GameRealisticMap.Algorithms.Following
 {
     public static class FollowPathWithObjects
     {
-        public static void PlaceOnPathRightAngle<TModel>(IReadOnlyCollection<ISegmentsProportionDefinition<TModel>> lib, List<PlacedModel<TModel>> layer, IEnumerable<TerrainPoint> path)
+        public static void PlaceOnPathRightAngle<TModel>(IReadOnlyCollection<ISegmentsDefinition<TModel>> lib, List<PlacedModel<TModel>> layer, IEnumerable<TerrainPoint> path)
         {
             if (lib.Count != 0)
             {
@@ -14,23 +14,36 @@ namespace GameRealisticMap.Algorithms.Following
             }
         }
 
-        public static void PlaceOnPathRightAngle<TModel>(ISegmentsProportionDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IEnumerable<TerrainPoint> path)
+        public static void PlaceOnPathRightAngle<TModel>(ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IEnumerable<TerrainPoint> path)
         {
             var follow = new FollowPath(path);
             follow.KeepRightAngles = true;
 
-            var random = RandomHelper.CreateRandom(follow.Current ?? TerrainPoint.Empty);
+            var random = RandomHelper.CreateRandom(follow.Current);
 
             var straights = lib.Straights;
 
             var maxSize = straights.Max(t => t.Size);
             var wantedObjects = lib.UseAnySize ? straights.ToList() : straights.Where(t => t.Size == maxSize).ToList();
             var wantedObject = wantedObjects.GetRandomWithProportion(random) ?? wantedObjects.First();
-
+            var previousDeltaAngle = 0d;
+            var isFirst = true;
             while (follow.Move(wantedObject.Size))
             {
-                var delta = Vector2.Normalize(follow.Current!.Vector - follow.Previous.Vector);
-                var angle = (180f + (MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI)) % 360f; // FIXME: Should be North-South (and not West-East)
+                var delta = Vector2.Normalize(follow.Current.Vector - follow.Previous.Vector);
+                var deltaAngle = MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI;
+                var angle = (180f + deltaAngle) % 360f; // FIXME: Should be North-South (and not West-East)
+
+                if (isFirst)
+                {
+                    if (lib.Ends.Count > 0)
+                    {
+                        layer.Add(new PlacedModel<TModel>(lib.Ends.GetRandom(random).Model, follow.Previous, (float)deltaAngle));
+                    }
+                    isFirst = false;
+                }
+
+                ProcessCorners(lib, layer, follow, random, previousDeltaAngle, deltaAngle);
 
                 var wantedSize = (follow.Previous.Vector - follow.Current.Vector).Length();
                 if (Math.Abs(wantedSize - wantedObject.Size) < 0.2f)
@@ -57,9 +70,33 @@ namespace GameRealisticMap.Algorithms.Following
                         layer.Add(new PlacedModel<TModel>(best.Model, center, angle));
                     }
                 }
+
+                previousDeltaAngle = deltaAngle;
+
                 if (!follow.IsLast && wantedObjects.Count > 1)
                 {
                     wantedObject = wantedObjects.GetRandomWithProportion(random) ?? wantedObjects.First();
+                }
+            }
+
+            if (lib.Ends.Count > 0)
+            {
+                layer.Add(new PlacedModel<TModel>(lib.Ends.GetRandom(random).Model, follow.Current, (float)previousDeltaAngle));
+            }
+        }
+
+        private static void ProcessCorners<TModel>(ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, FollowPath follow, Random random, double previousDeltaAngle, float deltaAngle)
+        {
+            if (!follow.IsLast && !follow.IsFirst)
+            {
+                var cornerAngle = deltaAngle - previousDeltaAngle;
+                if (cornerAngle > 45 && lib.RightCorners.Count > 0)
+                {
+                    layer.Add(new PlacedModel<TModel>(lib.RightCorners.GetRandom(random).Model, follow.Previous, (float)previousDeltaAngle));
+                }
+                else if (cornerAngle < -45 && lib.LeftCorners.Count > 0)
+                {
+                    layer.Add(new PlacedModel<TModel>(lib.LeftCorners.GetRandom(random).Model, follow.Previous, (float)previousDeltaAngle));
                 }
             }
         }

@@ -44,7 +44,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 
         public override FenceDefinition ToDefinition()
         {
-            return new FenceDefinition(Probability, Straights.ToDefinition(), useAnySize, Label);
+            return new FenceDefinition(Probability, Straights.ToDefinition(), null, null, null, useAnySize, Label);
         }
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)

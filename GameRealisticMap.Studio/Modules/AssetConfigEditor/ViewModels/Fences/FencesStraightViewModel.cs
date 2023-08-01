@@ -46,10 +46,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 
         public void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.AddUndoable(_parent.UndoRedoManager, new FenceItem(new FenceSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
+            Items.AddUndoable(_parent.UndoRedoManager, new FenceItem(new FenceStraightSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
         }
 
-        internal List<FenceSegmentDefinition> ToDefinition()
+        internal List<FenceStraightSegmentDefinition> ToDefinition()
         {
             return Items.Select(i => i.ToDefinition()).ToList();
         }

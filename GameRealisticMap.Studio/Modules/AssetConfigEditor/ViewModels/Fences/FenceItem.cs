@@ -6,7 +6,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 {
     internal class FenceItem : PropertyChangedBase, IWithComposition, IWithCompositionRectangle
     {
-        public FenceItem(FenceSegmentDefinition d)
+        public FenceItem(FenceStraightSegmentDefinition d)
         {
             _size = d.Size;
             _proportion = d.Proportion;
@@ -35,9 +35,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 
         public virtual float Width { get => Size; set => Size = value; }
 
-        internal FenceSegmentDefinition ToDefinition()
+        internal FenceStraightSegmentDefinition ToDefinition()
         {
-            return new FenceSegmentDefinition(Composition.ToDefinition(), Size, Proportion);
+            return new FenceStraightSegmentDefinition(Composition.ToDefinition(), Size, Proportion);
         }
 
         public void CompositionWasRotated(int degrees)
