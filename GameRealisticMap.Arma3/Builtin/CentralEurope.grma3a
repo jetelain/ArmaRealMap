@@ -3785,6 +3785,7 @@
         "Probability": 1,
         "Straights": [
           {
+            "Proportion": 1,
             "Model": {
               "Objects": [
                 {
@@ -3796,7 +3797,35 @@
             "Size": 5
           }
         ],
-        "Label": ""
+        "LeftCorners": [
+          {
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\structures_f_enoch\\walls\\brick\\brickwall_01_l_pole_f.p3d",
+                  "Transform": [-3.3974648E-06,0.7418997,0.015117526]
+                }
+              ]
+            },
+            "Probability": 1
+          }
+        ],
+        "RightCorners": [
+          {
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\structures_f_enoch\\walls\\brick\\brickwall_01_l_pole_f.p3d",
+                  "Transform": [-3.3974648E-06,0.7418997,0.015117526]
+                }
+              ]
+            },
+            "Probability": 1
+          }
+        ],
+        "Ends": [],
+        "Label": "",
+        "UseAnySize": false
       }
     ],
     "Fence": [
@@ -3804,6 +3833,7 @@
         "Probability": 1,
         "Straights": [
           {
+            "Proportion": 1,
             "Model": {
               "Objects": [
                 {
@@ -3815,6 +3845,7 @@
             "Size": 8
           },
           {
+            "Proportion": 1,
             "Model": {
               "Objects": [
                 {
@@ -3826,7 +3857,11 @@
             "Size": 4
           }
         ],
-        "Label": ""
+        "LeftCorners": [],
+        "RightCorners": [],
+        "Ends": [],
+        "Label": "",
+        "UseAnySize": false
       }
     ],
     "Hedge": [
@@ -3834,6 +3869,7 @@
         "Probability": 1,
         "Straights": [
           {
+            "Proportion": 1,
             "Model": {
               "Objects": [
                 {
@@ -3845,6 +3881,7 @@
             "Size": 2
           },
           {
+            "Proportion": 1,
             "Model": {
               "Objects": [
                 {
@@ -3856,7 +3893,11 @@
             "Size": 4
           }
         ],
-        "Label": ""
+        "LeftCorners": [],
+        "RightCorners": [],
+        "Ends": [],
+        "Label": "",
+        "UseAnySize": false
       }
     ]
   },
@@ -3867,7 +3908,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_2_F.p3d",
-              "Transform": [ 0, -0.20478594, 0 ]
+              "Transform": [0,-0.20478594,0]
             }
           ]
         },
@@ -3878,7 +3919,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_4_F.p3d",
-              "Transform": [ 0, -0.20478594, 0 ]
+              "Transform": [0,-0.20478594,0]
             }
           ]
         },
@@ -3889,7 +3930,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_8_F.p3d",
-              "Transform": [ 0, -0.20478594, 0 ]
+              "Transform": [0,-0.20478594,0]
             }
           ]
         },
@@ -3900,7 +3941,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_25_F.p3d",
-              "Transform": [ 0, -0.20478594, 0 ]
+              "Transform": [0,-0.20478594,0]
             }
           ]
         },
@@ -3911,7 +3952,7 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_TrackE_40_F.p3d",
-              "Transform": [ 0, -0.20478594, 0 ]
+              "Transform": [0,-0.20478594,0]
             }
           ]
         },
@@ -3925,15 +3966,15 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Up_25_F.p3d",
-              "Transform": [ 0, -0.51894, 25 ]
+              "Transform": [0,-0.51894,25]
             },
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Passing_25_F.p3d",
-              "Transform": [ 0, -0.46082354, 0 ]
+              "Transform": [0,-0.46082354,0]
             },
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Down_25_F.p3d",
-              "Transform": [ 0, -0.5189457, -25 ]
+              "Transform": [0,-0.5189457,-25]
             }
           ]
         },
@@ -3945,15 +3986,15 @@
           "Objects": [
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Up_25_F.p3d",
-              "Transform": [ 0, -0.51894, 17.5 ]
+              "Transform": [0,-0.51894,17.5]
             },
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Passing_10_F.p3d",
-              "Transform": [ 0, -0.46987486, 0 ]
+              "Transform": [0,-0.46987486,0]
             },
             {
               "Model": "a3\\structures_f_enoch\\infrastructure\\Railways\\Rail_Track_Down_25_F.p3d",
-              "Transform": [ 0, -0.5189457, -17.5 ]
+              "Transform": [0,-0.5189457,-17.5]
             }
           ]
         },
