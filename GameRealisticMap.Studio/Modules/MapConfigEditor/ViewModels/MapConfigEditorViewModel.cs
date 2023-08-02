@@ -490,5 +490,31 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         {
             await JsonSerializer.SerializeAsync(stream, Config).ConfigureAwait(false);
         }
+
+        public Task GenerateTerrainBuilder()
+        {
+            IoC.Get<IProgressTool>()
+                .RunTask(Labels.GenerateMapForArma3, DoGenerateTerrainBuilder);
+            return Task.CompletedTask;
+        }
+
+        private async Task DoGenerateTerrainBuilder(IProgressTaskUI task)
+        {
+            var a3config = Config.ToArma3MapConfig();
+
+            var target = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "GameRealisticMap", "Arma3", "TerrainBuilder", a3config.WorldName);
+
+            Directory.CreateDirectory(target);
+
+            ReportConfig(task, _arma3DataModule.ProjectDrive, a3config);
+
+            var assets = await GetAssets(_arma3DataModule.Library, a3config);
+
+            var generator = new Arma3TerrainBuilderGenerator(assets, _arma3DataModule.ProjectDrive);
+
+            await generator.GenerateTerrainBuilderFiles(task, a3config, target);
+
+            task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);
+        }
     }
 }

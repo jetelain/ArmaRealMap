@@ -39,8 +39,14 @@
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>
-                <Button Margin="5" Padding="10" cal:Message.Attach="GenerateMap">
+                <Button Margin="5" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
                     <Run Text="{x:Static r:Labels.GenerateMapForArma3}"/>
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Generate using WRP file format" cal:Message.Attach="GenerateMap"></MenuItem>
+                            <MenuItem Header="Generate using Terrain Builder files formats" cal:Message.Attach="GenerateTerrainBuilder"></MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
                 </Button>
                 <Button Margin="5" Padding="10" cal:Message.Attach="GenerateMod">
                     <Run Text="{x:Static r:Labels.GenerateModForArma3}"/>

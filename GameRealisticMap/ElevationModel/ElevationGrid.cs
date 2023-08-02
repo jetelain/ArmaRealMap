@@ -122,7 +122,12 @@ namespace GameRealisticMap.ElevationModel
 
         public DemDataCellPixelIsPoint<float> ToDataCell()
         {
-            return new DemDataCellPixelIsPoint<float>(Coordinates.Zero, new MapToolkit.Vector(cellSize), elevationGrid);
+            return ToDataCell(Coordinates.Zero);
+        }
+
+        public DemDataCellPixelIsPoint<float> ToDataCell(Coordinates start)
+        {
+            return new DemDataCellPixelIsPoint<float>(start, new MapToolkit.Vector(cellSize), elevationGrid);
         }
 
         public float GetAverageElevation(TerrainPolygon polygon)
