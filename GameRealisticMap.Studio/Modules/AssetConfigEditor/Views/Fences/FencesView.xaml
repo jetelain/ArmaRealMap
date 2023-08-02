@@ -6,16 +6,35 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <local:PercentValueConverter x:Key="PercentValueConverter" />
+    </UserControl.Resources>
     <ScrollViewer local:Behaviors.EnforceScroll="True">
         <StackPanel Margin="10 0">
             <StackPanel Orientation="Horizontal" Margin="0 10">
                 <Button Padding="10" Command="{Binding Back}">🡰</Button>
                 <TextBlock FontSize="30" Margin="20 0" Text="{Binding PageTitle}" />
             </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+                <Label VerticalAlignment="Top">
+                    <Run Text="Type" />
+                </Label>
+                <StackPanel>
+                    <TextBlock Margin="5">
+                        <RadioButton GroupName="Type" IsChecked="{Binding UseSegments}"><Run Text="Use rigid segments. Ideal for walls, wired fences, trimmed hedges, etc." /></RadioButton>
+                    </TextBlock>
+                    <TextBlock Margin="5">
+                        <RadioButton GroupName="Type" IsChecked="{Binding UseObjects}"><Run Text="Use objects with random orientation. Ideal for natural hedges." /></RadioButton>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
 
-            <StackPanel c:CompositionDragDrop.Importer="{Binding Straights.CompositionImporter}">
+            <StackPanel c:CompositionDragDrop.Importer="{Binding Straights.CompositionImporter}" Visibility="{Binding UseSegments, Converter={StaticResource BooleanToVisibilityConverter}}">
 
                 <TextBlock FontSize="25" Padding="0 15 0 5" Text="{Binding Straights.Label}" />
 
@@ -72,7 +91,7 @@
                 </DataGrid>
             </StackPanel>
 
-            <ItemsControl ItemsSource="{Binding CornersAndEnds}">
+            <ItemsControl ItemsSource="{Binding CornersAndEnds}"  Visibility="{Binding UseSegments, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel c:CompositionDragDrop.Importer="{Binding CompositionImporter}">
@@ -85,9 +104,12 @@
                                 <Button Padding="5" Margin="10 0" Command="{Binding CompositionImporter.AddComposition}">
                                     <Run Text="{x:Static r:Labels.AddAComposition}"/>
                                 </Button>
+                                <Button Padding="5" cal:Message.Attach="MakeItemsEquiprobable">
+                                    <Run Text="{x:Static r:Labels.MakeObjectsEquiprobable}"/>
+                                </Button>
                             </StackPanel>
 
-                            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding DataContext.UndoRedoManager, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="{x:Static r:Labels.Name}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
                                     <DataGridTemplateColumn Width="200">
@@ -97,7 +119,7 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability}" Width="100" />
+                                    <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="75" />
                                     <DataGridTemplateColumn Width="75">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
@@ -119,7 +141,53 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
+            <StackPanel c:CompositionDragDrop.Importer="{Binding Objects.CompositionImporter}" Visibility="{Binding UseObjects, Converter={StaticResource BooleanToVisibilityConverter}}">
 
+                <TextBlock FontSize="25" Text="{Binding Objects.Label}" />
+                <StackPanel Orientation="Horizontal" Margin="0 10"  DataContext="{Binding Objects}">
+                    <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">
+                        <Run Text="{x:Static r:Labels.AddAnObject}"/>
+                    </Button>
+                    <Button Padding="5" Margin="10 0" Command="{Binding CompositionImporter.AddComposition}">
+                        <Run Text="{x:Static r:Labels.AddAComposition}"/>
+                    </Button>
+                    <Button Padding="5" cal:Message.Attach="MakeItemsEquiprobable">
+                        <Run Text="{x:Static r:Labels.MakeObjectsEquiprobable}"/>
+                    </Button>
+                </StackPanel>
+                <DataGrid ItemsSource="{Binding Objects.Items}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{x:Static r:Labels.Name}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                        <DataGridTemplateColumn Width="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image c:CompositionPreview.Source="{Binding Composition}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="75" />
+                        <DataGridTextColumn Header="{x:Static r:Labels.Radius}" Binding="{Binding Radius}" Width="65" />
+                        <DataGridTextColumn Header="{x:Static r:Labels.MaxZ}" Binding="{Binding MaxZ}" Width="80" />
+                        <DataGridTextColumn Header="{x:Static r:Labels.MinZ}" Binding="{Binding MinZ}" Width="80" />
+                        <DataGridTextColumn Header="{x:Static r:Labels.MaxScale}" Binding="{Binding MaxScale}" Width="80" />
+                        <DataGridTextColumn Header="{x:Static r:Labels.MinScale}" Binding="{Binding MinScale}" Width="80" />
+                        <DataGridTemplateColumn Width="75">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Button Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                            <Run Text="{x:Static r:Labels.Edit}"/>
+                                        </Button>
+                                        <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.Objects.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                            <Run Text="{x:Static r:Labels.Remove}"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
 
 
 

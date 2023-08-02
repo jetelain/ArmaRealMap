@@ -30,6 +30,7 @@ using OldRoadTypeId = ArmaRealMap.Core.Roads.RoadTypeId;
 using NewRoadTypeId = GameRealisticMap.ManMade.Roads.RoadTypeId;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Arma3.Assets.Fences;
 
 namespace ArmToGrmA3
 {

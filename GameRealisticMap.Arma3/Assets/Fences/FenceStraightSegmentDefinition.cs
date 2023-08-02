@@ -1,6 +1,6 @@
 ﻿using GameRealisticMap.Algorithms.Definitions;
 
-namespace GameRealisticMap.Arma3.Assets
+namespace GameRealisticMap.Arma3.Assets.Fences
 {
     /// <summary>
     /// Straight segment, aligned east-west, centered on (0,0)
@@ -8,7 +8,7 @@ namespace GameRealisticMap.Arma3.Assets
     public class FenceStraightSegmentDefinition : StraightSegmentDefinition, IStraightSegmentProportionDefinition<Composition>
     {
         public FenceStraightSegmentDefinition(Composition model, float size, float proportion = 1)
-            : base(model, size) 
+            : base(model, size)
         {
             Proportion = proportion > 0 ? proportion : 1;
         }

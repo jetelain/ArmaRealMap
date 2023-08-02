@@ -9,6 +9,7 @@ using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using Gemini.Framework;
 using Gemini.Framework.Commands;
 using Gemini.Modules.Shell.Commands;
+using Gemini.Modules.ToolBars;
 using Gemini.Modules.UndoRedo;
 using Gemini.Modules.UndoRedo.Commands;
 
@@ -66,6 +67,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public override ICommand CloseCommand => _closeCommand ?? (_closeCommand = new AsyncCommand(() => TryCloseAsync()));
 
         // Replicate commands to Parent editor (as everything is global)
+
+        public IToolBar ToolBar => ParentEditor.ToolBar;
 
         void ICommandHandler<UndoCommandDefinition>.Update(Command command)
         {

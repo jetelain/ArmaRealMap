@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
@@ -12,28 +13,28 @@ using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 {
-    internal class FencesStraightViewModel : PropertyChangedBase, IModelImporterTarget, IExplorerTreeItem, IExplorerTreeItemCounter
+    internal class FenceObjectsViewModel : PropertyChangedBase, IModelImporterTarget, IExplorerTreeItem, IExplorerTreeItemCounter
     {
         private readonly FencesViewModel _parent;
 
-        public FencesStraightViewModel(List<FenceStraightSegmentDefinition>? definition, FencesViewModel parent)
+        public FenceObjectsViewModel(List<ItemDefinition>? definition, FencesViewModel parent)
         {
             _parent = parent;
             if (definition != null)
             {
-                Items = new ObservableCollection<FenceStraightItem>(definition.Select(d => new FenceStraightItem(d)));
+                Items = new ObservableCollection<FenceObjectItem>(definition.Select(d => new FenceObjectItem(d)));
             }
             else
             {
                 Items = new();
             }
             CompositionImporter = new CompositionImporter(this);
-            RemoveItem = new RelayCommand(item => Items.RemoveUndoable(parent.UndoRedoManager, (FenceStraightItem)item));
+            RemoveItem = new RelayCommand(item => Items.RemoveUndoable(parent.UndoRedoManager, (FenceObjectItem)item));
         }
 
-        public ObservableCollection<FenceStraightItem> Items { get; }
+        public ObservableCollection<FenceObjectItem> Items { get; }
 
-        public string Label => "Straigth segments";
+        public string Label => "Objects";
 
         public CompositionImporter CompositionImporter { get; }
 
@@ -47,16 +48,23 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 
         public void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.AddUndoable(_parent.UndoRedoManager, new FenceStraightItem(new FenceStraightSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
+            Items.AddUndoable(_parent.UndoRedoManager, new FenceObjectItem(new ItemDefinition(detected.GeneralRadius.Radius, composition.Translate(-detected.TrunkRadius.Center), null, null, DefinitionHelper.GetNewItemProbility(Items), null, null)));
+            DefinitionHelper.EquilibrateProbabilities(Items);
         }
 
-        internal List<FenceStraightSegmentDefinition> ToDefinition()
+        internal List<ItemDefinition> ToDefinition()
         {
             return Items.Select(i => i.ToDefinition()).ToList();
         }
+
         public IEnumerable<string> GetModels()
         {
             return Items.SelectMany(i => i.Composition.Items.Select(i => i.Model.Path));
+        }
+        public Task MakeItemsEquiprobable()
+        {
+            DefinitionHelper.Equiprobable(Items, _parent.UndoRedoManager);
+            return Task.CompletedTask;
         }
     }
 }

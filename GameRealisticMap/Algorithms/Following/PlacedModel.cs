@@ -2,22 +2,24 @@
 
 namespace GameRealisticMap.Algorithms.Following
 {
-    public class PlacedModel<TModel> : IModelPosition
+    public sealed class PlacedModel<TModel> : IPlacedModel<TModel>
     {
-        public PlacedModel(TModel model, TerrainPoint center, float angle)
+        public PlacedModel(TModel model, TerrainPoint center, float angle, float relativeElevation = 0f, float scale = 1f)
         {
             Model = model;
             Center = center;
             Angle = angle;
+            RelativeElevation = relativeElevation;
+            Scale = scale;
         }
 
         public float Angle { get; }
 
         public TerrainPoint Center { get; }
 
-        public float RelativeElevation => 0f;
+        public float RelativeElevation { get; }
 
-        public float Scale => 1f;
+        public float Scale { get; }
 
         public TModel Model { get; }
     }

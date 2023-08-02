@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
+using GameRealisticMap.Arma3.Assets.Fences;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
@@ -59,6 +61,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
         public IEnumerable<string> GetModels()
         {
             return Items.SelectMany(i => i.Composition.Items.Select(i => i.Model.Path));
+        }
+        public Task MakeItemsEquiprobable()
+        {
+            DefinitionHelper.Equiprobable(Items, _parent.UndoRedoManager);
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.Assets.Fences;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences

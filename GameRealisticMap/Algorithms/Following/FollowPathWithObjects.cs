@@ -10,16 +10,17 @@ namespace GameRealisticMap.Algorithms.Following
         {
             if (lib.Count != 0 && path.Count > 1)
             {
-                PlaceOnPathRightAngle(lib.GetRandom(path.First()), layer, path);
+                var random = RandomHelper.CreateRandom(path.First());
+
+                PlaceOnPathRightAngle(random, lib.GetRandom(random), layer, path);
             }
         }
 
-        public static void PlaceOnPathRightAngle<TModel>(ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
+        public static void PlaceOnPathRightAngle<TModel>(Random random, ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
         {
             var follow = new FollowPath(path);
-            follow.KeepRightAngles = true;
 
-            var random = RandomHelper.CreateRandom(follow.Current);
+            follow.KeepRightAngles = true;
 
             var straights = lib.Straights;
 
@@ -155,6 +156,30 @@ namespace GameRealisticMap.Algorithms.Following
                     }
                 }
             }
+        }
+
+        public static void PlaceObjectsOnPath<TModel>(Random random, IReadOnlyCollection<IItemDefinition<TModel>> items, List<PlacedModel<TModel>> layer, IReadOnlyCollection<TerrainPoint> path)
+        {
+            PlaceObjectsOnPath(random, items, layer, new FollowPath(path));
+        }
+
+        public static void PlaceObjectsOnPath<TModel>(Random random, IReadOnlyCollection<IItemDefinition<TModel>> items, List<PlacedModel<TModel>> layer, FollowPath follow)
+        {
+            do
+            {
+                var obj = items.GetRandom(random);
+                var scale = obj.GetScale(random);
+                var radiusScaled = obj.Radius * scale;
+                if (follow.Move(radiusScaled) && follow.Move(radiusScaled))
+                {
+                    layer.Add(new PlacedModel<TModel>(
+                        obj.Model, 
+                        follow.Previous,
+                        angle: random.GetAngle(), 
+                        relativeElevation: obj.GetElevation(random), 
+                        scale: scale));
+                }
+            } while (!follow.IsLast);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Algorithms.Following;
+﻿using GameRealisticMap.Algorithms;
+using GameRealisticMap.Algorithms.Following;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Fences;
@@ -23,7 +24,21 @@ namespace GameRealisticMap.Arma3.ManMade
             var layer = new List<PlacedModel<Composition>>();
             foreach (var fence in fences.ProgressStep(progress, "Fences"))
             {
-                FollowPathWithObjects.PlaceOnPathRightAngle(assets.GetFences(fence.TypeId), layer, fence.Path.Points);
+                var lib = assets.GetFences(fence.TypeId);
+                if (lib.Count != 0 && fence.Path.Points.Count > 1)
+                {
+                    var random = RandomHelper.CreateRandom(fence.Path.FirstPoint);
+                    var def = lib.GetRandom(random);
+                    if (def.Straights.Count > 0)
+                    {
+                        FollowPathWithObjects.PlaceOnPathRightAngle(random, def, layer, fence.Path.Points);
+                    }
+                    else if (def.Objects.Count > 0)
+                    {
+                        FollowPathWithObjects.PlaceObjectsOnPath(random, def.Objects, layer, fence.Path.Points);
+                    }
+                }
+
             }
             return layer.SelectMany(o => o.Model.ToTerrainBuilderObjects(o));
         }

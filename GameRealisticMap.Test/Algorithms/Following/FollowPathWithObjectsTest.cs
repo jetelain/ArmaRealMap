@@ -405,5 +405,52 @@ namespace GameRealisticMap.Test.Algorithms.Following
             Assert.Equal("Size4C", item.Model);
             Assert.Equal(270, item.Angle);
         }
+
+        [Fact]
+        public void PlaceObjectsOnPath()
+        {
+            var objects = new[] { new TestItemDefinition(1, 0.5f, "1m") };
+
+            var list = new List<PlacedModel<string>>();
+            FollowPathWithObjects.PlaceObjectsOnPath(new Random(0), objects, list, new[] {
+                new TerrainPoint(0,0),
+                new TerrainPoint(0,4),
+                new TerrainPoint(4,4)
+            });
+            Assert.Equal(8, list.Count);
+
+            var item = list[0];
+            Assert.Equal(new TerrainPoint(0, 0.5f), item.Center);
+            Assert.Equal("1m", item.Model);
+
+            item = list[1];
+            Assert.Equal(new TerrainPoint(0, 1.5f), item.Center);
+            Assert.Equal("1m", item.Model);
+
+            item = list[2];
+            Assert.Equal(new TerrainPoint(0, 2.5f), item.Center);
+            Assert.Equal("1m", item.Model);
+
+            item = list[3];
+            Assert.Equal(new TerrainPoint(0, 3.5f), item.Center);
+            Assert.Equal("1m", item.Model);
+
+            item = list[4];
+            Assert.Equal(new TerrainPoint(0.5f, 4f), item.Center);
+            Assert.Equal("1m", item.Model);
+
+            item = list[5];
+            Assert.Equal(new TerrainPoint(1.5f, 4f), item.Center);
+            Assert.Equal("1m", item.Model);
+
+            item = list[6];
+            Assert.Equal(new TerrainPoint(2.5f, 4f), item.Center);
+            Assert.Equal("1m", item.Model);
+
+            item = list[7];
+            Assert.Equal(new TerrainPoint(3.5f, 4f), item.Center);
+            Assert.Equal("1m", item.Model);
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Geometries;
 
@@ -96,5 +97,27 @@ namespace GameRealisticMap.Algorithms
             return default(T);
         }
 
+        public static float GetScale<TModelInfo>(this IItemDefinition<TModelInfo> obj, Random random)
+        {
+            if (obj.MinScale != null && obj.MaxScale != null)
+            {
+                return (float)(obj.MinScale + ((obj.MaxScale - obj.MinScale) * random.NextDouble()));
+            }
+            return 1;
+        }
+
+        public static float GetElevation<TModelInfo>(this IItemDefinition<TModelInfo> obj, Random random)
+        {
+            if (obj.MaxZ != null && obj.MinZ != null)
+            {
+                return (float)(obj.MinZ + ((obj.MaxZ - obj.MinZ) * random.NextDouble()));
+            }
+            return 0;
+        }
+
+        public static float GetAngle(this Random random)
+        {
+            return (float)(random.NextDouble() * 360);
+        }
     }
 }
