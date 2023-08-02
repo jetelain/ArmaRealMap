@@ -31,9 +31,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
             useAnySize = definition?.UseAnySize ?? false;
             useObjects = (definition?.Objects?.Count ?? 0) != 0;
             Straights = new FencesStraightViewModel(definition?.Straights, this);
-            LeftCorners = new FencesCornerOrEndViewModel(definition?.LeftCorners, "Left corners", this);
-            RightCorners = new FencesCornerOrEndViewModel(definition?.RightCorners, "Right corners", this);
-            Ends = new FencesCornerOrEndViewModel(definition?.Ends, "Ends", this);
+            LeftCorners = new FencesCornerOrEndViewModel(definition?.LeftCorners, GameRealisticMap.Studio.Labels.FenceLeftCorners, this);
+            RightCorners = new FencesCornerOrEndViewModel(definition?.RightCorners, GameRealisticMap.Studio.Labels.FenceRightCorners, this);
+            Ends = new FencesCornerOrEndViewModel(definition?.Ends, GameRealisticMap.Studio.Labels.FenceEnds, this);
             Objects = new FenceObjectsViewModel(definition?.Objects, this);
             SegmentsItems = new() { Straights, LeftCorners, RightCorners, Ends };
             ObjectsItems = new() { Objects };

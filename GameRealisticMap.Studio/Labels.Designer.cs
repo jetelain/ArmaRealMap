@@ -1276,11 +1276,110 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ends.
+        /// </summary>
+        public static string FenceEnds {
+            get {
+                return ResourceManager.GetString("FenceEnds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Filling strategy.
+        /// </summary>
+        public static string FenceFillingStrategy {
+            get {
+                return ResourceManager.GetString("FenceFillingStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Left corners.
+        /// </summary>
+        public static string FenceLeftCorners {
+            get {
+                return ResourceManager.GetString("FenceLeftCorners", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Objects.
+        /// </summary>
+        public static string FenceObjects {
+            get {
+                return ResourceManager.GetString("FenceObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Right corners.
+        /// </summary>
+        public static string FenceRightCorners {
+            get {
+                return ResourceManager.GetString("FenceRightCorners", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Straigth segments.
+        /// </summary>
+        public static string FenceStraigthSegments {
+            get {
+                return ResourceManager.GetString("FenceStraigthSegments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Fences, walls.
         /// </summary>
         public static string FencesWalls {
             get {
                 return ResourceManager.GetString("FencesWalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Type.
+        /// </summary>
+        public static string FenceType {
+            get {
+                return ResourceManager.GetString("FenceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use any element, even if a larger one would have been possible..
+        /// </summary>
+        public static string FenceUseAnySize {
+            get {
+                return ResourceManager.GetString("FenceUseAnySize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use largest elements when possible (default)..
+        /// </summary>
+        public static string FenceUseLargestFirst {
+            get {
+                return ResourceManager.GetString("FenceUseLargestFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use objects with random orientation. Ideal for natural hedges..
+        /// </summary>
+        public static string FenceUseObjects {
+            get {
+                return ResourceManager.GetString("FenceUseObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use rigid segments. Ideal for walls, wired fences, trimmed hedges, etc..
+        /// </summary>
+        public static string FenceUseRigidSegments {
+            get {
+                return ResourceManager.GetString("FenceUseRigidSegments", resourceCulture);
             }
         }
         

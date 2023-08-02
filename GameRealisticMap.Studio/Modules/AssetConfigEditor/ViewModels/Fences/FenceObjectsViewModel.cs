@@ -34,7 +34,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 
         public ObservableCollection<FenceObjectItem> Items { get; }
 
-        public string Label => "Objects";
+        public string Label => GameRealisticMap.Studio.Labels.FenceObjects;
 
         public CompositionImporter CompositionImporter { get; }
 

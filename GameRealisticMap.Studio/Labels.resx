@@ -909,4 +909,37 @@ You may eventually enable other mods.</value>
   <data name="MaxRoadSize" xml:space="preserve">
     <value>Max Road Size</value>
   </data>
+  <data name="FenceEnds" xml:space="preserve">
+    <value>Ends</value>
+  </data>
+  <data name="FenceRightCorners" xml:space="preserve">
+    <value>Right corners</value>
+  </data>
+  <data name="FenceLeftCorners" xml:space="preserve">
+    <value>Left corners</value>
+  </data>
+  <data name="FenceStraigthSegments" xml:space="preserve">
+    <value>Straigth segments</value>
+  </data>
+  <data name="FenceObjects" xml:space="preserve">
+    <value>Objects</value>
+  </data>
+  <data name="FenceType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="FenceUseRigidSegments" xml:space="preserve">
+    <value>Use rigid segments. Ideal for walls, wired fences, trimmed hedges, etc.</value>
+  </data>
+  <data name="FenceUseObjects" xml:space="preserve">
+    <value>Use objects with random orientation. Ideal for natural hedges.</value>
+  </data>
+  <data name="FenceFillingStrategy" xml:space="preserve">
+    <value>Filling strategy</value>
+  </data>
+  <data name="FenceUseLargestFirst" xml:space="preserve">
+    <value>Use largest elements when possible (default).</value>
+  </data>
+  <data name="FenceUseAnySize" xml:space="preserve">
+    <value>Use any element, even if a larger one would have been possible.</value>
+  </data>
 </root>

@@ -33,7 +33,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 
         public ObservableCollection<FenceStraightItem> Items { get; }
 
-        public string Label => "Straigth segments";
+        public string Label => GameRealisticMap.Studio.Labels.FenceStraigthSegments;
 
         public CompositionImporter CompositionImporter { get; }
 
