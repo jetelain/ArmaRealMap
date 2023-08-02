@@ -19,6 +19,7 @@ using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
+using GameRealisticMap.Studio.Modules.Main;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
@@ -29,7 +30,7 @@ using Microsoft.Win32;
 
 namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 {
-    internal class MapConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem
+    internal class MapConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem, IMainDocument
     {
         private readonly IShell _shell;
         private readonly IArma3DataModule _arma3DataModule;
@@ -225,7 +226,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         protected override async Task DoSave(string filePath)
         {
             using var stream = File.Create(filePath);
-            await JsonSerializer.SerializeAsync(stream, Config);
+            await SaveTo(stream);
         }
 
         public Task GeneratePreview(bool ignoreElevation = false)
@@ -483,6 +484,11 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                     task.WriteLine($"ModsPaths+='{path}'");
                 }
             }
+        }
+
+        public async Task SaveTo(Stream stream)
+        {
+            await JsonSerializer.SerializeAsync(stream, Config).ConfigureAwait(false);
         }
     }
 }

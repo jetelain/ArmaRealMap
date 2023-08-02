@@ -1465,6 +1465,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate an error report....
+        /// </summary>
+        public static string GenerateAnErrorReport {
+            get {
+                return ResourceManager.GetString("GenerateAnErrorReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Generate areas only (faster).
         /// </summary>
         public static string GenerateAreasOnly {

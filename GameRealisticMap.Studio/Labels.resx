@@ -942,4 +942,7 @@ You may eventually enable other mods.</value>
   <data name="FenceUseAnySize" xml:space="preserve">
     <value>Use any element, even if a larger one would have been possible.</value>
   </data>
+  <data name="GenerateAnErrorReport" xml:space="preserve">
+    <value>Generate an error report...</value>
+  </data>
 </root>
