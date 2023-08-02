@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Arma3.Assets.Filling;
+﻿using GameRealisticMap.Arma3.Assets.Fences;
+using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Fences;

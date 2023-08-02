@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Arma3.Assets.Fences;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.IO.Converters;
 using GameRealisticMap.Arma3.TerrainBuilder;

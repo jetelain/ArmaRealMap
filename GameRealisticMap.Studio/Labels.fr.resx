@@ -909,6 +909,39 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="MaxRoadSize" xml:space="preserve">
     <value>Largeur max de route</value>
   </data>
+  <data name="FenceEnds" xml:space="preserve">
+    <value>Débuts et fins</value>
+  </data>
+  <data name="FenceFillingStrategy" xml:space="preserve">
+    <value>Stratégie de remplissage</value>
+  </data>
+  <data name="FenceLeftCorners" xml:space="preserve">
+    <value>Coins gauche</value>
+  </data>
+  <data name="FenceRightCorners" xml:space="preserve">
+    <value>Coins droits</value>
+  </data>
+  <data name="FenceObjects" xml:space="preserve">
+    <value>Objets</value>
+  </data>
+  <data name="FenceStraigthSegments" xml:space="preserve">
+    <value>Segments droits</value>
+  </data>
+  <data name="FenceType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="FenceUseAnySize" xml:space="preserve">
+    <value>Utiliser n'importe quel segment, même si un plus large aurait été possible.</value>
+  </data>
+  <data name="FenceUseLargestFirst" xml:space="preserve">
+    <value>Utiliser les segments les plus grands lorsque possible (par défaut).</value>
+  </data>
+  <data name="FenceUseObjects" xml:space="preserve">
+    <value>Utiliser des objets avec une orientation aléatoire. Idéal pour les haies naturelles.</value>
+  </data>
+  <data name="FenceUseRigidSegments" xml:space="preserve">
+    <value>Utiliser des segments rigides. Idéal pour les murs, les grillages, les haies taillées, etc.</value>
+  </data>
   <data name="GenerateAnErrorReport" xml:space="preserve">
     <value>Générer un rapport d'erreur...</value>
   </data>

@@ -165,7 +165,7 @@
                                 <DataGridTextColumn Header="{x:Static r:Labels.Type}" Binding="{Binding PageTitle}" IsReadOnly="True" Width="150" />
                                 <DataGridTextColumn Header="{x:Static r:Labels.Label}" Binding="{Binding Label}" Width="150" />
                                 <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
-                                <DataGridTextColumn Header="{x:Static r:Labels.AssetObjects}" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTextColumn Header="{x:Static r:Labels.AssetObjects}" Binding="{Binding MainChild.Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
                                 <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

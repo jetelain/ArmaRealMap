@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace GameRealisticMap.Geometries
 {
@@ -74,7 +73,7 @@ namespace GameRealisticMap.Geometries
             return true;
         }
 
-        public TerrainPoint Current => position;
+        public TerrainPoint Current => position ?? TerrainPoint.Empty;
 
         public TerrainPoint Previous => previousPosition;
 
@@ -89,6 +88,8 @@ namespace GameRealisticMap.Geometries
         public bool IsAfterRightAngle { get; private set; }
 
         public bool IsLast => hasReachedEnd;
+
+        public bool IsFirst => index <=1;
 
         /// <summary>
         /// Index in original list
@@ -125,7 +126,7 @@ namespace GameRealisticMap.Geometries
                 if (KeepRightAngles)
                 {
                     var angle = Math.Abs(Math.Abs(Math.Acos(Vector2.Dot(Vector2.Normalize(delta), Vector2.Normalize(previousDelta)))) - (MathF.PI/2)); 
-                    if ( angle < 0.1d )
+                    if ( angle < 0.1d && !position!.Equals(previousPoint))
                     {
                         index--;
                         previousPosition = position;
