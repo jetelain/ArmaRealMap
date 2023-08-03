@@ -43,8 +43,8 @@
                     <Run Text="{x:Static r:Labels.GenerateMapForArma3}"/>
                     <Button.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Generate using WRP file format" cal:Message.Attach="GenerateMap"></MenuItem>
-                            <MenuItem Header="Generate using Terrain Builder files formats" cal:Message.Attach="GenerateTerrainBuilder"></MenuItem>
+                            <MenuItem Header="{x:Static r:Labels.GenerateMapForArma3WRP}" cal:Message.Attach="GenerateMap"></MenuItem>
+                            <MenuItem Header="{x:Static r:Labels.GenerateMapForArma3TB}" cal:Message.Attach="GenerateTerrainBuilder"></MenuItem>
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>

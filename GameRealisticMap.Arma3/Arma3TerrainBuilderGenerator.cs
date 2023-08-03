@@ -39,7 +39,7 @@ namespace GameRealisticMap.Arma3
         public async Task GenerateTerrainBuilderFiles(IProgressTask progress, Arma3MapConfig a3config, string targetDirectory)
         {
             var generators = new Arma3LayerGeneratorCatalog(progress, assets);
-            progress.Total += 6 + generators.Generators.Count;
+            progress.Total += 7 + generators.Generators.Count;
 
             // Download from OSM
             var osmSource = await LoadOsmData(progress, a3config);
@@ -89,26 +89,15 @@ namespace GameRealisticMap.Arma3
             }
 
             // layers.cfg
-            using (var report = progress.CreateStepPercent("LayersCfg"))
+            CreateLayersCfg(progress, config);
+            progress.ReportOneDone();
+            if (progress.CancellationToken.IsCancellationRequested)
             {
-                new LayersCfgGenerator(assets.Materials, projectDrive).WriteLayersCfg(config);
-                progress.ReportOneDone();
+                return;
             }
 
             // Imagery
-            var source = new ImagerySource(assets.Materials, progress, projectDrive, config, context);
-            using (var idMap = source.CreateIdMap())
-            {
-                await WriteImage(idMap, Path.Combine(targetDirectory, "idmap.png")).ConfigureAwait(false);
-            }
-            using (var satMap = source.CreateSatMap())
-            {
-                await WriteImage(satMap, Path.Combine(targetDirectory, "stamap.png")).ConfigureAwait(false);
-            }
-            context.DisposeHugeImages();
-
-            // TODO: CreatePictureMap/CreateSatOut
-
+            await ExportImagery(progress, config, context, targetDirectory).ConfigureAwait(false);
             progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
@@ -116,17 +105,22 @@ namespace GameRealisticMap.Arma3
             }
 
             // Elevation
-            var grid = context.GetData<ElevationData>().Elevation.ToDataCell(new Coordinates(0, TerrainBuilderObject.XShift));
-            using (var writer = File.CreateText(Path.Combine(targetDirectory,"elevation.asc")))
-            {
-                using var report = progress.CreateStepPercent("Elevation.AscFile");
-                EsriAsciiHelper.SaveDataCell(writer, grid, "-9999", report);
-            }
+            ExportElevation(progress, context, targetDirectory);
             progress.ReportOneDone();
-
-            var usedModels = new HashSet<ModelInfo>();
+            if (progress.CancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
 
             // Objects
+            await ExportObjects(progress, config, context, generators, targetDirectory);
+
+            await File.WriteAllTextAsync(Path.Combine(targetDirectory, "README.txt"), CreateReadMe(config, targetDirectory));
+        }
+
+        private async Task ExportObjects(IProgressTask progress, Arma3MapConfig config, BuildContext context, Arma3LayerGeneratorCatalog generators, string targetDirectory)
+        {
+            var usedModels = new HashSet<ModelInfo>();
             var objectsTargetDirectory = Path.Combine(targetDirectory, "Objects");
             Directory.CreateDirectory(objectsTargetDirectory);
             foreach (var tb in generators.Generators)
@@ -137,8 +131,8 @@ namespace GameRealisticMap.Arma3
                 {
                     usedModels.Add(entry.Model);
                 }
-                await WriteFileAsync(Path.Combine(objectsTargetDirectory, name + ".abs.txt"),entries.Where(e => e.ElevationMode == ElevationMode.Absolute).ToList());
-                await WriteFileAsync(Path.Combine(objectsTargetDirectory, name + ".rel.txt"), entries.Where(e => e.ElevationMode == ElevationMode.Relative).ToList());
+                await WriteFileAsync(Path.Combine(objectsTargetDirectory, "absolute_" + name + ".txt"), entries.Where(e => e.ElevationMode == ElevationMode.Absolute).ToList());
+                await WriteFileAsync(Path.Combine(objectsTargetDirectory, "relative_" + name + ".txt"), entries.Where(e => e.ElevationMode == ElevationMode.Relative).ToList());
                 progress.ReportOneDone();
             }
 
@@ -146,17 +140,63 @@ namespace GameRealisticMap.Arma3
             progress.ReportOneDone();
 
             new TmlGenerator().WriteLibrariesTo(usedModels, Path.Combine(targetDirectory, "Library"));
-
-            await File.WriteAllTextAsync(Path.Combine(targetDirectory, "README.txt"), CreateReadMe(config));
         }
 
-        private string? CreateReadMe(Arma3MapConfig config)
+        private void CreateLayersCfg(IProgressTask progress, Arma3MapConfig config)
+        {
+            using (var report = progress.CreateStepPercent("LayersCfg"))
+            {
+                new LayersCfgGenerator(assets.Materials, projectDrive).WriteLayersCfg(config);
+                progress.ReportOneDone();
+            }
+
+            if (OperatingSystem.IsWindows())
+            {
+                var legendSource = Path.Combine(Arma3ToolsHelper.GetArma3ToolsPath(), "TerrainBuilder\\img\\map\\maplegend.png");
+                var legendTarget = projectDrive.GetFullPath("legend.png");
+                if (File.Exists(legendSource) && !File.Exists(legendTarget))
+                {
+                    File.Copy(legendSource, projectDrive.GetFullPath(legendTarget), true);
+                }
+            }
+        }
+
+        private static void ExportElevation(IProgressTask progress, BuildContext context, string targetDirectory)
+        {
+            var grid = context.GetData<ElevationData>().Elevation.ToDataCell(new Coordinates(0, TerrainBuilderObject.XShift));
+            using (var writer = File.CreateText(Path.Combine(targetDirectory, "elevation.asc")))
+            {
+                using var report = progress.CreateStepPercent("Elevation.AscFile");
+                EsriAsciiHelper.SaveDataCell(writer, grid, "-9999", report);
+            }
+        }
+
+        private async Task ExportImagery(IProgressTask progress, Arma3MapConfig config, BuildContext context, string targetDirectory)
+        {
+            var source = new ImagerySource(assets.Materials, progress, projectDrive, config, context);
+            using (var idMap = source.CreateIdMap())
+            {
+                await WriteImage(idMap, Path.Combine(targetDirectory, "idmap.png")).ConfigureAwait(false);
+            }
+            ImageryCompiler.CreateConfigCppImages(projectDrive, config, source);
+            using (var satMap = source.CreateSatMap())
+            {
+                await WriteImage(satMap, Path.Combine(targetDirectory, "satmap.png")).ConfigureAwait(false);
+            }
+            context.DisposeHugeImages();
+        }
+
+        private string? CreateReadMe(Arma3MapConfig config, string targetDirectory)
         {
             var tiler = new ImageryTiler(config);
 
             var textureLayerSize = config.SizeInMeters / WrpCompiler.LandRange(config.SizeInMeters);
 
             return  FormattableString.Invariant($@"# {config.WorldName}
+
+See https://github.com/jetelain/ArmaRealMap/wiki/Terrain-Builder-Export for additional instructions.
+
+Remember to mount project drive with Arma 3 Tools, or your custom tool, before launching Terrain Builder.
 
 ## Mapframe properties
     Location
@@ -183,17 +223,53 @@ namespace GameRealisticMap.Arma3
             Desired overlap (px) = 16
 
         Texture layer
-            Size (m) = {textureLayerSize} x {textureLayerSize}
+            Size (m) = {textureLayerSize} x {textureLayerSize} (see note 1)
 
     Processing
         Layers config file (layers.cfg) = P:\{config.PboPrefix}\data\gdt\layers.cfg
 
 
+Note 1 : 
+If you choose an other texture layer size, you will have to edit the rvmat files generated in 
+'P:\{config.PboPrefix}\data\gdt' to keep a correct in game texture size.
+
+## Elevation
+
+Import '{Path.Combine(targetDirectory, "elevation.asc")}' with 'File > Import > Terrains...'.
+
+## Imagery
+
+Import '{Path.Combine(targetDirectory, "satmap.png")}' with 'File > Import > Satellite images...'.
+
+Import '{Path.Combine(targetDirectory, "idmap.png")}' with 'File > Import > Surface mask images...'.
+
+For both import, use following Localisation Options :
+
+    Left-Bottom location
+        Easting  = {TerrainBuilderObject.XShift}
+        Northing = 0
+    
+    Resolution
+        X (m/px) = {config.Resolution}
+        Y (m/px) = {config.Resolution}
+
+For large images this operation can take several minutes.
+
+## Libraries
+
+You may use your own libraries, or import tml files from '{Path.Combine(targetDirectory, "Library")}'.
+
+If you use your own libraries, import at least 'arm.tml' if present.
+
+To import files, go into 'Library manager', then right click on root element, then 'Load library'.
+
 ## Objects
 
-Files *.rel.txt have to be imported with relative elevation.
+Import objects from '{Path.Combine(targetDirectory, "Objects")}' with 'File > Import > Objects...'.
 
-Files *.abs.txt have to be imported with absolute elevation.
+Files relative_*.txt have to be imported with relative elevation.
+
+Files absolute_*.txt have to be imported with absolute elevation.
 ");
         }
 

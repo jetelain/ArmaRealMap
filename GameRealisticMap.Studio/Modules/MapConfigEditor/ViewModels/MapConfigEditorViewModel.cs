@@ -332,7 +332,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public Task GenerateMap()
         {
             IoC.Get<IProgressTool>()
-                .RunTask(Labels.GenerateMapForArma3, DoGenerateMap);
+                .RunTask(Labels.GenerateMapForArma3WRP, DoGenerateMap);
             return Task.CompletedTask;
         }
 
@@ -494,7 +494,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public Task GenerateTerrainBuilder()
         {
             IoC.Get<IProgressTool>()
-                .RunTask(Labels.GenerateMapForArma3, DoGenerateTerrainBuilder);
+                .RunTask(Labels.GenerateMapForArma3TB, DoGenerateTerrainBuilder);
             return Task.CompletedTask;
         }
 
@@ -514,7 +514,13 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             await generator.GenerateTerrainBuilderFiles(task, a3config, target);
 
+            task.AddSuccessAction(() => ShellHelper.OpenUri(Path.Combine(target, "README.txt")), GameRealisticMap.Studio.Labels.ViewImportInstructions);
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);
+            task.AddSuccessAction(() =>
+            {
+                Arma3ToolsHelper.EnsureProjectDrive();
+                ShellHelper.OpenUri(Path.Combine(Arma3ToolsHelper.GetArma3ToolsPath(), "TerrainBuilder\\TerrainBuilder.exe"));
+            }, GameRealisticMap.Studio.Labels.LaunchTerrainBuilder);
         }
     }
 }

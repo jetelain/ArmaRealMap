@@ -1528,6 +1528,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate Map to Terrain Builder files.
+        /// </summary>
+        public static string GenerateMapForArma3TB {
+            get {
+                return ResourceManager.GetString("GenerateMapForArma3TB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate Map to a WRP file.
+        /// </summary>
+        public static string GenerateMapForArma3WRP {
+            get {
+                return ResourceManager.GetString("GenerateMapForArma3WRP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Generate Mod for Arma 3.
         /// </summary>
         public static string GenerateModForArma3 {
@@ -1767,6 +1785,15 @@ namespace GameRealisticMap.Studio {
         public static string LaunchArma3Hint {
             get {
                 return ResourceManager.GetString("LaunchArma3Hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Launch Terrain Builder.
+        /// </summary>
+        public static string LaunchTerrainBuilder {
+            get {
+                return ResourceManager.GetString("LaunchTerrainBuilder", resourceCulture);
             }
         }
         
@@ -2454,6 +2481,15 @@ namespace GameRealisticMap.Studio {
         public static string UsualTerrainMods {
             get {
                 return ResourceManager.GetString("UsualTerrainMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à View import instructions.
+        /// </summary>
+        public static string ViewImportInstructions {
+            get {
+                return ResourceManager.GetString("ViewImportInstructions", resourceCulture);
             }
         }
         

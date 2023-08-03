@@ -945,4 +945,16 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="GenerateAnErrorReport" xml:space="preserve">
     <value>Générer un rapport d'erreur...</value>
   </data>
+  <data name="GenerateMapForArma3TB" xml:space="preserve">
+    <value>Générer des fichiers au format Terrain Builder</value>
+  </data>
+  <data name="GenerateMapForArma3WRP" xml:space="preserve">
+    <value>Générer un fichier au format WRP</value>
+  </data>
+  <data name="LaunchTerrainBuilder" xml:space="preserve">
+    <value>Lancer Terrain Builder (Anglais uniquement)</value>
+  </data>
+  <data name="ViewImportInstructions" xml:space="preserve">
+    <value>Voir les instructions d'import (Anglais uniquement)</value>
+  </data>
 </root>

@@ -58,7 +58,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                 GenerateIdMapTilesAndRvMat(config, idMap, tiler);
             }
 
-            CreateConfigCppImages(config, source);
+            CreateConfigCppImages(gameFileSystemWriter, config, source);
 
             using (var satMap = source.CreateSatMap())
             {
@@ -69,7 +69,7 @@ namespace GameRealisticMap.Arma3.GameEngine
              return tiler;
         }
 
-        private void CreateConfigCppImages(IArma3MapConfig config, IImagerySource source)
+        public static void CreateConfigCppImages(IGameFileSystemWriter gameFileSystemWriter, IArma3MapConfig config, IImagerySource source)
         {
             var picturemapFile = $"{config.PboPrefix}\\data\\picturemap_ca.png";
             //if (!gameFileSystemWriter.FileExists(picturemapFile))
