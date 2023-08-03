@@ -112,7 +112,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         private void GenerateIdMapTilesAndRvMat(IArma3MapConfig config, HugeImage<Rgba32> idmap, ImageryTiler tiler)
         {
             using var report = progress.CreateStep("IdMapTiling", tiler.Segments.Length);
-            var textureScale = GetTextureScale(config);
+            var textureScale = GetTextureScale(config, materialLibrary);
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
             {
                 using (var sourceTile = new Image<Rgb24>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgb24>()))
@@ -134,11 +134,6 @@ namespace GameRealisticMap.Arma3.GameEngine
                     }
                 }
             });
-        }
-
-        private double GetTextureScale(IArma3MapConfig config)
-        {
-            return GetTextureScale(config, materialLibrary);
         }
 
         public static double GetTextureScale(IArma3MapConfig config, TerrainMaterialLibrary materialLibrary)
