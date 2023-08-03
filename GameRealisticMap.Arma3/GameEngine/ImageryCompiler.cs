@@ -58,7 +58,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                 GenerateIdMapTilesAndRvMat(config, idMap, tiler);
             }
 
-            CreateConfigCppImages(config, source);
+            CreateConfigCppImages(gameFileSystemWriter, config, source);
 
             using (var satMap = source.CreateSatMap())
             {
@@ -69,7 +69,7 @@ namespace GameRealisticMap.Arma3.GameEngine
              return tiler;
         }
 
-        private void CreateConfigCppImages(IArma3MapConfig config, IImagerySource source)
+        public static void CreateConfigCppImages(IGameFileSystemWriter gameFileSystemWriter, IArma3MapConfig config, IImagerySource source)
         {
             var picturemapFile = $"{config.PboPrefix}\\data\\picturemap_ca.png";
             //if (!gameFileSystemWriter.FileExists(picturemapFile))
@@ -112,7 +112,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         private void GenerateIdMapTilesAndRvMat(IArma3MapConfig config, HugeImage<Rgba32> idmap, ImageryTiler tiler)
         {
             using var report = progress.CreateStep("IdMapTiling", tiler.Segments.Length);
-            var textureScale = GetTextureScale(config);
+            var textureScale = GetTextureScale(config, materialLibrary);
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
             {
                 using (var sourceTile = new Image<Rgb24>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgb24>()))
@@ -136,7 +136,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             });
         }
 
-        public double GetTextureScale(IArma3MapConfig config)
+        public static double GetTextureScale(IArma3MapConfig config, TerrainMaterialLibrary materialLibrary)
         {
             return config.SizeInMeters / WrpCompiler.LandRange(config.SizeInMeters) / materialLibrary.TextureSizeInMeters;
         }

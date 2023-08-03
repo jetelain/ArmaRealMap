@@ -332,7 +332,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public Task GenerateMap()
         {
             IoC.Get<IProgressTool>()
-                .RunTask(Labels.GenerateMapForArma3, DoGenerateMap);
+                .RunTask(Labels.GenerateMapForArma3WRP, DoGenerateMap);
             return Task.CompletedTask;
         }
 
@@ -489,6 +489,38 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public async Task SaveTo(Stream stream)
         {
             await JsonSerializer.SerializeAsync(stream, Config).ConfigureAwait(false);
+        }
+
+        public Task GenerateTerrainBuilder()
+        {
+            IoC.Get<IProgressTool>()
+                .RunTask(Labels.GenerateMapForArma3TB, DoGenerateTerrainBuilder);
+            return Task.CompletedTask;
+        }
+
+        private async Task DoGenerateTerrainBuilder(IProgressTaskUI task)
+        {
+            var a3config = Config.ToArma3MapConfig();
+
+            var target = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "GameRealisticMap", "Arma3", "TerrainBuilder", a3config.WorldName);
+
+            Directory.CreateDirectory(target);
+
+            ReportConfig(task, _arma3DataModule.ProjectDrive, a3config);
+
+            var assets = await GetAssets(_arma3DataModule.Library, a3config);
+
+            var generator = new Arma3TerrainBuilderGenerator(assets, _arma3DataModule.ProjectDrive);
+
+            await generator.GenerateTerrainBuilderFiles(task, a3config, target);
+
+            task.AddSuccessAction(() => ShellHelper.OpenUri(Path.Combine(target, "README.txt")), GameRealisticMap.Studio.Labels.ViewImportInstructions);
+            task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);
+            task.AddSuccessAction(() =>
+            {
+                Arma3ToolsHelper.EnsureProjectDrive();
+                ShellHelper.OpenUri(Path.Combine(Arma3ToolsHelper.GetArma3ToolsPath(), "TerrainBuilder\\TerrainBuilder.exe"));
+            }, GameRealisticMap.Studio.Labels.LaunchTerrainBuilder);
         }
     }
 }

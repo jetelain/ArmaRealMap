@@ -945,4 +945,16 @@ You may eventually enable other mods.</value>
   <data name="GenerateAnErrorReport" xml:space="preserve">
     <value>Generate an error report...</value>
   </data>
+  <data name="GenerateMapForArma3WRP" xml:space="preserve">
+    <value>Generate Map to a WRP file</value>
+  </data>
+  <data name="GenerateMapForArma3TB" xml:space="preserve">
+    <value>Generate Map to Terrain Builder files</value>
+  </data>
+  <data name="LaunchTerrainBuilder" xml:space="preserve">
+    <value>Launch Terrain Builder</value>
+  </data>
+  <data name="ViewImportInstructions" xml:space="preserve">
+    <value>View import instructions</value>
+  </data>
 </root>

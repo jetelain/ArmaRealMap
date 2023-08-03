@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Arma3.IO;
+﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.ManMade;
 using GameRealisticMap.Arma3.Nature.Forests;
 using GameRealisticMap.Arma3.Nature.Lakes;
