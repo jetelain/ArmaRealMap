@@ -38,7 +38,7 @@ namespace GameRealisticMap.Arma3
         public async Task GenerateTerrainBuilderFiles(IProgressTask progress, Arma3MapConfig a3config, string targetDirectory)
         {
             var generators = new Arma3LayerGeneratorCatalog(progress, assets);
-            progress.Total += 5 + generators.Generators.Count;
+            progress.Total += 6 + generators.Generators.Count;
 
             // Download from OSM
             var osmSource = await LoadOsmData(progress, a3config);
@@ -87,6 +87,13 @@ namespace GameRealisticMap.Arma3
                 return;
             }
 
+            // layers.cfg
+            using (var report = progress.CreateStepPercent("LayersCfg"))
+            {
+                new LayersCfgGenerator(assets.Materials, projectDrive).WriteLayersCfg(config);
+                progress.ReportOneDone();
+            }
+
             // Imagery
             var source = new ImagerySource(assets.Materials, progress, projectDrive, config, context);
             using (var idMap = source.CreateIdMap())
@@ -132,7 +139,59 @@ namespace GameRealisticMap.Arma3
                 progress.ReportOneDone();
             }
 
+            new DependencyUnpacker(assets, projectDrive).Unpack(progress, usedModels.Select(m => m.Path));
+            progress.ReportOneDone();
+
             // TODO: Create TML files
+
+            await File.WriteAllTextAsync(Path.Combine(targetDirectory, "README.txt"), CreateReadMe(config));
+        }
+
+        private string? CreateReadMe(Arma3MapConfig config)
+        {
+            var tiler = new ImageryTiler(config);
+
+            var textureLayerSize = config.SizeInMeters / WrpCompiler.LandRange(config.SizeInMeters);
+
+            return  FormattableString.Invariant($@"# {config.WorldName}
+
+## Mapframe properties
+    Location
+        Properties
+            Name              = {config.WorldName}
+            Ouput root folder = P:\{config.PboPrefix}
+
+        Location
+            Easting  = {TerrainBuilderObject.XShift}
+            Northing = 0
+
+    Sampler
+        Terrain sampler
+            Grid size        = {config.TerrainArea.GridSize} x {config.TerrainArea.GridSize}
+            Cell size (m)    = {config.TerrainArea.GridCellSize}
+            Terrain size (m) = {config.SizeInMeters}
+
+        Satellite/Surface (mask) source images
+            Size (px)         = {tiler.FullImageSize} x {tiler.FullImageSize}
+            Resolution (m/px) = {config.Resolution}
+
+        Satellite/Surface (mask) tiles
+            Size (px)            = {tiler.TileSize} x {tiler.TileSize}
+            Desired overlap (px) = 16
+
+        Texture layer
+            Size (m) = {textureLayerSize} x {textureLayerSize}
+
+    Processing
+        Layers config file (layers.cfg) = P:\{config.PboPrefix}\data\gdt\layers.cfg
+
+
+## Objects
+
+Files *.rel.txt have to be imported with relative elevation.
+
+Files *.abs.txt have to be imported with absolute elevation.
+");
         }
 
         private static async Task WriteImage(HugeImage<Rgba32> idMap, string filename)
@@ -158,5 +217,6 @@ namespace GameRealisticMap.Arma3
                 await File.WriteAllLinesAsync(filePath, terrainBuilderObjects.Select(o => o.ToTerrainBuilderCSV()));
             }
         }
+
     }
 }

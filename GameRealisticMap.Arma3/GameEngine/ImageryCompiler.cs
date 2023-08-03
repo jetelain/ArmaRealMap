@@ -136,7 +136,12 @@ namespace GameRealisticMap.Arma3.GameEngine
             });
         }
 
-        public double GetTextureScale(IArma3MapConfig config)
+        private double GetTextureScale(IArma3MapConfig config)
+        {
+            return GetTextureScale(config, materialLibrary);
+        }
+
+        public static double GetTextureScale(IArma3MapConfig config, TerrainMaterialLibrary materialLibrary)
         {
             return config.SizeInMeters / WrpCompiler.LandRange(config.SizeInMeters) / materialLibrary.TextureSizeInMeters;
         }
