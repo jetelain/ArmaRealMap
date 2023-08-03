@@ -3,6 +3,7 @@ using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.Imagery;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Arma3.TerrainBuilder.TmlFiles;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
@@ -126,23 +127,25 @@ namespace GameRealisticMap.Arma3
             var usedModels = new HashSet<ModelInfo>();
 
             // Objects
+            var objectsTargetDirectory = Path.Combine(targetDirectory, "Objects");
+            Directory.CreateDirectory(objectsTargetDirectory);
             foreach (var tb in generators.Generators)
             {
-                var name = tb.GetType().Name.Replace("Generator", "");
+                var name = tb.GetType().Name.Replace("Generator", "").ToLowerInvariant();
                 var entries = tb.Generate(config, context).ToList();
                 foreach (var entry in entries)
                 {
                     usedModels.Add(entry.Model);
                 }
-                await WriteFileAsync(Path.Combine(targetDirectory, name + ".abs.txt"),entries.Where(e => e.ElevationMode == ElevationMode.Absolute).ToList());
-                await WriteFileAsync(Path.Combine(targetDirectory, name + ".rel.txt"), entries.Where(e => e.ElevationMode == ElevationMode.Relative).ToList());
+                await WriteFileAsync(Path.Combine(objectsTargetDirectory, name + ".abs.txt"),entries.Where(e => e.ElevationMode == ElevationMode.Absolute).ToList());
+                await WriteFileAsync(Path.Combine(objectsTargetDirectory, name + ".rel.txt"), entries.Where(e => e.ElevationMode == ElevationMode.Relative).ToList());
                 progress.ReportOneDone();
             }
 
             new DependencyUnpacker(assets, projectDrive).Unpack(progress, usedModels.Select(m => m.Path));
             progress.ReportOneDone();
 
-            // TODO: Create TML files
+            new TmlGenerator().WriteLibrariesTo(usedModels, Path.Combine(targetDirectory, "Library"));
 
             await File.WriteAllTextAsync(Path.Combine(targetDirectory, "README.txt"), CreateReadMe(config));
         }
@@ -158,8 +161,8 @@ namespace GameRealisticMap.Arma3
 ## Mapframe properties
     Location
         Properties
-            Name              = {config.WorldName}
-            Ouput root folder = P:\{config.PboPrefix}
+            Name               = {config.WorldName}
+            Output root folder = P:\{config.PboPrefix}
 
         Location
             Easting  = {TerrainBuilderObject.XShift}
@@ -172,7 +175,7 @@ namespace GameRealisticMap.Arma3
             Terrain size (m) = {config.SizeInMeters}
 
         Satellite/Surface (mask) source images
-            Size (px)         = {tiler.FullImageSize} x {tiler.FullImageSize}
+            Size (px)         = {tiler.FullImageSize.Width} x {tiler.FullImageSize.Height}
             Resolution (m/px) = {config.Resolution}
 
         Satellite/Surface (mask) tiles
