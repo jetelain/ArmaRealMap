@@ -34,7 +34,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             cfg.WriteLine("};");
             cfg.WriteLine("class Legend {");
             cfg.WriteLine("    picture = \"legend.png\";");
-            cfg.WriteLine("    class Legend {");
+            cfg.WriteLine("    class Colors {");
             foreach (var def in materials.Definitions)
             {
                 var name = def.Usages.First().ToString().ToLowerInvariant();
