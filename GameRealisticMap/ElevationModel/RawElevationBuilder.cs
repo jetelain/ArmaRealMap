@@ -47,16 +47,20 @@ namespace GameRealisticMap.ElevationModel
                     if (oceanMakeValue > 128)
                     {
                         var elevation = GetElevationBilinear(source.Ground, latLong.Y, latLong.X);
-                        if (elevation >= 0)
+                        if (elevation >= -1)
                         {
-                            elevation = 0.1;
+                            elevation = ((oceanMakeValue - 128) / 128f * -0.9f) - 0.1f;
                         }
                         grid[x, y] = (float)elevation;
                     }
                     // TODO: Create an intermediate value ?
-                    else 
+                    else
                     {
                         var elevation = GetElevationBilinear(source.SurfaceOnly, latLong.Y, latLong.X);
+                        if (double.IsNaN(elevation) || elevation < 1)
+                        {
+                            elevation = ((128 - oceanMakeValue) / 128f * 0.9f) + 0.1f;
+                        }
                         grid[x, y] = (float)elevation;
                     }
                 }
@@ -76,6 +80,7 @@ namespace GameRealisticMap.ElevationModel
                 {
                     PolygonDrawHelper.DrawPolygon(m, o, new SolidBrush(Color.White), l => l.Select(p => new PointF(p.X / context.Area.GridCellSize, p.Y / context.Area.GridCellSize)));
                 }
+                m.BoxBlur(1);
             });
             return oceanMask;
         }
@@ -83,20 +88,20 @@ namespace GameRealisticMap.ElevationModel
         private static RawElevationSource CreateSource(IBuildContext context)
         {
             var points = new LatLngBounds(context.Area);
-            var start = new Coordinates(points.Bottom - 0.001, points.Left - 0.001);
-            var end = new Coordinates(points.Top + 0.001, points.Right + 0.001);
+            var start = new Coordinates(points.Bottom - 0.002, points.Left - 0.002);
+            var end = new Coordinates(points.Top + 0.002, points.Right + 0.002);
             var dbCredits = new List<string>() { "SRTM1", "STRM15+" };
 
-            // Full world coverage, but really low resolution (450m)
+            // Elevation of ground, but really low resolution (460m at equator)
             var fulldb = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/SRTM15Plus/")));
             var viewFull = fulldb.CreateView<float>(start, end).GetAwaiter().GetResult().ToDataCell();
 
-            // Partial world covergae, but better resolution (30m)
+            // Elevation of surface, Partial world covergae, but better resolution (30m at equator)
             var srtm = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/SRTM1/")));
             IDemDataCell view;
             if (!srtm.HasFullData(start, end).GetAwaiter().GetResult())
             {
-                // Alternative coverage, but requires JAXA credits
+                // Alternative Elevation of surface, but requires JAXA credits
                 var aw3d30 = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/AW3D30/")));
                 if (!srtm.HasFullData(start, end).GetAwaiter().GetResult())
                 {
