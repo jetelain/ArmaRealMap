@@ -2,8 +2,8 @@
 using System.Numerics;
 using System.Text.Json.Serialization;
 using ClipperLib;
-using GameRealisticMap.ManMade.Roads;
 using GeoAPI.Geometries;
+using MapToolkit;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Distance;
 
@@ -243,5 +243,43 @@ namespace GameRealisticMap.Geometries
             var b = Points[Math.Min(index + 1, Points.Count - 1)];
             return Vector2.Normalize(b.Vector - a.Vector);
         }
+
+        internal IEnumerable<TerrainPath> ClippedKeepOrientation(TerrainPolygon polygon)
+        {
+            var intPointPrecision = Points.Select(p => p.ToIntPointPrecision()).ToList();
+            var intPointFirst = intPointPrecision[0];
+
+            var clipped = Intersection(polygon);
+
+            foreach(var result in clipped)
+            {
+                if (!TerrainPoint.Equals(result.FirstPoint, intPointFirst))
+                {
+                    if (TerrainPoint.Equals(result.LastPoint, intPointFirst)) // trivial case : path was not really changed, only reverse
+                    {
+                        result.Points.Reverse();
+                    }
+                    else if (result.Points.Count > 3)
+                    {
+                        var coreItems = result.Points.GetRange(1, result.Points.Count - 2);
+                        var index1 = intPointPrecision.FindIndex(p => TerrainPoint.Equals(coreItems[0], p));
+                        var index2 = intPointPrecision.FindIndex(p => TerrainPoint.Equals(coreItems[1], p));
+                        if (index1 > index2)
+                        {
+                            result.Points.Reverse();
+                        }
+                    }
+                    else
+                    {
+                        // Find an alternate method
+                    }
+                }
+            }
+            return clipped;
+        }
+
+        public bool IsClosed => FirstPoint.Equals(LastPoint);
+
+        public bool IsCounterClockWise => Points.IsCounterClockWise();
     }
 }

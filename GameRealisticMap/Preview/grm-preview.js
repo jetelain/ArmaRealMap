@@ -480,6 +480,8 @@ function InitPreview(geoJson)
                 case 'fence': return { stroke: true, weight: 3, color: 'red' };
                 case 'tree': return { fillColor: "ForestGreen", stroke: false, fillOpacity: 0.8 };
                 case 'railway': return { fillColor: "black", stroke: false, fillOpacity: 0.8 };
+
+                case 'ocean': return { fillColor: 'RoyalBlue', fillOpacity: 0.5, stroke: true, weight: 3, color: 'RoyalBlue' };
 			}
 			return { fillColor:'black', stroke: false, fillOpacity: 0.2 };
         },

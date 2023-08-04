@@ -77,6 +77,51 @@ namespace GameRealisticMap.Preview
             }
         }
 
+        public async Task RenderHtml<TData>(IProgressTask progress, string targetFile) 
+            where TData: class, IGeoJsonData
+        {
+            try
+            {
+                
+                var catalog = new BuildersCatalog(progress, library, null, true);
+                progress.Total = 3;
+
+                var loader = new OsmDataOverPassLoader(progress);
+                var osmSource = await loader.Load(terrainArea);
+                progress.ReportOneDone();
+                if (progress.CancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                var context = new BuildContext(catalog, progress, terrainArea, osmSource, imagery);
+                var list = new List<Feature>();
+                var data = context.GetData<TData>();
+                
+                list.AddRange(data.ToGeoJson(p => p));
+                progress.ReportOneDone();
+                if (progress.CancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
+                
+
+                var collection = new FeatureCollection(list);
+
+                await RenderHtml(collection, targetFile);
+
+                progress.ReportOneDone();
+            }
+            catch (Exception ex)
+            {
+                progress.Failed(ex);
+            }
+            finally
+            {
+                progress.Dispose();
+            }
+        }
+
         //private IPosition Project(TerrainPoint point)
         //{
         //    var p = terrainArea.TerrainPointToLatLng(point);
