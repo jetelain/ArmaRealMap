@@ -3248,6 +3248,29 @@
       },
       {
         "Material": {
+          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_sand_centraleurope_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_sand_centraleurope_co.paa",
+          "Id": "F4A460FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAIVJREFUeJw1j0kOAzEIBJvF38w51zx/IpbQTMYWsiwVTeGf96urCix3x30E3b1/FxGwzGwhVZsSROQNTUFFMc9AunB3bUpEEGjIdPBW5SZ8rwt+DsAEVd3IytpIdpufNVEbB1IZhceFIyvzVj0ygMjK9T+eCbSvIddhBu1sbvFsQmFCmYIfOrZUavcGk1cAAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "Coastline",
+          "Sand"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "a3\\map_data\\gdt_seabed_nopx.paa",
+          "ColorTexture": "a3\\map_data\\gdt_seabed_co.paa",
+          "Id": "0026FFFF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAMlJREFUeJwdjt1Og0AYRM/Cx58CLdVgou/iQ+j73xlqTCBtpbjdLrt+7d1czJk58vH5HrvHHcP4RVtviTHSVDXjcWKaR6QuK34Oe/7cL2aJ5FmBMS1912PdjGTyQJE7iIaiKLk4y7wcsVdHVdZILhlpKrRNR4gBv1pC8Cx2Ytv0yDAN91/nHQa4AS/dmw6mJEaQyEqSaEghrKsKbtTpWz0ih/MJ8VevVIokhVI3yZrARa+8Lp5VMhMtCKdl5Gnzei/P1iF6tWuf+QcZ7VctNm5rngAAAABJRU5ErkJggg=="
+        },
+        "Usages": [
+          "OceanGround"
+        ]
+      },
+      {
+        "Material": {
           "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_forest_centraleurope_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_forest_centraleurope_co.paa",
           "Id": "008000FF",
@@ -3255,17 +3278,6 @@
         },
         "Usages": [
           "ForestGround"
-        ]
-      },
-      {
-        "Material": {
-          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_sand_centraleurope_nopx.paa",
-          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_sand_centraleurope_co.paa",
-          "Id": "F4A460FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAIVJREFUeJw1j0kOAzEIBJvF38w51zx/IpbQTMYWsiwVTeGf96urCix3x30E3b1/FxGwzGwhVZsSROQNTUFFMc9AunB3bUpEEGjIdPBW5SZ8rwt+DsAEVd3IytpIdpufNVEbB1IZhceFIyvzVj0ygMjK9T+eCbSvIddhBu1sbvFsQmFCmYIfOrZUavcGk1cAAAAASUVORK5CYII="
-        },
-        "Usages": [
-          "Sand"
         ]
       },
       {
@@ -3824,6 +3836,7 @@
           }
         ],
         "Ends": [],
+        "Objects": [],
         "Label": "",
         "UseAnySize": false
       }
@@ -3860,6 +3873,7 @@
         "LeftCorners": [],
         "RightCorners": [],
         "Ends": [],
+        "Objects": [],
         "Label": "",
         "UseAnySize": false
       }
@@ -3896,6 +3910,7 @@
         "LeftCorners": [],
         "RightCorners": [],
         "Ends": [],
+        "Objects": [],
         "Label": "",
         "UseAnySize": false
       }

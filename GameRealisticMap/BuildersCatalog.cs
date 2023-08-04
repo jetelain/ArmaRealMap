@@ -28,6 +28,7 @@ namespace GameRealisticMap
         public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library, IRailwayCrossingResolver? crossingResolver = null, bool useFullGeoJson = false)
         {
             Register(new OceanBuilder(progress));
+            Register(new CoastlineBuilder(progress));
             Register(new RawSatelliteImageBuilder(progress));
             Register(new RawElevationBuilder(progress));
             Register(new CategoryAreaBuilder(progress));

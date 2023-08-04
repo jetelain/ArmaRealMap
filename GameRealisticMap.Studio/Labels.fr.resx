@@ -957,4 +957,10 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="ViewImportInstructions" xml:space="preserve">
     <value>Voir les instructions d'import (Anglais uniquement)</value>
   </data>
+  <data name="AssetOceanGround" xml:space="preserve">
+    <value>Fond de l'océan</value>
+  </data>
+  <data name="AssetCoastline" xml:space="preserve">
+    <value>Par défaut - Littoral</value>
+  </data>
 </root>

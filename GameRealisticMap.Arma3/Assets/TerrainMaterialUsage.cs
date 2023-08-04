@@ -5,6 +5,8 @@
         Default,
         DefaultUrban,
         DefaultIndustrial,
+        Coastline,
+        OceanGround,
         ForestGround,
         Sand,
         Grass,

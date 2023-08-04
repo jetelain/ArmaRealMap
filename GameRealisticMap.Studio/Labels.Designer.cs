@@ -268,6 +268,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default ground - Coastline.
+        /// </summary>
+        public static string AssetCoastline {
+            get {
+                return ResourceManager.GetString("AssetCoastline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Commercial Building.
         /// </summary>
         public static string AssetCommercial {
@@ -525,6 +534,15 @@ namespace GameRealisticMap.Studio {
         public static string AssetObjects {
             get {
                 return ResourceManager.GetString("AssetObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ocean ground.
+        /// </summary>
+        public static string AssetOceanGround {
+            get {
+                return ResourceManager.GetString("AssetOceanGround", resourceCulture);
             }
         }
         
@@ -993,6 +1011,15 @@ namespace GameRealisticMap.Studio {
         public static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default ground coast line.
+        /// </summary>
+        public static string CoastLine {
+            get {
+                return ResourceManager.GetString("CoastLine", resourceCulture);
             }
         }
         

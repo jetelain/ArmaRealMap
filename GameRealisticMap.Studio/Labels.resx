@@ -957,4 +957,13 @@ You may eventually enable other mods.</value>
   <data name="ViewImportInstructions" xml:space="preserve">
     <value>View import instructions</value>
   </data>
+  <data name="AssetOceanGround" xml:space="preserve">
+    <value>Ocean ground</value>
+  </data>
+  <data name="CoastLine" xml:space="preserve">
+    <value>Default ground coast line</value>
+  </data>
+  <data name="AssetCoastline" xml:space="preserve">
+    <value>Default ground - Coastline</value>
+  </data>
 </root>
