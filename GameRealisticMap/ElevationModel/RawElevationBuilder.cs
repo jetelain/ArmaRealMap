@@ -1,9 +1,15 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Linq;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
+using GameRealisticMap.Nature.Ocean;
 using GameRealisticMap.Reporting;
 using MapToolkit;
 using MapToolkit.Databases;
 using MapToolkit.DataCells;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.ElevationModel
 {
@@ -18,42 +24,101 @@ namespace GameRealisticMap.ElevationModel
 
         public RawElevationData Build(IBuildContext context)
         {
-            var db = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/SRTM1/")));
-            //var db = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/AW3D30/")));
+            // Prepare data source
+            var source = CreateSource(context);
 
-            var done = 0;
+            // Prepare ocean mask
+            var oceanMask = CreateOceanMask(context);
 
-            var points = new LatLngBounds(context.Area);
-
-            var view = db.CreateView<ushort>(
-                new Coordinates(points.Bottom - 0.001, points.Left - 0.001),
-                new Coordinates(points.Top + 0.001, points.Right + 0.001))
-                .GetAwaiter()
-                .GetResult()
-                .ToDataCell();
-
+            // Create grid
             var size = context.Area.GridSize;
             var cellSize = context.Area.GridCellSize;
+            var done = 0;
 
-            using var report = progress.CreateStep("SRTM1", size);
+            using var report = progress.CreateStep("Elevation", size);
             var grid = new ElevationGrid(size, cellSize);
             Parallel.For(0, size, y =>
             {
                 for (int x = 0; x < size; x++)
                 {
                     var latLong = context.Area.TerrainPointToLatLng(new TerrainPoint(x * cellSize, y * cellSize));
-                    var elevation = GetElevationBilinear(view, latLong.Y, latLong.X);
-                    grid[x, y] = (float)elevation;
+
+                    var oceanMakeValue = oceanMask[x, y].PackedValue;
+                    if (oceanMakeValue > 128)
+                    {
+                        var elevation = GetElevationBilinear(source.Ground, latLong.Y, latLong.X);
+                        if (elevation >= 0)
+                        {
+                            elevation = 0.1;
+                        }
+                        grid[x, y] = (float)elevation;
+                    }
+                    // TODO: Create an intermediate value ?
+                    else 
+                    {
+                        var elevation = GetElevationBilinear(source.SurfaceOnly, latLong.Y, latLong.X);
+                        grid[x, y] = (float)elevation;
+                    }
                 }
                 report.Report(Interlocked.Increment(ref done));
             });
 
-            return new RawElevationData(grid);
+            return new RawElevationData(grid, source.Credits);
+        }
+
+        private static Image<L8> CreateOceanMask(IBuildContext context)
+        {
+            var ocean = context.GetData<OceanData>().Polygons;
+            var oceanMask = new Image<L8>(context.Area.GridSize, context.Area.GridSize, new L8(0));
+            oceanMask.Mutate(m =>
+            {
+                foreach (var o in ocean)
+                {
+                    PolygonDrawHelper.DrawPolygon(m, o, new SolidBrush(Color.White), l => l.Select(p => new PointF(p.X / context.Area.GridCellSize, p.Y / context.Area.GridCellSize)));
+                }
+            });
+            return oceanMask;
+        }
+
+        private static RawElevationSource CreateSource(IBuildContext context)
+        {
+            var points = new LatLngBounds(context.Area);
+            var start = new Coordinates(points.Bottom - 0.001, points.Left - 0.001);
+            var end = new Coordinates(points.Top + 0.001, points.Right + 0.001);
+            var dbCredits = new List<string>() { "SRTM1", "STRM15+" };
+
+            // Full world coverage, but really low resolution (450m)
+            var fulldb = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/SRTM15Plus/")));
+            var viewFull = fulldb.CreateView<float>(start, end).GetAwaiter().GetResult().ToDataCell();
+
+            // Partial world covergae, but better resolution (30m)
+            var srtm = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/SRTM1/")));
+            IDemDataCell view;
+            if (!srtm.HasFullData(start, end).GetAwaiter().GetResult())
+            {
+                // Alternative coverage, but requires JAXA credits
+                var aw3d30 = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/AW3D30/")));
+                if (!srtm.HasFullData(start, end).GetAwaiter().GetResult())
+                {
+                    view = viewFull;
+                }
+                else
+                {
+                    dbCredits.Add("AW3D30");
+                    view = aw3d30.CreateView<ushort>(start, end).GetAwaiter().GetResult().ToDataCell(); // TODO: check AW3D30 internal format
+                }
+            }
+            else
+            {
+                view = srtm.CreateView<ushort>(start, end).GetAwaiter().GetResult().ToDataCell();
+            }
+
+            return new RawElevationSource(dbCredits, view, viewFull);
         }
 
         public ValueTask<RawElevationData> Read(IPackageReader package, IContext context)
         {
-            return ValueTask.FromResult<RawElevationData>(new RawElevationData(context.GetData<ElevationData>().Elevation));
+            return ValueTask.FromResult<RawElevationData>(new RawElevationData(context.GetData<ElevationData>().Elevation, new List<string>()));
         }
 
         public Task Write(IPackageWriter package, RawElevationData data)
@@ -61,7 +126,7 @@ namespace GameRealisticMap.ElevationModel
             return Task.CompletedTask;
         }
 
-        private double GetElevationBilinear(DemDataCellBase<ushort> view, double lat, double lon)
+        private double GetElevationBilinear(IDemDataCell view, double lat, double lon)
         {
             return view.GetLocalElevation(new Coordinates(lat, lon), DefaultInterpolation.Instance);
         }

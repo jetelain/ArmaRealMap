@@ -281,5 +281,6 @@ namespace GameRealisticMap.Geometries
         public bool IsClosed => FirstPoint.Equals(LastPoint);
 
         public bool IsCounterClockWise => Points.IsCounterClockWise();
+        public bool IsClockWise => !Points.IsCounterClockWise();
     }
 }

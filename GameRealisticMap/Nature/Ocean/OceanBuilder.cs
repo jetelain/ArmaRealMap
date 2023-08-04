@@ -14,9 +14,7 @@ namespace GameRealisticMap.Nature.Ocean
 
         public OceanData Build(IBuildContext context)
         {
-            var x = context.OsmSource.Ways.FirstOrDefault(w => w.Id == 149847784);
-
-            var lines = context.OsmSource.Ways
+            var coastlines = context.OsmSource.Ways
                 .Where(w => w.Tags != null && w.Tags.GetValue("natural") == "coastline")
                 .SelectMany(w => context.OsmSource.Interpret(w))
                 .SelectMany(w => TerrainPath.FromGeometry(w, context.Area.LatLngToTerrainPoint))
@@ -24,34 +22,35 @@ namespace GameRealisticMap.Nature.Ocean
                 .SelectMany(p => p.ClippedKeepOrientation(context.Area.TerrainBounds))
                 .ToList();
 
-            if ( lines.Count == 0)
+            if ( coastlines.Count == 0)
             {
+                // No coastlines, assume land-only
                 return new OceanData(new List<TerrainPolygon>(0));
             }
 
-            CompletePathOnEdges(lines, context.Area.TerrainBounds);
+            CompleteCounterClockWiseOnEdges(coastlines, context.Area.TerrainBounds);
 
-            var result = MergeOriented(lines).Where(r => r.IsClosed).ToList();
+            var mergedCoastlines = MergeOriented(coastlines)
+                .Where(r => r.IsClosed)
+                .ToList();
 
             // CounterClockWise => Lands
             // ClockWise => Ocean
 
-            var ocean = result.Where(r => !r.IsCounterClockWise).ToList();
-
             var oceanBaseLine = context.Area.TerrainBounds.
-                SubstractAll(result.Where(r => r.IsCounterClockWise).Select(l => new TerrainPolygon(l.Points)));
+                SubstractAll(mergedCoastlines.Where(r => r.IsCounterClockWise).Select(l => new TerrainPolygon(l.Points)));
 
-            var polygons = TerrainPolygon.MergeAll(oceanBaseLine.Concat(result.Where(r => !r.IsCounterClockWise).Select(l => new TerrainPolygon(l.Points))).ToList());
+            var polygons = TerrainPolygon.MergeAll(oceanBaseLine.Concat(mergedCoastlines.Where(r => r.IsClockWise).Select(l => new TerrainPolygon(l.Points))).ToList());
 
             return new OceanData(polygons);
         }
         
-        private static void CompletePathOnEdges(IEnumerable<TerrainPath> paths, ITerrainEnvelope envelope)
+        private static void CompleteCounterClockWiseOnEdges(IEnumerable<TerrainPath> paths, ITerrainEnvelope envelope)
         {
-            CompletePathOnEdges(paths, envelope.MinPoint, envelope.MaxPoint);
+            CompleteCounterClockWiseOnEdges(paths, envelope.MinPoint, envelope.MaxPoint);
         }
 
-        private static void CompletePathOnEdges(IEnumerable<TerrainPath> paths, TerrainPoint edgeSW, TerrainPoint edgeNE)
+        private static void CompleteCounterClockWiseOnEdges(IEnumerable<TerrainPath> paths, TerrainPoint edgeSW, TerrainPoint edgeNE)
         {            
             foreach (var line in paths)
             {
