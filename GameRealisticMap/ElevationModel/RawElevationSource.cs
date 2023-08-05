@@ -35,7 +35,7 @@ namespace GameRealisticMap.ElevationModel
         private double GetOceanDepth(Coordinate latLong)
         {
             var elevation = GetElevationBilinear(Ground, latLong.Y, latLong.X);
-            if (elevation > 0)
+            if (elevation > -1)
             {
                 return -1;
             }

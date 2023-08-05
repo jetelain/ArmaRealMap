@@ -23,6 +23,10 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         public double UA { get; }
 
+        public Point ContentTopLeft { get; }
+
+        public Point ContentBottomRight { get; }
+
         public ImageryTile(int x, int y, int step, int halfOverlap, int tileSize, int top, double ua)
         {
             X = x;
@@ -33,12 +37,15 @@ namespace GameRealisticMap.Arma3.GameEngine
             UB = ((double)(halfOverlap - (x * step))) / (double)tileSize;
             VB = ((double)(top - (y * step))) / (double)tileSize;
             UA = ua;
+
+            ContentTopLeft = new Point(x * step, y * step);
+            ContentBottomRight = ContentTopLeft + new Size(step, step);
         }
 
         public bool ContainsImagePoint(Point p)
         {
-            return p.X >= ImageTopLeft.X && p.Y >= ImageTopLeft.Y 
-                && p.X < ImageBottomRight.X && p.Y < ImageBottomRight.Y;
+            return p.X >= ContentTopLeft.X && p.Y >= ContentTopLeft.Y 
+                && p.X < ContentBottomRight.X && p.Y < ContentBottomRight.Y;
         }
     }
 }
