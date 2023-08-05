@@ -32,6 +32,24 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
             Assert.Equal(wrp.MaterialIndex.Select(x => wrp.MatNames[x]).ToList(), Read("layers2.txt").ToList());
         }
 
+        [Fact]
+        public void Materials_Island512()
+        {
+            var builder = new WrpCompiler(new NoProgressSystem(), new GameFileSystemMock());
+            var wrp = WrpCompiler.InitWrp(Arma3MapConfigMock.Island512, WrpCompiler.LandRange(Arma3MapConfigMock.Island512.SizeInMeters));
+            builder.SetMaterialAndIndexes(new ImageryTiler(Arma3MapConfigMock.Island512), wrp, "prefix");
+            Assert.Equal(wrp.MaterialIndex.Select(x => wrp.MatNames[x]).ToList(), Read("layers3.txt").ToList());
+        }
+
+        [Fact]
+        public void Materials_Island1024()
+        {
+            var builder = new WrpCompiler(new NoProgressSystem(), new GameFileSystemMock());
+            var wrp = WrpCompiler.InitWrp(Arma3MapConfigMock.Island1024, WrpCompiler.LandRange(Arma3MapConfigMock.Island1024.SizeInMeters));
+            builder.SetMaterialAndIndexes(new ImageryTiler(Arma3MapConfigMock.Island1024), wrp, "prefix");
+            Assert.Equal(wrp.MaterialIndex.Select(x => wrp.MatNames[x]).ToList(), Read("layers4.txt").ToList());
+        }
+
         private IEnumerable<string> Read(string v)
         {
             using (var reader = new StreamReader(typeof(WrpCompilerTest).Assembly.GetManifestResourceStream("GameRealisticMap.Arma3.Test.GameEngine." + v)!))

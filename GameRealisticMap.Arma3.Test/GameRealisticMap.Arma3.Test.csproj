@@ -9,16 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="GameEngine\layers1.txt" />
-    <None Remove="GameEngine\layers2.txt" />
-    <None Remove="TerrainBuilder\world01.txt" />
-    <None Remove="TerrainBuilder\world01.wrp" />
-    <None Remove="TerrainBuilder\world02.wrp" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="GameEngine\layers1.txt" />
-    <EmbeddedResource Include="GameEngine\layers2.txt" />
+    <EmbeddedResource Include="GameEngine\*.txt" />
     <EmbeddedResource Include="TerrainBuilder\world01.txt" />
     <EmbeddedResource Include="TerrainBuilder\world01.wrp" />
     <EmbeddedResource Include="TerrainBuilder\world02.wrp" />
