@@ -1015,15 +1015,6 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Default ground coast line.
-        /// </summary>
-        public static string CoastLine {
-            get {
-                return ResourceManager.GetString("CoastLine", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Color Id.
         /// </summary>
         public static string ColorId {
