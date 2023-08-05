@@ -45,7 +45,15 @@ namespace GameRealisticMap.Arma3.Assets
 
         public TerrainMaterial GetMaterialByUsage(TerrainMaterialUsage usage)
         {
-            return indexByUsage[usage];
+            if (indexByUsage.TryGetValue(usage, out var material))
+            {
+                return material;
+            }
+            if (usage == TerrainMaterialUsage.Default)
+            {
+                return indexByColor.Values.First();
+            }
+            return GetMaterialByUsage(TerrainMaterialUsage.Default);
         }
 
         public List<TerrainMaterialDefinition> Definitions => indexByColor.Values.Select(m => new TerrainMaterialDefinition(m, GetUsage(m))).ToList();
