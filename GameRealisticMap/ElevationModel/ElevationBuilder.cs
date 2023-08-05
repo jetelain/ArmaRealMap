@@ -47,7 +47,7 @@ namespace GameRealisticMap.ElevationModel
                 var contour = new ContourGraph();
                 using (var report = progress.CreateStepPercent("Contours"))
                 {
-                    contour.Add(constraintGrid.Grid.ToDataCell(), new ContourLevelGenerator(1, 1), false, report);
+                    contour.Add(constraintGrid.Grid.ToDataCell(), new ContourLevelGenerator(-50, 5), false, report);
                 }
                 return new ElevationData(constraintGrid.Grid, contour.Lines.Select(l => new TerrainPath(l.Points.Select(p => new TerrainPoint((float)p.Longitude, (float)p.Latitude)).ToList())));
             }

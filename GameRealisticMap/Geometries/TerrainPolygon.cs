@@ -282,7 +282,7 @@ namespace GameRealisticMap.Geometries
             return result;
         }
 
-        private IEnumerable<TerrainPolygon> Substract(TerrainPolygon other)
+        public IEnumerable<TerrainPolygon> Substract(TerrainPolygon other)
         {
             var clipper = new Clipper();
             clipper.AddPath(Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, true);

@@ -10,6 +10,7 @@ using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
+using GameRealisticMap.Nature.Ocean;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
@@ -26,6 +27,8 @@ namespace GameRealisticMap
 
         public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library, IRailwayCrossingResolver? crossingResolver = null, bool useFullGeoJson = false)
         {
+            Register(new OceanBuilder(progress));
+            Register(new CoastlineBuilder(progress));
             Register(new RawSatelliteImageBuilder(progress));
             Register(new RawElevationBuilder(progress));
             Register(new CategoryAreaBuilder(progress));

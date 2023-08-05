@@ -5,6 +5,7 @@ using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.Nature.Forests;
+using GameRealisticMap.Nature.Ocean;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Surfaces;
 using GameRealisticMap.Nature.Watercourses;
@@ -49,6 +50,10 @@ namespace GameRealisticMap.Arma3.Imagery
 
                 DrawPolygons(config, d, TerrainMaterialUsage.DefaultIndustrial,
                     categories.Areas.Where(c => c.BuildingType == BuildingTypeId.Industrial).SelectMany(c => c.PolyList));
+
+                DrawPolygons(config, d, TerrainMaterialUsage.OceanGround, context.GetData<OceanData>().Polygons);
+
+                DrawPolygonsWithCrown(config, d, TerrainMaterialUsage.Coastline, 2.5f, context.GetData<CoastlineData>().Polygons);
 
                 DrawPolygonsWithCrown(config, d, TerrainMaterialUsage.ForestGround, 2.5f, context.GetData<ForestData>().Polygons);
 

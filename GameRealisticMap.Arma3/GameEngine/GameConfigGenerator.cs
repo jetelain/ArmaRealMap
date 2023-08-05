@@ -2,6 +2,7 @@
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ManMade.Places;
+using GameRealisticMap.Nature.Ocean;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
@@ -27,17 +28,18 @@ namespace GameRealisticMap.Arma3.GameEngine
                 gameFileSystemWriter.WriteTextFile(configCpp, GenerateConfigCpp(config, context.GetData<CitiesData>()));
             }
 
-            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\mapinfos.hpp", GenerateMapInfos(config, area));
+            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\mapinfos.hpp", GenerateMapInfos(config, area, context.GetData<OceanData>().IsIsland));
 
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\names.hpp", GenerateNames(context.GetData<CitiesData>()));
         }
 
-        private string GenerateMapInfos(IArma3MapConfig config, ITerrainArea area)
+
+        private string GenerateMapInfos(IArma3MapConfig config, ITerrainArea area, bool isIsland)
         {
             var center = area.TerrainPointToLatLng(new Geometries.TerrainPoint(config.SizeInMeters / 2, config.SizeInMeters / 2));
             var southWest = area.TerrainPointToLatLng(new Geometries.TerrainPoint(0, 0));
             var northEast = area.TerrainPointToLatLng(new Geometries.TerrainPoint(config.SizeInMeters, config.SizeInMeters));
-            var material = assets.Materials.GetMaterialByUsage(TerrainMaterialUsage.Default);
+            var material = assets.Materials.GetMaterialByUsage(isIsland ? TerrainMaterialUsage.OceanGround : TerrainMaterialUsage.Default);
 
             var centerUTM = new CoordinateSharp.Coordinate(center.Y, center.X).UTM;
 
