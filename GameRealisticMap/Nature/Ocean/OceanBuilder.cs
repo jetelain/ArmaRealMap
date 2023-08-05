@@ -25,7 +25,7 @@ namespace GameRealisticMap.Nature.Ocean
             if ( coastlines.Count == 0)
             {
                 // No coastlines, assume land-only
-                return new OceanData(new List<TerrainPolygon>(0));
+                return new OceanData(new List<TerrainPolygon>(0), new List<TerrainPolygon>(1) { context.Area.TerrainBounds });
             }
 
             CompleteCounterClockWiseOnEdges(coastlines, context.Area.TerrainBounds);
@@ -40,9 +40,11 @@ namespace GameRealisticMap.Nature.Ocean
             var oceanBaseLine = context.Area.TerrainBounds.
                 SubstractAll(mergedCoastlines.Where(r => r.IsCounterClockWise).Select(l => new TerrainPolygon(l.Points)));
 
-            var polygons = TerrainPolygon.MergeAll(oceanBaseLine.Concat(mergedCoastlines.Where(r => r.IsClockWise).Select(l => new TerrainPolygon(l.Points))).ToList());
+            var oceanPolygons = TerrainPolygon.MergeAll(oceanBaseLine.Concat(mergedCoastlines.Where(r => r.IsClockWise).Select(l => new TerrainPolygon(l.Points))).ToList());
 
-            return new OceanData(polygons);
+            var landPolygons = context.Area.TerrainBounds.SubstractAll(oceanPolygons).ToList();
+
+            return new OceanData(oceanPolygons, landPolygons);
         }
         
         private static void CompleteCounterClockWiseOnEdges(IEnumerable<TerrainPath> paths, ITerrainEnvelope envelope)

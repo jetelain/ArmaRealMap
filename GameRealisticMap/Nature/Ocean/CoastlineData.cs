@@ -6,7 +6,7 @@ namespace GameRealisticMap.Nature.Ocean
 {
     public class CoastlineData : IBasicTerrainData
     {
-        public const float Width = 4f;
+        public const float Width = 10f;
 
         public CoastlineData(List<TerrainPolygon> polygons)
         {

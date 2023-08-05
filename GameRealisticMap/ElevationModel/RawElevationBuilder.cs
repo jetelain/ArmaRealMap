@@ -42,27 +42,7 @@ namespace GameRealisticMap.ElevationModel
                 for (int x = 0; x < size; x++)
                 {
                     var latLong = context.Area.TerrainPointToLatLng(new TerrainPoint(x * cellSize, y * cellSize));
-
-                    var oceanMakeValue = oceanMask[x, y].PackedValue;
-                    if (oceanMakeValue > 128)
-                    {
-                        var elevation = GetElevationBilinear(source.Ground, latLong.Y, latLong.X);
-                        if (elevation >= -1)
-                        {
-                            elevation = ((oceanMakeValue - 128) / 128f * -0.9f) - 0.1f;
-                        }
-                        grid[x, y] = (float)elevation;
-                    }
-                    // TODO: Create an intermediate value ?
-                    else
-                    {
-                        var elevation = GetElevationBilinear(source.SurfaceOnly, latLong.Y, latLong.X);
-                        if (double.IsNaN(elevation) || elevation < 1)
-                        {
-                            elevation = ((128 - oceanMakeValue) / 128f * 0.9f) + 0.1f;
-                        }
-                        grid[x, y] = (float)elevation;
-                    }
+                    grid[x, y] = source.GetElevation(latLong, oceanMask[x, y].PackedValue);
                 }
                 report.Report(Interlocked.Increment(ref done));
             });
@@ -72,16 +52,26 @@ namespace GameRealisticMap.ElevationModel
 
         private static Image<L8> CreateOceanMask(IBuildContext context)
         {
-            var ocean = context.GetData<OceanData>().Polygons;
+            var cellSize = context.Area.GridCellSize;
+            var oceanData = context.GetData<OceanData>();
             var oceanMask = new Image<L8>(context.Area.GridSize, context.Area.GridSize, new L8(0));
-            oceanMask.Mutate(m =>
+            if (oceanData.Polygons.Count > 0)
             {
-                foreach (var o in ocean)
+                oceanMask.Mutate(m =>
                 {
-                    PolygonDrawHelper.DrawPolygon(m, o, new SolidBrush(Color.White), l => l.Select(p => new PointF(p.X / context.Area.GridCellSize, p.Y / context.Area.GridCellSize)));
-                }
-                m.BoxBlur(1);
-            });
+                    foreach (var o in oceanData.Polygons)
+                    {
+                        PolygonDrawHelper.DrawPolygon(m, o, new SolidBrush(Color.White), l => l.Select(p => new PointF(p.X / cellSize, p.Y / cellSize)));
+                    }
+                    m.GaussianBlur(25f / cellSize);
+
+                    foreach (var o in oceanData.Land)
+                    {
+                        PolygonDrawHelper.DrawPolygon(m, o, new SolidBrush(Color.Black), l => l.Select(p => new PointF(p.X / cellSize, p.Y / cellSize)));
+                    }
+                    m.GaussianBlur(5f / cellSize);
+                });
+            }
             return oceanMask;
         }
 
@@ -129,11 +119,6 @@ namespace GameRealisticMap.ElevationModel
         public Task Write(IPackageWriter package, RawElevationData data)
         {
             return Task.CompletedTask;
-        }
-
-        private double GetElevationBilinear(IDemDataCell view, double lat, double lon)
-        {
-            return view.GetLocalElevation(new Coordinates(lat, lon), DefaultInterpolation.Instance);
         }
     }
 }

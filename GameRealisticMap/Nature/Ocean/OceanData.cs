@@ -6,12 +6,15 @@ namespace GameRealisticMap.Nature.Ocean
 {
     public class OceanData : IBasicTerrainData
     {
-        public OceanData(List<TerrainPolygon> polygons)
+        public OceanData(List<TerrainPolygon> polygons, List<TerrainPolygon> land)
         {
             Polygons = polygons;
+            Land = land;
         }
 
         public List<TerrainPolygon> Polygons { get; }
+
+        public List<TerrainPolygon> Land { get; }
 
         public IEnumerable<Feature> ToGeoJson(Func<TerrainPoint, IPosition> project)
         {
