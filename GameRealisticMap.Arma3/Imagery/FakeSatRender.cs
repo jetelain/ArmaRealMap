@@ -2,6 +2,7 @@
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Nature.Ocean;
 using GameRealisticMap.Reporting;
 using HugeImages;
 using HugeImages.Processing;
@@ -33,10 +34,11 @@ namespace GameRealisticMap.Arma3.Imagery
 
         public Image<Rgba32> RenderSatOut(IArma3MapConfig config, IContext context, int size)
         {
+            var isIsland = context.GetData<OceanData>().IsIsland;
             var image = new Image<Rgba32>(size, size);
             image.Mutate(d =>
             {
-                d.Fill(GetBrush(materialLibrary.GetMaterialByUsage(TerrainMaterialUsage.Default)));
+                d.Fill(GetBrush(materialLibrary.GetMaterialByUsage(isIsland ? TerrainMaterialUsage.OceanGround : TerrainMaterialUsage.Default)));
                 d.GaussianBlur(1.5f);
             });
             return image;
