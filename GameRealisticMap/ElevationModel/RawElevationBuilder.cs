@@ -93,14 +93,14 @@ namespace GameRealisticMap.ElevationModel
             {
                 // Alternative Elevation of surface, but requires JAXA credits
                 var aw3d30 = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/AW3D30/")));
-                if (!srtm.HasFullData(start, end).GetAwaiter().GetResult())
+                if (!aw3d30.HasFullData(start, end).GetAwaiter().GetResult())
                 {
                     view = viewFull;
                 }
                 else
                 {
                     dbCredits.Add("AW3D30");
-                    view = aw3d30.CreateView<ushort>(start, end).GetAwaiter().GetResult().ToDataCell(); // TODO: check AW3D30 internal format
+                    view = aw3d30.CreateView<short>(start, end).GetAwaiter().GetResult().ToDataCell(); // TODO: check AW3D30 internal format
                 }
             }
             else
