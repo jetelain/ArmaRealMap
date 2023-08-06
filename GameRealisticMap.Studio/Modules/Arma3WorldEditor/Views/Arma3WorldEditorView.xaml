@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Arma3WorldEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views"
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" IsTabStop="False">
+        <StackPanel Orientation="Vertical">
+
+            <StackPanel Margin="0 5" Orientation="Horizontal">
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
+                <TextBlock VerticalAlignment="Center" Margin="10 0" Grid.Column="1">
+                    <Hyperlink NavigateUri="{x:Static r:Links.Arma3MapConfigHelp}" b:HyperLinkBehaviors.ShellExecute="True">
+                        <Run Text="{x:Static r:Labels.Help}" />
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+            
+            <StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
+                <Button Margin="5" Padding="10" cal:Message.Attach="ImportEden">
+                    <Run Text="Import changes from 3DEN Editor"/>
+                </Button>
+                <Button Margin="5" Padding="10" cal:Message.Attach="GenerateMod" IsEnabled="{Binding CanGenerateMod}">
+                    <Run Text="{x:Static r:Labels.GenerateModForArma3}"/>
+                </Button>
+            </StackPanel>
+            
+            <Expander IsExpanded="True" Margin="10">
+                <Expander.Header>
+                    <TextBlock FontSize="20"><Run Text="Map informations"/></TextBlock>
+                </Expander.Header>
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5"><Run Text="Terrain size"/></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Size}" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5"><Run Text="Land range"/></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding World.LandRangeX}" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="5"><Run Text="Pbo Prefix"/></TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding ConfigFile.PboPrefix}" />
+                    </Grid>
+                </StackPanel>
+            </Expander>
+            
+            
+            <!--<Expander IsExpanded="True" Margin="10">
+                <Expander.Header>
+                    <TextBlock FontSize="20"><Run Text="Objects"/></TextBlock>
+                </Expander.Header>
+                <StackPanel>
+                    
+
+                    
+                </StackPanel>
+            </Expander>-->
+
+            
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

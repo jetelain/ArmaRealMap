@@ -1,8 +1,9 @@
-﻿using GameRealisticMap.Geometries;
+﻿using GameRealisticMap.Arma3.GameEngine;
+using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Arma3
 {
-    public class Arma3MapConfig : IArma3MapConfig, IImageryOptions
+    public class Arma3MapConfig : IArma3MapConfig, IImageryOptions, IPboConfig
     {
         public Arma3MapConfig(Arma3MapConfigJson arma3MapConfigJson)
         {
@@ -43,7 +44,7 @@ namespace GameRealisticMap.Arma3
 
             if (string.IsNullOrEmpty(arma3MapConfigJson.TargetModDirectory))
             {
-                TargetModDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "GameRealisticMap", "Arma3", "Mods", $"@{WorldName}");
+                TargetModDirectory = GetAutomaticTargetModDirectory(WorldName);
             }
             else
             {
@@ -67,6 +68,11 @@ namespace GameRealisticMap.Arma3
             return $"m_{mgrs.LongZone}{mgrs.LatZone.ToLowerInvariant()}{mgrs.Digraph.ToLowerInvariant()}{Math.Truncate(mgrs.Easting) / 100:000}{Math.Truncate(mgrs.Northing/100):000}s{Math.Truncate(area.SizeInMeters / 100)}";
         }
 
+        public static string GetAutomaticTargetModDirectory(string worldName)
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "GameRealisticMap", "Arma3", "Mods", $"@{worldName}");
+        }
+
         public ITerrainArea TerrainArea { get; }
 
         public IImageryOptions Imagery => this;
@@ -84,6 +90,7 @@ namespace GameRealisticMap.Arma3
         public string WorldName { get; }
 
         public string AssetConfigFile { get; }
+
         public string TargetModDirectory { get; }
     }
 }

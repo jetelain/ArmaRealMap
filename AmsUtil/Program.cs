@@ -133,7 +133,7 @@ namespace TerrainBuilderUtil
                 {
                     case ".hide":
                     case ".hideObj":
-                        exportData.ToRemove.Add(new HideObject(GetVector((object[])array[1]), NormalizeModelPath((string)array[2])));
+                        exportData.ToRemove.Add(new HideObject(GetVector((object[])array[2]), NormalizeModelPath((string)array[1])));
                         break;
                     case ".hideArea":
                         break;
@@ -142,8 +142,8 @@ namespace TerrainBuilderUtil
                         break;
                     case ".map":
                         break;
-                    default:
-                        var model = models[(string)array[0]];
+                    case ".add":
+                        var model = models[(string)array[1]];
                         exportData.Add.Add(new EditableWrpObject()
                         {
                             Model = model,
@@ -165,9 +165,9 @@ namespace TerrainBuilderUtil
         private static Matrix4P GetTransform(bool useWorldPos, object[] array, string model)
         {
             // [_class, _pos, getPosWorld _x, vectorUp _x, vectorDir _x, surfaceNormal _pos];
-            var position = GetVector(useWorldPos ? (object[])array[2] : (object[])array[1]);
-            var vectorUp = GetVector((object[])array[3]);
-            var vectorDir = GetVector((object[])array[4]);
+            var position = GetVector(useWorldPos ? (object[])array[3] : (object[])array[2]);
+            var vectorUp = GetVector((object[])array[4]);
+            var vectorDir = GetVector((object[])array[5]);
 
             var matrix = Matrix4x4.CreateWorld(position,-vectorDir,vectorUp);
 
@@ -175,7 +175,7 @@ namespace TerrainBuilderUtil
             {
                 // If object is SlopeLandContact, it means that engine will make matrix relative
                 // to surfaceNormal so we have to compensate it
-                var surfaceNormal = GetVector((object[])array[5]);
+                var surfaceNormal = GetVector((object[])array[6]);
                 if (surfaceNormal != DefaultVectorUp)
                 {
                     var normalCompensation = Vector3.Lerp(DefaultVectorUp, surfaceNormal, -1);

@@ -12,15 +12,14 @@ private _toRemoveLayer = -1 add3DENLayer "Map integrable (to remove)";
 private _progress = 0;
 private _progressTotal = count _objects + count _systems;
 
-_data pushBack [".map", worldName, worldSize];
+_data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgVehicles" >> worldName >> "grma3_revision")];
 
 {
 	if ( _x isKindOf "ModuleHideTerrainObjects_F" ) then {
-		_data pushBack [".hideArea", getPosWorld _x, (_x get3DENAttribute "Size3") select 0, (_x get3DENAttribute "isRectangle") select 0, (_x get3DENAttribute "#filter") select 0];
 		_x set3DENLayer _toRemoveLayer;
 		private _hidden = _x getVariable ["#objects",[]];
 		{
-			_data pushBack [".hide", [_x] call FUNC(getPosWrp), (getModelInfo _x) select 1];
+			_data pushBack [".hide", (getModelInfo _x) select 1, getPosWorld _x, [_x] call FUNC(getPosWrp), vectorUp _x, vectorDir _x, surfaceNormal (getPosASL _x), getObjectScale _x, getObjectID _x];
 		} foreach _hidden;
 	};
 	
@@ -29,7 +28,7 @@ _data pushBack [".map", worldName, worldSize];
 		if ( _value == 5 ) then {
 			private _building = _x getVariable ["#building", objNull];
 			if ( !isNull _building ) then {
-				_data pushBack [".hideObj",  [_building] call FUNC(getPosWrp), (getModelInfo _building) select 1];
+				_data pushBack [".hide", (getModelInfo _building) select 1, getPosWorld _building, [_building] call FUNC(getPosWrp), vectorUp _building, vectorDir _building, surfaceNormal (getPosASL _building), getObjectScale _building, getObjectID _building];
 			};
 			_x set3DENLayer _toRemoveLayer;
 		};
@@ -72,20 +71,7 @@ _data pushBack [".map", worldName, worldSize];
 				_classes set [_class,_classData];
 			};
 			if ( _classData select 0 ) then {
-				private _pos = getPosASL _x;
-				private _dir = vectorDir _x;
-				private _up = vectorUp _x;
-				private _wpos = getPosWorld _x; 
-				
-				// DirAndUp has effect on getPosASL, we have to "correct" getPosWorld to take into account this
-				_x setVectorDirAndUp [[0,1,0],[0,0,1]];
-				private _pos2 = getPosASL _x;
-				_x setVectorDirAndUp [_dir,_up];
-				private _zfix = (_pos2 select 2) - (_pos select 2);
-				_wpos set [2, (_wpos select 2) - _zfix];
-
-				_data pushBack [_class, _pos, _wpos, _up, _dir, surfaceNormal _pos];
-				
+				_data pushBack [".add", _class, getPosWorld _x, [_x] call FUNC(getPosWrp), vectorUp _x, vectorDir _x, surfaceNormal (getPosASL _x), getObjectScale _x];
 				_x set3DENLayer _toRemoveLayer;
 			};
 		};

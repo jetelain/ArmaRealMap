@@ -28,7 +28,7 @@ class display3DEN
 				};
 				class AMS_Export
 				{
-					text = "Export to Arma Map Studio";
+					text = "Export to GameRealisticMap Studio";
 					action = QUOTE([] spawn FUNC(export););
 				};
 			};
@@ -65,7 +65,7 @@ class Cfg3DEN
 				{
 					class AMS_Exclude
 					{
-						displayName="Exclude from Arma Map Studio Export";
+						displayName="Exclude from GameRealisticMap Studio Export";
 						property="AMS_Exclude";
 						control="Checkbox";
 						expression="";
@@ -80,30 +80,11 @@ class Cfg3DEN
 
 class CfgVehicles {
 	
-	class All;
-	
-    class Static: All 
-	{
-		class AmsEden
-		{
-			surfacenormal = 1;
-		};
-	};
-	
-    class Building: Static 
-	{
-		class AmsEden
-		{
-			surfacenormal = 0;
-		};
-	};
-
 	class Wall_F;
 	class Land_New_WiredFence_5m_F: Wall_F 
 	{
 		class AmsEden
 		{
-			surfacenormal = 1;
 			canexport = 1;
 		};
     };
@@ -111,7 +92,6 @@ class CfgVehicles {
 	{
 		class AmsEden
 		{
-			surfacenormal = 1;
 			canexport = 1;
 		};
     };
@@ -125,6 +105,7 @@ class CfgVehicles {
 		};
 	};
 	
+	class All;
 	class AllVehicles: All 
 	{
 		class AmsEden
