@@ -6,6 +6,7 @@ using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Forests;
+using GameRealisticMap.Nature.Ocean;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
@@ -38,7 +39,8 @@ namespace GameRealisticMap.Nature
                 .Concat(context.GetData<RocksData>().Polygons)
                 .Concat(context.GetData<MeadowsData>().Polygons)
                 .Concat(context.GetData<FarmlandsData>().Polygons)
-                .Concat(context.GetData<CategoryAreaData>().Areas.SelectMany(a => a.PolyList));
+                .Concat(context.GetData<CategoryAreaData>().Areas.SelectMany(a => a.PolyList))
+                .Concat(context.GetData<OceanData>().Polygons);
         }
 
         public TEdge Build(IBuildContext context)

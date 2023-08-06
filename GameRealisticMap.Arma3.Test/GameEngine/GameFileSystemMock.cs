@@ -25,6 +25,11 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
             throw new NotImplementedException();
         }
 
+        public DateTime? GetLastWriteTimeUtc(string path)
+        {
+            throw new NotImplementedException();
+        }
+
         public Stream? OpenFileIfExists(string path)
         {
             throw new NotImplementedException();

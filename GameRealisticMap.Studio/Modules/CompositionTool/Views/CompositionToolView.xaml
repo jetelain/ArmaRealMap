@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Views"
              xmlns:local2="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="485">
     <UserControl.Resources>
@@ -22,7 +24,7 @@
         <TabControl>
             <TabItem>
                 <TabItem.Header>
-                    Top view
+                    <Run Text="{x:Static r:Labels.CompositionTopView}" />
                 </TabItem.Header>
                 <Border ClipToBounds="True">
                     <local:ZoomBorder Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" Background="LightGray">
@@ -81,7 +83,8 @@
 
             <TabItem>
                 <TabItem.Header>
-                    Side view
+                    <Run Text="{x:Static r:Labels.CompositionFrontView}" />
+                    
                 </TabItem.Header>
                 <Border ClipToBounds="True">
                     <local:ZoomBorder Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" Background="LightGray">
@@ -137,23 +140,82 @@
                 </Border>
             </TabItem>
 
+            <TabItem>
+                <TabItem.Header>
+                    <Run Text="{x:Static r:Labels.CompositionSideView}" />
+                    
+                </TabItem.Header>
+                <Border ClipToBounds="True">
+                    <local:ZoomBorder Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" Background="LightGray">
+                        <Grid Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" ClipToBounds="False"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <local:CanvasWithGrid Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Background="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            </local:CanvasWithGrid>
+                            <ItemsControl ItemsSource="{Binding Composition.Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Path Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Data="{Binding PreviewVisualAxisX}" Fill="Gray" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <ItemsControl ItemsSource="{Binding Composition.Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Path Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Data="{Binding PreviewGeoAxisX}" Fill="Black" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Line X1="0" X2="{x:Static local:CanvasGrid.Size}" Y1="{x:Static local:CanvasGrid.HalfSize}" Y2="{x:Static local:CanvasGrid.HalfSize}"  Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Stroke="Red" StrokeThickness="1" />
+                                <Line X1="{x:Static local:CanvasGrid.HalfSize}" X2="{x:Static local:CanvasGrid.HalfSize}" Y1="0" Y2="{x:Static local:CanvasGrid.Size}"  Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Stroke="Red" StrokeThickness="1" />
+                            </Canvas>
+                            <Rectangle 
+                        Width="{Binding Radius.FitRadius, Converter={StaticResource MetersToPixelsConverterX2}}" 
+                       Height="{x:Static local:CanvasGrid.Size}"
+                        Visibility="{Binding HasRadius, Converter={StaticResource BoolToVisibilityConverter}}" 
+                        StrokeThickness="1" Stroke="#8000FF00" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <Rectangle 
+                        Width="{Binding Radius.Radius, Converter={StaticResource MetersToPixelsConverterX2}}" 
+                        Height="{x:Static local:CanvasGrid.Size}"
+                        Visibility="{Binding HasRadius, Converter={StaticResource BoolToVisibilityConverter}}"
+                        StrokeThickness="1" Stroke="#800000FF" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <Rectangle 
+                        Width="{Binding Rectangle.Depth, Converter={StaticResource MetersToPixelsConverter}}" 
+                        Height="{x:Static local:CanvasGrid.Size}"
+                        Visibility="{Binding HasRectangle, Converter={StaticResource BoolToVisibilityConverter}}" 
+                        StrokeThickness="2" Stroke="#800000FF" VerticalAlignment="Center" HorizontalAlignment="Center" ClipToBounds="False" />
+
+                        </Grid>
+                    </local:ZoomBorder>
+                </Border>
+            </TabItem>
+            
         </TabControl>
 
         <DataGrid Grid.Row="2" ItemsSource="{Binding Composition.Items}" AutoGenerateColumns="false" local2:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Model" Binding="{Binding Model.Name}" IsReadOnly="True" Width="120" />
+                <DataGridTextColumn Header="{x:Static r:Labels.Model}" Binding="{Binding Model.Name}" IsReadOnly="True" Width="120" />
                 <DataGridTextColumn Header="X" Binding="{Binding X}" />
                 <DataGridTextColumn Header="Y" Binding="{Binding Y}" />
                 <DataGridTextColumn Header="Z" Binding="{Binding Z}" />
-                <DataGridTextColumn Header="Heading" Binding="{Binding Yaw}" />
-                <DataGridTextColumn Header="Pitch" Binding="{Binding Pitch}" />
-                <DataGridTextColumn Header="Roll" Binding="{Binding Roll}" />
-                <DataGridTextColumn Header="Scale" Binding="{Binding Scale}" />
+                <DataGridTextColumn Header="{x:Static r:Labels.Heading}" Binding="{Binding Yaw}" />
+                <DataGridTextColumn Header="{x:Static r:Labels.Pitch}" Binding="{Binding Pitch}" />
+                <DataGridTextColumn Header="{x:Static r:Labels.Roll}" Binding="{Binding Roll}" />
+                <DataGridTextColumn Header="{x:Static r:Labels.Scale}" Binding="{Binding Scale}" />
                 <DataGridTemplateColumn Width="30">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <Button CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" ToolTip="Remove item">❌</Button>
+                                <Button ToolTip="{x:Static r:Labels.Remove}" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">❌</Button>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -161,7 +223,18 @@
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Button Command="{Binding Importer.AddSingle}">Add an object</Button>
+            <Button Command="{Binding Importer.AddSingle}" Padding="5 0">
+                <Run Text="{x:Static r:Labels.AddAnObject}" />
+            </Button>
+            <Button Padding="5 0" Margin="20 0 0 0" cal:Message.Attach="Rotate(180)">
+                <Run Text="{x:Static r:Labels.Rotate180}" />
+            </Button>
+            <Button Padding="5 0" Margin="5 0 0 0" cal:Message.Attach="Rotate(+90)">
+                <Run Text="{x:Static r:Labels.Rotate90}" />
+            </Button>
+            <Button Padding="5 0" Margin="5 0 0 0" cal:Message.Attach="Rotate(-90)">
+                <Run Text="{x:Static r:Labels.RotateM90}" />
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

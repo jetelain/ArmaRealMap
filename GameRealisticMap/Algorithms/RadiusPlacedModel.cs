@@ -3,7 +3,7 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Algorithms
 {
-    public class RadiusPlacedModel<TModelInfo> : ITerrainEnvelope, IModelPosition
+    public class RadiusPlacedModel<TModelInfo> : ITerrainEnvelope, IPlacedModel<TModelInfo>
     {
         private readonly BoundingCircle boundingCircle;
 

@@ -7,3 +7,6 @@
 [submodule "HugeImages"]
 	path = HugeImages
 	url = https://github.com/jetelain/HugeImages.git
+[submodule "gemini"]
+	path = gemini
+	url = https://github.com/jetelain/gemini.git

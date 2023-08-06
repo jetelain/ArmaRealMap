@@ -2,7 +2,7 @@
 {
     public class Arma3MapConfigJson
     {
-        public int TileSize { get; set; } = 1024;
+        public int? TileSize { get; set; }
 
         public double Resolution { get; set; } = 1;
 

@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Caliburn.Micro;
+using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Filling;
+using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Fences;
@@ -15,12 +16,16 @@ using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Railways;
 using GameRealisticMap.Studio.Modules.CompositionTool;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
+using GameRealisticMap.Studio.Modules.Main;
+using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
@@ -28,7 +33,7 @@ using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
-    internal class AssetConfigEditorViewModel : PersistedDocument2, IExplorerRootTreeItem
+    internal class AssetConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem, IMainDocument
     {
         private readonly IArma3DataModule _arma3Data;
         private readonly IShell _shell;
@@ -47,6 +52,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public BindableCollection<RoadViewModel> Roads { get; } = new BindableCollection<RoadViewModel>();
 
         public BindableCollection<PondViewModel> Ponds { get; } = new BindableCollection<PondViewModel>();
+
+        public BindableCollection<IAssetCategory> Railways { get; } = new BindableCollection<IAssetCategory>();
 
         public List<ICommandWithLabel> AdditionalFilling { get; }
 
@@ -75,7 +82,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 new ExplorerTreeItem(Labels.Buildings, Buildings, "Buildings"),
                 new ExplorerTreeItem(Labels.AssetObjects, Objects, "Objects"),
                 new ExplorerTreeItem(Labels.GroundMaterials, Materials, "Materials"),
-                new ExplorerTreeItem(Labels.RoadsAndBridges, Roads, "Road")
+                new ExplorerTreeItem(Labels.RoadsAndBridges, Roads, "Road"),
+                new ExplorerTreeItem(Labels.Railways, Railways, "Railways")
             };
             UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; CanCopyFrom = false; };
             AdditionalFilling = CreateNatureFilling();
@@ -151,36 +159,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         private async Task<Arma3Assets> AutoEnableMods(string filePath)
         {
-            var deps = await Arma3Assets.LoadDependenciesFromFile(filePath); 
-
-            var activeMods = _arma3Data.ActiveMods.ToHashSet(StringComparer.OrdinalIgnoreCase);
-            var mods = IoC.Get<IArma3ModsService>();
-            var toEnablePaths = new List<string>();
-            var toInstallSteamId = new List<string>();
-            foreach (var dependency in deps.Dependencies)
-            {
-                var mod = mods.GetMod(dependency.SteamId);
-                if (mod == null)
-                {
-                    // => NOT INSTALLED, must prompt user
-                    toInstallSteamId.Add(dependency.SteamId);
-                }
-                else if (!activeMods.Contains(mod.Path))
-                {
-                    // => NOT ENABLED
-                    toEnablePaths.Add(mod.Path);
-                }
-            }
-            if (toEnablePaths.Count > 0)
-            {
-                await _arma3Data.ChangeActiveMods(_arma3Data.ActiveMods.Concat(toEnablePaths));
-            }
-            if (toInstallSteamId != null)
-            {
-                MissingMods = toInstallSteamId.Select(m => new MissingMod(m)).ToList();
-                NotifyOfPropertyChange(nameof(HasMissingMods));
-                NotifyOfPropertyChange(nameof(MissingMods));
-            }
+            var deps = await Arma3Assets.LoadDependenciesFromFile(filePath);
+            MissingMods = await MissingMod.DetectMissingMods(_arma3Data, IoC.Get<IArma3ModsService>(), deps);
+            NotifyOfPropertyChange(nameof(HasMissingMods));
+            NotifyOfPropertyChange(nameof(MissingMods));
             try
             {
                 // Last attempt
@@ -207,6 +189,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             Roads.Clear();
             Materials.Clear();
             Ponds.Clear();
+            Railways.Clear();
 
             Filling.AddRange(GetFilling(arma3Assets));
             Fences.AddRange(GetFences(arma3Assets));
@@ -229,6 +212,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(TextureSizeInMeters));
             BaseWorldName = arma3Assets.BaseWorldName;
             BaseDependency = arma3Assets.BaseDependency;
+            Railways.Add(new RailwaysStraightViewModel(arma3Assets.Railways?.Straights, this));
+            Railways.Add(new RailwaysCrossingViewModel(arma3Assets.Railways?.Crossings, this));
         }
 
         private List<ObjectsViewModel> GetObjects(Arma3Assets arma3Assets)
@@ -318,6 +303,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .OrderBy(k => k.Key)
                 .ToDictionary(k => k.Key, k => k.Bridge!);
             json.Ponds = Ponds.ToDictionary(p => p.Id, k => k.ToDefinition());
+            json.Railways = new RailwaysDefinition(
+                Railways.OfType<RailwaysStraightViewModel>().FirstOrDefault()?.ToDefinition() ?? new List<StraightSegmentDefinition>(),
+                Railways.OfType<RailwaysCrossingViewModel>().FirstOrDefault()?.ToDefinition() ?? new List<RailwayCrossingDefinition>()            
+                );
             json.BaseDependency = baseDependency;
             json.BaseWorldName = baseWorldName;
             json.Dependencies = ComputeModDependencies().Select(GetSteamId).Where(s => s != null).Select(m => new ModDependencyDefinition(m!)).ToList();
@@ -360,7 +349,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         protected override async Task DoSave(string filePath)
         {
             using var stream = File.Create(filePath);
-            await JsonSerializer.SerializeAsync(stream, ToJson(), Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library));
+            await SaveTo(stream);
             CanCopyFrom = false;
         }
 
@@ -391,6 +380,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         }
 
         public bool HasMissingMods => MissingMods.Count > 0;
+
         public List<MissingMod> MissingMods { get; private set; } = new List<MissingMod>();
 
         public IEnumerable<string> ListReferencedModels()
@@ -401,6 +391,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .Concat(Objects.SelectMany(f => f.GetModels()))
                 .Concat(Roads.SelectMany(f => f.GetModels()))
                 .Concat(Ponds.Where(p => !string.IsNullOrEmpty(p.Model)).Select(p => p.Model!))
+                .Concat(Railways.SelectMany(f => f.GetModels()))
                 .Distinct(StringComparer.OrdinalIgnoreCase);
         }
 
@@ -419,6 +410,55 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
                 await DoLoad(FilePath);
             }
+        }
+
+        public Task GenerateDemoMod()
+        {
+            Arma3ToolsHelper.EnsureProjectDrive();
+
+            IoC.Get<IProgressTool>()
+                .RunTask(Labels.GenerateDemoMod, DoGenerateMod);
+
+            return Task.CompletedTask;
+        }
+
+        public Task GenerateDemoWrp()
+        {
+            IoC.Get<IProgressTool>()
+                .RunTask(Labels.GenerateDemoWrpFile, DoGenerateWrp);
+
+            return Task.CompletedTask;
+        }
+
+        private async Task DoGenerateMod(IProgressTaskUI task)
+        {
+            var name = Path.GetFileNameWithoutExtension(FileName);
+            var assets = ToJson();
+            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
+            var config = await generator.GenerateMod(task);
+            if (config != null)
+            {
+                task.AddSuccessAction(() => ShellHelper.OpenUri(config.TargetModDirectory), Labels.ViewInFileExplorer);
+                task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, name));
+                task.AddSuccessAction(() => Arma3Helper.Launch(assets.Dependencies, config.TargetModDirectory, config.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
+                await Arma3LauncherHelper.CreateLauncherPresetAsync(assets.Dependencies, config.TargetModDirectory, "GRM - " + name);
+            }
+        }
+
+        private async Task DoGenerateWrp(IProgressTaskUI task)
+        {
+            var name = Path.GetFileNameWithoutExtension(FileName);
+            var assets = ToJson();
+            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
+            var config = await generator.GenerateWrp(task);
+            if (config != null)
+            {
+                task.AddSuccessAction(() => ShellHelper.OpenUri(_arma3Data.ProjectDrive.GetFullPath(config.PboPrefix)), Labels.ViewInFileExplorer);;
+            }
+        }
+        public async Task SaveTo(Stream stream)
+        {
+            await JsonSerializer.SerializeAsync(stream, ToJson(), Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library)).ConfigureAwait(false);
         }
     }
 }

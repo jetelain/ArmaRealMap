@@ -4,6 +4,7 @@
     {
         Normal,
         Embankment,
-        Bridge
+        Bridge,
+        Crossing // For railway only
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Arma3.IO;
+﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.ManMade;
 using GameRealisticMap.Arma3.Nature.Forests;
 using GameRealisticMap.Arma3.Nature.Lakes;
@@ -27,7 +21,7 @@ namespace GameRealisticMap.Arma3
             Generators.Add(new OrientedObjectsGenerator(progress, assets));
             Generators.Add(new BridgeGenerator(progress, assets));
             Generators.Add(new FenceGenerator(progress, assets));
-            // TODO: railway
+            Generators.Add(new RailwayGenerator(progress, assets));
 
             // Nature
             Generators.Add(new ForestEdgeGenerator(progress, assets));

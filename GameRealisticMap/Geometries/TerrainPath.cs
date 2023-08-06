@@ -1,12 +1,15 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using ClipperLib;
 using GeoAPI.Geometries;
+using MapToolkit;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Distance;
 
 namespace GameRealisticMap.Geometries
 {
+    [DebuggerDisplay("{Length}m {FirstPoint} to {LastPoint}")]
     public class TerrainPath : ITerrainEnvelope, ITerrainGeo
     {
         private readonly Lazy<LineString> asLineString;
@@ -204,5 +207,80 @@ namespace GameRealisticMap.Geometries
             }
             return points;
         }
+
+        public TerrainPath ExtendBothEnds(float extendAtEachEnd)
+        {
+            var newStart = Points[0] + Vector2.Normalize(Points[0].Vector - Points[1].Vector) * extendAtEachEnd;
+            var newEnd = Points[Points.Count-1] + Vector2.Normalize(Points[Points.Count - 1].Vector - Points[Points.Count - 2].Vector) * extendAtEachEnd;
+            var points = Points.ToList();
+            points[0] = newStart;
+            points[Points.Count - 1] = newEnd;
+            return new TerrainPath(points);
+        }
+
+        public static TerrainPath FromRectangle(TerrainPoint start, TerrainPoint end)
+        {
+            return new TerrainPath(
+                new List<TerrainPoint>()
+                {
+                    start,
+                    new TerrainPoint(end.X, start.Y),
+                    end,
+                    new TerrainPoint(start.X, end.Y),
+                    start
+                });
+        }
+
+        public static TerrainPath FromCircle(TerrainPoint origin, float radius)
+        {
+            return new TerrainPath(
+                GeometryHelper.SimpleCircle(origin.Vector, radius).Select(v => new TerrainPoint(v)).ToList());
+        }
+
+        public Vector2 GetNormalizedVectorAtIndex(int index)
+        {
+            var a = Points[Math.Max(index - 1, 0)];
+            var b = Points[Math.Min(index + 1, Points.Count - 1)];
+            return Vector2.Normalize(b.Vector - a.Vector);
+        }
+
+        internal IEnumerable<TerrainPath> ClippedKeepOrientation(TerrainPolygon polygon)
+        {
+            var intPointPrecision = Points.Select(p => p.ToIntPointPrecision()).ToList();
+            var intPointFirst = intPointPrecision[0];
+
+            var clipped = Intersection(polygon);
+
+            foreach(var result in clipped)
+            {
+                if (!TerrainPoint.Equals(result.FirstPoint, intPointFirst))
+                {
+                    if (TerrainPoint.Equals(result.LastPoint, intPointFirst)) // trivial case : path was not really changed, only reverse
+                    {
+                        result.Points.Reverse();
+                    }
+                    else if (result.Points.Count > 3)
+                    {
+                        var coreItems = result.Points.GetRange(1, result.Points.Count - 2);
+                        var index1 = intPointPrecision.FindIndex(p => TerrainPoint.Equals(coreItems[0], p));
+                        var index2 = intPointPrecision.FindIndex(p => TerrainPoint.Equals(coreItems[1], p));
+                        if (index1 > index2)
+                        {
+                            result.Points.Reverse();
+                        }
+                    }
+                    else
+                    {
+                        // Find an alternate method
+                    }
+                }
+            }
+            return clipped;
+        }
+
+        public bool IsClosed => FirstPoint.Equals(LastPoint);
+
+        public bool IsCounterClockWise => Points.IsCounterClockWise();
+        public bool IsClockWise => !Points.IsCounterClockWise();
     }
 }

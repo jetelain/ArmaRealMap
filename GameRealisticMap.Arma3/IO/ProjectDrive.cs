@@ -143,5 +143,15 @@ namespace GameRealisticMap.Arma3.IO
             }
             return physical;
         }
+
+        public DateTime? GetLastWriteTimeUtc(string path)
+        {
+            var fullPath = GetFullPath(path);
+            if (File.Exists(fullPath))
+            {
+                return File.GetLastWriteTimeUtc(fullPath);
+            }
+            return secondarySource?.GetLastWriteTimeUtc(path);
+        }
     }
 }

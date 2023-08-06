@@ -9,7 +9,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 {
     public sealed class TerrainBuilderObject
     {
-        private const int XShift = 200000;
+        public const int XShift = 200000;
 
         private readonly TerrainPoint point;
         private readonly float elevation;
@@ -104,8 +104,10 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 
         public float Elevation => elevation;
 
+        public ElevationMode ElevationMode => elevationMode;
+
         /// <summary>
-        /// "Yaw" in Terrain Builder
+        /// "Yaw" in Terrain Builder / Heading
         /// </summary>
         public float Yaw => yaw;
 

@@ -11,7 +11,7 @@ using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual
 {
-    internal class ObjectsViewModel : AssetBase<ObjectTypeId, List<ObjectDefinition>>, IExplorerTreeItemCounter
+    internal class ObjectsViewModel : AssetIdBase<ObjectTypeId, List<ObjectDefinition>>, IExplorerTreeItemCounter
     {
         public ObjectsViewModel(ObjectTypeId id, IReadOnlyCollection<ObjectDefinition> definitions, AssetConfigEditorViewModel parent)
             : base(id, parent)

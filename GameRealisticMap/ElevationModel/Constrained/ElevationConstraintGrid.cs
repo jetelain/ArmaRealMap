@@ -165,8 +165,8 @@ namespace GameRealisticMap.ElevationModel.Constrained
             var report = progress.CreateStep("ScanGrid", area.GridSize);
             int done = 0;
             int changes = 0;
-            var listHard = new ConcurrentBag<(int, int, Vector2, List<ElevationConstraintNode>)>();
-            var listSoft = new ConcurrentBag<(int, int, Vector2, List<ElevationConstraintNode>)>();
+            var listHard = new ConcurrentQueue<(int, int, Vector2, List<ElevationConstraintNode>)>();
+            var listSoft = new ConcurrentQueue<(int, int, Vector2, List<ElevationConstraintNode>)>();
 
             Parallel.For(0, area.GridSize, y =>
             {
@@ -176,14 +176,14 @@ namespace GameRealisticMap.ElevationModel.Constrained
                     var hard = Search(point - unit, point + unit).Where(c => c.IsSolved).ToList();
                     if (hard.Count > 0)
                     {
-                        listHard.Add(new(x, y, point, hard));
+                        listHard.Enqueue(new(x, y, point, hard));
                     }
                     else
                     {
                         var soft = Search(point - two, point + two).Where(c => c.IsSolved && c.IsSoft).ToList();
                         if (soft.Count > 0)
                         {
-                            listSoft.Add(new(x, y, point, soft));
+                            listSoft.Enqueue(new(x, y, point, soft));
                         }
                     }
                 }

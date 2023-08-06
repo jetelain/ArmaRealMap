@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
              xmlns:cal="http://caliburnmicro.com"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
@@ -26,8 +27,10 @@
                                    <Run Text="{x:Static r:Labels.Help}" />
                                 </Hyperlink>
                     </TextBlock>
+
                 </StackPanel>
 
+                
                 <Border Margin="10" Padding="10" BorderBrush="Red" BorderThickness="2" Visibility="{Binding HasMissingMods, Converter={StaticResource BooleanToVisibilityConverter}}" >
                     <StackPanel>
                         <TextBlock FontSize="20" Foreground="Red"><Run Text="{x:Static r:Labels.SomeModsAreMissing}"/></TextBlock>
@@ -47,6 +50,18 @@
                     </StackPanel>
                 </Border>
 
+                <StackPanel Margin="0 5" Orientation="Horizontal">
+                    <Button Margin="10 0" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
+                        <Run Text="{x:Static r:Labels.GenerateADemoWorld}" />
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{x:Static r:Labels.GenerateDemoWrpFile}" cal:Message.Attach="GenerateDemoWrp"></MenuItem>
+                                <MenuItem Header="{x:Static r:Labels.GenerateDemoMod}" cal:Message.Attach="GenerateDemoMod"></MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                </StackPanel>
+                
                 <StackPanel Orientation="Horizontal" Margin="10 0" Visibility="{Binding CanCopyFrom, Converter={StaticResource BooleanToVisibilityConverter}}">
 
                     <TextBlock VerticalAlignment="Center" FontSize="15"><Run Text="{x:Static r:Labels.QuickStartFrom}"/></TextBlock>
@@ -150,7 +165,7 @@
                                 <DataGridTextColumn Header="{x:Static r:Labels.Type}" Binding="{Binding PageTitle}" IsReadOnly="True" Width="150" />
                                 <DataGridTextColumn Header="{x:Static r:Labels.Label}" Binding="{Binding Label}" Width="150" />
                                 <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
-                                <DataGridTextColumn Header="{x:Static r:Labels.AssetObjects}" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTextColumn Header="{x:Static r:Labels.AssetObjects}" Binding="{Binding MainChild.Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
                                 <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -291,6 +306,30 @@
                         </DataGrid>
                     </StackPanel>
                 </Expander>
+
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Railways}"/></TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <DataGrid ItemsSource="{Binding Railways}" AutoGenerateColumns="false" Margin="0 10 0 0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{x:Static r:Labels.Type}" Binding="{Binding PageTitle}" IsReadOnly="True" Width="150" />
+                                <DataGridTextColumn Header="{x:Static r:Labels.AssetObjects}" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTemplateColumn Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">
+                                                <Run Text="{x:Static r:Labels.Edit}"/>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.WaterTiles}"/></TextBlock>

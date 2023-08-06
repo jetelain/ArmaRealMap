@@ -1,23 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using Gemini.Framework;
+using Gemini.Framework.Commands;
+using Gemini.Modules.Shell.Commands;
+using Gemini.Modules.ToolBars;
 using Gemini.Modules.UndoRedo;
+using Gemini.Modules.UndoRedo.Commands;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
-    internal abstract class AssetBase<TId, TDefinition> : Document, IModelImporterTarget, IAssetCategory
-        where TId : struct, Enum 
+    // IDocument : ILayoutItem, IScreen, IHaveDisplayName, IActivate, IDeactivate, IGuardClose, IClose, INotifyPropertyChangedEx, INotifyPropertyChanged
+
+    internal abstract class AssetBase<TDefinition> : LayoutItemBase, IDocument, ICommandHandler<UndoCommandDefinition>, ICommandHandler, ICommandHandler<RedoCommandDefinition>, ICommandHandler<SaveFileCommandDefinition>, ICommandHandler<SaveFileAsCommandDefinition>, IModelImporterTarget, IAssetCategory
         where TDefinition : class
     {
+        private AsyncCommand? _closeCommand;
 
-        protected AssetBase(TId id, AssetConfigEditorViewModel parent)
+        protected AssetBase(AssetConfigEditorViewModel parent, string idText)
         {
-            FillId = id;
+            IdText = idText;
             PageTitle = Labels.ResourceManager.GetString("Asset" + IdText) ?? IdText;
             DisplayName = parent.FileName + ": " + IdText;
             ParentEditor = parent;
@@ -27,14 +34,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             CompositionImporter = new CompositionImporter(this);
         }
 
-        protected override IUndoRedoManager CreateUndoRedoManager()
-        {
-            return ParentEditor.UndoRedoManager;
-        }
-
-        public TId FillId { get; }
-
-        public string IdText => FillId.ToString();
+        public string IdText { get; }
 
         public virtual string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/{IdText}.png";
 
@@ -54,6 +54,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public virtual IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
 
+        public IUndoRedoManager UndoRedoManager => ParentEditor.UndoRedoManager;
+
         public abstract void AddComposition(Composition model, ObjectPlacementDetectedInfos detected);
 
         public abstract void Equilibrate();
@@ -61,5 +63,51 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public abstract TDefinition ToDefinition();
 
         public abstract IEnumerable<string> GetModels();
+
+        public override ICommand CloseCommand => _closeCommand ?? (_closeCommand = new AsyncCommand(() => TryCloseAsync()));
+
+        // Replicate commands to Parent editor (as everything is global)
+
+        public IToolBar ToolBar => ParentEditor.ToolBar;
+
+        void ICommandHandler<UndoCommandDefinition>.Update(Command command)
+        {
+            ((ICommandHandler<UndoCommandDefinition>)ParentEditor).Update(command);
+        }
+
+        Task ICommandHandler<UndoCommandDefinition>.Run(Command command)
+        {
+            return ((ICommandHandler<UndoCommandDefinition>)ParentEditor).Run(command);
+        }
+
+        void ICommandHandler<RedoCommandDefinition>.Update(Command command)
+        {
+            ((ICommandHandler<RedoCommandDefinition>)ParentEditor).Update(command);
+        }
+
+        Task ICommandHandler<RedoCommandDefinition>.Run(Command command)
+        {
+            return ((ICommandHandler<RedoCommandDefinition>)ParentEditor).Run(command);
+        }
+
+        void ICommandHandler<SaveFileCommandDefinition>.Update(Command command)
+        {
+            ((ICommandHandler<SaveFileCommandDefinition>)ParentEditor).Update(command);
+        }
+
+        Task ICommandHandler<SaveFileCommandDefinition>.Run(Command command)
+        {
+            return ((ICommandHandler<SaveFileCommandDefinition>)ParentEditor).Run(command);
+        }
+
+        void ICommandHandler<SaveFileAsCommandDefinition>.Update(Command command)
+        {
+            ((ICommandHandler<SaveFileAsCommandDefinition>)ParentEditor).Update(command);
+        }
+
+        Task ICommandHandler<SaveFileAsCommandDefinition>.Run(Command command)
+        {
+            return ((ICommandHandler<SaveFileAsCommandDefinition>)ParentEditor).Run(command);
+        }
     }
 }

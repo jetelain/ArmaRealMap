@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
 
@@ -22,6 +23,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
 
         Task ChangeActiveMods (IEnumerable<string> mods);
 
+        IPboCompilerFactory CreatePboCompilerFactory();
+
         event EventHandler<EventArgs> Reloaded;
+
+        bool UsePboProject { get; set; }
+
     }
 }

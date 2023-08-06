@@ -49,7 +49,8 @@ namespace GameRealisticMap.Osm
                 // https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_API_by_Example#Example:_Simplest_possible_map_call
 
                 var qlbb = FormattableString.Invariant($"{box.Bottom},{box.Left},{box.Top},{box.Right}");
-                var query = FormattableString.Invariant(@$"(
+                var query = FormattableString.Invariant(@$"[timeout:300];
+(
   node({qlbb});
   rel(bn)->.x;
   way(bn);
@@ -77,6 +78,7 @@ out;"); ;
                 progress.WriteLine($"{query}");
                 using (var client = new HttpClient())
                 {
+                    client.Timeout = TimeSpan.FromSeconds(300);
                     using var download = await client.PostAsync(uri, new FormUrlEncodedContent(new Dictionary<string, string>() { { "data", query } }));
                     using var stream = await download.Content.ReadAsStreamAsync(); 
                     using (var target = File.Create(cacheFileName))

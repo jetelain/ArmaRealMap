@@ -1,10 +1,12 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.ManMade.Railways
 {
-    internal class Railway : ITerrainEnvelope, IWay
+    [DebuggerDisplay("{SpecialSegment} {Path}")]
+    public class Railway : ITerrainEnvelope, IWay
     {
         [JsonConstructor]
         public Railway(WaySpecialSegment specialSegment, TerrainPath path)

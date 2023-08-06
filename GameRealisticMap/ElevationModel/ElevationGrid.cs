@@ -122,7 +122,12 @@ namespace GameRealisticMap.ElevationModel
 
         public DemDataCellPixelIsPoint<float> ToDataCell()
         {
-            return new DemDataCellPixelIsPoint<float>(Coordinates.Zero, new MapToolkit.Vector(cellSize), elevationGrid);
+            return ToDataCell(Coordinates.Zero);
+        }
+
+        public DemDataCellPixelIsPoint<float> ToDataCell(Coordinates start)
+        {
+            return new DemDataCellPixelIsPoint<float>(start, new MapToolkit.Vector(cellSize), elevationGrid);
         }
 
         public float GetAverageElevation(TerrainPolygon polygon)
@@ -153,6 +158,17 @@ namespace GameRealisticMap.ElevationModel
                 return ElevationAround(polygon.Centroid);
             }
             return (float)(total / count);
+        }
+
+        public void Fill(float value)
+        {
+            for (var y = 0; y < size; ++y)
+            {
+                for (var x = 0; x < size; ++x)
+                {
+                    elevationGrid[y, x] = value;
+                }
+            }
         }
     }
 }

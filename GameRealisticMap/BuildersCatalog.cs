@@ -10,6 +10,7 @@ using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
+using GameRealisticMap.Nature.Ocean;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
@@ -24,8 +25,10 @@ namespace GameRealisticMap
     {
         private readonly Dictionary<Type, IBuilderAdapter> builders = new Dictionary<Type, IBuilderAdapter>();
 
-        public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library, bool useFullGeoJson = false)
+        public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library, IRailwayCrossingResolver? crossingResolver = null, bool useFullGeoJson = false)
         {
+            Register(new OceanBuilder(progress));
+            Register(new CoastlineBuilder(progress));
             Register(new RawSatelliteImageBuilder(progress));
             Register(new RawElevationBuilder(progress));
             Register(new CategoryAreaBuilder(progress));
@@ -48,7 +51,7 @@ namespace GameRealisticMap
             Register(new FarmlandsBuilder(progress));
             Register(new TreesBuilder(progress));
             Register(new OrientedObjectBuilder(progress));
-            Register(new RailwaysBuilder(progress));
+            Register(new RailwaysBuilder(progress, crossingResolver));
             Register(new CitiesBuilder(progress));
             Register(new ElevationBuilder(progress, useFullGeoJson));
         }

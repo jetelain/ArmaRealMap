@@ -13,6 +13,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         private readonly IGameFileSystemWriter fileSystemWriter;
 
         private readonly HashSet<string> models = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly List<string> rvmats = new List<string>();
 
         public WrpCompiler(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter)
         {
@@ -21,6 +22,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         }
 
         public IReadOnlyCollection<string> UsedModels => models;
+        public IReadOnlyCollection<string> UsedRvmat => rvmats;
 
         public void Write(IArma3MapConfig config, ElevationGrid elevationGrid, IEnumerable<EditableWrpObject> objects)
         {
@@ -30,6 +32,8 @@ namespace GameRealisticMap.Arma3.GameEngine
         public void Write(IArma3MapConfig config, ElevationGrid elevationGrid, ImageryTiler terrainTiler, IEnumerable<EditableWrpObject> objects)
         {
             var wrp = CreateWorldWithoutObjects(elevationGrid, terrainTiler, config.PboPrefix);
+
+            rvmats.AddRange(wrp.MatNames.Where(r => !string.IsNullOrEmpty(r)));
 
             foreach(var obj in objects)
             {
@@ -77,6 +81,8 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         public static int LandRange(float sizeInMeters)
         {
+            // Keep SizeInMeters / LandRange (WRP CellSize) close to 40m, never below 30m (except for really small maps)
+            // XXX: May use 2048 for above 61440
             if (sizeInMeters > 30720)
             {
                 return 1024;

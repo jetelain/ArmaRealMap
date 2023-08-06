@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Arma3.Assets.Filling;
+﻿using GameRealisticMap.Arma3.Assets.Fences;
+using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Fences;
@@ -19,7 +20,7 @@ namespace GameRealisticMap.Arma3.Assets
         string BaseDependency { get; }
 
         IReadOnlyCollection<BuildingDefinition> GetBuildings(BuildingTypeId buildingTypeId);
-
+        
         IReadOnlyCollection<ObjectDefinition> GetObjects(ObjectTypeId typeId);
 
         IReadOnlyCollection<BasicCollectionDefinition> GetBasicCollections(BasicCollectionId basicId);
@@ -31,5 +32,7 @@ namespace GameRealisticMap.Arma3.Assets
         BridgeDefinition? GetBridge(RoadTypeId roadType);
 
         IReadOnlyCollection<FenceDefinition> GetFences(FenceTypeId typeId);
+
+        RailwaysDefinition? Railways { get; }
     }
 }

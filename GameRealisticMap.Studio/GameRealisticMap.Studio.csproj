@@ -8,7 +8,7 @@
     <ApplicationIcon>Resources\grms.ico</ApplicationIcon>
 	<Company>GameRealisticMap</Company>
 	<Platforms>AnyCPU;x64</Platforms>
-	<FileVersion>0.2</FileVersion>
+	<FileVersion>0.4</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,9 +16,10 @@
     <!--<PackageReference Include="Gemini.Modules.ErrorList" Version="1.0.60-beta" />-->
     <!--<PackageReference Include="Gemini.Modules.GraphEditor" Version="1.0.60-beta" />-->
     <!--<PackageReference Include="Gemini.Modules.Inspector" Version="1.0.60-beta" />-->
-    <PackageReference Include="Gemini.Modules.Output" Version="1.0.60-beta" />
+    <!--<PackageReference Include="Gemini.Modules.Output" Version="1.0.60-beta" />-->
     <!--<PackageReference Include="Gemini.Modules.PropertyGrid" Version="1.0.60-beta" />-->
-    <PackageReference Include="GeminiWpf" Version="1.0.60-beta" />
+    <!--<PackageReference Include="GeminiWpf" Version="1.0.60-beta" />-->
+    <PackageReference Include="NLog" Version="5.2.2" />
     <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
     <PackageReference Include="XAML.MapControl" Version="8.1.0" />
   </ItemGroup>
@@ -26,6 +27,8 @@
   <ItemGroup>
     <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
     <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
+    <ProjectReference Include="..\gemini\src\Gemini.Modules.Output\Gemini.Modules.Output.csproj" />
+    <ProjectReference Include="..\gemini\src\Gemini\Gemini.csproj" />
   </ItemGroup>
 
   <ItemGroup>

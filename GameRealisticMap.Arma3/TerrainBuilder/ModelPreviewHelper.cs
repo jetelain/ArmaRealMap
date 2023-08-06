@@ -38,7 +38,15 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
         {
             return ToPolygons(GetOrCreate(cacheVisual, obj.Model, GetVisualLod), obj.ToWrpTransform(), ZProjection.Instance);
         }
+        public IEnumerable<TerrainPolygon> ToGeoAxisX(TerrainBuilderObject obj)
+        {
+            return ToPolygons(GetOrCreate(cacheGeo, obj.Model, GetGeoLod), obj.ToWrpTransform(), XProjection.Instance);
+        }
 
+        public IEnumerable<TerrainPolygon> ToVisualAxisX(TerrainBuilderObject obj)
+        {
+            return ToPolygons(GetOrCreate(cacheVisual, obj.Model, GetVisualLod), obj.ToWrpTransform(), XProjection.Instance);
+        }
         private IEnumerable<TerrainPolygon> ToPolygons(List<TerrainPolygon> terrainPolygons, Matrix4x4 matrix, I3dProjection projection)
         {
             return terrainPolygons.Select(p => Transform(p, matrix, projection));

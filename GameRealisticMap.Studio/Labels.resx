@@ -306,11 +306,11 @@
   <data name="YouCanAlsoMountDriveWithYourCustomTool" xml:space="preserve">
     <value>You can also mount drive with your custom tool</value>
   </data>
-  <data name="DownloadFromOfficialSiteFree" xml:space="preserve">
-    <value>Download from official site (free)</value>
+  <data name="PboProjectDownload" xml:space="preserve">
+    <value>Download Mikero's pboProject from official site (free)</value>
   </data>
-  <data name="ThisToolWillAllowYouToGenerateReadyToUseMod" xml:space="preserve">
-    <value>This tool will allow you to generate ready-to-use mod.</value>
+  <data name="PboProjectText" xml:space="preserve">
+    <value>Mikero's pboProject will support some advanced scenarios, but it needs additional configuration and knownledge. This tool is only suitable for experienced modders.</value>
   </data>
   <data name="GettingStarted" xml:space="preserve">
     <value>Getting Started</value>
@@ -809,5 +809,158 @@ You may eventually enable other mods.</value>
   </data>
   <data name="AssetWatercourseAdditional" xml:space="preserve">
     <value>Watercourse Additional</value>
+  </data>
+  <data name="SelectedAssetConfigMissingModsHint" xml:space="preserve">
+    <value>Selected asset configuration requires additional mods. Please subscribe to them on Steam Workshop:</value>
+  </data>
+  <data name="UnsavedCloseConfirmText" xml:space="preserve">
+    <value>'{0}' may have some unsaved changes, do you want to save them?</value>
+  </data>
+  <data name="UnsavedCloseConfirmTitle" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="GenerateADemoWorld" xml:space="preserve">
+    <value>Generate a demo map</value>
+  </data>
+  <data name="GenerateDemoWrpFile" xml:space="preserve">
+    <value>Generate a map (wrp file)</value>
+  </data>
+  <data name="GenerateDemoMod" xml:space="preserve">
+    <value>Generate a mod (ready-to-use)</value>
+  </data>
+  <data name="Forest" xml:space="preserve">
+    <value>Forest</value>
+  </data>
+  <data name="Lakes" xml:space="preserve">
+    <value>Lakes</value>
+  </data>
+  <data name="Watercourses" xml:space="preserve">
+    <value>Watercourses</value>
+  </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="UsePBOProject" xml:space="preserve">
+    <value>Use Mikero's pboProject</value>
+  </data>
+  <data name="UseBuitinGenerator" xml:space="preserve">
+    <value>Use Buitin Generator</value>
+  </data>
+  <data name="PBOGenerationTool" xml:space="preserve">
+    <value>PBO Generation Tool</value>
+  </data>
+  <data name="SatelliteRenderImage" xml:space="preserve">
+    <value>Satellite render image</value>
+  </data>
+  <data name="GenerateFromTexture" xml:space="preserve">
+    <value>Generate from texture</value>
+  </data>
+  <data name="SelectAnImage" xml:space="preserve">
+    <value>Select an image</value>
+  </data>
+  <data name="CompositionTopView" xml:space="preserve">
+    <value>Top view</value>
+  </data>
+  <data name="CompositionFrontView" xml:space="preserve">
+    <value>Front view</value>
+  </data>
+  <data name="CompositionSideView" xml:space="preserve">
+    <value>Side view</value>
+  </data>
+  <data name="Heading" xml:space="preserve">
+    <value>Heading</value>
+  </data>
+  <data name="Pitch" xml:space="preserve">
+    <value>Pitch</value>
+  </data>
+  <data name="Roll" xml:space="preserve">
+    <value>Roll</value>
+  </data>
+  <data name="Scale" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>Rotate 180°</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>Rotate +90°</value>
+  </data>
+  <data name="RotateM90" xml:space="preserve">
+    <value>Rotate -90°</value>
+  </data>
+  <data name="LaunchArma3" xml:space="preserve">
+    <value>Launch Arma 3</value>
+  </data>
+  <data name="LaunchArma3Hint" xml:space="preserve">
+    <value>Launch Arma 3 with default profile and required mods.</value>
+  </data>
+  <data name="AssetRailwaysCrossing" xml:space="preserve">
+    <value>Crossing</value>
+  </data>
+  <data name="AssetRailwaysStraight" xml:space="preserve">
+    <value>Straight rails</value>
+  </data>
+  <data name="Railways" xml:space="preserve">
+    <value>Railways</value>
+  </data>
+  <data name="MaxRoadSize" xml:space="preserve">
+    <value>Max Road Size</value>
+  </data>
+  <data name="FenceEnds" xml:space="preserve">
+    <value>Ends</value>
+  </data>
+  <data name="FenceRightCorners" xml:space="preserve">
+    <value>Right corners</value>
+  </data>
+  <data name="FenceLeftCorners" xml:space="preserve">
+    <value>Left corners</value>
+  </data>
+  <data name="FenceStraigthSegments" xml:space="preserve">
+    <value>Straigth segments</value>
+  </data>
+  <data name="FenceObjects" xml:space="preserve">
+    <value>Objects</value>
+  </data>
+  <data name="FenceType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="FenceUseRigidSegments" xml:space="preserve">
+    <value>Use rigid segments. Ideal for walls, wired fences, trimmed hedges, etc.</value>
+  </data>
+  <data name="FenceUseObjects" xml:space="preserve">
+    <value>Use objects with random orientation. Ideal for natural hedges.</value>
+  </data>
+  <data name="FenceFillingStrategy" xml:space="preserve">
+    <value>Filling strategy</value>
+  </data>
+  <data name="FenceUseLargestFirst" xml:space="preserve">
+    <value>Use largest elements when possible (default).</value>
+  </data>
+  <data name="FenceUseAnySize" xml:space="preserve">
+    <value>Use any element, even if a larger one would have been possible.</value>
+  </data>
+  <data name="GenerateAnErrorReport" xml:space="preserve">
+    <value>Generate an error report...</value>
+  </data>
+  <data name="GenerateMapForArma3WRP" xml:space="preserve">
+    <value>Generate Map to a WRP file</value>
+  </data>
+  <data name="GenerateMapForArma3TB" xml:space="preserve">
+    <value>Generate Map to Terrain Builder files</value>
+  </data>
+  <data name="LaunchTerrainBuilder" xml:space="preserve">
+    <value>Launch Terrain Builder</value>
+  </data>
+  <data name="ViewImportInstructions" xml:space="preserve">
+    <value>View import instructions</value>
+  </data>
+  <data name="AssetOceanGround" xml:space="preserve">
+    <value>Ocean ground</value>
+  </data>
+  <data name="AssetCoastline" xml:space="preserve">
+    <value>Default ground - Coastline</value>
   </data>
 </root>

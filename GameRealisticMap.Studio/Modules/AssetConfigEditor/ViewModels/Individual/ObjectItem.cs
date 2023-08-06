@@ -25,5 +25,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
         {
             return new ObjectDefinition(Composition.ToDefinition(), Probability);
         }
+
+        public void CompositionWasRotated(int degrees)
+        {
+            // Nothing to do
+        }
     }
 }

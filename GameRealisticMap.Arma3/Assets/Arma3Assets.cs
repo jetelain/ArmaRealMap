@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Arma3.Assets.Fences;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.IO.Converters;
 using GameRealisticMap.Arma3.TerrainBuilder;
@@ -36,6 +37,7 @@ namespace GameRealisticMap.Arma3.Assets
 
         public Dictionary<FenceTypeId, List<FenceDefinition>> Fences { get; set; } = new();
 
+        public RailwaysDefinition? Railways { get; set; }
 
         public IReadOnlyCollection<BasicCollectionDefinition> GetBasicCollections(BasicCollectionId basicId)
         {

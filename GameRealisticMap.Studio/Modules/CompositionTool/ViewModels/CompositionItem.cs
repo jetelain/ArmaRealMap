@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Numerics;
 using System.Text;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
@@ -76,6 +77,8 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             NotifyOfPropertyChange(nameof(PreviewVisualAxisY));
             NotifyOfPropertyChange(nameof(PreviewGeoAxisZ));
             NotifyOfPropertyChange(nameof(PreviewVisualAxisZ));
+            NotifyOfPropertyChange(nameof(PreviewGeoAxisX));
+            NotifyOfPropertyChange(nameof(PreviewVisualAxisX));
         }
 
         public string PreviewGeoAxisY
@@ -93,6 +96,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
                 return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualAxisY(ToTerrainBuilderObject()));
             }
         }
+
         public string PreviewGeoAxisZ
         {
             get
@@ -106,6 +110,23 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             get
             {
                 return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualAxisZ(ToTerrainBuilderObject()));
+            }
+        }
+
+
+        public string PreviewGeoAxisX
+        {
+            get
+            {
+                return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToGeoAxisX(ToTerrainBuilderObject()));
+            }
+        }
+
+        public string PreviewVisualAxisX
+        {
+            get
+            {
+                return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualAxisX(ToTerrainBuilderObject()));
             }
         }
         private static string ToPath(IEnumerable<TerrainPolygon> polygons)
@@ -136,6 +157,26 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
                 sb.Append(" Z");
             }
             return sb.ToString();
+        }
+
+        internal void Transform(Matrix4x4 transform)
+        {
+            var newMatrix = ToTerrainBuilderObject().ToWrpTransform() * transform;
+            var edited = new TerrainBuilderObject(Model, newMatrix, ElevationMode.Absolute);
+            _x = edited.Point.X;
+            _y = edited.Point.Y;
+            _z = edited.Elevation;
+            _picth = edited.Pitch;
+            _yaw = edited.Yaw;
+            _roll = edited.Roll;
+
+            NotifyOfPropertyChange(nameof(X));
+            NotifyOfPropertyChange(nameof(Y));
+            NotifyOfPropertyChange(nameof(Z));
+            NotifyOfPropertyChange(nameof(Pitch));
+            NotifyOfPropertyChange(nameof(Yaw));
+            NotifyOfPropertyChange(nameof(Roll));
+            NotifyPreview();
         }
     }
 }

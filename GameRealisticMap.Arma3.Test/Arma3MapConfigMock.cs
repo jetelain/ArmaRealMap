@@ -29,6 +29,24 @@ namespace GameRealisticMap.Arma3.Test
             TileSize = 1024
         };
 
+        internal static Arma3MapConfigMock Island512 = new Arma3MapConfigMock()
+        {
+            CellSize = new Vector2(4.5f),
+            Resolution = 1,
+            Size = 2048,
+            PboPrefix = "prefix",
+            TileSize = 512
+        };
+
+        internal static Arma3MapConfigMock Island1024 = new Arma3MapConfigMock()
+        {
+            CellSize = new Vector2(4.5f),
+            Resolution = 1,
+            Size = 2048,
+            PboPrefix = "prefix",
+            TileSize = 1024
+        };
+
         public float SizeInMeters => Size * CellSize.X;
 
         public int TileSize { get; set; }

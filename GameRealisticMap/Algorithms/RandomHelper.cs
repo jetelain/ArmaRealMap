@@ -1,4 +1,6 @@
-﻿using GameRealisticMap.Algorithms.Definitions;
+﻿using System;
+using System.Linq;
+using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Algorithms
@@ -70,5 +72,52 @@ namespace GameRealisticMap.Algorithms
             return densityDefinition.MinDensity + (densityDefinition.MaxDensity - densityDefinition.MinDensity) * random.NextDouble();
         }
 
+        public static T? GetRandomWithProportion<T>(this IEnumerable<T> list, Random random) where T : IWithProportion
+        {
+            var value = random.NextDouble();
+            var matching = list.ToList();
+            if (matching.Count == 1)
+            {
+                return matching[0];
+            }
+            if (matching.Count == 0)
+            {
+                return default(T);
+            }
+            var sumOfProportions = matching.Sum(i => i.Proportion);
+            var shift = 0d;
+            foreach (var item in matching)
+            {
+                shift += item.Proportion / sumOfProportions;
+                if (shift > value)
+                {
+                    return item;
+                }
+            }
+            return default(T);
+        }
+
+        public static float GetScale<TModelInfo>(this IItemDefinition<TModelInfo> obj, Random random)
+        {
+            if (obj.MinScale != null && obj.MaxScale != null)
+            {
+                return (float)(obj.MinScale + ((obj.MaxScale - obj.MinScale) * random.NextDouble()));
+            }
+            return 1;
+        }
+
+        public static float GetElevation<TModelInfo>(this IItemDefinition<TModelInfo> obj, Random random)
+        {
+            if (obj.MaxZ != null && obj.MinZ != null)
+            {
+                return (float)(obj.MinZ + ((obj.MaxZ - obj.MinZ) * random.NextDouble()));
+            }
+            return 0;
+        }
+
+        public static float GetAngle(this Random random)
+        {
+            return (float)(random.NextDouble() * 360);
+        }
     }
 }

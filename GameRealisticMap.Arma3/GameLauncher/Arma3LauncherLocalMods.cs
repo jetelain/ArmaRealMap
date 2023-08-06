@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
+﻿namespace GameRealisticMap.Arma3.GameLauncher
 {
     public class Arma3LauncherLocalMods
     {

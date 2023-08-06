@@ -4,7 +4,7 @@ using GameRealisticMap.Algorithms.Definitions;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
-    internal abstract class AssetProbabilityBase<TId, TDefinition> : AssetBase<TId, TDefinition>, IWithEditableProbability, IFillAssetCategory
+    internal abstract class AssetProbabilityBase<TId, TDefinition> : AssetIdBase<TId, TDefinition>, IWithEditableProbability, IFillAssetCategory
         where TId : struct, Enum
         where TDefinition : class, IWithProbability
     {

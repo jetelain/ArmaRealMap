@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Runtime.Versioning;
+﻿using System.Runtime.Versioning;
 using BIS.WRP;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
@@ -9,6 +8,7 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
+using GameRealisticMap.Preview;
 using GameRealisticMap.Reporting;
 using HugeImages.Storage;
 
@@ -16,13 +16,15 @@ namespace GameRealisticMap.Arma3
 {
     public class Arma3MapGenerator
     {
-        private readonly IArma3RegionAssets assets;
+        protected readonly IArma3RegionAssets assets;
         private readonly ProjectDrive projectDrive;
+        private readonly IPboCompilerFactory pboCompilerFactory;
 
-        public Arma3MapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive)
+        public Arma3MapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive, IPboCompilerFactory pboCompilerFactory)
         {
             this.assets = assets;
             this.projectDrive = projectDrive;
+            this.pboCompilerFactory = pboCompilerFactory;
         }
 
         public async Task<IImagerySource?> GetImagerySource(IProgressTask progress, Arma3MapConfig a3config, IHugeImageStorage hugeImageStorage)
@@ -37,13 +39,17 @@ namespace GameRealisticMap.Arma3
 
         public async Task<IBuildContext?> GetBuildContext(IProgressTask progress, Arma3MapConfig a3config, IHugeImageStorage hugeImageStorage)
         {
-            var loader = new OsmDataOverPassLoader(progress);
-            var osmSource = await loader.Load(a3config.TerrainArea);
+            var osmSource = await LoadOsmData(progress, a3config);
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return null;
             }
-            var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary);
+            return CreateBuildContext(progress, a3config, osmSource, hugeImageStorage);
+        }
+
+        protected virtual BuildContext CreateBuildContext(IProgressTask progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
+        {
+            var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary, assets.Railways);
             return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
         }
 
@@ -52,21 +58,21 @@ namespace GameRealisticMap.Arma3
         {
             progress.Total += 1;
 
-            var context = await GenerateWrp(progress, a3config);
-            if (progress.CancellationToken.IsCancellationRequested)
+            var results = await GenerateWrp(progress, a3config);
+            if (results == null || progress.CancellationToken.IsCancellationRequested)
             {
                 return null;
             }
 
             Directory.CreateDirectory(a3config.TargetModDirectory);
-            await Arma3ToolsHelper.BuildWithMikeroPboProject(a3config.PboPrefix, a3config.TargetModDirectory, progress);
+            await pboCompilerFactory.Create(progress).BinarizeAndCreatePbo(a3config, results.UsedModels, results.UsedRvmat);
             progress.ReportOneDone();
 
-            if (context == null || progress.CancellationToken.IsCancellationRequested)
-            { 
-                return null; 
+            if (results == null || progress.CancellationToken.IsCancellationRequested)
+            {
+                return null;
             }
-            var name = GameConfigGenerator.GetFreindlyName(a3config, context.GetData<CitiesData>());
+            var name = GameConfigGenerator.GetFreindlyName(a3config, results.Context.GetData<CitiesData>());
             var modCpp = Path.Combine(a3config.TargetModDirectory, "mod.cpp");
             if (!File.Exists(modCpp))
             {
@@ -75,14 +81,13 @@ namespace GameRealisticMap.Arma3
             return name;
         }
 
-        public async Task<BuildContext?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
+        public async Task<WrpAndContextResults?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
         {
             var generators = new Arma3LayerGeneratorCatalog(progress, assets);
             progress.Total += 6 + generators.Generators.Count;
 
             // Download from OSM
-            var loader = new OsmDataOverPassLoader(progress);
-            var osmSource = await loader.Load(a3config.TerrainArea);
+            var osmSource = await LoadOsmData(progress, a3config);
             progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
@@ -90,23 +95,32 @@ namespace GameRealisticMap.Arma3
             }
 
             // Generate content
-            var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary);
-            var context = new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery);
-            GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators); 
+            var context = CreateBuildContext(progress, a3config, osmSource);
+            var results = GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators);
             context.DisposeHugeImages();
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return null;
             }
 
+#if DEBUG
+            PreviewRender.RenderHtml(context, "debug.html").Wait();
+#endif
+
             // Convert PAA
             await projectDrive.ProcessImageToPaa(progress);
             progress.ReportOneDone();
 
-            return context;
+            return results;
         }
 
-        public void GenerateWrp(IProgressTask progress, IArma3MapConfig config, IContext context, ITerrainArea area, Arma3LayerGeneratorCatalog generators)
+        protected virtual async Task<IOsmDataSource> LoadOsmData(IProgressTask progress, Arma3MapConfig a3config)
+        {
+            var loader = new OsmDataOverPassLoader(progress);
+            return await loader.Load(a3config.TerrainArea);
+        }
+
+        public WrpAndContextResults? GenerateWrp(IProgressTask progress, Arma3MapConfig config, IContext context, ITerrainArea area, Arma3LayerGeneratorCatalog generators)
         {
             // Game config
             new GameConfigGenerator(assets, projectDrive).Generate(config, context, area);
@@ -118,7 +132,7 @@ namespace GameRealisticMap.Arma3
             progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
-                return;
+                return null;
             }
 
             // Imagery
@@ -128,7 +142,7 @@ namespace GameRealisticMap.Arma3
             progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
-                return;
+                return null;
             }
 
             // Objects + WRP
@@ -138,43 +152,23 @@ namespace GameRealisticMap.Arma3
 
             var size = area.SizeInMeters;
 
-            var objects = generators.Generators
-                .Progress(progress)
-                .SelectMany(tb => tb.Generate(config, context))
-                .Select(o => o.ToWrpObject(grid))
+            var objects = GetObjects(progress, config, context, generators, grid)
                 .Where(o => IsStrictlyInside(o, size));
 
             wrpBuilder.Write(config, grid, tiles, objects);
             progress.ReportOneDone();
 
-            UnpackFiles(progress, GetRequiredFiles(wrpBuilder));
+            new DependencyUnpacker(assets, projectDrive).Unpack(progress, wrpBuilder);
+
+            return new WrpAndContextResults(config, context, wrpBuilder.UsedModels, wrpBuilder.UsedRvmat);
         }
 
-        private List<string> GetRequiredFiles(WrpCompiler wrpBuilder)
+        protected virtual IEnumerable<EditableWrpObject> GetObjects(IProgressTask progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
         {
-            var materials = Enum.GetValues<TerrainMaterialUsage>().Select(u => assets.Materials.GetMaterialByUsage(u)).ToList();
-            var roads = Enum.GetValues<RoadTypeId>().Select(u => assets.RoadTypeLibrary.GetInfo(u)).ToList();
-            return wrpBuilder.UsedModels
-                .Concat(materials.Select(m => m.NormalTexture).Distinct())
-                .Concat(materials.Select(m => m.ColorTexture).Distinct())
-                .Concat(roads.Select(m => m.TextureEnd).Distinct())
-                .Concat(roads.Select(m => m.Texture).Distinct())
-                .Concat(roads.Select(m => m.Material).Distinct())
-                .ToList();
-        }
-
-        private void UnpackFiles(IProgressTask progress, IReadOnlyCollection<string> files)
-        {
-            using var report = progress.CreateStep("UnpackFiles", files.Count);
-            foreach(var model in files)
-            {
-                if (!projectDrive.EnsureLocalFileCopy(model))
-                {
-                    throw new ApplicationException($"File '{model}' is missing. Have you added all required mods in application configuration?");
-                }
-                report.ReportOneDone();
-            }
-            progress.ReportOneDone();
+            return generators.Generators
+                            .Progress(progress)
+                            .SelectMany(tb => tb.Generate(config, context))
+                            .Select(o => o.ToWrpObject(grid));
         }
 
         private bool IsStrictlyInside(EditableWrpObject o, float size)
