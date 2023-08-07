@@ -40,7 +40,7 @@ _data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgVehic
 } foreach _systems;
 
 {
-	if (_x get3DENAttribute "AMS_Exclude" select 0) then {
+	if (_x get3DENAttribute "GRMA3_Exclude" select 0) then {
 		// Ignored
 	} else {
 		if (!((_x get3denattribute "init" select 0) isequalto "")) then {
@@ -54,10 +54,10 @@ _data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgVehic
 				if ( isClass _classConfig ) then {
 					private _textures = getarray (_classConfig >> "hiddenselectionstextures");
 					private _simpleEden = getnumber (_classConfig >> "SimpleObject" >> "eden");
-					private _ams_canexport = getnumber (_classConfig >> "AmsEden" >> "canexport");
+					private _canexport = getnumber (_classConfig >> "grma3_canexport");
 					private _model = gettext (_classConfig >> "model");
 					private _realModel = (getModelInfo _x) select 1;
-					if ( (count _textures == 0 || _simpleEden == 1 || _ams_canexport == 1) && (_model != "\A3\Weapons_f\dummyweapon.p3d") && (_ams_canexport != -1)) then {
+					if ( ((_class regexMatch "Land_(.*)/i") || count _textures == 0 || _simpleEden == 1 || _canexport == 1) && (_model != "\A3\Weapons_f\dummyweapon.p3d") && (_canexport != -1)) then {
 						_classData = [true, 1];
 						_data pushBack [".class", _class, _model, boundingBoxReal _x, boundingCenter _x, _realModel, 1];
 					} else {

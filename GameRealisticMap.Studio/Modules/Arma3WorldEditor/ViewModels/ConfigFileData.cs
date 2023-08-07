@@ -11,8 +11,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private static readonly Regex DescriptionRegex = new Regex(@"description\s*=\s*""([^""]+)""", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
         private static readonly Regex RevisionRegex = new Regex(@"grma3_revision\s*=\s*([0-9]+)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
-        // grma3_revision
-
         public ConfigFileData(string configFile, string pboPrefix, string worldName, string description, int revision)
         {
             Path = configFile; 
@@ -28,9 +26,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public string WorldName { get; }
 
-        public string Description { get; }
+        public string Description { get; set; }
 
-        public int Revision { get; private set; }
+        public int Revision { get; set; }
 
         public static ConfigFileData ReadFromFile(string configFile, string worldName)
         {
@@ -65,7 +63,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             return new ConfigFileData(configFile, pboPrefix, worldName, description, revision);
         }
 
-        public void UpdateRevision(int newRevision)
+        public void SaveToFile()
         {
             var config = File.ReadAllText(Path);
 
@@ -73,7 +71,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             if (match.Success)
             {
                 config = config.Substring(0, match.Groups[1].Index)
-                    + FormattableString.Invariant($"{newRevision}")
+                    + FormattableString.Invariant($"{Revision}")
                     + config.Substring(match.Groups[1].Index + match.Groups[1].Length);
             }
             else
@@ -83,12 +81,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 {
                     var index = match.Index + match.Length;
                     config = config.Substring(0, index)
-                        + FormattableString.Invariant($";\r\n\t\tgrma3_revision = {newRevision}")
+                        + FormattableString.Invariant($";\r\n\t\tgrma3_revision = {Revision}")
                         + config.Substring(index);
                 }
             }
+
+            match = DescriptionRegex.Match(config);
+            if (match.Success)
+            {
+                config = config.Substring(0, match.Groups[1].Index)
+                    + Description.Replace('"', ' ')
+                    + config.Substring(match.Groups[1].Index + match.Groups[1].Length);
+            }
             File.WriteAllText(Path, config);
-            Revision = newRevision;
         }
     }
 }

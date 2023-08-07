@@ -1,1 +1,1 @@
-#include "\z\ams\addons\eden\script_component.hpp"
+#include "\z\grma3\addons\eden\script_component.hpp"

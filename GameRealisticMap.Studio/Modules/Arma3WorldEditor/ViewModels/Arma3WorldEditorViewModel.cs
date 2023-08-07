@@ -17,12 +17,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
     {
         private EditableWrp? _world;
         private ConfigFileData? _configFile;
-        private int pendingRevision;
         private readonly IArma3DataModule arma3Data;
+        private readonly IWindowManager windowManager;
 
-        public Arma3WorldEditorViewModel(IArma3DataModule arma3Data) 
+        public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager) 
         {
             this.arma3Data = arma3Data;
+            this.windowManager = windowManager;
         }
 
         public bool IsLoading { get; set; }
@@ -101,7 +102,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 StreamHelper.Write(World, filePath);
                 if (ConfigFile != null)
                 {
-                    ConfigFile.UpdateRevision(pendingRevision);
+                    ConfigFile.SaveToFile();
                 }
             }
             return Task.CompletedTask;
