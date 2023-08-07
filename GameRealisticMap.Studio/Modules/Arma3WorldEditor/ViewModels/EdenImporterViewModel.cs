@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
@@ -7,7 +8,9 @@ using System.Windows;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
+using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.Reporting;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
@@ -15,63 +18,92 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
     internal class EdenImporterViewModel : WindowBase
     {
         private readonly Arma3WorldEditorViewModel parent;
-        private Composition? clipboardComposition;
-        private ObjectPlacementDetectedInfos? clipboardDetected;
+        private bool _isWorking;
 
         public EdenImporterViewModel(Arma3WorldEditorViewModel parent)
         {
             this.parent = parent;
         }
 
-        public string ClipboardError { get; set; }
+        public string ClipboardError { get; set; } = string.Empty;
 
-        public bool IsClipboardNotValid => !IsClipboardValid;
+        public string ClipboardWarning { get; set; } = string.Empty;
 
-        public bool IsClipboardValid => clipboardComposition != null && clipboardDetected != null;
+        public bool IsClipboardNotValid => !IsWorking && !string.IsNullOrEmpty(ClipboardError);
 
+        public bool IsClipboardWarning => !IsWorking && string.IsNullOrEmpty(ClipboardError) && !string.IsNullOrEmpty(ClipboardWarning);
+
+        public bool IsClipboardValid => !IsWorking && string.IsNullOrEmpty(ClipboardError) && string.IsNullOrEmpty(ClipboardWarning);
+
+        public WrpEditBatch? Batch { get; set; }
+
+        public bool IsWorking
+        {
+            get { return _isWorking; }
+            set { _isWorking = value; NotifyOfPropertyChange(); }
+        }
         public Task ClipboardRefresh()
         {
-            clipboardComposition = null;
             ClipboardError = Labels.CompositionClipboardInvalid;
+            ClipboardWarning = string.Empty;
 
             var value = Clipboard.GetText();
             if (!string.IsNullOrEmpty(value))
             {
-                var lines = value.Split('\n').Select(l => l.Trim()).Select(l => l.Trim()).Where(l => !string.IsNullOrEmpty(l)).ToList();
-                if (lines.Count > 0 && lines.All(l => l.Split(';').Length >= 8))
-                {
-                    try
-                    {
-                        var library = IoC.Get<IArma3DataModule>().Library;
-                        clipboardComposition = Composition.CreateFromCsv(lines, library).Translate(new Vector3(0, -5, 0)); // Translate z -= 5 m (assume VR world)
-                        clipboardDetected = ObjectPlacementDetectedInfos.CreateFromComposition(clipboardComposition, library);
-                        if (clipboardDetected == null)
-                        {
-                            ClipboardError = Labels.CompositionClipboardUnknownSize;
-                        }
-                        else
-                        {
-                            ClipboardError = string.Empty;
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        ClipboardError = e.Message;
-                    }
-                }
+                IsWorking = true;
+                _ = Task.Run(() => DoDetect(value));
             }
 
             NotifyOfPropertyChange(nameof(IsClipboardValid));
+            NotifyOfPropertyChange(nameof(IsClipboardWarning));
             NotifyOfPropertyChange(nameof(IsClipboardNotValid));
             NotifyOfPropertyChange(nameof(ClipboardError));
+            NotifyOfPropertyChange(nameof(ClipboardWarning));
+
             return Task.CompletedTask;
+        }
+
+        private IProgressTaskUI DoDetect(string value)
+        {
+            var task = IoC.Get<IProgressTool>().StartTask("Clipboard");
+            try
+            {
+                var parser = new WrpEditBatchParser(task, parent.GameFileSystem);
+                Batch = parser.ParseFromText(value);
+
+                if (!string.IsNullOrEmpty(Batch.WorldName))
+                {
+                    ClipboardError = string.Empty;
+                    var worldName = Path.GetFileNameWithoutExtension(parent.FilePath);
+                    if (!string.Equals(Batch.WorldName, worldName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        ClipboardWarning = string.Format("Exported data is for map '{0}' but current map is '{1}'", Batch.WorldName, worldName);
+                    }
+                    else if (Batch.Revision != (parent.ConfigFile?.Revision ?? 0))
+                    {
+                        ClipboardWarning = string.Format("Exported data is for revision '{0}' but current revision is '{1}'", Batch.Revision, parent.ConfigFile?.Revision);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ClipboardError = e.Message;
+            }
+
+            IsWorking = false;
+            NotifyOfPropertyChange(nameof(IsClipboardValid));
+            NotifyOfPropertyChange(nameof(IsClipboardWarning));
+            NotifyOfPropertyChange(nameof(IsClipboardNotValid));
+            NotifyOfPropertyChange(nameof(ClipboardError));
+            NotifyOfPropertyChange(nameof(ClipboardWarning));
+            return task;
         }
 
         public Task ClipboardImport()
         {
-            if ( clipboardComposition != null && clipboardDetected != null)
+            if (Batch != null)
             {
-                target.AddComposition(clipboardComposition, clipboardDetected);
+                _ = Task.Run(() => parent.Apply(Batch));
             }
             return TryCloseAsync(true);
         }

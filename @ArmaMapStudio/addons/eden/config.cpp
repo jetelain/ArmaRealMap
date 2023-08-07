@@ -99,7 +99,7 @@ class CfgVehicles {
 	class All;
 	class AllVehicles: All 
 	{
-		grma3_anexport = -1;
+		grma3_canexport = -1;
     };
 
 	class Shelter_base_F;

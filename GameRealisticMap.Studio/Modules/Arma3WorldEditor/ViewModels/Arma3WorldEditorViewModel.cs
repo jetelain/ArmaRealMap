@@ -6,6 +6,7 @@ using BIS.WRP;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Edit;
+using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
@@ -39,7 +40,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             if (File.Exists(configFile))
             {
                 ConfigFile = ConfigFileData.ReadFromFile(configFile, Path.GetFileNameWithoutExtension(filePath));
-                pendingRevision = ConfigFile.Revision;
             }
             else
             {
@@ -90,6 +90,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         }
 
         public string Size => $"{_world?.TerrainRangeX} × {CellSize} m ➜ {SizeInMeters} m";
+
+        public IGameFileSystem GameFileSystem => arma3Data.ProjectDrive;
+
         protected override Task DoNew()
         {
             throw new NotSupportedException("You cannot create an empty world file.");
@@ -153,9 +156,23 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public Task ImportEden()
         {
-            // TODO !
+            return windowManager.ShowDialogAsync(new EdenImporterViewModel(this));
+        }
 
-            return Task.CompletedTask;
+        internal void Apply(WrpEditBatch batch)
+        {
+            if (World == null)
+            {
+                return;
+            }
+            using var task = IoC.Get<IProgressTool>().StartTask("Import");
+            var processor = new WrpEditProcessor(task);
+            processor.Process(World, batch);
+            if ( ConfigFile != null)
+            {
+                ConfigFile.Revision++;
+            }
+            IsDirty = true;
         }
     }
 }

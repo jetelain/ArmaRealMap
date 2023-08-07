@@ -18,7 +18,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views
     /// <summary>
     /// Logique d'interaction pour EdenImporterView.xaml
     /// </summary>
-    public partial class EdenImporterView : UserControl
+    public partial class EdenImporterView : Window
     {
         public EdenImporterView()
         {

@@ -9,7 +9,7 @@
     x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.EdenImporterView"
     Background="{DynamicResource EnvironmentWindowBackground}"
     Foreground="{DynamicResource EnvironmentWindowText}"
-    Width="760" Height="500" MinWidth="512" MinHeight="300" 
+    Width="840" Height="500" MinWidth="512" MinHeight="300" 
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="False"
     Title="Import changes from 3DEN Editor">
@@ -39,43 +39,48 @@
 
             <ScrollViewer IsTabStop="False" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 
+
                 <StackPanel>
-                    <GroupBox>
-                        <GroupBox.Header>
-                            <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.ImportFromClipboad}"/></TextBlock>
-                        </GroupBox.Header>
-                        <StackPanel>
-                            <TextBlock Margin="10">
-                                <Run Text="Open your map with Eden Editor, add objects"/> 
-                                
-                                <LineBreak />
-                                <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/xxxxxxxxxx">Export to GameRealisticMap</Hyperlink>
-                                <LineBreak />
-                                <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/1174073713">[E2TB] Export to Terrain Builder</Hyperlink>
-                            </TextBlock>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.ImportFromClipboad}"/></TextBlock>
+                    <TextBlock Margin="10">
+                                <Run Text="Subscribe and enable the following mod:" /> <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/xxxxxxxxxx">Export to GameRealisticMap</Hyperlink><LineBreak />
+                                <Run Text="Open your map with Eden Editor, add objects, hide objects, and then use the Export to GameRealisticMap from Tool menu."/><LineBreak />
+                                <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="https://github.com/jetelain/ArmaRealMap/wiki/Edit-With-Eden-Editor">See full instuctions</Hyperlink>
 
-                            <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardNotValid, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardRefresh">
-                                    <Run Text="{x:Static r:Labels.Refresh}"/>
-                                </Button>
-                                <TextBlock VerticalAlignment="Center" Foreground="Red" Margin="0 0 10 0">❌</TextBlock>
-                                <TextBlock VerticalAlignment="Center" Text="{Binding ClipboardError}"/>
-                            </StackPanel>
+                    </TextBlock>
 
-                            <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardValid, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardRefresh">
-                                    <Run Text="{x:Static r:Labels.Refresh}"/>
-                                </Button>
-                                <Button Padding="10 5" Margin="10 0" cal:Message.Attach="ClipboardImport">
-                                    <Run Text="{x:Static r:Labels.ImportFromClipboad}"/>
-                                </Button>
-                                <TextBlock VerticalAlignment="Center" Foreground="Green" Margin="0 0 10 0">✔</TextBlock>
-                                <TextBlock VerticalAlignment="Center"><Run Text="{x:Static r:Labels.DataSeemsValid}"/></TextBlock>
-                            </StackPanel>
 
-                        </StackPanel>
-                    </GroupBox>
+                    <ProgressBar IsIndeterminate="True" Height="15" Margin="15 0"  Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
+                    <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardNotValid, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Button Padding="10 5" Margin="5 0" cal:Message.Attach="ClipboardRefresh">
+                            <Run Text="{x:Static r:Labels.Refresh}"/>
+                        </Button>
+                        <TextBlock VerticalAlignment="Center" Foreground="Red" Margin="0 0 5 0">❌</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding ClipboardError}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardWarning, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Button Padding="10 5" Margin="5 0" cal:Message.Attach="ClipboardRefresh">
+                            <Run Text="{x:Static r:Labels.Refresh}"/>
+                        </Button>
+                        <Button Padding="10 5" Margin="5 0" cal:Message.Attach="ClipboardImport">
+                            <Run Text="{x:Static r:Labels.ImportFromClipboad}"/>
+                        </Button>
+                        <TextBlock VerticalAlignment="Center" Foreground="DarkOrange" Margin="0 0 5 0" FontWeight="Bold">⚠</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding ClipboardWarning}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardValid, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Button Padding="10 5" Margin="5 0" cal:Message.Attach="ClipboardRefresh">
+                            <Run Text="{x:Static r:Labels.Refresh}"/>
+                        </Button>
+                        <Button Padding="10 5" Margin="5 0" cal:Message.Attach="ClipboardImport">
+                            <Run Text="{x:Static r:Labels.ImportFromClipboad}"/>
+                        </Button>
+                        <TextBlock VerticalAlignment="Center" Foreground="Green" Margin="0 0 5 0">✔</TextBlock>
+                        <TextBlock VerticalAlignment="Center"><Run Text="{x:Static r:Labels.DataSeemsValid}"/></TextBlock>
+                    </StackPanel>
 
                 </StackPanel>
 
