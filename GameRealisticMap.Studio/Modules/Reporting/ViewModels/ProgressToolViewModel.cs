@@ -8,18 +8,21 @@ using Caliburn.Micro;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 using Gemini.Modules.Output;
+using NLog;
 
 namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 {
     [Export(typeof(IProgressTool))]
     internal class ProgressToolViewModel : Tool, IProgressTool
     {
+        private static readonly Logger logger = NLog.LogManager.GetLogger(" ProgressTool");
+
         private TaskState state =  TaskState.None;
         private ProgressTask? current = null;
         private readonly IOutput output;
         private readonly IShell shell;
         private readonly IWindowManager windowManager;
-        private readonly PerformanceCounter cpuCounter;
+        private readonly PerformanceCounter? cpuCounter;
         private readonly DispatcherTimer timer;
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
@@ -34,21 +37,33 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             this.shell = shell;
             this.windowManager = windowManager;
 
-            cpuCounter = new PerformanceCounter("Process", "% Processor Time",  Assembly.GetEntryAssembly()?.GetAssemblyName() ?? "_Total", true);
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
-            timer.Tick += Timer_Tick;
+            try
+            {
+                cpuCounter = new PerformanceCounter("Process", "% Processor Time", Assembly.GetEntryAssembly()?.GetAssemblyName() ?? "_Total", true);
+                timer.Tick += Timer_Tick;
+            }
+            catch(Exception ex)
+            {
+                logger.Warn(ex);
+            }
         }
+
+        public bool HasPerformanceCounter => cpuCounter != null;
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            try
+            if (cpuCounter != null)
             {
-                CpuUsage = cpuCounter.NextValue() / Environment.ProcessorCount;
-                NotifyOfPropertyChange(nameof(CpuUsage));
-            }
-            catch (InvalidOperationException)
-            {
+                try
+                {
+                    CpuUsage = cpuCounter.NextValue() / Environment.ProcessorCount;
+                    NotifyOfPropertyChange(nameof(CpuUsage));
+                }
+                catch (InvalidOperationException)
+                {
+                }
             }
         }
 
