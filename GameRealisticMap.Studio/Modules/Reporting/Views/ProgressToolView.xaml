@@ -57,12 +57,11 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-                <ProgressBar Value="{Binding CpuUsage, Mode=OneWay}" Minimum="0" Maximum="100"  Foreground="CadetBlue" Margin="10 0" Orientation="Vertical">
+                <ProgressBar Value="{Binding CpuUsage, Mode=OneWay}" Minimum="0" Maximum="100"  Foreground="CadetBlue" Margin="10 0" Orientation="Vertical" Visibility="{Binding HasPerformanceCounter, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
                 </ProgressBar>
-                <TextBlock HorizontalAlignment="Center" Margin="5">
+                <TextBlock HorizontalAlignment="Center" Margin="5" Visibility="{Binding HasPerformanceCounter, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
                     CPU
                 </TextBlock>
-
             </Grid>
 
             <Button Padding="5" cal:Message.Attach="CancelTask">

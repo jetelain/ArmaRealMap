@@ -101,6 +101,10 @@ namespace GameRealisticMap.Nature.Ocean
             {
                 line.Points.Add(line.FirstPoint);
             }
+            else if (other != null)
+            {
+                line.Points.Insert(0, other.LastPoint);
+            }
             else if (other == null && depth < 4)
             {
                 line.Points.Insert(0, edgeNE);
@@ -117,6 +121,10 @@ namespace GameRealisticMap.Nature.Ocean
             if (other == line)
             {
                 line.Points.Add(line.FirstPoint);
+            }
+            else if (other != null)
+            {
+                line.Points.Insert(0, other.LastPoint);
             }
             else if (other == null && depth < 4)
             {
@@ -136,6 +144,10 @@ namespace GameRealisticMap.Nature.Ocean
             {
                 line.Points.Add(line.FirstPoint);
             }
+            else if (other != null)
+            {
+                line.Points.Insert(0, other.LastPoint);
+            }
             else if (other == null && depth < 4)
             {
                 line.Points.Insert(0, edgeSW);
@@ -152,6 +164,10 @@ namespace GameRealisticMap.Nature.Ocean
             if (other == line)
             {
                 line.Points.Add(line.FirstPoint);
+            }
+            else if (other != null)
+            {
+                line.Points.Insert(0, other.LastPoint);
             }
             else if (other == null && depth < 4)
             {
