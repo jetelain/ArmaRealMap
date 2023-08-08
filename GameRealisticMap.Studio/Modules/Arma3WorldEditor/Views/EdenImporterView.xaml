@@ -43,14 +43,12 @@
                 <StackPanel>
                     <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.ImportFromClipboad}"/></TextBlock>
                     <TextBlock Margin="10">
-                                <Run Text="Subscribe and enable the following mod:" /> <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/xxxxxxxxxx">Export to GameRealisticMap</Hyperlink><LineBreak />
+                                <Run Text="Subscribe and enable the following mod:" /> <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/3016661145">Export to GameRealisticMap</Hyperlink><LineBreak />
                                 <Run Text="Open your map with Eden Editor, add objects, hide objects, and then use the Export to GameRealisticMap from Tool menu."/><LineBreak />
                                 <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="https://github.com/jetelain/ArmaRealMap/wiki/Edit-With-Eden-Editor">See full instuctions</Hyperlink>
-
                     </TextBlock>
 
-
-                    <ProgressBar IsIndeterminate="True" Height="15" Margin="15 0"  Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <ProgressBar Maximum="100" Minimum="0" Value="{Binding WorkingPercent}" Height="15" Margin="15 0"  Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                     <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardNotValid, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Button Padding="10 5" Margin="5 0" cal:Message.Attach="ClipboardRefresh">

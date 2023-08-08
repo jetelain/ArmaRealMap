@@ -1,24 +1,21 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Caliburn.Micro;
-using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Edit;
-using GameRealisticMap.Studio.Modules.Arma3Data;
-using GameRealisticMap.Studio.Modules.Reporting;
 using Gemini.Framework;
+using NLog;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
-    internal class EdenImporterViewModel : WindowBase
+    internal class EdenImporterViewModel : WindowBase, IProgress<double>
     {
+        private static readonly Logger logger = NLog.LogManager.GetLogger("EdenImporter");
+
         private readonly Arma3WorldEditorViewModel parent;
         private bool _isWorking;
+        private double _workingPercent;
 
         public EdenImporterViewModel(Arma3WorldEditorViewModel parent)
         {
@@ -42,6 +39,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             get { return _isWorking; }
             set { _isWorking = value; NotifyOfPropertyChange(); }
         }
+
+        public double WorkingPercent
+        {
+            get { return _workingPercent; }
+            set { _workingPercent = value; NotifyOfPropertyChange(); }
+        }
+
         public Task ClipboardRefresh()
         {
             ClipboardError = Labels.CompositionClipboardInvalid;
@@ -51,6 +55,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             if (!string.IsNullOrEmpty(value))
             {
                 IsWorking = true;
+                WorkingPercent = 0.0;
                 _ = Task.Run(() => DoDetect(value));
             }
 
@@ -63,9 +68,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             return Task.CompletedTask;
         }
 
-        private IProgressTaskUI DoDetect(string value)
+        private void DoDetect(string value)
         {
-            var task = IoC.Get<IProgressTool>().StartTask("Clipboard");
+            using var task = new BasicProgressSystem(this, logger);
             try
             {
                 var parser = new WrpEditBatchParser(task, parent.GameFileSystem);
@@ -87,6 +92,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
             catch (Exception e)
             {
+                logger.Error(e);
                 ClipboardError = e.Message;
             }
 
@@ -96,7 +102,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             NotifyOfPropertyChange(nameof(IsClipboardNotValid));
             NotifyOfPropertyChange(nameof(ClipboardError));
             NotifyOfPropertyChange(nameof(ClipboardWarning));
-            return task;
         }
 
         public Task ClipboardImport()
@@ -114,5 +119,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         }
 
         public Task Cancel() => TryCloseAsync(false);
+
+        public void Report(double value)
+        {
+            WorkingPercent = value;
+        }
     }
 }
