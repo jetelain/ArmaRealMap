@@ -78,7 +78,10 @@ namespace GameRealisticMap.Arma3.IO
         {
             var fullPath = GetFullPath(path);
             image.SaveAsPng(fullPath);
-            imageToPaaPending.Add(fullPath);
+            lock (imageToPaaPending)
+            {
+                imageToPaaPending.Add(fullPath);
+            }
         }
 
         public void WriteTextFile(string path, string text)
