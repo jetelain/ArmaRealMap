@@ -92,13 +92,16 @@ namespace GameRealisticMap.ManMade.Railways
                     var seg2 = new TerrainPath(point1, crossingPoint, point2);
                     var seg3 = new TerrainPath(new[] { point2 }.Concat(segment.Points.Skip(indexInRailway - part2Index + 2)).ToList());
 
-                    AddNormalSegment(railways, crossing, roadsIndex, seg1);
+                    if (seg1.Length > 0 && seg3.Length > 0)
+                    {
+                        AddNormalSegment(railways, crossing, roadsIndex, seg1);
 
-                    railways.Add(new Railway(WaySpecialSegment.Crossing, seg2));
+                        railways.Add(new Railway(WaySpecialSegment.Crossing, seg2));
 
-                    AddNormalSegment(railways, crossing, roadsIndex, seg3);
+                        AddNormalSegment(railways, crossing, roadsIndex, seg3);
 
-                    return;
+                        return;
+                    }
                 }
             }
 
