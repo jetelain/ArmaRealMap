@@ -18,6 +18,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
     {
         private EditableWrp? _world;
         private ConfigFileData? _configFile;
+        private string _targetModDirectory = string.Empty;
         private readonly IArma3DataModule arma3Data;
         private readonly IWindowManager windowManager;
 
@@ -36,15 +37,18 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             World = StreamHelper.Read<AnyWrp>(filePath).GetEditableWrp();
 
+            var worldName = Path.GetFileNameWithoutExtension(filePath);
             var configFile = Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, "config.cpp");
             if (File.Exists(configFile))
             {
-                ConfigFile = ConfigFileData.ReadFromFile(configFile, Path.GetFileNameWithoutExtension(filePath));
+                ConfigFile = ConfigFileData.ReadFromFile(configFile, worldName);
             }
             else
             {
                 ConfigFile = null;
             }
+
+            TargetModDirectory = Arma3MapConfig.GetAutomaticTargetModDirectory(worldName);
 
             IsLoading = false;
             NotifyOfPropertyChange(nameof(IsLoading));
@@ -57,10 +61,17 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             set { _world = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Size)); }
         }
 
+        
+
         public ConfigFileData? ConfigFile
         {
             get { return _configFile; }
             set { _configFile = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(CanGenerateMod)); }
+        }
+        public string TargetModDirectory
+        {
+            get { return _targetModDirectory; }
+            set { _targetModDirectory = value; NotifyOfPropertyChange(); }
         }
 
         public bool CanGenerateMod => !string.IsNullOrEmpty(_configFile?.PboPrefix);
@@ -142,16 +153,22 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 return;
             }
 
-            var a3config = new SimpleWrpModConfig(ConfigFile.WorldName, ConfigFile.PboPrefix);
+            var wrpConfig = new SimpleWrpModConfig(ConfigFile.WorldName, ConfigFile.PboPrefix, TargetModDirectory);
 
             var generator = new SimpleWrpModGenerator(arma3Data.ProjectDrive, arma3Data.CreatePboCompilerFactory());
 
-            await generator.GenerateMod(task, a3config, _world);
+            await generator.GenerateMod(task, wrpConfig, _world);
 
-            task.AddSuccessAction(() => ShellHelper.OpenUri(a3config.TargetModDirectory), Labels.ViewInFileExplorer);
+            task.AddSuccessAction(() => ShellHelper.OpenUri(wrpConfig.TargetModDirectory), Labels.ViewInFileExplorer);
             //task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, name));
             //task.AddSuccessAction(() => Arma3Helper.Launch(assets.Dependencies, a3config.TargetModDirectory, a3config.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
             //await Arma3LauncherHelper.CreateLauncherPresetAsync(assets.Dependencies, a3config.TargetModDirectory, "GRM - " + name);
+
+            await IoC.Get<IArma3WorldHistory>().RegisterWorld(
+                wrpConfig.WorldName,
+                wrpConfig.PboPrefix,
+                ConfigFile.Description,
+                wrpConfig.TargetModDirectory);
         }
 
         public Task ImportEden()

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor;
 using GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor;
 using GameRealisticMap.Studio.Modules.MapConfigEditor;
@@ -21,11 +23,14 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
         private bool isArma3ToolsInstalled;
         private bool isArma3ToolsAccepted;
         private readonly IShell _shell;
+        private readonly IArma3WorldHistory _history;
 
         [ImportingConstructor]
-        public HomeViewModel(IShell shell)
+        public HomeViewModel(IShell shell, IArma3WorldHistory history)
         {
             _shell = shell;
+            _history = history;
+            _history.Changed += (_, _) => UpdateRecent();
             DisplayName = Labels.Home;
             SetupArma3WorkDriveCommand = new RelayCommand(_ => Arma3ToolsHelper.EnsureProjectDrive(false));
         }
@@ -39,10 +44,30 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
         public bool IsProjectDriveNotCreated => !IsProjectDriveCreated;
 
         public RelayCommand SetupArma3WorkDriveCommand { get; }
+        public List<WorldEntry> EditMaps { get; private set; } = new List<WorldEntry>();
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
             await RefreshArma3ToolChain();
+
+            if (IsProjectDriveCreated)
+            {
+                UpdateRecent();
+            }
+        }
+
+        private void UpdateRecent()
+        {
+            _ = Task.Run(async () =>
+            {
+                var result = await _history.GetEntries();
+                if (result.Count > 0)
+                {
+                    var drive = IoC.Get<IArma3DataModule>().ProjectDrive;
+                    EditMaps = result.Select(r => new WorldEntry(r, drive)).Where(r => r.Exists).OrderByDescending(r => r.TimeStamp).Take(10).ToList();
+                    NotifyOfPropertyChange(nameof(EditMaps));
+                }
+            });
         }
 
         public async Task NewArma3MapConfig()

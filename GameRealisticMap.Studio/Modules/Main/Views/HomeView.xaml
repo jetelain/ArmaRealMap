@@ -12,115 +12,145 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
-    <StackPanel Margin="20">
-        <TextBlock FontSize="30" Margin="0 0 0 10">Game Realistic Map</TextBlock>
-        <TextBlock>
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" IsTabStop="False">
+        <StackPanel Margin="20" Width="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+            <TextBlock FontSize="30" Margin="0 0 0 10">Game Realistic Map</TextBlock>
+            <TextBlock>
             <Run Text="{x:Static r:Labels.HomeIntro}" />
             <TextBlock FontStyle="Italic" Text="{x:Static r:Labels.HomeIntroLimit}" />
         </TextBlock>
 
-        <Expander IsExpanded="True" Margin="0 20 0 0">
-            <Expander.Header>
-                <TextBlock FontSize="25">Arma 3</TextBlock>
-            </Expander.Header>
-            <StackPanel>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                            <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.RequiredTools}" /></TextBlock>
-                            <TextBlock VerticalAlignment="Center" Margin="10 5 0 0">
+            <Expander IsExpanded="True" Margin="0 20 30 0">
+                <Expander.Header>
+                    <TextBlock FontSize="25">Arma 3</TextBlock>
+                </Expander.Header>
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                                <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.RequiredTools}" /></TextBlock>
+                                <TextBlock VerticalAlignment="Center" Margin="10 5 0 0">
                                 <Hyperlink NavigateUri="{x:Static r:Links.Arma3SetupHelp}" b:HyperLinkBehaviors.ShellExecute="True">
                                    <Run Text="{x:Static r:Labels.Help}" />
                                 </Hyperlink>
+                                </TextBlock>
+                            </StackPanel>
+                            <TextBlock><Run Text="{x:Static r:Labels.RequiredToolsDescription}" /></TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Button Padding="10 5" cal:Message.Attach="RefreshArma3ToolChain">
+                                <Run Text="{x:Static r:Labels.Refresh}" />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0 10 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock HorizontalAlignment="Center" FontSize="20">Arma 3</TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsArma3NotInstalled, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.NotInstalled}" />
+                            <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsArma3Installed, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.Installed}" />
+                            <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://install/107410"><Run Text="{x:Static r:Labels.InstallWithSteam}" /></Hyperlink></TextBlock>
+                            <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://run/107410"><Run Text="{x:Static r:Labels.OpenArma3Launcher}" /></Hyperlink></TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock HorizontalAlignment="Center" FontSize="20">Arma 3 Tools</TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsArma3ToolsNotInstalled, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.NotInstalled}" />
+                            <TextBlock HorizontalAlignment="Center" Foreground="Red"  Visibility="{Binding IsArma3ToolsNotAccepted, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.LicenseNotApproved}" />
+                            <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsArma3ToolsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.Installed}" />
+                            <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://install/233800"><Run Text="{x:Static r:Labels.InstallWithSteam}" /></Hyperlink></TextBlock>
+                            <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://run/233800"><Run Text="{x:Static r:Labels.LaunchApproveLicense}" /></Hyperlink></TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock HorizontalAlignment="Center" FontSize="20">Work Drive (P:)</TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsProjectDriveNotCreated, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.NotFound}" />
+                            <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsProjectDriveCreated, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.Found}" />
+                            <TextBlock HorizontalAlignment="Center"><Hyperlink Command="{Binding SetupArma3WorkDriveCommand}" ><Run Text="{x:Static r:Labels.SetupWithArma3Tools}" /></Hyperlink></TextBlock>
+                            <TextBlock HorizontalAlignment="Center" TextAlignment="Center" FontStyle="Italic" TextWrapping="Wrap"><Run Text="{x:Static r:Labels.YouCanAlsoMountDriveWithYourCustomTool}" /></TextBlock>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock FontSize="20" Margin="0 10"><Run Text="{x:Static r:Labels.GettingStarted}" /></TextBlock>
+                    <TextBlock><Run Text="{x:Static r:Labels.GettingStartedDescription}"/></TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewArma3AssetConfig">
+                                <StackPanel>
+                                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/AssetConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
+                                    <TextBlock TextWrapping="Wrap"><Run Text="{x:Static r:Labels.CreateAnAssetsConfiguration}" /></TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
+                            <Run Text="{x:Static r:Labels.CreateAnAssetsConfigurationDescription}" />
                             </TextBlock>
                         </StackPanel>
-                        <TextBlock><Run Text="{x:Static r:Labels.RequiredToolsDescription}" /></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1">
-                        <Button Padding="10 5" cal:Message.Attach="RefreshArma3ToolChain">
-                            <Run Text="{x:Static r:Labels.Refresh}" />
-                        </Button>
-                    </StackPanel>
-                </Grid>
-
-                <Grid Margin="0 10 0 0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel>
-                        <TextBlock HorizontalAlignment="Center" FontSize="20">Arma 3</TextBlock>
-                        <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsArma3NotInstalled, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.NotInstalled}" />
-                        <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsArma3Installed, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.Installed}" />
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://install/107410"><Run Text="{x:Static r:Labels.InstallWithSteam}" /></Hyperlink></TextBlock>
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://run/107410"><Run Text="{x:Static r:Labels.OpenArma3Launcher}" /></Hyperlink></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1">
-                        <TextBlock HorizontalAlignment="Center" FontSize="20">Arma 3 Tools</TextBlock>
-                        <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsArma3ToolsNotInstalled, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.NotInstalled}" />
-                        <TextBlock HorizontalAlignment="Center" Foreground="Red"  Visibility="{Binding IsArma3ToolsNotAccepted, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.LicenseNotApproved}" />
-                        <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsArma3ToolsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.Installed}" />
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://install/233800"><Run Text="{x:Static r:Labels.InstallWithSteam}" /></Hyperlink></TextBlock>
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://run/233800"><Run Text="{x:Static r:Labels.LaunchApproveLicense}" /></Hyperlink></TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2">
-                        <TextBlock HorizontalAlignment="Center" FontSize="20">Work Drive (P:)</TextBlock>
-                        <TextBlock HorizontalAlignment="Center" Foreground="Red" Visibility="{Binding IsProjectDriveNotCreated, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.NotFound}" />
-                        <TextBlock HorizontalAlignment="Center" Foreground="Green" Visibility="{Binding IsProjectDriveCreated, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{x:Static r:Labels.Found}" />
-                        <TextBlock HorizontalAlignment="Center"><Hyperlink Command="{Binding SetupArma3WorkDriveCommand}" ><Run Text="{x:Static r:Labels.SetupWithArma3Tools}" /></Hyperlink></TextBlock>
-                        <TextBlock HorizontalAlignment="Center" TextAlignment="Center" FontStyle="Italic" TextWrapping="Wrap"><Run Text="{x:Static r:Labels.YouCanAlsoMountDriveWithYourCustomTool}" /></TextBlock>
-                    </StackPanel>
-                </Grid>
-                <TextBlock FontSize="20" Margin="0 10"><Run Text="{x:Static r:Labels.GettingStarted}" /></TextBlock>
-                <TextBlock><Run Text="{x:Static r:Labels.GettingStartedDescription}"/></TextBlock>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel HorizontalAlignment="Center">
-                        <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewArma3AssetConfig">
-                            <StackPanel>
-                                <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/AssetConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
-                                <TextBlock TextWrapping="Wrap"><Run Text="{x:Static r:Labels.CreateAnAssetsConfiguration}" /></TextBlock>
-                            </StackPanel>
-                        </Button>
-                        <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
-                            <Run Text="{x:Static r:Labels.CreateAnAssetsConfigurationDescription}" />
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-                        <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="BrowseArma3Assets">
-                            <StackPanel>
-                                <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Objects.png" Width="24" Height="24" Margin="0 0 0 5"/>
-                                <TextBlock TextWrapping="Wrap"><Run Text="{x:Static r:Labels.BrowseAssets}"/></TextBlock>
-                            </StackPanel></Button>
-                        <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                            <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="BrowseArma3Assets">
+                                <StackPanel>
+                                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Objects.png" Width="24" Height="24" Margin="0 0 0 5"/>
+                                    <TextBlock TextWrapping="Wrap"><Run Text="{x:Static r:Labels.BrowseAssets}"/></TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
                             <Run Text="{x:Static r:Labels.BrowseAssetsDescription}"/>
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2"  HorizontalAlignment="Center">
-                        <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewArma3MapConfig">
-                            <StackPanel>
-                                <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
-                                <TextBlock TextWrapping="Wrap"><Run Text="{x:Static r:Labels.CreateAMapConfiguration}" /></TextBlock>
-                            </StackPanel>
-                        </Button>
-                        <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2"  HorizontalAlignment="Center">
+                            <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewArma3MapConfig">
+                                <StackPanel>
+                                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
+                                    <TextBlock TextWrapping="Wrap"><Run Text="{x:Static r:Labels.CreateAMapConfiguration}" /></TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
                             <Run Text="{x:Static r:Labels.CreateAMapConfigurationDescription}"/>
-                        </TextBlock>
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
-        </Expander>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
 
-        <TextBlock FontSize="10" Margin="0 20 0 0">Arma 3 (including screenshots), Arma 3 Tools : Copyright © Bohemia Interactive. Icons made by Freepik and Mihimihi from www.flaticon.com.</TextBlock>
+                    <TextBlock FontSize="20" Margin="0 10"><Run Text="Recent generated maps" /></TextBlock>
+                    <TextBlock><Run Text="Use Eden Editor in Arma 3 to improve a generated map and integrate back here the changes"/></TextBlock>
 
-    </StackPanel>
+                    <ScrollViewer IsTabStop="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+                        <ItemsControl ItemsSource="{Binding EditMaps}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Margin="5" cal:Message.Attach="OpenFile">
+                                        <StackPanel>
+                                            <Image Source="{Binding ImageSource}" Width="96" Height="96" />
+                                            <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="128" TextAlignment="Center" />
+                                        </StackPanel>
+                                        <Button.ToolTip>
+                                            <TextBlock Text="{Binding Tooltip}" />
+                                        </Button.ToolTip>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                </StackPanel>
+            </Expander>
+
+            <TextBlock FontSize="10" Margin="0 20 0 0">Arma 3 (including screenshots), Arma 3 Tools : Copyright © Bohemia Interactive. Icons made by Freepik and Mihimihi from www.flaticon.com.</TextBlock>
+
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

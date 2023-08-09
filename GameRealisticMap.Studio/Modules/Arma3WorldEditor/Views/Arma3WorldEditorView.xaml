@@ -37,10 +37,10 @@
                 <Expander.Header>
                     <TextBlock FontSize="20"><Run Text="Map informations"/></TextBlock>
                 </Expander.Header>
-                <StackPanel>
+                <StackPanel Margin="0 5">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="200" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -48,29 +48,36 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5"><Run Text="Terrain size"/></TextBlock>
-                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Size}" />
+                        <Label Grid.Row="0" Grid.Column="0" Margin="5"><Run Text="Terrain size"/></Label>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Size}" VerticalAlignment="Center" />
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5"><Run Text="Land range"/></TextBlock>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding World.LandRangeX}" />
+                        <Label Grid.Row="1" Grid.Column="0" Margin="5"><Run Text="Land range"/></Label>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding World.LandRangeX}" VerticalAlignment="Center" />
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="5"><Run Text="Pbo Prefix"/></TextBlock>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding ConfigFile.PboPrefix}" />
+                        <Label Grid.Row="2" Grid.Column="0" Margin="5"><Run Text="Pbo Prefix"/></Label>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding ConfigFile.PboPrefix}" VerticalAlignment="Center" />
                     </Grid>
                 </StackPanel>
             </Expander>
             
             
-            <!--<Expander IsExpanded="True" Margin="10">
+            <Expander IsExpanded="True" Margin="10">
                 <Expander.Header>
-                    <TextBlock FontSize="20"><Run Text="Objects"/></TextBlock>
+                    <TextBlock FontSize="20"><Run Text="Configuration"/></TextBlock>
                 </Expander.Header>
                 <StackPanel>
-                    
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200"><Run Text="Description" /></Label>
+                        <TextBox Width="400" Text="{Binding ConfigFile.Description, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200"><Run Text="Mod directory" /></Label>
+                        <TextBox Width="400" Text="{Binding TargetModDirectory, Mode=TwoWay}" />
+                    </StackPanel>
 
-                    
+
                 </StackPanel>
-            </Expander>-->
+            </Expander>
 
             
         </StackPanel>

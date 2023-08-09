@@ -12,6 +12,7 @@ using Gemini.Framework.Services;
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor
 {
     [Export(typeof(IEditorProvider))]
+    [Export("Arma3WorldEditorProvider", typeof(IEditorProvider))]
     internal class Arma3WorldEditorProvider : IEditorProvider
     {
         private readonly IArma3DataModule arma3Data;
