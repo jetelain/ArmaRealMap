@@ -75,11 +75,9 @@ namespace GameRealisticMap.ManMade.Railways
 
                 var crossingWidth = crossingResolver.GetCrossingWidth(road?.RoadTypeInfos, factor);
 
-                if (crossingWidth > 0)
+                if (crossingWidth > 0 && indexInRailway > 0 && indexInRailway < segment.Points.Count - 1)
                 {
                     // split in 3 segments
-
-
                     var pathPart1 = new FollowPath(segment.Points.Take(indexInRailway + 1).Reverse());
                     pathPart1.Move(crossingWidth / 2);
                     var part1Index = pathPart1.Index;
