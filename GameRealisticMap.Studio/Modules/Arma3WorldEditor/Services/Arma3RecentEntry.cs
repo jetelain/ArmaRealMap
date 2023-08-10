@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
 {
-    internal class Arma3WorldEntry : IArma3WorldEntry
+    internal class Arma3RecentEntry : IArma3RecentEntry
     {
         public string? WorldName { get; set; }
 
@@ -13,5 +13,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
         public string? Description { get; set; }
 
         public string? ModDirectory { get; set; }
+
+        public string? ConfigFile { get; set; }
     }
 }

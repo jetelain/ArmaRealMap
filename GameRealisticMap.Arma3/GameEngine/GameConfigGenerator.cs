@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ManMade.Places;
@@ -31,6 +32,8 @@ namespace GameRealisticMap.Arma3.GameEngine
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\mapinfos.hpp", GenerateMapInfos(config, area, context.GetData<OceanData>().IsIsland));
 
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\names.hpp", GenerateNames(context.GetData<CitiesData>()));
+
+            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\grma3-dependencies.json", JsonSerializer.Serialize(assets.Dependencies));
         }
 
 

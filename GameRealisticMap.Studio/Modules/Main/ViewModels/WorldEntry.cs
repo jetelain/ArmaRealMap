@@ -6,19 +6,21 @@ using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor;
+using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 {
     public class WorldEntry
     {
-        public WorldEntry(IArma3WorldEntry world, ProjectDrive drive)
+        public WorldEntry(IArma3RecentEntry world, ProjectDrive drive)
         {
             if (!string.IsNullOrEmpty(world.PboPrefix) && !string.IsNullOrEmpty(world.WorldName))
             {
                 WorldName = world.WorldName;
                 Description = world.Description ?? world.WorldName;
                 FilePath = drive.GetFullPath(world.PboPrefix + "\\" + world.WorldName + ".wrp");
+                ConfigFile = world.ConfigFile;
                 PreviewPath = drive.GetFullPath(world.PboPrefix + "\\data\\picturemap_ca.png");
                 Exists = File.Exists(FilePath);
                 TimeStamp = world.TimeStamp;
@@ -39,6 +41,8 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 
         public string FilePath { get; }
 
+        public string? ConfigFile { get; }
+
         public string PreviewPath { get; }
 
         public bool Exists { get; }
@@ -47,10 +51,7 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 
         public async Task OpenFile()
         {
-            var provider = IoC.Get<IEditorProvider>("Arma3WorldEditorProvider");
-            var editor = provider.Create();
-            await provider.Open(editor, FilePath);
-            await IoC.Get<IShell>().OpenDocumentAsync(editor);
+            await EditorHelper.OpenWithEditor("Arma3WorldEditorProvider", FilePath);
         }
 
         public string Tooltip => string.Format("WorldName: {0}\r\nLast generated on {1}", WorldName, TimeStamp.ToLocalTime());

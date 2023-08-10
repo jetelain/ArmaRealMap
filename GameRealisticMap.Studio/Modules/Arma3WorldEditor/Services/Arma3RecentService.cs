@@ -11,8 +11,8 @@ using NLog;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
 {
-    [Export(typeof(IArma3WorldHistory))]
-    internal class Arma3WorldHistory : IArma3WorldHistory
+    [Export(typeof(IArma3RecentHistory))]
+    internal class Arma3RecentService : IArma3RecentHistory
     {
         private static readonly Logger logger = LogManager.GetLogger("Arma3WorldHistory");
 
@@ -24,7 +24,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "GameRealisticMap", "Arma3", "recent.json");
 
-        private async Task<List<Arma3WorldEntry>> ReadEntries()
+        private async Task<List<Arma3RecentEntry>> ReadEntries()
         {
             if (File.Exists(FilePath))
             {
@@ -32,7 +32,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
                 {
                     using (var stream = File.OpenRead(FilePath))
                     {
-                        return (await JsonSerializer.DeserializeAsync<List<Arma3WorldEntry>>(stream)) ?? new List<Arma3WorldEntry>();
+                        return (await JsonSerializer.DeserializeAsync<List<Arma3RecentEntry>>(stream)) ?? new List<Arma3RecentEntry>();
                     }
                 }
                 catch (Exception e)
@@ -40,7 +40,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
                     logger.Warn(e);
                 }
             }
-            var list = new List<Arma3WorldEntry>();
+            var list = new List<Arma3RecentEntry>();
             try
             {
                 await GenerateInitialList(list);
@@ -52,7 +52,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
             return list;
         }
 
-        private async Task GenerateInitialList(List<Arma3WorldEntry> list)
+        private async Task GenerateInitialList(List<Arma3RecentEntry> list)
         {
             var location = Path.Combine(Arma3ToolsHelper.GetProjectDrivePath(), "z", "arm", "addons");
             if (Directory.Exists(location))
@@ -62,7 +62,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
                 {
                     var directory = Path.GetDirectoryName(file) ?? location;
                     var worldName = Path.GetFileNameWithoutExtension(file);
-                    list.Add(new Arma3WorldEntry()
+                    list.Add(new Arma3RecentEntry()
                     {
                         WorldName = worldName,
                         Description = GetDescription(directory, worldName),
@@ -85,7 +85,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
             return string.Empty;
         }
 
-        private async Task SaveEntries(List<Arma3WorldEntry> entries)
+        private async Task SaveEntries(List<Arma3RecentEntry> entries)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);
             try
@@ -99,16 +99,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
             }
         }
 
-        public async Task<IReadOnlyCollection<IArma3WorldEntry>> GetEntries()
+        public async Task<IReadOnlyCollection<IArma3RecentEntry>> GetEntries()
         {
             return await ReadEntries();
         }
 
-        public async Task RegisterWorld(string worldName, string pboPrefix, string description, string? modDirectory)
+        public async Task RegisterWorld(string worldName, string pboPrefix, string description, string? modDirectory, string? configFile)
         {
             var entries = await ReadEntries();
 
-            CreateEntry(worldName, pboPrefix, description, modDirectory, entries);
+            CreateEntry(entries, worldName, pboPrefix, description, modDirectory, configFile);
 
             await SaveEntries(entries);
 
@@ -122,12 +122,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
             }
         }
 
-        private static void CreateEntry(string worldName, string pboPrefix, string description, string? modDirectory, List<Arma3WorldEntry> entries)
+        private static void CreateEntry(List<Arma3RecentEntry> entries, string worldName, string pboPrefix, string description, string? modDirectory, string? configFile)
         {
             var entry = entries.FirstOrDefault(e => string.Equals(worldName, e.WorldName, StringComparison.OrdinalIgnoreCase));
             if (entry == null)
             {
-                entry = new Arma3WorldEntry() { WorldName = worldName };
+                entry = new Arma3RecentEntry() { WorldName = worldName };
                 if (entries.Count > MaxEntries)
                 {
                     entries.Remove(entries.OrderBy(e => e.TimeStamp).First());
@@ -138,6 +138,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
             entry.PboPrefix = pboPrefix;
             entry.Description = description;
             entry.ModDirectory = modDirectory ?? entry.ModDirectory;
+            entry.ConfigFile = configFile ?? entry.ConfigFile;
+        }
+
+        public async Task<IArma3RecentEntry?> GetEntryOrDefault(string worldName)
+        {
+            var entries = await ReadEntries();
+
+            return entries.FirstOrDefault(e => string.Equals(worldName, e.WorldName, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

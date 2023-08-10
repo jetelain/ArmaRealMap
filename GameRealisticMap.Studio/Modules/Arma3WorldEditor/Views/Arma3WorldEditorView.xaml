@@ -18,7 +18,7 @@
             <StackPanel Margin="0 5" Orientation="Horizontal">
                 <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
                 <TextBlock VerticalAlignment="Center" Margin="10 0" Grid.Column="1">
-                    <Hyperlink NavigateUri="{x:Static r:Links.Arma3MapConfigHelp}" b:HyperLinkBehaviors.ShellExecute="True">
+                    <Hyperlink NavigateUri="https://github.com/jetelain/ArmaRealMap/wiki/Edit-With-Eden-Editor" b:HyperLinkBehaviors.ShellExecute="True">
                         <Run Text="{x:Static r:Labels.Help}" />
                     </Hyperlink>
                 </TextBlock>
@@ -47,6 +47,7 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Label Grid.Row="0" Grid.Column="0" Margin="5"><Run Text="Terrain size"/></Label>
                         <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Size}" VerticalAlignment="Center" />
@@ -56,6 +57,11 @@
 
                         <Label Grid.Row="2" Grid.Column="0" Margin="5"><Run Text="Pbo Prefix"/></Label>
                         <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding ConfigFile.PboPrefix}" VerticalAlignment="Center" />
+
+                        <Label Grid.Row="3" Grid.Column="0" Margin="5"><Run Text="Used Map Configuration"/></Label>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center">
+                            <Hyperlink NavigateUri="{Binding HistoryEntry.ConfigFile}" Command="{Binding OpenConfigFileCommand}"><TextBlock Text="{Binding HistoryEntry.ConfigFile}" /></Hyperlink>
+                        </TextBlock>
                     </Grid>
                 </StackPanel>
             </Expander>
@@ -68,11 +74,11 @@
                 <StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200"><Run Text="Description" /></Label>
-                        <TextBox Width="400" Text="{Binding ConfigFile.Description, Mode=TwoWay}" />
+                        <TextBox Width="250" Text="{Binding ConfigFile.Description, Mode=TwoWay}" />
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200"><Run Text="Mod directory" /></Label>
-                        <TextBox Width="400" Text="{Binding TargetModDirectory, Mode=TwoWay}" />
+                        <TextBox Width="500" Text="{Binding TargetModDirectory, Mode=TwoWay}" />
                     </StackPanel>
 
 

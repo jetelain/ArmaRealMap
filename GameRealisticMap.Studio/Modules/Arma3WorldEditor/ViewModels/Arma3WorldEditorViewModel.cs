@@ -21,16 +21,21 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private string _targetModDirectory = string.Empty;
         private readonly IArma3DataModule arma3Data;
         private readonly IWindowManager windowManager;
+        private readonly IArma3RecentHistory history;
 
-        public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager) 
+        public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history) 
         {
             this.arma3Data = arma3Data;
             this.windowManager = windowManager;
+            this.history = history;
+            OpenConfigFileCommand = new AsyncCommand(OpenConfigFile);
         }
+
+        public IAsyncCommand OpenConfigFileCommand { get; }
 
         public bool IsLoading { get; set; }
 
-        protected override Task DoLoad(string filePath)
+        protected override async Task DoLoad(string filePath)
         {
             IsLoading = true;
             NotifyOfPropertyChange(nameof(IsLoading));
@@ -48,11 +53,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 ConfigFile = null;
             }
 
-            TargetModDirectory = Arma3MapConfig.GetAutomaticTargetModDirectory(worldName);
+            HistoryEntry = await history.GetEntryOrDefault(worldName);
+
+            TargetModDirectory = HistoryEntry?.ModDirectory ?? Arma3MapConfig.GetAutomaticTargetModDirectory(worldName);
 
             IsLoading = false;
             NotifyOfPropertyChange(nameof(IsLoading));
-            return Task.CompletedTask;
+            NotifyOfPropertyChange(nameof(HistoryEntry));
         }
 
         public EditableWrp? World
@@ -61,18 +68,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             set { _world = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Size)); }
         }
 
-        
-
         public ConfigFileData? ConfigFile
         {
             get { return _configFile; }
             set { _configFile = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(CanGenerateMod)); }
         }
+
         public string TargetModDirectory
         {
             get { return _targetModDirectory; }
             set { _targetModDirectory = value; NotifyOfPropertyChange(); }
         }
+
+        public IArma3RecentEntry? HistoryEntry { get; private set; }
 
         public bool CanGenerateMod => !string.IsNullOrEmpty(_configFile?.PboPrefix);
 
@@ -164,7 +172,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             //task.AddSuccessAction(() => Arma3Helper.Launch(assets.Dependencies, a3config.TargetModDirectory, a3config.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
             //await Arma3LauncherHelper.CreateLauncherPresetAsync(assets.Dependencies, a3config.TargetModDirectory, "GRM - " + name);
 
-            await IoC.Get<IArma3WorldHistory>().RegisterWorld(
+            await IoC.Get<IArma3RecentHistory>().RegisterWorld(
                 wrpConfig.WorldName,
                 wrpConfig.PboPrefix,
                 ConfigFile.Description,
@@ -190,6 +198,15 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 ConfigFile.Revision++;
             }
             IsDirty = true;
+        }
+
+        public async Task OpenConfigFile()
+        {
+            var file = HistoryEntry?.ConfigFile;
+            if (!string.IsNullOrEmpty(file))
+            {
+                await EditorHelper.OpenWithEditor("Arma3MapConfigEditorProvider", file);
+            }
         }
     }
 }

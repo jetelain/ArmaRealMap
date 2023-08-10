@@ -103,7 +103,9 @@ namespace GameRealisticMap.Arma3.Assets
         public string BaseWorldName { get; set; } = "arm_world_centraleurope";
 
         public string BaseDependency { get; set; } = "arm_centraleurope";
-        
+
+        IReadOnlyCollection<ModDependencyDefinition> IArma3RegionAssets.Dependencies => Dependencies;
+
         public static JsonSerializerOptions CreateJsonSerializerOptions(IModelInfoLibrary library, bool allowUnresolvedModel = false)
         {
             return new JsonSerializerOptions()

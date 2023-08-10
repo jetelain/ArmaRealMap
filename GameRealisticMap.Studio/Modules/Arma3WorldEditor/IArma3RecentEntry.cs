@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor
 {
-    public interface IArma3WorldEntry
+    public interface IArma3RecentEntry
     {
         string? WorldName { get; }
 
@@ -13,5 +13,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor
         string? Description { get; }
 
         string? ModDirectory { get; }
+
+        string? ConfigFile { get; }
     }
 }

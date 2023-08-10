@@ -371,11 +371,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 task.AddSuccessAction(() => Arma3Helper.Launch(assets.Dependencies, a3config.TargetModDirectory, a3config.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
                 await Arma3LauncherHelper.CreateLauncherPresetAsync(assets.Dependencies, a3config.TargetModDirectory, "GRM - " + name);
 
-                await IoC.Get<IArma3WorldHistory>().RegisterWorld(
-                    a3config.WorldName,
-                    a3config.PboPrefix,
-                    freindlyName + ", GameRealisticMap",
-                    a3config.TargetModDirectory);
+                await AddToHistory(a3config, freindlyName);
             }
         }
 
@@ -395,11 +391,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             if (results != null)
             {
-                await IoC.Get<IArma3WorldHistory>().RegisterWorld(
-                    a3config.WorldName,
-                    a3config.PboPrefix,
-                    results.FreindlyName + ", GameRealisticMap",
-                    a3config.TargetModDirectory);
+                await AddToHistory(a3config, results.FreindlyName);
             }
         }
 
@@ -528,7 +520,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var generator = new Arma3TerrainBuilderGenerator(assets, _arma3DataModule.ProjectDrive);
 
-            await generator.GenerateTerrainBuilderFiles(task, a3config, target);
+            var freindlyName = await generator.GenerateTerrainBuilderFiles(task, a3config, target);
 
             task.AddSuccessAction(() => ShellHelper.OpenUri(Path.Combine(target, "README.txt")), GameRealisticMap.Studio.Labels.ViewImportInstructions);
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);
@@ -537,6 +529,21 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 Arma3ToolsHelper.EnsureProjectDrive();
                 ShellHelper.OpenUri(Path.Combine(Arma3ToolsHelper.GetArma3ToolsPath(), "TerrainBuilder\\TerrainBuilder.exe"));
             }, GameRealisticMap.Studio.Labels.LaunchTerrainBuilder);
+
+            if (!string.IsNullOrEmpty(freindlyName))
+            {
+                await AddToHistory(a3config, freindlyName);
+            }
+        }
+
+        private async Task AddToHistory(Arma3MapConfig a3config, string? freindlyName)
+        {
+            await IoC.Get<IArma3RecentHistory>().RegisterWorld(
+                a3config.WorldName,
+                a3config.PboPrefix,
+                freindlyName + ", GameRealisticMap",
+                a3config.TargetModDirectory,
+                IsNew ? null : FilePath);
         }
     }
 }

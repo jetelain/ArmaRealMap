@@ -23,10 +23,10 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
         private bool isArma3ToolsInstalled;
         private bool isArma3ToolsAccepted;
         private readonly IShell _shell;
-        private readonly IArma3WorldHistory _history;
+        private readonly IArma3RecentHistory _history;
 
         [ImportingConstructor]
-        public HomeViewModel(IShell shell, IArma3WorldHistory history)
+        public HomeViewModel(IShell shell, IArma3RecentHistory history)
         {
             _shell = shell;
             _history = history;
