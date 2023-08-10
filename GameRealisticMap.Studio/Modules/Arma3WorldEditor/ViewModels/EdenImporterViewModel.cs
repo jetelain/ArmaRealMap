@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Caliburn.Micro;
+using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit;
+using GameRealisticMap.Arma3.GameLauncher;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 using NLog;
 
@@ -25,6 +32,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public string ClipboardError { get; set; } = string.Empty;
 
         public string ClipboardWarning { get; set; } = string.Empty;
+        public string ClipboardMessage { get; set; } = string.Empty;
 
         public bool IsClipboardNotValid => !IsWorking && !string.IsNullOrEmpty(ClipboardError);
 
@@ -50,6 +58,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             ClipboardError = Labels.CompositionClipboardInvalid;
             ClipboardWarning = string.Empty;
+            ClipboardMessage = string.Empty;
 
             var value = Clipboard.GetText();
             if (!string.IsNullOrEmpty(value))
@@ -64,6 +73,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             NotifyOfPropertyChange(nameof(IsClipboardNotValid));
             NotifyOfPropertyChange(nameof(ClipboardError));
             NotifyOfPropertyChange(nameof(ClipboardWarning));
+            NotifyOfPropertyChange(nameof(ClipboardMessage));
 
             return Task.CompletedTask;
         }
@@ -88,6 +98,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     {
                         ClipboardWarning = string.Format("Exported data is for revision '{0}' but current revision is '{1}'", Batch.Revision, parent.ConfigFile?.Revision);
                     }
+                    ClipboardMessage = string.Format("{0} objects to add, {1} objects to remove", Batch.Add.Count, Batch.Remove.Count);
                 }
             }
             catch (Exception e)
@@ -102,6 +113,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             NotifyOfPropertyChange(nameof(IsClipboardNotValid));
             NotifyOfPropertyChange(nameof(ClipboardError));
             NotifyOfPropertyChange(nameof(ClipboardWarning));
+            NotifyOfPropertyChange(nameof(ClipboardMessage));
         }
 
         public Task ClipboardImport()
@@ -123,6 +135,36 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public void Report(double value)
         {
             WorkingPercent = value;
+        }
+
+        public Task LaunchArma3()
+        {
+            var installed = IoC.Get<IArma3ModsService>().GetModsList();
+            if (!IsInstalled(installed, "3016661145"))
+            {
+                ShellHelper.OpenUri("steam://url/CommunityFilePage/3016661145");
+                return Task.CompletedTask;
+            }
+            var dependencies = parent.Dependencies.ToList();
+            dependencies.Add(new ModDependencyDefinition("450814997")); // CBA3 (required by Export to GameRealisticMap)
+            dependencies.Add(new ModDependencyDefinition("3016661145")); // Export to GameRealisticMap
+            AddIfInstalled(installed, dependencies, "882231372");// Eden Extended Objects
+            AddIfInstalled(installed, dependencies, "1923321700");// O&T Expansion Eden
+            Arma3Helper.Launch(dependencies, parent.TargetModDirectory, Path.GetFileNameWithoutExtension(parent.FileName));
+            return Task.CompletedTask;
+        }
+
+        private static void AddIfInstalled(List<ModInfo> installed, List<ModDependencyDefinition> dependencies, string steamId)
+        {
+            if (IsInstalled(installed, steamId))
+            {
+                dependencies.Add(new ModDependencyDefinition(steamId));
+            }
+        }
+
+        private static bool IsInstalled(List<ModInfo> installed, string steamId)
+        {
+            return installed.Any(m => m.SteamId == steamId);
         }
     }
 }

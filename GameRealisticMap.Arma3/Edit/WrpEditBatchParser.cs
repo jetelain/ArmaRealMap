@@ -26,6 +26,10 @@ namespace GameRealisticMap.Arma3.Edit
 
         private static string NormalizeModelPath(string model)
         {
+            if (string.IsNullOrEmpty(model))
+            {
+                return model;
+            }
             var path = model.TrimStart('\\');
             if (!path.EndsWith(".p3d", StringComparison.OrdinalIgnoreCase))
             {
@@ -70,11 +74,17 @@ namespace GameRealisticMap.Arma3.Edit
                             }
                             break;
                         case ".class":
-                            models.Add((string)array[1], NormalizeModelPath((string)array[2]));
+                            var modelPath = NormalizeModelPath((string)array[2]);
+                            if (!string.IsNullOrEmpty(modelPath))
+                            {
+                                models.Add((string)array[1], NormalizeModelPath((string)array[2]));
+                            }
                             break;
                         case ".add":
-                            var modelAdd = models[(string)array[1]];
-                            exportData.Add.Add(new WrpAddObject(GetTransform(array, modelAdd), modelAdd));
+                            if (models.TryGetValue((string)array[1], out var modelAdd))
+                            {
+                                exportData.Add.Add(new WrpAddObject(GetTransform(array, modelAdd), modelAdd));
+                            }
                             break;
                     }
                 }

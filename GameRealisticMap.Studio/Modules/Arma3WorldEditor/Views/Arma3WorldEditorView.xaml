@@ -49,18 +49,22 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Margin="5"><Run Text="Terrain size"/></Label>
+                        <Label Grid.Row="0" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.MapSizeSquare}"/></Label>
                         <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Size}" VerticalAlignment="Center" />
 
                         <Label Grid.Row="1" Grid.Column="0" Margin="5"><Run Text="Land range"/></Label>
                         <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding World.LandRangeX}" VerticalAlignment="Center" />
 
                         <Label Grid.Row="2" Grid.Column="0" Margin="5"><Run Text="Pbo Prefix"/></Label>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding ConfigFile.PboPrefix}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center">
+                            <Hyperlink Command="{Binding OpenDirectoryCommand}">
+                                <TextBlock Text="{Binding HistoryEntry.PboPrefix}" />
+                            </Hyperlink>
+                        </TextBlock>
 
                         <Label Grid.Row="3" Grid.Column="0" Margin="5"><Run Text="Used Map Configuration"/></Label>
                         <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center">
-                            <Hyperlink NavigateUri="{Binding HistoryEntry.ConfigFile}" Command="{Binding OpenConfigFileCommand}"><TextBlock Text="{Binding HistoryEntry.ConfigFile}" /></Hyperlink>
+                            <Hyperlink Command="{Binding OpenConfigFileCommand}"><TextBlock Text="{Binding HistoryEntry.ConfigFile}" /></Hyperlink>
                         </TextBlock>
                     </Grid>
                 </StackPanel>

@@ -1,13 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using BIS.Core.Streams;
 using BIS.WRP;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
+using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit;
+using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
@@ -29,10 +36,20 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             this.windowManager = windowManager;
             this.history = history;
             OpenConfigFileCommand = new AsyncCommand(OpenConfigFile);
+            OpenDirectoryCommand = new RelayCommand(_ => OpenDirectory());
+        }
+
+        private void OpenDirectory()
+        {
+            var pboPrefix = ConfigFile?.PboPrefix;
+            if(!string.IsNullOrEmpty(pboPrefix))
+            {
+                ShellHelper.OpenUri(arma3Data.ProjectDrive.GetFullPath(pboPrefix));
+            }
         }
 
         public IAsyncCommand OpenConfigFileCommand { get; }
-
+        public RelayCommand OpenDirectoryCommand { get; }
         public bool IsLoading { get; set; }
 
         protected override async Task DoLoad(string filePath)
@@ -57,9 +74,45 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             TargetModDirectory = HistoryEntry?.ModDirectory ?? Arma3MapConfig.GetAutomaticTargetModDirectory(worldName);
 
+            Dependencies = await ReadDependencies(DependenciesFilePath(filePath));
+
             IsLoading = false;
             NotifyOfPropertyChange(nameof(IsLoading));
             NotifyOfPropertyChange(nameof(HistoryEntry));
+        }
+
+        private static string DependenciesFilePath(string filePath)
+        {
+            return Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, "grma3-dependencies.json");
+        }
+
+        private async Task<List<ModDependencyDefinition>> ReadDependencies(string dependenciesFile)
+        {
+            if (File.Exists(dependenciesFile))
+            {
+                try
+                {
+                    using var stream = File.OpenRead(dependenciesFile);
+                    return await JsonSerializer.DeserializeAsync<List<ModDependencyDefinition>>(stream) ?? new List<ModDependencyDefinition>();
+                }
+                catch { 
+                    // Ignore any error
+                }
+            }
+            return DetectDependencies();
+        }
+
+        private List<ModDependencyDefinition> DetectDependencies()
+        {
+            if (World != null)
+            {
+                var usedFiles = World.Objects.Select(o => o.Model).Where(m => !string.IsNullOrEmpty(m)).Distinct().ToList();
+
+                return IoC.Get<IArma3Dependencies>()
+                    .ComputeModDependencies(usedFiles)
+                    .ToList();
+            }
+            return new List<ModDependencyDefinition>();
         }
 
         public EditableWrp? World
@@ -112,12 +165,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public IGameFileSystem GameFileSystem => arma3Data.ProjectDrive;
 
+        public List<ModDependencyDefinition> Dependencies { get; set; } = new List<ModDependencyDefinition>();
+
         protected override Task DoNew()
         {
             throw new NotSupportedException("You cannot create an empty world file.");
         }
 
-        protected override Task DoSave(string filePath)
+        protected override async Task DoSave(string filePath)
         {
             if (World != null)
             {
@@ -126,8 +181,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 {
                     ConfigFile.SaveToFile();
                 }
+                if (Dependencies != null)
+                {
+                    using var stream = File.Create(DependenciesFilePath(filePath));
+                    await JsonSerializer.SerializeAsync(stream, Dependencies);
+                }
             }
-            return Task.CompletedTask;
         }
 
         public async Task GenerateMod()
@@ -169,7 +228,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             task.AddSuccessAction(() => ShellHelper.OpenUri(wrpConfig.TargetModDirectory), Labels.ViewInFileExplorer);
             //task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, name));
-            //task.AddSuccessAction(() => Arma3Helper.Launch(assets.Dependencies, a3config.TargetModDirectory, a3config.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
+            task.AddSuccessAction(() => Arma3Helper.Launch(Dependencies, wrpConfig.TargetModDirectory, wrpConfig.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
             //await Arma3LauncherHelper.CreateLauncherPresetAsync(assets.Dependencies, a3config.TargetModDirectory, "GRM - " + name);
 
             await IoC.Get<IArma3RecentHistory>().RegisterWorld(
@@ -197,6 +256,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 ConfigFile.Revision++;
             }
+            // TODO: Update dependencies !
             IsDirty = true;
         }
 
