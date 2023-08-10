@@ -98,7 +98,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     {
                         ClipboardWarning = string.Format("Exported data is for revision '{0}' but current revision is '{1}'", Batch.Revision, parent.ConfigFile?.Revision);
                     }
-                    ClipboardMessage = string.Format("{0} objects to add, {1} objects to remove", Batch.Add.Count, Batch.Remove.Count);
+                    ClipboardMessage = string.Format("{0} objects to add, {1} objects to remove, {2} elevation grid changes", 
+                        Batch.Add.Count,
+                        Batch.Remove.Count,
+                        Batch.Elevation.Count);
                 }
             }
             catch (Exception e)
@@ -148,8 +151,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             var dependencies = parent.Dependencies.ToList();
             dependencies.Add(new ModDependencyDefinition("450814997")); // CBA3 (required by Export to GameRealisticMap)
             dependencies.Add(new ModDependencyDefinition("3016661145")); // Export to GameRealisticMap
-            AddIfInstalled(installed, dependencies, "882231372");// Eden Extended Objects
-            AddIfInstalled(installed, dependencies, "1923321700");// O&T Expansion Eden
+            AddIfInstalled(installed, dependencies, "882231372"); // Eden Extended Objects
+            AddIfInstalled(installed, dependencies, "1923321700"); // O&T Expansion Eden
+            AddIfInstalled(installed, dependencies, "2822758266"); // Deformer
+            // AddIfInstalled(installed, dependencies, "1736812763"); // Arma 3 Non Editor Objects ???
+
             Arma3Helper.Launch(dependencies, parent.TargetModDirectory, Path.GetFileNameWithoutExtension(parent.FileName));
             return Task.CompletedTask;
         }

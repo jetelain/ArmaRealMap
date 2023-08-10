@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections;
+using System.Numerics;
 using BIS.Core.Serialization;
 using BIS.Core.Streams;
 using BIS.P3D;
@@ -86,11 +87,30 @@ namespace GameRealisticMap.Arma3.Edit
                                 exportData.Add.Add(new WrpAddObject(GetTransform(array, modelAdd), modelAdd));
                             }
                             break;
+
+                        case ".dhmap": 
+                            exportData.ElevationAdjustObjects = true;
+                            ElevationData(exportData, array);
+                            break;
+
+                        case ".hmap":
+                            exportData.ElevationAdjustObjects = false;
+                            ElevationData(exportData, array);
+                            break;
+
                     }
                 }
                 report.ReportOneDone();
             }
             return exportData;
+        }
+
+        private static void ElevationData(WrpEditBatch exportData, object[] array)
+        {
+            exportData.Elevation.AddRange(
+                (array[1] as IEnumerable)?
+                .OfType<object[]>()?
+                .Select(entry => new WrpSetElevationGrid(Convert.ToInt32(entry[0]), Convert.ToInt32(entry[1]), Convert.ToSingle(entry[2]))) ?? Enumerable.Empty<WrpSetElevationGrid>());
         }
 
         private Matrix4x4 GetTransform(object[] array, string model)

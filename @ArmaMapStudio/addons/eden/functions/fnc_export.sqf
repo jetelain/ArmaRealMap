@@ -82,6 +82,18 @@ _data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgWorld
 	
 } foreach _objects;
 
+// Deformer related data
+if ( !isNil "GF_gridMap") then {
+	_data pushBack [".dhmap", GF_gridMap apply { [_x#0, _x#1, _y#0] }];
+};
+
+if ( !isNil "GF_deformObjects") then { // Not sure about this
+	private _center = [worldSize/2,worldSize/2];
+	{
+		_data pushBack [".hide", (getModelInfo _x) select 1, getPosWorld _x, [_x] call FUNC(getPosWrp), vectorUp _x, vectorDir _x, surfaceNormal (getPosASL _x), getObjectScale _x, getObjectID _x];
+	} foreach (GF_deformObjects apply { _center nearestObject _x });
+};
+
 endloadingscreen;
 INFO_1("%1 items", count _data);
 

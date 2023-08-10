@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using BIS.Core.Streams;
 using BIS.WRP;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 
@@ -38,6 +39,41 @@ namespace GameRealisticMap.Arma3.Edit
 
         public void Process(EditableWrp world, WrpEditBatch batch)
         {
+            if (batch.Elevation.Count > 0)
+            {
+                var delta = new ElevationGrid(world.TerrainRangeX, world.CellSize * world.LandRangeX / world.TerrainRangeX);
+                using (var report = _progressSystem.CreateStep("Elevation", batch.Elevation.Count))
+                {
+                    foreach (var entry in batch.Elevation)
+                    {
+                        var index = entry.X + (entry.Y * world.TerrainRangeX);
+                        delta[entry.X, entry.Y] = entry.Elevation - world.Elevation[index];
+                        world.Elevation[index] = entry.Elevation;
+                        report.ReportOneDone();
+                    }
+                }
+                if (batch.ElevationAdjustObjects)
+                {
+                    using (var report = _progressSystem.CreateStep("Adjust", world.Objects.Count))
+                    {
+                        foreach (var obj in world.Objects)
+                        {
+                            if (!string.IsNullOrEmpty(obj.Model))
+                            {
+                                var ychange = delta.ElevationAt(new TerrainPoint(obj.Transform.Matrix.M41, obj.Transform.Matrix.M43));
+                                if (MathF.Abs(ychange) > 0.0001f)
+                                {
+                                    var matrix = obj.Transform.Matrix;
+                                    matrix.M43 += ychange;
+                                    obj.Transform.Matrix = matrix;
+                                }
+                                report.ReportOneDone();
+                            }
+                        }
+                    }
+                }
+            }
+            
             var objects = FilterObjects(world, batch.Remove, world.CellSize * world.LandRangeX);
 
             using (var report = _progressSystem.CreateStep("Objects", 1))
