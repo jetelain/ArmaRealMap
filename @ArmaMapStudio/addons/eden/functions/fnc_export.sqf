@@ -57,7 +57,7 @@ _data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgWorld
 					private _canexport = getnumber (_classConfig >> "grma3_canexport");
 					private _model = gettext (_classConfig >> "model");
 					private _realModel = (getModelInfo _x) select 1;
-					if ( ((_class regexMatch "Land_(.*)/i") || count _textures == 0 || _simpleEden == 1 || _canexport == 1) && (_model != "\A3\Weapons_f\dummyweapon.p3d") && (_canexport != -1)) then {
+					if ( ((_class regexMatch "Land_(.*)/i") || count _textures == 0 || _simpleEden == 1 || _canexport == 1) && (_model != "\A3\Weapons_f\dummyweapon.p3d") && (_model != "") && (_canexport != -1)) then {
 						_classData = [true, 1];
 						_data pushBack [".class", _class, _model, boundingBoxReal _x, boundingCenter _x, _realModel, 1];
 					} else {
