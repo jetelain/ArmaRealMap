@@ -64,7 +64,7 @@ namespace GameRealisticMap.Arma3.Edit
                                 if (MathF.Abs(ychange) > 0.0001f)
                                 {
                                     var matrix = obj.Transform.Matrix;
-                                    matrix.M43 += ychange;
+                                    matrix.M42 += ychange;
                                     obj.Transform.Matrix = matrix;
                                 }
                                 report.ReportOneDone();
