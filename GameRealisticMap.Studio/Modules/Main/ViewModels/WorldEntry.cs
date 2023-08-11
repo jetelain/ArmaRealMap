@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -54,7 +55,7 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
             await EditorHelper.OpenWithEditor("Arma3WorldEditorProvider", FilePath);
         }
 
-        public string Tooltip => string.Format("WorldName: {0}\r\nLast generated on {1}", WorldName, TimeStamp.ToLocalTime());
+        public string Tooltip => string.Format(CultureInfo.InstalledUICulture, "WorldName: {0}\r\nLast generated on {1}", WorldName, TimeStamp.ToLocalTime());
 
         public ImageSource ImageSource
         {

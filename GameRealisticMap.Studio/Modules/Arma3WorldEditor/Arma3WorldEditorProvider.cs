@@ -17,14 +17,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor
     {
         private readonly IArma3DataModule arma3Data;
         private readonly IWindowManager windowManager;
-        private readonly IArma3RecentHistory history;
 
         [ImportingConstructor]
-        public Arma3WorldEditorProvider(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history)
+        public Arma3WorldEditorProvider(IArma3DataModule arma3Data, IWindowManager windowManager)
         {
             this.arma3Data = arma3Data;
             this.windowManager = windowManager;
-            this.history = history;
         }
 
         public IEnumerable<EditorFileType> FileTypes
@@ -42,7 +40,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor
             return string.Equals(Path.GetExtension(path), ".wrp", StringComparison.OrdinalIgnoreCase);
         }
 
-        public IDocument Create() => new Arma3WorldEditorViewModel(arma3Data, windowManager, history);
+        public IDocument Create() => new Arma3WorldEditorViewModel(arma3Data, windowManager, IoC.Get<IArma3RecentHistory>(), IoC.Get<IArma3BackupService>());
 
         public Task New(IDocument document, string name) => throw new NotSupportedException("You cannot create an empty world file.");
 

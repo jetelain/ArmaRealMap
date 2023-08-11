@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using BIS.Core.Streams;
 using BIS.WRP;
 using Caliburn.Micro;
@@ -26,15 +25,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private EditableWrp? _world;
         private ConfigFileData? _configFile;
         private string _targetModDirectory = string.Empty;
+        private int savedRevision;
+        private List<RevisionHistoryEntry> _backups = new List<RevisionHistoryEntry>();
         private readonly IArma3DataModule arma3Data;
         private readonly IWindowManager windowManager;
         private readonly IArma3RecentHistory history;
+        private readonly IArma3BackupService worldBackup;
 
-        public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history) 
+        public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history, IArma3BackupService worldBackup) 
         {
             this.arma3Data = arma3Data;
             this.windowManager = windowManager;
             this.history = history;
+            this.worldBackup = worldBackup;
             OpenConfigFileCommand = new AsyncCommand(OpenConfigFile);
             OpenDirectoryCommand = new RelayCommand(_ => OpenDirectory());
         }
@@ -49,18 +52,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         }
 
         public IAsyncCommand OpenConfigFileCommand { get; }
+
         public RelayCommand OpenDirectoryCommand { get; }
-        public bool IsLoading { get; set; }
 
         protected override async Task DoLoad(string filePath)
         {
-            IsLoading = true;
-            NotifyOfPropertyChange(nameof(IsLoading));
+            var worldName = Path.GetFileNameWithoutExtension(filePath);
 
             World = StreamHelper.Read<AnyWrp>(filePath).GetEditableWrp();
 
-            var worldName = Path.GetFileNameWithoutExtension(filePath);
-            var configFile = Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, "config.cpp");
+            var configFile = ConfigFilePath(filePath);
             if (File.Exists(configFile))
             {
                 ConfigFile = ConfigFileData.ReadFromFile(configFile, worldName);
@@ -69,6 +70,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 ConfigFile = null;
             }
+            savedRevision = ConfigFile?.Revision ?? 0;
 
             HistoryEntry = await history.GetEntryOrDefault(worldName);
 
@@ -76,14 +78,24 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             Dependencies = await ReadDependencies(DependenciesFilePath(filePath));
 
-            IsLoading = false;
-            NotifyOfPropertyChange(nameof(IsLoading));
+            UpdateBackupsList(filePath);
+
             NotifyOfPropertyChange(nameof(HistoryEntry));
+        }
+
+        private void UpdateBackupsList(string filePath)
+        {
+            Backups = new[] { new RevisionHistoryEntry(this) }.Concat(worldBackup.GetBackups(filePath).Select(b => new RevisionHistoryEntry(this, b))).ToList();
         }
 
         private static string DependenciesFilePath(string filePath)
         {
             return Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, "grma3-dependencies.json");
+        }
+
+        private static string ConfigFilePath(string filePath)
+        {
+            return Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, "config.cpp");
         }
 
         private async Task<List<ModDependencyDefinition>> ReadDependencies(string dependenciesFile)
@@ -167,6 +179,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public List<ModDependencyDefinition> Dependencies { get; set; } = new List<ModDependencyDefinition>();
 
+        public List<RevisionHistoryEntry> Backups
+        {
+            get { return _backups; }
+            set { _backups = value; NotifyOfPropertyChange(); }
+        }
+
         protected override Task DoNew()
         {
             throw new NotSupportedException("You cannot create an empty world file.");
@@ -176,10 +194,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (World != null)
             {
-                StreamHelper.Write(World, filePath);
+                if (IsDirty)
+                {
+                    worldBackup.CreateBackup(filePath, savedRevision, ConfigFilePath(filePath), DependenciesFilePath(filePath));
+                    StreamHelper.Write(World, filePath);
+                    UpdateBackupsList(filePath);
+                }
                 if (ConfigFile != null)
                 {
-                    ConfigFile.SaveToFile();
+                    ConfigFile.SaveToFile(ConfigFilePath(filePath));
+                    savedRevision = ConfigFile.Revision;
                 }
                 if (Dependencies != null)
                 {
@@ -258,6 +282,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
             // TODO: Update dependencies !
             IsDirty = true;
+            ClearActive();
         }
 
         public async Task OpenConfigFile()
@@ -266,6 +291,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             if (!string.IsNullOrEmpty(file))
             {
                 await EditorHelper.OpenWithEditor("Arma3MapConfigEditorProvider", file);
+            }
+        }
+
+        public void ClearActive()
+        {
+            foreach(var entry in Backups)
+            {
+                entry.IsActive = false;
             }
         }
     }

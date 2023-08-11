@@ -89,7 +89,36 @@
                 </StackPanel>
             </Expander>
 
+
+            <Expander IsExpanded="True" Margin="10">
+                <Expander.Header>
+                    <TextBlock FontSize="20"><Run Text="Revision history"/></TextBlock>
+                </Expander.Header>
+                <DataGrid ItemsSource="{Binding Backups}" AutoGenerateColumns="false" Margin="12">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Revision" Binding="{Binding Revision}" IsReadOnly="True" Width="100" />
+                        <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True" Width="200" />
+                        <DataGridTemplateColumn Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Button Padding="2" cal:Message.Attach="Load" Visibility="{Binding IsNotActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Run Text="Restore"/>
+                                        </Button>
+                                        <TextBlock Padding="3" TextAlignment="Center" Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Run Foreground="Green">✔</Run>
+                                            <Run Text="Current"/>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Expander>
             
+            
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>

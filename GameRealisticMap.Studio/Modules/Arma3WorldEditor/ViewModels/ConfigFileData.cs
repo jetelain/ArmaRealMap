@@ -11,16 +11,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private static readonly Regex DescriptionRegex = new Regex(@"description\s*=\s*""([^""]+)""", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
         private static readonly Regex RevisionRegex = new Regex(@"grma3_revision\s*=\s*([0-9]+)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
-        public ConfigFileData(string configFile, string pboPrefix, string worldName, string description, int revision)
+        public ConfigFileData(string config, string pboPrefix, string worldName, string description, int revision)
         {
-            Path = configFile; 
+            Content = config; 
             PboPrefix = pboPrefix;
             WorldName = worldName;
             Description = description;
             Revision = revision;
         }
 
-        public string Path { get; }
+        public string Content { get; }
 
         public string PboPrefix { get; }
 
@@ -32,8 +32,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public static ConfigFileData ReadFromFile(string configFile, string worldName)
         {
-            var config = File.ReadAllText(configFile);
+            return ReadFromContent(worldName, File.ReadAllText(configFile));
+        }
 
+        public static ConfigFileData ReadFromContent(string worldName, string config)
+        {
             var pboPrefix = string.Empty;
             var description = string.Empty;
             var revision = 0;
@@ -60,12 +63,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 revision = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
             }
 
-            return new ConfigFileData(configFile, pboPrefix, worldName, description, revision);
+            return new ConfigFileData(config, pboPrefix, worldName, description, revision);
         }
 
-        public void SaveToFile()
+        public void SaveToFile(string filePath)
         {
-            var config = File.ReadAllText(Path);
+            var config = Content;
+            if (File.Exists(filePath))
+            {
+                config = File.ReadAllText(filePath);
+            }
 
             var match = RevisionRegex.Match(config);
             if (match.Success)
@@ -93,7 +100,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     + Description.Replace('"', ' ')
                     + config.Substring(match.Groups[1].Index + match.Groups[1].Length);
             }
-            File.WriteAllText(Path, config);
+            File.WriteAllText(filePath, config);
         }
     }
 }
