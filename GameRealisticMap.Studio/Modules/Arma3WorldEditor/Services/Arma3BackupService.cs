@@ -56,14 +56,17 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
         {
             var backupDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameRealisticMap", "Arma3", "Backups", Path.GetFileNameWithoutExtension(wrpFilePath));
             var result = new List<IArma3Backup>();
-            foreach(var backupZipFile in Directory.GetFiles(backupDir, "*.zip").OrderByDescending(f => File.GetLastWriteTimeUtc(f)).ToList())
+            if (Directory.Exists(backupDir))
             {
-                var match = FileNameRegex.Match(Path.GetFileName(backupZipFile));
-                if ( match.Success 
-                    && DateTime.TryParseExact(match.Groups[1].Value, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var timestamp) 
-                    && int.TryParse(match.Groups[3].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var revision))
+                foreach (var backupZipFile in Directory.GetFiles(backupDir, "*.zip").OrderByDescending(f => File.GetLastWriteTimeUtc(f)).ToList())
                 {
-                    result.Add(new Arma3Backup(backupZipFile, timestamp, File.GetLastWriteTimeUtc(backupZipFile), revision));
+                    var match = FileNameRegex.Match(Path.GetFileName(backupZipFile));
+                    if (match.Success
+                        && DateTime.TryParseExact(match.Groups[1].Value, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var timestamp)
+                        && int.TryParse(match.Groups[3].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var revision))
+                    {
+                        result.Add(new Arma3Backup(backupZipFile, timestamp, File.GetLastWriteTimeUtc(backupZipFile), revision));
+                    }
                 }
             }
             return result;

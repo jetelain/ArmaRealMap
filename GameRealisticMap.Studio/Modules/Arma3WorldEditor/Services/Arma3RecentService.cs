@@ -20,6 +20,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
 
         public event EventHandler<EventArgs>? Changed;
 
+        private List<Arma3RecentEntry>? cachedList;
+
         public string FilePath { get; } = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "GameRealisticMap", "Arma3", "recent.json");
@@ -99,14 +101,23 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
             }
         }
 
+        private async Task<List<Arma3RecentEntry>> GetEntriesImpl()
+        {
+            if (cachedList != null)
+            {
+                return cachedList;
+            }
+            return cachedList = await ReadEntries();
+        }
+
         public async Task<IReadOnlyCollection<IArma3RecentEntry>> GetEntries()
         {
-            return await ReadEntries();
+            return await GetEntriesImpl();
         }
 
         public async Task RegisterWorld(string worldName, string pboPrefix, string description, string? modDirectory, string? configFile)
         {
-            var entries = await ReadEntries();
+            var entries = await GetEntriesImpl();
 
             CreateEntry(entries, worldName, pboPrefix, description, modDirectory, configFile);
 
@@ -143,7 +154,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
 
         public async Task<IArma3RecentEntry?> GetEntryOrDefault(string worldName)
         {
-            var entries = await ReadEntries();
+            var entries = await GetEntriesImpl();
 
             return entries.FirstOrDefault(e => string.Equals(worldName, e.WorldName, StringComparison.OrdinalIgnoreCase));
         }

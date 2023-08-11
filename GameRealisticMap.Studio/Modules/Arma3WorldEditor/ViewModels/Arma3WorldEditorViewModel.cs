@@ -255,7 +255,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             task.AddSuccessAction(() => Arma3Helper.Launch(Dependencies, wrpConfig.TargetModDirectory, wrpConfig.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
             //await Arma3LauncherHelper.CreateLauncherPresetAsync(assets.Dependencies, a3config.TargetModDirectory, "GRM - " + name);
 
-            await IoC.Get<IArma3RecentHistory>().RegisterWorld(
+            await history.RegisterWorld(
                 wrpConfig.WorldName,
                 wrpConfig.PboPrefix,
                 ConfigFile.Description,
