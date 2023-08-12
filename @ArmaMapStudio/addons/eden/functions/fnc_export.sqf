@@ -7,7 +7,10 @@ private _objects = _all select 0;
 private _systems = _all select 3;
 private _cfgVehicles = configfile >> "cfgvehicles";
 private _classes = createHashMap;
-private _toRemoveLayer = -1 add3DENLayer "Map integrable (to remove)";
+
+private _layerName = LLSTRING(ExportLayer);
+private _existingLayers = (_all #6) select { ((_x get3DENAttribute "name")#0) == _layerName };
+private _toRemoveLayer =  if ( count _existingLayers > 0 ) then { _existingLayers # 0 } else { -1 add3DENLayer LLSTRING(ExportLayer) };
 
 private _progress = 0;
 private _progressTotal = count _objects + count _systems;
@@ -98,4 +101,4 @@ toFixed -1;
 
 copyToClipboard _result;
 
-systemChat "Done. Copied to clipboard";
+[LLSTRING(ExportDone), 0, 5] call BIS_fnc_3DENNotification;

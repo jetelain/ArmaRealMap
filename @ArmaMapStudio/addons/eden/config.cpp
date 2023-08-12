@@ -28,7 +28,7 @@ class display3DEN
 				};
 				class GRMA3_Export
 				{
-					text = "Export to GameRealisticMap Studio";
+					text = CSTRING(ExportToGrmStudio);
 					action = QUOTE([] spawn FUNC(export););
 				};
 			};
@@ -43,7 +43,7 @@ class display3DEN
             class GRMA3_Transform
             {
                 action=QUOTE([] spawn FUNC(transform););
-                text="Re-create hidden objects";
+                text=CSTRING(CreateHiddenObjects);
                 conditionShow="selectedLogic";
                 value=0;
                 opensNewWindow=0;
@@ -65,7 +65,7 @@ class Cfg3DEN
 				{
 					class GRMA3_Exclude
 					{
-						displayName="Exclude from GameRealisticMap Studio Export";
+						displayName=CSTRING(ExcludeFromExport);
 						property="GRMA3_Exclude";
 						control="Checkbox";
 						expression="";
