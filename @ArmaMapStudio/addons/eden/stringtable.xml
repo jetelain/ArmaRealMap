@@ -21,6 +21,9 @@
             <English>Integrable to map (to remove)</English>
             <French>Intégrable à la carte (à supprimer)</French>
         </Key>
-
+        <Key ID="STR_grma3_eden_EditObject">
+            <English>Edit object</English>
+            <French>Modifier l'objet</French>
+        </Key>
     </Package>
 </Project>

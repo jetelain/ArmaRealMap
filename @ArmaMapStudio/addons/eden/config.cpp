@@ -30,6 +30,7 @@ class display3DEN
 				{
 					text = CSTRING(ExportToGrmStudio);
 					action = QUOTE([] spawn FUNC(export););
+					picture=QPATHTOF(data\icon.paa);
 				};
 			};
 		};
@@ -39,15 +40,26 @@ class display3DEN
     {
         class Items
         {
-            items[]+={"GRMA3_Transform"};
-            class GRMA3_Transform
+            items[]+={"GRMA3_CreateHiddenObjects", "GRMA3_EditObject"};
+            class GRMA3_CreateHiddenObjects
             {
-                action=QUOTE([] spawn FUNC(transform););
+                action=QUOTE([] spawn FUNC(recreateHidden););
                 text=CSTRING(CreateHiddenObjects);
+				picture=QPATHTOF(data\icon.paa);
                 conditionShow="selectedLogic";
                 value=0;
                 opensNewWindow=0;
             };
+			class GRMA3_EditObject
+			{
+                action=QUOTE([] spawn FUNC(editObject););
+                text=CSTRING(EditObject);
+				picture=QPATHTOF(data\icon.paa);
+				conditionShow="1";
+				value=0;
+                opensNewWindow=0;
+			};
+
         };
     };
 };
