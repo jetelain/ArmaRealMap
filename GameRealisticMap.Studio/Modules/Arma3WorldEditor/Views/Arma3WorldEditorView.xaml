@@ -18,7 +18,7 @@
             <StackPanel Margin="0 5" Orientation="Horizontal">
                 <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
                 <TextBlock VerticalAlignment="Center" Margin="10 0" Grid.Column="1">
-                    <Hyperlink NavigateUri="https://github.com/jetelain/ArmaRealMap/wiki/Edit-With-Eden-Editor" b:HyperLinkBehaviors.ShellExecute="True">
+                    <Hyperlink NavigateUri="{x:Static r:Links.EditWithEdenEditorHelpLink}" b:HyperLinkBehaviors.ShellExecute="True">
                         <Run Text="{x:Static r:Labels.Help}" />
                     </Hyperlink>
                 </TextBlock>
@@ -26,7 +26,7 @@
             
             <StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
                 <Button Margin="5" Padding="10" cal:Message.Attach="ImportEden">
-                    <Run Text="Import changes from 3DEN Editor"/>
+                    <Run Text="{x:Static r:Labels.ImportChangesFromEdenEditor}" />
                 </Button>
                 <Button Margin="5" Padding="10" cal:Message.Attach="GenerateMod" IsEnabled="{Binding CanGenerateMod}">
                     <Run Text="{x:Static r:Labels.GenerateModForArma3}"/>
@@ -35,7 +35,7 @@
             
             <Expander IsExpanded="True" Margin="10">
                 <Expander.Header>
-                    <TextBlock FontSize="20"><Run Text="Map informations"/></TextBlock>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.MapInformations}"/></TextBlock>
                 </Expander.Header>
                 <StackPanel Margin="0 5">
                     <Grid>
@@ -52,17 +52,17 @@
                         <Label Grid.Row="0" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.MapSizeSquare}"/></Label>
                         <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Size}" VerticalAlignment="Center" />
 
-                        <Label Grid.Row="1" Grid.Column="0" Margin="5"><Run Text="Land range"/></Label>
+                        <Label Grid.Row="1" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.WrpLandRange}"/></Label>
                         <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding World.LandRangeX}" VerticalAlignment="Center" />
 
-                        <Label Grid.Row="2" Grid.Column="0" Margin="5"><Run Text="Pbo Prefix"/></Label>
+                        <Label Grid.Row="2" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.PboPrefix}"/></Label>
                         <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center">
                             <Hyperlink Command="{Binding OpenDirectoryCommand}">
                                 <TextBlock Text="{Binding HistoryEntry.PboPrefix}" />
                             </Hyperlink>
                         </TextBlock>
 
-                        <Label Grid.Row="3" Grid.Column="0" Margin="5"><Run Text="Used Map Configuration"/></Label>
+                        <Label Grid.Row="3" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.UsedMapConfiguration}"/></Label>
                         <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center">
                             <Hyperlink Command="{Binding OpenConfigFileCommand}"><TextBlock Text="{Binding HistoryEntry.ConfigFile}" /></Hyperlink>
                         </TextBlock>
@@ -73,15 +73,15 @@
             
             <Expander IsExpanded="True" Margin="10">
                 <Expander.Header>
-                    <TextBlock FontSize="20"><Run Text="Configuration"/></TextBlock>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.Configuration}"/></TextBlock>
                 </Expander.Header>
                 <StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
-                        <Label Width="200"><Run Text="Description" /></Label>
+                        <Label Width="200"><Run Text="{x:Static r:Labels.MapDescription}" /></Label>
                         <TextBox Width="250" Text="{Binding ConfigFile.Description, Mode=TwoWay}" />
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
-                        <Label Width="200"><Run Text="Mod directory" /></Label>
+                        <Label Width="200"><Run Text="{x:Static r:Labels.ModDirectory}" /></Label>
                         <TextBox Width="500" Text="{Binding TargetModDirectory, Mode=TwoWay}" />
                     </StackPanel>
 
@@ -92,7 +92,7 @@
 
             <Expander IsExpanded="True" Margin="10">
                 <Expander.Header>
-                    <TextBlock FontSize="20"><Run Text="Revision history"/></TextBlock>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.MapRevisionHistory}"/></TextBlock>
                 </Expander.Header>
                 <DataGrid ItemsSource="{Binding Backups}" AutoGenerateColumns="false" Margin="12">
                     <DataGrid.Columns>
@@ -103,11 +103,11 @@
                                 <DataTemplate>
                                     <Grid>
                                         <Button Padding="2" cal:Message.Attach="Load" Visibility="{Binding IsNotActive, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                            <Run Text="Restore"/>
+                                            <Run Text="{x:Static r:Labels.Restore}"/>
                                         </Button>
                                         <TextBlock Padding="3" TextAlignment="Center" Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}">
                                             <Run Foreground="Green">✔</Run>
-                                            <Run Text="Current"/>
+                                            <Run Text="{x:Static r:Labels.CurrentVersion}"/>
                                         </TextBlock>
                                     </Grid>
                                 </DataTemplate>

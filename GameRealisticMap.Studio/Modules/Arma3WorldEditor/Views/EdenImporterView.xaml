@@ -12,7 +12,7 @@
     Width="840" Height="500" MinWidth="512" MinHeight="300" 
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="False"
-    Title="Import changes from 3DEN Editor">
+    Title="{x:Static r:Labels.ImportChangesFromEdenEditor}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -41,26 +41,26 @@
 
 
                 <StackPanel>
-                    <TextBlock FontSize="20"><Run Text="Edit with Eden Editor"/></TextBlock>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.EditWithEdenEditor}"/></TextBlock>
                     <TextBlock Margin="10">
-                        <Run Text="This feature requires an additional mod from Steam Workshop:" /> <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/3016661145">Export to GameRealisticMap</Hyperlink>
+                        <Run Text="{x:Static r:Labels.FeatureRequiresAdditionalMod}" /> <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/3016661145">Export to GameRealisticMap</Hyperlink>
                     </TextBlock>
                     <TextBlock Margin="10 5 10 10">
-                        <Run Text="Open your map with Eden Editor, add objects, hide objects, and then use the Export to GameRealisticMap from Tool menu."/><LineBreak />
-                        <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="https://github.com/jetelain/ArmaRealMap/wiki/Edit-With-Eden-Editor">
-                            <Run Text="See help for detailed instructions"/>
+                        <Run Text="{x:Static r:Labels.EditWithEdenEditorHint}"/><LineBreak />
+                        <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="{x:Static r:Links.EditWithEdenEditorHelpLink}">
+                            <Run Text="{x:Static r:Labels.SeeHelpForDetailedInstructions}"/>
                         </Hyperlink>
                     </TextBlock>
                     <StackPanel Orientation="Horizontal" Margin="10 5 10 10">
                         <Button Padding="10 5"  Margin="0 0 5 0" cal:Message.Attach="LaunchArma3">
                             <Run Text="{x:Static r:Labels.LaunchArma3}" />
                         </Button>
-                        <TextBlock VerticalAlignment="Center"><Run Text="Launch Arma 3 with default profile and recommanded mods (if installed)"/></TextBlock>
+                        <TextBlock VerticalAlignment="Center"><Run Text="{x:Static r:Labels.LaunchArma3EditHint}"/></TextBlock>
                     </StackPanel>
                     
                     <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.ImportFromClipboad}"/></TextBlock>
                     <TextBlock Margin="10">
-                        <Run Text="Once you have exported data, click on Refresh button, and then validate import."/><LineBreak />
+                        <Run Text="{x:Static r:Labels.ImportFromClipboardEdenHint}"/><LineBreak />
                     </TextBlock>
 
                     <ProgressBar Maximum="100" Minimum="0" Value="{Binding WorkingPercent}" Height="15" Margin="15 0"  Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />

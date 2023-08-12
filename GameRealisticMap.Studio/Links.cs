@@ -11,6 +11,7 @@ namespace GameRealisticMap.Studio
         public static Uri Arma3SetupHelp => new Uri(Labels.Arma3SetupHelpLink);
         public static Uri Arma3AssetConfigHelp => new Uri(Labels.Arma3AssetConfigHelpLink);
         public static Uri Arma3MapConfigHelp => new Uri(Labels.Arma3MapConfigHelpLink);
+        public static Uri EditWithEdenEditorHelpLink => new Uri(Labels.EditWithEdenEditorHelpLink);
 
     }
 }

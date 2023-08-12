@@ -32,6 +32,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public string ClipboardError { get; set; } = string.Empty;
 
         public string ClipboardWarning { get; set; } = string.Empty;
+
         public string ClipboardMessage { get; set; } = string.Empty;
 
         public bool IsClipboardNotValid => !IsWorking && !string.IsNullOrEmpty(ClipboardError);
@@ -92,13 +93,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     var worldName = Path.GetFileNameWithoutExtension(parent.FilePath);
                     if (!string.Equals(Batch.WorldName, worldName, StringComparison.OrdinalIgnoreCase))
                     {
-                        ClipboardWarning = string.Format("Exported data is for map '{0}' but current map is '{1}'", Batch.WorldName, worldName);
+                        ClipboardWarning = string.Format(Labels.ExportedDataMapMismatch, Batch.WorldName, worldName);
                     }
                     else if (Batch.Revision != (parent.ConfigFile?.Revision ?? 0))
                     {
-                        ClipboardWarning = string.Format("Exported data is for revision '{0}' but current revision is '{1}'", Batch.Revision, parent.ConfigFile?.Revision);
+                        ClipboardWarning = string.Format(Labels.ExportedDataRevisionMismatch, Batch.Revision, parent.ConfigFile?.Revision);
                     }
-                    ClipboardMessage = string.Format("{0} objects to add, {1} objects to remove, {2} elevation grid changes", 
+                    ClipboardMessage = string.Format(Labels.ExportedDataStats, 
                         Batch.Add.Count,
                         Batch.Remove.Count,
                         Batch.Elevation.Count);
@@ -154,7 +155,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             AddIfInstalled(installed, dependencies, "882231372"); // Eden Extended Objects
             AddIfInstalled(installed, dependencies, "1923321700"); // O&T Expansion Eden
             AddIfInstalled(installed, dependencies, "2822758266"); // Deformer
-            // AddIfInstalled(installed, dependencies, "1736812763"); // Arma 3 Non Editor Objects ???
+            // XXX: Add a settings page for that
 
             Arma3Helper.Launch(dependencies, parent.TargetModDirectory, Path.GetFileNameWithoutExtension(parent.FileName));
             return Task.CompletedTask;

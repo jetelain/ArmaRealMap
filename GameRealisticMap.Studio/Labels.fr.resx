@@ -963,4 +963,80 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="AssetCoastline" xml:space="preserve">
     <value>Par défaut - Littoral</value>
   </data>
+  <data name="CurrentVersion" xml:space="preserve">
+    <value>Actuel</value>
+  </data>
+  <data name="EditWithEdenEditor" xml:space="preserve">
+    <value>Modifier avec Eden Editor</value>
+  </data>
+  <data name="EditWithEdenEditorHelpLink" xml:space="preserve">
+    <value>https://github.com/jetelain/ArmaRealMap/wiki/Edit-With-Eden-Editor-FR</value>
+  </data>
+  <data name="EditWithEdenEditorHint" xml:space="preserve">
+    <value>Ouvrir la carte avec Eden Editor, ajouter des objets, cacher des objets, and utiliser l'export GameRealisticMap depuis le menu outils.</value>
+  </data>
+  <data name="ExportedDataMapMismatch" xml:space="preserve">
+    <value>Les données exportées sont pour la carte '{0}' mais la carte actuelle est '{1}'</value>
+  </data>
+  <data name="ExportedDataRevisionMismatch" xml:space="preserve">
+    <value>Les données exportées sont pour la révision '{0}' mais la révision actuelle est '{1}'</value>
+  </data>
+  <data name="ExportedDataStats" xml:space="preserve">
+    <value>{0} objets à ajouter, {1} objets à supprimer, {2} changements de la grille de dénivelé</value>
+  </data>
+  <data name="FeatureRequiresAdditionalMod" xml:space="preserve">
+    <value>Cette fonctionnalité nécessite un mod additionnel depuis le Workshop Steam :</value>
+  </data>
+  <data name="ImportChangesFromEdenEditor" xml:space="preserve">
+    <value>Importer des changements depuis 3DEN Editor</value>
+  </data>
+  <data name="ImportFromClipboardEdenHint" xml:space="preserve">
+    <value>Une fois que vous avez exporté les données, cliquer sur le bouton Actualiser, puis valider l'import.</value>
+  </data>
+  <data name="LaunchArma3EditHint" xml:space="preserve">
+    <value>Lance Arma 3 avec le profil par défaut et les mods recommandé (si installés)</value>
+  </data>
+  <data name="MapDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="MapInformations" xml:space="preserve">
+    <value>Informations de la carte</value>
+  </data>
+  <data name="MapRevisionHistory" xml:space="preserve">
+    <value>Historique de révision</value>
+  </data>
+  <data name="ModDirectory" xml:space="preserve">
+    <value>Répertoire du mod</value>
+  </data>
+  <data name="PboPrefix" xml:space="preserve">
+    <value>Préfixe PBO</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Restaurer</value>
+  </data>
+  <data name="RestoreTitle" xml:space="preserve">
+    <value>Restaurer {0}</value>
+  </data>
+  <data name="RestoreDataLossMessage" xml:space="preserve">
+    <value>Restaurer une précédente version engendre la perte des modifications actuelles, voulez vous continuer ?</value>
+  </data>
+  <data name="SeeHelpForDetailedInstructions" xml:space="preserve">
+    <value>Voir l'aide pour des instructions détaillées</value>
+  </data>
+  <data name="UsedMapConfiguration" xml:space="preserve">
+    <value>Configuration de carte utilisée</value>
+  </data>
+  <data name="WrpLandRange" xml:space="preserve">
+    <value>Land range</value>
+  </data>
+  <data name="RecentGeneratedMaps" xml:space="preserve">
+    <value>Carte récemment générées</value>
+  </data>
+  <data name="RecentGeneratedMapsHint" xml:space="preserve">
+    <value>Utiliser l'éditeur Eden dans Arma 3 pour améliorer une care générée, and réintégrer ici les changements.</value>
+  </data>
+  <data name="Arma3RecentWorldTooltip" xml:space="preserve">
+    <value>WorldName: {0}
+Dernière génération le {1}</value>
+  </data>
 </root>

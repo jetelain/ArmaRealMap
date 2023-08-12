@@ -4,11 +4,9 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Caliburn.Micro;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor;
 using GameRealisticMap.Studio.Toolkit;
-using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 {
@@ -55,7 +53,7 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
             await EditorHelper.OpenWithEditor("Arma3WorldEditorProvider", FilePath);
         }
 
-        public string Tooltip => string.Format(CultureInfo.InstalledUICulture, "WorldName: {0}\r\nLast generated on {1}", WorldName, TimeStamp.ToLocalTime());
+        public string Tooltip => string.Format(CultureInfo.InstalledUICulture, Labels.Arma3RecentWorldTooltip, WorldName, TimeStamp.ToLocalTime());
 
         public ImageSource ImageSource
         {

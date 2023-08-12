@@ -52,7 +52,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (parent.IsDirty && !parent.Backups.Any(b => b.IsActive))
             {
-                if (MessageBox.Show("Restoring a previous version causes the loss of current modifications, do you want to continue?", string.Format("Restore {0}", Date), MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                if (MessageBox.Show(Labels.RestoreDataLossMessage, string.Format(Labels.RestoreTitle, Date), MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                 {
                     return;
                 }
