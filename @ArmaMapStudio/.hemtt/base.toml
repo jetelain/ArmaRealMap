@@ -1,10 +1,11 @@
-name = "Arma Map Studio"
-prefix = "ams"
+name = "Export to GameRealisticMap Studio"
+prefix = "grma3"
 author = "GrueArbre"
 template = "cba"
 mainprefix = "z"
 folder_optionals = true
 sig_version = 3
 files = [
-    "mod.cpp"
+    "mod.cpp",
+    "logo.paa"
 ]

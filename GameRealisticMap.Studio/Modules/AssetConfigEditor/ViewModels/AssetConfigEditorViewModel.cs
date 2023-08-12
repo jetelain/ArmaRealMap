@@ -309,7 +309,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 );
             json.BaseDependency = baseDependency;
             json.BaseWorldName = baseWorldName;
-            json.Dependencies = ComputeModDependencies().Select(GetSteamId).Where(s => s != null).Select(m => new ModDependencyDefinition(m!)).ToList();
+            json.Dependencies = ComputeModDependencies();
             return json;
         }
 
@@ -395,9 +395,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .Distinct(StringComparer.OrdinalIgnoreCase);
         }
 
-        public IEnumerable<string> ComputeModDependencies()
+        public List<ModDependencyDefinition> ComputeModDependencies()
         {
-            return (_arma3Data.ProjectDrive.SecondarySource as PboFileSystem)?.GetModPaths(ListReferencedModels()) ?? Enumerable.Empty<string>();
+            return IoC.Get<IArma3Dependencies>().ComputeModDependencies(ListReferencedModels()).ToList();
         }
 
         public async Task Reload()

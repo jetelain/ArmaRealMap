@@ -15,7 +15,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
     [Export(typeof(IProgressTool))]
     internal class ProgressToolViewModel : Tool, IProgressTool
     {
-        private static readonly Logger logger = NLog.LogManager.GetLogger(" ProgressTool");
+        private static readonly Logger logger = NLog.LogManager.GetLogger("ProgressTool");
 
         private TaskState state =  TaskState.None;
         private ProgressTask? current = null;

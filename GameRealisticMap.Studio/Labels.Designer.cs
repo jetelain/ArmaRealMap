@@ -187,6 +187,16 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à WorldName: {0}
+        ///Last generated on {1}.
+        /// </summary>
+        public static string Arma3RecentWorldTooltip {
+            get {
+                return ResourceManager.GetString("Arma3RecentWorldTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à https://github.com/jetelain/ArmaRealMap/wiki/Install-required-tools-for-Arma-3.
         /// </summary>
         public static string Arma3SetupHelpLink {
@@ -1186,6 +1196,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Current.
+        /// </summary>
+        public static string CurrentVersion {
+            get {
+                return ResourceManager.GetString("CurrentVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Data seems valid..
         /// </summary>
         public static string DataSeemsValid {
@@ -1285,11 +1304,74 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Edit with Eden Editor.
+        /// </summary>
+        public static string EditWithEdenEditor {
+            get {
+                return ResourceManager.GetString("EditWithEdenEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à https://github.com/jetelain/ArmaRealMap/wiki/Edit-With-Eden-Editor.
+        /// </summary>
+        public static string EditWithEdenEditorHelpLink {
+            get {
+                return ResourceManager.GetString("EditWithEdenEditorHelpLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Open your map with Eden Editor, add objects, hide objects, and then use the Export to GameRealisticMap from Tool menu..
+        /// </summary>
+        public static string EditWithEdenEditorHint {
+            get {
+                return ResourceManager.GetString("EditWithEdenEditorHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Explorer.
         /// </summary>
         public static string Explorer {
             get {
                 return ResourceManager.GetString("Explorer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Exported data is for map &apos;{0}&apos; but current map is &apos;{1}.
+        /// </summary>
+        public static string ExportedDataMapMismatch {
+            get {
+                return ResourceManager.GetString("ExportedDataMapMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Exported data is for revision &apos;{0}&apos; but current revision is &apos;{1}.
+        /// </summary>
+        public static string ExportedDataRevisionMismatch {
+            get {
+                return ResourceManager.GetString("ExportedDataRevisionMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0} objects to add, {1} objects to remove, {2} elevation grid changes.
+        /// </summary>
+        public static string ExportedDataStats {
+            get {
+                return ResourceManager.GetString("ExportedDataStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à This feature requires an additional mod from Steam Workshop:.
+        /// </summary>
+        public static string FeatureRequiresAdditionalMod {
+            get {
+                return ResourceManager.GetString("FeatureRequiresAdditionalMod", resourceCulture);
             }
         }
         
@@ -1717,6 +1799,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import changes from 3DEN Editor.
+        /// </summary>
+        public static string ImportChangesFromEdenEditor {
+            get {
+                return ResourceManager.GetString("ImportChangesFromEdenEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Import from clipboad.
         /// </summary>
         public static string ImportFromClipboad {
@@ -1740,6 +1831,15 @@ namespace GameRealisticMap.Studio {
         public static string ImportFromClipboardArma3Hint2 {
             get {
                 return ResourceManager.GetString("ImportFromClipboardArma3Hint2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Once you have exported data, click on Refresh button, and then validate import..
+        /// </summary>
+        public static string ImportFromClipboardEdenHint {
+            get {
+                return ResourceManager.GetString("ImportFromClipboardEdenHint", resourceCulture);
             }
         }
         
@@ -1794,6 +1894,15 @@ namespace GameRealisticMap.Studio {
         public static string LaunchArma3 {
             get {
                 return ResourceManager.GetString("LaunchArma3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Launch Arma 3 with default profile and recommanded mods (if installed).
+        /// </summary>
+        public static string LaunchArma3EditHint {
+            get {
+                return ResourceManager.GetString("LaunchArma3EditHint", resourceCulture);
             }
         }
         
@@ -1857,6 +1966,33 @@ namespace GameRealisticMap.Studio {
         public static string MakeSeedsEquiprobable {
             get {
                 return ResourceManager.GetString("MakeSeedsEquiprobable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Description.
+        /// </summary>
+        public static string MapDescription {
+            get {
+                return ResourceManager.GetString("MapDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Map informations.
+        /// </summary>
+        public static string MapInformations {
+            get {
+                return ResourceManager.GetString("MapInformations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Revision history.
+        /// </summary>
+        public static string MapRevisionHistory {
+            get {
+                return ResourceManager.GetString("MapRevisionHistory", resourceCulture);
             }
         }
         
@@ -1971,6 +2107,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Mod directory.
+        /// </summary>
+        public static string ModDirectory {
+            get {
+                return ResourceManager.GetString("ModDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Model.
         /// </summary>
         public static string Model {
@@ -2067,6 +2212,15 @@ namespace GameRealisticMap.Studio {
         public static string PBOGenerationTool {
             get {
                 return ResourceManager.GetString("PBOGenerationTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à PBO Prefix.
+        /// </summary>
+        public static string PboPrefix {
+            get {
+                return ResourceManager.GetString("PboPrefix", resourceCulture);
             }
         }
         
@@ -2179,6 +2333,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Recent generated maps.
+        /// </summary>
+        public static string RecentGeneratedMaps {
+            get {
+                return ResourceManager.GetString("RecentGeneratedMaps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use Eden Editor in Arma 3 to improve a generated map and integrate back here the changes..
+        /// </summary>
+        public static string RecentGeneratedMapsHint {
+            get {
+                return ResourceManager.GetString("RecentGeneratedMapsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ⟳ Refresh.
         /// </summary>
         public static string Refresh {
@@ -2220,6 +2392,33 @@ namespace GameRealisticMap.Studio {
         public static string RequiredToolsDescription {
             get {
                 return ResourceManager.GetString("RequiredToolsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Restore.
+        /// </summary>
+        public static string Restore {
+            get {
+                return ResourceManager.GetString("Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Restoring a previous version causes the loss of current modifications, do you want to continue?.
+        /// </summary>
+        public static string RestoreDataLossMessage {
+            get {
+                return ResourceManager.GetString("RestoreDataLossMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Restore {0}.
+        /// </summary>
+        public static string RestoreTitle {
+            get {
+                return ResourceManager.GetString("RestoreTitle", resourceCulture);
             }
         }
         
@@ -2337,6 +2536,15 @@ namespace GameRealisticMap.Studio {
         public static string SeedNumber {
             get {
                 return ResourceManager.GetString("SeedNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à See help for detailed instructions.
+        /// </summary>
+        public static string SeeHelpForDetailedInstructions {
+            get {
+                return ResourceManager.GetString("SeeHelpForDetailedInstructions", resourceCulture);
             }
         }
         
@@ -2476,6 +2684,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Used Map Configuration.
+        /// </summary>
+        public static string UsedMapConfiguration {
+            get {
+                return ResourceManager.GetString("UsedMapConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Use Mikero&apos;s pboProject.
         /// </summary>
         public static string UsePBOProject {
@@ -2571,6 +2788,15 @@ namespace GameRealisticMap.Studio {
         public static string Width {
             get {
                 return ResourceManager.GetString("Width", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Land range.
+        /// </summary>
+        public static string WrpLandRange {
+            get {
+                return ResourceManager.GetString("WrpLandRange", resourceCulture);
             }
         }
         

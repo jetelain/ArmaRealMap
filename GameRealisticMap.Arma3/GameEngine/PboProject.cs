@@ -13,7 +13,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             this.progress = progress;
         }
 
-        public async Task BinarizeAndCreatePbo(Arma3MapConfig config, IReadOnlyCollection<string> usedModels, IReadOnlyCollection<string> usedRvmat)
+        public async Task BinarizeAndCreatePbo(IPboConfig config, IReadOnlyCollection<string> usedModels, IReadOnlyCollection<string> usedRvmat)
         {
             await Arma3ToolsHelper.BuildWithMikeroPboProject(config.PboPrefix, config.TargetModDirectory, progress);
         }

@@ -6,7 +6,7 @@ class CfgPatches {
         units[] = {};
         weapons[] = {};
         requiredVersion = REQUIRED_VERSION;
-        requiredAddons[] = {"ams_main", "A3_3DEN"};
+        requiredAddons[] = {"grma3_main", "A3_3DEN"};
         author = "GrueArbre";
         VERSION_CONFIG;
     };
@@ -22,8 +22,8 @@ class Display3DEN
     {
         class Items
         {
-            items[]+={"Separator", "AMS_Report"};
-            class AMS_Report
+            items[]+={"Separator", "GRMA3_Report"};
+            class GRMA3_Report
             {
                 action=QUOTE([screenToWorld getMousePosition] call FUNC(report););
                 text="Report an issue";

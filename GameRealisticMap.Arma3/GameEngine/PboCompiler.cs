@@ -22,7 +22,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             this.modelInfoLibrary = modelInfoLibrary;
         }
 
-        public async Task BinarizeAndCreatePbo(Arma3MapConfig config, IReadOnlyCollection<string> usedModels, IReadOnlyCollection<string> usedRvmat)
+        public async Task BinarizeAndCreatePbo(IPboConfig config, IReadOnlyCollection<string> usedModels, IReadOnlyCollection<string> usedRvmat)
         {
             Arma3ToolsHelper.EnsureProjectDrive();
 
@@ -73,7 +73,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         }
 
-        private void CreatePbo(Arma3MapConfig config, string sourcePboPath, string targetPboPath, string configTargetBin)
+        private void CreatePbo(IPboConfig config, string sourcePboPath, string targetPboPath, string configTargetBin)
         {
             var pbo = new PBO();
             pbo.PropertiesPairs.Add(new KeyValuePair<string, string>("prefix", config.PboPrefix));

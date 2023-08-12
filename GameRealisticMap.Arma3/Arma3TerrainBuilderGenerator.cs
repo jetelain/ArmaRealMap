@@ -5,6 +5,7 @@ using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Arma3.TerrainBuilder.TmlFiles;
 using GameRealisticMap.ElevationModel;
+using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Preview;
@@ -36,7 +37,7 @@ namespace GameRealisticMap.Arma3
             return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
         }
 
-        public async Task GenerateTerrainBuilderFiles(IProgressTask progress, Arma3MapConfig a3config, string targetDirectory)
+        public async Task<string?> GenerateTerrainBuilderFiles(IProgressTask progress, Arma3MapConfig a3config, string targetDirectory)
         {
             var generators = new Arma3LayerGeneratorCatalog(progress, assets);
             progress.Total += 7 + generators.Generators.Count;
@@ -46,7 +47,7 @@ namespace GameRealisticMap.Arma3
             progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
-                return;
+                return null;
             }
 
             // Generate content
@@ -54,7 +55,7 @@ namespace GameRealisticMap.Arma3
             await GenerateFilesAsync(progress, a3config, context, a3config.TerrainArea, generators, targetDirectory);
             if (progress.CancellationToken.IsCancellationRequested)
             {
-                return;
+                return null;
             }
 
 #if DEBUG
@@ -65,6 +66,7 @@ namespace GameRealisticMap.Arma3
             await projectDrive.ProcessImageToPaa(progress);
             progress.ReportOneDone();
 
+            return GameConfigGenerator.GetFreindlyName(a3config, context.GetData<CitiesData>());
         }
 
         private async Task<IOsmDataSource> LoadOsmData(IProgressTask progress, Arma3MapConfig a3config)

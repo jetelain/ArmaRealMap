@@ -34,5 +34,7 @@ namespace GameRealisticMap.Arma3.Assets
         IReadOnlyCollection<FenceDefinition> GetFences(FenceTypeId typeId);
 
         RailwaysDefinition? Railways { get; }
+
+        IReadOnlyCollection<ModDependencyDefinition> Dependencies { get; }
     }
 }

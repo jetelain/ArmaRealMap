@@ -7,19 +7,22 @@ private _objects = _all select 0;
 private _systems = _all select 3;
 private _cfgVehicles = configfile >> "cfgvehicles";
 private _classes = createHashMap;
-private _toRemoveLayer = -1 add3DENLayer "Map integrable (to remove)";
+
+private _layerName = LLSTRING(ExportLayer);
+private _existingLayers = (_all #6) select { ((_x get3DENAttribute "name")#0) == _layerName };
+private _toRemoveLayer =  if ( count _existingLayers > 0 ) then { _existingLayers # 0 } else { -1 add3DENLayer LLSTRING(ExportLayer) };
 
 private _progress = 0;
 private _progressTotal = count _objects + count _systems;
 
+_data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgWorlds" >> worldName >> "grma3_revision")];
 
 {
 	if ( _x isKindOf "ModuleHideTerrainObjects_F" ) then {
-		_data pushBack [".hideArea", getPosWorld _x, (_x get3DENAttribute "Size3") select 0, (_x get3DENAttribute "isRectangle") select 0, (_x get3DENAttribute "#filter") select 0];
 		_x set3DENLayer _toRemoveLayer;
 		private _hidden = _x getVariable ["#objects",[]];
 		{
-			_data pushBack [".hide", [_x] call FUNC(getPosWrp), (getModelInfo _x) select 1];
+			_data pushBack [".hide", (getModelInfo _x) select 1, getPosWorld _x, [_x] call FUNC(getPosWrp), vectorUp _x, vectorDir _x, surfaceNormal (getPosASL _x), getObjectScale _x, getObjectID _x];
 		} foreach _hidden;
 	};
 	
@@ -28,7 +31,7 @@ private _progressTotal = count _objects + count _systems;
 		if ( _value == 5 ) then {
 			private _building = _x getVariable ["#building", objNull];
 			if ( !isNull _building ) then {
-				_data pushBack [".hideObj",  [_building] call FUNC(getPosWrp), (getModelInfo _building) select 1];
+				_data pushBack [".hide", (getModelInfo _building) select 1, getPosWorld _building, [_building] call FUNC(getPosWrp), vectorUp _building, vectorDir _building, surfaceNormal (getPosASL _building), getObjectScale _building, getObjectID _building];
 			};
 			_x set3DENLayer _toRemoveLayer;
 		};
@@ -40,7 +43,7 @@ private _progressTotal = count _objects + count _systems;
 } foreach _systems;
 
 {
-	if (_x get3DENAttribute "AMS_Exclude" select 0) then {
+	if (_x get3DENAttribute "GRMA3_Exclude" select 0) then {
 		// Ignored
 	} else {
 		if (!((_x get3denattribute "init" select 0) isequalto "")) then {
@@ -54,10 +57,10 @@ private _progressTotal = count _objects + count _systems;
 				if ( isClass _classConfig ) then {
 					private _textures = getarray (_classConfig >> "hiddenselectionstextures");
 					private _simpleEden = getnumber (_classConfig >> "SimpleObject" >> "eden");
-					private _ams_canexport = getnumber (_classConfig >> "AmsEden" >> "canexport");
+					private _canexport = getnumber (_classConfig >> "grma3_canexport");
 					private _model = gettext (_classConfig >> "model");
 					private _realModel = (getModelInfo _x) select 1;
-					if ( (count _textures == 0 || _simpleEden == 1 || _ams_canexport == 1) && (_model != "\A3\Weapons_f\dummyweapon.p3d") && (_ams_canexport != -1)) then {
+					if ( ((_class regexMatch "Land_(.*)/i") || count _textures == 0 || _simpleEden == 1 || _canexport == 1) && (_model != "\A3\Weapons_f\dummyweapon.p3d") && (_model != "") && (_canexport != -1)) then {
 						_classData = [true, 1];
 						_data pushBack [".class", _class, _model, boundingBoxReal _x, boundingCenter _x, _realModel, 1];
 					} else {
@@ -71,20 +74,7 @@ private _progressTotal = count _objects + count _systems;
 				_classes set [_class,_classData];
 			};
 			if ( _classData select 0 ) then {
-				private _pos = getPosASL _x;
-				private _dir = vectorDir _x;
-				private _up = vectorUp _x;
-				private _wpos = getPosWorld _x; 
-				
-				// DirAndUp has effect on getPosASL, we have to "correct" getPosWorld to take into account this
-				_x setVectorDirAndUp [[0,1,0],[0,0,1]];
-				private _pos2 = getPosASL _x;
-				_x setVectorDirAndUp [_dir,_up];
-				private _zfix = (_pos2 select 2) - (_pos select 2);
-				_wpos set [2, (_wpos select 2) - _zfix];
-
-				_data pushBack [_class, _pos, _wpos, _up, _dir, surfaceNormal _pos];
-				
+				_data pushBack [".add", _class, getPosWorld _x, [_x] call FUNC(getPosWrp), vectorUp _x, vectorDir _x, surfaceNormal (getPosASL _x), getObjectScale _x];
 				_x set3DENLayer _toRemoveLayer;
 			};
 		};
@@ -94,6 +84,11 @@ private _progressTotal = count _objects + count _systems;
 	progressLoadingScreen  (_progress / _progressTotal);
 	
 } foreach _objects;
+
+// Deformer related data
+if ( !isNil "GF_gridMap") then {
+	_data pushBack [".dhmap", GF_gridMap apply { [_x#0, _x#1, _y#0] }];
+};
 
 endloadingscreen;
 INFO_1("%1 items", count _data);
@@ -106,4 +101,4 @@ toFixed -1;
 
 copyToClipboard _result;
 
-systemChat "Done. Copied to clipboard";
+[LLSTRING(ExportDone), 0, 5] call BIS_fnc_3DENNotification;

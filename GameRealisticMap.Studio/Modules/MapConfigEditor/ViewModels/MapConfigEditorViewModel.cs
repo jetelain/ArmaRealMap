@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
@@ -16,6 +15,7 @@ using GameRealisticMap.Preview;
 using GameRealisticMap.Satellite;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
@@ -357,10 +357,11 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory());
 
-            var name = await generator.GenerateMod(task, a3config);
+            var freindlyName = await generator.GenerateMod(task, a3config);
 
-            if (!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(freindlyName))
             {
+                var name = freindlyName;
                 if (name != a3config.WorldName)
                 {
                     name = $"{name} - {a3config.WorldName}"; // use WorldName to make it unique
@@ -369,6 +370,8 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, name));
                 task.AddSuccessAction(() => Arma3Helper.Launch(assets.Dependencies, a3config.TargetModDirectory, a3config.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
                 await Arma3LauncherHelper.CreateLauncherPresetAsync(assets.Dependencies, a3config.TargetModDirectory, "GRM - " + name);
+
+                await AddToHistory(a3config, freindlyName);
             }
         }
 
@@ -382,9 +385,14 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory());
 
-            await generator.GenerateWrp(task, a3config);
+            var results = await generator.GenerateWrp(task, a3config);
 
             task.AddSuccessAction(() => ShellHelper.OpenUri(_arma3DataModule.ProjectDrive.GetFullPath(a3config.PboPrefix)), Labels.ViewInFileExplorer);
+
+            if (results != null)
+            {
+                await AddToHistory(a3config, results.FreindlyName);
+            }
         }
 
         private async Task<Arma3Assets> GetAssets(ModelInfoLibrary library, Arma3MapConfig a3config)
@@ -512,7 +520,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var generator = new Arma3TerrainBuilderGenerator(assets, _arma3DataModule.ProjectDrive);
 
-            await generator.GenerateTerrainBuilderFiles(task, a3config, target);
+            var freindlyName = await generator.GenerateTerrainBuilderFiles(task, a3config, target);
 
             task.AddSuccessAction(() => ShellHelper.OpenUri(Path.Combine(target, "README.txt")), GameRealisticMap.Studio.Labels.ViewImportInstructions);
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);
@@ -521,6 +529,21 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 Arma3ToolsHelper.EnsureProjectDrive();
                 ShellHelper.OpenUri(Path.Combine(Arma3ToolsHelper.GetArma3ToolsPath(), "TerrainBuilder\\TerrainBuilder.exe"));
             }, GameRealisticMap.Studio.Labels.LaunchTerrainBuilder);
+
+            if (!string.IsNullOrEmpty(freindlyName))
+            {
+                await AddToHistory(a3config, freindlyName);
+            }
+        }
+
+        private async Task AddToHistory(Arma3MapConfig a3config, string? freindlyName)
+        {
+            await IoC.Get<IArma3RecentHistory>().RegisterWorld(
+                a3config.WorldName,
+                a3config.PboPrefix,
+                freindlyName + ", GameRealisticMap",
+                a3config.TargetModDirectory,
+                IsNew ? null : FilePath);
         }
     }
 }

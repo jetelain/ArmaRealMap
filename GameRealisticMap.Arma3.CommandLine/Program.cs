@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
@@ -17,12 +18,18 @@ namespace GameRealisticMap.Arma3.CommandLine
     {
         static async Task Main(string[] args)
         {
-
-
-
             var projectDrive = new ProjectDrive(Arma3ToolsHelper.GetProjectDrivePath(), new PboFileSystem());
-
             projectDrive.AddMountPoint(@"z\arm\addons", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive\z\arm\addons");
+
+            var reader = new WrpEditBatchParser(new ConsoleProgressSystem(), projectDrive);
+
+            var exportData = reader.ParseFromFile(@"C:\Users\Julien\Desktop\regiment_grma3.txt");
+
+            File.WriteAllLines(@"c:\temp\regiment_grma3_add.txt", exportData.Add.Select(o => $"{o.Model};{o.Transform}"));
+            File.WriteAllLines(@"c:\temp\regiment_grma3_del.txt", exportData.Remove.Select(o => $"{o.Model};{o.WorldPos}"));
+
+
+
 
             var models = new ModelInfoLibrary(projectDrive);
 

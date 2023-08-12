@@ -963,4 +963,80 @@ You may eventually enable other mods.</value>
   <data name="AssetCoastline" xml:space="preserve">
     <value>Default ground - Coastline</value>
   </data>
+  <data name="ExportedDataMapMismatch" xml:space="preserve">
+    <value>Exported data is for map '{0}' but current map is '{1}</value>
+  </data>
+  <data name="ExportedDataRevisionMismatch" xml:space="preserve">
+    <value>Exported data is for revision '{0}' but current revision is '{1}</value>
+  </data>
+  <data name="ExportedDataStats" xml:space="preserve">
+    <value>{0} objects to add, {1} objects to remove, {2} elevation grid changes</value>
+  </data>
+  <data name="RestoreDataLossMessage" xml:space="preserve">
+    <value>Restoring a previous version causes the loss of current modifications, do you want to continue?</value>
+  </data>
+  <data name="RestoreTitle" xml:space="preserve">
+    <value>Restore {0}</value>
+  </data>
+  <data name="ImportChangesFromEdenEditor" xml:space="preserve">
+    <value>Import changes from 3DEN Editor</value>
+  </data>
+  <data name="PboPrefix" xml:space="preserve">
+    <value>PBO Prefix</value>
+  </data>
+  <data name="WrpLandRange" xml:space="preserve">
+    <value>Land range</value>
+  </data>
+  <data name="UsedMapConfiguration" xml:space="preserve">
+    <value>Used Map Configuration</value>
+  </data>
+  <data name="MapDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ModDirectory" xml:space="preserve">
+    <value>Mod directory</value>
+  </data>
+  <data name="CurrentVersion" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="MapRevisionHistory" xml:space="preserve">
+    <value>Revision history</value>
+  </data>
+  <data name="MapInformations" xml:space="preserve">
+    <value>Map informations</value>
+  </data>
+  <data name="EditWithEdenEditor" xml:space="preserve">
+    <value>Edit with Eden Editor</value>
+  </data>
+  <data name="LaunchArma3EditHint" xml:space="preserve">
+    <value>Launch Arma 3 with default profile and recommanded mods (if installed)</value>
+  </data>
+  <data name="ImportFromClipboardEdenHint" xml:space="preserve">
+    <value>Once you have exported data, click on Refresh button, and then validate import.</value>
+  </data>
+  <data name="EditWithEdenEditorHint" xml:space="preserve">
+    <value>Open your map with Eden Editor, add objects, hide objects, and then use the Export to GameRealisticMap from Tool menu.</value>
+  </data>
+  <data name="FeatureRequiresAdditionalMod" xml:space="preserve">
+    <value>This feature requires an additional mod from Steam Workshop:</value>
+  </data>
+  <data name="SeeHelpForDetailedInstructions" xml:space="preserve">
+    <value>See help for detailed instructions</value>
+  </data>
+  <data name="EditWithEdenEditorHelpLink" xml:space="preserve">
+    <value>https://github.com/jetelain/ArmaRealMap/wiki/Edit-With-Eden-Editor</value>
+  </data>
+  <data name="Arma3RecentWorldTooltip" xml:space="preserve">
+    <value>WorldName: {0}
+Last generated on {1}</value>
+  </data>
+  <data name="RecentGeneratedMaps" xml:space="preserve">
+    <value>Recent generated maps</value>
+  </data>
+  <data name="RecentGeneratedMapsHint" xml:space="preserve">
+    <value>Use Eden Editor in Arma 3 to improve a generated map and integrate back here the changes.</value>
+  </data>
 </root>

@@ -1,5 +1,5 @@
 #define MAINPREFIX z
-#define PREFIX ams
+#define PREFIX grma3
 
 #include "script_version.hpp"
 

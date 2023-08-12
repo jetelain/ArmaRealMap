@@ -8,6 +8,7 @@ using ArmaRealMap.TerrainBuilder;
 using BIS.Core.Math;
 using BIS.Core.Serialization;
 using BIS.Core.Streams;
+using BIS.P3D;
 using BIS.PBO;
 using BIS.WRP;
 using CommandLine;
@@ -132,19 +133,22 @@ namespace TerrainBuilderUtil
                 {
                     case ".hide":
                     case ".hideObj":
-                        exportData.ToRemove.Add(new HideObject(GetVector((object[])array[1]), NormalizeModelPath((string)array[2])));
+                        exportData.ToRemove.Add(new HideObject(GetVector((object[])array[2]), NormalizeModelPath((string)array[1])));
                         break;
                     case ".hideArea":
                         break;
                     case ".class":
                         models.Add((string)array[1], NormalizeModelPath((string)array[2]));
                         break;
-                    default:
+                    case ".map":
+                        break;
+                    case ".add":
+                        var model = models[(string)array[1]];
                         exportData.Add.Add(new EditableWrpObject()
                         {
-                            Model = models[(string)array[0]],
+                            Model = model,
                             ObjectID = nextObjectId++,
-                            Transform = GetTransform(worldPos, array)
+                            Transform = GetTransform(worldPos, array, model)
                         });
                         break;
                 }
@@ -156,26 +160,22 @@ namespace TerrainBuilderUtil
         private static readonly Vector3 DefaultVectorDir = new Vector3(0, 0, 1); // North
         private static readonly Vector3 DefaultVectorUp = new Vector3(0, 1, 0); // Up
         private static readonly Vector3 DefaultVectorCross = Vector3.Cross(DefaultVectorDir, DefaultVectorUp);
+        private static readonly Dictionary<string, bool> slopelandcontact = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
-        private static Matrix4P GetTransform(bool useWorldPos, object[] array)
+        private static Matrix4P GetTransform(bool useWorldPos, object[] array, string model)
         {
             // [_class, _pos, getPosWorld _x, vectorUp _x, vectorDir _x, surfaceNormal _pos];
-            var position = GetVector(useWorldPos ? (object[])array[2] : (object[])array[1]);
-            var vectorUp = GetVector((object[])array[3]);
-            var vectorDir = GetVector((object[])array[4]);
+            var position = GetVector(useWorldPos ? (object[])array[3] : (object[])array[2]);
+            var vectorUp = GetVector((object[])array[4]);
+            var vectorDir = GetVector((object[])array[5]);
 
             var matrix = Matrix4x4.CreateWorld(position,-vectorDir,vectorUp);
 
-            if ( array.Length > 5 )
+            if (IsSlopeLandContact(model))
             {
-                // here starts the problems
-                // If surfaceNormal is exported if object placement is relative to surfaceNormal.
-                // => if present, it means that engine will make matrix relative to surfaceNormal
-                //    so we have to compensate it
-                // => if not, it means that engine will apply directly the matrix 
-                //    so we have nothing to do     
-
-                var surfaceNormal = GetVector((object[])array[5]);
+                // If object is SlopeLandContact, it means that engine will make matrix relative
+                // to surfaceNormal so we have to compensate it
+                var surfaceNormal = GetVector((object[])array[6]);
                 if (surfaceNormal != DefaultVectorUp)
                 {
                     var normalCompensation = Vector3.Lerp(DefaultVectorUp, surfaceNormal, -1);
@@ -186,6 +186,26 @@ namespace TerrainBuilderUtil
                 }
             }
             return new Matrix4P(matrix);
+        }
+
+        private static bool IsSlopeLandContact(string model)
+        {
+            if (!slopelandcontact.TryGetValue(model, out var isSlopeLandContact))
+            {
+                var file = Path.Combine("P:", model);
+                if (File.Exists(file))
+                {
+                    var infos = StreamHelper.Read<P3D>(file);
+                    var placement = infos.LODs.FirstOrDefault(l => l.Resolution == 1E+13f)?.NamedProperties?.FirstOrDefault(n => n.Item1 == "placement")?.Item2;
+                    isSlopeLandContact = !string.IsNullOrEmpty(placement) && placement.StartsWith("slope", StringComparison.OrdinalIgnoreCase);
+                }
+                else
+                {
+                    Console.WriteLine($"Model {model} was not found, unknown SlopeLandContact");
+                }
+                slopelandcontact.Add(model, isSlopeLandContact);
+            }
+            return isSlopeLandContact;
         }
 
         private static List<EditableWrpObject> FilterObjects(EditableWrp source, List<HideObject> toRemove)
@@ -316,7 +336,7 @@ namespace TerrainBuilderUtil
             using (var writer = new StreamWriter(opts.Target, false))
             {
                 foreach (var add in exportData.Add)
-                {
+                {           
                     var yaw = (float)System.Math.Atan2(add.Transform.Matrix.M13, add.Transform.Matrix.M33) * 180 / Math.PI;
                     var pitch = (float)System.Math.Asin(-add.Transform.Matrix.M23) * 180 / Math.PI;
                     var roll = (float)System.Math.Atan2(add.Transform.Matrix.M21, add.Transform.Matrix.M22) * 180 / Math.PI;

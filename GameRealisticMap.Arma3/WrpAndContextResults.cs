@@ -1,4 +1,7 @@
-﻿namespace GameRealisticMap.Arma3
+﻿using GameRealisticMap.Arma3.GameEngine;
+using GameRealisticMap.ManMade.Places;
+
+namespace GameRealisticMap.Arma3
 {
     public class WrpAndContextResults 
     {
@@ -17,5 +20,7 @@
         public IReadOnlyCollection<string> UsedModels { get; }
 
         public IReadOnlyCollection<string> UsedRvmat { get; }
+
+        public string FreindlyName => GameConfigGenerator.GetFreindlyName(Config, Context.GetData<CitiesData>());
     }
 }

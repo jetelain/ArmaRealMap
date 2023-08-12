@@ -6,7 +6,7 @@ class CfgPatches {
         units[] = {};
         weapons[] = {};
         requiredVersion = REQUIRED_VERSION;
-        requiredAddons[] = {"ams_main", "A3_3DEN"};
+        requiredAddons[] = {"grma3_main", "A3_3DEN"};
         author = "GrueArbre";
         VERSION_CONFIG;
     };
@@ -24,12 +24,13 @@ class display3DEN
 			{
 				class Tools
 				{
-					items[] += {"AMS_Export"};
+					items[] += {"GRMA3_Export"};
 				};
-				class AMS_Export
+				class GRMA3_Export
 				{
-					text = "Export to Arma Map Studio";
+					text = CSTRING(ExportToGrmStudio);
 					action = QUOTE([] spawn FUNC(export););
+					picture=QPATHTOF(data\icon.paa);
 				};
 			};
 		};
@@ -39,15 +40,26 @@ class display3DEN
     {
         class Items
         {
-            items[]+={"AMS_Transform"};
-            class AMS_Transform
+            items[]+={"GRMA3_CreateHiddenObjects", "GRMA3_EditObject"};
+            class GRMA3_CreateHiddenObjects
             {
-                action=QUOTE([] spawn FUNC(transform););
-                text="Re-create hidden objects";
+                action=QUOTE([] spawn FUNC(recreateHidden););
+                text=CSTRING(CreateHiddenObjects);
+				picture=QPATHTOF(data\icon.paa);
                 conditionShow="selectedLogic";
                 value=0;
                 opensNewWindow=0;
             };
+			class GRMA3_EditObject
+			{
+                action=QUOTE([] spawn FUNC(editObject););
+                text=CSTRING(EditObject);
+				picture=QPATHTOF(data\icon.paa);
+				conditionShow="1";
+				value=0;
+                opensNewWindow=0;
+			};
+
         };
     };
 };
@@ -63,10 +75,10 @@ class Cfg3DEN
 			{
 				class Attributes
 				{
-					class AMS_Exclude
+					class GRMA3_Exclude
 					{
-						displayName="Exclude from Arma Map Studio Export";
-						property="AMS_Exclude";
+						displayName=CSTRING(ExcludeFromExport);
+						property="GRMA3_Exclude";
 						control="Checkbox";
 						expression="";
 						defaultValue="false";
@@ -80,66 +92,32 @@ class Cfg3DEN
 
 class CfgVehicles {
 	
-	class All;
-	
-    class Static: All 
-	{
-		class AmsEden
-		{
-			surfacenormal = 1;
-		};
-	};
-	
-    class Building: Static 
-	{
-		class AmsEden
-		{
-			surfacenormal = 0;
-		};
-	};
-
 	class Wall_F;
 	class Land_New_WiredFence_5m_F: Wall_F 
 	{
-		class AmsEden
-		{
-			surfacenormal = 1;
-			canexport = 1;
-		};
+		grma3_canexport = 1;
     };
     class Land_New_WiredFence_10m_F: Wall_F 
 	{
-		class AmsEden
-		{
-			surfacenormal = 1;
-			canexport = 1;
-		};
+		grma3_canexport = 1;
     };
 	
 	class TargetBootcampHumanSimple_F;
 	class TargetBootcampHuman_F: TargetBootcampHumanSimple_F 
 	{
-		class AmsEden
-		{
-			canexport = 1;
-		};
+		grma3_canexport = 1;
 	};
 	
+	class All;
 	class AllVehicles: All 
 	{
-		class AmsEden
-		{
-			canexport = -1;
-		};
+		grma3_canexport = -1;
     };
 
 	class Shelter_base_F;
 	class CamoNet_BLUFOR_F: Shelter_base_F 
 	{
-		class AmsEden
-		{
-			canexport = 1;
-		};
+		grma3_canexport = 1;
     };
 };
 

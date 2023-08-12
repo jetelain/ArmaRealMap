@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.CompositionTool;

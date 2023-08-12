@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\bis-file-formats\BIS.Core\BIS.Core.csproj" />
+    <ProjectReference Include="..\bis-file-formats\BIS.P3D\BIS.P3D.csproj" />
     <ProjectReference Include="..\bis-file-formats\BIS.PBO\BIS.PBO.csproj" />
     <ProjectReference Include="..\bis-file-formats\BIS.WRP\BIS.WRP.csproj" />
     <ProjectReference Include="..\ArmaRealMap\ArmaRealMap.csproj" />

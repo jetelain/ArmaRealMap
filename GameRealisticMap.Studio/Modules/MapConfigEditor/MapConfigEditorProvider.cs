@@ -13,6 +13,7 @@ using Gemini.Framework.Services;
 namespace GameRealisticMap.Studio.Modules.MapConfigEditor
 {
     [Export(typeof(IEditorProvider))]
+    [Export("Arma3MapConfigEditorProvider", typeof(IEditorProvider))]
     [Export(typeof(MapConfigEditorProvider))]
     internal class MapConfigEditorProvider : IEditorProvider
     {

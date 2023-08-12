@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Arma3WorldEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views"
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" IsTabStop="False">
+        <StackPanel Orientation="Vertical">
+
+            <StackPanel Margin="0 5" Orientation="Horizontal">
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
+                <TextBlock VerticalAlignment="Center" Margin="10 0" Grid.Column="1">
+                    <Hyperlink NavigateUri="{x:Static r:Links.EditWithEdenEditorHelpLink}" b:HyperLinkBehaviors.ShellExecute="True">
+                        <Run Text="{x:Static r:Labels.Help}" />
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+            
+            <StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
+                <Button Margin="5" Padding="10" cal:Message.Attach="ImportEden">
+                    <Run Text="{x:Static r:Labels.ImportChangesFromEdenEditor}" />
+                </Button>
+                <Button Margin="5" Padding="10" cal:Message.Attach="GenerateMod" IsEnabled="{Binding CanGenerateMod}">
+                    <Run Text="{x:Static r:Labels.GenerateModForArma3}"/>
+                </Button>
+            </StackPanel>
+            
+            <Expander IsExpanded="True" Margin="10">
+                <Expander.Header>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.MapInformations}"/></TextBlock>
+                </Expander.Header>
+                <StackPanel Margin="0 5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.MapSizeSquare}"/></Label>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Size}" VerticalAlignment="Center" />
+
+                        <Label Grid.Row="1" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.WrpLandRange}"/></Label>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding World.LandRangeX}" VerticalAlignment="Center" />
+
+                        <Label Grid.Row="2" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.PboPrefix}"/></Label>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center">
+                            <Hyperlink Command="{Binding OpenDirectoryCommand}">
+                                <TextBlock Text="{Binding HistoryEntry.PboPrefix}" />
+                            </Hyperlink>
+                        </TextBlock>
+
+                        <Label Grid.Row="3" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.UsedMapConfiguration}"/></Label>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center">
+                            <Hyperlink Command="{Binding OpenConfigFileCommand}"><TextBlock Text="{Binding HistoryEntry.ConfigFile}" /></Hyperlink>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+            </Expander>
+            
+            
+            <Expander IsExpanded="True" Margin="10">
+                <Expander.Header>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.Configuration}"/></TextBlock>
+                </Expander.Header>
+                <StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200"><Run Text="{x:Static r:Labels.MapDescription}" /></Label>
+                        <TextBox Width="250" Text="{Binding ConfigFile.Description, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200"><Run Text="{x:Static r:Labels.ModDirectory}" /></Label>
+                        <TextBox Width="500" Text="{Binding TargetModDirectory, Mode=TwoWay}" />
+                    </StackPanel>
+
+
+                </StackPanel>
+            </Expander>
+
+
+            <Expander IsExpanded="True" Margin="10">
+                <Expander.Header>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.MapRevisionHistory}"/></TextBlock>
+                </Expander.Header>
+                <DataGrid ItemsSource="{Binding Backups}" AutoGenerateColumns="false" Margin="12">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Revision" Binding="{Binding Revision}" IsReadOnly="True" Width="100" />
+                        <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True" Width="200" />
+                        <DataGridTemplateColumn Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Button Padding="2" cal:Message.Attach="Load" Visibility="{Binding IsNotActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Run Text="{x:Static r:Labels.Restore}"/>
+                                        </Button>
+                                        <TextBlock Padding="3" TextAlignment="Center" Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Run Foreground="Green">✔</Run>
+                                            <Run Text="{x:Static r:Labels.CurrentVersion}"/>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Expander>
+            
+            
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

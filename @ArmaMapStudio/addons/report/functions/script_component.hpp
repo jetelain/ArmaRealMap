@@ -1,1 +1,1 @@
-#include "\z\ams\addons\report\script_component.hpp"
+#include "\z\grma3\addons\report\script_component.hpp"

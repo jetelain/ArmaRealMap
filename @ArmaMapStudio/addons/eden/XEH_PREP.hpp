@@ -1,3 +1,5 @@
 PREP(export);
 PREP(getPosWrp);
-PREP(transform);
+PREP(recreateHidden);
+PREP(transformObject);
+PREP(editObject);
