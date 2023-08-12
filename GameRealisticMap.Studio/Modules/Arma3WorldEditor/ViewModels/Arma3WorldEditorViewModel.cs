@@ -279,7 +279,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             processor.Process(World, batch);
             if ( ConfigFile != null)
             {
-                ConfigFile.Revision++;
+                if (Backups.Count > 0)
+                {
+                    ConfigFile.Revision = Math.Max(ConfigFile.Revision, Backups.Max(b => b.Revision)) + 1;
+                }
+                else
+                {
+                    ConfigFile.Revision++;
+                }
             }
             // TODO: Update dependencies !
             IsDirty = true;
