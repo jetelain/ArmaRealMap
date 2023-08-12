@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GameRealisticMap.Arma3;
-using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels;
+using GameRealisticMap.Arma3.GameEngine;
 using NLog;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
@@ -79,10 +79,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
 
         private string GetDescription(string directory, string worldName)
         {
-            var configFile = Path.Combine(directory, "config.cpp");
+            var configFile = Path.Combine(directory, GameConfigTextData.FileName);
             if (File.Exists(configFile))
             {
-                return ConfigFileData.ReadFromFile(configFile, worldName).Description;
+                return GameConfigTextData.ReadFromFile(configFile, worldName).Description;
             }
             return string.Empty;
         }

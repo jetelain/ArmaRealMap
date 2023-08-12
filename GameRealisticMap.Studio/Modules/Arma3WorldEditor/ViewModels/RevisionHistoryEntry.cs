@@ -10,6 +10,7 @@ using BIS.Core.Streams;
 using BIS.WRP;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.GameEngine;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
@@ -84,11 +85,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 parent.World = StreamHelper.Read<AnyWrp>(worldStream).GetEditableWrp();
             }
 
-            var configEntry = archive.GetEntry("config.cpp");
+            var configEntry = archive.GetEntry(GameConfigTextData.FileName);
             if (configEntry != null)
             {
                 using var reader = new StreamReader(configEntry.Open());
-                parent.ConfigFile = ConfigFileData.ReadFromContent(Path.GetFileNameWithoutExtension(parent.FileName), reader.ReadToEnd());
+                parent.ConfigFile = GameConfigTextData.ReadFromContent(reader.ReadToEnd(), Path.GetFileNameWithoutExtension(parent.FileName));
             }
             else
             {

@@ -10,6 +10,7 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit;
+using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Studio.Modules.Arma3Data;
@@ -23,7 +24,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
     internal class Arma3WorldEditorViewModel : PersistedDocument
     {
         private EditableWrp? _world;
-        private ConfigFileData? _configFile;
+        private GameConfigTextData? _configFile;
         private string _targetModDirectory = string.Empty;
         private int savedRevision;
         private List<RevisionHistoryEntry> _backups = new List<RevisionHistoryEntry>();
@@ -64,7 +65,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             var configFile = ConfigFilePath(filePath);
             if (File.Exists(configFile))
             {
-                ConfigFile = ConfigFileData.ReadFromFile(configFile, worldName);
+                ConfigFile = GameConfigTextData.ReadFromFile(configFile, worldName);
             }
             else
             {
@@ -95,7 +96,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         private static string ConfigFilePath(string filePath)
         {
-            return Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, "config.cpp");
+            return Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, GameConfigTextData.FileName);
         }
 
         private async Task<List<ModDependencyDefinition>> ReadDependencies(string dependenciesFile)
@@ -133,7 +134,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             set { _world = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Size)); }
         }
 
-        public ConfigFileData? ConfigFile
+        public GameConfigTextData? ConfigFile
         {
             get { return _configFile; }
             set { _configFile = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(CanGenerateMod)); }
@@ -202,7 +203,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 }
                 if (ConfigFile != null)
                 {
-                    ConfigFile.SaveToFile(ConfigFilePath(filePath));
+                    ConfigFile.SaveIncrementalToFile(ConfigFilePath(filePath));
                     savedRevision = ConfigFile.Revision;
                 }
                 if (Dependencies != null)
