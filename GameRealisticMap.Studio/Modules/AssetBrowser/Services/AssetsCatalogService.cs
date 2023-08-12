@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,12 +9,15 @@ using BIS.Core.Streams;
 using BIS.P3D;
 using BIS.P3D.ODOL;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using NLog;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
 {
     [Export(typeof(IAssetsCatalogService))]
     internal class AssetsCatalogService : IAssetsCatalogService
     {
+        private static readonly Logger logger = NLog.LogManager.GetLogger("AssetsCatalogService");
+
         private readonly IArma3DataModule arma3DataModule;
 
         [ImportingConstructor]
@@ -45,11 +47,18 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             var result = new List<AssetCatalogItem>();
             foreach(var path in paths)
             {
-                using var stream = arma3DataModule.ProjectDrive.OpenFileIfExists(path);
-                if (stream != null)
+                try
                 {
-                    var infos = StreamHelper.Read<P3DInfosOnly>(stream);
-                    result.Add(new AssetCatalogItem(path, GetModId(modId, path), DetectModel(infos.ModelInfo, path), infos.ModelInfo.BboxMax.Vector3 - infos.ModelInfo.BboxMin.Vector3, GetHeight(infos.ModelInfo)));
+                    using var stream = arma3DataModule.ProjectDrive.OpenFileIfExists(path);
+                    if (stream != null)
+                    {
+                        var infos = StreamHelper.Read<P3DInfosOnly>(stream);
+                        result.Add(new AssetCatalogItem(path, GetModId(modId, path), DetectModel(infos.ModelInfo, path), infos.ModelInfo.BboxMax.Vector3 - infos.ModelInfo.BboxMin.Vector3, GetHeight(infos.ModelInfo)));
+                    }
+                }
+                catch(Exception ex)
+                {
+                    logger.Warn(ex, "Import of {0} from {1} failed.", path, modId);
                 }
             }
             return Task.FromResult(result);
@@ -104,7 +113,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             }
             if (string.IsNullOrEmpty(modelInfo.Class))
             {
-                Trace.WriteLine($"No clue for '{name}'");
+                logger.Debug($"No clue for '{name}'");
                 return AssetCatalogCategory.Unknown;
             }
             return ClassToCategory(modelInfo.Class, name);
@@ -127,7 +136,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 case "house":
                     return AssetCatalogCategory.Building;
             }
-            Trace.WriteLine($"Unknown class='{modelClass}' for '{name}'");
+            logger.Debug($"Unknown class='{modelClass}' for '{name}'");
             return AssetCatalogCategory.Unknown;
         }
 
@@ -197,7 +206,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 case MapType.Track:
                     return AssetCatalogCategory.BridgeOrRoad;
             }
-            Trace.WriteLine($"Unknown map='{modelInfo.MapType}' for '{name}'");
+            logger.Debug($"Unknown map='{modelInfo.MapType}' for '{name}'");
             return AssetCatalogCategory.Unknown;
         }
     }

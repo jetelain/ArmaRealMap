@@ -15,23 +15,28 @@ using GameRealisticMap.Studio.Modules.AssetBrowser.Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
+using NLog;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
     [Export(typeof(AssetBrowserViewModel))]
     internal class AssetBrowserViewModel : Document
     {
+        private static readonly Logger logger = NLog.LogManager.GetLogger("AssetBrowser");
+
         private readonly IArma3DataModule _arma3DataModule;
         private readonly IArma3Previews _arma3Previews;
         private readonly IAssetsCatalogService _catalogService;
         private readonly IArma3ModsService _modsService;
 
         public BindableCollection<AssetViewModel>? AllAssets { get; set; }
+
         public ICollectionView? Assets { get; set; }
 
         public BindableCollection<ModOption> Mods { get; } = new BindableCollection<ModOption>();
 
         public List<CategoryOption> Categories { get; } = new List<CategoryOption>();
+
         public List<CategoryOption> SetCategories { get; } = new List<CategoryOption>();
 
         public List<ModInfo> ActiveMods { get; set; } = new List<ModInfo>();
@@ -144,19 +149,34 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         private async Task DoImport(List<string> paths, string modId)
         {
-            IsImporting = true; 
+            var target = AllAssets;
+            if (target == null)
+            {
+                return;
+            }
+
+            IsImporting = true;
             NotifyOfPropertyChange(nameof(IsImporting));
-            var target = AllAssets!;
-            var existing = target.Select(a => a.Path)?.ToHashSet(StringComparer.OrdinalIgnoreCase) ?? new HashSet<string>();
-            var needImport = paths.Where(p => !existing.Contains(p)).ToList();
-            var imported = await _catalogService.ImportItems(needImport, modId).ConfigureAwait(false);
-            var models = imported.Select(m => new AssetViewModel(m, _arma3Previews.GetPreviewFast(m.Path))).ToList();
-            target.AddRange(models);
-            UpdateModsList(models);
-            await _catalogService.SaveTo(AssetsCatalogPath, target.Select(i => i.Item).ToList());
+
+            try
+            {
+                var existing = target.Select(a => a.Path).ToHashSet(StringComparer.OrdinalIgnoreCase) ?? new HashSet<string>();
+                var needImport = paths.Where(p => !existing.Contains(p)).ToList();
+                var imported = await _catalogService.ImportItems(needImport, modId).ConfigureAwait(false);
+                var models = imported.Select(m => new AssetViewModel(m, _arma3Previews.GetPreviewFast(m.Path))).ToList();
+                target.AddRange(models);
+                await _catalogService.SaveTo(AssetsCatalogPath, target.Select(i => i.Item).ToList());
+                UpdateModsList(models);
+
+                _ = Task.Run(() => LoadPreviews(models.Where(a => !a.Preview.IsFile).ToList()));
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+            }
+
             IsImporting = false;
             NotifyOfPropertyChange(nameof(IsImporting));
-            await LoadPreviews(models.Where(a => !a.Preview.IsFile).ToList());
         }
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
