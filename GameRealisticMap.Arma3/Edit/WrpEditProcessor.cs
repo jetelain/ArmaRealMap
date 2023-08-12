@@ -133,6 +133,8 @@ namespace GameRealisticMap.Arma3.Edit
 
             if (nomatch.Count > 0)
             {
+                _progressSystem.WriteLine($"{nomatch.Count} did not match on first pass, use relaxed matching.");
+
                 using (var report = _progressSystem.CreateStep("RemoveRelaxed", objects.Count))
                 {
                     for (int i = 0; i < objects.Count; ++i)
@@ -155,6 +157,8 @@ namespace GameRealisticMap.Arma3.Edit
                     }
                 }
             }
+
+            _progressSystem.WriteLine($"{removed} objects removed, for {toRemove.Count} requested.");
 
             return objects;
         }
