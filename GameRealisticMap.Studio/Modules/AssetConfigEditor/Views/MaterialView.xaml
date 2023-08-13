@@ -63,15 +63,29 @@
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.SatelliteRenderImage}" />
                 </Label>
-                <Image Source="{Binding FakeSatPreview}" Width="24" Height="24"  />
-                <Button Margin="10 0 0 0" cal:Message.Attach="RegenerateFakeSatImage" Padding="5 0">
-                    <Run Text="{x:Static r:Labels.GenerateFromTexture}" />
-                </Button>
-                <Button Margin="10 0 0 0" cal:Message.Attach="SelectFakeSatImage" Padding="5 0">
-                    <Run Text="{x:Static r:Labels.SelectAnImage}" />
-                </Button>
+                
+                <Border Width="60" >
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding FakeSatPreview}" 
+                                TileMode="Tile"  
+                                Stretch="Uniform"
+                                AlignmentY="Top"
+                                Viewport="0,0,10,10" 
+                                ViewportUnits="Absolute" />
+                    </Border.Background>
+                </Border>
+
+                <StackPanel Margin="10 0 0 0">
+                    <Button cal:Message.Attach="RegenerateFakeSatImage" Padding="5 3">
+                        <Run Text="{x:Static r:Labels.GenerateFromTexture}" />
+                    </Button>
+                    <Button cal:Message.Attach="SelectFakeSatImage" Padding="5 3" Margin="0 5 0 0 ">
+                        <Run Text="{x:Static r:Labels.SelectAnImage}" />
+                    </Button>
+                </StackPanel>
+                
             </StackPanel>
-            
+
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -80,6 +94,7 @@
                 <Image Source="{Binding ColorTexture, Converter={StaticResource TexturePreviewConverter}}" Margin="5" />
                 <Image Source="{Binding NormalTexture, Converter={StaticResource TexturePreviewConverter}}" Grid.Column="1" Margin="5" />
             </Grid>
+
             
             
         </StackPanel>

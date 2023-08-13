@@ -160,7 +160,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             var uri = IoC.Get<IArma3Previews>().GetTexturePreview(_colorTexture);
             if (uri != null && uri.IsFile)
             {
-                SetFakeSatImageFromFile(uri.LocalPath);
+                using var img = Image.Load(uri.LocalPath);
+                img.Mutate(d =>
+                {
+                    d.Resize(1, 1);
+                    d.Resize(8, 8);
+                });
+                SetFakeSatImage(img);
             }
         }
 
@@ -177,15 +183,14 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             if (dialog.ShowDialog() == true)
             {
-                SetFakeSatImageFromFile(dialog.FileName);
+                using var img = Image.Load(dialog.FileName);
+                SetFakeSatImage(img);
             }
             return Task.CompletedTask;
         }
 
-        private void SetFakeSatImageFromFile(string path)
+        private void SetFakeSatImage(Image img)
         {
-            var img = Image.Load(path);
-            img.Mutate(d => d.Resize(8, 8));
             var mem = new MemoryStream();
             img.SaveAsPng(mem);
             FakeSatPngImage = mem.ToArray();
