@@ -26,7 +26,7 @@ namespace GameRealisticMap.Arma3
         private readonly IArma3RegionAssets assets;
         private readonly ProjectDrive projectDrive;
 
-        private const int MaxTerrainBuilderImageSize = 20000; // ~1.2 GB at 24 bpp
+        private const int MaxTerrainBuilderImageSize = 25000; // ~1.8 GB at 24 bpp
 
         private record ImageryPart(int X, int Y, int E, int N, int Size, string Name);
 
