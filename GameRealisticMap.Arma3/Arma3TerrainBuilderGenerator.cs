@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Arma3.Assets;
+﻿using System.Text;
+using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.Imagery;
 using GameRealisticMap.Arma3.IO;
@@ -24,6 +25,10 @@ namespace GameRealisticMap.Arma3
     {
         private readonly IArma3RegionAssets assets;
         private readonly ProjectDrive projectDrive;
+
+        private const int MaxTerrainBuilderImageSize = 20000; // ~1.2 GB at 24 bpp
+
+        private record ImageryPart(int X, int Y, int E, int N, int Size, string Name);
 
         public Arma3TerrainBuilderGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive)
         {
@@ -99,7 +104,7 @@ namespace GameRealisticMap.Arma3
             }
 
             // Imagery
-            await ExportImagery(progress, config, context, targetDirectory).ConfigureAwait(false);
+            var parts = await ExportImagery(progress, config, context, targetDirectory).ConfigureAwait(false);
             progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
@@ -117,7 +122,7 @@ namespace GameRealisticMap.Arma3
             // Objects
             await ExportObjects(progress, config, context, generators, targetDirectory);
 
-            await File.WriteAllTextAsync(Path.Combine(targetDirectory, "README.txt"), CreateReadMe(config, targetDirectory));
+            await File.WriteAllTextAsync(Path.Combine(targetDirectory, "README.txt"), CreateReadMe(config, targetDirectory, parts));
         }
 
         private async Task ExportObjects(IProgressTask progress, Arma3MapConfig config, BuildContext context, Arma3LayerGeneratorCatalog generators, string targetDirectory)
@@ -173,28 +178,62 @@ namespace GameRealisticMap.Arma3
             }
         }
 
-        private async Task ExportImagery(IProgressTask progress, Arma3MapConfig config, BuildContext context, string targetDirectory)
+        private async Task<List<ImageryPart>> ExportImagery(IProgressTask progress, Arma3MapConfig config, BuildContext context, string targetDirectory)
         {
+            var parts = GenerateParts(config);
+
             var source = new ImagerySource(assets.Materials, progress, projectDrive, config, context);
             using (var idMap = source.CreateIdMap())
             {
-                await WriteImage(idMap, Path.Combine(targetDirectory, "idmap.png")).ConfigureAwait(false);
+                await WriteImage(progress, idMap, Path.Combine(targetDirectory, "idmap.png"), parts).ConfigureAwait(false);
             }
             ImageryCompiler.CreateConfigCppImages(projectDrive, config, source);
             using (var satMap = source.CreateSatMap())
             {
-                await WriteImage(satMap, Path.Combine(targetDirectory, "satmap.png")).ConfigureAwait(false);
+                await WriteImage(progress, satMap, Path.Combine(targetDirectory, "satmap.png"), parts).ConfigureAwait(false);
             }
             context.DisposeHugeImages();
+
+            return parts;
         }
 
-        private string? CreateReadMe(Arma3MapConfig config, string targetDirectory)
+        private static List<ImageryPart> GenerateParts(Arma3MapConfig config)
+        {
+            var parts = new List<ImageryPart>();
+
+            var hsize = config.GetImagerySize().Width;
+            if (hsize < MaxTerrainBuilderImageSize)
+            {
+                parts.Add(new ImageryPart(0, 0, TerrainBuilderObject.XShift, 0, hsize, string.Empty));
+            }
+            else
+            {
+                var psize = hsize;
+                while (psize > MaxTerrainBuilderImageSize)
+                {
+                    psize /= 2;
+                }
+                for (int x = 0; x < hsize; x += psize)
+                {
+                    for (int y = 0; y < hsize; y += psize)
+                    {
+                        int e = TerrainBuilderObject.XShift + x;
+                        int n = hsize - y - psize;
+                        parts.Add(new ImageryPart(x, y, e, n, psize, $".E{e}_N{n}"));
+                    }
+                }
+            }
+
+            return parts;
+        }
+
+        private string? CreateReadMe(Arma3MapConfig config, string targetDirectory, List<ImageryPart> parts)
         {
             var tiler = new ImageryTiler(config);
 
             var textureLayerSize = config.SizeInMeters / WrpCompiler.LandRange(config.SizeInMeters);
 
-            return  FormattableString.Invariant($@"# {config.WorldName}
+            return FormattableString.Invariant($@"# {config.WorldName}
 
 See https://github.com/jetelain/ArmaRealMap/wiki/Terrain-Builder-Export for additional instructions.
 
@@ -241,21 +280,7 @@ Import '{Path.Combine(targetDirectory, "elevation.asc")}' with 'File > Import > 
 
 ## Imagery
 
-Import '{Path.Combine(targetDirectory, "satmap.png")}' with 'File > Import > Satellite images...'.
-
-Import '{Path.Combine(targetDirectory, "idmap.png")}' with 'File > Import > Surface mask images...'.
-
-For both import, use following Localisation Options :
-
-    Left-Bottom location
-        Easting  = {TerrainBuilderObject.XShift}
-        Northing = 0
-    
-    Resolution
-        X (m/px) = {config.Resolution}
-        Y (m/px) = {config.Resolution}
-
-For large images this operation can take several minutes.
+{GetImagertReadMe(config, targetDirectory, parts)}
 
 ## Libraries
 
@@ -275,19 +300,83 @@ Files absolute_*.txt have to be imported with absolute elevation.
 ");
         }
 
-        private static async Task WriteImage(HugeImage<Rgba32> idMap, string filename)
+        private static string GetImagertReadMe(Arma3MapConfig config, string targetDirectory, List<ImageryPart> parts)
         {
-            using (var bigImage = new Image<Rgb24>(idMap.Size.Width, idMap.Size.Height))
+            if (parts.Count > 1)
             {
-                // TODO: Build smaller images if size is too big
+                var sb = new StringBuilder();
+                sb.AppendLine(FormattableString.Invariant(
+                    $@"Images are located in '{targetDirectory}',
 
-                await bigImage.MutateAsync(async i =>
+Import Satellite images with 'File > Import > Satellite images...'.
+
+Import Surface images with 'File > Import > Surface mask images...'."));
+                sb.AppendLine();
+                sb.AppendLine("| Easting       | Northing      | Satellite                        | Surface                          |");
+                sb.AppendLine("|---------------|---------------|----------------------------------|----------------------------------|");
+                foreach(var part in parts)
                 {
-                    await i.DrawHugeImageAsync(idMap, Point.Empty).ConfigureAwait(false);
+                    sb.Append("| ");
+                    sb.Append(part.E.ToString().PadLeft(13, ' '));
+                    sb.Append(" | ");
+                    sb.Append(part.N.ToString().PadLeft(13, ' '));
+                    sb.Append(" | ");
+                    sb.Append(($"satmap{part.Name}.png").PadRight(32, ' '));
+                    sb.Append(" | ");
+                    sb.Append(($"idmap{part.Name}.png").PadRight(32, ' '));
+                    sb.AppendLine(" |");
+                }
+                sb.AppendLine();
+                sb.Append(FormattableString.Invariant(
+    $@"For all imports, use following Localisation Options :
 
-                }).ConfigureAwait(false);
+    Left-Bottom location
+        Easting  = Value in column Easting
+        Northing = Value in column Northing
+    
+    Resolution
+        X (m/px) = {config.Resolution}
+        Y (m/px) = {config.Resolution}
 
-                await bigImage.SaveAsPngAsync(filename).ConfigureAwait(false);
+For large images this operation can take several minutes."));
+                return sb.ToString();
+            }
+
+
+            return FormattableString.Invariant($@"Import '{Path.Combine(targetDirectory, "satmap.png")}' with 'File > Import > Satellite images...'.
+
+Import '{Path.Combine(targetDirectory, "idmap.png")}' with 'File > Import > Surface mask images...'.
+
+For both import, use following Localisation Options :
+
+    Left-Bottom location
+        Easting  = {TerrainBuilderObject.XShift}
+        Northing = 0
+    
+    Resolution
+        X (m/px) = {config.Resolution}
+        Y (m/px) = {config.Resolution}
+
+For large images this operation can take several minutes.");
+        }
+
+        private static async Task WriteImage(IProgressTask task, HugeImage<Rgba32> himage, string filename, List<ImageryPart> parts)
+        {
+            using var report = task.CreateStep(Path.GetFileName(filename), parts.Count);
+
+            foreach (var part in parts)
+            {
+                using (var image = new Image<Rgb24>(part.Size, part.Size))
+                {
+                    await image.MutateAsync(async i =>
+                    {
+                        await i.DrawHugeImageAsync(himage, new Point(part.X, part.Y), new Point(0, 0), new Size(part.Size)).ConfigureAwait(false);
+
+                    }).ConfigureAwait(false);
+
+                    await image.SaveAsPngAsync(Path.ChangeExtension(filename, part.Name + ".png")).ConfigureAwait(false);
+                }
+                report.ReportOneDone();
             }
         }
 
