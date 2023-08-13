@@ -1039,4 +1039,25 @@ Last generated on {1}</value>
   <data name="RecentGeneratedMapsHint" xml:space="preserve">
     <value>Use Eden Editor in Arma 3 to improve a generated map and integrate back here the changes.</value>
   </data>
+  <data name="FakeSatBlend" xml:space="preserve">
+    <value>Satellite image blend</value>
+  </data>
+  <data name="FakeSatBlend0" xml:space="preserve">
+    <value>Real image</value>
+  </data>
+  <data name="FakeSatBlend1" xml:space="preserve">
+    <value>Texture colors</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Resolution</value>
+  </data>
+  <data name="ResolutionUnit" xml:space="preserve">
+    <value>meters per pixels. [BETA] Only '1' have been tested.</value>
+  </data>
+  <data name="Pixels" xml:space="preserve">
+    <value>pixels</value>
+  </data>
+  <data name="WorldNameHint" xml:space="preserve">
+    <value>Technical name, should be globally unique.</value>
+  </data>
 </root>

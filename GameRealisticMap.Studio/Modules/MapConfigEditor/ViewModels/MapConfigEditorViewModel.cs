@@ -59,9 +59,40 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 }
                 NotifyOfPropertyChange(nameof(SouthWest));
                 NotifyOfPropertyChange(nameof(Center));
-                NotifyOfPropertyChange(nameof(Locations));
+                NotifyCoordinatesRelated();
                 IsDirty = true;
             }
+        }
+
+        private void NotifyCoordinatesRelated()
+        {
+            NotifyOfPropertyChange(nameof(Locations));
+
+            UpdateAutomaticValues();
+        }
+
+        private void UpdateAutomaticValues()
+        {
+            AutomaticWorldName = string.Empty;
+            AutomaticPboPrefix = string.Empty;
+            AutomaticTargetModDirectory = string.Empty;
+            AutomaticTileSize = 512;
+            if (!string.IsNullOrEmpty(Center) || !string.IsNullOrEmpty(SouthWest))
+            {
+                try
+                {
+                    var config = Config.ToArma3MapConfig();
+                    AutomaticWorldName = config.WorldName;
+                    AutomaticPboPrefix = config.PboPrefix;
+                    AutomaticTargetModDirectory = config.TargetModDirectory;
+                    AutomaticTileSize = config.TileSize;
+                }
+                catch { } // Ignore any validation error
+            }
+            NotifyOfPropertyChange(nameof(AutomaticWorldName));
+            NotifyOfPropertyChange(nameof(AutomaticPboPrefix));
+            NotifyOfPropertyChange(nameof(AutomaticTargetModDirectory));
+            NotifyOfPropertyChange(nameof(AutomaticTileSize));
         }
 
         public string SouthWest
@@ -76,7 +107,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 }
                 NotifyOfPropertyChange(nameof(SouthWest));
                 NotifyOfPropertyChange(nameof(Center));
-                NotifyOfPropertyChange(nameof(Locations));
+                NotifyCoordinatesRelated();
                 IsDirty = true;
             }
         }
@@ -89,7 +120,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 Config.GridCellSize = NormalizeCellSize(value);
                 NotifyOfPropertyChange(nameof(MapSize));
                 NotifyOfPropertyChange(nameof(GridCellSize));
-                NotifyOfPropertyChange(nameof(Locations));
+                NotifyCoordinatesRelated();
                 IsDirty = true;
             }
         }
@@ -102,7 +133,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 Config.GridSize = value;
                 NotifyOfPropertyChange(nameof(MapSize));
                 NotifyOfPropertyChange(nameof(GridSize));
-                NotifyOfPropertyChange(nameof(Locations));
+                NotifyCoordinatesRelated();
                 IsDirty = true;
             }
         }
@@ -126,7 +157,38 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 NotifyOfPropertyChange(nameof(MapSize));
                 NotifyOfPropertyChange(nameof(GridSize));
                 NotifyOfPropertyChange(nameof(GridCellSize));
-                NotifyOfPropertyChange(nameof(Locations));
+                NotifyCoordinatesRelated();
+                IsDirty = true;
+            }
+        }
+
+        public string WorldName
+        {
+            get { return Config.WorldName ?? string.Empty; }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    Arma3ConfigHelper.ValidateWorldName(value);
+                }
+                Config.WorldName = value;
+                NotifyOfPropertyChange(nameof(WorldName));
+                UpdateAutomaticValues();
+                IsDirty = true;
+            }
+        }
+
+        public string PboPrefix
+        {
+            get { return Config.PboPrefix ?? string.Empty; }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    Arma3ConfigHelper.ValidatePboPrefix(value);
+                }
+                Config.PboPrefix = value;
+                NotifyOfPropertyChange(nameof(PboPrefix));
                 IsDirty = true;
             }
         }
@@ -197,6 +259,11 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         public IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
 
+        public string AutomaticWorldName { get; private set; }
+        public string AutomaticPboPrefix { get; private set; }
+        public string AutomaticTargetModDirectory { get; private set; }
+        public int AutomaticTileSize { get; private set; } = 512;
+
         protected override async Task DoLoad(string filePath)
         {
             using var stream = File.OpenRead(filePath);
@@ -207,9 +274,9 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(MapSize));
             NotifyOfPropertyChange(nameof(GridSize));
             NotifyOfPropertyChange(nameof(GridCellSize));
-            NotifyOfPropertyChange(nameof(Locations));
             NotifyOfPropertyChange(nameof(BoundingBox));
             NotifyOfPropertyChange(nameof(AssetConfigFile));
+            NotifyCoordinatesRelated();
             await CheckDependencies();
         }
 

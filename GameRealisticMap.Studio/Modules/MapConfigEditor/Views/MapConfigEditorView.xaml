@@ -8,6 +8,7 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.MapConfigEditor.Views"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="1200" d:DesignWidth="800">
     <UserControl.Resources>
@@ -116,25 +117,55 @@
                 <StackPanel  Orientation="Vertical">
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">WorldName</Label>
-                        <TextBox Width="200" Text="{Binding Config.WorldName,Mode=TwoWay}" />
+                        <toolkit:WatermarkTextBox Width="200" Text="{Binding WorldName, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticWorldName}"  />
+                        <TextBlock Margin="10 0" VerticalAlignment="Center">
+                            <Run Text="{x:Static r:Labels.WorldNameHint}" />
+                        </TextBlock>
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
-                        <Label Width="200">PboPrefix</Label>
-                        <TextBox Width="200" Text="{Binding Config.PboPrefix,Mode=TwoWay}" />
+                        <Label Width="200">
+                            <Run Text="{x:Static r:Labels.PboPrefix}"/>
+                        </Label>
+                        <toolkit:WatermarkTextBox Width="200" Text="{Binding PboPrefix, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticPboPrefix}"  />
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">TileSize</Label>
-                        <TextBox Width="200" Text="{Binding Config.TileSize,Mode=TwoWay}" />
-                        <TextBlock Margin="10 0">pixels</TextBlock>
+                        <toolkit:WatermarkTextBox Width="200" Text="{Binding Config.TileSize,Mode=TwoWay, ValidatesOnExceptions=True}"  Watermark="{Binding AutomaticTileSize}" />
+                        <TextBlock Margin="10 0">
+                            <Run Text="{x:Static r:Labels.Pixels}" />
+                        </TextBlock>
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
-                        <Label Width="200">Resolution</Label>
-                        <TextBox Width="200" Text="{Binding Config.Resolution,Mode=TwoWay}" />
-                        <TextBlock Margin="10 0">meters per pixels</TextBlock>
+                        <Label Width="200">
+                            <Run Text="{x:Static r:Labels.Resolution}"/>
+                        </Label>
+                        <TextBox Width="200" Text="{Binding Config.Resolution,Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock Margin="10 0">
+                            <Run Text="{x:Static r:Labels.ResolutionUnit}" />
+                        </TextBlock>
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
-                        <Label Width="200">FakeSatBlend</Label>
-                        <TextBox Width="200" Text="{Binding Config.FakeSatBlend,Mode=TwoWay}" />
+                        <Label Width="200">
+                            <Run Text="{x:Static r:Labels.FakeSatBlend}"/>
+                        </Label>
+                        <TextBox Width="50" Margin="0 0 10 0" Text="{Binding Config.FakeSatBlend,Mode=TwoWay, ValidatesOnExceptions=True}" />
+
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{x:Static r:Labels.FakeSatBlend0}" />
+                        </TextBlock>
+                        <Slider 
+                            Value="{Binding Config.FakeSatBlend,Mode=TwoWay, ValidatesOnExceptions=True}" 
+                            Minimum="0" Maximum="1" Width="200" 
+                            TickFrequency="0.01" TickPlacement="BottomRight" IsSnapToTickEnabled="True" />
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{x:Static r:Labels.FakeSatBlend1}" />
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200">
+                            <Run Text="{x:Static r:Labels.ModDirectory}" />
+                        </Label>
+                        <toolkit:WatermarkTextBox Width="500" Text="{Binding Config.TargetModDirectory, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticTargetModDirectory}"  />
                     </StackPanel>
                 </StackPanel>
             </Expander>

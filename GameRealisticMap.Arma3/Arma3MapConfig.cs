@@ -50,6 +50,9 @@ namespace GameRealisticMap.Arma3
             {
                 TargetModDirectory = arma3MapConfigJson.TargetModDirectory;
             }
+
+            Arma3ConfigHelper.ValidatePboPrefix(PboPrefix);
+            Arma3ConfigHelper.ValidateWorldName(WorldName);
         }
 
         private static int DetectTileSize(int imageSizeInPixels)

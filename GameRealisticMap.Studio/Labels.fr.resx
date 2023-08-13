@@ -1039,4 +1039,25 @@ Vous pouvez éventuellement activer d'autres mods.</value>
     <value>WorldName: {0}
 Dernière génération le {1}</value>
   </data>
+  <data name="FakeSatBlend" xml:space="preserve">
+    <value>Mélange d'image satellite</value>
+  </data>
+  <data name="FakeSatBlend0" xml:space="preserve">
+    <value>Image réelle</value>
+  </data>
+  <data name="FakeSatBlend1" xml:space="preserve">
+    <value>Couleur des textures</value>
+  </data>
+  <data name="Pixels" xml:space="preserve">
+    <value>pixels</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Résolution</value>
+  </data>
+  <data name="ResolutionUnit" xml:space="preserve">
+    <value>mètres par pixels. [BETA] Seule la valeur '1' a été testée.</value>
+  </data>
+  <data name="WorldNameHint" xml:space="preserve">
+    <value>Nom technique, devrait être globalement unique.</value>
+  </data>
 </root>

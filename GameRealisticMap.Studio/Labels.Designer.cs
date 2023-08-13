@@ -1367,6 +1367,33 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Satellite image blend.
+        /// </summary>
+        public static string FakeSatBlend {
+            get {
+                return ResourceManager.GetString("FakeSatBlend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Real image.
+        /// </summary>
+        public static string FakeSatBlend0 {
+            get {
+                return ResourceManager.GetString("FakeSatBlend0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Texture colors.
+        /// </summary>
+        public static string FakeSatBlend1 {
+            get {
+                return ResourceManager.GetString("FakeSatBlend1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à This feature requires an additional mod from Steam Workshop:.
         /// </summary>
         public static string FeatureRequiresAdditionalMod {
@@ -2252,6 +2279,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à pixels.
+        /// </summary>
+        public static string Pixels {
+            get {
+                return ResourceManager.GetString("Pixels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Preview.
         /// </summary>
         public static string Preview {
@@ -2392,6 +2428,24 @@ namespace GameRealisticMap.Studio {
         public static string RequiredToolsDescription {
             get {
                 return ResourceManager.GetString("RequiredToolsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Resolution.
+        /// </summary>
+        public static string Resolution {
+            get {
+                return ResourceManager.GetString("Resolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à meters per pixels. [BETA] Only &apos;1&apos; have been tested..
+        /// </summary>
+        public static string ResolutionUnit {
+            get {
+                return ResourceManager.GetString("ResolutionUnit", resourceCulture);
             }
         }
         
@@ -2788,6 +2842,15 @@ namespace GameRealisticMap.Studio {
         public static string Width {
             get {
                 return ResourceManager.GetString("Width", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Technical name, should be globally unique..
+        /// </summary>
+        public static string WorldNameHint {
+            get {
+                return ResourceManager.GetString("WorldNameHint", resourceCulture);
             }
         }
         
