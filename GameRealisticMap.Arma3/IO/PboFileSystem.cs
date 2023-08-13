@@ -67,7 +67,7 @@ namespace GameRealisticMap.Arma3.IO
         {
             foreach(var path in gamePaths)
             {
-                foreach(var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories).Where(f => ShouldRead(f)))
+                foreach (var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories).Where(f => ShouldRead(f)))
                 {
                     AddCacheDefault(pboPath);
                 }
@@ -75,9 +75,12 @@ namespace GameRealisticMap.Arma3.IO
 
             foreach (var path in mods)
             {
-                foreach (var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories))
+                if (Directory.Exists(path))
                 {
-                    AddCacheDefault(pboPath);
+                    foreach (var pboPath in Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories))
+                    {
+                        AddCacheDefault(pboPath);
+                    }
                 }
             }
         }

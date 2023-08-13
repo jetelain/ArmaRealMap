@@ -53,11 +53,13 @@ namespace GameRealisticMap.ManMade.Railways
             return new RailwaysData(railways);
         }
 
-        private void AddNormalSegment(List<Railway> railways, List<TerrainPoint> crossing, TerrainSpacialIndex<Road> roadsIndex, TerrainPath segment)
+        private void AddNormalSegment(List<Railway> railways, List<TerrainPoint> crossing, TerrainSpacialIndex<Road> roadsIndex, TerrainPath segment, int recursion = 0)
         {
             var crossingPoint = segment.Points.FirstOrDefault(p => crossing.Contains(p));
-            if (crossingPoint != null)
+            if (crossingPoint != null && recursion < 200)
             {
+                crossing.Remove(crossingPoint);
+
                 var indexInRailway = segment.Points.IndexOf(crossingPoint);
 
                 var road = roadsIndex.Search(crossingPoint, crossingPoint).FirstOrDefault(r => r.Path.Points.Contains(crossingPoint));
@@ -94,11 +96,11 @@ namespace GameRealisticMap.ManMade.Railways
 
                     if (seg1.Length > 0 && seg3.Length > 0)
                     {
-                        AddNormalSegment(railways, crossing, roadsIndex, seg1);
+                        AddNormalSegment(railways, crossing, roadsIndex, seg1, recursion + 1);
 
                         railways.Add(new Railway(WaySpecialSegment.Crossing, seg2));
 
-                        AddNormalSegment(railways, crossing, roadsIndex, seg3);
+                        AddNormalSegment(railways, crossing, roadsIndex, seg3, recursion + 1);
 
                         return;
                     }

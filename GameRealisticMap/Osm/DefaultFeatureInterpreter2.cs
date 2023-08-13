@@ -521,10 +521,7 @@ namespace GameRealisticMap.Osm
 
         private static AttributesTable TagsAndIdToAttributes(ICompleteOsmGeo osmObject)
         {
-            var attr = osmObject.Tags.ToAttributeTable();
-            attr.Add("id", osmObject.Id);
-
-            return attr;
+            return osmObject.Tags.ToAttributeTable();
         }
     }
 }
