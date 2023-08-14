@@ -8,7 +8,7 @@
     <ApplicationIcon>Resources\grms.ico</ApplicationIcon>
 	<Company>GameRealisticMap</Company>
 	<Platforms>AnyCPU;x64</Platforms>
-	<FileVersion>0.4.1</FileVersion>
+	<FileVersion>0.5</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
