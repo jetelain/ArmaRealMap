@@ -36,24 +36,29 @@ namespace GameRealisticMap.Arma3.TerrainBuilder.TmlFiles
 
         private string GetBundle(ModelInfo a)
         {
-            if (a.Path.StartsWith("a3\\"))
+            return GetBundle(a.Path);
+        }
+
+        internal static string GetBundle(string path)
+        {
+            if (path.StartsWith("a3\\"))
             {
                 return "arma3";
             }
-            if (a.Path.StartsWith("z\\arm\\"))
+            if (path.StartsWith("z\\arm\\"))
             {
                 return "arm";
             }
-            var i = a.Path.IndexOf('\\');
+            var i = path.IndexOf('\\');
             if (i == -1)
             {
                 return "none";
             }
             if (i < 5)
             {
-                return Path.GetDirectoryName(a.Path)!.Replace("\\", "_");
+                return Path.GetDirectoryName(path)!.Replace("\\", "_");
             }
-            return a.Path.Substring(i);
+            return path.Substring(0, i);
         }
     }
 }
