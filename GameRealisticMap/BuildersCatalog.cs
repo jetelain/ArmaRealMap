@@ -54,6 +54,8 @@ namespace GameRealisticMap
             Register(new RailwaysBuilder(progress, crossingResolver));
             Register(new CitiesBuilder(progress));
             Register(new ElevationBuilder(progress, useFullGeoJson));
+            Register(new VineyardBuilder(progress));
+            Register(new OrchardBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)
