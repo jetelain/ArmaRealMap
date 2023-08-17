@@ -8,8 +8,8 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Filling;
+using GameRealisticMap.Arma3.Assets.Rows;
 using GameRealisticMap.Arma3.GameLauncher;
-using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
@@ -20,6 +20,7 @@ using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Railways;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Rows;
 using GameRealisticMap.Studio.Modules.CompositionTool;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer;
@@ -45,7 +46,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public BindableCollection<BuildingsViewModel> Buildings { get; } = new BindableCollection<BuildingsViewModel>();
 
-        public BindableCollection<ObjectsViewModel> Objects { get; } = new BindableCollection<ObjectsViewModel>();
+        public BindableCollection<NaturalRowViewModel> NaturalRows { get; } = new BindableCollection<NaturalRowViewModel>();
+
+        public BindableCollection<Individual.ObjectsViewModel> Objects { get; } = new BindableCollection<Individual.ObjectsViewModel>();
 
         public BindableCollection<MaterialViewModel> Materials { get; } = new BindableCollection<MaterialViewModel>();
 
@@ -79,6 +82,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 new ExplorerTreeItem(Labels.NaturalAreas, Filling, "Nature"),
                 new ExplorerTreeItem(Labels.FencesWalls, Fences, "Fence"),
+                new ExplorerTreeItem("Natural rows", NaturalRows, "NaturalRows"),
                 new ExplorerTreeItem(Labels.Buildings, Buildings, "Buildings"),
                 new ExplorerTreeItem(Labels.AssetObjects, Objects, "Objects"),
                 new ExplorerTreeItem(Labels.GroundMaterials, Materials, "Materials"),
@@ -89,7 +93,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             AdditionalFilling = CreateNatureFilling();
             AdditionalFences = CreateFences();
             RemoveFilling = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item, Filling));
-            RemoveFence = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item, Fences));
+            RemoveFence = new RelayCommand(item => DoRemoveFilling((FencesViewModel)item, Fences));
             BuiltinAssetConfigFiles = Arma3Assets.GetBuiltinList().Select(builtin => new ImportConfigCommand(builtin, this)).ToList();
         }
 
@@ -119,7 +123,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             return list;
         }
 
-        private void DoRemoveFilling(IFillAssetCategory item, BindableCollection<IFillAssetCategory> list)
+        private void DoRemoveFilling<T>(T item, BindableCollection<T> list) 
+            where T : class, IFillAssetCategory
         {
             if (list.Count(f => f != item && f.IsSameFillId(item.IdObj)) >= 1)
             {
@@ -190,11 +195,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             Materials.Clear();
             Ponds.Clear();
             Railways.Clear();
+            NaturalRows.Clear();
 
             Filling.AddRange(GetFilling(arma3Assets));
             Fences.AddRange(GetFences(arma3Assets));
             Objects.AddRange(GetObjects(arma3Assets));
             Buildings.AddRange(GetBuildings(arma3Assets));
+            NaturalRows.AddRange(GetNaturalRows(arma3Assets));
 
             foreach (var id in Enum.GetValues<TerrainMaterialUsage>().OrderByDescending(i => i))
             {
@@ -216,12 +223,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             Railways.Add(new RailwaysCrossingViewModel(arma3Assets.Railways?.Crossings, this));
         }
 
-        private List<ObjectsViewModel> GetObjects(Arma3Assets arma3Assets)
+        private List<Individual.ObjectsViewModel> GetObjects(Arma3Assets arma3Assets)
         {
-            var list = new List<ObjectsViewModel>();
+            var list = new List<Individual.ObjectsViewModel>();
             foreach (var id in Enum.GetValues<ObjectTypeId>())
             {
-                list.Add(new ObjectsViewModel(id, arma3Assets.GetObjects(id), this));
+                list.Add(new Individual.ObjectsViewModel(id, arma3Assets.GetObjects(id), this));
             }
             list.Sort((a, b) => a.PageTitle.CompareTo(b.PageTitle));
             return list;
@@ -273,6 +280,20 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             return list;
         }
 
+        private List<NaturalRowViewModel> GetNaturalRows(Arma3Assets arma3Assets)
+        {
+            var list = new List<NaturalRowViewModel>();
+            foreach (var id in Enum.GetValues<NaturalRowType>())
+            {
+                foreach (var entry in AtLeastOne(arma3Assets.GetNaturalRows(id)))
+                {
+                    list.Add(new NaturalRowViewModel(id, entry, this));
+                }
+            }
+            list.Sort((a, b) => a.PageTitle.CompareTo(b.PageTitle));
+            return list;
+        }
+
         private IEnumerable<T?> AtLeastOne<T>(IReadOnlyCollection<T> collection, T? one = null) where T : class
         {
             if (collection.Count == 0)
@@ -291,6 +312,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             json.Fences = Fences.Cast<FencesViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
             json.Buildings = Buildings.Where(c => !c.IsEmpty).OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
             json.Objects = Objects.Where(c => !c.IsEmpty).OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
+            json.NaturalRows = NaturalRows.Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
             var materialDefintions = Materials
                 .Where(m => m.SameAs == null)
                 .Select(m => new TerrainMaterialDefinition(m.ToDefinition(), Materials.Where(o => o == m || o.SameAs == m).Select(o => o.FillId).OrderBy(m => m).ToArray()))
@@ -333,7 +355,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 DefinitionHelper.EquilibrateProbabilities(list.ToList());
             }
-            foreach (var item in Filling.Concat(Fences).Concat(Buildings.Cast<IAssetCategory>()).Concat(Objects))
+            foreach (var list in NaturalRows.GroupBy(c => c.FillId))
+            {
+                DefinitionHelper.EquilibrateProbabilities(list.ToList());
+            }
+            foreach (var item in Filling.Concat(Fences).Concat(NaturalRows).Concat(Buildings.Cast<IAssetCategory>()).Concat(Objects))
             {
                 item.Equilibrate();
             }
@@ -392,6 +418,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .Concat(Roads.SelectMany(f => f.GetModels()))
                 .Concat(Ponds.Where(p => !string.IsNullOrEmpty(p.Model)).Select(p => p.Model!))
                 .Concat(Railways.SelectMany(f => f.GetModels()))
+                .Concat(NaturalRows.SelectMany(f => f.GetModels()))
                 .Distinct(StringComparer.OrdinalIgnoreCase);
         }
 

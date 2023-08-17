@@ -5,6 +5,7 @@ using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Fences;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Generic;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
@@ -22,7 +23,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 
         public FencesCornerOrEndViewModel Ends { get; }
 
-        public FenceObjectsViewModel Objects { get; }
+        public ObjectsViewModel Objects { get; }
 
         public FencesViewModel(FenceTypeId id, FenceDefinition? definition, AssetConfigEditorViewModel parent)
             : base(id, definition, parent)
@@ -34,7 +35,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
             LeftCorners = new FencesCornerOrEndViewModel(definition?.LeftCorners, GameRealisticMap.Studio.Labels.FenceLeftCorners, this);
             RightCorners = new FencesCornerOrEndViewModel(definition?.RightCorners, GameRealisticMap.Studio.Labels.FenceRightCorners, this);
             Ends = new FencesCornerOrEndViewModel(definition?.Ends, GameRealisticMap.Studio.Labels.FenceEnds, this);
-            Objects = new FenceObjectsViewModel(definition?.Objects, this);
+            Objects = new ObjectsViewModel(definition?.Objects, this);
             SegmentsItems = new() { Straights, LeftCorners, RightCorners, Ends };
             ObjectsItems = new() { Objects };
         }
@@ -110,7 +111,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 
         public override void Equilibrate()
         {
-
+            if (UseObjects)
+            {
+                DefinitionHelper.EquilibrateProbabilities(Objects.Items);
+            }
         }
 
         public override IEnumerable<string> GetModels()

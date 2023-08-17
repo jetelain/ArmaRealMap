@@ -14,9 +14,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 {
     internal class FencesStraightViewModel : PropertyChangedBase, IModelImporterTarget, IExplorerTreeItem, IExplorerTreeItemCounter
     {
-        private readonly FencesViewModel _parent;
+        private readonly IDocument _parent;
 
-        public FencesStraightViewModel(List<FenceStraightSegmentDefinition>? definition, FencesViewModel parent)
+        public FencesStraightViewModel(List<FenceStraightSegmentDefinition>? definition, IDocument parent)
         {
             _parent = parent;
             if (definition != null)
