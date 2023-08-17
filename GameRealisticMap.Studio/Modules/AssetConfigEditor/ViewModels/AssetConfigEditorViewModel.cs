@@ -66,6 +66,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public RelayCommand RemoveFence { get; }
 
+        public RelayCommand RemoveNaturalRow { get; }
+
         public bool IsLoading { get; set; }
 
         public List<ImportConfigCommand> BuiltinAssetConfigFiles { get; }
@@ -93,7 +95,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             AdditionalFilling = CreateNatureFilling();
             AdditionalFences = CreateFences();
             RemoveFilling = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item, Filling));
-            RemoveFence = new RelayCommand(item => DoRemoveFilling((FencesViewModel)item, Fences));
+            RemoveFence = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item, Fences));
+            RemoveNaturalRow = new RelayCommand(item => DoRemoveFilling((NaturalRowViewModel)item, NaturalRows));
             BuiltinAssetConfigFiles = Arma3Assets.GetBuiltinList().Select(builtin => new ImportConfigCommand(builtin, this)).ToList();
         }
 
