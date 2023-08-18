@@ -1,5 +1,6 @@
 ﻿using GameRealisticMap.Arma3.Assets.Fences;
 using GameRealisticMap.Arma3.Assets.Filling;
+using GameRealisticMap.Arma3.Assets.Rows;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Fences;
@@ -32,6 +33,8 @@ namespace GameRealisticMap.Arma3.Assets
         BridgeDefinition? GetBridge(RoadTypeId roadType);
 
         IReadOnlyCollection<FenceDefinition> GetFences(FenceTypeId typeId);
+
+        IReadOnlyCollection<RowDefinition> GetNaturalRows(NaturalRowType typeId);
 
         RailwaysDefinition? Railways { get; }
 

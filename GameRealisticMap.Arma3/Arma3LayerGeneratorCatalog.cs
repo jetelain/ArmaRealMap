@@ -1,5 +1,6 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.ManMade;
+using GameRealisticMap.Arma3.ManMade.Farmlands;
 using GameRealisticMap.Arma3.Nature.Forests;
 using GameRealisticMap.Arma3.Nature.Lakes;
 using GameRealisticMap.Arma3.Nature.RockAreas;
@@ -22,6 +23,8 @@ namespace GameRealisticMap.Arma3
             Generators.Add(new BridgeGenerator(progress, assets));
             Generators.Add(new FenceGenerator(progress, assets));
             Generators.Add(new RailwayGenerator(progress, assets));
+            Generators.Add(new VineyardsGenerator(progress, assets));
+            Generators.Add(new OrchardGenerator(progress, assets));
 
             // Nature
             Generators.Add(new ForestEdgeGenerator(progress, assets));
@@ -32,6 +35,7 @@ namespace GameRealisticMap.Arma3
             Generators.Add(new ScrubGenerator(progress, assets));
             Generators.Add(new ScrubRadialGenerator(progress, assets));
             Generators.Add(new TreesGenerator(progress, assets));
+            Generators.Add(new TreeRowsGenerator(progress, assets));
             Generators.Add(new WatercourseGenerator(progress, assets));
             Generators.Add(new WatercourseRadialGenerator(progress, assets));
         }

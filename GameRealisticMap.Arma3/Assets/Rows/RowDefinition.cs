@@ -3,7 +3,7 @@ using GameRealisticMap.Arma3.Assets.Fences;
 
 namespace GameRealisticMap.Arma3.Assets.Rows
 {
-    public class RowDefinition : IWithProbability
+    public class RowDefinition : IRowFillingDefinition<Composition>
     {
         public RowDefinition(double probability,
             double rowSpacing,
@@ -27,5 +27,9 @@ namespace GameRealisticMap.Arma3.Assets.Rows
         public string Label { get; }
 
         public double RowSpacing { get; }
+
+        IReadOnlyCollection<IStraightSegmentProportionDefinition<Composition>> IRowDefition<Composition>.Segments => Segments;
+
+        IReadOnlyCollection<IItemDefinition<Composition>> IRowDefition<Composition>.Objects => Objects;
     }
 }

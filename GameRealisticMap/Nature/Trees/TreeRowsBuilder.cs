@@ -1,7 +1,7 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 
-namespace GameRealisticMap.ManMade.Rows
+namespace GameRealisticMap.Nature.Trees
 {
     public class TreeRowsBuilder : IDataBuilder<TreeRowsData>
     {
@@ -28,7 +28,7 @@ namespace GameRealisticMap.ManMade.Rows
                 {
                     rows.Add(segment);
                 }
-                
+
             }
             return new TreeRowsData(rows);
         }

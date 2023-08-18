@@ -2,7 +2,7 @@
 using GeoJSON.Text.Feature;
 using GeoJSON.Text.Geometry;
 
-namespace GameRealisticMap.ManMade.Rows
+namespace GameRealisticMap.Nature.Trees
 {
     public class TreeRowsData : IGeoJsonData
     {

@@ -6,7 +6,7 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Farmlands
 {
-    internal class VineyardData : IBasicTerrainData
+    public class VineyardData : IBasicTerrainData
     {
         [JsonConstructor]
         public VineyardData(List<TerrainPolygon> polygons)
