@@ -55,6 +55,10 @@ namespace GameRealisticMap.Arma3.Imagery
 
                 DrawPolygonsWithCrown(config, d, TerrainMaterialUsage.Coastline, 2.5f, context.GetData<CoastlineData>().Polygons);
 
+                DrawPolygons(config, d, TerrainMaterialUsage.Grass, context.GetData<OrchardData>().Polygons);
+
+                DrawPolygons(config, d, TerrainMaterialUsage.Grass, context.GetData<VineyardData>().Polygons);
+
                 DrawPolygonsWithCrown(config, d, TerrainMaterialUsage.ForestGround, 2.5f, context.GetData<ForestData>().Polygons);
 
                 DrawPolygons(config, d, TerrainMaterialUsage.Meadow, context.GetData<MeadowsData>().Polygons);

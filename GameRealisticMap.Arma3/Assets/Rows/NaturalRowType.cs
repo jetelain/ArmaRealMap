@@ -5,6 +5,6 @@
         TreeRow,
         OrchardRow,
         VineyardRow,
-        FarmLandType2Row
+        FarmLandRow
     }
 }

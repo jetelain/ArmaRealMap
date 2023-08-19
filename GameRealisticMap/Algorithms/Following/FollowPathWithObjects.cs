@@ -198,6 +198,16 @@ namespace GameRealisticMap.Algorithms.Following
                     var center = new TerrainPoint(Vector2.Lerp(follow.Previous.Vector, follow.Current.Vector, 0.5f));
                     layer.Add(new PlacedModel<TModel>(wantedObject.Model, center, angle));
                 }
+                else
+                {
+                    // Does not fit
+                    var best = segments.OrderByDescending(o => o.Size).FirstOrDefault(o => o.Size <= actualSize);
+                    if (best != null)
+                    { 
+                        var center = follow.Previous + (delta * best.Size / 2);
+                        layer.Add(new PlacedModel<TModel>(best.Model, center, angle));
+                    }
+                }
                 if (!follow.IsLast && segments.Count > 1)
                 {
                     wantedObject = segments.GetRandomWithProportion(random) ?? segments.First();

@@ -11,7 +11,7 @@ namespace GameRealisticMap.Algorithms.Rows
         {
             var box = BoundingBox.Compute(polygon.Shell.ToArray());
             var v1 = box.Points[1].Vector - box.Points[0].Vector;
-            var v2 = box.Points[2].Vector - box.Points[0].Vector;
+            var v2 = box.Points[3].Vector - box.Points[0].Vector;
             var rowSpacing = Vector2.Normalize(v2) * (float)definition.RowSpacing;
             var position = box.Points[0].Vector + (rowSpacing / 2);
             var done = definition.RowSpacing / 2;

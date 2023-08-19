@@ -59,6 +59,9 @@ namespace GameRealisticMap.Demo
             CreateSampleSingle(context, places, polygon => new MeadowsData(polygon), new Vector2(4 * 512, 0));
             CreateSampleSingle(context, places, polygon => new SandSurfacesData(polygon), new Vector2(5 * 512, 0));
             CreateSampleQuad(context, places, polygon => new FarmlandsData(polygon), new Vector2(0 * 512, 512));
+            CreateSampleQuad(context, places, polygon => new OrchardData(polygon), new Vector2(5 * 512, 512));
+            CreateSampleQuad(context, places, polygon => new VineyardData(polygon), new Vector2(6 * 512, 512));
+
             CreateSampleLakes(context, places, new Vector2(6 * 512, 0));
             CreateSampleWatercourses(context, places, new Vector2(7 * 512, 0));
 
