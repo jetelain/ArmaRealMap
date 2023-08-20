@@ -21,11 +21,10 @@ namespace GameRealisticMap.Arma3.Nature.Trees
 
         public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
         {
-            var result = new List<TerrainBuilderObject>();
+            var layer = new List<PlacedModel<Composition>>();
             var definitions = assets.GetNaturalRows(NaturalRowType.TreeRow);
             if (definitions.Count > 0)
             {
-                var layer = new List<PlacedModel<Composition>>();
                 var rows = context.GetData<TreeRowsData>().Rows;
                 foreach (var row in rows.ProgressStep(progress, "TreeRows"))
                 {
@@ -33,7 +32,7 @@ namespace GameRealisticMap.Arma3.Nature.Trees
                     FollowPathWithObjects.PlaceOnPathNotFitted(random, definitions.GetRandom(random), layer, row.Points);
                 }
             }
-            return result;
+            return layer.SelectMany(o => o.Model.ToTerrainBuilderObjects(o));
         }
     }
 }

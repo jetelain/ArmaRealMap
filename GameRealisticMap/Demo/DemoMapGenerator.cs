@@ -14,6 +14,7 @@ using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
+using GameRealisticMap.Nature.Trees;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Preview;
 using NetTopologySuite.Utilities;
@@ -77,6 +78,7 @@ namespace GameRealisticMap.Demo
 
             var roads = CreateSampleRoads(grid, places);
 
+            CreateTreeRows(context, places, roads);
             CreateSampleOriented(context, roads, places);
 
             places.Add(new City(new TerrainPoint(context.Area.SizeInMeters / 2, context.Area.SizeInMeters / 2), new List<TerrainPolygon>() { context.Area.TerrainBounds }, name + " DEMO", CityTypeId.City, 1024, 10000));
@@ -264,6 +266,21 @@ namespace GameRealisticMap.Demo
             CreateSampleFence(places, fences, offset + new Vector2(120, 0), FenceTypeId.Hedge);
             CreateSampleFence(places, fences, offset + new Vector2(240, 0), FenceTypeId.Wall);
             context.SetData(new FencesData(fences));
+        }
+
+        private void CreateTreeRows(BuildContext context, List<City> places, List<Road> roads)
+        {
+            var type = roadTypeLibrary.GetInfo(RoadTypeId.TwoLanesSecondaryRoad);
+
+            var rows = new List<TerrainPath>();
+            var offset = new Vector2(7 * 512, 512);
+            rows.Add(new TerrainPath(new TerrainPoint(8, 8) + offset, new TerrainPoint(8, 504) + offset));
+            roads.Add(new Road(WaySpecialSegment.Normal, new TerrainPath(new TerrainPoint(8 + (type.ClearWidth / 2), 8) + offset, new TerrainPoint(8 + (type.ClearWidth / 2), 504) + offset), type));
+            rows.Add(new TerrainPath(new TerrainPoint(8+ type.ClearWidth, 8) + offset, new TerrainPoint(8 + type.ClearWidth, 504) + offset));
+
+            rows.Add(new TerrainPath(new TerrainPoint(64, 8) + offset, new TerrainPoint(64, 504) + offset));
+
+            context.SetData(new TreeRowsData(rows));
         }
 
         private void CreateSampleFence(List<City> places, List<Fence> fences, Vector2 offset, FenceTypeId id)
