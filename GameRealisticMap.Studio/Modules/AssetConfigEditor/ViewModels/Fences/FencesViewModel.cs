@@ -4,16 +4,14 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Fences;
 using GameRealisticMap.ManMade.Fences;
-using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Generic;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 {
-    internal class FencesViewModel : AssetProbabilityBase<FenceTypeId, FenceDefinition>
+    internal class FencesViewModel : PathObjectsViewModelBase<FenceTypeId, FenceDefinition>
     {
         private bool useAnySize;
-        private bool useObjects;
 
         public FencesStraightViewModel Straights { get; }
 
@@ -40,17 +38,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
             ObjectsItems = new() { Objects };
         }
 
-        public List<IExplorerTreeItem> SegmentsItems { get; }
+        public override List<IExplorerTreeItem> SegmentsItems { get; }
 
-        public List<IExplorerTreeItem> ObjectsItems { get; }
-
-        public IExplorerTreeItem? MainChild => Children.FirstOrDefault(); // Used by "Count" column on main view
-
-        public override IEnumerable<IExplorerTreeItem> Children => useObjects ? ObjectsItems : SegmentsItems;
+        public override List<IExplorerTreeItem> ObjectsItems { get; }
 
         public IEnumerable<FencesCornerOrEndViewModel> CornersAndEnds => new[] { LeftCorners, RightCorners, Ends };
-
-        public string DensityText => string.Empty; // To avoid binding error
 
         public bool IsEmpty { get { return UseObjects ? Objects.Items.Count == 0 : Straights.Items.Count == 0; } }
 
@@ -64,28 +56,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
         {
             get { return !useAnySize; }
             set { useAnySize = !value; }
-        }
-
-        public bool UseObjects
-        {
-            get { return useObjects; }
-            set 
-            {
-                if (useObjects != value)
-                {
-                    useObjects = value; 
-                    NotifyOfPropertyChange(); 
-                    NotifyOfPropertyChange(nameof(UseSegments));
-                    NotifyOfPropertyChange(nameof(Children));
-                    NotifyOfPropertyChange(nameof(MainChild));
-                }
-            }
-        }
-
-        public bool UseSegments
-        {
-            get { return !UseObjects; }
-            set { UseObjects = !value; }
         }
 
         public override FenceDefinition ToDefinition()

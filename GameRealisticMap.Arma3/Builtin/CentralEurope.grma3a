@@ -4061,7 +4061,7 @@
     "TreeRow": [
       {
         "Probability": 1,
-        "Segments": [],
+        "Straights": [],
         "Objects": [
           {
             "Radius": 11,
@@ -4085,7 +4085,7 @@
     "OrchardRow": [
       {
         "Probability": 0.5,
-        "Segments": [],
+        "Straights": [],
         "Objects": [
           {
             "Radius": 4,
@@ -4107,7 +4107,7 @@
       },
       {
         "Probability": 0.5,
-        "Segments": [],
+        "Straights": [],
         "Objects": [
           {
             "Radius": 3,
@@ -4131,7 +4131,7 @@
     "VineyardRow": [
       {
         "Probability": 1,
-        "Segments": [
+        "Straights": [
           {
             "Proportion": 1,
             "Model": {
@@ -4189,7 +4189,7 @@
     "FarmLandRow": [
       {
         "Probability": 1,
-        "Segments": [
+        "Straights": [
           {
             "Proportion": 1,
             "Model": {

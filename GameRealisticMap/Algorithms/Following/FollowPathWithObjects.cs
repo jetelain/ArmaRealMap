@@ -217,9 +217,9 @@ namespace GameRealisticMap.Algorithms.Following
 
         public static void PlaceOnPathNotFitted<TModel>(Random random, IRowDefition<TModel> defition, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
         {
-            if (defition.Segments.Count > 0)
+            if (defition.Straights.Count > 0)
             {
-                PlaceOnPathNotFitted(random, defition.Segments, layer, path);
+                PlaceOnPathNotFitted(random, defition.Straights, layer, path);
             }
             else if ( defition.Objects.Count > 0 )
             {

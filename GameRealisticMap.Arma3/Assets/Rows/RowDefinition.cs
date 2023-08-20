@@ -7,12 +7,12 @@ namespace GameRealisticMap.Arma3.Assets.Rows
     {
         public RowDefinition(double probability,
             double rowSpacing,
-            List<FenceStraightSegmentDefinition>? segments = null,
+            List<FenceStraightSegmentDefinition>? straights = null,
             List<ItemDefinition>? objects = null,
             string label = "")
         {
             Probability = probability;
-            Segments = segments ?? new List<FenceStraightSegmentDefinition>();
+            Straights = straights ?? new List<FenceStraightSegmentDefinition>();
             Objects = objects ?? new List<ItemDefinition>();
             Label = label;
             RowSpacing = rowSpacing;
@@ -20,7 +20,7 @@ namespace GameRealisticMap.Arma3.Assets.Rows
 
         public double Probability { get; }
 
-        public List<FenceStraightSegmentDefinition> Segments { get; }
+        public List<FenceStraightSegmentDefinition> Straights { get; }
 
         public List<ItemDefinition> Objects { get; }
 
@@ -28,7 +28,7 @@ namespace GameRealisticMap.Arma3.Assets.Rows
 
         public double RowSpacing { get; }
 
-        IReadOnlyCollection<IStraightSegmentProportionDefinition<Composition>> IRowDefition<Composition>.Segments => Segments;
+        IReadOnlyCollection<IStraightSegmentProportionDefinition<Composition>> IRowDefition<Composition>.Straights => Straights;
 
         IReadOnlyCollection<IItemDefinition<Composition>> IRowDefition<Composition>.Objects => Objects;
     }

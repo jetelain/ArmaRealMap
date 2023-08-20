@@ -1,19 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Rows;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
-using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Generic;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Rows
 {
-    internal class NaturalRowViewModel : AssetProbabilityBase<NaturalRowType, RowDefinition>
+    internal class NaturalRowViewModel : PathObjectsViewModelBase<NaturalRowType, RowDefinition>
     {
         private double rowSpacing;
-        private bool useObjects;
 
         public FencesStraightViewModel Segments { get; }
 
@@ -24,23 +21,17 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Rows
         {
             label = definition?.Label ?? string.Empty;
             rowSpacing = definition?.RowSpacing ?? 2;
-            useObjects = (definition?.Segments?.Count ?? 0) == 0;
-            Segments = new FencesStraightViewModel(definition?.Segments, this);
+            useObjects = (definition?.Straights?.Count ?? 0) == 0;
+            Segments = new FencesStraightViewModel(definition?.Straights, this);
             Objects = new ObjectsViewModel(definition?.Objects, this);
             SegmentsItems = new() { Segments };
             ObjectsItems = new() { Objects };
             rowSpacing = definition?.RowSpacing ?? 2;
         }
 
-        public List<IExplorerTreeItem> SegmentsItems { get; }
+        public override List<IExplorerTreeItem> SegmentsItems { get; }
 
-        public List<IExplorerTreeItem> ObjectsItems { get; }
-
-        public IExplorerTreeItem? MainChild => Children.FirstOrDefault(); // Used by "Count" column on main view
-
-        public override IEnumerable<IExplorerTreeItem> Children => useObjects ? ObjectsItems : SegmentsItems;
-
-        public string DensityText => string.Empty; // To avoid binding error
+        public override List<IExplorerTreeItem> ObjectsItems { get; }
 
         public bool IsEmpty { get { return UseObjects ? Objects.Items.Count == 0 : Segments.Items.Count == 0; } }
 
@@ -51,28 +42,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Rows
         }
 
         public bool UseRowSpacing => FillId != NaturalRowType.TreeRow;
-
-        public bool UseObjects
-        {
-            get { return useObjects; }
-            set
-            {
-                if (useObjects != value)
-                {
-                    useObjects = value;
-                    NotifyOfPropertyChange();
-                    NotifyOfPropertyChange(nameof(UseSegments));
-                    NotifyOfPropertyChange(nameof(Children));
-                    NotifyOfPropertyChange(nameof(MainChild));
-                }
-            }
-        }
-
-        public bool UseSegments
-        {
-            get { return !UseObjects; }
-            set { UseObjects = !value; }
-        }
 
         public override RowDefinition ToDefinition()
         {
