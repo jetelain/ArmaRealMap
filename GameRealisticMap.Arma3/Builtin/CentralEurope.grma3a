@@ -586,6 +586,46 @@
         "MaxDensity": 0.005,
         "Label": ""
       }
+    ],
+    "SmallOrchard": [
+      {
+        "Models": [
+          {
+            "Radius": 5,
+            "FitRadius": 5,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\t_malusdomestica_2s.p3d",
+                  "Transform": [0.069520056,4.288282,-0.09381491]
+                }
+              ]
+            },
+            "Probability": 0.5,
+            "MaxScale": 1.25,
+            "MinScale": 0.75
+          },
+          {
+            "Radius": 4,
+            "FitRadius": 4,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\t_pyruscommunis_2s.p3d",
+                  "Transform": [-0.029040007,3.6264021,0.09442985]
+                }
+              ]
+            },
+            "Probability": 0.5,
+            "MaxScale": 1.25,
+            "MinScale": 0.75
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.004,
+        "MaxDensity": 0.004,
+        "Label": ""
+      }
     ]
   },
   "Bridges": {
@@ -4014,6 +4054,158 @@
           ]
         },
         "Size": 60
+      }
+    ]
+  },
+  "NaturalRows": {
+    "TreeRow": [
+      {
+        "Probability": 1,
+        "Straights": [],
+        "Objects": [
+          {
+            "Radius": 11,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\t_fagussylvatica_3s.p3d",
+                  "Transform": [-0.1925013,11.785852,-0.71770334]
+                }
+              ]
+            },
+            "Probability": 1,
+            "MaxScale": 1.25,
+            "MinScale": 0.75
+          }
+        ],
+        "Label": "Large Tree",
+        "RowSpacing": 2
+      }
+    ],
+    "OrchardRow": [
+      {
+        "Probability": 0.5,
+        "Straights": [],
+        "Objects": [
+          {
+            "Radius": 4,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\t_malusdomestica_2s.p3d",
+                  "Transform": [-0.00982013,4.288282,-0.10076958]
+                }
+              ]
+            },
+            "Probability": 1,
+            "MaxScale": 1.25,
+            "MinScale": 0.75
+          }
+        ],
+        "Label": "Apple",
+        "RowSpacing": 14
+      },
+      {
+        "Probability": 0.5,
+        "Straights": [],
+        "Objects": [
+          {
+            "Radius": 3,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\t_pyruscommunis_2s.p3d",
+                  "Transform": [-0.12652956,3.6264021,0.0075428486]
+                }
+              ]
+            },
+            "Probability": 1,
+            "MaxScale": 1.25,
+            "MinScale": 0.75
+          }
+        ],
+        "Label": "Pear",
+        "RowSpacing": 12
+      }
+    ],
+    "VineyardRow": [
+      {
+        "Probability": 1,
+        "Straights": [
+          {
+            "Proportion": 1,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_argo\\Bushes\\b_Vitis_vinifera_F.p3d",
+                  "Transform": [-0.8906791,0,-0.45463243,0,1,0,0.45463243,0,-0.8906791,-2.6210938,1.058703,-0.2529297]
+                },
+                {
+                  "Model": "a3\\structures_f_argo\\Industrial\\Agriculture\\VineyardFence_01_F.p3d",
+                  "Transform": [0.01953125,0.60459185,0.006591797]
+                },
+                {
+                  "Model": "a3\\vegetation_f_argo\\Bushes\\b_Vitis_vinifera_F.p3d",
+                  "Transform": [0.30078125,1.058703,0.4934082]
+                },
+                {
+                  "Model": "a3\\vegetation_f_argo\\Bushes\\b_Vitis_vinifera_F.p3d",
+                  "Transform": [-0.7686965,0,0.6396137,0,1,0,-0.6396137,0,-0.7686965,2.3632812,1.058703,0.06591797]
+                }
+              ]
+            },
+            "Size": 8.4
+          },
+          {
+            "Proportion": 1,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\structures_f_argo\\Industrial\\Agriculture\\VineyardFence_01_F.p3d",
+                  "Transform": [0.01953125,0.60459185,0.006591797]
+                },
+                {
+                  "Model": "a3\\vegetation_f_argo\\Bushes\\b_Vitis_vinifera_F.p3d",
+                  "Transform": [-1,0,1.509958E-07,0,1,0,-1.509958E-07,0,-1,-0.29296875,1.058703,-0.20776367]
+                },
+                {
+                  "Model": "a3\\vegetation_f_argo\\Bushes\\b_Vitis_vinifera_F.p3d",
+                  "Transform": [-4.371139E-08,0,1,0,1,0,-1,0,-4.371139E-08,2.3476562,1.058703,0.27954102]
+                },
+                {
+                  "Model": "a3\\vegetation_f_argo\\Bushes\\b_Vitis_vinifera_F.p3d",
+                  "Transform": [0.70710677,0,-0.70710677,0,1,0,0.70710677,0,0.70710677,-2.2617188,1.058703,0.21240234]
+                }
+              ]
+            },
+            "Size": 8.4
+          }
+        ],
+        "Objects": [],
+        "Label": "",
+        "RowSpacing": 4
+      }
+    ],
+    "FarmLandRow": [
+      {
+        "Probability": 1,
+        "Straights": [
+          {
+            "Proportion": 1,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\crop\\b_corn_row_f.p3d",
+                  "Transform": [0.034398794,0.51142883,-0.04401326]
+                }
+              ]
+            },
+            "Size": 6
+          }
+        ],
+        "Objects": [],
+        "Label": "Corn",
+        "RowSpacing": 2.5
       }
     ]
   },

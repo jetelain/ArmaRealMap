@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Arma3.Assets.Fences
 {
-    public class FenceDefinition : ISegmentsDefinition<Composition>
+    public class FenceDefinition : ISegmentsDefinition<Composition>, IRowDefition<Composition>
     {
         public FenceDefinition(double probability,
             List<FenceStraightSegmentDefinition>? straights,
@@ -46,5 +46,9 @@ namespace GameRealisticMap.Arma3.Assets.Fences
         IReadOnlyCollection<ICornerOrEndSegmentDefinition<Composition>> ISegmentsDefinition<Composition>.Ends => Ends;
 
         IReadOnlyCollection<IStraightSegmentProportionDefinition<Composition>> ISegmentsDefinition<Composition>.Straights => Straights;
+
+        IReadOnlyCollection<IStraightSegmentProportionDefinition<Composition>> IRowDefition<Composition>.Straights => Straights;
+
+        IReadOnlyCollection<IItemDefinition<Composition>> IRowDefition<Composition>.Objects => Objects;
     }
 }

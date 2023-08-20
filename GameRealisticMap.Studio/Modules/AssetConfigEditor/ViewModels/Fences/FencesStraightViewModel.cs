@@ -14,9 +14,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 {
     internal class FencesStraightViewModel : PropertyChangedBase, IModelImporterTarget, IExplorerTreeItem, IExplorerTreeItemCounter
     {
-        private readonly FencesViewModel _parent;
+        private readonly IDocument _parent;
 
-        public FencesStraightViewModel(List<FenceStraightSegmentDefinition>? definition, FencesViewModel parent)
+        public FencesStraightViewModel(List<FenceStraightSegmentDefinition>? definition, IDocument parent)
         {
             _parent = parent;
             if (definition != null)
@@ -47,7 +47,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 
         public void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
-            Items.AddUndoable(_parent.UndoRedoManager, new FenceStraightItem(new FenceStraightSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius)));
+            Items.AddUndoable(_parent.UndoRedoManager, new FenceStraightItem(new FenceStraightSegmentDefinition(composition.Translate(-detected.GeneralRadius.Center), detected.GeneralRadius.Radius * 2)));
         }
 
         internal List<FenceStraightSegmentDefinition> ToDefinition()

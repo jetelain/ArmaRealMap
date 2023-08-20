@@ -4,6 +4,7 @@ using GameRealisticMap.Algorithms;
 using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Arma3.Assets.Fences;
 using GameRealisticMap.Arma3.Assets.Filling;
+using GameRealisticMap.Arma3.Assets.Rows;
 using GameRealisticMap.Arma3.IO.Converters;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Buildings;
@@ -38,6 +39,8 @@ namespace GameRealisticMap.Arma3.Assets
         public Dictionary<FenceTypeId, List<FenceDefinition>> Fences { get; set; } = new();
 
         public RailwaysDefinition? Railways { get; set; }
+
+        public Dictionary<NaturalRowType, List<RowDefinition>> NaturalRows { get; set; } = new();
 
         public IReadOnlyCollection<BasicCollectionDefinition> GetBasicCollections(BasicCollectionId basicId)
         {
@@ -75,6 +78,11 @@ namespace GameRealisticMap.Arma3.Assets
         public IReadOnlyCollection<ObjectDefinition> GetObjects(ObjectTypeId typeId)
         {
             return Lookup(Objects, typeId);
+        }
+
+        public IReadOnlyCollection<RowDefinition> GetNaturalRows(NaturalRowType typeId)
+        {
+            return Lookup(NaturalRows, typeId);
         }
 
         private IReadOnlyCollection<T> Lookup<K,T>(Dictionary<K, List<T>> dict, K typeId)

@@ -359,6 +359,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Farmland plants rows -- [BETA] Unused.
+        /// </summary>
+        public static string AssetFarmLandRow {
+            get {
+                return ResourceManager.GetString("AssetFarmLandRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Fence.
         /// </summary>
         public static string AssetFence {
@@ -553,6 +562,15 @@ namespace GameRealisticMap.Studio {
         public static string AssetOceanGround {
             get {
                 return ResourceManager.GetString("AssetOceanGround", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Orchard tree row.
+        /// </summary>
+        public static string AssetOrchardRow {
+            get {
+                return ResourceManager.GetString("AssetOrchardRow", resourceCulture);
             }
         }
         
@@ -773,6 +791,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Small orchard trees.
+        /// </summary>
+        public static string AssetSmallOrchard {
+            get {
+                return ResourceManager.GetString("AssetSmallOrchard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Statue.
         /// </summary>
         public static string AssetStatue {
@@ -796,6 +823,15 @@ namespace GameRealisticMap.Studio {
         public static string AssetTree {
             get {
                 return ResourceManager.GetString("AssetTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Tree row.
+        /// </summary>
+        public static string AssetTreeRow {
+            get {
+                return ResourceManager.GetString("AssetTreeRow", resourceCulture);
             }
         }
         
@@ -832,6 +868,15 @@ namespace GameRealisticMap.Studio {
         public static string AssetTwoLanesSecondaryRoad {
             get {
                 return ResourceManager.GetString("AssetTwoLanesSecondaryRoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Vineyard.
+        /// </summary>
+        public static string AssetVineyardRow {
+            get {
+                return ResourceManager.GetString("AssetVineyardRow", resourceCulture);
             }
         }
         
@@ -2170,6 +2215,33 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Natural rows.
+        /// </summary>
+        public static string NaturalRows {
+            get {
+                return ResourceManager.GetString("NaturalRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use objects with random orientation. Ideal for individual plants..
+        /// </summary>
+        public static string NaturalRowUseObjects {
+            get {
+                return ResourceManager.GetString("NaturalRowUseObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use rigid segments. Ideal for prefabricated rows..
+        /// </summary>
+        public static string NaturalRowUseRigidSegments {
+            get {
+                return ResourceManager.GetString("NaturalRowUseRigidSegments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Normal Texture.
         /// </summary>
         public static string NormalTexture {
@@ -2545,6 +2617,15 @@ namespace GameRealisticMap.Studio {
         public static string RotateM90 {
             get {
                 return ResourceManager.GetString("RotateM90", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Rows spacing.
+        /// </summary>
+        public static string RowsSpacing {
+            get {
+                return ResourceManager.GetString("RowsSpacing", resourceCulture);
             }
         }
         

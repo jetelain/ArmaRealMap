@@ -1,35 +1,37 @@
-﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Nature;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Forests;
+using GameRealisticMap.Nature;
 using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.ManMade.Farmlands
 {
-    internal class FarmlandsBuilder : BasicBuilderBase<FarmlandsData>
+    internal class VineyardBuilder : BasicBuilderBase<VineyardData>
     {
-        public FarmlandsBuilder(IProgressSystem progress)
+        public VineyardBuilder(IProgressSystem progress)
             : base(progress)
         {
 
         }
 
-        protected override FarmlandsData CreateWrapper(List<TerrainPolygon> polygons)
+        protected override VineyardData CreateWrapper(List<TerrainPolygon> polygons)
         {
-            return new FarmlandsData(polygons);
+            return new VineyardData(polygons);
         }
 
         protected override bool IsTargeted(TagsCollectionBase tags)
         {
-            return tags.GetValue("landuse") == "farmland" && tags.GetValue("crop") != "grass";
-            // Grass is processed as a Meadow
+            return tags.GetValue("landuse") == "vineyard";
         }
 
         protected override IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
         {
             return base.GetPriority(context)
-                .Concat(context.GetData<VineyardData>().Polygons)
-                .Concat(context.GetData<OrchardData>().Polygons)
                 .Concat(context.GetData<ForestData>().Polygons);
         }
 

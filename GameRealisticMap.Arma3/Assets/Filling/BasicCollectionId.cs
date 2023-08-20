@@ -7,6 +7,7 @@
         Rocks,
         RocksAdditional,
         DefaultAreas,
-        WatercourseAdditional
+        WatercourseAdditional,
+        SmallOrchard
     }
 }

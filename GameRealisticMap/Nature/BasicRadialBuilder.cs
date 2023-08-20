@@ -40,7 +40,9 @@ namespace GameRealisticMap.Nature
                 .Concat(context.GetData<MeadowsData>().Polygons)
                 .Concat(context.GetData<FarmlandsData>().Polygons)
                 .Concat(context.GetData<CategoryAreaData>().Areas.SelectMany(a => a.PolyList))
-                .Concat(context.GetData<OceanData>().Polygons);
+                .Concat(context.GetData<OceanData>().Polygons)
+                .Concat(context.GetData<OrchardData>().Polygons)
+                .Concat(context.GetData<VineyardData>().Polygons);
         }
 
         public TEdge Build(IBuildContext context)

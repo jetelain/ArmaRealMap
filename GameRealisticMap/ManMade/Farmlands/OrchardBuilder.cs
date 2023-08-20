@@ -6,30 +6,28 @@ using OsmSharp.Tags;
 
 namespace GameRealisticMap.ManMade.Farmlands
 {
-    internal class FarmlandsBuilder : BasicBuilderBase<FarmlandsData>
+    internal class OrchardBuilder : BasicBuilderBase<OrchardData>
     {
-        public FarmlandsBuilder(IProgressSystem progress)
+        public OrchardBuilder(IProgressSystem progress)
             : base(progress)
         {
 
         }
 
-        protected override FarmlandsData CreateWrapper(List<TerrainPolygon> polygons)
+        protected override OrchardData CreateWrapper(List<TerrainPolygon> polygons)
         {
-            return new FarmlandsData(polygons);
+            return new OrchardData(polygons);
         }
 
         protected override bool IsTargeted(TagsCollectionBase tags)
         {
-            return tags.GetValue("landuse") == "farmland" && tags.GetValue("crop") != "grass";
-            // Grass is processed as a Meadow
+            return tags.GetValue("landuse") == "orchard";
         }
 
         protected override IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
         {
             return base.GetPriority(context)
                 .Concat(context.GetData<VineyardData>().Polygons)
-                .Concat(context.GetData<OrchardData>().Polygons)
                 .Concat(context.GetData<ForestData>().Polygons);
         }
 

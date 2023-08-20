@@ -11,7 +11,7 @@ using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Reporting;
-using GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;

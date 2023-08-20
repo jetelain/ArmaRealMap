@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Media;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling

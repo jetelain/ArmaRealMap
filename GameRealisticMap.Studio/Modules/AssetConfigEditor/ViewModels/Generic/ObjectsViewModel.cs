@@ -6,18 +6,19 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Fences;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 
-namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
+namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Generic
 {
-    internal class FenceObjectsViewModel : PropertyChangedBase, IModelImporterTarget, IExplorerTreeItem, IExplorerTreeItemCounter
+    internal class ObjectsViewModel : PropertyChangedBase, IModelImporterTarget, IExplorerTreeItem, IExplorerTreeItemCounter
     {
-        private readonly FencesViewModel _parent;
+        private readonly IDocument _parent;
 
-        public FenceObjectsViewModel(List<ItemDefinition>? definition, FencesViewModel parent)
+        public ObjectsViewModel(List<ItemDefinition>? definition, IDocument parent)
         {
             _parent = parent;
             if (definition != null)
@@ -34,7 +35,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 
         public ObservableCollection<FenceObjectItem> Items { get; }
 
-        public string Label => GameRealisticMap.Studio.Labels.FenceObjects;
+        public string Label => Labels.FenceObjects;
 
         public CompositionImporter CompositionImporter { get; }
 
@@ -61,6 +62,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
         {
             return Items.SelectMany(i => i.Composition.Items.Select(i => i.Model.Path));
         }
+
         public Task MakeItemsEquiprobable()
         {
             DefinitionHelper.Equiprobable(Items, _parent.UndoRedoManager);

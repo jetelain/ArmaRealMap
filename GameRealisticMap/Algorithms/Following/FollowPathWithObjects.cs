@@ -118,7 +118,7 @@ namespace GameRealisticMap.Algorithms.Following
 
         public static void PlaceOnPath<TModel>(IEnumerable<IStraightSegmentDefinition<TModel>> straights, List<PlacedModel<TModel>> layer, IEnumerable<TerrainPoint> path)
         {
-            PlaceOnPath(straights,layer, new FollowPath(path));
+            PlaceOnPath(straights, layer, new FollowPath(path));
         }
 
         public static void PlaceOnPath<TModel>(IEnumerable<IStraightSegmentDefinition<TModel>> straights, List<PlacedModel<TModel>> layer, FollowPath follow)
@@ -129,7 +129,7 @@ namespace GameRealisticMap.Algorithms.Following
             while (follow.Move(width))
             {
                 var delta = Vector2.Normalize(follow.Current.Vector - follow.Previous.Vector);
-                var angle = (90f+(MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI)) % 360f;
+                var angle = (90f + (MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI)) % 360f;
 
                 var wantedSize = (follow.Previous.Vector - follow.Current.Vector).Length();
                 if (Math.Abs(wantedSize - width) < 0.2f)
@@ -173,13 +173,59 @@ namespace GameRealisticMap.Algorithms.Following
                 if (follow.Move(radiusScaled) && follow.Move(radiusScaled))
                 {
                     layer.Add(new PlacedModel<TModel>(
-                        obj.Model, 
+                        obj.Model,
                         follow.Previous,
-                        angle: random.GetAngle(), 
-                        relativeElevation: obj.GetElevation(random), 
+                        angle: random.GetAngle(),
+                        relativeElevation: obj.GetElevation(random),
                         scale: scale));
                 }
             } while (!follow.IsLast);
         }
+
+        public static void PlaceOnPathNotFitted<TModel>(Random random, IReadOnlyCollection<IStraightSegmentProportionDefinition<TModel>> segments, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
+        {
+            var follow = new FollowPath(path);
+            var wantedObject = segments.GetRandomWithProportion(random) ?? segments.First();
+            while (follow.Move(wantedObject.Size))
+            {
+                var delta = Vector2.Normalize(follow.Current.Vector - follow.Previous.Vector);
+                var deltaAngle = MathF.Atan2(delta.Y, delta.X) * 180 / MathF.PI;
+                var angle = (180f + deltaAngle) % 360f; // FIXME: Should be North-South (and not West-East)
+                var actualSize = (follow.Previous.Vector - follow.Current.Vector).Length();
+                if (Math.Abs((actualSize - wantedObject.Size) / wantedObject.Size) < 0.1f)
+                {
+                    // Fit with 10% tolerance
+                    var center = new TerrainPoint(Vector2.Lerp(follow.Previous.Vector, follow.Current.Vector, 0.5f));
+                    layer.Add(new PlacedModel<TModel>(wantedObject.Model, center, angle));
+                }
+                else
+                {
+                    // Does not fit
+                    var best = segments.OrderByDescending(o => o.Size).FirstOrDefault(o => o.Size <= actualSize);
+                    if (best != null)
+                    { 
+                        var center = follow.Previous + (delta * best.Size / 2);
+                        layer.Add(new PlacedModel<TModel>(best.Model, center, angle));
+                    }
+                }
+                if (!follow.IsLast && segments.Count > 1)
+                {
+                    wantedObject = segments.GetRandomWithProportion(random) ?? segments.First();
+                }
+            }
+        }
+
+        public static void PlaceOnPathNotFitted<TModel>(Random random, IRowDefition<TModel> defition, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
+        {
+            if (defition.Straights.Count > 0)
+            {
+                PlaceOnPathNotFitted(random, defition.Straights, layer, path);
+            }
+            else if ( defition.Objects.Count > 0 )
+            {
+                PlaceObjectsOnPath(random, defition.Objects, layer, path);
+            }
+        }
+
     }
 }

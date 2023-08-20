@@ -1060,4 +1060,31 @@ Last generated on {1}</value>
   <data name="WorldNameHint" xml:space="preserve">
     <value>Technical name, should be globally unique.</value>
   </data>
+  <data name="RowsSpacing" xml:space="preserve">
+    <value>Rows spacing</value>
+  </data>
+  <data name="NaturalRowUseObjects" xml:space="preserve">
+    <value>Use objects with random orientation. Ideal for individual plants.</value>
+  </data>
+  <data name="NaturalRowUseRigidSegments" xml:space="preserve">
+    <value>Use rigid segments. Ideal for prefabricated rows.</value>
+  </data>
+  <data name="AssetFarmLandRow" xml:space="preserve">
+    <value>[BETA: Unused] Farmland plants rows</value>
+  </data>
+  <data name="AssetOrchardRow" xml:space="preserve">
+    <value>Orchard tree row</value>
+  </data>
+  <data name="AssetTreeRow" xml:space="preserve">
+    <value>Tree row</value>
+  </data>
+  <data name="AssetVineyardRow" xml:space="preserve">
+    <value>Vineyard</value>
+  </data>
+  <data name="NaturalRows" xml:space="preserve">
+    <value>Natural rows</value>
+  </data>
+  <data name="AssetSmallOrchard" xml:space="preserve">
+    <value>Small orchard trees</value>
+  </data>
 </root>
