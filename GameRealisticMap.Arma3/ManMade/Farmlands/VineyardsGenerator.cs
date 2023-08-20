@@ -29,7 +29,7 @@ namespace GameRealisticMap.Arma3.ManMade.Farmlands
                 foreach (var vineyard in vineyards.ProgressStep(progress, "Vineyards"))
                 {
                     var rnd = RandomHelper.CreateRandom(vineyard.Centroid);
-                    FillAreaWithRows.Fill(RandomHelper.CreateRandom(vineyard.Centroid), lib.GetRandom(rnd), layer, vineyard);
+                    FillAreaWithRows.Fill(rnd, lib.GetRandom(rnd), layer, vineyard);
                 }
             }
             return layer.SelectMany(o => o.Model.ToTerrainBuilderObjects(o));

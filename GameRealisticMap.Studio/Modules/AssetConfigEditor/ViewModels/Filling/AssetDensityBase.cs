@@ -5,15 +5,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Caliburn.Micro;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Algorithms.Filling;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.Studio.Modules.Arma3Data;
-using GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
@@ -22,6 +20,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         where TDefinition : class, IWithDensity, IWithProbability
         where TItem : class, IWithEditableProbability
     {
+
+        public PreviewViewModel PlacementPreview { get; } = new PreviewViewModel();
 
         protected AssetDensityBase(TId id, TDefinition? definition, AssetConfigEditorViewModel parent)
             : base(id, definition, parent)
@@ -66,14 +66,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public string Preview => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Areas/{FillId}.png";
 
-        public List<PreviewItem> PreviewItems { get; private set; } = new List<PreviewItem>();
-
-        private bool isGeneratingPreview;
-        public bool IsGeneratingPreview { get { return isGeneratingPreview; } private set { isGeneratingPreview = value; NotifyOfPropertyChange(); } }
-
-        private string generatePreviewStatus = string.Empty;
-        public string GeneratePreviewStatus { get { return generatePreviewStatus; } private set { generatePreviewStatus = value; NotifyOfPropertyChange(); } }
-
         public Task ComputeMaxDensity()
         {
             var max = Math.Round(GetMaxDensity(), 4);
@@ -104,19 +96,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             return (layer.SelectMany(c => c.Model.ToTerrainBuilderObjects(c)).ToList(), generatePreviewInfo);
         }
 
-        protected void SetPreview(List<TerrainBuilderObject> objects, string status = "")
-        {
-            var helper = IoC.Get<IArma3DataModule>().ModelPreviewHelper;
-            GeneratePreviewStatus = Labels.LoadingObjectsShapes;
-            PreviewItems =
-                objects.SelectMany(o => helper.ToVisualAxisY(o).Select(p => new PreviewItem(p, o.Model, o.Scale, true)))
-                .Concat(objects.SelectMany(o => helper.ToGeoAxisY(o).Select(p => new PreviewItem(p, o.Model, o.Scale, false))))
-                .ToList();
-            GeneratePreviewStatus = status;
-            IsGeneratingPreview = false;
-            NotifyOfPropertyChange(nameof(PreviewItems));
-        }
-
         private TerrainPolygon CreatePreviewBox()
         {
             var width = GetPreviewWidth();
@@ -132,23 +111,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public Task GeneratePreview()
         {
-            if (!IsGeneratingPreview)
-            {
-                GeneratePreviewStatus = Labels.GeneratingPreview;
-                IsGeneratingPreview = true;
-                Task.Run(() => { var (obj, status) = GeneratePreviewItems(); SetPreview(obj, status); });
-            }
+            PlacementPreview.GeneratePreview(GeneratePreviewItems);
             return Task.CompletedTask;
         }
 
         public Task GenerateFullPreview()
         {
-            if (!IsGeneratingPreview)
-            {
-                GeneratePreviewStatus = Labels.GeneratingPreview;
-                IsGeneratingPreview = true;
-                Task.Run(() => SetPreview(GenerateFullPreviewItems()));
-            }
+            PlacementPreview.GeneratePreview(GenerateFullPreviewItems);
             return Task.CompletedTask;
         }
 

@@ -1,6 +1,6 @@
-﻿namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling
+﻿namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls
 {
-    internal class PreviewGrid
+    internal static class PreviewGrid
     {
         public static double Scale { get; } = 5;
 

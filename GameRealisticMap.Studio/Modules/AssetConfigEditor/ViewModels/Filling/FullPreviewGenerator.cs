@@ -8,6 +8,7 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Scrubs;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling

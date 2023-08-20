@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling
+namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls
 {
-    public class ColorToBrushConverter : IValueConverter
+    public sealed class ColorToBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

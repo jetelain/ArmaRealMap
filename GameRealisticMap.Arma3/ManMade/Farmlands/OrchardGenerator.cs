@@ -37,7 +37,7 @@ namespace GameRealisticMap.Arma3.ManMade.Farmlands
                     if (orchard.Area > 4000)
                     {
                         var rnd = RandomHelper.CreateRandom(orchard.Centroid);
-                        FillAreaWithRows.Fill(RandomHelper.CreateRandom(orchard.Centroid), lib1.GetRandom(rnd), layer1, orchard);
+                        FillAreaWithRows.Fill(rnd, lib1.GetRandom(rnd), layer1, orchard);
                     }
                     else
                     {

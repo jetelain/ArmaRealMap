@@ -1,10 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using GameRealisticMap.Algorithms.Rows;
+using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Rows;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Generic;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
+using System;
+using GameRealisticMap.Algorithms.Following;
+using System.Linq;
+using GameRealisticMap.Geometries;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls;
+using GameRealisticMap.Arma3.TerrainBuilder;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Rows
 {
@@ -15,6 +24,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Rows
         public FencesStraightViewModel Segments { get; }
 
         public ObjectsViewModel Objects { get; }
+
+        public PreviewViewModel PlacementPreview { get; } = new PreviewViewModel();
 
         public NaturalRowViewModel(NaturalRowType id, RowDefinition? definition, AssetConfigEditorViewModel parent)
             : base(id, definition, parent)
@@ -79,6 +90,28 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Rows
                 return Objects.GetModels();
             }
             return Segments.GetModels();
+        }
+
+        public Task GeneratePreview()
+        {
+            PlacementPreview.GeneratePreview(DoGeneratePreview);
+            return Task.CompletedTask;
+        }
+
+        private List<TerrainBuilderObject> DoGeneratePreview()
+        {
+            var layer = new List<PlacedModel<Composition>>();
+            var rnd = new Random(0);
+            if (UseRowSpacing)
+            {
+                FillAreaWithRows.Fill(rnd, ToDefinition(), layer, TerrainPolygon.FromRectangle(new TerrainPoint(0, 0), new TerrainPoint((float)PreviewGrid.SizeInMeters, (float)PreviewGrid.SizeInMeters)));
+            }
+            else
+            {
+                var h = (float)PreviewGrid.SizeInMeters / 2;
+                FollowPathWithObjects.PlaceOnPathNotFitted(rnd, ToDefinition(), layer, new[] { new TerrainPoint(h, 0), new TerrainPoint(h, (float)PreviewGrid.SizeInMeters) });
+            }
+            return layer.SelectMany(o => o.Model.ToTerrainBuilderObjects(o)).ToList();
         }
     }
 }

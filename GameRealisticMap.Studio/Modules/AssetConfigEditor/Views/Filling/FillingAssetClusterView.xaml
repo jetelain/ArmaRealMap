@@ -6,13 +6,13 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
              xmlns:localf="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling"
+             xmlns:preview="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <local:PercentValueConverter x:Key="PercentValueConverter" />
-        <localf:ColorToBrushConverter x:Key="BrushConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <ScrollViewer local:Behaviors.EnforceScroll="True" c:CompositionDragDrop.Importer="{Binding CompositionImporter}" Name="ScrollViewer">
@@ -132,27 +132,11 @@
                 <Button Margin="5 0" Padding="5" cal:Message.Attach="GenerateFullPreview">
                     <Run Text="{x:Static r:Labels.GeneratePreviewWithLinkedAreas}"/>
                 </Button>
-                <ProgressBar IsIndeterminate="{Binding IsGeneratingPreview}" Width="100" Margin="5 5" Visibility="{Binding IsGeneratingPreview, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                <TextBlock Margin="5 0" Text="{Binding GeneratePreviewStatus}" VerticalAlignment="Center" />
+                <ProgressBar IsIndeterminate="{Binding PlacementPreview.IsWorking}" Width="100" Margin="5 5" Visibility="{Binding PlacementPreview.IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Margin="5 0" Text="{Binding PlacementPreview.Status}" VerticalAlignment="Center" />
             </StackPanel>
 
-            <Grid Width="{x:Static localf:PreviewGrid.Size}" Height="{x:Static localf:PreviewGrid.Size}" ClipToBounds="True">
-                <Rectangle Fill="White" Width="{Binding PreviewBoxWidthPixels}" Height="{x:Static localf:PreviewGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                <ItemsControl ItemsSource="{Binding PreviewItems}" Margin="10">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Canvas Width="{x:Static localf:PreviewGrid.Size}" Height="{x:Static localf:PreviewGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Path  Width="{x:Static localf:PreviewGrid.Size}" Height="{x:Static localf:PreviewGrid.Size}" Data="{Binding Path}" Fill="{Binding Color, Converter={StaticResource BrushConverter}}" ToolTip="{Binding Model.Name}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Grid>
-            
-
+            <preview:PreviewControl ItemsSource="{Binding PlacementPreview.Items}" PreviewBoxWidthPixels="{Binding PreviewBoxWidthPixels}" />
 
         </StackPanel>
 
