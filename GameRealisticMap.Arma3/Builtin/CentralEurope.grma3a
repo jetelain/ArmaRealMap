@@ -586,6 +586,46 @@
         "MaxDensity": 0.005,
         "Label": ""
       }
+    ],
+    "SmallOrchard": [
+      {
+        "Models": [
+          {
+            "Radius": 5,
+            "FitRadius": 5,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\t_malusdomestica_2s.p3d",
+                  "Transform": [0.069520056,4.288282,-0.09381491]
+                }
+              ]
+            },
+            "Probability": 0.5,
+            "MaxScale": 1.25,
+            "MinScale": 0.75
+          },
+          {
+            "Radius": 4,
+            "FitRadius": 4,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\t_pyruscommunis_2s.p3d",
+                  "Transform": [-0.029040007,3.6264021,0.09442985]
+                }
+              ]
+            },
+            "Probability": 0.5,
+            "MaxScale": 1.25,
+            "MinScale": 0.75
+          }
+        ],
+        "Probability": 1,
+        "MinDensity": 0.004,
+        "MaxDensity": 0.004,
+        "Label": ""
+      }
     ]
   },
   "Bridges": {
@@ -4024,16 +4064,18 @@
         "Segments": [],
         "Objects": [
           {
-            "Radius": 5.5,
+            "Radius": 11,
             "Model": {
               "Objects": [
                 {
-                  "Model": "a3\\plants_f\\tree\\t_FicusB2s_F.p3d",
-                  "Transform": [-1.241775,3.9193487,2.0590892]
+                  "Model": "a3\\vegetation_f_enoch\\tree\\t_fagussylvatica_3s.p3d",
+                  "Transform": [-0.1925013,11.785852,-0.71770334]
                 }
               ]
             },
-            "Probability": 1
+            "Probability": 1,
+            "MaxScale": 1.25,
+            "MinScale": 0.75
           }
         ],
         "Label": "Large Tree",
@@ -4042,7 +4084,7 @@
     ],
     "OrchardRow": [
       {
-        "Probability": 1,
+        "Probability": 0.5,
         "Segments": [],
         "Objects": [
           {
@@ -4056,12 +4098,34 @@
               ]
             },
             "Probability": 1,
-            "MaxScale": 1.1,
-            "MinScale": 0.9
+            "MaxScale": 1.25,
+            "MinScale": 0.75
           }
         ],
         "Label": "Apple",
         "RowSpacing": 14
+      },
+      {
+        "Probability": 0.5,
+        "Segments": [],
+        "Objects": [
+          {
+            "Radius": 3,
+            "Model": {
+              "Objects": [
+                {
+                  "Model": "a3\\vegetation_f_enoch\\tree\\t_pyruscommunis_2s.p3d",
+                  "Transform": [-0.12652956,3.6264021,0.0075428486]
+                }
+              ]
+            },
+            "Probability": 1,
+            "MaxScale": 1.25,
+            "MinScale": 0.75
+          }
+        ],
+        "Label": "Pear",
+        "RowSpacing": 12
       }
     ],
     "VineyardRow": [

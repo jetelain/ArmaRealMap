@@ -42,7 +42,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public BindableCollection<IFillAssetCategory> Filling { get; } = new BindableCollection<IFillAssetCategory>();
 
-        public BindableCollection<IFillAssetCategory> Fences { get; } = new BindableCollection<IFillAssetCategory>();
+        public BindableCollection<FencesViewModel> Fences { get; } = new BindableCollection<FencesViewModel>();
 
         public BindableCollection<BuildingsViewModel> Buildings { get; } = new BindableCollection<BuildingsViewModel>();
 
@@ -61,6 +61,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public List<ICommandWithLabel> AdditionalFilling { get; }
 
         public List<ICommandWithLabel> AdditionalFences { get; }
+
+        public List<ICommandWithLabel> AdditionalNaturalRows { get; }
 
         public RelayCommand RemoveFilling { get; }
 
@@ -84,7 +86,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 new ExplorerTreeItem(Labels.NaturalAreas, Filling, "Nature"),
                 new ExplorerTreeItem(Labels.FencesWalls, Fences, "Fence"),
-                new ExplorerTreeItem("Natural rows", NaturalRows, "NaturalRows"),
+                new ExplorerTreeItem(Labels.NaturalRows, NaturalRows, "NaturalRows"),
                 new ExplorerTreeItem(Labels.Buildings, Buildings, "Buildings"),
                 new ExplorerTreeItem(Labels.AssetObjects, Objects, "Objects"),
                 new ExplorerTreeItem(Labels.GroundMaterials, Materials, "Materials"),
@@ -94,8 +96,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; CanCopyFrom = false; };
             AdditionalFilling = CreateNatureFilling();
             AdditionalFences = CreateFences();
+            AdditionalNaturalRows = CreateAdditional<NaturalRowType,NaturalRowViewModel>(i => new NaturalRowViewModel(i, null, this), NaturalRows);
             RemoveFilling = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item, Filling));
-            RemoveFence = new RelayCommand(item => DoRemoveFilling((IFillAssetCategory)item, Fences));
+            RemoveFence = new RelayCommand(item => DoRemoveFilling((FencesViewModel)item, Fences));
             RemoveNaturalRow = new RelayCommand(item => DoRemoveFilling((NaturalRowViewModel)item, NaturalRows));
             BuiltinAssetConfigFiles = Arma3Assets.GetBuiltinList().Select(builtin => new ImportConfigCommand(builtin, this)).ToList();
         }
@@ -105,11 +108,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             var list = new List<ICommandWithLabel>();
             foreach (var id in Enum.GetValues<BasicCollectionId>())
             {
-                list.Add(new AdditionalFilling<FillingAssetBasicViewModel>(id.ToString(), () => new FillingAssetBasicViewModel(id, null, this), Filling, UndoRedoManager));
+                list.Add(new AdditionalFilling<IFillAssetCategory>(id.ToString(), () => new FillingAssetBasicViewModel(id, null, this), Filling, UndoRedoManager));
             }
             foreach (var id in Enum.GetValues<ClusterCollectionId>())
             {
-                list.Add(new AdditionalFilling<FillingAssetClusterViewModel>(id.ToString(), () => new FillingAssetClusterViewModel(id, null, this), Filling, UndoRedoManager));
+                list.Add(new AdditionalFilling<IFillAssetCategory>(id.ToString(), () => new FillingAssetClusterViewModel(id, null, this), Filling, UndoRedoManager));
             }
             list.Sort((a, b) => a.Label.CompareTo(b.Label));
             return list;
@@ -117,10 +120,17 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         internal List<ICommandWithLabel> CreateFences()
         {
+            return CreateAdditional<FenceTypeId, FencesViewModel>(id => new FencesViewModel(id, null, this), Fences);
+        }
+
+        internal List<ICommandWithLabel> CreateAdditional<TEnum,TViewModel>(Func<TEnum,TViewModel> create, BindableCollection<TViewModel> target)
+            where TEnum : struct, Enum
+            where TViewModel : class, IFillAssetCategory
+        {
             var list = new List<ICommandWithLabel>();
-            foreach (var id in Enum.GetValues<FenceTypeId>())
+            foreach (var id in Enum.GetValues<TEnum>())
             {
-                list.Add(new AdditionalFilling<FencesViewModel>(id.ToString(), () => new FencesViewModel(id, null, this), Fences, UndoRedoManager));
+                list.Add(new AdditionalFilling<TViewModel>(id.ToString(), () => create(id), target, UndoRedoManager));
             }
             list.Sort((a, b) => a.Label.CompareTo(b.Label));
             return list;

@@ -7,7 +7,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
     internal static class DefinitionHelper
     {
-        internal static double GetNewItemProbility(IReadOnlyList<IWithEditableProbability> list)
+        internal static double GetNewItemProbility<T>(IReadOnlyList<T> list)
+            where T : IWithEditableProbability
         {
             if (list.Count == 0)
             {
@@ -24,7 +25,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             }
         }
 
-        internal static void EquilibrateProbabilities(IReadOnlyList<IWithEditableProbability> list)
+        internal static void EquilibrateProbabilities<T>(IReadOnlyList<T> list)
+            where T : IWithEditableProbability
         {
             if (list.Count == 1)
             {

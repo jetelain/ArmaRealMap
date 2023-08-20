@@ -22,20 +22,20 @@
 
             <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
                 <Label VerticalAlignment="Top" Width="100">
-                    <Run Text="{x:Static r:Labels.FenceType}" />
+                    <Run Text="{x:Static r:Labels.Type}" />
                 </Label>
                 <StackPanel>
                     <TextBlock Margin="5">
-                        <RadioButton GroupName="Type" IsChecked="{Binding UseObjects}"><Run Text="{x:Static r:Labels.FenceUseObjects}" /></RadioButton>
+                        <RadioButton GroupName="Type" IsChecked="{Binding UseObjects}"><Run Text="{x:Static r:Labels.NaturalRowUseObjects}" /></RadioButton>
                     </TextBlock>
                     <TextBlock Margin="5">
-                        <RadioButton GroupName="Type" IsChecked="{Binding UseSegments}"><Run Text="{x:Static r:Labels.FenceUseRigidSegments}" /></RadioButton>
+                        <RadioButton GroupName="Type" IsChecked="{Binding UseSegments}"><Run Text="{x:Static r:Labels.NaturalRowUseRigidSegments}" /></RadioButton>
                     </TextBlock>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+            <StackPanel Orientation="Horizontal" Margin="0 5 0 5" Visibility="{Binding UseRowSpacing, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Label VerticalAlignment="Top" Width="100">
-                    <Run Text="Rows spacing" />
+                    <Run Text="{x:Static r:Labels.RowsSpacing}" />
                 </Label>
                 <TextBox Text="{Binding RowSpacing}" Width="50" />
             </StackPanel>

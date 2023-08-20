@@ -50,6 +50,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Rows
             set { rowSpacing = value; NotifyOfPropertyChange(); }
         }
 
+        public bool UseRowSpacing => FillId != NaturalRowType.TreeRow;
+
         public bool UseObjects
         {
             get { return useObjects; }

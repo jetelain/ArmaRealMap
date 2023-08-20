@@ -8,13 +8,13 @@ using Gemini.Modules.UndoRedo;
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
     internal class AdditionalFilling<T> : ICommandWithLabel
-        where T : IFillAssetCategory
+        where T : class, IFillAssetCategory
     {
         private readonly Func<T> create;
-        private readonly BindableCollection<IFillAssetCategory> target;
+        private readonly BindableCollection<T> target;
         private readonly IUndoRedoManager undoRedoManager;
 
-        internal AdditionalFilling(string idText, Func<T> create, BindableCollection<IFillAssetCategory> target, IUndoRedoManager undoRedoManager)
+        internal AdditionalFilling(string idText, Func<T> create, BindableCollection<T> target, IUndoRedoManager undoRedoManager)
         {
             Label = Labels.ResourceManager.GetString("Asset" + idText) ?? idText;
             this.create = create;
@@ -23,6 +23,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         }
 
         public string Label { get; }
+
 
         public event EventHandler? CanExecuteChanged;
 

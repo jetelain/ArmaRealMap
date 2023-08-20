@@ -1060,4 +1060,31 @@ Dernière génération le {1}</value>
   <data name="WorldNameHint" xml:space="preserve">
     <value>Nom technique, devrait être globalement unique.</value>
   </data>
+  <data name="AssetOrchardRow" xml:space="preserve">
+    <value>Rangée d'arbre fruitier</value>
+  </data>
+  <data name="AssetTreeRow" xml:space="preserve">
+    <value>Rangée d'arbre</value>
+  </data>
+  <data name="AssetVineyardRow" xml:space="preserve">
+    <value>Vignoble</value>
+  </data>
+  <data name="NaturalRows" xml:space="preserve">
+    <value>Rangées naturelles</value>
+  </data>
+  <data name="NaturalRowUseObjects" xml:space="preserve">
+    <value>Utiliser des objets avec une orientation aléatoire. Idéal pour des plantes individuelles.</value>
+  </data>
+  <data name="NaturalRowUseRigidSegments" xml:space="preserve">
+    <value>Utiliser des segments rigides. Idéal pour des rangées pré-fabriquées.</value>
+  </data>
+  <data name="RowsSpacing" xml:space="preserve">
+    <value>Espacement des rangées</value>
+  </data>
+  <data name="AssetSmallOrchard" xml:space="preserve">
+    <value>Arbres fruitier</value>
+  </data>
+  <data name="AssetFarmLandRow" xml:space="preserve">
+    <value>[BETA: Inutilisé] Rangées plein champs</value>
+  </data>
 </root>
