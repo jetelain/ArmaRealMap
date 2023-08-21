@@ -1,4 +1,6 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Diagnostics;
+using GameRealisticMap.Geometries;
+using Xunit.Abstractions;
 
 namespace GameRealisticMap.Test.Geometries
 {
@@ -6,7 +8,21 @@ namespace GameRealisticMap.Test.Geometries
     {
         private static TerrainPolygon Square100x100()
         {
-            return new TerrainPolygon(new List<TerrainPoint>() { new (100,100), new (0,100), new (0,0), new (100,0), new (100,100) });
+            return new TerrainPolygon(new List<TerrainPoint>() { new(100, 100), new(0, 100), new(0, 0), new(100, 0), new(100, 100) });
+        }
+
+        private static TerrainPolygon TriangleA()
+        {
+            return new TerrainPolygon(new List<TerrainPoint>() { new(0, 0), new(0, 100), new(100, 0), new(0, 0) });
+        }
+        private static TerrainPolygon TriangleB()
+        {
+            return new TerrainPolygon(new List<TerrainPoint>() { new(101, 101), new(0, 101), new(101, 0), new(101, 101) });
+        }
+
+        private static TerrainPolygon Square100x100Far()
+        {
+            return new TerrainPolygon(new List<TerrainPoint>() { new(1100, 1100), new(1000, 1100), new(1000, 1000), new(1100, 1000), new(1100, 1100) });
         }
 
         private static TerrainPolygon Square100x100WithHole()
@@ -39,7 +55,7 @@ namespace GameRealisticMap.Test.Geometries
 
         private static TerrainPolygon Square50x50WithHole()
         {
-            return new TerrainPolygon(new() { new(75, 75), new(75, 25), new(25, 25), new(25, 75), new(75, 75) }, 
+            return new TerrainPolygon(new() { new(75, 75), new(75, 25), new(25, 25), new(25, 75), new(75, 75) },
                 new() { new() { new(55, 55), new(55, 45), new(45, 45), new(45, 55), new(55, 55) } });
         }
 
@@ -183,7 +199,7 @@ namespace GameRealisticMap.Test.Geometries
         {
             var poly = Square100x100();
 
-            var crown = Assert.Single(poly.Crown(10,10));
+            var crown = Assert.Single(poly.Crown(10, 10));
             Assert.Equal(new TerrainPoint(-10, -10), crown.MinPoint);
             Assert.Equal(new TerrainPoint(110, 110), crown.MaxPoint);
             Assert.Equal(9, crown.Shell.Count);
@@ -301,7 +317,7 @@ namespace GameRealisticMap.Test.Geometries
             Assert.Single(polygon.Holes);
             Assert.Equal("POLYGON ((0 100, 0 0, 100 0, 100 100, 0 100), (75 25, 25 25, 25 75, 75 75, 75 25))", polygon.ToString());
 
-            result = TerrainPolygon.MergeAll(SquareBands100x100WithHole().Concat(new []{ Square10x10() }).ToList());
+            result = TerrainPolygon.MergeAll(SquareBands100x100WithHole().Concat(new[] { Square10x10() }).ToList());
             Assert.Equal(2, result.Count);
             polygon = result[0];
             Assert.Equal(new TerrainPoint(0, 0), polygon.MinPoint);
@@ -314,5 +330,25 @@ namespace GameRealisticMap.Test.Geometries
             Assert.Equal("POLYGON ((55 55, 45 55, 45 45, 55 45, 55 55))", polygon.ToString());
         }
 
+        [Fact]
+        public void TerrainPolygon_IntersectionArea()
+        {
+            Assert.Equal(7500, Square100x100().IntersectionArea(Square100x100WithHole()));
+            Assert.Equal(10000, Square100x100().IntersectionArea(Square100x100()));
+            Assert.Equal(0, Square100x100().IntersectionArea(Square100x100Far()));
+            Assert.Equal(0, TriangleA().IntersectionArea(TriangleB()));
+            Assert.Equal(5000, TriangleA().IntersectionArea(Square100x100()));
+        }
+
+        [Fact]
+        public void TerrainPolygon_Intersects()
+        {
+            Assert.True(Square100x100().Intersects(Square100x100WithHole()));
+            Assert.True(Square100x100().Intersects(Square100x100()));
+            Assert.False(Square100x100().Intersects(Square100x100Far()));
+            Assert.False(TriangleA().Intersects(TriangleB()));
+            Assert.True(TriangleA().Intersects(Square100x100()));
+        }
     }
+
 }

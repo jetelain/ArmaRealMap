@@ -94,10 +94,10 @@ namespace GameRealisticMap.Satellite
 
         private async Task<byte[]> Load(Uri uri)
         {
-            progress.WriteLine(uri.OriginalString);
             int sleep = 10;
             while (sleep < 20000)
             {
+                progress.WriteLine($"Fetch '{uri.OriginalString}'");
                 await Task.Delay(sleep).ConfigureAwait(false);
                 try
                 {
@@ -118,7 +118,6 @@ namespace GameRealisticMap.Satellite
             var filePath = FormattableString.Invariant($"{zoomLevel}/{tY}/{tX}.jpg");
 
             var cacheFile = System.IO.Path.Combine(cacheLocation, filePath);
-            progress.WriteLine(cacheFile);
             if (!File.Exists(cacheFile))
             {
                 await downloadSemaphore.WaitAsync().ConfigureAwait(false);
@@ -128,7 +127,6 @@ namespace GameRealisticMap.Satellite
                     {
                         Directory.CreateDirectory(Path.GetDirectoryName(cacheFile));
                         File.WriteAllBytes(cacheFile, await Load(new Uri(endPoint + filePath, UriKind.Absolute)).ConfigureAwait(false));
-                        progress.WriteLine("--> OK");
                     }
                 }
                 finally
@@ -136,7 +134,7 @@ namespace GameRealisticMap.Satellite
                     downloadSemaphore.Release();
                 }
             }
-
+            progress.WriteLine($"Load '{cacheFile}'");
             try
             {
                 var image = await Image.LoadAsync<Rgba32>(cacheFile, new JpegDecoder()).ConfigureAwait(false);

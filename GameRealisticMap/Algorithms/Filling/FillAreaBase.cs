@@ -115,7 +115,7 @@ namespace GameRealisticMap.Algorithms.Filling
             }
             if (remainItems > 0)
             {
-                progress.WriteLine($"Warning: Unable to generate all models for polygon '{fillarea.Area.Polygon}': {remainItems} remains on {fillarea.ItemsToAdd}");
+                progress.WriteLine($"Warning: Unable to generate all models for polygon '{fillarea.Area.MinPoint} -> {fillarea.Area.MaxPoint}': {remainItems} remains on {fillarea.ItemsToAdd}");
                 report.Report(Interlocked.Add(ref generatedItems, remainItems));
             }
         }

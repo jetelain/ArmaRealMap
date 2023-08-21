@@ -6,7 +6,7 @@ namespace GameRealisticMap.ManMade.Roads
 {
     internal static class RoadTypeIdHelper
     {
-        internal static RoadTypeId? FromOSM(TagsCollectionBase tags, IProgressSystem progress)
+        internal static RoadTypeId? FromOSM(TagsCollectionBase tags)
         {
             var type = tags.GetValue("highway");
             switch (type)
@@ -71,10 +71,6 @@ namespace GameRealisticMap.ManMade.Roads
                     }
                     return RoadTypeId.SingleLaneConcreteRoad;
 
-            }
-            if (!string.IsNullOrEmpty(type))
-            {
-                progress.WriteLine($"Unknown highway='{type}'");
             }
             return null;
         }

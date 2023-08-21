@@ -674,5 +674,20 @@ namespace GameRealisticMap.Geometries
             }
             return new TerrainPoint((float)segment[0].X, (float)segment[0].Y);
         }
+
+
+        public bool Intersects(TerrainPolygon other)
+        {
+            if (GeometryHelper.EnveloppeIntersects(this, other))
+            {
+                return AsPolygon.Intersects(other.AsPolygon);
+            }
+            return false;
+        }
+
+        public double IntersectionArea(TerrainPolygon other)
+        {
+            return Intersection(other).Sum(o => o.Area);
+        }
     }
 }
