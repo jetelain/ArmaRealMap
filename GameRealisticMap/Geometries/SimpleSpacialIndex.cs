@@ -82,7 +82,7 @@ namespace GameRealisticMap.Geometries
 
         public static int GetCellCount(Vector2 size)
         {
-            return (int)Math.Max(2, Math.Ceiling(Math.Max(size.X / 80, size.Y / 80)));
+            return (int)Math.Min(Math.Max(2, Math.Ceiling(Math.Max(size.X / 128, size.Y / 128))), 256);
         }
 
         public IEnumerable<T> Values => all.Where(a => !a.isRemoved).Select(a => a.value);

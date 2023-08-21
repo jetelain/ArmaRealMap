@@ -97,7 +97,7 @@ namespace GameRealisticMap.Arma3.Imagery
 
         private void DrawPolygons(IArma3MapConfig config, IImageProcessingContext d, IBrush brush, IEnumerable<TerrainPolygon> polygons)
         {
-            foreach (var polygon in polygons)
+            foreach (var polygon in polygons.ProgressStep(progress, "DrawPolygons"))
             {
                 DrawPolygon(config, brush, d, polygon);
             }
@@ -105,7 +105,7 @@ namespace GameRealisticMap.Arma3.Imagery
 
         private void DrawPolygonsCrown(IArma3MapConfig config, IImageProcessingContext d, IBrush crownBrush, IEnumerable<TerrainPolygon> polygons, float crownSize)
         {
-            foreach (var polygon in polygons)
+            foreach (var polygon in polygons.ProgressStep(progress, "DrawPolygonsCrown"))
             {
                 foreach (var x in polygon.OuterCrown(crownSize))
                 {

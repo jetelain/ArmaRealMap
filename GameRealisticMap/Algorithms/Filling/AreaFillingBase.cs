@@ -21,5 +21,10 @@ namespace GameRealisticMap.Algorithms.Filling
         public AreaDefinition Area => area;
 
         public int ItemsToAdd { get; }
+
+        public virtual void Cleanup()
+        {
+
+        }
     }
 }

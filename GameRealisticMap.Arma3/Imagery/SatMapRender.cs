@@ -33,6 +33,7 @@ namespace GameRealisticMap.Arma3.Imagery
 
         public Image RenderSatOut(IArma3MapConfig config, IContext context, int size)
         {
+            using var step = progress.CreateStep("SatOut", 1);
             return fakeSatRender.RenderSatOut(config, context, size);
         }
 
