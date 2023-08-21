@@ -61,7 +61,6 @@ namespace GameRealisticMap.Arma3.ManMade
                 if (!TryPlaceBuilding(result, roads, building, 0.5f, 1.25f)
                     && !TryPlaceBuildingIfNotOverlapping(buildings, result, roads, building, 1.25f, 10f))
                 {
-                    // progress.WriteLine($"Nothing fits {building.TypeId} {building.Box.Width} x {building.Box.Height}");
                     nonefits++;
                 }
                 report.ReportOneDone();
