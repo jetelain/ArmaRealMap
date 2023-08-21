@@ -330,12 +330,6 @@ namespace GameRealisticMap.Test.Geometries
             Assert.Equal("POLYGON ((55 55, 45 55, 45 45, 55 45, 55 55))", polygon.ToString());
         }
 
-        private readonly ITestOutputHelper _output;
-        public TerrainPolygonTest(ITestOutputHelper output)
-        {
-            _output = output;
-        }
-
         [Fact]
         public void TerrainPolygon_IntersectionArea()
         {
