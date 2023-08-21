@@ -107,7 +107,7 @@ namespace GameRealisticMap.ManMade.Buildings
                         while (wasUpdated && building.Box.Width < mergeLimit && building.Box.Width < mergeLimit)
                         {
                             wasUpdated = false;
-                            foreach (var other in small.Where(building, b => b.Poly.Intersects(building.Poly)).ToList())
+                            foreach (var other in small.Where(building, b => b.Polygon.Intersects(building.Polygon)).ToList())
                             {
                                 small.Remove(other);
                                 building.AddAndMerge(other);
@@ -144,10 +144,10 @@ namespace GameRealisticMap.ManMade.Buildings
                 do
                 {
                     wasChanged = false;
-                    foreach (var other in todo.Where(building, o => o.Poly.Intersects(building.Poly)).ToList())
+                    foreach (var other in todo.Where(building, o => o.Polygon.Intersects(building.Polygon)).ToList())
                     {
-                        var intersection = building.Poly.Intersection(other.Poly);
-                        if (intersection.Area > other.Poly.Area * 0.15)
+                        var intersectionArea = building.Polygon.IntersectionArea(other.Polygon);
+                        if (intersectionArea > other.Polygon.Area * 0.15)
                         {
                             todo.Remove(other);
                             pass3.Remove(other);
@@ -156,7 +156,7 @@ namespace GameRealisticMap.ManMade.Buildings
                         else
                         {
                             var mergeSimulation = building.Box.Add(other.Box);
-                            if (mergeSimulation.Poly.Area <= (building.Poly.Area + other.Poly.Area - intersection.Area) * 1.05)
+                            if (mergeSimulation.Polygon.Area <= (building.Polygon.Area + other.Polygon.Area - intersectionArea) * 1.05)
                             {
                                 building.AddAndMerge(other);
                                 pass3.Remove(other);
@@ -193,10 +193,10 @@ namespace GameRealisticMap.ManMade.Buildings
                 do
                 {
                     wasChanged = false;
-                    foreach (var other in todo.Where(o => o.Poly.Intersects(building.Poly)).ToList())
+                    foreach (var other in todo.Where(o => o.Polygon.Intersects(building.Polygon)).ToList())
                     {
-                        var intersection = building.Poly.Intersection(other.Poly);
-                        if (intersection.Area > other.Poly.Area * 0.15)
+                        var intersectionArea = building.Polygon.IntersectionArea(other.Polygon);
+                        if (intersectionArea > other.Polygon.Area * 0.15)
                         {
                             todo.Remove(other);
                             pass3.Remove(other);
@@ -204,7 +204,7 @@ namespace GameRealisticMap.ManMade.Buildings
                         else
                         {
                             var mergeSimulation = building.Box.Add(other.Box);
-                            if (mergeSimulation.Poly.Area <= (building.Poly.Area + other.Poly.Area - intersection.Area) * 1.05)
+                            if (mergeSimulation.Polygon.Area <= (building.Polygon.Area + other.Polygon.Area - intersectionArea) * 1.05)
                             {
                                 building.AddAndMerge(other);
                                 pass3.Remove(other);
@@ -229,7 +229,7 @@ namespace GameRealisticMap.ManMade.Buildings
             Parallel.ForEach(pass3, building =>
             {
                 var conflicts = roadsIndex
-                    .Where(building.Box, r => r.Polygons.Any(p => p.AsPolygon.Intersects(building.Box.Poly)))
+                    .Where(building.Box, r => r.Polygons.Any(p => p.Intersects(building.Box.Polygon)))
                     .ToList();
                 if (conflicts.Count > 0)
                 {
@@ -265,7 +265,7 @@ namespace GameRealisticMap.ManMade.Buildings
             {
                 if (building.Category == null)
                 {
-                    var meta = metas.Where(m => m.PolyList.Any(p => p.AsPolygon.Intersects(building.Poly))).FirstOrDefault();
+                    var meta = metas.Where(m => m.PolyList.Any(p => p.Intersects(building.Polygon))).FirstOrDefault();
                     if (meta == null)
                     {
                         building.Category = BuildingTypeId.Residential;

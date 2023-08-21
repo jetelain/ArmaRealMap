@@ -72,10 +72,10 @@ namespace GameRealisticMap.ManMade.Roads
                     return RoadTypeId.SingleLaneConcreteRoad;
 
             }
-            if (!string.IsNullOrEmpty(type))
-            {
-                progress.WriteLine($"Unknown highway='{type}'");
-            }
+            //if (!string.IsNullOrEmpty(type))
+            //{
+            //    progress.WriteLine($"Unknown highway='{type}'");
+            //}
             return null;
         }
 

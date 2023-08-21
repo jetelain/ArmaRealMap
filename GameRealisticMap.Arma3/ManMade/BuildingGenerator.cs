@@ -61,11 +61,12 @@ namespace GameRealisticMap.Arma3.ManMade
                 if (!TryPlaceBuilding(result, roads, building, 0.5f, 1.25f)
                     && !TryPlaceBuildingIfNotOverlapping(buildings, result, roads, building, 1.25f, 10f))
                 {
-                    progress.WriteLine($"Nothing fits {building.TypeId} {building.Box.Width} x {building.Box.Height}");
+                    // progress.WriteLine($"Nothing fits {building.TypeId} {building.Box.Width} x {building.Box.Height}");
                     nonefits++;
                 }
                 report.ReportOneDone();
             }
+            progress.WriteLine($"{nonefits} buildings has no matching assets ({nonefits * 100.0 / buildings.Count:0.00} %).");
             return result.SelectMany(p => p.ToObjects());
         }
 
@@ -76,8 +77,8 @@ namespace GameRealisticMap.Arma3.ManMade
             {
                 var obj = PickOne(building, candidates);
                 var realbox = RealBoxAdjustedToRoad(roads, obj.Size, GetFitBox(building, min, max, obj));
-                if (!wanted.Where(b => b != building).Any(b => b.Box.Poly.Intersects(realbox.Poly))
-                    && !buildings.Any(b => b.Box.Poly.Intersects(realbox.Poly)))
+                if (!wanted.Where(b => b != building).Any(b => b.Box.Polygon.Intersects(realbox.Polygon))
+                    && !buildings.Any(b => b.Box.Polygon.Intersects(realbox.Polygon)))
                 {
                     buildings.Add(new Placed(obj.Composition, realbox));
                     return true;
@@ -164,7 +165,7 @@ namespace GameRealisticMap.Arma3.ManMade
             var realbox = new BoundingBox(box.Center, size.X, size.Y, box.Angle);
             var conflicts = roads
                 .Where(r => r.EnveloppeIntersects(realbox))
-                .Where(r => r.Polygons.Any(p => p.AsPolygon.Intersects(realbox.Poly)))
+                .Where(r => r.Polygons.Any(p => p.Intersects(realbox.Polygon)))
                 .ToList();
             if (conflicts.Count > 0)
             {
@@ -176,7 +177,7 @@ namespace GameRealisticMap.Arma3.ManMade
                 var b3 = new BoundingBox(box.Center + Vector2.Transform(new Vector2(-dw, -dh), rotate), size.X, size.Y, box.Angle);
                 var b4 = new BoundingBox(box.Center + Vector2.Transform(new Vector2(-dw, dh), rotate), size.X, size.Y, box.Angle);
                 realbox = (new[] { b1, b2, b3, b4 })
-                    .Select(b => new { Box = b, Conflits = conflicts.Sum(c => c.Polygons.Sum(p => p.AsPolygon.Intersection(b.Poly).Area)) })
+                    .Select(b => new { Box = b, Conflits = conflicts.Sum(c => c.Polygons.Sum(p => p.IntersectionArea(b.Polygon))) })
                     .ToList()
                     .OrderBy(b => b.Conflits).First().Box;
             }

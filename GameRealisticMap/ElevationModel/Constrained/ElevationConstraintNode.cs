@@ -149,16 +149,20 @@ namespace GameRealisticMap.ElevationModel.Constrained
             SetElevation(ComputeBaseElevation());
         }
 
-        public void SetNotBelow(float minimalElevation)
+        public void SetNotBelow(float minimalElevation, int recursion = 0)
         {
             if (LowerLimitAbsoluteElevation.HasValue && LowerLimitAbsoluteElevation.Value >= minimalElevation)
             {
                 return;
             }
             LowerLimitAbsoluteElevation = minimalElevation;
+            if (recursion > 750)
+            {
+                return;
+            }
             foreach (var constraint in Constraints)
             {
-                constraint.LowerThan?.SetNotBelow(minimalElevation);
+                constraint.LowerThan?.SetNotBelow(minimalElevation, recursion + 1);
             }
         }
     }
