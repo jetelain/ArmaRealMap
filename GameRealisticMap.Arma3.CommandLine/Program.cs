@@ -1,41 +1,48 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
+using CommandLine;
 using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Arma3.Edit;
-using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Preview;
 using GameRealisticMap.Reporting;
-using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Arma3.CommandLine
 {
     internal class Program
     {
-        static async Task Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
-            var projectDrive = new ProjectDrive(Arma3ToolsHelper.GetProjectDrivePath(), new PboFileSystem());
-            projectDrive.AddMountPoint(@"z\arm\addons", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive\z\arm\addons");
-
-            var reader = new WrpEditBatchParser(new ConsoleProgressSystem(), projectDrive);
-
-            var exportData = reader.ParseFromFile(@"C:\Users\Julien\Desktop\regiment_grma3.txt");
-
-            File.WriteAllLines(@"c:\temp\regiment_grma3_add.txt", exportData.Add.Select(o => $"{o.Model};{o.Transform}"));
-            File.WriteAllLines(@"c:\temp\regiment_grma3_del.txt", exportData.Remove.Select(o => $"{o.Model};{o.WorldPos}"));
-
-
-
-
-            var models = new ModelInfoLibrary(projectDrive);
-
-            var generator = new Arma3DemoMapGenerator(await Arma3Assets.LoadFromFile(models,"builtin:CentralEurope.grma3a"), projectDrive, "CentralEurope",  new PboCompilerFactory(models, projectDrive));
-
-            var config = await generator.GenerateMod(new ConsoleProgressSystem());
+            try
+            {
+                return await Parser.Default.ParseArguments<GenerateObjectLayerOptions>(args)
+                  .MapResult(
+                    (GenerateObjectLayerOptions opts) => GenerateObjectLayer(opts),
+                    errs => Task.FromResult(1));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return 2;
+            }
         }
+
+        private static async Task<int> GenerateObjectLayer(GenerateObjectLayerOptions opts)
+        {
+            var progress = new ConsoleProgressSystem();
+            var workspaceSettings = await WorkspaceSettings.Load();
+            var projectDrive = OperatingSystem.IsWindows() ? workspaceSettings.CreateProjectDrive() : workspaceSettings.CreateProjectDriveStandalone();
+            var models = new ModelInfoLibrary(projectDrive);
+            var a3config = await opts.GetConfigFile();
+            var assets = await Arma3Assets.LoadFromFile(models, a3config.AssetConfigFile);
+            var generator = new Arma3TerrainBuilderGenerator(assets, projectDrive);
+
+            Directory.CreateDirectory(opts.TargetDirectory);
+
+            await generator.GenerateOnlyOneLayer(progress, a3config, opts.LayerName, opts.TargetDirectory);
+
+            return 0;
+        }
+
+
     }
 }

@@ -132,14 +132,13 @@ namespace GameRealisticMap.Arma3
             Directory.CreateDirectory(objectsTargetDirectory);
             foreach (var tb in generators.Generators)
             {
-                var name = tb.GetType().Name.Replace("Generator", "").ToLowerInvariant();
+                var name = GetLayerName(tb);
                 var entries = tb.Generate(config, context).ToList();
                 foreach (var entry in entries)
                 {
                     usedModels.Add(entry.Model);
                 }
-                await WriteFileAsync(Path.Combine(objectsTargetDirectory, "absolute_" + name + ".txt"), entries.Where(e => e.ElevationMode == ElevationMode.Absolute).ToList());
-                await WriteFileAsync(Path.Combine(objectsTargetDirectory, "relative_" + name + ".txt"), entries.Where(e => e.ElevationMode == ElevationMode.Relative).ToList());
+                await WriteLayers(objectsTargetDirectory, name, entries);
                 progress.ReportOneDone();
             }
 
@@ -147,6 +146,17 @@ namespace GameRealisticMap.Arma3
             progress.ReportOneDone();
 
             new TmlGenerator().WriteLibrariesTo(usedModels, Path.Combine(targetDirectory, "Library"));
+        }
+
+        private static string GetLayerName(ITerrainBuilderLayerGenerator tb)
+        {
+            return tb.GetType().Name.Replace("Generator", "").ToLowerInvariant();
+        }
+
+        private static async Task WriteLayers(string objectsTargetDirectory, string name, List<TerrainBuilderObject> entries)
+        {
+            await WriteFileAsync(Path.Combine(objectsTargetDirectory, "absolute_" + name + ".txt"), entries.Where(e => e.ElevationMode == ElevationMode.Absolute).ToList());
+            await WriteFileAsync(Path.Combine(objectsTargetDirectory, "relative_" + name + ".txt"), entries.Where(e => e.ElevationMode == ElevationMode.Relative).ToList());
         }
 
         private void CreateLayersCfg(IProgressTask progress, Arma3MapConfig config)
@@ -314,7 +324,7 @@ Import Surface images with 'File > Import > Surface mask images...'."));
                 sb.AppendLine();
                 sb.AppendLine("| Easting       | Northing      | Satellite                        | Surface                          |");
                 sb.AppendLine("|---------------|---------------|----------------------------------|----------------------------------|");
-                foreach(var part in parts)
+                foreach (var part in parts)
                 {
                     sb.Append("| ");
                     sb.Append(part.E.ToString().PadLeft(13, ' '));
@@ -380,12 +390,35 @@ For large images this operation can take several minutes.");
             }
         }
 
-        private async Task WriteFileAsync(string filePath, List<TerrainBuilderObject> terrainBuilderObjects)
+        private static async Task WriteFileAsync(string filePath, List<TerrainBuilderObject> terrainBuilderObjects)
         {
             if (terrainBuilderObjects.Count > 0)
             {
                 await File.WriteAllLinesAsync(filePath, terrainBuilderObjects.Select(o => o.ToTerrainBuilderCSV()));
             }
+        }
+
+        public async Task GenerateOnlyOneLayer(IProgressTask progress, Arma3MapConfig a3config, string layerName, string targetDirectory)
+        {
+            var osmSource = await LoadOsmData(progress, a3config);
+            progress.ReportOneDone();
+            if (progress.CancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
+            // Generate content
+            var context = CreateBuildContext(progress, a3config, osmSource);
+
+            var layers = new Arma3LayerGeneratorCatalog(progress, assets);
+            var generator = layers.Generators.FirstOrDefault(g => string.Equals(GetLayerName(g), layerName, StringComparison.OrdinalIgnoreCase));
+            if (generator == null)
+            {
+                throw new ApplicationException($"Layer '{layerName}' does not exists.");
+            }
+
+            var result = generator.Generate(a3config, context);
+            await WriteLayers(targetDirectory, GetLayerName(generator), result.ToList());
         }
 
     }

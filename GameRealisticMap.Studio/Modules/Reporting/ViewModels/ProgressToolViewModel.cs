@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Caliburn.Micro;
@@ -24,6 +25,8 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         private readonly IWindowManager windowManager;
         private readonly PerformanceCounter? cpuCounter;
         private readonly DispatcherTimer timer;
+        private double memoryPeak;
+        private readonly double totalMemGb;
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
 
@@ -39,10 +42,11 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
+            timer.Tick += Timer_Tick;
             try
             {
+                totalMemGb = SystemNative.GetTotalMemoryInGigaBytes();
                 cpuCounter = new PerformanceCounter("Process", "% Processor Time", Assembly.GetEntryAssembly()?.GetAssemblyName() ?? "_Total", true);
-                timer.Tick += Timer_Tick;
             }
             catch(Exception ex)
             {
@@ -65,6 +69,19 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
                 {
                 }
             }
+            try
+            {
+                var memoryGB = Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024 / 1024.0;
+                MemUsage = $"{memoryGB:0.0} G";
+                NotifyOfPropertyChange(nameof(MemUsage));
+                memoryPeak = Math.Max(memoryGB, memoryPeak);
+                if (totalMemGb > 0 )
+                {
+                    MemPressure = memoryGB / totalMemGb * 100.0;
+                    NotifyOfPropertyChange(nameof(MemPressure));
+                }
+            }
+            catch { }
         }
 
         public TaskState State
@@ -99,6 +116,10 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
         public float CpuUsage { get; private set; }
 
+        public double MemPressure { get; private set; }
+
+        public string MemUsage { get; private set; } = string.Empty;
+
         public IProgressTaskUI StartTask(string name)
         {
             output.Clear();
@@ -111,6 +132,8 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             NotifyOfPropertyChange(nameof(TaskName));
 
             State = TaskState.Running;
+
+            memoryPeak = 0;
 
             return current = new ProgressTask(this, name);
         }
@@ -164,6 +187,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             {
                 task.Failed(ex);
             }
+            task.WriteLine(FormattableString.Invariant($"Memory: Peak: {memoryPeak:0.000} G, System: {totalMemGb:0.000} G"));
             task.Dispose();
             if ( task.Error == null && !task.CancellationToken.IsCancellationRequested)
             {

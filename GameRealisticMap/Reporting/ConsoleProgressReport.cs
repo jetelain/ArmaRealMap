@@ -112,6 +112,10 @@ namespace GameRealisticMap.Reporting
             if (!Console.IsOutputRedirected)
             {
                 Console.Write(new string(' ', Console.BufferWidth - Console.CursorLeft - 1));
+
+                Console.CursorLeft = Console.BufferWidth - 8;
+                var memoryGB = Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024 / 1024.0;
+                Console.Write($"{memoryGB:0.0} G");
             }
         }
 
