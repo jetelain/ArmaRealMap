@@ -18,7 +18,7 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore dependencies
-      run: dotnet restore --configuration Release GameRealisticMap-LinuxCI.sln
+      run: dotnet restore GameRealisticMap-LinuxCI.sln
 
     - name: Build
       run: dotnet build --no-restore --configuration Release GameRealisticMap-LinuxCI.sln
