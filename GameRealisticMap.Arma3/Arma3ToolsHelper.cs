@@ -113,7 +113,8 @@ namespace GameRealisticMap.Arma3
                  && !output.Contains(":     ")
                  && !output.Contains("Info: Persistence detected on")
                  && !output.Contains("Creating process:")
-                 && output != "---------------------------------------------"
+                 && output != "---------------------------------------------",
+                 GetProjectDrivePath()
                  );
             if (rc != 0)
             {
@@ -148,7 +149,7 @@ namespace GameRealisticMap.Arma3
             }).ConfigureAwait(false);
         }
 
-        internal static async Task<int> Run(IProgressSystem system, string executable, string arguments, Func<string, bool>? outputFilter = null)
+        internal static async Task<int> Run(IProgressSystem system, string executable, string arguments, Func<string, bool>? outputFilter = null, string? workingDirectory = null)
         {
             var options = new ProcessStartInfo()
             {
@@ -160,6 +161,10 @@ namespace GameRealisticMap.Arma3
                 Arguments = arguments,
                 UseShellExecute = false
             };
+            if ( !string.IsNullOrEmpty(workingDirectory) )
+            {
+                options.WorkingDirectory = workingDirectory;
+            }
             var process = Process.Start(options)!;
             process.OutputDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data) && (outputFilter == null || outputFilter(e.Data))) { system.WriteLine(e.Data); } };
             process.ErrorDataReceived += (_, e) => { if (!string.IsNullOrEmpty(e.Data) && (outputFilter == null || outputFilter(e.Data))) { system.WriteLine(e.Data); } };
