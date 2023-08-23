@@ -89,6 +89,12 @@ namespace GameRealisticMap.Algorithms.Filling
                 for (int i = 0; i < Math.Max(10, fillarea.ItemsToAdd) && remainItems > 0; ++i)
                 {
                     var point = fillarea.Area.GetRandomPointInside();
+                    if (point == null)
+                    {
+                        unChangedLoops = 100;
+                        progress.WriteLine($"Warning: Unable to find any point within the polygon '{fillarea.Area.MinPoint} -> {fillarea.Area.MaxPoint}', Area='{fillarea.Area.Polygon.Area}' EnveloppeArea='{fillarea.Area.Polygon.EnveloppeArea}'");
+                        break;
+                    }
                     var obj = fillarea.SelectObjectToInsert(point);
                     var candidate = Create(obj, point, 0, 0, GetScale(fillarea.Area.Random, obj));
                     if (WillFit(candidate, fillarea.Area))
