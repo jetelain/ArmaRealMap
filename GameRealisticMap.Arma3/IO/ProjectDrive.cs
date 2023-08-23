@@ -48,10 +48,6 @@ namespace GameRealisticMap.Arma3.IO
 
         public bool EnsureLocalFileCopy(string path)
         {
-            if (!OperatingSystem.IsWindows())
-            {
-                return true; // Unsupported on Linux
-            }
             var fullPath = GetFullPath(path);
             if (File.Exists(fullPath))
             {
