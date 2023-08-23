@@ -56,7 +56,8 @@ namespace GameRealisticMap.Arma3.TerrainBuilder.TmlFiles
             }
             if (i < 5)
             {
-                return Path.GetDirectoryName(path)!.Replace("\\", "_");
+                var last = path.LastIndexOf('\\'); // can't be -1, as IndexOf('\\') was different of -1
+                return path.Substring(0, last).Replace("\\", "_");
             }
             return path.Substring(0, i);
         }

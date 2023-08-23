@@ -30,11 +30,20 @@ namespace GameRealisticMap.Arma3.IO
             {
                 if (path.StartsWith(item.Key, StringComparison.OrdinalIgnoreCase))
                 {
-                    return Path.Combine(item.Value, path.Substring(item.Key.Length));
+                    return Path.Combine(item.Value, ToRelativePhysicalPath(path.Substring(item.Key.Length)));
                 }
             }
             // Should call Arma3ToolsHelper.EnsureProjectDrive() if mountPath == "P:" on first call
-            return Path.Combine(mountPath, path);
+            return Path.Combine(mountPath, ToRelativePhysicalPath(path));
+        }
+
+        private string ToRelativePhysicalPath(string gamePath)
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                return gamePath;
+            }
+            return gamePath.Replace("\\", "/");
         }
 
         public bool EnsureLocalFileCopy(string path)

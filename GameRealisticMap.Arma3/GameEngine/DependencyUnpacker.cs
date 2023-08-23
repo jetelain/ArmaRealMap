@@ -41,6 +41,10 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         private void UnpackFiles(IProgressTask progress, IReadOnlyCollection<string> files)
         {
+            if (!OperatingSystem.IsWindows())
+            {
+                return; // Unsupported on Linux
+            }
             using var report = progress.CreateStep("UnpackFiles", files.Count);
             foreach (var model in files)
             {
