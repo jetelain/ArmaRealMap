@@ -36,7 +36,7 @@ namespace GameRealisticMap.Reporting
         {
             var process = Process.GetCurrentProcess();
 
-            Console.WriteLine($"Elapsed: {sw.Elapsed}, Memory peak: {MemoryPeakGB:0.0} G, Total CPU: {process.TotalProcessorTime}");
+            Console.WriteLine($"Elapsed: {sw.Elapsed}, Memory peak: {MemoryPeakGB:0.0} G, Total CPU: {process.TotalProcessorTime} ({process.TotalProcessorTime.TotalMilliseconds/sw.Elapsed.TotalMilliseconds:0.00} average)");
 #if DEBUG
             Console.WriteLine($"Note: This is a DEBUG binary, performance could be better with a RELEASE binary");
 #endif
