@@ -141,7 +141,7 @@ namespace GameRealisticMap.Arma3.Assets
                 .ToList();
         }
 
-        public static async Task<Arma3Assets> LoadFromFile(ModelInfoLibrary library, string path, bool allowUnresolvedModel = false)
+        public static async Task<Arma3Assets> LoadFromFile(IModelInfoLibrary library, string path, bool allowUnresolvedModel = false)
         {
             Arma3Assets? assets = null;
 

@@ -113,6 +113,7 @@ namespace GameRealisticMap.Algorithms.Filling
                     unChangedLoops++;
                 }
             }
+            fillarea.Cleanup();
             if (remainItems > 0)
             {
                 progress.WriteLine($"Warning: Unable to generate all models for polygon '{fillarea.Area.MinPoint} -> {fillarea.Area.MaxPoint}': {remainItems} remains on {fillarea.ItemsToAdd}");

@@ -1,41 +1,56 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
-using System.Threading.Tasks;
-using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Arma3.Edit;
+﻿using CommandLine;
 using GameRealisticMap.Arma3.GameEngine;
-using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.ElevationModel;
-using GameRealisticMap.Osm;
-using GameRealisticMap.Preview;
 using GameRealisticMap.Reporting;
-using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Arma3.CommandLine
 {
     internal class Program
     {
-        static async Task Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
-            var projectDrive = new ProjectDrive(Arma3ToolsHelper.GetProjectDrivePath(), new PboFileSystem());
-            projectDrive.AddMountPoint(@"z\arm\addons", @"C:\Users\Julien\source\repos\ArmaRealMap\PDrive\z\arm\addons");
+            try
+            {
+                return await Parser.Default.ParseArguments<GenerateObjectLayerOptions, GenerateWrpOptions, GenerateModOptions>(args)
+                  .MapResult(
+                    (GenerateObjectLayerOptions opts) => GenerateObjectLayer(opts),
+                    (GenerateWrpOptions opts) => GenerateWrp(opts),
+                    (GenerateModOptions opts) => GenerateMod(opts),
+                    errs => Task.FromResult(1));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return 2;
+            }
+        }
 
-            var reader = new WrpEditBatchParser(new ConsoleProgressSystem(), projectDrive);
+        private static async Task<int> GenerateObjectLayer(GenerateObjectLayerOptions opts)
+        {
+            using var workspace = await opts.CreateWorkspace();
+            var generator = new Arma3TerrainBuilderGenerator(workspace.Assets, workspace.ProjectDrive);
+            Directory.CreateDirectory(opts.TargetDirectory);
+            await generator.GenerateOnlyOneLayer(workspace.Progress, workspace.MapConfig, opts.LayerName, opts.TargetDirectory);
+            return 0;
+        }
 
-            var exportData = reader.ParseFromFile(@"C:\Users\Julien\Desktop\regiment_grma3.txt");
+        private static async Task<int> GenerateWrp(GenerateWrpOptions opts)
+        {
+            using var workspace = await opts.CreateWorkspace();
+            var generator = new Arma3MapGenerator(workspace.Assets, workspace.ProjectDrive, new NonePboCompilerFactory());
+            await generator.GenerateWrp(workspace.Progress, workspace.MapConfig, !opts.SkipPaa);
+            return 0;
+        }
 
-            File.WriteAllLines(@"c:\temp\regiment_grma3_add.txt", exportData.Add.Select(o => $"{o.Model};{o.Transform}"));
-            File.WriteAllLines(@"c:\temp\regiment_grma3_del.txt", exportData.Remove.Select(o => $"{o.Model};{o.WorldPos}"));
-
-
-
-
-            var models = new ModelInfoLibrary(projectDrive);
-
-            var generator = new Arma3DemoMapGenerator(await Arma3Assets.LoadFromFile(models,"builtin:CentralEurope.grma3a"), projectDrive, "CentralEurope",  new PboCompilerFactory(models, projectDrive));
-
-            var config = await generator.GenerateMod(new ConsoleProgressSystem());
+        private static async Task<int> GenerateMod(GenerateModOptions opts)
+        {
+            if ( !OperatingSystem.IsWindows())
+            {
+                throw new PlatformNotSupportedException("Mod generation works only on Windows");
+            }
+            using var workspace = await opts.CreateWorkspace();
+            var generator = new Arma3MapGenerator(workspace.Assets, workspace.ProjectDrive, new PboCompilerFactory(workspace.ProjectDrive));
+            await generator.GenerateMod(workspace.Progress, workspace.MapConfig);
+            return 0;
         }
     }
 }

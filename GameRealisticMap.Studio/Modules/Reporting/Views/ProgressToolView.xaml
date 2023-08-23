@@ -45,8 +45,8 @@
         </Grid>
 
         <StackPanel Orientation="Horizontal" Margin="10 0 10 10" HorizontalAlignment="Right" Grid.Row="1">
-
-            <Grid Width="50">
+            
+            <Grid Width="60">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Visibility" Value="Collapsed" />
@@ -57,14 +57,30 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-                <ProgressBar Value="{Binding CpuUsage, Mode=OneWay}" Minimum="0" Maximum="100"  Foreground="CadetBlue" Margin="10 0" Orientation="Vertical" Visibility="{Binding HasPerformanceCounter, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
+                <ProgressBar Value="{Binding MemPressure, Mode=OneWay}" Minimum="0" Maximum="66"  Foreground="CadetBlue" Margin="5 0" Orientation="Vertical">
+                </ProgressBar>
+                <TextBlock HorizontalAlignment="Center" Margin="5" Text="{Binding MemUsage}" />
+            </Grid>
+            
+            <Grid Width="60">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding State}" Value="Running">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <ProgressBar Value="{Binding CpuUsage, Mode=OneWay}" Minimum="0" Maximum="90"  Foreground="CadetBlue" Margin="5 0" Orientation="Vertical" Visibility="{Binding HasPerformanceCounter, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
                 </ProgressBar>
                 <TextBlock HorizontalAlignment="Center" Margin="5" Visibility="{Binding HasPerformanceCounter, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
                     CPU
                 </TextBlock>
             </Grid>
 
-            <Button Padding="5" cal:Message.Attach="CancelTask">
+            <Button Padding="5" cal:Message.Attach="CancelTask" Margin="5 0 0 0">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Visibility" Value="Collapsed" />

@@ -382,3 +382,4 @@ healthchecksdb
 /PDrive/z/arm/addons/m_*
 *.bak
 /PDrive/z/arm/addons/grm_demo_*
+/GameRealisticMap.Arma3.CommandLine/Properties/launchSettings.json
