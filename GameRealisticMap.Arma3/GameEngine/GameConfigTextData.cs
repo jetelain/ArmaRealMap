@@ -72,8 +72,12 @@ namespace GameRealisticMap.Arma3.GameEngine
                 }
                 else
                 {
-                    pboPrefix = Path.GetDirectoryName(fullWorldName) ?? string.Empty;
-                    worldName = Path.GetFileNameWithoutExtension(fullWorldName) ?? string.Empty;
+                    var idx = fullWorldName.LastIndexOf('\\');
+                    if (idx != -1)
+                    {
+                        pboPrefix = fullWorldName.Substring(0, idx);
+                        worldName = fullWorldName.Substring(idx + 1);
+                    }
                 }
             }
 
@@ -123,7 +127,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                 {
                     var index = match.Index + match.Length;
                     content = content.Substring(0, index)
-                        + FormattableString.Invariant($";\r\n\t\tgrma3_revision = {Revision}")
+                        + FormattableString.Invariant($";{Environment.NewLine}\t\tgrma3_revision = {Revision}")
                         + content.Substring(index);
                 }
             }
