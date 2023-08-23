@@ -37,12 +37,18 @@ namespace GameRealisticMap.Algorithms.Filling
             return new TerrainPoint(x, y);
         }
 
-        internal TerrainPoint GetRandomPointInside()
+        internal TerrainPoint? GetRandomPointInside()
         {
             var point = GetRandomPoint();
+            int attempts = 0;
             while (!Polygon.Contains(point))
             {
                 point = GetRandomPoint();
+                attempts++;
+                if (attempts > 200_000) // Safeguard
+                {
+                    return null;
+                }
             }
             return point;
         }
