@@ -8,15 +8,17 @@ namespace GameRealisticMap.Reporting
         private readonly int itemsToDo;
         private readonly Stopwatch sw;
         private readonly Stopwatch lastReport;
+        private readonly ConsoleProgressSystem parent;
         private readonly object locker = new object();
         private int lastDone = 0;
 
-        public ConsoleProgressReport(string taskName, int itemsToDo = 1)
+        internal ConsoleProgressReport(string taskName, int itemsToDo, ConsoleProgressSystem parent)
         {
             this.taskName = taskName;
             this.itemsToDo = itemsToDo;
             this.sw = Stopwatch.StartNew();
             this.lastReport = Stopwatch.StartNew();
+            this.parent = parent;
 
             Trace.WriteLine(string.Empty);
             Trace.WriteLine($"Begin task {taskName}");
@@ -107,7 +109,7 @@ namespace GameRealisticMap.Reporting
             Trace.Flush();
         }
 
-        private static void CleanEndOfLine()
+        private void CleanEndOfLine()
         {
             if (!Console.IsOutputRedirected)
             {
@@ -116,6 +118,8 @@ namespace GameRealisticMap.Reporting
                 Console.CursorLeft = Console.BufferWidth - 8;
                 var memoryGB = Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024 / 1024.0;
                 Console.Write($"{memoryGB:0.0} G");
+
+                parent.MemoryPeakGB = Math.Max(parent.MemoryPeakGB, memoryGB);
             }
         }
 

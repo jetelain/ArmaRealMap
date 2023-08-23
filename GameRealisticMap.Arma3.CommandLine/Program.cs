@@ -1,9 +1,5 @@
-﻿using System.Text.Json;
-using CommandLine;
-using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.Osm;
+﻿using CommandLine;
+using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.CommandLine
@@ -14,9 +10,11 @@ namespace GameRealisticMap.Arma3.CommandLine
         {
             try
             {
-                return await Parser.Default.ParseArguments<GenerateObjectLayerOptions>(args)
+                return await Parser.Default.ParseArguments<GenerateObjectLayerOptions, GenerateWrpOptions, GenerateModOptions>(args)
                   .MapResult(
                     (GenerateObjectLayerOptions opts) => GenerateObjectLayer(opts),
+                    (GenerateWrpOptions opts) => GenerateWrp(opts),
+                    (GenerateModOptions opts) => GenerateMod(opts),
                     errs => Task.FromResult(1));
             }
             catch (Exception ex)
@@ -28,21 +26,31 @@ namespace GameRealisticMap.Arma3.CommandLine
 
         private static async Task<int> GenerateObjectLayer(GenerateObjectLayerOptions opts)
         {
-            var progress = new ConsoleProgressSystem();
-            var workspaceSettings = await WorkspaceSettings.Load();
-            var projectDrive = OperatingSystem.IsWindows() ? workspaceSettings.CreateProjectDrive() : workspaceSettings.CreateProjectDriveStandalone();
-            var models = new ModelInfoLibrary(projectDrive);
-            var a3config = await opts.GetConfigFile();
-            var assets = await Arma3Assets.LoadFromFile(models, a3config.AssetConfigFile);
-            var generator = new Arma3TerrainBuilderGenerator(assets, projectDrive);
-
+            using var workspace = await opts.CreateWorkspace();
+            var generator = new Arma3TerrainBuilderGenerator(workspace.Assets, workspace.ProjectDrive);
             Directory.CreateDirectory(opts.TargetDirectory);
-
-            await generator.GenerateOnlyOneLayer(progress, a3config, opts.LayerName, opts.TargetDirectory);
-
+            await generator.GenerateOnlyOneLayer(workspace.Progress, workspace.MapConfig, opts.LayerName, opts.TargetDirectory);
             return 0;
         }
 
+        private static async Task<int> GenerateWrp(GenerateWrpOptions opts)
+        {
+            using var workspace = await opts.CreateWorkspace();
+            var generator = new Arma3MapGenerator(workspace.Assets, workspace.ProjectDrive, new NonePboCompilerFactory());
+            await generator.GenerateWrp(workspace.Progress, workspace.MapConfig, !opts.SkipPaa);
+            return 0;
+        }
 
+        private static async Task<int> GenerateMod(GenerateModOptions opts)
+        {
+            if ( !OperatingSystem.IsWindows())
+            {
+                throw new PlatformNotSupportedException("Mod generation works only on Windows");
+            }
+            using var workspace = await opts.CreateWorkspace();
+            var generator = new Arma3MapGenerator(workspace.Assets, workspace.ProjectDrive, new PboCompilerFactory(workspace.ProjectDrive));
+            await generator.GenerateMod(workspace.Progress, workspace.MapConfig);
+            return 0;
+        }
     }
 }

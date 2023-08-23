@@ -81,7 +81,7 @@ namespace GameRealisticMap.Arma3
             return name;
         }
 
-        public async Task<WrpAndContextResults?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config)
+        public async Task<WrpAndContextResults?> GenerateWrp(IProgressTask progress, Arma3MapConfig a3config, bool pngToPaa = true)
         {
             var generators = new Arma3LayerGeneratorCatalog(progress, assets);
             progress.Total += 6 + generators.Generators.Count;
@@ -103,12 +103,11 @@ namespace GameRealisticMap.Arma3
                 return null;
             }
 
-#if DEBUG
-            PreviewRender.RenderHtml(context, "debug.html").Wait();
-#endif
-
             // Convert PAA
-            await projectDrive.ProcessImageToPaa(progress);
+            if (pngToPaa)
+            {
+                await projectDrive.ProcessImageToPaa(progress);
+            }
             progress.ReportOneDone();
 
             return results;

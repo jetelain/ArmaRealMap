@@ -42,6 +42,15 @@ namespace GameRealisticMap.Arma3.IO
             return drive;
         }
 
+        public ProjectDrive CreateProjectDriveAutomatic()
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                return CreateProjectDrive();
+            }
+            return CreateProjectDriveStandalone();
+        }
+
         public static async Task<WorkspaceSettings> Load()
         {
             var filename = DefaultLocation;

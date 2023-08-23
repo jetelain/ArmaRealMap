@@ -19,5 +19,10 @@ namespace GameRealisticMap.Arma3.CommandLine
             }
             return a3config;
         }
+
+        public async Task<MapWorkspace> CreateWorkspace()
+        {
+            return await MapWorkspace.Create(await GetConfigFile(), Path.GetDirectoryName(ConfigFile) ?? string.Empty);
+        }
     }
 }

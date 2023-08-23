@@ -32,12 +32,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             "Arma3",
             "Previews");
 
-        public string LibraryCachePath { get; set; } = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "GameRealisticMap",
-            "Arma3",
-            "modelinfo.json");
-
         public WorkspaceSettings? Settings { get; set; }
 
         public IEnumerable<string> ActiveMods  => (ProjectDrive.SecondarySource as PboFileSystem)?.ModsPaths ?? new List<string>();
@@ -83,28 +77,24 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
 
         public override async Task PostInitializeAsync()
         {
-            await LoadLibraryFromCache().ConfigureAwait(false);
+            await LoadLibraryFromCache();
         }
 
         private async Task LoadLibraryFromCache()
         {
-            if (File.Exists(LibraryCachePath))
-            {
-                await Library.LoadFrom(LibraryCachePath).ConfigureAwait(false);
-            }
+            await Library.Load().ConfigureAwait(false);
         }
 
         public async Task SaveLibraryCache()
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(LibraryCachePath)!);
-            await Library.SaveTo(LibraryCachePath).ConfigureAwait(false);
+            await Library.Save().ConfigureAwait(false);
         }
 
         public async Task Reload()
         {
             Initialize();
 
-            await LoadLibraryFromCache().ConfigureAwait(false);
+            await LoadLibraryFromCache();
 
             Reloaded?.Invoke(this, EventArgs.Empty);
         }

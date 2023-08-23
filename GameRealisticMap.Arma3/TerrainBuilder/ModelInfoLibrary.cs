@@ -10,6 +10,10 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 {
     public class ModelInfoLibrary : IModelInfoLibrary
     {
+        public static string DefaultCachePath { get; } = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "GameRealisticMap", "Arma3", "modelinfo.json");
+
         private readonly Dictionary<string, ModelInfo> indexByName = new Dictionary<string, ModelInfo>(StringComparer.OrdinalIgnoreCase);
         private readonly IGameFileSystem fileSystem;
 
@@ -191,10 +195,25 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 indexByName[item.Name] = item;
             }
         }
+
+        public async Task Load()
+        {
+            if (File.Exists(DefaultCachePath))
+            {
+                await LoadFrom(DefaultCachePath).ConfigureAwait(false);
+            }
+        }
+
         public async Task SaveTo(string path)
         {
             using var stream = File.Create(path);
             await JsonSerializer.SerializeAsync(stream, indexByName.Values);
+        }
+
+        public Task Save()
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(DefaultCachePath)!);
+            return SaveTo(DefaultCachePath);
         }
     }
 }
