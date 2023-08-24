@@ -2,8 +2,10 @@
 
 namespace GameRealisticMap.Nature
 {
-    public interface IBasicTerrainData : IGeoJsonData
+    public interface IBasicTerrainData : IGeoJsonData, INonDefaultArea, IPolygonTerrainData
     {
-        List<TerrainPolygon> Polygons { get; }
+        new List<TerrainPolygon> Polygons { get; }
+
+        IEnumerable<TerrainPolygon> INonDefaultArea.Polygons => Polygons;
     }
 }

@@ -8,7 +8,7 @@ using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.Nature
 {
-    internal abstract class BasicGeneratorBase<TData> : GeneratorBase<TData> where TData : class, IBasicTerrainData
+    internal abstract class BasicGeneratorBase<TData> : GeneratorBase<TData> where TData : class, IPolygonTerrainData
     {
         public BasicGeneratorBase(IProgressSystem progress, IArma3RegionAssets assets)
             : base(progress, assets)

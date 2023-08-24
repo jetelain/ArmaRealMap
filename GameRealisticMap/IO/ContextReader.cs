@@ -1,4 +1,5 @@
-﻿using HugeImages.Storage;
+﻿using System.Diagnostics;
+using HugeImages.Storage;
 
 namespace GameRealisticMap.IO
 {
@@ -29,6 +30,11 @@ namespace GameRealisticMap.IO
             }
             cache[typeof(T)] = result;
             return result;
+        }
+
+        public IEnumerable<T> GetOfType<T>() where T : class
+        {
+            return catalog.GetOfType<T>(this);
         }
 
         public async Task Visit<TData>(IDataBuilder<TData> builder) where TData : class

@@ -130,7 +130,7 @@ namespace GameRealisticMap.Preview
 
         public static async Task RenderHtml(BuildContext context, string targetFile)
         {
-            await RenderHtml(new FeatureCollection(context.Catalog.GetOfType<IGeoJsonData>(context).SelectMany(b => b.ToGeoJson(p => p)).ToList()), targetFile);
+            await RenderHtml(new FeatureCollection(context.GetOfType<IGeoJsonData>().SelectMany(b => b.ToGeoJson(p => p)).ToList()), targetFile);
         }
 
         public static async Task RenderHtml(FeatureCollection collection, string targetFile)

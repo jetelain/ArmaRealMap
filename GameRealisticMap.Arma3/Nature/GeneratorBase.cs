@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Algorithms;
-using GameRealisticMap.Algorithms.Filling;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
@@ -10,7 +9,7 @@ using GameRealisticMap.Reporting;
 namespace GameRealisticMap.Arma3.Nature
 {
     public abstract class GeneratorBase<TData> : ITerrainBuilderLayerGenerator 
-        where TData : class, IBasicTerrainData
+        where TData : class, IPolygonTerrainData
     {
         protected readonly IProgressSystem progress;
         protected readonly IArma3RegionAssets assets;
@@ -21,8 +20,15 @@ namespace GameRealisticMap.Arma3.Nature
             this.assets = assets;
         }
 
+        protected virtual bool ShouldGenerate => true;
+
         public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
         {
+            if (!ShouldGenerate)
+            {
+                return new List<TerrainBuilderObject>(0);
+            }
+
             using var scope = progress.CreateScope(GetType().Name.Replace("Generator",""));
 
             var polygons = context.GetData<TData>().Polygons;
