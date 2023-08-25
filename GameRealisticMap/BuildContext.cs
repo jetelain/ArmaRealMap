@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Osm;
+﻿using System.Diagnostics;
+using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using HugeImages.Storage;
 
@@ -50,6 +51,11 @@ namespace GameRealisticMap
                 datas[typeof(T)] = builtData;
                 return builtData;
             }
+        }
+
+        public IEnumerable<T> GetOfType<T>() where T : class
+        {
+            return catalog.GetOfType<T>(this);
         }
 
         public void SetData<T>(T value)

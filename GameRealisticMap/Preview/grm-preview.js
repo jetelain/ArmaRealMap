@@ -449,6 +449,8 @@ function InitPreview(geoJson)
 	L.control.scale({ maxWidth: 200, imperial: false }).addTo(map);
 	L.control.gridMousePosition().addTo(map);
 
+    var stripes = new L.StripePattern();
+    stripes.addTo(map);
 
 	L.geoJSON(geoJson, {
 		style: function(feature) {
@@ -483,6 +485,10 @@ function InitPreview(geoJson)
 
                 case 'ocean': return { fillColor: 'RoyalBlue', fillOpacity: 0.5, stroke: true, weight: 3, color: 'RoyalBlue' };
                 case 'coastline': return { stroke: true, weight: 1, dashArray: [5, 5], color: 'yellow', fillOpacity: 0 };
+                case 'orchard': return { fillColor: 'greenyellow', stroke: false, fillOpacity: 0.35 };
+                case 'vineyard': return { fillColor: 'greenyellow', stroke: false, fillOpacity: 0.35 };
+                case 'default':
+                    return { fillPattern: stripes, stroke: false, fillOpacity: 0.2 };
 			}
 			return { fillColor:'black', stroke: false, fillOpacity: 0.2 };
         },

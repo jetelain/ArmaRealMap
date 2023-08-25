@@ -1,6 +1,7 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.ManMade;
 using GameRealisticMap.Arma3.ManMade.Farmlands;
+using GameRealisticMap.Arma3.Nature.DefaultAreas;
 using GameRealisticMap.Arma3.Nature.Forests;
 using GameRealisticMap.Arma3.Nature.Lakes;
 using GameRealisticMap.Arma3.Nature.RockAreas;
@@ -38,6 +39,7 @@ namespace GameRealisticMap.Arma3
             Generators.Add(new TreeRowsGenerator(progress, assets));
             Generators.Add(new WatercourseGenerator(progress, assets));
             Generators.Add(new WatercourseRadialGenerator(progress, assets));
+            Generators.Add(new DefaultAreasGenerator(progress, assets));
         }
 
         public List<ITerrainBuilderLayerGenerator> Generators { get; } = new List<ITerrainBuilderLayerGenerator>();

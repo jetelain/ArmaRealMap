@@ -1,11 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Nature;
 using GeoJSON.Text.Feature;
 using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Buildings
 {
-    public class BuildingsData : IGeoJsonData
+    public class BuildingsData : IGeoJsonData, INonDefaultArea
     {
         [JsonConstructor]
         public BuildingsData(List<Building> buildings)
@@ -14,6 +15,8 @@ namespace GameRealisticMap.ManMade.Buildings
         }
 
         public List<Building> Buildings { get; }
+
+        IEnumerable<TerrainPolygon> INonDefaultArea.Polygons => Buildings.Select(b => b.Box.Polygon);
 
         public IEnumerable<Feature> ToGeoJson(Func<TerrainPoint, IPosition> project)
         {

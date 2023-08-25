@@ -8,6 +8,8 @@ using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
+using GameRealisticMap.Nature;
+using GameRealisticMap.Nature.DefaultAreas;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.Ocean;
@@ -57,6 +59,7 @@ namespace GameRealisticMap
             Register(new VineyardBuilder(progress));
             Register(new OrchardBuilder(progress));
             Register(new TreeRowsBuilder(progress));
+            Register(new DefaultAreasBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)
