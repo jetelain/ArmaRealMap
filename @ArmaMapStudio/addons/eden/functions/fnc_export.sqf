@@ -15,14 +15,14 @@ private _toRemoveLayer =  if ( count _existingLayers > 0 ) then { _existingLayer
 private _progress = 0;
 private _progressTotal = count _objects + count _systems;
 
-_data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgWorlds" >> worldName >> "grma3_revision")];
+private _prelude = (str [".map", worldName, worldSize, getNumber (configFile >> "CfgWorlds" >> worldName >> "grma3_revision")]);
 
 {
 	if ( _x isKindOf "ModuleHideTerrainObjects_F" ) then {
 		_x set3DENLayer _toRemoveLayer;
 		private _hidden = _x getVariable ["#objects",[]];
 		{
-			_data pushBack [".hide", (getModelInfo _x) select 1, getPosWorld _x, [_x] call FUNC(getPosWrp), vectorUp _x, vectorDir _x, surfaceNormal (getPosASL _x), getObjectScale _x, getObjectID _x];
+			_data pushBack [".hide", (getModelInfo _x) select 1, [], [_x] call FUNC(getPosWrp), vectorUp _x, vectorDir _x, surfaceNormal (getPosASL _x), getObjectScale _x, getObjectID _x];
 		} foreach _hidden;
 	};
 	
@@ -31,7 +31,7 @@ _data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgWorld
 		if ( _value == 5 ) then {
 			private _building = _x getVariable ["#building", objNull];
 			if ( !isNull _building ) then {
-				_data pushBack [".hide", (getModelInfo _building) select 1, getPosWorld _building, [_building] call FUNC(getPosWrp), vectorUp _building, vectorDir _building, surfaceNormal (getPosASL _building), getObjectScale _building, getObjectID _building];
+				_data pushBack [".hide", (getModelInfo _building) select 1, [], [_building] call FUNC(getPosWrp), vectorUp _building, vectorDir _building, surfaceNormal (getPosASL _building), getObjectScale _building, getObjectID _building];
 			};
 			_x set3DENLayer _toRemoveLayer;
 		};
@@ -41,6 +41,8 @@ _data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgWorld
 	progressLoadingScreen  (_progress / _progressTotal);
 	
 } foreach _systems;
+
+private _deleteCount = count _data;
 
 {
 	if (_x get3DENAttribute "GRMA3_Exclude" select 0) then {
@@ -74,7 +76,7 @@ _data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgWorld
 				_classes set [_class,_classData];
 			};
 			if ( _classData select 0 ) then {
-				_data pushBack [".add", _class, getPosWorld _x, [_x] call FUNC(getPosWrp), vectorUp _x, vectorDir _x, surfaceNormal (getPosASL _x), getObjectScale _x];
+				_data pushBack [".add", _class, [], [_x] call FUNC(getPosWrp), vectorUp _x, vectorDir _x, surfaceNormal (getPosASL _x), getObjectScale _x];
 				_x set3DENLayer _toRemoveLayer;
 			};
 		};
@@ -85,20 +87,42 @@ _data pushBack [".map", worldName, worldSize, getNumber (configFile >> "CfgWorld
 	
 } foreach _objects;
 
+
+private _addCount = (count _data) - _deleteCount - (count _classes);
+private _elevationCount = 0;
+
 // Deformer related data
 if ( !isNil "GF_gridMap") then {
-	_data pushBack [".dhmap", GF_gridMap apply { [_x#0, _x#1, _y#0] }];
+	toFixed 3; 
+	private _hmap = GF_gridMap apply { [_x#0, _x#1, _y#0] };
+	_elevationCount = count _hmap;
+	for "_i" from 0 to (count _hmap) step 25 do { 
+		_data pushBack ((str [".dhmap", _hmap select [_i, 25] ]) regexReplace ["\.000/gio", ""]);
+	};
 };
 
 endloadingscreen;
+
 INFO_1("%1 items", count _data);
+
+private _results = [];
 
 toFixed 20; 
 
-private _result = _data joinString endl;
+for "_i" from 0 to (count _data) step 20000 do { 
+	_results pushBack (([_prelude] + (_data select [_i, 20000])) joinString endl);
+};
 
 toFixed -1; 
 
-copyToClipboard _result;
+systemChat (format ["Total: %1 deletes, %2 adds, %3 elevation changes", _deleteCount, _addCount, _elevationCount]);
 
-[LLSTRING(ExportDone), 0, 5] call BIS_fnc_3DENNotification;
+if ( count _results <= 1 ) then {
+	copyToClipboard (_results # 0);
+	[LLSTRING(ExportDone), 0, 5] call BIS_fnc_3DENNotification;
+}
+else {
+	GVAR(results) = _results;
+	GVAR(current) = 0;
+	call FUNC(copyPart);
+};
