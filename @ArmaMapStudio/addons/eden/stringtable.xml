@@ -25,5 +25,13 @@
             <English>Edit object</English>
             <French>Modifier l'objet</French>
         </Key>
+        <Key ID="STR_grma3_eden_NextPartButton">
+            <English>Next Part</English>
+            <French>Suivant</French>
+        </Key>
+        <Key ID="STR_grma3_eden_NextPartMessage">
+            <English>Part %1 on %2 of export have been copied. Import it in GameRealisticMap Studio, and then click on Next Part button to continue.</English>
+            <French>Partie %1 sur %2 de l'export a été copié. Importer le dans GameRealisticMap Studio, puis ensuite cliquer sur le bouton Suivant pour continuer.</French>
+        </Key>
     </Package>
 </Project>
