@@ -14,6 +14,7 @@
         Statue,
         WarMemorial,
         Tree,
-        Sculpture
+        Sculpture,
+        StreetLamp
     }
 }

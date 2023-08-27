@@ -3365,7 +3365,9 @@
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat",
       "Id": "TwoLanesMotorway",
       "Width": 10,
-      "ClearWidth": 15
+      "ClearWidth": 15,
+      "HasStreetLamp": false,
+      "DistanceBetweenStreetLamps": null
     },
     {
       "SatelliteColor": "4D4D4DFF",
@@ -3375,7 +3377,9 @@
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat",
       "Id": "TwoLanesPrimaryRoad",
       "Width": 10,
-      "ClearWidth": 14
+      "ClearWidth": 14,
+      "HasStreetLamp": true,
+      "DistanceBetweenStreetLamps": 35
     },
     {
       "SatelliteColor": "4D4D4DFF",
@@ -3385,7 +3389,9 @@
       "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_main_road.rvmat",
       "Id": "TwoLanesSecondaryRoad",
       "Width": 7.5,
-      "ClearWidth": 11.5
+      "ClearWidth": 11.5,
+      "HasStreetLamp": true,
+      "DistanceBetweenStreetLamps": 28.75
     },
     {
       "SatelliteColor": "625F5BFF",
@@ -3395,7 +3401,9 @@
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road.rvmat",
       "Id": "TwoLanesConcreteRoad",
       "Width": 7,
-      "ClearWidth": 10
+      "ClearWidth": 10,
+      "HasStreetLamp": true,
+      "DistanceBetweenStreetLamps": 25
     },
     {
       "SatelliteColor": "625F5BFF",
@@ -3405,7 +3413,9 @@
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road.rvmat",
       "Id": "SingleLaneConcreteRoad",
       "Width": 4,
-      "ClearWidth": 6
+      "ClearWidth": 6,
+      "HasStreetLamp": true,
+      "DistanceBetweenStreetLamps": 15
     },
     {
       "SatelliteColor": "534C43FF",
@@ -3415,7 +3425,9 @@
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_road.rvmat",
       "Id": "SingleLaneDirtRoad",
       "Width": 3.5,
-      "ClearWidth": 5
+      "ClearWidth": 5,
+      "HasStreetLamp": false,
+      "DistanceBetweenStreetLamps": null
     },
     {
       "SatelliteColor": "534C43FF",
@@ -3425,7 +3437,9 @@
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roaddirt_path.rvmat",
       "Id": "SingleLaneDirtPath",
       "Width": 3.5,
-      "ClearWidth": 6
+      "ClearWidth": 6,
+      "HasStreetLamp": false,
+      "DistanceBetweenStreetLamps": null
     },
     {
       "SatelliteColor": "625F5BFF",
@@ -3435,7 +3449,9 @@
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadconcrete_city_road.rvmat",
       "Id": "ConcreteFootway",
       "Width": 2,
-      "ClearWidth": 3
+      "ClearWidth": 3,
+      "HasStreetLamp": false,
+      "DistanceBetweenStreetLamps": null
     },
     {
       "SatelliteColor": "534C43FF",
@@ -3445,7 +3461,9 @@
       "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_traildirt_trail.rvmat",
       "Id": "Trail",
       "Width": 1.5,
-      "ClearWidth": 3.5
+      "ClearWidth": 3.5,
+      "HasStreetLamp": false,
+      "DistanceBetweenStreetLamps": null
     }
   ],
   "Objects": {
@@ -3817,6 +3835,19 @@
             {
               "Model": "a3\\structures_f_enoch\\cultural\\Statues\\OldSculpture_01_F.p3d",
               "Transform": [-1,0,-8.742278E-08,0,1,0,8.742278E-08,0,-1,0.006516583,1.4047977,0.08052327]
+            }
+          ]
+        },
+        "Probability": 1
+      }
+    ],
+    "StreetLamp": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\civ\\lamps\\lampstreet_f.p3d",
+              "Transform": [0,6.123829,1.6212021]
             }
           ]
         },

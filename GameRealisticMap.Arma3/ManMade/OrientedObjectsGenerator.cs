@@ -30,6 +30,16 @@ namespace GameRealisticMap.Arma3.ManMade
                     result.AddRange(definition.Composition.ToTerrainBuilderObjects(new ModelPosition(obj.Point, obj.Angle)));
                 }
             }
+
+            var lamps = assets.GetObjects(ObjectTypeId.StreetLamp);
+            if (lamps.Count > 0)
+            {
+                foreach (var obj in context.GetData<ProceduralStreetLampsData>().Objects.ProgressStep(progress, "ProceduralStreetLamps"))
+                {
+                    var definition = lamps.GetRandom(obj.Point);
+                    result.AddRange(definition.Composition.ToTerrainBuilderObjects(new ModelPosition(obj.Point, obj.Angle)));
+                }
+            }
             return result;
         }
     }

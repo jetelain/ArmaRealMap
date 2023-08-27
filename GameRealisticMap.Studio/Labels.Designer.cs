@@ -359,7 +359,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Farmland plants rows -- [BETA] Unused.
+        ///   Recherche une chaîne localisée semblable à [BETA: Unused] Farmland plants rows.
         /// </summary>
         public static string AssetFarmLandRow {
             get {
@@ -805,6 +805,15 @@ namespace GameRealisticMap.Studio {
         public static string AssetStatue {
             get {
                 return ResourceManager.GetString("AssetStatue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Street lamp.
+        /// </summary>
+        public static string AssetStreetLamp {
+            get {
+                return ResourceManager.GetString("AssetStreetLamp", resourceCulture);
             }
         }
         
@@ -1300,6 +1309,15 @@ namespace GameRealisticMap.Studio {
         public static string DetectedType {
             get {
                 return ResourceManager.GetString("DetectedType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Distance between street lamps.
+        /// </summary>
+        public static string DistanceBetweenStreetLamps {
+            get {
+                return ResourceManager.GetString("DistanceBetweenStreetLamps", resourceCulture);
             }
         }
         
@@ -2734,6 +2752,33 @@ namespace GameRealisticMap.Studio {
         public static string SomeModsAreMissing {
             get {
                 return ResourceManager.GetString("SomeModsAreMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Street lamps.
+        /// </summary>
+        public static string StreetLamps {
+            get {
+                return ResourceManager.GetString("StreetLamps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à None.
+        /// </summary>
+        public static string StreetLampsNone {
+            get {
+                return ResourceManager.GetString("StreetLampsNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Street lamps on the side.
+        /// </summary>
+        public static string StreetLampsOnTheSide {
+            get {
+                return ResourceManager.GetString("StreetLampsOnTheSide", resourceCulture);
             }
         }
         

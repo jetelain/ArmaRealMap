@@ -99,6 +99,10 @@ namespace GameRealisticMap.ManMade.Objects
             {
                 return ObjectTypeId.Sculpture;
             }
+            if (tags.GetValue("highway") == "street_lamp")
+            {
+                return ObjectTypeId.Sculpture;
+            }
             return null;
         }
 
@@ -112,7 +116,7 @@ namespace GameRealisticMap.ManMade.Objects
             return GeometryHelper.GetFacing(point, facing, maxDistance) ?? GetRandomAngle(point);
         }
 
-        private float GetRandomAngle(TerrainPoint point)
+        internal static float GetRandomAngle(TerrainPoint point)
         {
             return (float)(RandomHelper.CreateRandom(point).NextDouble() * 360);
         }
