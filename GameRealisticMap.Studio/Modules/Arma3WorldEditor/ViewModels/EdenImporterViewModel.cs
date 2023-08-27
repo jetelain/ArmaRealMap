@@ -55,6 +55,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             set { _workingPercent = value; NotifyOfPropertyChange(); }
         }
 
+        public bool IsReadyToImport => Batch != null && Batch.IsComplete && string.IsNullOrEmpty(ClipboardError);
+
         public Task ClipboardRefresh()
         {
             ClipboardError = Labels.CompositionClipboardInvalid;
@@ -85,24 +87,59 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             try
             {
                 var parser = new WrpEditBatchParser(task, parent.GameFileSystem);
-                Batch = parser.ParseFromText(value);
 
-                if (!string.IsNullOrEmpty(Batch.WorldName))
+                var batch = parser.ParseFromText(value);
+                if (!string.IsNullOrEmpty(batch.WorldName))
                 {
                     ClipboardError = string.Empty;
                     var worldName = Path.GetFileNameWithoutExtension(parent.FilePath);
-                    if (!string.Equals(Batch.WorldName, worldName, StringComparison.OrdinalIgnoreCase))
+                    if (!string.Equals(batch.WorldName, worldName, StringComparison.OrdinalIgnoreCase))
                     {
-                        ClipboardWarning = string.Format(Labels.ExportedDataMapMismatch, Batch.WorldName, worldName);
+                        ClipboardWarning = string.Format(Labels.ExportedDataMapMismatch, batch.WorldName, worldName);
                     }
-                    else if (Batch.Revision != (parent.ConfigFile?.Revision ?? 0))
+                    else if (batch.Revision != (parent.ConfigFile?.Revision ?? 0))
                     {
-                        ClipboardWarning = string.Format(Labels.ExportedDataRevisionMismatch, Batch.Revision, parent.ConfigFile?.Revision);
+                        ClipboardWarning = string.Format(Labels.ExportedDataRevisionMismatch, batch.Revision, parent.ConfigFile?.Revision);
                     }
-                    ClipboardMessage = string.Format(Labels.ExportedDataStats, 
-                        Batch.Add.Count,
-                        Batch.Remove.Count,
-                        Batch.Elevation.Count);
+
+                    if (batch.IsComplete)
+                    {
+                        Batch = batch;
+                    }
+                    else
+                    {
+                        if (Batch == null || Batch.IsComplete)
+                        {
+                            Batch = batch;
+                        }
+                        else
+                        {
+                            var intersect = Batch.PartIndexes.Intersect(batch.PartIndexes).ToList();
+                            if (intersect.Any())
+                            {
+                                ClipboardError = string.Format("Part #{0} has been already imported.", intersect.First());
+                            }
+                            else
+                            {
+                                Batch.PartIndexes.AddRange(batch.PartIndexes);
+                                Batch.Add.AddRange(batch.Add);
+                                Batch.Remove.AddRange(batch.Remove);
+                                Batch.Elevation.AddRange(batch.Elevation);
+                            }
+                        }
+                        if (!Batch.IsComplete)
+                        {
+                            ClipboardWarning = GetNextPartMessage(Batch);
+                        }
+                    }
+
+                    if (Batch != null)
+                    {
+                        ClipboardMessage = string.Format(Labels.ExportedDataStats,
+                            Batch.Add.Count,
+                            Batch.Remove.Count,
+                            Batch.Elevation.Count);
+                    }
                 }
             }
             catch (Exception e)
@@ -115,9 +152,20 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             NotifyOfPropertyChange(nameof(IsClipboardValid));
             NotifyOfPropertyChange(nameof(IsClipboardWarning));
             NotifyOfPropertyChange(nameof(IsClipboardNotValid));
+            NotifyOfPropertyChange(nameof(IsReadyToImport));
             NotifyOfPropertyChange(nameof(ClipboardError));
             NotifyOfPropertyChange(nameof(ClipboardWarning));
             NotifyOfPropertyChange(nameof(ClipboardMessage));
+        }
+
+        private static string GetNextPartMessage(WrpEditBatch batch)
+        {
+            var missing = Enumerable.Range(0, batch.PartCount ?? 1).Except(batch.PartIndexes).ToList();
+            if (missing.Count == 0)
+            {
+                return string.Empty;
+            }
+            return string.Format("Click on Refresh button when part #{0} is copied to continue import.", missing.Min() + 1);
         }
 
         public Task ClipboardImport()

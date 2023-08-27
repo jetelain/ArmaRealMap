@@ -77,7 +77,7 @@
                         <Button Padding="10 5" Margin="0 0 5 0" cal:Message.Attach="ClipboardRefresh">
                             <Run Text="{x:Static r:Labels.Refresh}"/>
                         </Button>
-                        <Button Padding="10 5" Margin="5 0" cal:Message.Attach="ClipboardImport">
+                        <Button Padding="10 5" Margin="5 0" cal:Message.Attach="ClipboardImport" Visibility="{Binding IsReadyToImport, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Run Text="{x:Static r:Labels.ImportFromClipboad}"/>
                         </Button>
                         <TextBlock VerticalAlignment="Center" Foreground="DarkOrange" Margin="0 0 5 0" FontWeight="Bold">⚠</TextBlock>
@@ -88,7 +88,7 @@
                         <Button Padding="10 5" Margin="0 0 5 0" cal:Message.Attach="ClipboardRefresh">
                             <Run Text="{x:Static r:Labels.Refresh}"/>
                         </Button>
-                        <Button Padding="10 5" Margin="5 0" cal:Message.Attach="ClipboardImport">
+                        <Button Padding="10 5" Margin="5 0" cal:Message.Attach="ClipboardImport" Visibility="{Binding IsReadyToImport, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Run Text="{x:Static r:Labels.ImportFromClipboad}"/>
                         </Button>
                         <TextBlock VerticalAlignment="Center" Foreground="Green" Margin="0 0 5 0">✔</TextBlock>

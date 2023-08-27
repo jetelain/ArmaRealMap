@@ -1,6 +1,7 @@
 #include "script_component.hpp"		
 
-copyToClipboard (GVAR(results) # GVAR(current));
+copyToClipboard ([(GVAR(results) # GVAR(current)), [".part", GVAR(current), count GVAR(results)]] joinString endl);
+
 GVAR(current) = GVAR(current) + 1;
 systemChat (format ["Part %1 on %2 copied", GVAR(current), count GVAR(results)]);
 

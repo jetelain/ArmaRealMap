@@ -98,6 +98,11 @@ namespace GameRealisticMap.Arma3.Edit
                             ElevationData(exportData, array);
                             break;
 
+                        case ".part":
+                            exportData.PartIndexes.Add(Convert.ToInt32(array[1]));
+                            exportData.PartCount = Convert.ToInt32(array[2]);
+                            break;
+
                     }
                 }
                 report.ReportOneDone();
