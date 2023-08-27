@@ -1087,4 +1087,10 @@ Dernière génération le {1}</value>
   <data name="AssetFarmLandRow" xml:space="preserve">
     <value>[BETA: Inutilisé] Rangées plein champs</value>
   </data>
+  <data name="ImportNextPartPrompt" xml:space="preserve">
+    <value>Cliquer sur le bouton Actualiser lorsque la partie #{0} aura été copiée, pour continuer l'import.</value>
+  </data>
+  <data name="PartHasBeenAlreadyImported" xml:space="preserve">
+    <value>La partie #{0} a déjà été importée.</value>
+  </data>
 </root>
