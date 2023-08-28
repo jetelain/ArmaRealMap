@@ -3379,7 +3379,7 @@
       "Width": 10,
       "ClearWidth": 14,
       "HasStreetLamp": true,
-      "DistanceBetweenStreetLamps": 35
+      "DistanceBetweenStreetLamps": 40
     },
     {
       "SatelliteColor": "4D4D4DFF",
@@ -3391,7 +3391,7 @@
       "Width": 7.5,
       "ClearWidth": 11.5,
       "HasStreetLamp": true,
-      "DistanceBetweenStreetLamps": 28.75
+      "DistanceBetweenStreetLamps": 30
     },
     {
       "SatelliteColor": "625F5BFF",
@@ -3403,7 +3403,7 @@
       "Width": 7,
       "ClearWidth": 10,
       "HasStreetLamp": true,
-      "DistanceBetweenStreetLamps": 25
+      "DistanceBetweenStreetLamps": 30
     },
     {
       "SatelliteColor": "625F5BFF",
@@ -3415,7 +3415,7 @@
       "Width": 4,
       "ClearWidth": 6,
       "HasStreetLamp": true,
-      "DistanceBetweenStreetLamps": 15
+      "DistanceBetweenStreetLamps": 30
     },
     {
       "SatelliteColor": "534C43FF",

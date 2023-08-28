@@ -32,15 +32,16 @@ namespace GameRealisticMap.ManMade.Objects
             }
 
             var allRoads = context.GetData<RoadsData>().Roads;
-            var roadsWithLamps = allRoads.Where(r => r.RoadTypeInfos.HasStreetLamp).ToList();
+            var roadsWithLamps = allRoads.Where(r => r.RoadTypeInfos.HasStreetLamp).OrderBy(r => r.RoadType).ToList();
             var lamps = new List<ProceduralStreetLamp>();
 
             var roadsPolygon = allRoads.SelectMany(r => r.ClearPolygons).ToList();
 
             foreach(var road in roadsWithLamps.ProgressStep(progress, "Roads"))
             {
-                var spacing = road.ClearWidth * 2.5f;
-                var margin = new Vector2(road.ClearWidth * 1.5f);
+                var spacing = road.RoadTypeInfos.DistanceBetweenStreetLamps;
+                var marginDistance = spacing / 2;
+                var margin = new Vector2(marginDistance);
 
                 var paths = road.Path.ToTerrainPolygon(road.ClearWidth + 0.1f)
                     .SelectMany(p => p.Holes.Concat(new[] { p.Shell }))
@@ -53,7 +54,7 @@ namespace GameRealisticMap.ManMade.Objects
                 {
                     foreach (var point in GeometryHelper.PointsOnPathRegular(path.Points, spacing))
                     {
-                        if (index.Search(point.Vector - margin, point.Vector + margin).Count == 0)
+                        if (!index.Search(point.Vector - margin, point.Vector + margin).Any(o => (o.Point.Vector - point.Vector).Length() < marginDistance))
                         { 
                             var angle = GeometryHelper.GetFacing(point, new[] { road.Path }, spacing) ?? OrientedObjectBuilder.GetRandomAngle(point);
                             var lamp = new ProceduralStreetLamp(point, angle);
