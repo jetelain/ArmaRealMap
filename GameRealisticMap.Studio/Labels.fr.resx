@@ -1102,4 +1102,10 @@ Dernière génération le {1}</value>
   <data name="DistanceBetweenStreetLamps" xml:space="preserve">
     <value>Distance entre les lampadaires</value>
   </data>
+  <data name="ImportNextPartPrompt" xml:space="preserve">
+    <value>Cliquer sur le bouton Actualiser lorsque la partie #{0} aura été copiée, pour continuer l'import.</value>
+  </data>
+  <data name="PartHasBeenAlreadyImported" xml:space="preserve">
+    <value>La partie #{0} a déjà été importée.</value>
+  </data>
 </root>

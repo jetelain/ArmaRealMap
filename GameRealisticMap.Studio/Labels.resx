@@ -1102,4 +1102,10 @@ Last generated on {1}</value>
   <data name="DistanceBetweenStreetLamps" xml:space="preserve">
     <value>Distance between street lamps</value>
   </data>
+  <data name="PartHasBeenAlreadyImported" xml:space="preserve">
+    <value>Part #{0} has been already imported.</value>
+  </data>
+  <data name="ImportNextPartPrompt" xml:space="preserve">
+    <value>Click on Refresh button when part #{0} is copied to continue import.</value>
+  </data>
 </root>

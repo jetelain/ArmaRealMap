@@ -1934,6 +1934,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Click on Refresh button when part #{0} is copied to continue import..
+        /// </summary>
+        public static string ImportNextPartPrompt {
+            get {
+                return ResourceManager.GetString("ImportNextPartPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ✔ Installed.
         /// </summary>
         public static string Installed {
@@ -2320,6 +2329,15 @@ namespace GameRealisticMap.Studio {
         public static string OpenResult {
             get {
                 return ResourceManager.GetString("OpenResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Part #{0} has been already imported..
+        /// </summary>
+        public static string PartHasBeenAlreadyImported {
+            get {
+                return ResourceManager.GetString("PartHasBeenAlreadyImported", resourceCulture);
             }
         }
         

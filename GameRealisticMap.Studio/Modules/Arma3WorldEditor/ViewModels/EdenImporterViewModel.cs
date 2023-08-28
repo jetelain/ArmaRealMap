@@ -117,7 +117,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                             var intersect = Batch.PartIndexes.Intersect(batch.PartIndexes).ToList();
                             if (intersect.Any())
                             {
-                                ClipboardError = string.Format("Part #{0} has been already imported.", intersect.First());
+                                ClipboardError = string.Format(GameRealisticMap.Studio.Labels.PartHasBeenAlreadyImported, intersect.First());
                             }
                             else
                             {
@@ -165,7 +165,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 return string.Empty;
             }
-            return string.Format("Click on Refresh button when part #{0} is copied to continue import.", missing.Min() + 1);
+            return string.Format(GameRealisticMap.Studio.Labels.ImportNextPartPrompt, missing.Min() + 1);
         }
 
         public Task ClipboardImport()
