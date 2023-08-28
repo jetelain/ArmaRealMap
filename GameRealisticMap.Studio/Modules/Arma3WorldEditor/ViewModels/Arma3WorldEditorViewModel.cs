@@ -13,11 +13,15 @@ using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.ElevationModel;
+using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
+using Microsoft.Win32;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
@@ -178,6 +182,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public IGameFileSystem GameFileSystem => arma3Data.ProjectDrive;
 
+        public IModelInfoLibrary Library => arma3Data.Library;
+
         public List<ModDependencyDefinition> Dependencies { get; set; } = new List<ModDependencyDefinition>();
 
         public List<RevisionHistoryEntry> Backups
@@ -268,16 +274,56 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             return windowManager.ShowDialogAsync(new EdenImporterViewModel(this));
         }
 
+        public Task ImportFile()
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "Text File|*.txt";
+            if (dialog.ShowDialog() == true)
+            {
+                return windowManager.ShowDialogAsync(new FileImporterViewModel(this, dialog.FileName));
+            }
+            return Task.CompletedTask;
+        }
+
         internal void Apply(WrpEditBatch batch)
+        {
+            using var task = IoC.Get<IProgressTool>().StartTask("Import");
+            Apply(batch, task);
+        }
+
+        internal void Apply(List<TerrainBuilderObject> list)
         {
             if (World == null)
             {
                 return;
             }
             using var task = IoC.Get<IProgressTool>().StartTask("Import");
+            var size = World.TerrainRangeX;
+            var grid = new ElevationGrid(size, CellSize!.Value);
+            for (int x = 0; x < size; x++)
+            {
+                for (int y = 0; y < size; y++)
+                {
+                    grid[x, y] = World.Elevation[x + (y * size)];
+                }
+            }
+            var batch = new WrpEditBatch();
+            batch.Add.AddRange(list
+                .ProgressStep(task, "ToWrpObject")
+                .Select(l => l.ToWrpObject(grid))
+                .Select(o => new WrpAddObject(o.Transform.Matrix, o.Model)));
+            Apply(batch, task);
+        }
+
+        private void Apply(WrpEditBatch batch, IProgressTaskUI task)
+        {
+            if (World == null)
+            {
+                return;
+            }
             var processor = new WrpEditProcessor(task);
             processor.Process(World, batch);
-            if ( ConfigFile != null)
+            if (ConfigFile != null)
             {
                 if (Backups.Count > 0)
                 {
@@ -309,5 +355,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 entry.IsActive = false;
             }
         }
+
+
     }
 }
