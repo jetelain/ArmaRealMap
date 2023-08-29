@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Reporting;
+using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
@@ -75,6 +77,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             try
             {
+                var library = new ImportLibrary(await IoC.Get<IAssetsCatalogService>().Load(), parent.Library);
+
                 list.Clear();
                 using (var task = new BasicProgressSystem(this, logger))
                 {
@@ -84,7 +88,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                         var csvLine = line.Trim().Split(';');
                         if (csvLine.Length > 7)
                         {
-                            list.Add(new TerrainBuilderObject(ElevationMode.Absolute, csvLine, parent.Library));
+                            list.Add(new TerrainBuilderObject(ElevationMode.Absolute, csvLine, library));
                         }
                     }
                 }

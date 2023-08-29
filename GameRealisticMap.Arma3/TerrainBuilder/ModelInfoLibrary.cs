@@ -24,6 +24,11 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             this.fileSystem = fileSystem;
         }
 
+        public bool TryResolveByName(string name, [MaybeNullWhen(false)] out ModelInfo model)
+        {
+            return indexByName.TryGetValue(name, out model);
+        }
+
         public ModelInfo ResolveByName(string name)
         {
             if (!indexByName.TryGetValue(name, out var modelInfo))
@@ -35,6 +40,12 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 }
                 if (candidates.Count > 1)
                 {
+                    // Prefer a3 if available
+                    var a3 = candidates.Where(c => c.StartsWith("a3\\", StringComparison.OrdinalIgnoreCase)).ToList();
+                    if (a3.Count == 1)
+                    {
+                        return ResolveByPath(a3[0]);
+                    }
                     throw new ApplicationException($"Name '{name}' matches multiples files : '{string.Join("', '", candidates)}'");
                 }
                 throw new ApplicationException($"Unknown model '{name}'");

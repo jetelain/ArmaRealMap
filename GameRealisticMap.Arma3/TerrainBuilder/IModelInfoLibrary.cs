@@ -6,6 +6,8 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
     {
         ModelInfo ResolveByName(string name);
 
+        bool TryResolveByName(string name, [MaybeNullWhen(false)] out ModelInfo model);
+
         ModelInfo ResolveByPath(string path);
 
         bool TryResolveByPath(string path, [MaybeNullWhen(false)] out ModelInfo model);
