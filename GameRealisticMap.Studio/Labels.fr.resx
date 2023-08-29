@@ -1087,6 +1087,21 @@ Dernière génération le {1}</value>
   <data name="AssetFarmLandRow" xml:space="preserve">
     <value>[BETA: Inutilisé] Rangées plein champs</value>
   </data>
+  <data name="AssetStreetLamp" xml:space="preserve">
+    <value>Lampadaire</value>
+  </data>
+  <data name="StreetLamps" xml:space="preserve">
+    <value>Lampadaire</value>
+  </data>
+  <data name="StreetLampsNone" xml:space="preserve">
+    <value>Aucun</value>
+  </data>
+  <data name="StreetLampsOnTheSide" xml:space="preserve">
+    <value>Lampadaires sur le coté</value>
+  </data>
+  <data name="DistanceBetweenStreetLamps" xml:space="preserve">
+    <value>Distance entre les lampadaires</value>
+  </data>
   <data name="ImportNextPartPrompt" xml:space="preserve">
     <value>Cliquer sur le bouton Actualiser lorsque la partie #{0} aura été copiée, pour continuer l'import.</value>
   </data>

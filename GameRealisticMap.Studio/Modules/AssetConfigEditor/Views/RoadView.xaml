@@ -32,43 +32,43 @@
                 <StackPanel>
                     <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.RoadConfiguration}"/></TextBlock>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">
+                        <Label Width="150">
                             <Run Text="{x:Static r:Labels.ClearWidth}" />
                         </Label>
                         <TextBox Width="50" Text="{Binding ClearWidth,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">
+                        <Label Width="150">
                             <Run Text="{x:Static r:Labels.Width}" />
                         </Label>
                         <TextBox Width="50" Text="{Binding Width,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">
+                        <Label Width="150">
                             <Run Text="{x:Static r:Labels.TextureWidth}" />
                         </Label>
                         <TextBox Width="50" Text="{Binding TextureWidth,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">
+                        <Label Width="150">
                             <Run Text="{x:Static r:Labels.Texture}" />
                         </Label>
                         <TextBox Width="400" Text="{Binding Texture,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">
+                        <Label Width="150">
                             <Run Text="{x:Static r:Labels.TextureEnd}" />
                         </Label>
                         <TextBox Width="400" Text="{Binding TextureEnd,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">
+                        <Label Width="150">
                             <Run Text="{x:Static r:Labels.RoadRvMaterial}" />
                         </Label>
                         <TextBox Width="400" Text="{Binding Material,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
                     <StackPanel Margin="10" Orientation="Horizontal" >
-                        <Label Width="100">
+                        <Label Width="150">
                             <Run Text="{x:Static r:Labels.RoadSatelliteColor}" />
                         </Label>
                         <toolkit:ColorPicker 
@@ -76,6 +76,28 @@
                     Width="100"
                     UsingAlphaChannel="False" />
                     </StackPanel>
+                    
+                    <StackPanel Margin="10" Orientation="Horizontal" >
+                        <Label Width="150">
+                            <Run Text="{x:Static r:Labels.StreetLamps}" />
+                        </Label>
+                        <RadioButton GroupName="StreetLamp" IsChecked="{Binding HasStreetLamp}" VerticalAlignment="Center" Margin="0 0 10 0">
+                            <Run Text="{x:Static r:Labels.StreetLampsOnTheSide}" />
+                        </RadioButton>
+                        <RadioButton GroupName="StreetLamp" IsChecked="{Binding HasNotStreetLamp}" VerticalAlignment="Center">
+                            <Run Text="{x:Static r:Labels.StreetLampsNone}" />
+                        </RadioButton>
+                    </StackPanel>
+
+                    <StackPanel Margin="50 0 0 10" Orientation="Horizontal" Visibility="{Binding HasStreetLamp, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                        <Label Width="200">
+                            <TextBlock TextWrapping="Wrap">
+                                <Run Text="{x:Static r:Labels.DistanceBetweenStreetLamps}" />
+                            </TextBlock>
+                        </Label>
+                        <TextBox Width="50" Text="{Binding DistanceBetweenStreetLamps,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+
                 </StackPanel>
 
                 <Grid Grid.Column="1">

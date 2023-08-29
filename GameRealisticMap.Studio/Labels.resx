@@ -1087,6 +1087,21 @@ Last generated on {1}</value>
   <data name="AssetSmallOrchard" xml:space="preserve">
     <value>Small orchard trees</value>
   </data>
+  <data name="AssetStreetLamp" xml:space="preserve">
+    <value>Street lamp</value>
+  </data>
+  <data name="StreetLamps" xml:space="preserve">
+    <value>Street lamps</value>
+  </data>
+  <data name="StreetLampsOnTheSide" xml:space="preserve">
+    <value>Street lamps on the side</value>
+  </data>
+  <data name="StreetLampsNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="DistanceBetweenStreetLamps" xml:space="preserve">
+    <value>Distance between street lamps</value>
+  </data>
   <data name="PartHasBeenAlreadyImported" xml:space="preserve">
     <value>Part #{0} has been already imported.</value>
   </data>

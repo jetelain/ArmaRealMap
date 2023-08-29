@@ -60,6 +60,7 @@ namespace GameRealisticMap
             Register(new OrchardBuilder(progress));
             Register(new TreeRowsBuilder(progress));
             Register(new DefaultAreasBuilder(progress));
+            Register(new ProceduralStreetLampsBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)
