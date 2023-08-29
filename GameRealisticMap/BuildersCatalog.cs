@@ -61,6 +61,7 @@ namespace GameRealisticMap
             Register(new TreeRowsBuilder(progress));
             Register(new DefaultAreasBuilder(progress));
             Register(new ProceduralStreetLampsBuilder(progress));
+            Register(new SidewalksBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)

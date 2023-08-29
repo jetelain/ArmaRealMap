@@ -246,12 +246,14 @@ namespace GameRealisticMap.Geometries
 
         internal IEnumerable<TerrainPath> ClippedKeepOrientation(TerrainPolygon polygon)
         {
+            return KeepOrientation(Intersection(polygon));
+        }
+
+        private IEnumerable<TerrainPath> KeepOrientation(IEnumerable<TerrainPath> clipped)
+        {
             var intPointPrecision = Points.Select(p => p.ToIntPointPrecision()).ToList();
             var intPointFirst = intPointPrecision[0];
-
-            var clipped = Intersection(polygon);
-
-            foreach(var result in clipped)
+            foreach (var result in clipped)
             {
                 if (!TerrainPoint.Equals(result.FirstPoint, intPointFirst))
                 {
@@ -278,9 +280,15 @@ namespace GameRealisticMap.Geometries
             return clipped;
         }
 
+        internal IEnumerable<TerrainPath> SubstractAllKeepOrientation(IEnumerable<TerrainPolygon> others)
+        {
+            return KeepOrientation(SubstractAll(others));
+        }
+
         public bool IsClosed => FirstPoint.Equals(LastPoint);
 
         public bool IsCounterClockWise => Points.IsCounterClockWise();
+
         public bool IsClockWise => !Points.IsCounterClockWise();
     }
 }
