@@ -2,7 +2,6 @@
 using GameRealisticMap.IO.Converters;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
-using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.Assets
@@ -10,7 +9,7 @@ namespace GameRealisticMap.Arma3.Assets
     public class Arma3RoadTypeInfos : IRoadTypeInfos
     {
         [JsonConstructor]
-        public Arma3RoadTypeInfos(RoadTypeId id, Rgb24 satelliteColor, float textureWidth, string texture, string textureEnd, string material, float width, float clearWidth)
+        public Arma3RoadTypeInfos(RoadTypeId id, Rgb24 satelliteColor, float textureWidth, string texture, string textureEnd, string material, float width, float clearWidth, bool? hasStreetLamp = null, float? distanceBetweenStreetLamps = null)
         {
             SatelliteColor = satelliteColor;
             TextureWidth = textureWidth;
@@ -20,6 +19,11 @@ namespace GameRealisticMap.Arma3.Assets
             Id = id;
             Width = width;
             ClearWidth = clearWidth;
+            HasStreetLamp = hasStreetLamp ?? DefaultRoadTypeLibrary.Instance.GetInfo(id).HasStreetLamp;
+            if (HasStreetLamp ?? false)
+            {
+                DistanceBetweenStreetLamps = distanceBetweenStreetLamps ?? (ClearWidth * 2.5f);
+            }
         }
 
         [JsonConverter(typeof(Rgb24Converter))]
@@ -38,5 +42,13 @@ namespace GameRealisticMap.Arma3.Assets
         public float Width { get; }
 
         public float ClearWidth { get; }
+
+        public bool? HasStreetLamp { get; }
+
+        public float? DistanceBetweenStreetLamps { get; }
+
+        bool IRoadTypeInfos.HasStreetLamp => HasStreetLamp ?? false;
+
+        float IRoadTypeInfos.DistanceBetweenStreetLamps => DistanceBetweenStreetLamps ?? (ClearWidth * 2.5f);
     }
 }

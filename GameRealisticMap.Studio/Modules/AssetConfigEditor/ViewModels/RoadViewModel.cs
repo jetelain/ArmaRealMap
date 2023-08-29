@@ -20,6 +20,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         private string textureEnd;
         private string material;
         private Color satelliteColor;
+        private bool hasStreetLamp;
+        private float distanceBetweenStreetLamps;
 
         public RoadViewModel(RoadTypeId id, Arma3RoadTypeInfos? arma3RoadTypeInfos, BridgeDefinition? bridgeDefinition, AssetConfigEditorViewModel parent)
             : base(id, parent)
@@ -31,6 +33,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             textureEnd = arma3RoadTypeInfos?.TextureEnd ?? string.Empty;
             material = arma3RoadTypeInfos?.Material ?? string.Empty;
             textureWidth = arma3RoadTypeInfos?.TextureWidth ?? Width;
+            hasStreetLamp = arma3RoadTypeInfos?.HasStreetLamp ?? defaults.HasStreetLamp;
+            distanceBetweenStreetLamps = arma3RoadTypeInfos?.DistanceBetweenStreetLamps ?? (clearWidth * 2.5f);
             if (arma3RoadTypeInfos != null)
             {
                 satelliteColor = Color.FromRgb(arma3RoadTypeInfos.SatelliteColor.R, arma3RoadTypeInfos.SatelliteColor.G, arma3RoadTypeInfos.SatelliteColor.B);
@@ -110,12 +114,20 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public Color SatelliteColor { get => satelliteColor; set { satelliteColor = value; NotifyOfPropertyChange(); } }
 
+        public bool HasStreetLamp { get => hasStreetLamp; set { if (hasStreetLamp != value) { hasStreetLamp = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(HasNotStreetLamp)); } } }
+        
+        public bool HasNotStreetLamp { get => !HasStreetLamp; set { HasStreetLamp = !value; } }
+
+        public float DistanceBetweenStreetLamps { get => distanceBetweenStreetLamps; set { distanceBetweenStreetLamps = value; NotifyOfPropertyChange(); } }
+
+
         public List<BridgeViewModel> Items { get; }
+
         public RelayCommand ClearItem { get; }
 
         public override Arma3RoadTypeInfos ToDefinition()
         {
-            return new Arma3RoadTypeInfos(FillId, new Rgb24(SatelliteColor.R, SatelliteColor.G, SatelliteColor.B), TextureWidth, Texture, TextureEnd, Material, Width, ClearWidth);
+            return new Arma3RoadTypeInfos(FillId, new Rgb24(SatelliteColor.R, SatelliteColor.G, SatelliteColor.B), TextureWidth, Texture, TextureEnd, Material, Width, ClearWidth, HasStreetLamp, DistanceBetweenStreetLamps);
         }
 
         public BridgeDefinition? ToBridgeDefinition()
