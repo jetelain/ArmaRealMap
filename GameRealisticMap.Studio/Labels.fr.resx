@@ -1108,4 +1108,25 @@ Dernière génération le {1}</value>
   <data name="PartHasBeenAlreadyImported" xml:space="preserve">
     <value>La partie #{0} a déjà été importée.</value>
   </data>
+  <data name="RelativeElevation" xml:space="preserve">
+    <value>Positon relative (au sol)</value>
+  </data>
+  <data name="NoValidObjectDefinitionFoundInFile" xml:space="preserve">
+    <value>Aucune définition valide d'objet n'a été trouvé dans le fichier.</value>
+  </data>
+  <data name="NumObjectsToImport" xml:space="preserve">
+    <value>{0} objets à importer</value>
+  </data>
+  <data name="ImportObjectsFromFile" xml:space="preserve">
+    <value>Importer des objets depuis un fichier</value>
+  </data>
+  <data name="ImportsObjects" xml:space="preserve">
+    <value>Importer les objets</value>
+  </data>
+  <data name="ElevationMode" xml:space="preserve">
+    <value>Mode d'altitude</value>
+  </data>
+  <data name="AbsoluteElevation" xml:space="preserve">
+    <value>Position absolue</value>
+  </data>
 </root>

@@ -90,11 +90,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 }
                 if (list.Count == 0)
                 {
-                    Error = "No valid object definition found in file.";
+                    Error = GameRealisticMap.Studio.Labels.NoValidObjectDefinitionFoundInFile;
                 }
                 else
                 {
-                    Message = string.Format("{0} objects to import", list.Count);
+                    Message = string.Format(GameRealisticMap.Studio.Labels.NumObjectsToImport, list.Count);
                 }
             }
             catch (Exception ex)
@@ -129,11 +129,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (IsRelative)
             {
-                _ = Task.Run(() => parent.Apply(list.Select(i => new TerrainBuilderObject(i.Model, i.Point, i.Elevation, ElevationMode.Relative, i.Yaw, i.Pitch, i.Roll, i.Scale)).ToList()));
+                parent.Apply(list.Select(i => new TerrainBuilderObject(i.Model, i.Point, i.Elevation, ElevationMode.Relative, i.Yaw, i.Pitch, i.Roll, i.Scale)).ToList());
             }
             else
             {
-                _ = Task.Run(() => parent.Apply(list));
+                parent.Apply(list);
             }
             return TryCloseAsync(true);
         }

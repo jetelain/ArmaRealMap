@@ -287,32 +287,37 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         internal void Apply(WrpEditBatch batch)
         {
-            using var task = IoC.Get<IProgressTool>().StartTask("Import");
-            Apply(batch, task);
+            IoC.Get<IProgressTool>().RunTask("Import", task => {
+                Apply(batch, task);
+                return Task.CompletedTask;
+            }, false);
         }
 
         internal void Apply(List<TerrainBuilderObject> list)
         {
-            if (World == null)
+            IoC.Get<IProgressTool>().RunTask("Import", async task =>
             {
-                return;
-            }
-            using var task = IoC.Get<IProgressTool>().StartTask("Import");
-            var size = World.TerrainRangeX;
-            var grid = new ElevationGrid(size, CellSize!.Value);
-            for (int x = 0; x < size; x++)
-            {
-                for (int y = 0; y < size; y++)
+                if (World == null)
                 {
-                    grid[x, y] = World.Elevation[x + (y * size)];
+                    return;
                 }
-            }
-            var batch = new WrpEditBatch();
-            batch.Add.AddRange(list
-                .ProgressStep(task, "ToWrpObject")
-                .Select(l => l.ToWrpObject(grid))
-                .Select(o => new WrpAddObject(o.Transform.Matrix, o.Model)));
-            Apply(batch, task);
+                await arma3Data.SaveLibraryCache();
+                var size = World.TerrainRangeX;
+                var grid = new ElevationGrid(size, CellSize!.Value);
+                for (int x = 0; x < size; x++)
+                {
+                    for (int y = 0; y < size; y++)
+                    {
+                        grid[x, y] = World.Elevation[x + (y * size)];
+                    }
+                }
+                var batch = new WrpEditBatch();
+                batch.Add.AddRange(list
+                    .ProgressStep(task, "ToWrpObject")
+                    .Select(l => l.ToWrpObject(grid))
+                    .Select(o => new WrpAddObject(o.Transform.Matrix, o.Model)));
+                Apply(batch, task);
+            }, false);
         }
 
         private void Apply(WrpEditBatch batch, IProgressTaskUI task)

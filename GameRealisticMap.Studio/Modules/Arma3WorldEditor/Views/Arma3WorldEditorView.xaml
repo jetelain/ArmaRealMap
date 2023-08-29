@@ -29,7 +29,7 @@
                     <Run Text="{x:Static r:Labels.ImportChangesFromEdenEditor}" />
                 </Button>
                 <Button Margin="5" Padding="10" cal:Message.Attach="ImportFile">
-                    <Run Text="Import objects from file" />
+                    <Run Text="{x:Static r:Labels.ImportObjectsFromFile}" />
                 </Button>
                 <Button Margin="5" Padding="10" cal:Message.Attach="GenerateMod" IsEnabled="{Binding CanGenerateMod}">
                     <Run Text="{x:Static r:Labels.GenerateModForArma3}"/>

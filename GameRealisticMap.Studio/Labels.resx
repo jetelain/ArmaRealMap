@@ -1108,4 +1108,25 @@ Last generated on {1}</value>
   <data name="ImportNextPartPrompt" xml:space="preserve">
     <value>Click on Refresh button when part #{0} is copied to continue import.</value>
   </data>
+  <data name="ImportObjectsFromFile" xml:space="preserve">
+    <value>Import objects from file</value>
+  </data>
+  <data name="ImportsObjects" xml:space="preserve">
+    <value>Import objects</value>
+  </data>
+  <data name="RelativeElevation" xml:space="preserve">
+    <value>Relative elevation (to ground)</value>
+  </data>
+  <data name="AbsoluteElevation" xml:space="preserve">
+    <value>Absolute elevation</value>
+  </data>
+  <data name="ElevationMode" xml:space="preserve">
+    <value>Elevation mode</value>
+  </data>
+  <data name="NoValidObjectDefinitionFoundInFile" xml:space="preserve">
+    <value>No valid object definition found in file.</value>
+  </data>
+  <data name="NumObjectsToImport" xml:space="preserve">
+    <value>{0} objects to import</value>
+  </data>
 </root>

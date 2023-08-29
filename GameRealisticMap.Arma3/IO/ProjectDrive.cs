@@ -148,7 +148,7 @@ namespace GameRealisticMap.Arma3.IO
         {
             var physical = Directory.GetFiles(mountPath, pattern, SearchOption.AllDirectories)
                 .Select(file => file.Substring(mountPath.Length).TrimStart('\\'))
-                .Where(file => !file.StartsWith("temp\\", StringComparison.OrdinalIgnoreCase));
+                .Where(file => !file.StartsWith("temp\\", StringComparison.OrdinalIgnoreCase) && !file.StartsWith("grm-temp\\", StringComparison.OrdinalIgnoreCase));
             if (secondarySource != null)
             {
                 return secondarySource.FindAll(pattern).Concat(physical).Distinct(StringComparer.OrdinalIgnoreCase);
