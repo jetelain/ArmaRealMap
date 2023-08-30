@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Geometries;
+﻿using System.Numerics;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Reporting;
@@ -9,7 +10,8 @@ namespace GameRealisticMap.ManMade.Roads
     {
         private readonly IProgressSystem progress;
 
-        public const float Axis = 0.5f;
+        public const float Axis = 0.75f;
+        public const float MinimalLength = 4f;
         public const float Epsilon = 0.01f;
 
         public SidewalksBuilder(IProgressSystem progress)
@@ -48,14 +50,25 @@ namespace GameRealisticMap.ManMade.Roads
                 .SelectMany(p => p.Holes.Concat(new[] { p.Shell }))
                 .Select(p => new TerrainPath(p))
                 .SelectMany(p => p.SubstractAllKeepOrientation(mask))
+                .Where(p => p.Length > MinimalLength)
                 .ToList();
+
+            foreach(var path in paths.ProgressStep(progress, "Orientation"))
+            {
+                var dx = new TerrainPoint(Vector2.Transform(path.Points[0].Vector + (Vector2.Normalize(path.Points[1].Vector - path.Points[0].Vector) * (Epsilon)),
+                    Matrix3x2.CreateRotation(MathF.PI/2, path.Points[0].Vector)));
+                if (!polygons.Any(p => p.Contains(dx)))
+                {
+                    path.Points.Reverse();
+                }
+            }
 
             return new SidewalksData(paths);
         }
 
         private bool HasSideWalk(IRoadTypeInfos roadTypeInfos)
         {
-            return roadTypeInfos.Id >= RoadTypeId.TwoLanesPrimaryRoad && roadTypeInfos.Id <= RoadTypeId.SingleLaneConcreteRoad;
+            return roadTypeInfos.Id >= RoadTypeId.TwoLanesPrimaryRoad && roadTypeInfos.Id < RoadTypeId.SingleLaneConcreteRoad;
         }
 
         private bool DoNotCrossSideWalk(IRoadTypeInfos roadTypeInfos)
