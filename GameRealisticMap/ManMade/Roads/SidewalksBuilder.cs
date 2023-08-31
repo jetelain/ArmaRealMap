@@ -37,7 +37,7 @@ namespace GameRealisticMap.ManMade.Roads
                 mask = TerrainPolygon.MergeAll(mask, report);
             }
 
-            var polygons = allRoads.ProgressStep(progress, "Roads").Where(r => HasSideWalk(r.RoadTypeInfos) && r.SpecialSegment == WaySpecialSegment.Normal).SelectMany(r => r.Path.ToTerrainPolygon(r.Width + Axis)).ToList();
+            var polygons = allRoads.ProgressStep(progress, "Roads").Where(r => r.RoadTypeInfos.HasSideWalks && r.SpecialSegment == WaySpecialSegment.Normal).SelectMany(r => r.Path.ToTerrainPolygon(r.Width + Axis)).ToList();
 
             using (var report = progress.CreateStep("MergeRoads", polygons.Count))
             {
@@ -64,11 +64,6 @@ namespace GameRealisticMap.ManMade.Roads
             }
 
             return new SidewalksData(paths);
-        }
-
-        private bool HasSideWalk(IRoadTypeInfos roadTypeInfos)
-        {
-            return roadTypeInfos.Id >= RoadTypeId.TwoLanesPrimaryRoad && roadTypeInfos.Id < RoadTypeId.SingleLaneConcreteRoad;
         }
 
         private bool DoNotCrossSideWalk(IRoadTypeInfos roadTypeInfos)

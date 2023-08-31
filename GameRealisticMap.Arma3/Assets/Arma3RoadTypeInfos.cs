@@ -9,7 +9,7 @@ namespace GameRealisticMap.Arma3.Assets
     public class Arma3RoadTypeInfos : IRoadTypeInfos
     {
         [JsonConstructor]
-        public Arma3RoadTypeInfos(RoadTypeId id, Rgb24 satelliteColor, float textureWidth, string texture, string textureEnd, string material, float width, float clearWidth, bool? hasStreetLamp = null, float? distanceBetweenStreetLamps = null)
+        public Arma3RoadTypeInfos(RoadTypeId id, Rgb24 satelliteColor, float textureWidth, string texture, string textureEnd, string material, float width, float clearWidth, bool? hasStreetLamp = null, float? distanceBetweenStreetLamps = null, bool? hasSideWalks = null)
         {
             SatelliteColor = satelliteColor;
             TextureWidth = textureWidth;
@@ -24,6 +24,7 @@ namespace GameRealisticMap.Arma3.Assets
             {
                 DistanceBetweenStreetLamps = distanceBetweenStreetLamps ?? (ClearWidth * 2.5f);
             }
+            HasSideWalks = hasSideWalks ?? DefaultRoadTypeLibrary.Instance.GetInfo(id).HasSideWalks;
         }
 
         [JsonConverter(typeof(Rgb24Converter))]
@@ -47,8 +48,12 @@ namespace GameRealisticMap.Arma3.Assets
 
         public float? DistanceBetweenStreetLamps { get; }
 
+        public bool? HasSideWalks { get; }
+
         bool IRoadTypeInfos.HasStreetLamp => HasStreetLamp ?? false;
 
         float IRoadTypeInfos.DistanceBetweenStreetLamps => DistanceBetweenStreetLamps ?? (ClearWidth * 2.5f);
+
+        bool IRoadTypeInfos.HasSideWalks => HasSideWalks ?? false;
     }
 }
