@@ -21,6 +21,11 @@
             new DefaultRoadTypeInfos(RoadTypeId.Trail, 1.5f, 1.5f)
         };
 
+        public IBridgeInfos GetBridge(RoadTypeId id)
+        {
+            return DefaultBridgeInfos.AnyBridgeSize;
+        }
+
         public IRoadTypeInfos GetInfo(RoadTypeId id)
         {
             return _roads.First(r => r.Id == id);
