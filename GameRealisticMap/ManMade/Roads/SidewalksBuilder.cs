@@ -10,7 +10,7 @@ namespace GameRealisticMap.ManMade.Roads
     {
         private readonly IProgressSystem progress;
 
-        public const float Axis = 0.75f;
+        public const float Axis = 1f; // 50cm on each side of the road
         public const float MinimalLength = 4f;
         public const float Epsilon = 0.01f;
 
@@ -25,19 +25,27 @@ namespace GameRealisticMap.ManMade.Roads
 
             var areas = context.GetData<CategoryAreaData>().Areas;
 
-            var mask = allRoads.ProgressStep(progress, "Mask").Where(r => DoNotCrossSideWalk(r.RoadTypeInfos)).SelectMany(r => r.Path.ToTerrainPolygon(r.Width + Axis - Epsilon)).ToList();
+            var mask = allRoads.ProgressStep(progress, "Mask")
+                .Where(r => DoNotCrossSideWalk(r.RoadTypeInfos))
+                .SelectMany(r => r.Path.ToTerrainPolygon(r.Width + Axis - Epsilon))
+                .ToList();
 
             using (var report = progress.CreateStep("Residential", 1))
             {
+                // Add to mask non residential areas
                 mask.AddRange(context.Area.TerrainBounds.SubstractAllSplitted(areas.Where(a => a.BuildingType == BuildingTypeId.Residential).SelectMany(a => a.PolyList)));
             }
 
             using (var report = progress.CreateStep("MergeMask", mask.Count))
             {
+                // Simplify the mask to speedup SubstractAll
                 mask = TerrainPolygon.MergeAll(mask, report);
             }
 
-            var polygons = allRoads.ProgressStep(progress, "Roads").Where(r => r.RoadTypeInfos.HasSideWalks && r.SpecialSegment == WaySpecialSegment.Normal).SelectMany(r => r.Path.ToTerrainPolygon(r.Width + Axis)).ToList();
+            var polygons = allRoads.ProgressStep(progress, "Roads")
+                .Where(r => r.RoadTypeInfos.HasSideWalks && r.SpecialSegment == WaySpecialSegment.Normal)
+                .SelectMany(r => r.Path.ToTerrainPolygon(r.Width + Axis))
+                .ToList();
 
             using (var report = progress.CreateStep("MergeRoads", polygons.Count))
             {
@@ -49,7 +57,7 @@ namespace GameRealisticMap.ManMade.Roads
                 .ProgressStep(progress, "SubstractAll")
                 .SelectMany(p => p.Holes.Concat(new[] { p.Shell }))
                 .Select(p => new TerrainPath(p))
-                .SelectMany(p => p.SubstractAllKeepOrientation(mask))
+                .SelectMany(p => p.SubstractAll(mask))
                 .Where(p => p.Length > MinimalLength)
                 .ToList();
 
