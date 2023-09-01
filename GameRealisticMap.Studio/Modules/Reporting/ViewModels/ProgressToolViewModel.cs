@@ -167,16 +167,16 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             OnUIThread(() => output.AppendLine(message ?? string.Empty));
         }
 
-        public void RunTask(string name, Func<IProgressTaskUI, Task> run)
+        public void RunTask(string name, Func<IProgressTaskUI, Task> run, bool prompt = true)
         {
             if (!IsRunning)
             {
                 shell.ShowTool(this);
-                _ = Task.Run(() => DoRunTask(name, run));
+                _ = Task.Run(() => DoRunTask(name, run, prompt));
             }
         }
 
-        private async Task DoRunTask(string name, Func<IProgressTaskUI, Task> run)
+        private async Task DoRunTask(string name, Func<IProgressTaskUI, Task> run, bool prompt)
         {
             using var task = (ProgressTask)StartTask(name);
             try
@@ -189,10 +189,11 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             }
             task.WriteLine(FormattableString.Invariant($"Memory: Peak: {memoryPeak:0.000} G, System: {totalMemGb:0.000} G"));
             task.Dispose();
-            if ( task.Error == null && !task.CancellationToken.IsCancellationRequested)
+            if (prompt && task.Error == null && !task.CancellationToken.IsCancellationRequested)
             {
                 new System.Action(() => windowManager.ShowDialogAsync(new SuccessViewModel(task))).BeginOnUIThread();
             }
         }
+
     }
 }

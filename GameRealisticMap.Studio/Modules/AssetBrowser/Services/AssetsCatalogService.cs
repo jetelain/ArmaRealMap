@@ -19,11 +19,21 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
         private static readonly Logger logger = NLog.LogManager.GetLogger("AssetsCatalogService");
 
         private readonly IArma3DataModule arma3DataModule;
+        public string AssetsCatalogPath { get; set; } = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "GameRealisticMap",
+            "Arma3",
+            "assets.json");
 
         [ImportingConstructor]
         public AssetsCatalogService(IArma3DataModule arma3DataModule)
         {
             this.arma3DataModule = arma3DataModule;
+        }
+
+        public Task<List<AssetCatalogItem>> Load()
+        {
+            return LoadFrom(AssetsCatalogPath);
         }
 
         public async Task<List<AssetCatalogItem>> LoadFrom(string fileName)
@@ -34,6 +44,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 return await JsonSerializer.DeserializeAsync<List<AssetCatalogItem>>(stream, new JsonSerializerOptions() { Converters = { new JsonStringEnumConverter() } }) ?? new List<AssetCatalogItem>();
             }
             return new List<AssetCatalogItem>();
+        }
+
+        public Task Save(List<AssetCatalogItem> items)
+        {
+            return SaveTo(AssetsCatalogPath, items);
         }
 
         public async Task SaveTo(string fileName, List<AssetCatalogItem> items)
