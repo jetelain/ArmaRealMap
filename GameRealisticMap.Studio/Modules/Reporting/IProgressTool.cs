@@ -10,6 +10,6 @@ namespace GameRealisticMap.Studio.Modules.Reporting
 
         IProgressTaskUI StartTask(string name);
 
-        void RunTask(string name, Func<IProgressTaskUI, Task> run);
+        void RunTask(string name, Func<IProgressTaskUI, Task> run, bool prompt = true);
     }
 }

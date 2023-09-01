@@ -172,7 +172,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (Batch != null)
             {
-                _ = Task.Run(() => parent.Apply(Batch));
+                parent.Apply(Batch);
             }
             return TryCloseAsync(true);
         }

@@ -50,12 +50,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             new ModInfo("ARM", string.Empty, "2982306133")
         };
 
-        public string AssetsCatalogPath { get; set; } = System.IO.Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "GameRealisticMap",
-            "Arma3",
-            "assets.json");
-
         [ImportingConstructor]
         public AssetBrowserViewModel(IArma3DataModule arma3DataModule, IArma3Previews arma3Previews, IAssetsCatalogService catalogService, IArma3ModsService arma3ModsService)
         {
@@ -165,7 +159,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 var imported = await _catalogService.ImportItems(needImport, modId).ConfigureAwait(false);
                 var models = imported.Select(m => new AssetViewModel(m, _arma3Previews.GetPreviewFast(m.Path))).ToList();
                 target.AddRange(models);
-                await _catalogService.SaveTo(AssetsCatalogPath, target.Select(i => i.Item).ToList());
+                await _catalogService.Save(target.Select(i => i.Item).ToList());
                 UpdateModsList(models);
 
                 _ = Task.Run(() => LoadPreviews(models.Where(a => !a.Preview.IsFile).ToList()));
@@ -181,14 +175,14 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            var items = await _catalogService.LoadFrom(AssetsCatalogPath);
+            var items = await _catalogService.Load();
 
             var known = new HashSet<string>(items.Select(i => i.Path), StringComparer.OrdinalIgnoreCase);
             var missing = await _catalogService.ImportItems(_arma3DataModule.Library.Models.Where(m => !known.Contains(m.Path)).Select(m => m.Path));
             items.AddRange(missing);
             if (missing.Count > 0)
             {
-                await _catalogService.SaveTo(AssetsCatalogPath, items);
+                await _catalogService.Save(items);
             }
 
             AllAssets = new BindableCollection<AssetViewModel>(items.Select(m => new AssetViewModel(m, _arma3Previews.GetPreviewFast(m.Path))));
@@ -267,7 +261,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             if (target != null)
             {
                 Assets?.Refresh();
-                await _catalogService.SaveTo(AssetsCatalogPath, target.Select(i => i.Item).ToList());
+                await _catalogService.Save(target.Select(i => i.Item).ToList());
             }
         }
 
@@ -277,7 +271,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             if (target != null)
             {
                 AllAssets?.RemoveRange(enumerable);
-                await _catalogService.SaveTo(AssetsCatalogPath, target.Select(i => i.Item).ToList());
+                await _catalogService.Save(target.Select(i => i.Item).ToList());
             }
         }
 

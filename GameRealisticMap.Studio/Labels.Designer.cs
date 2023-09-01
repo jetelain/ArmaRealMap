@@ -70,6 +70,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Absolute elevation.
+        /// </summary>
+        public static string AbsoluteElevation {
+            get {
+                return ResourceManager.GetString("AbsoluteElevation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Active mods.
         /// </summary>
         public static string ActiveMods {
@@ -1394,6 +1403,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Elevation mode.
+        /// </summary>
+        public static string ElevationMode {
+            get {
+                return ResourceManager.GetString("ElevationMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Explorer.
         /// </summary>
         public static string Explorer {
@@ -1943,6 +1961,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import objects from file.
+        /// </summary>
+        public static string ImportObjectsFromFile {
+            get {
+                return ResourceManager.GetString("ImportObjectsFromFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import objects.
+        /// </summary>
+        public static string ImportsObjects {
+            get {
+                return ResourceManager.GetString("ImportsObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ✔ Installed.
         /// </summary>
         public static string Installed {
@@ -2296,6 +2332,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à No valid object definition found in file..
+        /// </summary>
+        public static string NoValidObjectDefinitionFoundInFile {
+            get {
+                return ResourceManager.GetString("NoValidObjectDefinitionFoundInFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0} objects to import.
+        /// </summary>
+        public static string NumObjectsToImport {
+            get {
+                return ResourceManager.GetString("NumObjectsToImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à objects/m².
         /// </summary>
         public static string ObjectsPerM2 {
@@ -2500,6 +2554,15 @@ namespace GameRealisticMap.Studio {
         public static string Refresh {
             get {
                 return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Relative elevation (to ground).
+        /// </summary>
+        public static string RelativeElevation {
+            get {
+                return ResourceManager.GetString("RelativeElevation", resourceCulture);
             }
         }
         
