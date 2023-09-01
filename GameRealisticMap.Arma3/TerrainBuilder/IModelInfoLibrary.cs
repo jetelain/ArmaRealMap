@@ -11,5 +11,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
         ModelInfo ResolveByPath(string path);
 
         bool TryResolveByPath(string path, [MaybeNullWhen(false)] out ModelInfo model);
+
+        bool TryRegister(string name, string path);
     }
 }

@@ -40,13 +40,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 }
                 if (candidates.Count > 1)
                 {
-                    // Prefer a3 if available
-                    var a3 = candidates.Where(c => c.StartsWith("a3\\", StringComparison.OrdinalIgnoreCase)).ToList();
-                    if (a3.Count == 1)
-                    {
-                        return ResolveByPath(a3[0]);
-                    }
-                    throw new ApplicationException($"Name '{name}' matches multiples files : '{string.Join("', '", candidates)}'");
+                    throw new AmbiguousModelName(name, candidates);
                 }
                 throw new ApplicationException($"Unknown model '{name}'");
             }
@@ -225,6 +219,19 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
         {
             Directory.CreateDirectory(Path.GetDirectoryName(DefaultCachePath)!);
             return SaveTo(DefaultCachePath);
+        }
+
+        public bool TryRegister(string name, string path)
+        {
+            var odol = ReadModelInfoOnly(path);
+            if (odol == null)
+            {
+                return false;
+            }
+
+            var model = new ModelInfo(name, path, odol.BoundingCenter.Vector3);
+            indexByName.Add(name, model);
+            return true;
         }
     }
 }

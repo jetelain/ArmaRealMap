@@ -73,8 +73,25 @@
                         <TextBlock VerticalAlignment="Center"><Run Text="{x:Static r:Labels.DataSeemsValid}"/></TextBlock>
                     </StackPanel>
 
+                    <ItemsControl Margin="10" Visibility="{Binding HasAmbigousModels, Converter={StaticResource BooleanToVisibilityConverter}}" ItemsSource="{Binding AmbigousModels}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Width="200" Margin="5" cal:Message.Attach="Resolve">
+                                    <StackPanel Orientation="Vertical">
+                                        <Image Source="{Binding Preview}" />
+                                        <TextBlock Text="{Binding Path}" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
 
-                    
+                    </ItemsControl>
+
                     <TextBlock Margin="10" Text="{Binding Message}"/>
 
                 </StackPanel>

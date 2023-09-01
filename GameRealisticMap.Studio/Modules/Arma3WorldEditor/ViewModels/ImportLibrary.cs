@@ -17,6 +17,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             this.library = library;
         }
 
+        public bool TryRegister(string name, string path)
+        {
+            return library.TryRegister(name, path);
+        }
+
         public ModelInfo ResolveByName(string name)
         {
             if (TryResolveByName(name, out var model))

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Reporting;
-using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.Modules.Arma3Data;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
@@ -22,6 +22,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private bool _isWorking;
         private double _workingPercent;
         private bool isAbsolute;
+        private List<AmbiguousItem> ambigousModels = new List<AmbiguousItem>();
 
         public FileImporterViewModel(Arma3WorldEditorViewModel parent, string fileName)
         {
@@ -61,11 +62,23 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public bool IsRelative { get { return !IsAbsolute; } set { IsAbsolute = !value; } }
 
+        public bool HasAmbigousModels => AmbigousModels.Count > 0;
+
+        public List<AmbiguousItem> AmbigousModels
+        {
+            get { return ambigousModels; }
+            set
+            {
+                ambigousModels = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(HasAmbigousModels));
+            }
+        }
+
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             IsWorking = true;
             NotifyOfPropertyChange(nameof(IsNotValid));
             NotifyOfPropertyChange(nameof(IsValid));
+            AmbigousModels = new List<AmbiguousItem>();
 
             _ = Task.Run(() => DoReadFile());
 
@@ -77,7 +90,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             try
             {
-                var library = new ImportLibrary(await IoC.Get<IAssetsCatalogService>().Load(), parent.Library);
+                var library = /*new ImportLibrary(await IoC.Get<IAssetsCatalogService>().Load(),*/ parent.Library/*)*/;
 
                 list.Clear();
                 using (var task = new BasicProgressSystem(this, logger))
@@ -105,6 +118,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 logger.Error(ex);
                 Error = ex.Message;
+                if (ex is AmbiguousModelName amn)
+                {
+                    await ShowAmbiguousItems(amn);
+                }
             }
 
             IsWorking = false;
@@ -124,6 +141,17 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
         }
 
+        private async Task ShowAmbiguousItems(AmbiguousModelName amn)
+        {
+            var preview = IoC.Get<IArma3Previews>();
+            var items = new List<AmbiguousItem>();
+            foreach(var path in amn.Candidates)
+            {
+                items.Add(new AmbiguousItem(this, amn.Name,  path, await preview.GetPreview(path)));
+            }
+            AmbigousModels = items;
+        }
+
         public void Report(double value)
         {
             WorkingPercent = value;
@@ -140,6 +168,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 parent.Apply(list);
             }
             return TryCloseAsync(true);
+        }
+
+        internal Task Resolve(string name, string path)
+        {
+            parent.Library.TryRegister(name, path);
+
+            return OnActivateAsync(CancellationToken.None);
         }
     }
 }
