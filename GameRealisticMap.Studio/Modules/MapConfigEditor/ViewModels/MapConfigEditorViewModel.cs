@@ -11,6 +11,7 @@ using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Preview;
 using GameRealisticMap.Satellite;
 using GameRealisticMap.Studio.Modules.Arma3Data;
@@ -310,7 +311,16 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         private async Task DoGeneratePreview(IProgressTaskUI task, bool ignoreElevation)
         {
             var a3config = Config.ToArma3MapConfig();
-            var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery);
+            IRoadTypeLibrary<IRoadTypeInfos> library;
+            try
+            {
+                library = await GetAssets(_arma3DataModule.Library, a3config);
+            }
+            catch
+            {
+                library = new DefaultRoadTypeLibrary();
+            }
+            var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery, library);
             var target = Path.Combine(Path.GetTempPath(), "grm-preview.html");
             await render.RenderHtml(task, target, ignoreElevation);
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewResultInWebBrowser);

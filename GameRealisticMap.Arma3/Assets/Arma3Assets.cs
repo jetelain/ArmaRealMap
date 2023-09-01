@@ -199,5 +199,14 @@ namespace GameRealisticMap.Arma3.Assets
             }
             return assets;
         }
+
+        IBridgeInfos IRoadTypeLibrary<Arma3RoadTypeInfos>.GetBridge(RoadTypeId roadType)
+        {
+            if (Bridges.TryGetValue(roadType, out var bridge))
+            {
+                return bridge;
+            }
+            return DefaultBridgeInfos.NoBridge;
+        }
     }
 }
