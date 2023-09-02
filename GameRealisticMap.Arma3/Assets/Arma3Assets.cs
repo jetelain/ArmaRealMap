@@ -114,6 +114,10 @@ namespace GameRealisticMap.Arma3.Assets
 
         IReadOnlyCollection<ModDependencyDefinition> IArma3RegionAssets.Dependencies => Dependencies;
 
+        public List<SidewalksDefinition> Sidewalks { get; set; } = new();
+
+        IReadOnlyCollection<SidewalksDefinition> IArma3RegionAssets.Sidewalks => Sidewalks;
+
         public static JsonSerializerOptions CreateJsonSerializerOptions(IModelInfoLibrary library, bool allowUnresolvedModel = false)
         {
             return new JsonSerializerOptions()

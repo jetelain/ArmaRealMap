@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.ManMade.Roads.Libraries;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.ManMade.Roads.Libraries;
 
 namespace GameRealisticMap.Arma3.Assets
 {
@@ -20,8 +21,10 @@ namespace GameRealisticMap.Arma3.Assets
 
         public StraightSegmentDefinition End { get; }
 
+        [JsonIgnore]
         public bool HasBridge => true;
 
+        [JsonIgnore]
         public float MinimalBridgeLength => Single.Size / 3;
     }
 }

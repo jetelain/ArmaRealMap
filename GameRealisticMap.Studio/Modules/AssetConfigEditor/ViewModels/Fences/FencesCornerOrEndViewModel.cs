@@ -15,9 +15,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
 {
     internal class FencesCornerOrEndViewModel : PropertyChangedBase, IModelImporterTarget, IExplorerTreeItem, IExplorerTreeItemCounter
     {
-        private readonly FencesViewModel _parent;
+        private readonly IDocument _parent;
 
-        public FencesCornerOrEndViewModel(List<FenceCornerOrEndDefinition>? definition, string label, FencesViewModel parent)
+        public FencesCornerOrEndViewModel(List<FenceCornerOrEndDefinition>? definition, string label, IDocument parent)
         {
             _parent = parent;
             if (definition != null)

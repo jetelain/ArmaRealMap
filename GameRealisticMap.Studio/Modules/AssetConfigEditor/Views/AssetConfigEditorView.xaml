@@ -362,7 +362,46 @@
                         </DataGrid>
                     </StackPanel>
                 </Expander>
-
+                
+                <Expander IsExpanded="True" Margin="10">
+                    <Expander.Header>
+                        <TextBlock FontSize="25"><Run Text="Sidewalks"/></TextBlock>
+                    </Expander.Header>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 10">
+                            <Button Padding="5" b:ButtonBehaviors.OpenContextOnClick="True" Command="{Binding AdditionalSidewalks}">
+                                <Run Text="{x:Static r:Labels.AddAVariation}"/>
+                            </Button>
+                        </StackPanel>
+                        <DataGrid ItemsSource="{Binding Sidewalks}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{x:Static r:Labels.Type}" Binding="{Binding PageTitle}" IsReadOnly="True" Width="150" />
+                                <DataGridTextColumn Header="{x:Static r:Labels.Label}" Binding="{Binding Label}" Width="150" />
+                                <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
+                                <DataGridTextColumn Header="{x:Static r:Labels.AssetObjects}" Binding="{Binding Straights.Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTemplateColumn Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2"  CommandParameter="{Binding}" Command="{Binding Edit}">
+                                                <Run Text="{x:Static r:Labels.Edit}"/>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Padding="2" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveSidewalks, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                                <Run Text="{x:Static r:Labels.Remove}"/>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+                
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Railways}"/></TextBlock>

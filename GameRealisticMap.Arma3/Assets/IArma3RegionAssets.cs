@@ -39,5 +39,7 @@ namespace GameRealisticMap.Arma3.Assets
         RailwaysDefinition? Railways { get; }
 
         IReadOnlyCollection<ModDependencyDefinition> Dependencies { get; }
+
+        IReadOnlyCollection<SidewalksDefinition> Sidewalks { get; }
     }
 }
