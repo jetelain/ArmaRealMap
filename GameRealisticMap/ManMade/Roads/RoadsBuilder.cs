@@ -94,6 +94,9 @@ namespace GameRealisticMap.ManMade.Roads
 
         internal List<Road> PrepareRoads(IOsmDataSource osm, ITerrainArea area)
         {
+            // Do not process bridges that length is not significantly larger than grid cell size, because they wont be noticiable
+            var strictBridgeMinimalLength = area.GridCellSize * 1.25f;
+
             var osmRoads = osm.Ways.Where(o => o.Tags != null && o.Tags.ContainsKey("highway")).ToList();
             var roads = new List<Road>();
             using var report = progress.CreateStep("Interpret", osmRoads.Count);
@@ -102,6 +105,7 @@ namespace GameRealisticMap.ManMade.Roads
                 var kind = RoadTypeIdHelper.FromOSM(road.Tags);
                 if (kind != null)
                 {
+                    var special = WaySpecialSegmentHelper.FromOSM(road.Tags);
                     var type = library.GetInfo(kind.Value);
                     foreach (var geometry in osm.Interpret(road))
                     {
@@ -109,7 +113,15 @@ namespace GameRealisticMap.ManMade.Roads
                         {
                             foreach (var pathSegment in path.ClippedBy(area.TerrainBounds))
                             {
-                                roads.Add(new Road(WaySpecialSegmentHelper.FromOSM(road.Tags), pathSegment, type));
+                                if (special == WaySpecialSegment.Bridge)
+                                {
+                                    var bridgeInfos = library.GetBridge(type.Id);
+                                    if (pathSegment.Length < strictBridgeMinimalLength || !bridgeInfos.HasBridge || pathSegment.Length < bridgeInfos.MinimalBridgeLength)
+                                    {
+                                        special = WaySpecialSegment.Normal;
+                                    }
+                                }
+                                roads.Add(new Road(special, pathSegment, type));
                             }
                         }
                     }

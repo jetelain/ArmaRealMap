@@ -1,6 +1,8 @@
-﻿namespace GameRealisticMap.Arma3.Assets
+﻿using GameRealisticMap.ManMade.Roads.Libraries;
+
+namespace GameRealisticMap.Arma3.Assets
 {
-    public class BridgeDefinition
+    public class BridgeDefinition : IBridgeInfos
     {
         public BridgeDefinition(StraightSegmentDefinition single, StraightSegmentDefinition start, StraightSegmentDefinition middle, StraightSegmentDefinition end)
         {
@@ -18,5 +20,8 @@
 
         public StraightSegmentDefinition End { get; }
 
+        public bool HasBridge => true;
+
+        public float MinimalBridgeLength => Single.Size / 3;
     }
 }

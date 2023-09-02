@@ -60,6 +60,12 @@ namespace GameRealisticMap.ManMade.Buildings
 
                     case "garage":
                         return BuildingTypeId.IndividualGarage;
+
+                    case "house":
+                    case "detached":
+                    case "semidetached_house":
+                    case "farm":
+                        return BuildingTypeId.Residential;
                 }
                 if (tags.GetValue("historic") == "fort")
                 {
