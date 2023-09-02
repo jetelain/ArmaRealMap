@@ -76,6 +76,11 @@ namespace GameRealisticMap.Geometries
         {
             return TerrainPolygon.FromPath(Points, width);
         }
+        public IEnumerable<TerrainPolygon> ToTerrainPolygonButt(float width)
+        {
+            return TerrainPolygon.FromPath(Points, width, EndType.etOpenButt);
+        }
+
         public static IEnumerable<TerrainPath> FromGeometry(IGeometry geometry, Func<Coordinate, TerrainPoint> project)
         {
             switch (geometry.OgcGeometryType)

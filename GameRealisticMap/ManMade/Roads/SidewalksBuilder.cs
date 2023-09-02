@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Reporting;
 
@@ -13,6 +14,7 @@ namespace GameRealisticMap.ManMade.Roads
         public const float Axis = 1f; // 50cm on each side of the road
         public const float MinimalLength = 4f;
         public const float Epsilon = 0.01f;
+        public const float FenceMargin = 1f;
 
         public SidewalksBuilder(IProgressSystem progress)
         {
@@ -24,6 +26,7 @@ namespace GameRealisticMap.ManMade.Roads
             var allRoads = context.GetData<RoadsData>().Roads;
 
             var areas = context.GetData<CategoryAreaData>().Areas;
+            var fences = context.GetData<FencesData>().Fences;
 
             var mask = allRoads.ProgressStep(progress, "Mask")
                 .Where(r => DoNotCrossSideWalk(r.RoadTypeInfos))
@@ -36,11 +39,8 @@ namespace GameRealisticMap.ManMade.Roads
                 mask.AddRange(context.Area.TerrainBounds.SubstractAllSplitted(areas.Where(a => a.BuildingType == BuildingTypeId.Residential).SelectMany(a => a.PolyList)));
             }
 
-            using (var report = progress.CreateStep("MergeMask", mask.Count))
-            {
-                // Simplify the mask to speedup SubstractAll
-                mask = TerrainPolygon.MergeAll(mask, report);
-            }
+            mask.AddRange(fences.ProgressStep(progress, "Fences")
+                .SelectMany(f => f.Path.ToTerrainPolygonButt(f.Width + FenceMargin)));
 
             var polygons = allRoads.ProgressStep(progress, "Roads")
                 .Where(r => r.RoadTypeInfos.HasSideWalks && r.SpecialSegment == WaySpecialSegment.Normal)
