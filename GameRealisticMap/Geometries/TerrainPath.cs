@@ -50,21 +50,20 @@ namespace GameRealisticMap.Geometries
         public LineString AsLineString => asLineString.Value;
 
         [JsonIgnore]
-        public float Length
+        public float Length => GetLength(Points);
+
+        internal static float GetLength(IReadOnlyList<TerrainPoint> points)
         {
-            get
+            var length = 0f;
+            var prev = points[0];
+            TerrainPoint point;
+            for (int i = 1; i < points.Count; ++i)
             {
-                var length = 0f;
-                var prev = FirstPoint;
-                TerrainPoint point;
-                for (int i = 1; i < Points.Count; ++i)
-                {
-                    point = Points[i];
-                    length += (point.Vector - prev.Vector).Length();
-                    prev = point;
-                }
-                return length;
+                point = points[i];
+                length += (point.Vector - prev.Vector).Length();
+                prev = point;
             }
+            return length;
         }
 
         public LineString ToLineString(Func<TerrainPoint, Coordinate> project)
