@@ -8,8 +8,19 @@
 
         float ClearWidth { get; }
 
+        /// <summary>
+        /// Generate street lamps (everywhere)
+        /// </summary>
         bool HasStreetLamp { get; }
 
+        /// <summary>
+        /// Distance in meters between procedural street lamps
+        /// </summary>
         float DistanceBetweenStreetLamps { get; }
+
+        /// <summary>
+        /// Generate sidewalks in Urban areas
+        /// </summary>
+        bool HasSideWalks { get; }
     }
 }

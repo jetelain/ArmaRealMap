@@ -147,10 +147,10 @@ namespace GameRealisticMap.Geometries
                 GeometryHelper.SimpleCircle(origin.Vector, radius).Select(v => new TerrainPoint(v)).ToList());
         }
 
-        public static IEnumerable<TerrainPolygon> FromPath(IEnumerable<TerrainPoint> points, float width)
+        public static IEnumerable<TerrainPolygon> FromPath(IEnumerable<TerrainPoint> points, float width, EndType endType = EndType.etOpenRound)
         {
             var clipper = new ClipperOffset(2, 10);
-            clipper.AddPath(points.Select(p => p.ToIntPoint()).ToList(), JoinType.jtSquare, EndType.etOpenRound);
+            clipper.AddPath(points.Select(p => p.ToIntPoint()).ToList(), JoinType.jtSquare, endType);
             var tree = new PolyTree();
             clipper.Execute(ref tree, width * GeometryHelper.ScaleForClipper / 2);
             return ToPolygons(tree);

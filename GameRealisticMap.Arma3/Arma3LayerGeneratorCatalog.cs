@@ -26,6 +26,7 @@ namespace GameRealisticMap.Arma3
             Generators.Add(new RailwayGenerator(progress, assets));
             Generators.Add(new VineyardsGenerator(progress, assets));
             Generators.Add(new OrchardGenerator(progress, assets));
+            Generators.Add(new SidewalksGenerator(progress, assets));
 
             // Nature
             Generators.Add(new ForestEdgeGenerator(progress, assets));

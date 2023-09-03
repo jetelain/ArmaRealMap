@@ -35,7 +35,7 @@ namespace GameRealisticMap.Geometries
         public TerrainPoint FirstPoint => Points[0];
 
         [JsonIgnore]
-        public TerrainPoint LastPoint => Points[Points.Count-1];
+        public TerrainPoint LastPoint => Points[Points.Count - 1];
 
         [JsonIgnore]
         public TerrainPoint MinPoint { get; }
@@ -50,21 +50,20 @@ namespace GameRealisticMap.Geometries
         public LineString AsLineString => asLineString.Value;
 
         [JsonIgnore]
-        public float Length 
-        { 
-            get
+        public float Length => GetLength(Points);
+
+        internal static float GetLength(IReadOnlyList<TerrainPoint> points)
+        {
+            var length = 0f;
+            var prev = points[0];
+            TerrainPoint point;
+            for (int i = 1; i < points.Count; ++i)
             {
-                var length = 0f;
-                var prev = FirstPoint;
-                TerrainPoint point;
-                for(int i = 1; i < Points.Count; ++i)
-                {
-                    point = Points[i];
-                    length += (point.Vector - prev.Vector).Length();
-                    prev = point;
-                }
-                return length;
+                point = points[i];
+                length += (point.Vector - prev.Vector).Length();
+                prev = point;
             }
+            return length;
         }
 
         public LineString ToLineString(Func<TerrainPoint, Coordinate> project)
@@ -76,6 +75,11 @@ namespace GameRealisticMap.Geometries
         {
             return TerrainPolygon.FromPath(Points, width);
         }
+        public IEnumerable<TerrainPolygon> ToTerrainPolygonButt(float width)
+        {
+            return TerrainPolygon.FromPath(Points, width, EndType.etOpenButt);
+        }
+
         public static IEnumerable<TerrainPath> FromGeometry(IGeometry geometry, Func<Coordinate, TerrainPoint> project)
         {
             switch (geometry.OgcGeometryType)
@@ -211,7 +215,7 @@ namespace GameRealisticMap.Geometries
         public TerrainPath ExtendBothEnds(float extendAtEachEnd)
         {
             var newStart = Points[0] + Vector2.Normalize(Points[0].Vector - Points[1].Vector) * extendAtEachEnd;
-            var newEnd = Points[Points.Count-1] + Vector2.Normalize(Points[Points.Count - 1].Vector - Points[Points.Count - 2].Vector) * extendAtEachEnd;
+            var newEnd = Points[Points.Count - 1] + Vector2.Normalize(Points[Points.Count - 1].Vector - Points[Points.Count - 2].Vector) * extendAtEachEnd;
             var points = Points.ToList();
             points[0] = newStart;
             points[Points.Count - 1] = newEnd;
@@ -251,7 +255,7 @@ namespace GameRealisticMap.Geometries
 
             var clipped = Intersection(polygon);
 
-            foreach(var result in clipped)
+            foreach (var result in clipped)
             {
                 if (!TerrainPoint.Equals(result.FirstPoint, intPointFirst))
                 {

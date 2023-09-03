@@ -18,6 +18,16 @@ namespace GameRealisticMap.Algorithms.Following
 
         public static void PlaceOnPathRightAngle<TModel>(Random random, ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
         {
+            PlaceOnPathRightAngleV2(random, lib, layer, path);
+        }
+
+        public static void PlaceOnPathRightAngleV2<TModel>(Random random, ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
+        {
+            new FollowPathFitted<TModel>(lib).PlaceOnPath(random, layer, path);
+        }
+
+        public static void PlaceOnPathRightAngleV1<TModel>(Random random, ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
+        {
             var follow = new FollowPath(path);
 
             follow.KeepRightAngles = true;
@@ -203,7 +213,7 @@ namespace GameRealisticMap.Algorithms.Following
                     // Does not fit
                     var best = segments.OrderByDescending(o => o.Size).FirstOrDefault(o => o.Size <= actualSize);
                     if (best != null)
-                    { 
+                    {
                         var center = follow.Previous + (delta * best.Size / 2);
                         layer.Add(new PlacedModel<TModel>(best.Model, center, angle));
                     }
@@ -221,7 +231,7 @@ namespace GameRealisticMap.Algorithms.Following
             {
                 PlaceOnPathNotFitted(random, defition.Straights, layer, path);
             }
-            else if ( defition.Objects.Count > 0 )
+            else if (defition.Objects.Count > 0)
             {
                 PlaceObjectsOnPath(random, defition.Objects, layer, path);
             }
