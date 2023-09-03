@@ -1,6 +1,7 @@
 ﻿using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.ManMade.DefaultUrbanAreas;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
@@ -62,6 +63,12 @@ namespace GameRealisticMap
             Register(new DefaultAreasBuilder(progress));
             Register(new ProceduralStreetLampsBuilder(progress));
             Register(new SidewalksBuilder(progress));
+            Register(new DefaultResidentialAreasBuilder(progress));
+            Register(new DefaultCommercialAreasBuilder(progress));
+            Register(new DefaultIndustrialAreasBuilder(progress));
+            Register(new DefaultMilitaryAreasBuilder(progress));
+            Register(new DefaultRetailAreasBuilder(progress));
+            Register(new DefaultAgriculturalAreasBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)

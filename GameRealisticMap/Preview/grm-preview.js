@@ -449,8 +449,11 @@ function InitPreview(geoJson)
 	L.control.scale({ maxWidth: 200, imperial: false }).addTo(map);
 	L.control.gridMousePosition().addTo(map);
 
-    var stripes = new L.StripePattern();
+    var stripes = new L.StripePattern({ weight: 4, spaceWeight: 4, color: 'lightgreen' });
     stripes.addTo(map);
+
+    var stripes2 = new L.StripePattern({ weight: 2, spaceWeight:2 });
+    stripes2.addTo(map);
 
 	L.geoJSON(geoJson, {
 		style: function(feature) {
@@ -483,7 +486,8 @@ function InitPreview(geoJson)
                 case 'tree': return { fillColor: "ForestGreen", stroke: false, fillOpacity: 0.8 };
                 case 'railway': return { fillColor: "black", stroke: false, fillOpacity: 0.8 };
                 case 'sidewalk': return { fill: false, stroke: true, weight: 1, dashArray: [5, 5], color: 'Gray' };
-
+                case 'defaultCategory': 
+                    return { fillPattern: stripes2, stroke: false, fillOpacity: 0.2 };
                 case 'ocean': return { fillColor: 'RoyalBlue', fillOpacity: 0.5, stroke: true, weight: 3, color: 'RoyalBlue' };
                 case 'coastline': return { stroke: true, weight: 1, dashArray: [5, 5], color: 'yellow', fillOpacity: 0 };
                 case 'orchard': return { fillColor: 'greenyellow', stroke: false, fillOpacity: 0.35 };
