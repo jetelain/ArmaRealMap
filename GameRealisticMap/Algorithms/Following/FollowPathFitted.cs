@@ -10,6 +10,8 @@ namespace GameRealisticMap.Algorithms.Following
         private readonly IReadOnlyCollection<IStraightSegmentProportionDefinition<TModel>> baselineStraights;
         private readonly ISegmentsDefinition<TModel> lib;
 
+        private const float MinimalSegmentLength = 0.25f; // Ignore anything small than 25cm
+
         public FollowPathFitted(ISegmentsDefinition<TModel> lib)
         {
             this.lib = lib;
@@ -43,33 +45,26 @@ namespace GameRealisticMap.Algorithms.Following
             }
         }
 
-        private void AddCorner(List<PlacedModel<TModel>> layer, TerrainPoint point, Random random, float previousDeltaAngle, float cornerAngle)
+        private void AddCorner(List<PlacedModel<TModel>> layer, TerrainPoint point, Random random, float prevObjectAngle, float cornerAngle)
         {
             if (cornerAngle > 45 && lib.RightCorners.Count > 0)
             {
-                layer.Add(new PlacedModel<TModel>(lib.RightCorners.GetRandom(random).Model, point, previousDeltaAngle));
+                layer.Add(new PlacedModel<TModel>(lib.RightCorners.GetRandom(random).Model, point, prevObjectAngle));
             }
             else if (cornerAngle < -45 && lib.LeftCorners.Count > 0)
             {
-                layer.Add(new PlacedModel<TModel>(lib.LeftCorners.GetRandom(random).Model, point, previousDeltaAngle));
+                layer.Add(new PlacedModel<TModel>(lib.LeftCorners.GetRandom(random).Model, point, prevObjectAngle));
             }
-        }
-
-        private void Segment(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment segment, bool isFirstSegment, bool isLastSegment)
-        {
-            // May choose average on some criterias ?
-            // May give up a part of length on some criterias ?
-            PlaceEndsAjusted(random, layer, segment, ChooseModels(random, segment, 0.8f), isFirstSegment, isLastSegment);
         }
 
         private void UniqueSegment(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment)
         {
             if (terrainPathSegment.IsClosed)
             {
-                var models = ChooseModels(random, terrainPathSegment);
-                if (models.Count >= 3)
+                var models = ChooseModels(random, terrainPathSegment.Length, false, 0.9f);
+                if (models.Count > 2)
                 {
-                    PlaceAverage(random, layer, terrainPathSegment, models, false, false);
+                    PlaceAverage(random, layer, terrainPathSegment, models, false, false, models.Sum(m => m.Size));
                 }
                 else
                 {
@@ -82,13 +77,25 @@ namespace GameRealisticMap.Algorithms.Following
             }
         }
 
-        internal void PlaceAverage(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment, IReadOnlyList<IStraightSegmentDefinition<TModel>> models, bool isFirstSegment, bool isLastSegment)
+        private void PlaceAverage(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment, IReadOnlyList<IStraightSegmentDefinition<TModel>> models, bool isFirstSegment, bool isLastSegment, float modelLengths)
         {
-            var modelLengths = models.Sum(m => m.Size);
-            var factor = modelLengths / terrainPathSegment.Length;
             var follow = new FollowPath(terrainPathSegment.Points);
-            var previousDeltaAngle = 0f;
+            var factor = terrainPathSegment.Length / modelLengths;
+            var prevObjectAngle = PlaceObjects(random, layer, models, isFirstSegment, factor, follow);
+            FinishSegment(random, layer, terrainPathSegment, isLastSegment, prevObjectAngle);
+        }
 
+        private void PlaceCentered(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment, IReadOnlyList<IStraightSegmentDefinition<TModel>> models, bool isFirstSegment, bool isLastSegment, float modelLengths)
+        {
+            var follow = new FollowPath(terrainPathSegment.Points);
+            follow.Move((terrainPathSegment.Length - modelLengths) / 2);
+            var prevObjectAngle = PlaceObjects(random, layer, models, isFirstSegment, 1, follow);
+            FinishSegment(random, layer, terrainPathSegment, isLastSegment, prevObjectAngle);
+        }
+
+        private float PlaceObjects(Random random, List<PlacedModel<TModel>> layer, IEnumerable<IStraightSegmentDefinition<TModel>> models, bool isFirstSegment, float factor, FollowPath follow)
+        {
+            var prevObjectAngle = 0f;
             foreach (var model in models)
             {
                 var modelSize = model.Size * factor;
@@ -96,50 +103,71 @@ namespace GameRealisticMap.Algorithms.Following
                 {
                     Debugger.Break();
                 }
-                previousDeltaAngle = PlaceSingleObject(random, layer, isFirstSegment, follow, model);
+                prevObjectAngle = PlaceSingleObject(random, layer, isFirstSegment, follow, model);
                 isFirstSegment = false;
             }
-
-            FinishSegment(random, layer, terrainPathSegment, isLastSegment, previousDeltaAngle);
+            return prevObjectAngle;
         }
 
-        internal void PlaceEndsAjusted(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment, IReadOnlyList<IStraightSegmentDefinition<TModel>> models, bool isFirstSegment, bool isLastSegment)
+        internal void Segment(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment, bool isFirstSegment, bool isLastSegment)
         {
-            if (models.Count == 1)
+            var models = ChooseModels(random, terrainPathSegment.Length, isFirstSegment || isLastSegment, 0.8f);
+            if (models.Count == 0)
             {
-                // Cannot adjust anything, average is the only solution
-                PlaceAverage(random, layer, terrainPathSegment, models, isFirstSegment, isLastSegment);
-                return;
+                return; // Nothing to do
             }
+            var modelLengths = models.Sum(m => m.Size);
+            if (modelLengths >= terrainPathSegment.Length)
+            {
+                if (models.Count < 2)
+                {
+                    // Cannot adjust anything, average is the only solution
+                    PlaceAverage(random, layer, terrainPathSegment, models, isFirstSegment, isLastSegment, modelLengths);
+                }
+                else
+                {
+                    PlaceEndsFitted(random, layer, terrainPathSegment, models, isFirstSegment, isLastSegment, modelLengths);
+                }
+            }
+            else
+            {
+                PlaceCentered(random, layer, terrainPathSegment, models, isFirstSegment, isLastSegment, modelLengths);
+            }
+        }
 
+        private void PlaceEndsFitted(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment, IReadOnlyList<IStraightSegmentDefinition<TModel>> models, bool isFirstSegment, bool isLastSegment, float modelLengths)
+        {
             var firstModel = models[0];
             var lastModel = models[models.Count - 1];
-            
-            var follow = new FollowPath(terrainPathSegment.Points);
-            follow.Move(firstModel.Size);
-            PlaceSingleObject(random, layer, isFirstSegment, follow, firstModel);
+
+            PlaceFirstFitted(random, layer, terrainPathSegment, isFirstSegment, firstModel);
 
             if (models.Count > 2)
             {
-                var middleSize = models.Sum(m => m.Size) - firstModel.Size - lastModel.Size;
-                follow = new FollowPath(terrainPathSegment.Points);
-                follow.Move((terrainPathSegment.Length - middleSize) * firstModel.Size / (firstModel.Size + lastModel.Size));
-                foreach (var model in models.Skip(1).Take(models.Count - 2))
-                {
-                    if (!follow.Move(model.Size))
-                    {
-                        Debugger.Break();
-                    }
-                    PlaceSingleObject(random, layer, false, follow, model);
-                }
+                var middleSize = modelLengths - firstModel.Size - lastModel.Size;
+                var followMid = new FollowPath(terrainPathSegment.Points);
+                followMid.Move((terrainPathSegment.Length - middleSize) * firstModel.Size / (firstModel.Size + lastModel.Size));
+                PlaceObjects(random, layer, models.Skip(1).Take(models.Count - 2), false, 1, followMid);
             }
 
-            follow = new FollowPath(terrainPathSegment.Points);
-            follow.Move(terrainPathSegment.Length - lastModel.Size);
-            follow.Move(lastModel.Size);
-            var previousDeltaAngle = PlaceSingleObject(random, layer, false, follow, lastModel);
+            var lastAngle = PlaceLastFitted(random, layer, terrainPathSegment, lastModel);
 
-            FinishSegment(random, layer, terrainPathSegment, isLastSegment, previousDeltaAngle);
+            FinishSegment(random, layer, terrainPathSegment, isLastSegment, lastAngle);
+        }
+
+        private float PlaceLastFitted(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment, IStraightSegmentDefinition<TModel> lastModel)
+        {
+            var followEnd = new FollowPath(terrainPathSegment.Points);
+            followEnd.Move(terrainPathSegment.Length - lastModel.Size);
+            followEnd.Move(lastModel.Size);
+            return PlaceSingleObject(random, layer, false, followEnd, lastModel);
+        }
+
+        private void PlaceFirstFitted(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment, bool isFirstSegment, IStraightSegmentDefinition<TModel> firstModel)
+        {
+            var followSt = new FollowPath(terrainPathSegment.Points);
+            followSt.Move(firstModel.Size);
+            PlaceSingleObject(random, layer, isFirstSegment, followSt, firstModel);
         }
 
         private float PlaceSingleObject(Random random, List<PlacedModel<TModel>> layer, bool isFirst, FollowPath follow, IStraightSegmentDefinition<TModel> model)
@@ -156,36 +184,44 @@ namespace GameRealisticMap.Algorithms.Following
             return deltaAngle;
         }
 
-        private void FinishSegment(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment, bool isLastSegment, float previousDeltaAngle)
+        private void FinishSegment(Random random, List<PlacedModel<TModel>> layer, TerrainPathSegment terrainPathSegment, bool isLastSegment, float angle)
         {
             var lastPoint = terrainPathSegment.Points[terrainPathSegment.Points.Count - 1];
             if (isLastSegment)
             {
                 if (lib.Ends.Count > 0)
                 {
-                    layer.Add(new PlacedModel<TModel>(lib.Ends.GetRandom(random).Model, lastPoint, previousDeltaAngle));
+                    layer.Add(new PlacedModel<TModel>(lib.Ends.GetRandom(random).Model, lastPoint, angle));
                 }
             }
             else
             {
-                AddCorner(layer, lastPoint, random, previousDeltaAngle, terrainPathSegment.AngleWithNext);
+                AddCorner(layer, lastPoint, random, angle, terrainPathSegment.AngleWithNext);
             }
         }
 
-        private List<IStraightSegmentDefinition<TModel>> ChooseModels(Random random, TerrainPathSegment terrainPathSegment, float factor = 1)
+        internal List<IStraightSegmentDefinition<TModel>> ChooseModels(Random random, float pathLength, bool canGiveUp, float toleranceFactor)
         {
-            var remainLength = terrainPathSegment.Length;
-            var models = new List<IStraightSegmentDefinition<TModel>>();
+            var remainLength = pathLength;
+            var models = new List<IStraightSegmentDefinition<TModel>>(); 
+            if (pathLength < MinimalSegmentLength)
+            {
+                return models;
+            }
             do
             {
                 var wantedObject = baselineStraights.GetRandomWithProportion(random) ?? baselineStraights.First();
                 if (remainLength < wantedObject.Size)
                 {
                     // Object is too large, try to find a smaller one
-                    wantedObject = lib.Straights.OrderBy(o => o.Size).First(o => o.Size >= remainLength * factor);
+                    wantedObject = lib.Straights.OrderBy(o => o.Size).First(o => o.Size >= remainLength * toleranceFactor);
                     wantedObject = lib.Straights.Where(t => t.Size == wantedObject.Size).GetRandomWithProportion(random) ?? wantedObject;
 
-                    // May we give up if the size difference is too important ?
+                    if ((canGiveUp && ((wantedObject.Size - remainLength) / pathLength) > 0.25) || remainLength < MinimalSegmentLength) // Not sure about this
+                    {
+                        // Give up: Would overflow more than 25% of the total path
+                        return models;
+                    }
                 }
                 models.Add(wantedObject);
                 remainLength -= wantedObject.Size;

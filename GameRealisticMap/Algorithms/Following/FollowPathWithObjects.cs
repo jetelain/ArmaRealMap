@@ -16,12 +16,17 @@ namespace GameRealisticMap.Algorithms.Following
             }
         }
 
+        public static void PlaceOnPathRightAngle<TModel>(Random random, ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
+        {
+            PlaceOnPathRightAngleV2(random, lib, layer, path);
+        }
+
         public static void PlaceOnPathRightAngleV2<TModel>(Random random, ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
         {
             new FollowPathFitted<TModel>(lib).PlaceOnPath(random, layer, path);
         }
 
-        public static void PlaceOnPathRightAngle<TModel>(Random random, ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
+        public static void PlaceOnPathRightAngleV1<TModel>(Random random, ISegmentsDefinition<TModel> lib, List<PlacedModel<TModel>> layer, IReadOnlyList<TerrainPoint> path)
         {
             var follow = new FollowPath(path);
 
