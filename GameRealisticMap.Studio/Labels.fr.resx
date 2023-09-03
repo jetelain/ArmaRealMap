@@ -1129,4 +1129,16 @@ Dernière génération le {1}</value>
   <data name="AbsoluteElevation" xml:space="preserve">
     <value>Position absolue</value>
   </data>
+  <data name="InResidentialAreas" xml:space="preserve">
+    <value>Dans les zones résidentielles</value>
+  </data>
+  <data name="Sidewalks" xml:space="preserve">
+    <value>Trottoirs</value>
+  </data>
+  <data name="Never" xml:space="preserve">
+    <value>Jamais</value>
+  </data>
+  <data name="AssetSidewalks" xml:space="preserve">
+    <value>Trottoirs</value>
+  </data>
 </root>

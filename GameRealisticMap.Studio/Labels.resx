@@ -1129,4 +1129,16 @@ Last generated on {1}</value>
   <data name="NumObjectsToImport" xml:space="preserve">
     <value>{0} objects to import</value>
   </data>
+  <data name="Sidewalks" xml:space="preserve">
+    <value>Sidewalks</value>
+  </data>
+  <data name="InResidentialAreas" xml:space="preserve">
+    <value>In residential areas</value>
+  </data>
+  <data name="Never" xml:space="preserve">
+    <value>Never</value>
+  </data>
+  <data name="AssetSidewalks" xml:space="preserve">
+    <value>Sidewalks</value>
+  </data>
 </root>

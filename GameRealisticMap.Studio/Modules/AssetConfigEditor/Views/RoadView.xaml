@@ -98,6 +98,18 @@
                         <TextBox Width="50" Text="{Binding DistanceBetweenStreetLamps,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
                     </StackPanel>
 
+                    <StackPanel Margin="10" Orientation="Horizontal"  >
+                        <Label Width="150">
+                            <Run Text="{x:Static r:Labels.Sidewalks}" />
+                        </Label>
+                        <RadioButton IsChecked="{Binding HasSidewalks}" VerticalAlignment="Center" Margin="0 0 10 0">
+                            <Run Text="{x:Static r:Labels.InResidentialAreas}" />
+                        </RadioButton>
+                        <RadioButton IsChecked="{Binding HasNotSidewalks}" VerticalAlignment="Center">
+                            <Run Text="{x:Static r:Labels.Never}" />
+                        </RadioButton>
+                    </StackPanel>
+                    
                 </StackPanel>
 
                 <Grid Grid.Column="1">

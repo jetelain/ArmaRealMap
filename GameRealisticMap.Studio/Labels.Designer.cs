@@ -773,6 +773,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Sidewalks.
+        /// </summary>
+        public static string AssetSidewalks {
+            get {
+                return ResourceManager.GetString("AssetSidewalks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Urban road - 1 Lane.
         /// </summary>
         public static string AssetSingleLaneConcreteRoad {
@@ -1979,6 +1988,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à In residential areas.
+        /// </summary>
+        public static string InResidentialAreas {
+            get {
+                return ResourceManager.GetString("InResidentialAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ✔ Installed.
         /// </summary>
         public static string Installed {
@@ -2301,6 +2319,15 @@ namespace GameRealisticMap.Studio {
         public static string NaturalRowUseRigidSegments {
             get {
                 return ResourceManager.GetString("NaturalRowUseRigidSegments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Never.
+        /// </summary>
+        public static string Never {
+            get {
+                return ResourceManager.GetString("Never", resourceCulture);
             }
         }
         
@@ -2815,6 +2842,15 @@ namespace GameRealisticMap.Studio {
         public static string ShowError {
             get {
                 return ResourceManager.GetString("ShowError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Sidewalks.
+        /// </summary>
+        public static string Sidewalks {
+            get {
+                return ResourceManager.GetString("Sidewalks", resourceCulture);
             }
         }
         
