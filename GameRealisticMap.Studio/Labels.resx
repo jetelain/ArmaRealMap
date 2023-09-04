@@ -136,7 +136,7 @@
     <value>Commercial Building</value>
   </data>
   <data name="AssetDefaultAreas" xml:space="preserve">
-    <value>Default Areas</value>
+    <value>Default Areas - Non urban / natural</value>
   </data>
   <data name="AssetFence" xml:space="preserve">
     <value>Fence</value>
@@ -1140,5 +1140,23 @@ Last generated on {1}</value>
   </data>
   <data name="AssetSidewalks" xml:space="preserve">
     <value>Sidewalks</value>
+  </data>
+  <data name="AssetDefaultAgriculturalAreas" xml:space="preserve">
+    <value>Default Areas - Agricultural</value>
+  </data>
+  <data name="AssetDefaultCommercialAreas" xml:space="preserve">
+    <value>Default Areas - Commercial / offices</value>
+  </data>
+  <data name="AssetDefaultIndustrialAreas" xml:space="preserve">
+    <value>Default Areas - Industrial</value>
+  </data>
+  <data name="AssetDefaultMilitaryAreas" xml:space="preserve">
+    <value>Default Areas - Military</value>
+  </data>
+  <data name="AssetDefaultResidentialAreas" xml:space="preserve">
+    <value>Default Areas - Residential</value>
+  </data>
+  <data name="AssetDefaultRetailAreas" xml:space="preserve">
+    <value>Default Areas - Retail</value>
   </data>
 </root>

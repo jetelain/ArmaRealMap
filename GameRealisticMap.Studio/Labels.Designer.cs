@@ -332,11 +332,29 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Default Areas.
+        ///   Recherche une chaîne localisée semblable à Default Areas - Agricultural.
+        /// </summary>
+        public static string AssetDefaultAgriculturalAreas {
+            get {
+                return ResourceManager.GetString("AssetDefaultAgriculturalAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default Areas - Non urban / natural.
         /// </summary>
         public static string AssetDefaultAreas {
             get {
                 return ResourceManager.GetString("AssetDefaultAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default Areas - Commercial / offices.
+        /// </summary>
+        public static string AssetDefaultCommercialAreas {
+            get {
+                return ResourceManager.GetString("AssetDefaultCommercialAreas", resourceCulture);
             }
         }
         
@@ -346,6 +364,42 @@ namespace GameRealisticMap.Studio {
         public static string AssetDefaultIndustrial {
             get {
                 return ResourceManager.GetString("AssetDefaultIndustrial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default Areas - Industrial.
+        /// </summary>
+        public static string AssetDefaultIndustrialAreas {
+            get {
+                return ResourceManager.GetString("AssetDefaultIndustrialAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default Areas - Military.
+        /// </summary>
+        public static string AssetDefaultMilitaryAreas {
+            get {
+                return ResourceManager.GetString("AssetDefaultMilitaryAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default Areas - Residential.
+        /// </summary>
+        public static string AssetDefaultResidentialAreas {
+            get {
+                return ResourceManager.GetString("AssetDefaultResidentialAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default Areas - Retail.
+        /// </summary>
+        public static string AssetDefaultRetailAreas {
+            get {
+                return ResourceManager.GetString("AssetDefaultRetailAreas", resourceCulture);
             }
         }
         
