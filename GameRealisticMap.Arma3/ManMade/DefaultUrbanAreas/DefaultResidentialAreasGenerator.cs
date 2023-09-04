@@ -5,7 +5,7 @@ using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.Nature.DefaultUrbanAreas
 {
-    internal class DefaultResidentialAreasGenerator : BasicGeneratorBase<DefaultCommercialAreaData>
+    internal class DefaultResidentialAreasGenerator : BasicGeneratorBase<DefaultResidentialAreaData>
     {
         public DefaultResidentialAreasGenerator(IProgressSystem progress, IArma3RegionAssets assets)
             : base(progress, assets)
