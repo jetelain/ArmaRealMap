@@ -8,6 +8,12 @@
         RocksAdditional,
         DefaultAreas,
         WatercourseAdditional,
-        SmallOrchard
+        SmallOrchard,
+        DefaultAgriculturalAreas,
+        DefaultCommercialAreas,
+        DefaultIndustrialAreas,
+        DefaultMilitaryAreas,
+        DefaultResidentialAreas,
+        DefaultRetailAreas
     }
 }

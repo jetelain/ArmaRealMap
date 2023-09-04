@@ -2,6 +2,7 @@
 using GameRealisticMap.Arma3.ManMade;
 using GameRealisticMap.Arma3.ManMade.Farmlands;
 using GameRealisticMap.Arma3.Nature.DefaultAreas;
+using GameRealisticMap.Arma3.Nature.DefaultUrbanAreas;
 using GameRealisticMap.Arma3.Nature.Forests;
 using GameRealisticMap.Arma3.Nature.Lakes;
 using GameRealisticMap.Arma3.Nature.RockAreas;
@@ -27,6 +28,12 @@ namespace GameRealisticMap.Arma3
             Generators.Add(new VineyardsGenerator(progress, assets));
             Generators.Add(new OrchardGenerator(progress, assets));
             Generators.Add(new SidewalksGenerator(progress, assets));
+            Generators.Add(new DefaultAgriculturalAreasGenerator(progress, assets));
+            Generators.Add(new DefaultCommercialAreasGenerator(progress, assets));
+            Generators.Add(new DefaultIndustrialAreasGenerator(progress, assets));
+            Generators.Add(new DefaultMilitaryAreasGenerator(progress, assets));
+            Generators.Add(new DefaultResidentialAreasGenerator(progress, assets));
+            Generators.Add(new DefaultRetailAreasGenerator(progress, assets));
 
             // Nature
             Generators.Add(new ForestEdgeGenerator(progress, assets));

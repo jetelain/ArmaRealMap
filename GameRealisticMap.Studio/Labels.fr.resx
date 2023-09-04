@@ -145,7 +145,7 @@
     <value>Le fichier de style de carte est manquant.</value>
   </data>
   <data name="AssetDefaultAreas" xml:space="preserve">
-    <value>Zones par défaut</value>
+    <value>Zones par défaut - Non urbain / nature</value>
   </data>
   <data name="AssetFireHydrant" xml:space="preserve">
     <value>Bouche d'incendie</value>
@@ -1140,5 +1140,23 @@ Dernière génération le {1}</value>
   </data>
   <data name="AssetSidewalks" xml:space="preserve">
     <value>Trottoirs</value>
+  </data>
+  <data name="AssetDefaultAgriculturalAreas" xml:space="preserve">
+    <value>Zones par défaut - Agricole</value>
+  </data>
+  <data name="AssetDefaultCommercialAreas" xml:space="preserve">
+    <value>Zones par défaut - Bureaux</value>
+  </data>
+  <data name="AssetDefaultIndustrialAreas" xml:space="preserve">
+    <value>Zones par défaut - Industriel</value>
+  </data>
+  <data name="AssetDefaultMilitaryAreas" xml:space="preserve">
+    <value>Zones par défaut - Militaire</value>
+  </data>
+  <data name="AssetDefaultResidentialAreas" xml:space="preserve">
+    <value>Zones par défaut - Résidentiel</value>
+  </data>
+  <data name="AssetDefaultRetailAreas" xml:space="preserve">
+    <value>Zones par défaut - Commercial</value>
   </data>
 </root>

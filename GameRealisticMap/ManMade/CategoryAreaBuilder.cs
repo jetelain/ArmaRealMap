@@ -23,7 +23,10 @@ namespace GameRealisticMap.ManMade
                 var buildingType = GetBuildingType(area.Tags.GetValue("landuse"));
                 if (buildingType != null)
                 {
-                    var polygons = context.OsmSource.Interpret(area).SelectMany(geometry => TerrainPolygon.FromGeometry(geometry, context.Area.LatLngToTerrainPoint)).ToList();
+                    var polygons = context.OsmSource.Interpret(area)
+                        .SelectMany(geometry => TerrainPolygon.FromGeometry(geometry, context.Area.LatLngToTerrainPoint))
+                        .SelectMany(g => g.ClippedBy(context.Area.TerrainBounds))
+                        .ToList();
                     areas.Add(new CategoryArea(buildingType.Value, polygons));
                 }
                 report.ReportOneDone();
