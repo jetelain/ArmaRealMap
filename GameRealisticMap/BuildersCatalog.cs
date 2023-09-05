@@ -8,8 +8,6 @@ using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.ManMade.Roads.Libraries;
-using GameRealisticMap.Nature;
 using GameRealisticMap.Nature.DefaultAreas;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
@@ -28,14 +26,14 @@ namespace GameRealisticMap
     {
         private readonly Dictionary<Type, IBuilderAdapter> builders = new Dictionary<Type, IBuilderAdapter>();
 
-        public BuildersCatalog(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library, IRailwayCrossingResolver? crossingResolver = null, bool useFullGeoJson = false)
+        public BuildersCatalog(IProgressSystem progress, IBuildersConfig config, bool useFullGeoJson = false)
         {
             Register(new OceanBuilder(progress));
             Register(new CoastlineBuilder(progress));
             Register(new RawSatelliteImageBuilder(progress));
             Register(new RawElevationBuilder(progress));
             Register(new CategoryAreaBuilder(progress));
-            Register(new RoadsBuilder(progress, library));
+            Register(new RoadsBuilder(progress, config.Roads));
             Register(new BuildingsBuilder(progress));
             Register(new WatercoursesBuilder(progress));
             Register(new WatercourseRadialBuilder(progress));
@@ -54,7 +52,7 @@ namespace GameRealisticMap
             Register(new FarmlandsBuilder(progress));
             Register(new TreesBuilder(progress));
             Register(new OrientedObjectBuilder(progress));
-            Register(new RailwaysBuilder(progress, crossingResolver));
+            Register(new RailwaysBuilder(progress, config.RailwayCrossings));
             Register(new CitiesBuilder(progress));
             Register(new ElevationBuilder(progress, useFullGeoJson));
             Register(new VineyardBuilder(progress));

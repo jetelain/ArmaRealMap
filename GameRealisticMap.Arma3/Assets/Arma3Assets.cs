@@ -10,12 +10,13 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
+using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
 
 namespace GameRealisticMap.Arma3.Assets
 {
-    public class Arma3Assets : Arma3AssetsDependenciesOnly, IArma3RegionAssets, IRoadTypeLibrary<Arma3RoadTypeInfos>
+    public class Arma3Assets : Arma3AssetsDependenciesOnly, IArma3RegionAssets, IRoadTypeLibrary<Arma3RoadTypeInfos>, IBuildersConfig
     {
         public const string BuiltinPrefix = "builtin:";
         private const string BuiltinNamespace = "GameRealisticMap.Arma3.Builtin.";
@@ -117,6 +118,10 @@ namespace GameRealisticMap.Arma3.Assets
         public List<SidewalksDefinition> Sidewalks { get; set; } = new();
 
         IReadOnlyCollection<SidewalksDefinition> IArma3RegionAssets.Sidewalks => Sidewalks;
+
+        IRoadTypeLibrary<IRoadTypeInfos> IBuildersConfig.Roads => this;
+
+        IRailwayCrossingResolver IBuildersConfig.RailwayCrossings => (IRailwayCrossingResolver?)Railways ?? new DefaultRailwayCrossingResolver();
 
         public static JsonSerializerOptions CreateJsonSerializerOptions(IModelInfoLibrary library, bool allowUnresolvedModel = false)
         {

@@ -49,7 +49,7 @@ namespace GameRealisticMap.Arma3
 
         protected virtual BuildContext CreateBuildContext(IProgressTask progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
         {
-            var builders = new BuildersCatalog(progress, assets.RoadTypeLibrary, assets.Railways);
+            var builders = new BuildersCatalog(progress, assets);
             return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
         }
 
