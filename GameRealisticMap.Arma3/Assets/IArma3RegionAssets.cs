@@ -10,7 +10,7 @@ using GameRealisticMap.ManMade.Roads.Libraries;
 
 namespace GameRealisticMap.Arma3.Assets
 {
-    public interface IArma3RegionAssets
+    public interface IArma3RegionAssets : IBuildersConfig
     {
         IRoadTypeLibrary<Arma3RoadTypeInfos> RoadTypeLibrary { get; }
 

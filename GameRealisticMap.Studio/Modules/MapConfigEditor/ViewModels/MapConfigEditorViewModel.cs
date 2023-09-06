@@ -311,16 +311,16 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         private async Task DoGeneratePreview(IProgressTaskUI task, bool ignoreElevation)
         {
             var a3config = Config.ToArma3MapConfig();
-            IRoadTypeLibrary<IRoadTypeInfos> library;
+            IBuildersConfig config;
             try
             {
-                library = await GetAssets(_arma3DataModule.Library, a3config);
+                config = await GetAssets(_arma3DataModule.Library, a3config);
             }
             catch
             {
-                library = new DefaultRoadTypeLibrary();
+                config = new DefaultBuildersConfig();
             }
-            var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery, library);
+            var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery, config);
             var target = Path.Combine(Path.GetTempPath(), "grm-preview.html");
             await render.RenderHtml(task, target, ignoreElevation);
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewResultInWebBrowser);

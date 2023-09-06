@@ -2367,6 +2367,41 @@
           ]
         }
       }
+    ],
+    "Lighthouse": [
+      {
+        "Size": [5.6,5.6],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\dominants\\lighthouse\\lighthouse_f.p3d",
+              "Transform": [0,11.517036,3.1152215]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.6,5.6],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\infrastructure\\seaports\\lighthouse_03_green_f.p3d",
+              "Transform": [0.009523988,7.8525257,0.0031797886]
+            }
+          ]
+        }
+      },
+      {
+        "Size": [5.6,5.6],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f_argo\\infrastructure\\seaports\\lighthouse_03_red_f.p3d",
+              "Transform": [0.009523988,7.8525257,0.0031797886]
+            }
+          ]
+        }
+      }
     ]
   },
   "ClusterCollections": {
