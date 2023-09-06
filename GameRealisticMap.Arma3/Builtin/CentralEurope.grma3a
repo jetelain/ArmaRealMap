@@ -3862,6 +3862,19 @@
         },
         "Probability": 1
       }
+    ],
+    "Flagpole": [
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\mil\\Flags\\Mast_F.p3d",
+              "Transform": [0.051921017,3.9768047,0.3953951]
+            }
+          ]
+        },
+        "Probability": 1
+      }
     ]
   },
   "Ponds": {

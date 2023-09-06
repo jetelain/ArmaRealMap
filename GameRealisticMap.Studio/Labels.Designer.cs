@@ -449,6 +449,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Flagpole.
+        /// </summary>
+        public static string AssetFlagpole {
+            get {
+                return ResourceManager.GetString("AssetFlagpole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Forest Trees.
         /// </summary>
         public static string AssetForest {

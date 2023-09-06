@@ -59,9 +59,13 @@ namespace GameRealisticMap.ManMade.Objects
                     }
                     return null;
             }
-            if (tags.GetValue("man_made") == "water_well")
+            switch (tags.GetValue("man_made"))
             {
-                return ObjectTypeId.WaterWell;
+                case "water_well":
+                    return ObjectTypeId.WaterWell;
+
+                case "flagpole":
+                    return ObjectTypeId.Flagpole;
             }
             if (tags.GetValue("leisure") == "picnic_table")
             {
