@@ -1162,4 +1162,7 @@ Last generated on {1}</value>
   <data name="AssetLighthouse" xml:space="preserve">
     <value>Lighthouse</value>
   </data>
+  <data name="AssetFlagpole" xml:space="preserve">
+    <value>Flagpole</value>
+  </data>
 </root>

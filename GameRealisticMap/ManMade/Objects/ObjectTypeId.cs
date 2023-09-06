@@ -15,6 +15,7 @@
         WarMemorial,
         Tree,
         Sculpture,
-        StreetLamp
+        StreetLamp,
+        Flagpole
     }
 }
