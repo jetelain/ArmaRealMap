@@ -1159,4 +1159,7 @@ Last generated on {1}</value>
   <data name="AssetDefaultRetailAreas" xml:space="preserve">
     <value>Default Areas - Retail</value>
   </data>
+  <data name="AssetLighthouse" xml:space="preserve">
+    <value>Lighthouse</value>
+  </data>
 </root>

@@ -1159,4 +1159,7 @@ Dernière génération le {1}</value>
   <data name="AssetDefaultRetailAreas" xml:space="preserve">
     <value>Zones par défaut - Commercial</value>
   </data>
+  <data name="AssetLighthouse" xml:space="preserve">
+    <value>Phare</value>
+  </data>
 </root>

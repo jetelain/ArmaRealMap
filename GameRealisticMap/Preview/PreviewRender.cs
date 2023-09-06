@@ -13,18 +13,18 @@ namespace GameRealisticMap.Preview
     {
         private readonly ITerrainArea terrainArea;
         private readonly IImageryOptions imagery;
-        private readonly IRoadTypeLibrary<IRoadTypeInfos> library;
+        private readonly IBuildersConfig config;
 
         public PreviewRender(ITerrainArea terrainArea, IImageryOptions imagery)
-            : this(terrainArea, imagery, new DefaultRoadTypeLibrary())
+            : this(terrainArea, imagery, new DefaultBuildersConfig())
         {
         }
 
-        public PreviewRender(ITerrainArea terrainArea, IImageryOptions imagery, IRoadTypeLibrary<IRoadTypeInfos> library)
+        public PreviewRender(ITerrainArea terrainArea, IImageryOptions imagery, IBuildersConfig config)
         {
             this.terrainArea = terrainArea;
             this.imagery = imagery;
-            this.library = library;
+            this.config = config;
         }
 
         public async Task RenderHtml(IProgressTask progress, string targetFile, bool ignoreElevation = false)
@@ -37,7 +37,7 @@ namespace GameRealisticMap.Preview
                     filter = (t) => t != typeof(ElevationData);
                 }
 
-                var catalog = new BuildersCatalog(progress, library, null, true);
+                var catalog = new BuildersCatalog(progress, config, true);
                 var count = catalog.CountOfType<IGeoJsonData>(filter);
                 progress.Total = count + 2;
 
@@ -83,7 +83,7 @@ namespace GameRealisticMap.Preview
             try
             {
                 
-                var catalog = new BuildersCatalog(progress, library, null, true);
+                var catalog = new BuildersCatalog(progress, config, true);
                 progress.Total = 3;
 
                 var loader = new OsmDataOverPassLoader(progress);

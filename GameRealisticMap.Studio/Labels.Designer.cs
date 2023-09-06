@@ -566,6 +566,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Lighthouse.
+        /// </summary>
+        public static string AssetLighthouse {
+            get {
+                return ResourceManager.GetString("AssetLighthouse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Map Config.
         /// </summary>
         public static string AssetMapConfig {
