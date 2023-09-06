@@ -105,7 +105,7 @@ namespace GameRealisticMap.ManMade.Objects
             }
             if (tags.GetValue("highway") == "street_lamp")
             {
-                return ObjectTypeId.Sculpture;
+                return ObjectTypeId.StreetLamp;
             }
             return null;
         }
