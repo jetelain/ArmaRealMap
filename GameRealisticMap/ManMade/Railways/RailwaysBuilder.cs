@@ -19,7 +19,7 @@ namespace GameRealisticMap.ManMade.Railways
         public RailwaysData Build(IBuildContext context)
         {
             var nodes = context.OsmSource.All
-                .Where(s => s.Tags != null && s.Tags.GetValue("railway") == "rail")
+                .Where(s => s.Tags != null && IsRail(s.Tags.GetValue("railway")))
                 .ToList();
 
             var crossing = context.OsmSource.Nodes
@@ -51,6 +51,11 @@ namespace GameRealisticMap.ManMade.Railways
             }
 
             return new RailwaysData(railways);
+        }
+
+        private bool IsRail(string value)
+        {
+            return value == "rail" || value == "disused";
         }
 
         private void AddNormalSegment(List<Railway> railways, List<TerrainPoint> crossing, TerrainSpacialIndex<Road> roadsIndex, TerrainPath segment, int recursion = 0)
