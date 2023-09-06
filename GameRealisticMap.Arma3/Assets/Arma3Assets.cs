@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Numerics;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Algorithms.Definitions;
@@ -16,7 +17,7 @@ using GameRealisticMap.ManMade.Roads.Libraries;
 
 namespace GameRealisticMap.Arma3.Assets
 {
-    public class Arma3Assets : Arma3AssetsDependenciesOnly, IArma3RegionAssets, IRoadTypeLibrary<Arma3RoadTypeInfos>, IBuildersConfig
+    public class Arma3Assets : Arma3AssetsDependenciesOnly, IArma3RegionAssets, IRoadTypeLibrary<Arma3RoadTypeInfos>, IBuildersConfig, IBuildingSizeLibrary
     {
         public const string BuiltinPrefix = "builtin:";
         private const string BuiltinNamespace = "GameRealisticMap.Arma3.Builtin.";
@@ -123,6 +124,8 @@ namespace GameRealisticMap.Arma3.Assets
 
         IRailwayCrossingResolver IBuildersConfig.RailwayCrossings => (IRailwayCrossingResolver?)Railways ?? new DefaultRailwayCrossingResolver();
 
+        IBuildingSizeLibrary IBuildersConfig.Buildings => this;
+
         public static JsonSerializerOptions CreateJsonSerializerOptions(IModelInfoLibrary library, bool allowUnresolvedModel = false)
         {
             return new JsonSerializerOptions()
@@ -216,6 +219,11 @@ namespace GameRealisticMap.Arma3.Assets
                 return bridge;
             }
             return DefaultBridgeInfos.NoBridge;
+        }
+
+        public IEnumerable<Vector2> GetSizes(BuildingTypeId buildingType)
+        {
+            return GetBuildings(buildingType).Select(b => b.Size);
         }
     }
 }

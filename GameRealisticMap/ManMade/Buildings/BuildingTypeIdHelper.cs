@@ -22,7 +22,6 @@ namespace GameRealisticMap.ManMade.Buildings
             {
                 return BuildingTypeId.BusStopShelter;
             }
-
             if (tags.ContainsKey("building") && !tags.IsFalse("building"))
             {
                 if (tags.GetValue("tower:type") == "communication")
@@ -75,6 +74,14 @@ namespace GameRealisticMap.ManMade.Buildings
                 {
                     return BuildingTypeId.Retail;
                 }
+            }
+            switch (tags.GetValue("man_made"))
+            {
+                case "lighthouse":
+                    return BuildingTypeId.Lighthouse;
+
+                case "water_tower":
+                    return BuildingTypeId.WaterTower;
             }
             return null;
         }

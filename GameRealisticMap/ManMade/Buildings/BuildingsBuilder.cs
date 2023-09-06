@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Numerics;
+using GameRealisticMap.Algorithms;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
+using OsmSharp.Geo;
 
 namespace GameRealisticMap.ManMade.Buildings
 {
     internal class BuildingsBuilder : IDataBuilder<BuildingsData>
     {
         private readonly IProgressSystem progress;
+        private readonly IBuildingSizeLibrary library;
 
-        public BuildingsBuilder(IProgressSystem progress)
+        public BuildingsBuilder(IProgressSystem progress, IBuildingSizeLibrary library)
         {
             this.progress = progress;
+            this.library = library;
         }
 
         public BuildingsData Build(IBuildContext context)
@@ -27,15 +32,17 @@ namespace GameRealisticMap.ManMade.Buildings
             var pass2 = MergeSmallBuildings(pass1, context.Area);
             //Preview(data, removed, pass2, "buildings-pass2.png");
 
+            var roadsIndex = new TerrainSpacialIndex<Road>(context.Area);
+            roadsIndex.AddRange(roads.Roads);
+
+            AddNodeBuildings(pass2, context.OsmSource, context.Area, roadsIndex) ;
+
 #if PARALLEL
             var pass3 = RemoveCollidingBuildingsParallel(pass2, context.Area);
 #else
             var pass3 = RemoveCollidingBuildingsWithSI(pass2, context.Area);
 #endif
             //Preview(data, removed, pass3, "buildings-pass3.png");
-
-            var roadsIndex = new TerrainSpacialIndex<Road>(context.Area);
-            roadsIndex.AddRange(roads.Roads);
 
             var pass4 = RoadCrop(pass3, roadsIndex);
             //Preview(data, removed, pass4, "buildings-pass4.png");
@@ -46,6 +53,41 @@ namespace GameRealisticMap.ManMade.Buildings
             //Preview(data, removed, pass5, "buildings-pass5.png");
 
             return new BuildingsData(pass5);
+        }
+
+        private void AddNodeBuildings(List<BuildingCandidate> candidates, IOsmDataSource osmSource, ITerrainArea area, TerrainSpacialIndex<Road> roadsIndex)
+        {
+            var cache = new ConcurrentDictionary<BuildingTypeId, List<Vector2>>();
+
+            foreach(var node in osmSource.Nodes
+                .Where(n => n.Tags != null && n.Tags.ContainsKey("man_made"))
+                .ProgressStep(progress, "Nodes"))
+            {
+                var type = BuildingTypeIdHelper.FromOSM(node.Tags);
+                if (type != null)
+                {
+                    var sizes = cache.GetOrAdd(type.Value, k => library.GetSizes(type.Value).ToList());
+                    if (sizes.Count > 0)
+                    {
+                        var center = area.LatLngToTerrainPoint(node.GetCoordinate());
+                        var random = RandomHelper.CreateRandom(center);
+                        var closestRoad = roadsIndex.Search(center.WithMargin(100f)).OrderBy(r => r.Path.Distance(center)).FirstOrDefault();
+                        float angle;
+                        if (closestRoad == null)
+                        {
+                            angle = RandomHelper.GetAngle(random);
+                        }
+                        else
+                        {
+                            var delta = closestRoad.Path.NearestPointBoundary(center).Vector - center.Vector;
+                            angle = MathF.Atan2(delta.Y, delta.X);
+                        }
+                        var size = sizes.GetEquiprobale(random);
+                        var box = new BoundingBox(center, size.X, size.Y, angle);
+                        candidates.Add(new BuildingCandidate(box, type));
+                    }
+                }
+            }
         }
 
         private void DetectEntranceSide(IReadOnlyList<BuildingCandidate> buildings, TerrainSpacialIndex<Road> roadsIndex, ITerrainArea area)
@@ -284,11 +326,13 @@ namespace GameRealisticMap.ManMade.Buildings
         private List<BuildingCandidate> DetectBuildingsBoundingRects(IOsmDataSource osm, ITerrainArea area)
         {
             var buildings = osm.All.Where(o => o.Tags != null && o.Tags.ContainsKey("building")).ToList();
+            var manMadeAreas = osm.Ways.Where(o => o.Tags != null && o.Tags.ContainsKey("man_made") && !o.Tags.ContainsKey("building")).ToList();
 
             var areaEnveloppe = new Envelope(TerrainPoint.Empty, new TerrainPoint(area.SizeInMeters, area.SizeInMeters));
 
-            var pass1 = new List<BuildingCandidate>();
-            using var report1 = progress.CreateStep("Interpret", buildings.Count);
+            var candidateSurfaces = new List<BuildingCandidate>();
+
+            using var report = progress.CreateStep("Interpret", buildings.Count + manMadeAreas.Count);
             foreach (var building in buildings)
             {
                 foreach (var geometry in osm.Interpret(building))
@@ -297,13 +341,33 @@ namespace GameRealisticMap.ManMade.Buildings
                     {
                         if (areaEnveloppe.EnveloppeContains(poly))
                         { 
-                            pass1.Add(new BuildingCandidate(poly, BuildingTypeIdHelper.FromOSM(building.Tags)));
+                            candidateSurfaces.Add(new BuildingCandidate(poly, BuildingTypeIdHelper.FromOSM(building.Tags)));
                         }
                     }
                 }
-                report1.ReportOneDone();
+                report.ReportOneDone();
             }
-            return pass1;
+
+            foreach (var manMade in manMadeAreas)
+            {
+                var type = BuildingTypeIdHelper.FromOSM(manMade.Tags);
+                if (type != null)
+                {
+                    foreach (var geometry in osm.Interpret(manMade))
+                    {
+                        foreach (var poly in TerrainPolygon.FromGeometry(geometry, area.LatLngToTerrainPoint))
+                        {
+                            if (areaEnveloppe.EnveloppeContains(poly))
+                            {
+                                candidateSurfaces.Add(new BuildingCandidate(poly, type));
+                            }
+                        }
+                    }
+                }
+                report.ReportOneDone();
+            }
+
+            return candidateSurfaces;
         }
     }
 }

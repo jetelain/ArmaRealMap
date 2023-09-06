@@ -12,6 +12,13 @@ namespace GameRealisticMap.ManMade.Buildings
             Category = category;
         }
 
+        public BuildingCandidate(BoundingBox box, BuildingTypeId? category)
+        {
+            Polygons = new List<TerrainPolygon>() { box.Polygon };
+            Box = box;
+            Category = category;
+        }
+
         public List<TerrainPolygon> Polygons { get; }
 
         public BoundingBox Box { get; set; }

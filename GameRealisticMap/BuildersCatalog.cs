@@ -34,7 +34,7 @@ namespace GameRealisticMap
             Register(new RawElevationBuilder(progress));
             Register(new CategoryAreaBuilder(progress));
             Register(new RoadsBuilder(progress, config.Roads));
-            Register(new BuildingsBuilder(progress));
+            Register(new BuildingsBuilder(progress, config.Buildings));
             Register(new WatercoursesBuilder(progress));
             Register(new WatercourseRadialBuilder(progress));
             Register(new ForestBuilder(progress));

@@ -15,6 +15,7 @@
         Agricultural,
         WaterTower,
         BusStopShelter,
-        IndividualGarage
+        IndividualGarage,
+        Lighthouse
     }
 }
