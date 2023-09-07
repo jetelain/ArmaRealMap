@@ -33,8 +33,6 @@ namespace GameRealisticMap.Conditions
 
         public bool IsUrban => evaluator.GetAreas(point).Any();
 
-        public string Area => string.Join(",", evaluator.GetAreas(point));
-
         public float Elevation => evaluator.GetElevation(point);
 
         public float Slope => evaluator.GetSlope(point);
