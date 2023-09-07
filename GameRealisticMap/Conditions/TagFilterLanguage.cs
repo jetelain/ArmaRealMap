@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using StringToExpression;
+using StringToExpression.Exceptions;
 using StringToExpression.GrammerDefinitions;
 using StringToExpression.Util;
 
@@ -29,12 +30,27 @@ namespace GameRealisticMap.Conditions
         /// <returns></returns>
         public Expression<Func<T, bool>> Parse<T>(string text, string paramName = "point")
         {
-            var parameters = new[] { Expression.Parameter(typeof(T), paramName) };
-            var body = language.Parse(text, parameters);
+            try
+            {
+                var parameters = new[] { Expression.Parameter(typeof(T), paramName) };
+                var body = language.Parse(text, parameters);
 
-            ExpressionConversions.TryBoolean(ref body);
+                ExpressionConversions.TryBoolean(ref body);
 
-            return Expression.Lambda<Func<T, bool>>(body, parameters);
+                return Expression.Lambda<Func<T, bool>>(body, parameters);
+            }
+            catch (OperationInvalidException ex) when (ex.InnerException != null)
+            {
+                throw new TagFilterLanguageException(ex.ErrorSegment, $"Expression '{text}' is invalid: {ex.InnerException.Message}", ex);
+            }
+            catch (ParseException ex)
+            {
+                throw new TagFilterLanguageException(ex.ErrorSegment, $"Expression '{text}' is invalid: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException($"Expression '{text}' is invalid: {ex.Message}", ex);
+            }
         }
 
         /// <summary>
@@ -255,7 +271,7 @@ namespace GameRealisticMap.Conditions
                         var property = parameters[0].Type.GetProperty(value, BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public);
                         if ( property == null)
                         {
-                            throw new ArgumentException($"No property '{value}'");
+                            throw new ArgumentException($"Property '{value}' does not exists.");
                         }
                         return Expression.MakeMemberAccess((Expression)parameters[0], property);
                     }),

@@ -1,9 +1,11 @@
 ﻿using System.Linq.Expressions;
+using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Roads;
 
 namespace GameRealisticMap.Conditions
 {
+    [JsonConverter(typeof(ConditionOnPointJsonConverter))]
     public class ConditionOnPoint
     {
         private readonly string condition;
