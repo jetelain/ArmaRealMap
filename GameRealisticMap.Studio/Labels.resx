@@ -1165,4 +1165,55 @@ Last generated on {1}</value>
   <data name="AssetFlagpole" xml:space="preserve">
     <value>Flagpole</value>
   </data>
+  <data name="CriteriaIsResidential" xml:space="preserve">
+    <value>is in a residential area</value>
+  </data>
+	<data name="CriteriaIsCommercial" xml:space="preserve">
+    <value>is in an commercial/office area</value>
+  </data>
+  <data name="CriteriaIsIndustrial" xml:space="preserve">
+    <value>is in an industrial area</value>
+  </data>
+  <data name="CriteriaIsRetail" xml:space="preserve">
+    <value>is in a retail area</value>
+  </data>
+  <data name="CriteriaIsMilitary" xml:space="preserve">
+    <value>is in a military area</value>
+  </data>
+  <data name="CriteriaIsFarmyard" xml:space="preserve">
+    <value>is in a farmyard area (does not includes fields)</value>
+  </data>
+  <data name="CriteriaIsUrban" xml:space="preserve">
+    <value>is in an inhabited / built area</value>
+  </data>
+  <data name="CriteriaIsOcean" xml:space="preserve">
+    <value>is in the ocean</value>
+  </data>
+	<data name="CriteriaDistanceToOcean" xml:space="preserve">
+    <value>distance to the ocean (in meters)</value>
+  </data>
+  <data name="CriteriaElevation" xml:space="preserve">
+    <value>elevation above sea level (in meters)</value>
+  </data>
+  <data name="CriteriaSlope" xml:space="preserve">
+    <value>terrain slope (in degrees)</value>
+  </data>
+  <data name="CriteriaIsRoadMotorway" xml:space="preserve">
+    <value>closest road is a motorway</value>
+  </data>
+  <data name="CriteriaIsRoadPrimary" xml:space="preserve">
+    <value>closest road is a primary road</value>
+  </data>
+	<data name="CriteriaIsRoadSecondary" xml:space="preserve">
+    <value>closest road is a secondary road</value>
+  </data>
+  <data name="CriteriaIsRoadUrban" xml:space="preserve">
+    <value>closest road is a residential/urban road</value>
+  </data>
+  <data name="CriteriaIsRoadPath" xml:space="preserve">
+    <value>closest road is a track</value>
+  </data>
+  <data name="CriteriaDistanceToRoad" xml:space="preserve">
+    <value>distance to the closest road (in meters)</value>
+  </data>
 </root>

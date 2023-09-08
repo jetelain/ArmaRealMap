@@ -1,6 +1,7 @@
 ﻿using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Conditions;
 using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.Reporting;
 
@@ -19,15 +20,20 @@ namespace GameRealisticMap.Arma3.ManMade
 
         public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
         {
+            var evaluator = context.GetData<ConditionEvaluator>();
             var objects = context.GetData<OrientedObjectData>().Objects;
             var result = new List<TerrainBuilderObject>();
-            foreach(var obj in objects.ProgressStep(progress,"OrientedObjects"))
+            foreach(var obj in objects.ProgressStep(progress, "OrientedObjects"))
             {
                 var candidates = assets.GetObjects(obj.TypeId);
                 if (candidates.Count >  0)
                 {
-                    var definition = candidates.GetRandom(obj.Point);
-                    result.AddRange(definition.Composition.ToTerrainBuilderObjects(new ModelPosition(obj.Point, obj.Angle)));
+                    var pointContext = new PointConditionContext(evaluator, obj.Point);
+                    var definition = candidates.GetRandom(obj.Point, pointContext);
+                    if (definition != null)
+                    {
+                        result.AddRange(definition.Composition.ToTerrainBuilderObjects(new ModelPosition(obj.Point, obj.Angle)));
+                    }
                 }
             }
 
@@ -36,8 +42,12 @@ namespace GameRealisticMap.Arma3.ManMade
             {
                 foreach (var obj in context.GetData<ProceduralStreetLampsData>().Objects.ProgressStep(progress, "ProceduralStreetLamps"))
                 {
-                    var definition = lamps.GetRandom(obj.Point);
-                    result.AddRange(definition.Composition.ToTerrainBuilderObjects(new ModelPosition(obj.Point, obj.Angle)));
+                    var pointContext = new PointConditionContext(evaluator, obj.Point);
+                    var definition = lamps.GetRandom(obj.Point, pointContext);
+                    if (definition != null)
+                    {
+                        result.AddRange(definition.Composition.ToTerrainBuilderObjects(new ModelPosition(obj.Point, obj.Angle)));
+                    }
                 }
             }
             return result;

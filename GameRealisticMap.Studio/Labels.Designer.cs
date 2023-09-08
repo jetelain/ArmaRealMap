@@ -1340,6 +1340,159 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à distance to the ocean (in meters).
+        /// </summary>
+        public static string CriteriaDistanceToOcean {
+            get {
+                return ResourceManager.GetString("CriteriaDistanceToOcean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à distance to the closest road (in meters).
+        /// </summary>
+        public static string CriteriaDistanceToRoad {
+            get {
+                return ResourceManager.GetString("CriteriaDistanceToRoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à elevation above sea level (in meters).
+        /// </summary>
+        public static string CriteriaElevation {
+            get {
+                return ResourceManager.GetString("CriteriaElevation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à is in an commercial/office area.
+        /// </summary>
+        public static string CriteriaIsCommercial {
+            get {
+                return ResourceManager.GetString("CriteriaIsCommercial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à is in a farmyard area (does not includes fields).
+        /// </summary>
+        public static string CriteriaIsFarmyard {
+            get {
+                return ResourceManager.GetString("CriteriaIsFarmyard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à is in an industrial area.
+        /// </summary>
+        public static string CriteriaIsIndustrial {
+            get {
+                return ResourceManager.GetString("CriteriaIsIndustrial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à is in a military area.
+        /// </summary>
+        public static string CriteriaIsMilitary {
+            get {
+                return ResourceManager.GetString("CriteriaIsMilitary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à is in the ocean.
+        /// </summary>
+        public static string CriteriaIsOcean {
+            get {
+                return ResourceManager.GetString("CriteriaIsOcean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à is in a residential area.
+        /// </summary>
+        public static string CriteriaIsResidential {
+            get {
+                return ResourceManager.GetString("CriteriaIsResidential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à is in a retail area.
+        /// </summary>
+        public static string CriteriaIsRetail {
+            get {
+                return ResourceManager.GetString("CriteriaIsRetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à closest road is a motorway.
+        /// </summary>
+        public static string CriteriaIsRoadMotorway {
+            get {
+                return ResourceManager.GetString("CriteriaIsRoadMotorway", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à closest road is a track.
+        /// </summary>
+        public static string CriteriaIsRoadPath {
+            get {
+                return ResourceManager.GetString("CriteriaIsRoadPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à closest road is a primary road.
+        /// </summary>
+        public static string CriteriaIsRoadPrimary {
+            get {
+                return ResourceManager.GetString("CriteriaIsRoadPrimary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à closest road is a secondary road.
+        /// </summary>
+        public static string CriteriaIsRoadSecondary {
+            get {
+                return ResourceManager.GetString("CriteriaIsRoadSecondary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à closest road is a residential/urban road.
+        /// </summary>
+        public static string CriteriaIsRoadUrban {
+            get {
+                return ResourceManager.GetString("CriteriaIsRoadUrban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à is in an inhabited / built area.
+        /// </summary>
+        public static string CriteriaIsUrban {
+            get {
+                return ResourceManager.GetString("CriteriaIsUrban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à terrain slope (in degrees).
+        /// </summary>
+        public static string CriteriaSlope {
+            get {
+                return ResourceManager.GetString("CriteriaSlope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Current.
         /// </summary>
         public static string CurrentVersion {

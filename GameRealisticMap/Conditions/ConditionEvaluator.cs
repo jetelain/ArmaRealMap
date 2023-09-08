@@ -83,6 +83,19 @@ namespace GameRealisticMap.Conditions
 
         public bool IsOcean(TerrainPoint point)
         {
+            if (ocean.Polygons.Count == 0)
+            {
+                return false;
+            }
+            var elevation = GetElevation(point);
+            if (elevation < -1)
+            {
+                return true;
+            }
+            if (elevation > 2.5)
+            {
+                return false;
+            }
             if (ocean.IsIsland)
             {
                 return !ocean.Land.Any(p => p.Contains(point));
@@ -94,19 +107,19 @@ namespace GameRealisticMap.Conditions
         {
             if (ocean.Polygons.Count == 0)
             {
-                return float.NaN;
+                return float.MaxValue; // Assume very far away ocean
             }
             return ocean.Polygons.Min(p => p.Distance(point));
         }
 
-        public Road? GetRoad(TerrainPoint point)
+        public IEnumerable<Road> GetRoads(TerrainPoint point)
         {
             var nearby = roads.Search(point.Vector - roadSearch, point.Vector + roadSearch);
             if (nearby.Count == 0)
             {
-                return null;
+                return nearby;
             }
-            return nearby.OrderBy(r => r.Path.Distance(point)).FirstOrDefault();
+            return nearby.OrderBy(r => r.Path.Distance(point));
         }
     }
 }

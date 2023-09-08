@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.ConditionTool.Controls.ConditionBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.ConditionTool.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="800">
+    <Grid>
+        <Border VerticalAlignment="Top">
+            <ItemsControl ItemsSource="{Binding Tokens}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplateSelector>
+                    <local:TokenTemplateChooser>
+                        <local:TokenTemplateChooser.Single>
+                            <DataTemplate>
+                                <Border CornerRadius="5" Background="{Binding Brush}">
+                                    <TextBlock Padding="5 0 5 0" Text="{Binding Text}" />
+                                </Border>
+                            </DataTemplate>
+                        </local:TokenTemplateChooser.Single>
+                        <local:TokenTemplateChooser.Begin>
+                            <DataTemplate>
+                                <Border CornerRadius="5 0 0 5" Background="{Binding Brush}">
+                                    <TextBlock Padding="5 0 2.5 0" Text="{Binding Text}" />
+                                </Border>
+                            </DataTemplate>
+                        </local:TokenTemplateChooser.Begin>
+                        <local:TokenTemplateChooser.Middle>
+                            <DataTemplate>
+                                <Border Background="{Binding Brush}">
+                                    <TextBlock Padding="2.5 0" Text="{Binding Text}" />
+                                </Border>
+                            </DataTemplate>
+                        </local:TokenTemplateChooser.Middle>
+                        <local:TokenTemplateChooser.End>
+                            <DataTemplate>
+                                <Border CornerRadius="0 5 5 0" Background="{Binding Brush}">
+                                    <TextBlock Padding="2.5 0 5 0" Text="{Binding Text}" />
+                                </Border>
+                            </DataTemplate>
+                        </local:TokenTemplateChooser.End>
+                        <local:TokenTemplateChooser.Neutral>
+                            <DataTemplate>
+                                <TextBlock Padding="5 0" Text="{Binding Text}" />
+                            </DataTemplate>
+                        </local:TokenTemplateChooser.Neutral>
+                        <local:TokenTemplateChooser.Not>
+                            <DataTemplate>
+                                <Border CornerRadius="5 0 0 5" Background="Black">
+                                    <TextBlock Padding="5 0 5 0" Foreground="White">!</TextBlock>
+                                </Border>
+                            </DataTemplate>
+                        </local:TokenTemplateChooser.Not>
+                        <local:TokenTemplateChooser.Error>
+                            <DataTemplate>
+                                <Border CornerRadius="5" Background="Red">
+                                    <TextBlock Padding="5 0 5 0" Text="{Binding Text}" />
+                                </Border>
+                            </DataTemplate>
+                        </local:TokenTemplateChooser.Error>
+                    </local:TokenTemplateChooser>
+                </ItemsControl.ItemTemplateSelector>
+            </ItemsControl>
+        </Border>
+    </Grid>
+</UserControl>

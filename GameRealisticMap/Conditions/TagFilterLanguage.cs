@@ -4,6 +4,7 @@ using System.Reflection;
 using StringToExpression;
 using StringToExpression.Exceptions;
 using StringToExpression.GrammerDefinitions;
+using StringToExpression.Tokenizer;
 using StringToExpression.Util;
 
 namespace GameRealisticMap.Conditions
@@ -21,6 +22,8 @@ namespace GameRealisticMap.Conditions
         {
             language = new Language(AllDefinitions().ToArray());
         }
+
+        public List<Token> Tokenize(string text) => language.Tokenizer.Tokenize(text).ToList();
 
         /// <summary>
         /// Parses the specified text converting it into a predicate expression
@@ -41,7 +44,7 @@ namespace GameRealisticMap.Conditions
             }
             catch (OperationInvalidException ex) when (ex.InnerException != null)
             {
-                throw new TagFilterLanguageException(ex.ErrorSegment, $"Expression '{text}' is invalid: {ex.InnerException.Message}", ex);
+                throw new TagFilterLanguageException(ex.ErrorSegment, $"Expression '{text}' is invalid: {ex.InnerException.Message}", ex.InnerException);
             }
             catch (ParseException ex)
             {
@@ -119,51 +122,52 @@ namespace GameRealisticMap.Conditions
             {
                 new BinaryOperatorDefinition(
                     name:"EQ",
-                    regex: @"\b(==)\b",
+                    regex: @"==",
                     orderOfPrecedence:11,
                     expressionBuilder: ConvertEnumsIfRequired((left,right) => Expression.Equal(left, right))),
                 new BinaryOperatorDefinition(
                     name:"NE",
-                    regex: @"\b(!=)\b",
+                    regex: @"!=",
                     orderOfPrecedence:12,
                     expressionBuilder: ConvertEnumsIfRequired((left,right) => Expression.NotEqual(left, right))),
 
                 new BinaryOperatorDefinition(
-                    name:"GT",
-                    regex: @"\b(\>)\b",
-                    orderOfPrecedence:13,
-                    expressionBuilder: (left,right) => Expression.GreaterThan(left, right)),
-                new BinaryOperatorDefinition(
                     name:"GE",
-                    regex: @"\b(\>=)\b",
+                    regex: @"\>=",
                     orderOfPrecedence:14,
                     expressionBuilder: (left,right) => Expression.GreaterThanOrEqual(left, right)),
 
                 new BinaryOperatorDefinition(
-                    name:"LT",
-                    regex: @"\b(\<)\b",
-                    orderOfPrecedence:15,
-                    expressionBuilder: (left,right) => Expression.LessThan(left, right)),
+                    name:"GT",
+                    regex: @"\>",
+                    orderOfPrecedence:13,
+                    expressionBuilder: (left,right) => Expression.GreaterThan(left, right)),
+
                 new BinaryOperatorDefinition(
                     name:"LE",
-                    regex: @"\b(\<=)\b",
+                    regex: @"\<=",
                     orderOfPrecedence:16,
                     expressionBuilder: (left,right) => Expression.LessThanOrEqual(left, right)),
+                new BinaryOperatorDefinition(
+                    name:"LT",
+                    regex: @"\<",
+                    orderOfPrecedence:15,
+                    expressionBuilder: (left,right) => Expression.LessThan(left, right)),
 
                 new BinaryOperatorDefinition(
                     name:"AND",
-                    regex: @"\b(&&)\b",
+                    regex: @"&&",
                     orderOfPrecedence:17,
                     expressionBuilder: (left,right) => Expression.And(left, right)),
                 new BinaryOperatorDefinition(
                     name:"OR",
-                    regex: @"\b(\|\|)\b",
+                    regex: @"\|\|",
                     orderOfPrecedence:18,
                     expressionBuilder: (left,right) => Expression.Or(left, right)),
 
                 new UnaryOperatorDefinition(
                     name:"NOT",
-                    regex: @"\b(!)\b",
+                    regex: @"!",
                     orderOfPrecedence:19,
                     operandPosition: RelativePosition.Right,
                     expressionBuilder: (arg) => {
@@ -183,27 +187,27 @@ namespace GameRealisticMap.Conditions
             {
                  new BinaryOperatorDefinition(
                     name:"ADD",
-                    regex: @"\b(\+)\b",
+                    regex: @"\+",
                     orderOfPrecedence: 2,
                     expressionBuilder: (left,right) => Expression.Add(left, right)),
                 new BinaryOperatorDefinition(
                     name:"SUB",
-                    regex: @"\b(\-)\b",
+                    regex: @"\-",
                     orderOfPrecedence: 2,
                     expressionBuilder: (left,right) => Expression.Subtract(left, right)),
                 new BinaryOperatorDefinition(
                     name:"MUL",
-                    regex: @"\b(\*)\b",
+                    regex: @"\*",
                     orderOfPrecedence: 1,
                     expressionBuilder: (left,right) => Expression.Multiply(left, right)),
                 new BinaryOperatorDefinition(
                     name:"DIV",
-                    regex: @"\b(\/)\b",
+                    regex: @"\/",
                     orderOfPrecedence: 1,
                     expressionBuilder: (left,right) => Expression.Divide(left, right)),
                 new BinaryOperatorDefinition(
                     name:"MOD",
-                    regex: @"\b(%)\b",
+                    regex: @"%",
                     orderOfPrecedence: 1,
                     expressionBuilder: (left,right) => Expression.Modulo(left, right)),
             };

@@ -1165,4 +1165,16 @@ Dernière génération le {1}</value>
   <data name="AssetFlagpole" xml:space="preserve">
     <value>Mât (drapeau)</value>
   </data>
+  <data name="CriteriaIsResidential" xml:space="preserve">
+    <value>appartient à une zone résidentielle</value>
+  </data>
+  <data name="CriteriaIsIndustrial" xml:space="preserve">
+    <value>appartient à une zone industrielle</value>
+  </data>
+  <data name="CriteriaElevation" xml:space="preserve">
+    <value>altitude par rapport au niveau de la mer en métres</value>
+  </data>
+  <data name="CriteriaSlope" xml:space="preserve">
+    <value>pente du terrain en degrés</value>
+  </data>
 </root>
