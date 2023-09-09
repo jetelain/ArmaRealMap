@@ -28,6 +28,11 @@ namespace GameRealisticMap.Conditions
             roads.AddRange(context.GetData<RoadsData>().Roads);
         }
 
+        public IPointConditionContext GetPointContext(TerrainPoint point, Road? road = null)
+        {
+            return new PointConditionContext(this, point, road);
+        }
+
         public bool IsArea(TerrainPoint point, BuildingTypeId buildingType)
         {
             return areas.Areas.Any(a => a.BuildingType == buildingType && a.PolyList.Any(p => p.Contains(point)));

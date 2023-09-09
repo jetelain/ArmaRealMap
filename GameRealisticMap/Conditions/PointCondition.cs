@@ -4,20 +4,20 @@ using System.Text.Json.Serialization;
 namespace GameRealisticMap.Conditions
 {
     [JsonConverter(typeof(PointConditionJsonConverter))]
-    public class PointCondition : ICondition<PointConditionContext>
+    public class PointCondition : ICondition<IPointConditionContext>
     {
         private readonly string condition;
-        private readonly Expression<Func<PointConditionContext, bool>> expression;
-        private readonly Lazy<Func<PointConditionContext, bool>> evaluate;
+        private readonly Expression<Func<IPointConditionContext, bool>> expression;
+        private readonly Lazy<Func<IPointConditionContext, bool>> evaluate;
 
         public PointCondition(string condition)
         {
             this.condition = condition;
-            this.expression = TagFilterLanguage.Instance.Parse<PointConditionContext>(condition);
+            this.expression = TagFilterLanguage.Instance.Parse<IPointConditionContext>(condition);
             this.evaluate = new(() => expression.Compile(), LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
-        public bool Evaluate (PointConditionContext evaluator)
+        public bool Evaluate (IPointConditionContext evaluator)
         {
             return evaluate.Value(evaluator);
         }

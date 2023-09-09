@@ -28,8 +28,7 @@ namespace GameRealisticMap.Arma3.ManMade
                 var candidates = assets.GetObjects(obj.TypeId);
                 if (candidates.Count >  0)
                 {
-                    var pointContext = new PointConditionContext(evaluator, obj.Point, obj.Road);
-                    var definition = candidates.GetRandom(obj.Point, pointContext);
+                    var definition = candidates.GetRandom(obj.Point, evaluator.GetPointContext(obj.Point, obj.Road));
                     if (definition != null)
                     {
                         result.AddRange(definition.Composition.ToTerrainBuilderObjects(new ModelPosition(obj.Point, obj.Angle)));
@@ -42,8 +41,7 @@ namespace GameRealisticMap.Arma3.ManMade
             {
                 foreach (var obj in context.GetData<ProceduralStreetLampsData>().Objects.ProgressStep(progress, "ProceduralStreetLamps"))
                 {
-                    var pointContext = new PointConditionContext(evaluator, obj.Point, obj.Road);
-                    var definition = lamps.GetRandom(obj.Point, pointContext);
+                    var definition = lamps.GetRandom(obj.Point, evaluator.GetPointContext(obj.Point, obj.Road));
                     if (definition != null)
                     {
                         result.AddRange(definition.Composition.ToTerrainBuilderObjects(new ModelPosition(obj.Point, obj.Angle)));

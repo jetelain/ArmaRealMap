@@ -4,13 +4,13 @@ using GameRealisticMap.ManMade.Roads;
 
 namespace GameRealisticMap.Conditions
 {
-    public class PointConditionContext
+    internal sealed class PointConditionContext : IPointConditionContext
     {
         private readonly ConditionEvaluator evaluator;
         private readonly TerrainPoint point;
         private Road? road;
 
-        public PointConditionContext(ConditionEvaluator evaluator, TerrainPoint point, Road? associatedRoad = null) 
+        public PointConditionContext(ConditionEvaluator evaluator, TerrainPoint point, Road? associatedRoad = null)
         {
             this.evaluator = evaluator;
             this.point = point;

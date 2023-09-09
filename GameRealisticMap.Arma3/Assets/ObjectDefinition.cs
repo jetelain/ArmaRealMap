@@ -4,7 +4,7 @@ using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Arma3.Assets
 {
-    public class ObjectDefinition : IWithProbabilityAndCondition<PointConditionContext>
+    public class ObjectDefinition : IWithProbabilityAndCondition<IPointConditionContext>
     {
         public ObjectDefinition(Composition composition, double probability, PointCondition? condition = null)
         {
@@ -20,6 +20,6 @@ namespace GameRealisticMap.Arma3.Assets
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public PointCondition? Condition { get; }
 
-        ICondition<PointConditionContext>? IWithCondition<PointConditionContext>.Condition => Condition;
+        ICondition<IPointConditionContext>? IWithCondition<IPointConditionContext>.Condition => Condition;
     }
 }

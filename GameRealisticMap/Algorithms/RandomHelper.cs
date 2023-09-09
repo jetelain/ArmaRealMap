@@ -121,10 +121,10 @@ namespace GameRealisticMap.Algorithms
             return (float)(random.NextDouble() * 360);
         }
 
-        public static TItem? GetRandom<TItem>(this IReadOnlyCollection<TItem> list, TerrainPoint point, PointConditionContext context)
-            where TItem : class, IWithProbabilityAndCondition<PointConditionContext>
+        public static TItem? GetRandom<TItem>(this IReadOnlyCollection<TItem> list, TerrainPoint point, IPointConditionContext context)
+            where TItem : class, IWithProbabilityAndCondition<IPointConditionContext>
         {
-            return GetRandom<TItem, PointConditionContext>(list, CreateRandom(point), context);
+            return GetRandom<TItem, IPointConditionContext>(list, CreateRandom(point), context);
         }
 
         public static TItem? GetRandom<TItem, TContext>(this IReadOnlyCollection<TItem> list, Random random, TContext context)
