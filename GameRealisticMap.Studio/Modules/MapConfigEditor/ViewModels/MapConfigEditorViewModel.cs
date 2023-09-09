@@ -311,19 +311,23 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         private async Task DoGeneratePreview(IProgressTaskUI task, bool ignoreElevation)
         {
             var a3config = Config.ToArma3MapConfig();
-            IBuildersConfig config;
-            try
-            {
-                config = await GetAssets(_arma3DataModule.Library, a3config);
-            }
-            catch
-            {
-                config = new DefaultBuildersConfig();
-            }
+            var config = await GetBuildersConfigSafe(a3config);
             var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery, config);
             var target = Path.Combine(Path.GetTempPath(), "grm-preview.html");
             await render.RenderHtml(task, target, ignoreElevation);
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewResultInWebBrowser);
+        }
+
+        internal async Task<IBuildersConfig> GetBuildersConfigSafe(Arma3MapConfig a3config)
+        {
+            try
+            {
+                return await GetAssets(_arma3DataModule.Library, a3config);
+            }
+            catch
+            {
+                return new DefaultBuildersConfig();
+            }
         }
 
         public Task ChooseAssetConfig()

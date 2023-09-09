@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -38,9 +39,14 @@
 
         <ctrl:ConditionBox DataContext="{Binding}" Grid.Row="2" />
 
-        <TextBlock Grid.Row="3" Margin="5 10 0 5">Available criterias</TextBlock>
+
+        <StackPanel  Grid.Row="3" Orientation="Horizontal">
+            <Button cal:Message.Attach="TestOnMap" Padding="10 5">Test on a map</Button>
+        </StackPanel>
+        
+        <TextBlock Grid.Row="4" Margin="5 10 0 5">Available criterias</TextBlock>
     
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="4">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="5">
             <ItemsControl ItemsSource="{Binding Criterias}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

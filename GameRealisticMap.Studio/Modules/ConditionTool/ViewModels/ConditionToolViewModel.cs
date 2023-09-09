@@ -4,7 +4,9 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using GameRealisticMap.Conditions;
+using GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 using StringToExpression.Exceptions;
@@ -16,6 +18,8 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
     internal class ConditionToolViewModel : Tool, IConditionTool
     {
         private ConditionVM? target;
+        private PointCondition? condition;
+
         public ConditionToolViewModel()
         {
             DisplayName = "Tags editor";
@@ -65,7 +69,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
         private void DoApply()
         {
-            PointCondition? condition = null;
+            condition = null;
             StringSegment? error = null;
             ErrorMessage = string.Empty;
             try
@@ -117,5 +121,27 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             return Apply();
         }
 
+        public async Task TestOnMap()
+        {
+            await Apply();
+
+            if (condition == null)
+            {
+                return;
+            }
+            var shell = IoC.Get<IShell>();
+            var tester = shell.Documents.OfType<ConditionTestMapViewModel>().FirstOrDefault();
+            if (tester == null)
+            {
+                var map = shell.Documents.OfType<MapConfigEditorViewModel>().FirstOrDefault();
+                if (map == null)
+                {
+                    return;
+                }
+                tester = new ConditionTestMapViewModel(map);
+            }
+            await shell.OpenDocumentAsync(tester);
+            await tester.TestCondition(condition);
+        }
     }
 }
