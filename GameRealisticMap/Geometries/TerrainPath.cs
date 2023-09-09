@@ -279,7 +279,9 @@ namespace GameRealisticMap.Geometries
                 }
                 else
                 {
-                    Debugger.Break();
+#if DEBUG
+                    throw new InvalidOperationException("Unsupported edge case");
+#endif
                 }
             }
             return clipped;
