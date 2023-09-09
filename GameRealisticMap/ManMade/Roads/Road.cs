@@ -7,6 +7,8 @@ namespace GameRealisticMap.ManMade.Roads
 {
     public class Road : ITerrainEnvelope, IWay
     {
+        private TerrainPath path;
+
         [JsonConstructor]
         public Road(WaySpecialSegment specialSegment, TerrainPath path, IRoadTypeInfos roadTypeInfos)
         {
@@ -14,8 +16,8 @@ namespace GameRealisticMap.ManMade.Roads
             {
                 throw new ArgumentOutOfRangeException(nameof(specialSegment)); // Invalid value for a road
             }
+            this.path = path;
             SpecialSegment = specialSegment;
-            Path = path;
             RoadTypeInfos = roadTypeInfos;
             MinPoint = path.MinPoint - new Vector2(roadTypeInfos.Width);
             MaxPoint = path.MaxPoint + new Vector2(roadTypeInfos.Width);
@@ -23,7 +25,16 @@ namespace GameRealisticMap.ManMade.Roads
 
         public WaySpecialSegment SpecialSegment { get; }
 
-        public TerrainPath Path { get; set; }
+        public TerrainPath Path 
+        { 
+            get { return path; } 
+            set
+            {
+                path = value;
+                MinPoint = path.MinPoint - new Vector2(RoadTypeInfos.Width);
+                MaxPoint = path.MaxPoint + new Vector2(RoadTypeInfos.Width);
+            } 
+        }
 
         public IRoadTypeInfos RoadTypeInfos { get; }
 
@@ -37,10 +48,10 @@ namespace GameRealisticMap.ManMade.Roads
         public float ClearWidth => RoadTypeInfos.ClearWidth;
 
         [JsonIgnore]
-        public TerrainPoint MinPoint { get; }
+        public TerrainPoint MinPoint { get; private set; }
 
         [JsonIgnore]
-        public TerrainPoint MaxPoint { get; }
+        public TerrainPoint MaxPoint { get; private set; }
 
         [JsonIgnore]
         public IEnumerable<TerrainPolygon> Polygons => Path.ToTerrainPolygon(Width);

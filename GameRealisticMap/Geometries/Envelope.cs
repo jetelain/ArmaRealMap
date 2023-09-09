@@ -1,6 +1,6 @@
 ﻿namespace GameRealisticMap.Geometries
 {
-    internal class Envelope : ITerrainEnvelope
+    public sealed class Envelope : ITerrainEnvelope
     {
         internal static readonly Envelope None = new Envelope(new TerrainPoint(float.MinValue, float.MinValue), new TerrainPoint(float.MaxValue, float.MaxValue));
 
