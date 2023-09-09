@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Conditions;
+using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
@@ -37,10 +39,23 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             }
         }
 
-        public PointCondition? ToCondition()
+        public void SetParsedCondition(PointCondition? condition)
+        {
+            this.condition = condition;
+            UpdateTokens();
+        }
+
+        public PointCondition? ToDefinition()
         {
             return condition;
         }
 
+        public Task Edit()
+        {
+            var tool = IoC.Get<IConditionTool>();
+            IoC.Get<IShell>().ShowTool(tool);
+            tool.Target = this;
+            return Task.CompletedTask;
+        }
     }
 }

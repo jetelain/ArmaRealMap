@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
+using GameRealisticMap.Studio.Modules.ConditionTool.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual
 {
@@ -9,6 +10,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
         public ObjectItem(ObjectDefinition d)
         {
             _probability = d.Probability;
+            Condition = new ConditionVM(d.Condition);
             Composition = new CompositionViewModel(d.Composition);
         }
 
@@ -19,11 +21,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
             set { _probability = value; NotifyOfPropertyChange(); }
         }
 
+        public ConditionVM Condition { get; }
+
         public CompositionViewModel Composition { get; }
 
         internal ObjectDefinition ToDefinition()
         {
-            return new ObjectDefinition(Composition.ToDefinition(), Probability);
+            return new ObjectDefinition(Composition.ToDefinition(), Probability, Condition.ToDefinition());
         }
 
         public void CompositionWasRotated(int degrees)

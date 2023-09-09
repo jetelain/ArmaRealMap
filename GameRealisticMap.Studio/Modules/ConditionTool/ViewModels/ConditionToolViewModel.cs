@@ -15,9 +15,10 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
     [Export(typeof(IConditionTool))]
     internal class ConditionToolViewModel : Tool, IConditionTool
     {
+        private ConditionVM? target;
         public ConditionToolViewModel()
         {
-            DisplayName = "Condition";
+            DisplayName = "Tags editor";
             Criterias = typeof(PointConditionContext).GetProperties()
                 .Select(p => new CriteriaItem("Point", p.Name, p.PropertyType))
                 .OrderBy(p => !p.IsBoolean)
@@ -27,9 +28,26 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
 
-        //public ConditionVM Model1 { get; set; } = new ConditionVM(new PointCondition("Elevation > 1000 && IsUrban && !IsResidential"));
+        public ConditionVM? Target
+        { 
+            get { return target; }
+            set
+            {
+                target = value;
+                if ( target != null)
+                {
+                    ConditionText = target.Condition;
+                }
+                else
+                {
+                    ConditionText = string.Empty;
+                }
+                NotifyOfPropertyChange(nameof(ConditionText));
+                DoApply();
+            }
+        }
 
-        public string ConditionText { get; set; } = "IsUrban && !IsResidential";
+        public string ConditionText { get; set; } = string.Empty;
 
         public string ErrorMessage { get; set; } = string.Empty;
 
@@ -41,13 +59,20 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
         public Task Apply()
         {
+            DoApply();
+            return Task.CompletedTask;
+        }
+
+        private void DoApply()
+        {
+            PointCondition? condition = null;
             StringSegment? error = null;
             ErrorMessage = string.Empty;
             try
             {
-                if ( !string.IsNullOrEmpty(ConditionText) )
+                if (!string.IsNullOrEmpty(ConditionText))
                 {
-                    var condition = new PointCondition(ConditionText);
+                    condition = new PointCondition(ConditionText);
                 }
             }
             catch (ParseException ex)
@@ -67,11 +92,13 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             {
                 Tokens = new List<ConditionToken>();
             }
-
+            if (!HasError && target != null)
+            {
+                target.SetParsedCondition(condition);
+            }
             NotifyOfPropertyChange(nameof(ErrorMessage));
             NotifyOfPropertyChange(nameof(Tokens));
             NotifyOfPropertyChange(nameof(HasError));
-            return Task.CompletedTask;
         }
 
         public Task AddCriteria(CriteriaItem criteria)
@@ -79,7 +106,10 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             var text = ConditionText;
             if (!string.IsNullOrEmpty(text) )
             {
-                text += " && ";
+                if(!text.EndsWith("!"))
+                {
+                    text += " && ";
+                }
             }
             text += criteria.Name + criteria.InitText;
             ConditionText = text;

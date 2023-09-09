@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Algorithms.Definitions;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Arma3.Assets
@@ -16,6 +17,7 @@ namespace GameRealisticMap.Arma3.Assets
 
         public double Probability { get; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public PointCondition? Condition { get; }
 
         ICondition<PointConditionContext>? IWithCondition<PointConditionContext>.Condition => Condition;
