@@ -121,6 +121,66 @@ namespace GameRealisticMap.Test.Geometries
             Assert.Equal(new Vector2(-0.70710677f, -0.70710677f), path.GetNormalizedVectorAtIndex(1));
             Assert.Equal(new Vector2(-1, 0), path.GetNormalizedVectorAtIndex(2));
         }
-        
+
+        [Fact]
+        public void TerrainPath_ClippedBy()
+        {
+            var path = new TerrainPath(new(5, 0), new(5, 5), new(5, 10), new(5, 15), new(5, 20));
+            var clip = path.ClippedBy(TerrainPolygon.FromRectangle(new(2.5f, 2.5f), new(7.5f, 17.5f))).ToList();
+            var clipPath = Assert.Single(clip);
+            Assert.Equal(new TerrainPoint[] { new(5,2.5f), new(5,5), new(5,10), new(5, 15), new(5,17.5f) }, clipPath.Points);
+
+            clip = path.ClippedBy(TerrainPolygon.FromRectangle(new(2.5f, 0f), new(7.5f, 20f))).ToList();
+            clipPath = Assert.Single(clip);
+            Assert.Equal(path.Points, clipPath.Points);
+
+            clip = path.ClippedBy(TerrainPolygon.FromRectangle(new(10f, -10f), new(10f, 30f))).ToList();
+            Assert.Empty(clip);
+
+            // Order is not preserved by ClippedBy
+            path = new TerrainPath(new(17109.277f, -14502.888f), new(16591.264f, -12701.211f), new(16163.766f, -11304.716f), new(15508.252f, -9480.714f), new(14873.61f, -7825.331f), new(13395f, -4382.8315f), new(13258.774f, -4007.939f), new(13170.557f, -3792.907f), new(13141.093f, -3670.9758f), new(13054.459f, -3426.7131f), new(12794.966f, -2589.082f), new(11699.636f, 1066.6356f), new(10796.126f, 4111.285f));
+            clip = path.ClippedBy(TerrainPolygon.FromRectangle(new(0, 0), new(26000, 26000))).ToList();
+            clipPath = Assert.Single(clip);
+            Assert.Equal(new TerrainPoint[] { new(10796.125f, 4111.285f), new(11699.635f, 1066.635f), new(12019.221f, 0) }, clipPath.Points); // Reversed would be also acceptable
+        }
+
+        [Fact]
+        public void TerrainPath_ClippedKeepOrientation()
+        {
+            var path = new TerrainPath(new(5, 0), new(5, 5), new(5, 10), new(5, 15), new(5, 20));
+
+            var clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(2.5f, 2.5f), new(7.5f, 17.5f))).ToList();
+            var clipPath = Assert.Single(clip);
+            Assert.Equal(new TerrainPoint[] { new(5, 2.5f), new(5, 5), new(5, 10), new(5, 15), new(5, 17.5f) }, clipPath.Points);
+
+            clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(2.5f, 0f), new(7.5f, 20f))).ToList();
+            clipPath = Assert.Single(clip);
+            Assert.Equal(path.Points, clipPath.Points);
+
+            clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(10f, -10f), new(10f, 30f))).ToList();
+            Assert.Empty(clip);
+
+            // Order is not preserved by ClippedBy
+            path = new TerrainPath(new(17109.277f, -14502.888f), new(16591.264f, -12701.211f), new(16163.766f, -11304.716f), new(15508.252f, -9480.714f), new(14873.61f, -7825.331f), new(13395f, -4382.8315f), new(13258.774f, -4007.939f), new(13170.557f, -3792.907f), new(13141.093f, -3670.9758f), new(13054.459f, -3426.7131f), new(12794.966f, -2589.082f), new(11699.636f, 1066.6356f), new(10796.126f, 4111.285f));
+            clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(0, 0), new(26000, 26000))).ToList();
+            clipPath = Assert.Single(clip);
+            Assert.Equal(new TerrainPoint[] { new(12019.221f, 0), new(11699.635f, 1066.635f), new(10796.125f, 4111.285f) }, clipPath.Points);
+        }
+
+        [Fact]
+        public void TerrainPath_Substract()
+        {
+            var path = new TerrainPath(new(5, 0), new(5, 5), new(5, 10), new(5, 15), new(5, 20));
+
+            var result = path.Substract(TerrainPolygon.FromRectangle(new(2.5f, 2.5f), new(7.5f, 17.5f))).OrderBy(p => p.FirstPoint.Y).ToList();
+            Assert.Equal(2, result.Count);
+            Assert.Equal(new TerrainPoint[] { new(5, 0), new(5, 2.5f) }, result[0].Points);
+            Assert.Equal(new TerrainPoint[] { new(5, 17.5f), new(5, 20) }, result[1].Points);
+
+            result = path.Substract(TerrainPolygon.FromRectangle(new(10f, -10f), new(10f, 30f))).ToList();
+            Assert.Equal(path.Points, Assert.Single(result).Points);
+
+            Assert.Empty(path.Substract(TerrainPolygon.FromRectangle(new(2.5f, 0f), new(7.5f, 20f))));
+        }
     }
 }

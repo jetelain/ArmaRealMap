@@ -18,7 +18,8 @@ namespace GameRealisticMap.Nature.Ocean
                 .Where(w => w.Tags != null && w.Tags.GetValue("natural") == "coastline")
                 .SelectMany(w => context.OsmSource.Interpret(w))
                 .SelectMany(w => TerrainPath.FromGeometry(w, context.Area.LatLngToTerrainPoint))
-                .Where(p => p.EnveloppeIntersects(context.Area.TerrainBounds))
+                .ToList();
+            coastlines = MergeOriented(coastlines)
                 .SelectMany(p => p.ClippedKeepOrientation(context.Area.TerrainBounds))
                 .ToList();
 
@@ -28,7 +29,7 @@ namespace GameRealisticMap.Nature.Ocean
                 return new OceanData(new List<TerrainPolygon>(0), new List<TerrainPolygon>(1) { context.Area.TerrainBounds }, false);
             }
 
-            CompleteCounterClockWiseOnEdges(coastlines, context.Area.TerrainBounds);
+            coastlines = CompleteCounterClockWiseOnEdges(coastlines, context.Area.TerrainBounds);
 
             var mergedCoastlines = MergeOriented(coastlines)
                 .Where(r => r.IsClosed)
@@ -38,9 +39,9 @@ namespace GameRealisticMap.Nature.Ocean
             // ClockWise => Ocean
 
             var oceanBaseLine = context.Area.TerrainBounds.
-                SubstractAll(mergedCoastlines.Where(r => r.IsCounterClockWise).Select(l => new TerrainPolygon(l.Points)));
+                SubstractAll(mergedCoastlines.Where(r => r.IsCounterClockWise).Select(l => l.ToPolygon()));
 
-            var oceanPolygons = TerrainPolygon.MergeAll(oceanBaseLine.Concat(mergedCoastlines.Where(r => r.IsClockWise).Select(l => new TerrainPolygon(l.Points))).ToList());
+            var oceanPolygons = TerrainPolygon.MergeAll(oceanBaseLine.Concat(mergedCoastlines.Where(r => r.IsClockWise).Select(l => l.ToPolygon())).ToList());
 
             var landPolygons = context.Area.TerrainBounds.SubstractAll(oceanPolygons).ToList();
 
@@ -60,12 +61,14 @@ namespace GameRealisticMap.Nature.Ocean
             return false;
         }
 
-        private static void CompleteCounterClockWiseOnEdges(IEnumerable<TerrainPath> paths, ITerrainEnvelope envelope)
+        private static List<TerrainPath> CompleteCounterClockWiseOnEdges(IEnumerable<TerrainPath> sourcePaths, ITerrainEnvelope envelope)
         {
+            var paths = sourcePaths.Select(p => new MutableTerrainPath(p)).ToList();
             CompleteCounterClockWiseOnEdges(paths, envelope.MinPoint, envelope.MaxPoint);
+            return paths.Select(p => p.ToPath()).ToList();
         }
 
-        private static void CompleteCounterClockWiseOnEdges(IEnumerable<TerrainPath> paths, TerrainPoint edgeSW, TerrainPoint edgeNE)
+        private static void CompleteCounterClockWiseOnEdges(IEnumerable<MutableTerrainPath> paths, TerrainPoint edgeSW, TerrainPoint edgeNE)
         {            
             foreach (var line in paths)
             {
@@ -91,7 +94,7 @@ namespace GameRealisticMap.Nature.Ocean
             }
         }
 
-        private static void LookEast(TerrainPoint edgeSW, TerrainPoint edgeNE, IEnumerable<TerrainPath> notClosed, TerrainPath line, TerrainPoint lookFrom, int depth = 0)
+        private static void LookEast(TerrainPoint edgeSW, TerrainPoint edgeNE, IEnumerable<MutableTerrainPath> notClosed, MutableTerrainPath line, TerrainPoint lookFrom, int depth = 0)
         {
             var other = notClosed
                 .Where(n => !n.IsClosed && n.LastPoint.Y == edgeNE.Y && n.LastPoint.X > lookFrom.X)
@@ -112,7 +115,7 @@ namespace GameRealisticMap.Nature.Ocean
             }
         }
 
-        private static void LookSouth(TerrainPoint edgeSW, TerrainPoint edgeNE, IEnumerable<TerrainPath> notClosed, TerrainPath line, TerrainPoint lookFrom, int depth = 0)
+        private static void LookSouth(TerrainPoint edgeSW, TerrainPoint edgeNE, IEnumerable<MutableTerrainPath> notClosed, MutableTerrainPath line, TerrainPoint lookFrom, int depth = 0)
         {
             var other = notClosed
                 .Where(n => !n.IsClosed && n.LastPoint.X == edgeNE.X && n.LastPoint.Y < lookFrom.Y)
@@ -134,7 +137,7 @@ namespace GameRealisticMap.Nature.Ocean
             }
         }
 
-        private static void LookWest(TerrainPoint edgeSW, TerrainPoint edgeNE, IEnumerable<TerrainPath> notClosed, TerrainPath line, TerrainPoint lookFrom, int depth = 0)
+        private static void LookWest(TerrainPoint edgeSW, TerrainPoint edgeNE, IEnumerable<MutableTerrainPath> notClosed, MutableTerrainPath line, TerrainPoint lookFrom, int depth = 0)
         {
             var other = notClosed
                 .Where(n => !n.IsClosed && n.LastPoint.Y == edgeSW.Y && n.LastPoint.X < lookFrom.X)
@@ -155,7 +158,7 @@ namespace GameRealisticMap.Nature.Ocean
             }
         }
 
-        private static void LookNorth(TerrainPoint edgeSW, TerrainPoint edgeNE, IEnumerable<TerrainPath> notClosed, TerrainPath line, TerrainPoint lookFrom, int depth = 0)
+        private static void LookNorth(TerrainPoint edgeSW, TerrainPoint edgeNE, IEnumerable<MutableTerrainPath> notClosed, MutableTerrainPath line, TerrainPoint lookFrom, int depth = 0)
         {
             var other = notClosed
                 .Where(n => !n.IsClosed && n.LastPoint.X == edgeSW.X && n.LastPoint.Y > lookFrom.Y)
@@ -179,35 +182,33 @@ namespace GameRealisticMap.Nature.Ocean
 
         internal List<TerrainPath> MergeOriented(List<TerrainPath> paths)
         {
-            using var report = progress.CreateStep("Coastlines", paths.Count);
+            using var report = progress.CreateStep("MergeOriented", paths.Count);
             var todo = new HashSet<TerrainPath>(paths);
             var result = new List<TerrainPath>();
-            foreach (var path in todo.ToList())
+            foreach (var wpath in todo.ToList())
             {
-               
+                var path = wpath;
                 if (todo.Contains(path))
                 {
                     todo.Remove(path);
-                    
-                    result.Add(path);
                     if (!path.IsClosed)
                     {
                         var other = GetMergeable(paths, todo, path);
                         while (other != null)
                         {
                             todo.Remove(other);
-
-                           if (TerrainPoint.Equals(path.LastPoint, other.FirstPoint))
+                            if (TerrainPoint.Equals(path.LastPoint, other.FirstPoint))
                             {
-                                path.Points.AddRange(other.Points.Skip(1));
+                                path = new TerrainPath(path.Points.Concat(other.Points.Skip(1)).ToList());
                             }
                             else
                             {
-                                path.Points.InsertRange(0, other.Points.Take(other.Points.Count-1));
+                                path = new TerrainPath(other.Points.Take(other.Points.Count - 1).Concat(path.Points).ToList());
                             }
                             other = GetMergeable(paths, todo, path);
                         }
                     }
+                    result.Add(path);
                     report.ReportOneDone();
                 }
                 
@@ -218,7 +219,7 @@ namespace GameRealisticMap.Nature.Ocean
 
         private static TerrainPath? GetMergeable(List<TerrainPath> paths, HashSet<TerrainPath> todo, TerrainPath path)
         {
-            return paths.FirstOrDefault(other => other != path && todo.Contains(other) && (TerrainPoint.Equals(other.LastPoint, path.FirstPoint) || TerrainPoint.Equals(other.FirstPoint, path.LastPoint)));
+            return paths.FirstOrDefault(other => other != path && !other.IsClosed && todo.Contains(other) && (TerrainPoint.Equals(other.LastPoint, path.FirstPoint) || TerrainPoint.Equals(other.FirstPoint, path.LastPoint)));
         }
 
 

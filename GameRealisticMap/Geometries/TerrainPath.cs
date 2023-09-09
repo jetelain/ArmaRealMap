@@ -29,7 +29,7 @@ namespace GameRealisticMap.Geometries
             asLineString = new Lazy<LineString>(() => ToLineString(c => new Coordinate(c.X, c.Y)));
         }
 
-        public List<TerrainPoint> Points { get; }
+        public List<TerrainPoint> Points { get; } // TODO: Change to IReadOnlyList<TerrainPoint>
 
         [JsonIgnore]
         public TerrainPoint FirstPoint => Points[0];
@@ -90,7 +90,7 @@ namespace GameRealisticMap.Geometries
             return new TerrainPath[0];
         }
 
-        public List<TerrainPath> Intersection(TerrainPolygon polygon)
+        private List<TerrainPath> Intersection(TerrainPolygon polygon)
         {
             var clipper = new Clipper();
             clipper.AddPath(Points.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, false);
@@ -110,6 +110,10 @@ namespace GameRealisticMap.Geometries
 
         public List<TerrainPath> Substract(TerrainPolygon polygon)
         {
+            if (!EnveloppeIntersects(polygon))
+            {
+                return new List<TerrainPath>() { this };
+            }
             var clipper = new Clipper();
             clipper.AddPath(Points.Select(c => c.ToIntPoint()).ToList(), PolyType.ptSubject, false);
             clipper.AddPath(polygon.Shell.Select(c => c.ToIntPoint()).ToList(), PolyType.ptClip, true);
@@ -143,8 +147,13 @@ namespace GameRealisticMap.Geometries
 
         public IEnumerable<TerrainPath> ClippedBy(TerrainPolygon polygon)
         {
+            if (!EnveloppeIntersects(polygon))
+            {
+                return Enumerable.Empty<TerrainPath>();
+            }
             return Intersection(polygon);
         }
+
         public bool EnveloppeIntersects(ITerrainEnvelope other)
         {
             return other.MinPoint.X <= MaxPoint.X &&
@@ -248,35 +257,29 @@ namespace GameRealisticMap.Geometries
             return Vector2.Normalize(b.Vector - a.Vector);
         }
 
-        internal IEnumerable<TerrainPath> ClippedKeepOrientation(TerrainPolygon polygon)
+        public IEnumerable<TerrainPath> ClippedKeepOrientation(TerrainPolygon polygon)
         {
-            var intPointPrecision = Points.Select(p => p.ToIntPointPrecision()).ToList();
-            var intPointFirst = intPointPrecision[0];
+            if (!EnveloppeIntersects(polygon))
+            {
+                return Enumerable.Empty<TerrainPath>();
+            }
+
+            var initialPoints = Points.Select(p => p.ToIntPointPrecision()).ToList();
 
             var clipped = Intersection(polygon);
-
             foreach (var result in clipped)
             {
-                if (!TerrainPoint.Equals(result.FirstPoint, intPointFirst))
+                var indices = result.Points.Select(np => initialPoints.FindIndex(p => TerrainPoint.Equals(np, p))).Where(i => i != -1).Take(2).ToList();
+                if (indices.Count > 1) 
                 {
-                    if (TerrainPoint.Equals(result.LastPoint, intPointFirst)) // trivial case : path was not really changed, only reverse
+                    if (indices[0] > indices[1])
                     {
                         result.Points.Reverse();
                     }
-                    else if (result.Points.Count > 3)
-                    {
-                        var coreItems = result.Points.GetRange(1, result.Points.Count - 2);
-                        var index1 = intPointPrecision.FindIndex(p => TerrainPoint.Equals(coreItems[0], p));
-                        var index2 = intPointPrecision.FindIndex(p => TerrainPoint.Equals(coreItems[1], p));
-                        if (index1 > index2)
-                        {
-                            result.Points.Reverse();
-                        }
-                    }
-                    else
-                    {
-                        // Find an alternate method
-                    }
+                }
+                else
+                {
+                    Debugger.Break();
                 }
             }
             return clipped;
@@ -285,6 +288,21 @@ namespace GameRealisticMap.Geometries
         public bool IsClosed => FirstPoint.Equals(LastPoint);
 
         public bool IsCounterClockWise => Points.IsCounterClockWise();
+
         public bool IsClockWise => !Points.IsCounterClockWise();
+
+        public TerrainPath Reversed()
+        {
+            return new TerrainPath(Enumerable.Reverse(Points).ToList());
+        }
+
+        public TerrainPolygon ToPolygon()
+        {
+            if (!IsClosed)
+            {
+                return new TerrainPolygon(Points.Concat(new[] { FirstPoint }).ToList());
+            }
+            return new TerrainPolygon(Points);
+        }
     }
 }
