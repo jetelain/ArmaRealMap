@@ -1468,9 +1468,9 @@ namespace GameRealisticMap.Studio {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à closest road is a residential/urban road.
         /// </summary>
-        public static string CriteriaIsRoadUrban {
+        public static string CriteriaIsRoadSimple {
             get {
-                return ResourceManager.GetString("CriteriaIsRoadUrban", resourceCulture);
+                return ResourceManager.GetString("CriteriaIsRoadSimple", resourceCulture);
             }
         }
         

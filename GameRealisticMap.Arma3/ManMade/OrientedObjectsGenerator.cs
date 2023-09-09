@@ -28,7 +28,7 @@ namespace GameRealisticMap.Arma3.ManMade
                 var candidates = assets.GetObjects(obj.TypeId);
                 if (candidates.Count >  0)
                 {
-                    var pointContext = new PointConditionContext(evaluator, obj.Point);
+                    var pointContext = new PointConditionContext(evaluator, obj.Point, obj.Road);
                     var definition = candidates.GetRandom(obj.Point, pointContext);
                     if (definition != null)
                     {
@@ -42,7 +42,7 @@ namespace GameRealisticMap.Arma3.ManMade
             {
                 foreach (var obj in context.GetData<ProceduralStreetLampsData>().Objects.ProgressStep(progress, "ProceduralStreetLamps"))
                 {
-                    var pointContext = new PointConditionContext(evaluator, obj.Point);
+                    var pointContext = new PointConditionContext(evaluator, obj.Point, obj.Road);
                     var definition = lamps.GetRandom(obj.Point, pointContext);
                     if (definition != null)
                     {

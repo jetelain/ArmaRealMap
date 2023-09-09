@@ -3896,7 +3896,7 @@
           ]
         },
         "Probability": 0.5,
-        "Condition": "!IsRoadUrban"
+        "Condition": "!IsRoadSimple"
       },
       {
         "Composition": {
@@ -3908,7 +3908,7 @@
           ]
         },
         "Probability": 0.5,
-        "Condition": "IsRoadUrban"
+        "Condition": "IsRoadSimple"
       }
     ],
     "Flagpole": [

@@ -43,7 +43,7 @@ namespace GameRealisticMap.Conditions
 
         public bool IsRoadSecondary => NearbyRoad?.RoadType == RoadTypeId.TwoLanesSecondaryRoad;
 
-        public bool IsRoadUrban => OneOf(NearbyRoad?.RoadType, RoadTypeId.TwoLanesConcreteRoad, RoadTypeId.SingleLaneConcreteRoad);
+        public bool IsRoadSimple => OneOf(NearbyRoad?.RoadType, RoadTypeId.TwoLanesConcreteRoad, RoadTypeId.SingleLaneConcreteRoad);
 
         public bool IsRoadPath => OneOf(NearbyRoad?.RoadType, RoadTypeId.SingleLaneDirtPath, RoadTypeId.SingleLaneDirtRoad);
 

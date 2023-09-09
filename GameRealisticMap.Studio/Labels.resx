@@ -1207,7 +1207,7 @@ Last generated on {1}</value>
 	<data name="CriteriaIsRoadSecondary" xml:space="preserve">
     <value>closest road is a secondary road</value>
   </data>
-  <data name="CriteriaIsRoadUrban" xml:space="preserve">
+  <data name="CriteriaIsRoadSimple" xml:space="preserve">
     <value>closest road is a residential/urban road</value>
   </data>
   <data name="CriteriaIsRoadPath" xml:space="preserve">
