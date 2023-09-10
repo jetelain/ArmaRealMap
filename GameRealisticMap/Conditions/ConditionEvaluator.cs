@@ -16,7 +16,10 @@ namespace GameRealisticMap.Conditions
         private readonly ElevationData elevation;
         private readonly OceanData ocean;
         private readonly TerrainSpacialIndex<Road> roads;
-        private readonly Vector2 roadSearch = new Vector2(75, 75);
+        private readonly Vector2 roadSearch = new Vector2(MaxRoadBoxSearch, MaxRoadBoxSearch);
+
+        internal const float MaxRoadBoxSearch = 75f;
+        internal const float MaxRoadDistance = MaxRoadBoxSearch * 1.414f; // MaxRoadBoxSearch * sqrt(2)
 
         public ConditionEvaluator(IBuildContext context)
         {
@@ -93,7 +96,7 @@ namespace GameRealisticMap.Conditions
                 return false;
             }
             var elevation = GetElevation(point);
-            if (elevation < -1)
+            if (elevation < -3) // Lake can be up to 2.5m deep, but is not formally ocean
             {
                 return true;
             }

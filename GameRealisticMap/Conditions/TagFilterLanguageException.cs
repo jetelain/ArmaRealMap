@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Conditions
 {
-    internal class TagFilterLanguageException : StringToExpression.Exceptions.ParseException
+    public sealed class TagFilterLanguageException : StringToExpression.Exceptions.ParseException
     {
         public TagFilterLanguageException(StringSegment errorSegment, string message)
             : base(errorSegment, message)

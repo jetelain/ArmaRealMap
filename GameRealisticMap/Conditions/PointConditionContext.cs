@@ -47,7 +47,7 @@ namespace GameRealisticMap.Conditions
 
         public bool IsRoadPath => OneOf(NearbyRoad?.RoadType, RoadTypeId.SingleLaneDirtPath, RoadTypeId.SingleLaneDirtRoad);
 
-        public float DistanceToRoad => NearbyRoad?.Path.Distance(point) ?? 100f;
+        public float DistanceToRoad => NearbyRoad?.Path.Distance(point) ?? ConditionEvaluator.MaxRoadDistance;
 
         public bool IsOcean => evaluator.IsOcean(point);
 
