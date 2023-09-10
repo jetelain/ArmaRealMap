@@ -160,6 +160,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Apply.
+        /// </summary>
+        public static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à https://github.com/jetelain/ArmaRealMap/wiki/Create-an-asset-configuration-for-Arma-3.
         /// </summary>
         public static string Arma3AssetConfigHelpLink {
@@ -1052,6 +1061,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Available criterias.
+        /// </summary>
+        public static string AvailableCriterias {
+            get {
+                return ResourceManager.GetString("AvailableCriterias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Bridge elements.
         /// </summary>
         public static string BridgeElements {
@@ -1246,6 +1264,15 @@ namespace GameRealisticMap.Studio {
         public static string ComputeMaximum {
             get {
                 return ResourceManager.GetString("ComputeMaximum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Condition.
+        /// </summary>
+        public static string Condition {
+            get {
+                return ResourceManager.GetString("Condition", resourceCulture);
             }
         }
         
@@ -3125,11 +3152,74 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Tags.
+        /// </summary>
+        public static string Tags {
+            get {
+                return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Tags editor.
+        /// </summary>
+        public static string TagsEditor {
+            get {
+                return ResourceManager.GetString("TagsEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0}: Tags tester.
+        /// </summary>
+        public static string TagsTester {
+            get {
+                return ResourceManager.GetString("TagsTester", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0} points, {1:0.0}% matches, {2:0.0000} msec/point.
+        /// </summary>
+        public static string TagsTesterStats {
+            get {
+                return ResourceManager.GetString("TagsTesterStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Task Progress.
         /// </summary>
         public static string TaskProgress {
             get {
                 return ResourceManager.GetString("TaskProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Test on a map.
+        /// </summary>
+        public static string TestOnAMap {
+            get {
+                return ResourceManager.GetString("TestOnAMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Test on current view.
+        /// </summary>
+        public static string TestOnCurrentView {
+            get {
+                return ResourceManager.GetString("TestOnCurrentView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Test randomly on map.
+        /// </summary>
+        public static string TestRandomlyOnMap {
+            get {
+                return ResourceManager.GetString("TestRandomlyOnMap", resourceCulture);
             }
         }
         

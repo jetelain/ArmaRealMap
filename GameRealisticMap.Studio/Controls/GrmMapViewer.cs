@@ -5,13 +5,9 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.Nature.Forests;
-using GameRealisticMap.Nature.Ocean;
-using GameRealisticMap.Nature.Scrubs;
+using GameRealisticMap.Studio.Shared;
 
 namespace GameRealisticMap.Studio.Controls
 {
@@ -74,14 +70,14 @@ namespace GameRealisticMap.Studio.Controls
 
 
 
-        public IContext? Context
+        public PreviewMapData? MapData
         {
-            get { return (IContext?)GetValue(ContextProperty); }
-            set { SetValue(ContextProperty, value); }
+            get { return (PreviewMapData?)GetValue(MapDataProperty); }
+            set { SetValue(MapDataProperty, value); }
         }
 
-        public static readonly DependencyProperty ContextProperty =
-            DependencyProperty.Register(nameof(Context), typeof(IContext), typeof(GrmMapViewer), new PropertyMetadata(null, SomePropertyChanged));
+        public static readonly DependencyProperty MapDataProperty =
+            DependencyProperty.Register(nameof(MapData), typeof(PreviewMapData), typeof(GrmMapViewer), new PropertyMetadata(null, SomePropertyChanged));
 
 
 
@@ -148,16 +144,6 @@ namespace GameRealisticMap.Studio.Controls
             base.OnMouseWheel(e);
         }
 
-        internal static void EnsureData(IContext context) // TODO: Create a DTO to avoid passing context
-        {
-            context.GetData<OceanData>();
-            context.GetData<ElevationWithLakesData>();
-            context.GetData<ScrubData>();
-            context.GetData<ForestData>();
-            context.GetData<BuildingsData>();
-            context.GetData<RoadsData>();
-        }
-
         protected override void OnRender(DrawingContext dc)
         {
             var actualSize = new Rect(0, 0, ActualWidth, ActualHeight);
@@ -176,17 +162,17 @@ namespace GameRealisticMap.Studio.Controls
             dc.PushTransform(ScaleTr);
 
             dc.DrawRectangle(Background, null, new Rect(Convert(TerrainPoint.Empty, size), Convert(new TerrainPoint(size, size), size)));
-            if (Context != null)
+            if (MapData != null)
             {
-                DrawPolygons(dc, size, enveloppe, OceanBrush, Context.GetData<OceanData>().Polygons);
-                DrawPolygons(dc, size, enveloppe, OceanBrush, Context.GetData<ElevationWithLakesData>().Lakes.Select(l => l.TerrainPolygon));
-                DrawPolygons(dc, size, enveloppe, ScrubsBrush, Context.GetData<ScrubData>().Polygons);
-                DrawPolygons(dc, size, enveloppe, ForestBrush, Context.GetData<ForestData>().Polygons);
+                DrawPolygons(dc, size, enveloppe, OceanBrush, MapData.Ocean.Polygons);
+                DrawPolygons(dc, size, enveloppe, OceanBrush, MapData.ElevationWithLakes.Lakes.Select(l => l.TerrainPolygon));
+                DrawPolygons(dc, size, enveloppe, ScrubsBrush, MapData.Scrub.Polygons);
+                DrawPolygons(dc, size, enveloppe, ForestBrush, MapData.Forest.Polygons);
                 if (Scale > 0.5)
                 {
-                    DrawPolygons(dc, size, enveloppe, BuildingBrush, Context.GetData<BuildingsData>().Buildings.Select(b => b.Box.Polygon));
+                    DrawPolygons(dc, size, enveloppe, BuildingBrush, MapData.Buildings.Buildings.Select(b => b.Box.Polygon));
                 }
-                var roads = Context.GetData<RoadsData>().Roads;
+                var roads = MapData.Roads.Roads;
                 foreach (var road in roads.OrderByDescending(r => r.RoadType))
                 {
                     if (road.EnveloppeIntersects(enveloppe))

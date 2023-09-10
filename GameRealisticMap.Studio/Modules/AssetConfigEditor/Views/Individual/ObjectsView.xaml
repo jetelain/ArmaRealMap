@@ -38,7 +38,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="100" />
-                    <DataGridTemplateColumn Width="200" Header="Tags">
+                    <DataGridTemplateColumn Width="200" Header="{x:Static r:Labels.Tags}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ctrl:ConditionEdit DataContext="{Binding Condition}" />

@@ -1168,7 +1168,7 @@ Last generated on {1}</value>
   <data name="CriteriaIsResidential" xml:space="preserve">
     <value>is in a residential area</value>
   </data>
-	<data name="CriteriaIsCommercial" xml:space="preserve">
+  <data name="CriteriaIsCommercial" xml:space="preserve">
     <value>is in an commercial/office area</value>
   </data>
   <data name="CriteriaIsIndustrial" xml:space="preserve">
@@ -1189,7 +1189,7 @@ Last generated on {1}</value>
   <data name="CriteriaIsOcean" xml:space="preserve">
     <value>is in the ocean</value>
   </data>
-	<data name="CriteriaDistanceToOcean" xml:space="preserve">
+  <data name="CriteriaDistanceToOcean" xml:space="preserve">
     <value>distance to the ocean (in meters)</value>
   </data>
   <data name="CriteriaElevation" xml:space="preserve">
@@ -1204,7 +1204,7 @@ Last generated on {1}</value>
   <data name="CriteriaIsRoadPrimary" xml:space="preserve">
     <value>closest road is a primary road</value>
   </data>
-	<data name="CriteriaIsRoadSecondary" xml:space="preserve">
+  <data name="CriteriaIsRoadSecondary" xml:space="preserve">
     <value>closest road is a secondary road</value>
   </data>
   <data name="CriteriaIsRoadSimple" xml:space="preserve">
@@ -1215,5 +1215,35 @@ Last generated on {1}</value>
   </data>
   <data name="CriteriaDistanceToRoad" xml:space="preserve">
     <value>distance to the closest road (in meters)</value>
+  </data>
+  <data name="TestRandomlyOnMap" xml:space="preserve">
+    <value>Test randomly on map</value>
+  </data>
+  <data name="TestOnCurrentView" xml:space="preserve">
+    <value>Test on current view</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Condition" xml:space="preserve">
+    <value>Condition</value>
+  </data>
+  <data name="AvailableCriterias" xml:space="preserve">
+    <value>Available criterias</value>
+  </data>
+  <data name="TestOnAMap" xml:space="preserve">
+    <value>Test on a map</value>
+  </data>
+  <data name="TagsEditor" xml:space="preserve">
+    <value>Tags editor</value>
+  </data>
+  <data name="TagsTester" xml:space="preserve">
+    <value>{0}: Tags tester</value>
+  </data>
+  <data name="TagsTesterStats" xml:space="preserve">
+    <value>{0} points, {1:0.0}% matches, {2:0.0000} msec/point</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tags</value>
   </data>
 </root>

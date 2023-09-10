@@ -1177,4 +1177,73 @@ Dernière génération le {1}</value>
   <data name="CriteriaSlope" xml:space="preserve">
     <value>pente du terrain en degrés</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Appliquer</value>
+  </data>
+  <data name="AvailableCriterias" xml:space="preserve">
+    <value>Critères disponibles</value>
+  </data>
+  <data name="Condition" xml:space="preserve">
+    <value>Condition</value>
+  </data>
+  <data name="CriteriaDistanceToOcean" xml:space="preserve">
+    <value>distance à l'océan (en mètres)</value>
+  </data>
+  <data name="CriteriaDistanceToRoad" xml:space="preserve">
+    <value>distance de la route la plus proche (en mètres)</value>
+  </data>
+  <data name="CriteriaIsCommercial" xml:space="preserve">
+    <value>dans une zone de bureaux</value>
+  </data>
+  <data name="CriteriaIsFarmyard" xml:space="preserve">
+    <value>dans une zone agricole (n'inclus pas les champs)</value>
+  </data>
+  <data name="CriteriaIsMilitary" xml:space="preserve">
+    <value>dans une zone militaire</value>
+  </data>
+  <data name="CriteriaIsOcean" xml:space="preserve">
+    <value>dans l'océan</value>
+  </data>
+  <data name="CriteriaIsRetail" xml:space="preserve">
+    <value>dans une zone commerciale</value>
+  </data>
+  <data name="CriteriaIsRoadMotorway" xml:space="preserve">
+    <value>la route la plus proche est un autoroute</value>
+  </data>
+  <data name="CriteriaIsRoadPath" xml:space="preserve">
+    <value>la route la plus proche est une piste</value>
+  </data>
+  <data name="CriteriaIsRoadPrimary" xml:space="preserve">
+    <value>la route la plus proche est une nationale</value>
+  </data>
+  <data name="CriteriaIsRoadSecondary" xml:space="preserve">
+    <value>la route la plus proche est une dépermentale</value>
+  </data>
+  <data name="CriteriaIsRoadSimple" xml:space="preserve">
+    <value>la route la plus proche est une rue</value>
+  </data>
+  <data name="CriteriaIsUrban" xml:space="preserve">
+    <value>dans une zone urbaine/habitée</value>
+  </data>
+  <data name="TagsEditor" xml:space="preserve">
+    <value>Editeur d'étiquette</value>
+  </data>
+  <data name="TagsTester" xml:space="preserve">
+    <value>{0}: Testeur d'étiquette</value>
+  </data>
+  <data name="TagsTesterStats" xml:space="preserve">
+    <value>{0} points, {1:0.0}% correspondent, {2:0.0000} msec/point</value>
+  </data>
+  <data name="TestOnAMap" xml:space="preserve">
+    <value>Tester sur une carte</value>
+  </data>
+  <data name="TestOnCurrentView" xml:space="preserve">
+    <value>Tester sur la vue actuelle</value>
+  </data>
+  <data name="TestRandomlyOnMap" xml:space="preserve">
+    <value>Tester aléatoirement sur la carte</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Etiquettes</value>
+  </data>
 </root>

@@ -25,7 +25,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
         public ConditionToolViewModel()
         {
-            DisplayName = "Tags editor";
+            DisplayName = GameRealisticMap.Studio.Labels.TagsEditor;
             Criterias = typeof(IPointConditionContext).GetProperties()
                 .Select(p => new CriteriaItem("Point", p.Name, p.PropertyType))
                 .OrderBy(p => !p.IsBoolean)

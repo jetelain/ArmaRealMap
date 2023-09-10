@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,9 +6,9 @@ using Caliburn.Micro;
 using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Reporting;
+using GameRealisticMap.Studio.Shared;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 
@@ -27,7 +26,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
         public List<TerrainPoint> IsFalse { get; private set; } = new List<TerrainPoint>();
 
-        public IContext? Context => mapData;
+        public PreviewMapData? PreviewMapData { get; set; }
 
         public float SizeInMeters { get; private set; } = 2500;
 
@@ -44,12 +43,12 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
         public ConditionTestMapViewModel(MapConfigEditorViewModel map)
         {
             this.map = map;
-            DisplayName = string.Format("Testing on {0}", map.FileName);
+            DisplayName = string.Format(GameRealisticMap.Studio.Labels.TagsTester, map.FileName);
         }
 
         protected override Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            initialize = IoC.Get<IProgressTool>().RunTask("Generate preview for testing", DoGenerateData, false);
+            initialize = IoC.Get<IProgressTool>().RunTask(GameRealisticMap.Studio.Labels.GeneratePreview, DoGenerateData, false);
             return base.OnInitializeAsync(cancellationToken);
         }
 
@@ -67,9 +66,9 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             var osmSource = await loader.Load(a3config.TerrainArea);
             var context = new BuildContext(catalog, taskUI, a3config.TerrainArea, osmSource, new ImageryOptions());
             conditionEvaluator = context.GetData<ConditionEvaluator>();
-            GrmMapViewer.EnsureData(context);
+            PreviewMapData = new PreviewMapData(context);
             mapData = context;
-            NotifyOfPropertyChange(nameof(Context));
+            NotifyOfPropertyChange(nameof(PreviewMapData));
 
             IsWorking = false;
             NotifyOfPropertyChange(nameof(IsWorking));
@@ -115,7 +114,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             Condition.SamplePointProvider = provider;
 
             var total = isTrue.Count + isFalse.Count;
-            Stats = string.Format("{0} points, {1:0.0}% matches, {2:0.0000} msec/point", total, isTrue.Count * 100.0 / total, (double)sw.ElapsedMilliseconds / total);
+            Stats = string.Format(GameRealisticMap.Studio.Labels.TagsTesterStats, total, isTrue.Count * 100.0 / total, (double)sw.ElapsedMilliseconds / total);
 
             NotifyOfPropertyChange(nameof(IsTrue));
             NotifyOfPropertyChange(nameof(IsFalse));
