@@ -3,6 +3,7 @@ using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Fences;
+using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Reporting;
 
@@ -42,6 +43,8 @@ namespace GameRealisticMap.ManMade.Roads
 
             mask.AddRange(fences.ProgressStep(progress, "Fences")
                 .SelectMany(f => f.Path.ToTerrainPolygonButt(f.Width + FenceMargin)));
+
+            mask.AddRange(context.GetData<RailwaysData>().Railways.SelectMany(r => r.ClearPolygons));
 
             var polygons = allRoads.ProgressStep(progress, "Roads")
                 .Where(r => r.RoadTypeInfos.HasSideWalks && r.SpecialSegment == WaySpecialSegment.Normal)

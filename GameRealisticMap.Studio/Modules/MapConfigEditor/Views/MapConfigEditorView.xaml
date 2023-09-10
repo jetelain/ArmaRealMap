@@ -33,6 +33,7 @@
                         <ContextMenu>
                             <MenuItem Header="{x:Static r:Labels.GenerateWithElevation}" cal:Message.Attach="GeneratePreviewNormal"></MenuItem>
                             <MenuItem Header="{x:Static r:Labels.GenerateAreasOnly}" cal:Message.Attach="GeneratePreviewFast"></MenuItem>
+                            <MenuItem Header="Generate simple preview in built-in viewer" cal:Message.Attach="GeneratePreviewNew"></MenuItem>
                             <Separator />
                             <MenuItem Header="{x:Static r:Labels.GenerateRawSatelliteImage}" cal:Message.Attach="GenerateRawSatMap"></MenuItem>
                             <MenuItem Header="{x:Static r:Labels.GenerateSatelliteImage}" cal:Message.Attach="GenerateSatMap"></MenuItem>

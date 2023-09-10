@@ -318,6 +318,11 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewResultInWebBrowser);
         }
 
+        public Task GeneratePreviewNew()
+        {
+            return _shell.OpenDocumentAsync(new MapPreviewViewModel(this));
+        }
+
         internal async Task<IBuildersConfig> GetBuildersConfigSafe(Arma3MapConfig a3config)
         {
             try
