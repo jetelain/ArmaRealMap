@@ -23,6 +23,8 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             NotifyOfPropertyChange(nameof(Tokens));
         }
 
+        internal ISamplePointProvider? SamplePointProvider { get; set; }
+
         public List<ConditionToken> Tokens { get; private set; } = new List<ConditionToken>();
 
         public string Condition

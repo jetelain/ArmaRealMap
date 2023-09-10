@@ -20,13 +20,17 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10"  Visibility="{Binding IsNotWorking, Converter={StaticResource BooleanToVisibilityConverter}}">
             <ctrl:ConditionBox DataContext="{Binding Condition}" />
-            <Button Padding="10 5" Margin="10 0" cal:Message.Attach="RunCondition">
+            <Button Padding="10 5" Margin="10 0" cal:Message.Attach="RunRandom">
                 Test randomly on map
             </Button>
+            <Button Padding="10 5" Margin="0 0 10 0" Click="Button_Click">
+                Test on current view
+            </Button>
+            <TextBlock Text="{Binding Stats}" />
         </StackPanel>
-        <ProgressBar MaxWidth="500" Height="10" Margin="10" IsIndeterminate="True"  Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <ProgressBar HorizontalAlignment="Left" Width="300" Height="15" Margin="5" IsIndeterminate="True"  Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-        <grm:GrmMapViewer Grid.Row="1" Context="{Binding Context}" IsTrue="{Binding IsTrue}" IsFalse="{Binding IsFalse}" SizeInMeters="{Binding SizeInMeters}" />
+        <grm:GrmMapViewer x:Name="map" Grid.Row="1" Context="{Binding Context}" IsTrue="{Binding IsTrue}" IsFalse="{Binding IsFalse}" SizeInMeters="{Binding SizeInMeters}" />
 
     </Grid>
 </UserControl>

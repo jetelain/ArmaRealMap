@@ -6,9 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Conditions;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor;
+using GameRealisticMap.Studio.Modules.MapConfigEditor;
 using GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels;
 using Gemini.Framework;
 using Gemini.Framework.Services;
+using Microsoft.Win32;
 using StringToExpression.Exceptions;
 using StringToExpression.Util;
 
@@ -60,6 +63,8 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
         public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
         public List<CriteriaItem> Criterias { get; }
+
+        public ISamplePointProvider? SamplePointProvider { get; set; }
 
         public Task Apply()
         {
@@ -130,18 +135,28 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
                 return;
             }
             var shell = IoC.Get<IShell>();
-            var tester = shell.Documents.OfType<ConditionTestMapViewModel>().FirstOrDefault();
-            if (tester == null)
+
+            var map = shell.Documents.OfType<MapConfigEditorViewModel>().FirstOrDefault();
+            if (map == null)
             {
-                var map = shell.Documents.OfType<MapConfigEditorViewModel>().FirstOrDefault();
-                if (map == null)
+                var provider = IoC.Get<MapConfigEditorProvider>();
+                var dialog = new OpenFileDialog();
+                dialog.Filter = string.Join("|", provider.FileTypes.Select(x => x.Name + "|*" + x.FileExtension));
+                if (dialog.ShowDialog() != true)
                 {
                     return;
                 }
+                map = (MapConfigEditorViewModel)provider.Create();
+                await provider.Open(map, dialog.FileName);
+                await shell.OpenDocumentAsync(map);
+            }
+            var tester = shell.Documents.OfType<ConditionTestMapViewModel>().Where(t => t.Map == map).FirstOrDefault();
+            if (tester == null)
+            {
                 tester = new ConditionTestMapViewModel(map);
             }
             await shell.OpenDocumentAsync(tester);
-            await tester.TestCondition(condition);
+            await tester.TestCondition(condition, Target?.SamplePointProvider);
         }
     }
 }

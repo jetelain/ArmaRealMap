@@ -27,8 +27,11 @@ namespace GameRealisticMap.Studio.Controls
         private readonly SolidColorBrush BuildingBrush = new SolidColorBrush(Color.FromArgb(128, 139, 69, 19));
         private readonly SolidColorBrush ScrubsBrush = new SolidColorBrush(Color.FromArgb(128, 244, 164, 96));
 
-        private readonly SolidColorBrush TrueBursh = new SolidColorBrush(Colors.Green);
-        private readonly SolidColorBrush FalseBursh = new SolidColorBrush(Colors.Red);
+        private readonly Pen FalsePen = new Pen(new SolidColorBrush(Colors.Red), 2);
+        private readonly SolidColorBrush FalseFill = new SolidColorBrush(Colors.White);
+
+        private readonly Pen TruePen = new Pen(new SolidColorBrush(Colors.Green), 2);
+        private readonly SolidColorBrush TrueFill = new SolidColorBrush(Colors.Black);
 
         public GrmMapViewer()
         {
@@ -167,9 +170,8 @@ namespace GameRealisticMap.Studio.Controls
 
             var size = SizeInMeters;
 
-            var northWest = new TerrainPoint((float)(DeltaX / Scale), (float)(size - (DeltaY / Scale)));
-            var southEast = northWest + new Vector2((float)(actualSize.Width / Scale), -(float)(actualSize.Height / Scale));
-            var enveloppe = new Envelope(new TerrainPoint(northWest.X, southEast.Y), new TerrainPoint(southEast.X, northWest.Y));
+            var enveloppe = GetViewportEnveloppe(actualSize, size);
+
             dc.PushTransform(Translate);
             dc.PushTransform(ScaleTr);
 
@@ -203,20 +205,29 @@ namespace GameRealisticMap.Studio.Controls
                 {
                     if (point.EnveloppeIntersects(enveloppe))
                     {
-                        dc.DrawEllipse(FalseBursh, null, Convert(point, size), 3, 3);
+                        dc.DrawEllipse(FalseFill, FalsePen, Convert(point, size), 3, 3);
                     }
                 }
                 foreach (var point in IsTrue)
                 {
                     if (point.EnveloppeIntersects(enveloppe))
                     {
-                        dc.DrawEllipse(TrueBursh, null, Convert(point, size), 3, 3);
+                        dc.DrawEllipse(TrueFill, TruePen, Convert(point, size), 3, 3);
                     }
                 }
             }
             dc.Pop();
             dc.Pop();
         }
+
+        private Envelope GetViewportEnveloppe(Rect actualSize, float size)
+        {
+            var northWest = new TerrainPoint((float)(DeltaX / Scale), (float)(size - (DeltaY / Scale)));
+            var southEast = northWest + new Vector2((float)(actualSize.Width / Scale), -(float)(actualSize.Height / Scale));
+            return new Envelope(new TerrainPoint(northWest.X, southEast.Y), new TerrainPoint(southEast.X, northWest.Y));
+        }
+
+        public ITerrainEnvelope GetViewportEnveloppe() => GetViewportEnveloppe(new Rect(0, 0, ActualWidth, ActualHeight), SizeInMeters);
 
         private void DrawPolygons(DrawingContext dc, float size, Envelope enveloppe, SolidColorBrush brush, IEnumerable<TerrainPolygon> polygons)
         {

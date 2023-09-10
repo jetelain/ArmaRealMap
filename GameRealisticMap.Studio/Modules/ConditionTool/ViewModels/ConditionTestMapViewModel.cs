@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
@@ -12,6 +11,7 @@ using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Reporting;
 using Gemini.Framework;
+using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
@@ -36,6 +36,10 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
         public bool IsWorking { get; set; } = true;
 
         public bool IsNotWorking => !IsWorking;
+
+        public string Stats { get; set; } = string.Empty;
+
+        public MapConfigEditorViewModel Map => map;
 
         public ConditionTestMapViewModel(MapConfigEditorViewModel map)
         {
@@ -70,9 +74,11 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             IsWorking = false;
             NotifyOfPropertyChange(nameof(IsWorking));
             NotifyOfPropertyChange(nameof(IsNotWorking));
+
+            OnUIThread(() => IoC.Get<IShell>().ShowTool<IConditionTool>());
         }
 
-        internal Task TestCondition(PointCondition condition)
+        internal Task TestCondition(PointCondition condition, ISamplePointProvider? provider)
         {
             if (initialize == null)
             {
@@ -80,12 +86,10 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             }
             if (!initialize.IsCompleted)
             {
-                initialize.ContinueWith(_ => TestCondition(condition));
+                initialize.ContinueWith(_ => TestCondition(condition, provider));
                 return Task.CompletedTask;
             }
-            var size = (int)(mapData!.Area.SizeInMeters * 10);
-            var count = (int)Math.Min((mapData!.Area.SizeInMeters / 100) * (mapData!.Area.SizeInMeters / 100), 50_000);
-            var points = Enumerable.Range(0, count).Select(_ => new TerrainPoint(Random.Shared.Next(0, size) / 10f, Random.Shared.Next(0, size) / 10f)).ToList();
+            var points = (provider ?? new RandomPointProvider()).GetSamplePoints(mapData!);
             var isTrue = new List<TerrainPoint>();
             var isFalse = new List<TerrainPoint>();
             var sw = Stopwatch.StartNew();
@@ -108,19 +112,38 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             IsTrue = isTrue;
             IsFalse = isFalse;
             Condition.SetParsedCondition(condition);
+            Condition.SamplePointProvider = provider;
+
+            var total = isTrue.Count + isFalse.Count;
+            Stats = string.Format("{0} points, {1:0.0}% matches, {2:0.0000} msec/point", total, isTrue.Count * 100.0 / total, (double)sw.ElapsedMilliseconds / total);
+
             NotifyOfPropertyChange(nameof(IsTrue));
             NotifyOfPropertyChange(nameof(IsFalse));
+            NotifyOfPropertyChange(nameof(Stats));
             return Task.CompletedTask;
         }
 
-        public Task RunCondition()
+        public Task RunRandom()
         {
             if (initialize != null && initialize.IsCompleted)
             {
                 var def = Condition.ToDefinition();
                 if (def != null)
                 {
-                    return TestCondition(def);
+                    return TestCondition(def, new RandomPointProvider());
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task RunViewport(ITerrainEnvelope envelope)
+        {
+            if (initialize != null && initialize.IsCompleted)
+            {
+                var def = Condition.ToDefinition();
+                if (def != null)
+                {
+                    return TestCondition(def, new ViewportPointProvider(envelope));
                 }
             }
             return Task.CompletedTask;

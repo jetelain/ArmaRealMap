@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GameRealisticMap.Studio.Modules.ConditionTool.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.Views
 {
@@ -23,6 +24,15 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.Views
         public ConditionTestMapView()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ConditionTestMapViewModel;
+            if (vm != null)
+            {
+                vm.RunViewport(map.GetViewportEnveloppe());
+            }
         }
     }
 }
