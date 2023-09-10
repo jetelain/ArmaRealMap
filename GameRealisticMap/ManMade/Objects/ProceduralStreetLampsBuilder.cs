@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Reporting;
 
@@ -35,9 +36,11 @@ namespace GameRealisticMap.ManMade.Objects
             var roadsWithLamps = allRoads.Where(r => r.RoadTypeInfos.HasStreetLamp).OrderBy(r => r.RoadType).ToList();
             var lamps = new List<ProceduralStreetLamp>();
 
-            var roadsPolygon = allRoads.SelectMany(r => r.ClearPolygons).ToList();
+            var mask = allRoads.SelectMany(r => r.ClearPolygons).ToList();
 
-            foreach(var road in roadsWithLamps.ProgressStep(progress, "Roads"))
+            mask.AddRange(context.GetData<RailwaysData>().Railways.SelectMany(r => r.ClearPolygons));
+
+            foreach (var road in roadsWithLamps.ProgressStep(progress, "Roads"))
             {
                 var spacing = road.RoadTypeInfos.DistanceBetweenStreetLamps;
                 var marginDistance = spacing / 2;
@@ -46,7 +49,7 @@ namespace GameRealisticMap.ManMade.Objects
                 var paths = road.Path.ToTerrainPolygon(road.ClearWidth + 0.1f)
                     .SelectMany(p => p.Holes.Concat(new[] { p.Shell }))
                     .Select(p => new TerrainPath(p))
-                    .SelectMany(p => p.SubstractAll(roadsPolygon))
+                    .SelectMany(p => p.SubstractAll(mask))
                     .Where(p => p.Length > spacing)
                     .ToList();
 

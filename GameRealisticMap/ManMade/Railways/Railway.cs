@@ -8,6 +8,8 @@ namespace GameRealisticMap.ManMade.Railways
     [DebuggerDisplay("{SpecialSegment} {Path}")]
     public class Railway : ITerrainEnvelope, IWay
     {
+        public const float RailwayWidth = 3.290f;
+
         [JsonConstructor]
         public Railway(WaySpecialSegment specialSegment, TerrainPath path)
         {
@@ -22,7 +24,7 @@ namespace GameRealisticMap.ManMade.Railways
         public TerrainPath Path { get; set; }
 
         [JsonIgnore]
-        public float Width => 3.290f; // International Union of Railways (UIC) : Kinematic reference profile ( https://en.wikipedia.org/wiki/Loading_gauge )
+        public float Width => RailwayWidth; // International Union of Railways (UIC) : Kinematic reference profile ( https://en.wikipedia.org/wiki/Loading_gauge )
 
         [JsonIgnore]
         public float ClearWidth => 5f; // Width with ~1m margin on each side

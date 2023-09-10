@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Studio.Shared;
 
@@ -22,6 +23,9 @@ namespace GameRealisticMap.Studio.Controls
         private readonly SolidColorBrush RoadBrush = new SolidColorBrush(Color.FromArgb(192, 75, 0, 130));
         private readonly SolidColorBrush BuildingBrush = new SolidColorBrush(Color.FromArgb(128, 139, 69, 19));
         private readonly SolidColorBrush ScrubsBrush = new SolidColorBrush(Color.FromArgb(128, 244, 164, 96));
+        private readonly Pen RailwayPen = new Pen(new SolidColorBrush(Color.FromArgb(204, 0, 0, 0)), Railway.RailwayWidth);
+
+        // return { fillColor: "black", stroke: false, fillOpacity: 0.8 };
 
         private readonly Pen FalsePen = new Pen(new SolidColorBrush(Colors.Red), 2);
         private readonly SolidColorBrush FalseFill = new SolidColorBrush(Colors.White);
@@ -166,14 +170,14 @@ namespace GameRealisticMap.Studio.Controls
             {
                 DrawPolygons(dc, size, enveloppe, OceanBrush, MapData.Ocean.Polygons);
                 DrawPolygons(dc, size, enveloppe, OceanBrush, MapData.ElevationWithLakes.Lakes.Select(l => l.TerrainPolygon));
+                DrawPolygons(dc, size, enveloppe, OceanBrush, MapData.Watercourses.Polygons);
                 DrawPolygons(dc, size, enveloppe, ScrubsBrush, MapData.Scrub.Polygons);
                 DrawPolygons(dc, size, enveloppe, ForestBrush, MapData.Forest.Polygons);
                 if (Scale > 0.5)
                 {
                     DrawPolygons(dc, size, enveloppe, BuildingBrush, MapData.Buildings.Buildings.Select(b => b.Box.Polygon));
                 }
-                var roads = MapData.Roads.Roads;
-                foreach (var road in roads.OrderByDescending(r => r.RoadType))
+                foreach (var road in MapData.Roads.Roads.OrderByDescending(r => r.RoadType))
                 {
                     if (road.EnveloppeIntersects(enveloppe))
                     {
@@ -184,6 +188,11 @@ namespace GameRealisticMap.Studio.Controls
                         dc.DrawGeometry(null, pen, CreatePath(size, road.Path));
                     }
                 }
+                var paths = MapData.Railways.Railways.Select(r => r.Path);
+
+                DrawPaths(dc, size, enveloppe, RailwayPen, paths);
+
+                DrawAdditionals(dc, size, enveloppe, MapData.Additional);
             }
             if (Scale > 0.7)
             {
@@ -206,6 +215,99 @@ namespace GameRealisticMap.Studio.Controls
             dc.Pop();
         }
 
+        private void DrawAdditionals(DrawingContext dc, float size, Envelope enveloppe, List<PreviewAdditionalLayer> layers)
+        {
+            foreach (var additional in layers)
+            {
+                if (additional.Polygons != null)
+                {
+                    DrawPolygons(dc, size, enveloppe, GetAdditionalBrush(additional.Name)!, additional.Polygons);
+                }
+                else if (additional.Paths != null)
+                {
+                    if (Scale > 0.5)
+                    {
+                        DrawPaths(dc, size, enveloppe, GetAdditionalPen(additional.Name)!, additional.Paths);
+                    }
+                }
+                else if (additional.Points != null)
+                {
+                    if (Scale > 0.7)
+                    {
+                        DrawPoints(dc, size, enveloppe, additional.Points, GetAdditionalPen(additional.Name), GetAdditionalBrush(additional.Name), 2);
+                    }
+                }
+            }
+        }
+
+        private static void DrawPoints(DrawingContext dc, float size, Envelope enveloppe, IEnumerable<TerrainPoint> points, Pen? pen, Brush? brush, int radius)
+        {
+            foreach (var point in points)
+            {
+                if (point.EnveloppeIntersects(enveloppe))
+                {
+                    dc.DrawEllipse(brush, pen, Convert(point, size), radius, radius);
+                }
+            }
+        }
+
+        private Pen? GetAdditionalPen(string name)
+        {
+            switch(name)
+            {
+                case "Sidewalks":
+                    return new Pen(new SolidColorBrush(Color.FromArgb(204, 0, 0, 0)), 1)
+                    {
+                        DashStyle = new DashStyle(new[] { 2d, 2d }, 0)
+                    };
+
+                case "Fences":
+                    return new Pen(new SolidColorBrush(Colors.Red), 1);
+            }
+            return null;
+        }
+
+        private Brush? GetAdditionalBrush(string name)
+        {
+            switch(name)
+            {
+                case "DefaultAreas":
+                    return CreateStripesFilling(Color.FromArgb(51, 144, 238, 144));
+                case "Meadows":
+                    return new SolidColorBrush(Color.FromArgb(89, 173, 255, 47));
+            }
+            if ( name.StartsWith("Default"))
+            {
+                return CreateStripesFilling(Color.FromArgb(51, 0, 0, 0));
+            }
+            return new SolidColorBrush(Color.FromArgb(204, 0, 0, 0));
+        }
+
+        private static Brush CreateStripesFilling(Color color)
+        {
+            return new LinearGradientBrush(
+                new GradientStopCollection(new[] {
+                            new GradientStop(color, 0), new GradientStop(color, 0.5),
+                            new GradientStop(Colors.Transparent, 0.5), new GradientStop(Colors.Transparent, 1) }))
+            {
+                SpreadMethod = GradientSpreadMethod.Repeat,
+                MappingMode = BrushMappingMode.Absolute,
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(4, 4)
+            };
+        }
+
+        private void DrawPaths(DrawingContext dc, float size, Envelope enveloppe, Pen pen, IEnumerable<TerrainPath> paths)
+        {
+            foreach (var path in paths)
+            {
+                if (path.EnveloppeIntersects(enveloppe))
+                {
+                    dc.DrawGeometry(null, pen, CreatePath(size, path));
+                }
+            }
+        }
+
         private Envelope GetViewportEnveloppe(Rect actualSize, float size)
         {
             var northWest = new TerrainPoint((float)(DeltaX / Scale), (float)(size - (DeltaY / Scale)));
@@ -215,7 +317,7 @@ namespace GameRealisticMap.Studio.Controls
 
         public ITerrainEnvelope GetViewportEnveloppe() => GetViewportEnveloppe(new Rect(0, 0, ActualWidth, ActualHeight), SizeInMeters);
 
-        private void DrawPolygons(DrawingContext dc, float size, Envelope enveloppe, SolidColorBrush brush, IEnumerable<TerrainPolygon> polygons)
+        private void DrawPolygons(DrawingContext dc, float size, Envelope enveloppe, Brush brush, IEnumerable<TerrainPolygon> polygons)
         {
             var isLowScale = Scale < 1;
             foreach (var poly in polygons)
