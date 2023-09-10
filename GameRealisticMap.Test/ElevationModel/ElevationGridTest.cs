@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.ElevationModel;
+﻿using System.Numerics;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using MapToolkit;
 using MapToolkit.DataCells;
@@ -139,6 +140,113 @@ NODATA_value  -9999
             var str = new StringWriter();
             EsriAsciiHelper.SaveDataCell(str, grid.ToDataCell());
             return str.ToString();
+        }
+
+        [Fact]
+        public void ElevationGrid_NormalAt()
+        {
+            var grid = new ElevationGrid(2, 10);
+            grid[0, 0] = 100f;
+            grid[1, 0] = 100f;
+            grid[0, 1] = 100f;
+            grid[1, 1] = 100f;
+
+            Assert.Equal(new Vector3(0, 0, 1), grid.NormalAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(new Vector3(0, 0, 1), grid.NormalAt(new TerrainPoint(7.5f, 7.5f)));
+
+            grid[0, 0] = 100f;
+            grid[1, 0] = 100f;
+            grid[0, 1] = 110f;
+            grid[1, 1] = 110f;
+
+            Assert.Equal(new Vector3(0, -0.70710677f, 0.70710677f), grid.NormalAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(new Vector3(0, -0.70710677f, 0.70710677f), grid.NormalAt(new TerrainPoint(7.5f, 7.5f)));
+
+            grid[0, 0] = 110f;
+            grid[1, 0] = 110f;
+            grid[0, 1] = 100f;
+            grid[1, 1] = 100f;
+
+            Assert.Equal(new Vector3(0, 0.70710677f, 0.70710677f), grid.NormalAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(new Vector3(0, 0.70710677f, 0.70710677f), grid.NormalAt(new TerrainPoint(7.5f, 7.5f)));
+
+            grid[0, 0] = 100f;
+            grid[1, 0] = 110f;
+            grid[0, 1] = 100f;
+            grid[1, 1] = 110f;
+
+            Assert.Equal(new Vector3(-0.70710677f, 0, 0.70710677f), grid.NormalAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(new Vector3(-0.70710677f, 0, 0.70710677f), grid.NormalAt(new TerrainPoint(7.5f, 7.5f)));
+
+            grid[0, 0] = 110f;
+            grid[1, 0] = 100f;
+            grid[0, 1] = 110f;
+            grid[1, 1] = 100f;
+
+            Assert.Equal(new Vector3(0.70710677f, 0, 0.70710677f), grid.NormalAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(new Vector3(0.70710677f, 0, 0.70710677f), grid.NormalAt(new TerrainPoint(7.5f, 7.5f)));
+
+            grid[0, 0] = 110f;
+            grid[1, 0] = 110f;
+            grid[0, 1] = 110f;
+            grid[1, 1] = 100f;
+
+            Assert.Equal(new Vector3(0, 0, 1), grid.NormalAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(new Vector3(0.57735026f, 0.57735026f, 0.57735026f), grid.NormalAt(new TerrainPoint(7.5f, 7.5f)));
+        }
+
+
+        [Fact]
+        public void ElevationGrid_SlopeAt()
+        {
+            var grid = new ElevationGrid(2, 10);
+            grid[0, 0] = 100f;
+            grid[1, 0] = 100f;
+            grid[0, 1] = 100f;
+            grid[1, 1] = 100f;
+
+            Assert.Equal(0, grid.SlopeAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(0, grid.SlopeAt(new TerrainPoint(7.5f, 7.5f)));
+
+            grid[0, 0] = 100f;
+            grid[1, 0] = 100f;
+            grid[0, 1] = 110f;
+            grid[1, 1] = 110f;
+
+            Assert.Equal(45, grid.SlopeAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(45, grid.SlopeAt(new TerrainPoint(7.5f, 7.5f)));
+
+            grid[0, 0] = 110f;
+            grid[1, 0] = 110f;
+            grid[0, 1] = 100f;
+            grid[1, 1] = 100f;
+
+            Assert.Equal(45, grid.SlopeAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(45, grid.SlopeAt(new TerrainPoint(7.5f, 7.5f)));
+
+            grid[0, 0] = 100f;
+            grid[1, 0] = 110f;
+            grid[0, 1] = 100f;
+            grid[1, 1] = 110f;
+
+            Assert.Equal(45, grid.SlopeAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(45, grid.SlopeAt(new TerrainPoint(7.5f, 7.5f)));
+
+            grid[0, 0] = 110f;
+            grid[1, 0] = 100f;
+            grid[0, 1] = 110f;
+            grid[1, 1] = 100f;
+
+            Assert.Equal(45, grid.SlopeAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(45, grid.SlopeAt(new TerrainPoint(7.5f, 7.5f)));
+
+            grid[0, 0] = 110f;
+            grid[1, 0] = 110f;
+            grid[0, 1] = 110f;
+            grid[1, 1] = 100f;
+
+            Assert.Equal(0, grid.SlopeAt(new TerrainPoint(2.5f, 2.5f)));
+            Assert.Equal(54.735607f, grid.SlopeAt(new TerrainPoint(7.5f, 7.5f)));
         }
     }
 }

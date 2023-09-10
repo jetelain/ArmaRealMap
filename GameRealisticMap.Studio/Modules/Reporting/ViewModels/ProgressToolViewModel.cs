@@ -167,13 +167,14 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             OnUIThread(() => output.AppendLine(message ?? string.Empty));
         }
 
-        public void RunTask(string name, Func<IProgressTaskUI, Task> run, bool prompt = true)
+        public Task? RunTask(string name, Func<IProgressTaskUI, Task> run, bool prompt = true)
         {
             if (!IsRunning)
             {
                 shell.ShowTool(this);
-                _ = Task.Run(() => DoRunTask(name, run, prompt));
+                return Task.Run(() => DoRunTask(name, run, prompt));
             }
+            return null;
         }
 
         private async Task DoRunTask(string name, Func<IProgressTaskUI, Task> run, bool prompt)

@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.ConditionTool.Controls.ConditionEdit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.ConditionTool.Controls"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="20" d:DesignWidth="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <local:ConditionBox />
+
+        <Button Grid.Column="1" cal:Message.Attach="Edit" VerticalAlignment="Top" Padding="5">
+            ✎
+        </Button>
+    </Grid>
+</UserControl>

@@ -21,7 +21,8 @@ namespace GameRealisticMap.ManMade.Objects
 
         public OrientedObjectData Build(IBuildContext context)
         {
-            var facing = context.GetData<RoadsData>().Roads.Select(s => s.Path);
+            var roads = context.GetData<RoadsData>().Roads;
+            var facing = roads.Select(s => s.Path);
 
             var objects = new List<OrientedObject>();
             foreach (var node in context.OsmSource.Nodes.Where(s => s.Tags != null).ProgressStep(progress,"Objects"))
@@ -32,7 +33,9 @@ namespace GameRealisticMap.ManMade.Objects
                     var point = context.Area.LatLngToTerrainPoint(node.GetCoordinate());
                     if (context.Area.IsInside(point))
                     {
-                        objects.Add(new OrientedObject(point, GetAngle(facing, node.Tags, point), type.Value));
+                        var angle = GetAngle(facing, node.Tags, point, out var facingPath);
+                        var road = facingPath != null ? roads.FirstOrDefault(r => r.Path ==  facingPath) : null;
+                        objects.Add(new OrientedObject(point, angle, type.Value, road));
                     }
                 }
             }
@@ -110,14 +113,15 @@ namespace GameRealisticMap.ManMade.Objects
             return null;
         }
 
-        private float GetAngle(IEnumerable<ITerrainGeo> facing, TagsCollectionBase tags, TerrainPoint point)
+        private float GetAngle(IEnumerable<ITerrainGeo> facing, TagsCollectionBase tags, TerrainPoint point, out ITerrainGeo? closest)
         {
             var heading = tags.GetDirection();
             if (heading != null)
             {
+                closest = null;
                 return -heading.Value; // convert to trigonometric because Heading is clockwise
             }
-            return GeometryHelper.GetFacing(point, facing, maxDistance) ?? GetRandomAngle(point);
+            return GeometryHelper.GetFacing(point, facing, out closest, maxDistance) ?? GetRandomAngle(point);
         }
 
         internal static float GetRandomAngle(TerrainPoint point)

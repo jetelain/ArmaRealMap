@@ -240,7 +240,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             Arma3ToolsHelper.EnsureProjectDrive();
 
-            IoC.Get<IProgressTool>()
+            _ = IoC.Get<IProgressTool>()
                 .RunTask(Labels.GenerateModForArma3, DoGenerateMod);
         }
 

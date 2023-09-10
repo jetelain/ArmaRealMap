@@ -87,9 +87,46 @@ namespace GameRealisticMap.ElevationModel
             return z10 + d0111 - d0111 * xIn - d1011 * yIn;
         }
 
+        public Vector3 NormalAtGrid(Vector2 gridPos)
+        {
+            var x = (int)MathF.Floor(gridPos.X);
+            var y = (int)MathF.Floor(gridPos.Y);
+            var xIn = gridPos.X - x;
+            var yIn = gridPos.Y - y;
+            var z10 = ElevationAtCell(x + 1, y);
+            var z01 = ElevationAtCell(x, y + 1);
+            if (xIn <= 1 - yIn)
+            {
+                var z00 = ElevationAtCell(x, y);
+                return Plane.CreateFromVertices(
+                    new Vector3(0, 0, z00),
+                    new Vector3(CellSize.X, 0, z10),
+                    new Vector3(0, CellSize.Y, z01)
+                    ).Normal;
+            }
+            var z11 = ElevationAtCell(x + 1, y + 1);
+            return Plane.CreateFromVertices(
+                new Vector3(0, CellSize.Y, z01),
+                new Vector3(CellSize.X, 0, z10),
+                new Vector3(CellSize.X, CellSize.Y, z11)
+                ).Normal;
+        }
+
         public float ElevationAt(TerrainPoint point)
         {
             return ElevationAtGrid(ToGrid(point));
+        }
+
+        public Vector3 NormalAt(TerrainPoint point)
+        {
+            return NormalAtGrid(ToGrid(point));
+        }
+
+        public float SlopeAt(TerrainPoint point)
+        {
+            var v2 = new Vector3(0, 0, 1);
+            var v1 = NormalAtGrid(ToGrid(point));
+            return MathF.Abs(MathF.Atan2(Vector3.Cross(v1, v2).Length(), Vector3.Dot(v1, v2))) * 180 / MathF.PI;
         }
 
         public Vector2 ToGrid(TerrainPoint point)

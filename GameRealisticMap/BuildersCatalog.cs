@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.ElevationModel;
+﻿using GameRealisticMap.Conditions;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.DefaultUrbanAreas;
@@ -67,6 +68,7 @@ namespace GameRealisticMap
             Register(new DefaultMilitaryAreasBuilder(progress));
             Register(new DefaultRetailAreasBuilder(progress));
             Register(new DefaultAgriculturalAreasBuilder(progress));
+            Register(new ConditionEvaluatorBuilder());
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)

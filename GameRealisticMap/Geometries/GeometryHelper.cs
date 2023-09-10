@@ -193,8 +193,13 @@ namespace GameRealisticMap.Geometries
 
         public static float? GetFacing(TerrainPoint point, IEnumerable<ITerrainGeo> facing, float maxDistance = 50f)
         {
+            return GetFacing(point, facing, out var _, maxDistance);
+        }
+
+        public static float? GetFacing(TerrainPoint point, IEnumerable<ITerrainGeo> facing, out ITerrainGeo? closest, float maxDistance = 50f)
+        {
             var envelope = point.WithMargin(maxDistance);
-            var closest = facing.Where(p => p.EnveloppeIntersects(envelope)).MinBy(g => g.Distance(point));
+            closest = facing.Where(p => p.EnveloppeIntersects(envelope)).MinBy(g => g.Distance(point));
             if (closest == null)
             {
                 return null;

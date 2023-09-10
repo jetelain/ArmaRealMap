@@ -22,13 +22,18 @@ namespace GameRealisticMap.Studio.Behaviors
                 var context = button.ContextMenu;
                 if (context != null)
                 {
-                    context.Placement = PlacementMode.Relative;
-                    context.PlacementTarget = button;
-                    context.HorizontalOffset = button.Margin.Left;
-                    context.VerticalOffset = button.ActualHeight - button.Margin.Bottom;
-                    context.IsOpen = true;
+                    ShowButtonContextMenu(button, context);
                 }
             }
+        }
+
+        internal static void ShowButtonContextMenu(Button button, ContextMenu context)
+        {
+            context.Placement = PlacementMode.Relative;
+            context.PlacementTarget = button;
+            context.HorizontalOffset = button.Margin.Left;
+            context.VerticalOffset = button.ActualHeight - button.Margin.Bottom;
+            context.IsOpen = true;
         }
     }
 }

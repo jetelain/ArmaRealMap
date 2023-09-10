@@ -3895,7 +3895,20 @@
             }
           ]
         },
-        "Probability": 1
+        "Probability": 0.5,
+        "Condition": "!IsRoadSimple"
+      },
+      {
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\civ\\lamps\\lampstreet_small_f.p3d",
+              "Transform": [2.9802322E-08,3.1020916,-4.917383E-07]
+            }
+          ]
+        },
+        "Probability": 0.5,
+        "Condition": "IsRoadSimple"
       }
     ],
     "Flagpole": [

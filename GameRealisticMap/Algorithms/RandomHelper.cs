@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Algorithms
@@ -118,6 +119,64 @@ namespace GameRealisticMap.Algorithms
         public static float GetAngle(this Random random)
         {
             return (float)(random.NextDouble() * 360);
+        }
+
+        public static TItem? GetRandom<TItem>(this IReadOnlyCollection<TItem> list, TerrainPoint point, IPointConditionContext context)
+            where TItem : class, IWithProbabilityAndCondition<IPointConditionContext>
+        {
+            return GetRandom<TItem, IPointConditionContext>(list, CreateRandom(point), context);
+        }
+
+        public static TItem? GetRandom<TItem, TContext>(this IReadOnlyCollection<TItem> list, Random random, TContext context)
+            where TItem : class, IWithProbabilityAndCondition<TContext>
+        {
+            var optimist = list.GetRandom<TItem>(random);
+            if (optimist.Condition == null || optimist.Condition.Evaluate(context))
+            {
+                return optimist;
+            }
+            var filtered = EvaluateOtherItems(list, context, optimist);
+            if (filtered.Count == 0)
+            {
+                return default;
+            }
+            if (filtered.Count == 1)
+            {
+                return filtered[0];
+            }
+            var value = random.NextDouble() * filtered.Sum(f => f.Probability);
+            var shift = 0d;
+            foreach (var item in list)
+            {
+                shift += item.Probability;
+                if (shift > value)
+                {
+                    return item;
+                }
+            }
+            throw new InvalidOperationException();
+        }
+
+        public static TItem? GetEquiprobale<TItem, TContext>(this IReadOnlyList<TItem> list, Random random, TContext context)
+            where TItem : class, IWithProbabilityAndCondition<TContext>
+        {
+            var optimist = list.GetEquiprobale<TItem>(random);
+            if (optimist.Condition == null || optimist.Condition.Evaluate(context))
+            {
+                return optimist;
+            }
+            var filtered = EvaluateOtherItems(list, context, optimist);
+            if (filtered.Count == 0)
+            {
+                return default;
+            }
+            return filtered[random.Next(0, filtered.Count)];
+        }
+
+        private static List<TItem> EvaluateOtherItems<TItem, TContext>(IReadOnlyCollection<TItem> list, TContext context, TItem ignore) 
+            where TItem : class, IWithProbabilityAndCondition<TContext>
+        {
+            return list.Where(i => i != ignore && (i.Condition == null || i.Condition.Evaluate(context))).ToList();
         }
     }
 }

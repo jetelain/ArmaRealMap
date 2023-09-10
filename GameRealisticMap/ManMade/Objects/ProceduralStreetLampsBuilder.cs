@@ -57,7 +57,7 @@ namespace GameRealisticMap.ManMade.Objects
                         if (!index.Search(point.Vector - margin, point.Vector + margin).Any(o => (o.Point.Vector - point.Vector).Length() < marginDistance))
                         { 
                             var angle = GeometryHelper.GetFacing(point, new[] { road.Path }, spacing) ?? OrientedObjectBuilder.GetRandomAngle(point);
-                            var lamp = new ProceduralStreetLamp(point, angle);
+                            var lamp = new ProceduralStreetLamp(point, angle, road);
                             lamps.Add(lamp);
                             index.Insert(point.Vector, lamp);
                         }
