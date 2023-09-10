@@ -43,7 +43,7 @@
 
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button cal:Message.Attach="TestOnMap" Padding="10 5">
+            <Button Padding="10 5" Click="Button_Click">
                 <Run Text="{x:Static r:Labels.TestOnAMap}" />
             </Button>
         </StackPanel>

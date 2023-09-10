@@ -20,11 +20,14 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
     [Export(typeof(IConditionTool))]
     internal class ConditionToolViewModel : Tool, IConditionTool
     {
+        private readonly IShell shell;
         private ConditionVM? target;
         private PointCondition? condition;
 
-        public ConditionToolViewModel()
+        [ImportingConstructor]
+        public ConditionToolViewModel(IShell shell)
         {
+            this.shell = shell;
             DisplayName = GameRealisticMap.Studio.Labels.TagsEditor;
             Criterias = typeof(IPointConditionContext).GetProperties()
                 .Select(p => new CriteriaItem("Point", p.Name, p.PropertyType))
@@ -126,29 +129,45 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             return Apply();
         }
 
-        public async Task TestOnMap()
+        public List<MapConfigEditorViewModel> GetAvailableMaps()
         {
-            await Apply();
+            return shell.Documents.OfType<MapConfigEditorViewModel>().ToList();
+        }
 
-            if (condition == null)
+        public async Task OpenAndTestOnMap()
+        {
+            var provider = IoC.Get<MapConfigEditorProvider>();
+            var dialog = new OpenFileDialog();
+            dialog.Filter = string.Join("|", provider.FileTypes.Select(x => x.Name + "|*" + x.FileExtension));
+            if (dialog.ShowDialog() != true)
             {
                 return;
             }
-            var shell = IoC.Get<IShell>();
+            var map = (MapConfigEditorViewModel)provider.Create();
+            await provider.Open(map, dialog.FileName);
+            await shell.OpenDocumentAsync(map);
+            await TestOnMap(map);
+        }
 
+        public async Task TestOnFirstMap()
+        {
             var map = shell.Documents.OfType<MapConfigEditorViewModel>().FirstOrDefault();
             if (map == null)
             {
-                var provider = IoC.Get<MapConfigEditorProvider>();
-                var dialog = new OpenFileDialog();
-                dialog.Filter = string.Join("|", provider.FileTypes.Select(x => x.Name + "|*" + x.FileExtension));
-                if (dialog.ShowDialog() != true)
-                {
-                    return;
-                }
-                map = (MapConfigEditorViewModel)provider.Create();
-                await provider.Open(map, dialog.FileName);
-                await shell.OpenDocumentAsync(map);
+                await OpenAndTestOnMap();
+            }
+            else
+            {
+                await TestOnMap(map);
+            }
+        }
+
+        public async Task TestOnMap(MapConfigEditorViewModel map)
+        {
+            await Apply();
+            if (condition == null || map == null)
+            {
+                return;
             }
             var tester = shell.Documents.OfType<ConditionTestMapViewModel>().Where(t => t.Map == map).FirstOrDefault();
             if (tester == null)
