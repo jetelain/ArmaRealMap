@@ -24,7 +24,7 @@
         <ProgressBar HorizontalAlignment="Left" Width="300" Height="15" Margin="5" IsIndeterminate="True" 
                      Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-        <grm:GrmMapViewer x:Name="map" Grid.Row="1" MapData="{Binding PreviewMapData}" SizeInMeters="{Binding SizeInMeters}" />
+        <grm:GrmMapViewer Grid.Row="1" MapData="{Binding PreviewMapData}" SizeInMeters="{Binding SizeInMeters}" />
 
         <Grid Grid.Column="1" Grid.RowSpan="2">
             <Grid.RowDefinitions>

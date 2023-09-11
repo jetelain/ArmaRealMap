@@ -7,12 +7,12 @@
         private readonly List<DefaultRoadTypeInfos> _roads = new List<DefaultRoadTypeInfos>()
         {
             new DefaultRoadTypeInfos(RoadTypeId.TwoLanesMotorway, 12f, 18f),
-            new DefaultRoadTypeInfos(RoadTypeId.TwoLanesPrimaryRoad, 12f, 18f, true, true),
+            new DefaultRoadTypeInfos(RoadTypeId.TwoLanesPrimaryRoad, 12f, 18f, StreetLampsCondition.NearUrbanAreas, true),
 
-            new DefaultRoadTypeInfos(RoadTypeId.TwoLanesSecondaryRoad, 7.5f, 11.5f, true, true),
-            new DefaultRoadTypeInfos(RoadTypeId.TwoLanesConcreteRoad, 7.5f, 11.5f, true, true),
+            new DefaultRoadTypeInfos(RoadTypeId.TwoLanesSecondaryRoad, 7.5f, 11.5f, StreetLampsCondition.NearUrbanAreas, true),
+            new DefaultRoadTypeInfos(RoadTypeId.TwoLanesConcreteRoad, 7.5f, 11.5f, StreetLampsCondition.UrbanAreas, true),
 
-            new DefaultRoadTypeInfos(RoadTypeId.SingleLaneConcreteRoad, 5.5f, 7.5f, true),
+            new DefaultRoadTypeInfos(RoadTypeId.SingleLaneConcreteRoad, 5.5f, 7.5f, StreetLampsCondition.UrbanAreas),
             new DefaultRoadTypeInfos(RoadTypeId.SingleLaneDirtRoad, 5.5f, 7.5f),
 
             new DefaultRoadTypeInfos(RoadTypeId.SingleLaneDirtPath, 4.5f, 6.5f),

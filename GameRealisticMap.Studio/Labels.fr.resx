@@ -1093,11 +1093,8 @@ Dernière génération le {1}</value>
   <data name="StreetLamps" xml:space="preserve">
     <value>Lampadaire</value>
   </data>
-  <data name="StreetLampsNone" xml:space="preserve">
-    <value>Aucun</value>
-  </data>
-  <data name="StreetLampsOnTheSide" xml:space="preserve">
-    <value>Lampadaires sur le coté</value>
+  <data name="StreetLampsEverywhere" xml:space="preserve">
+    <value>Partout</value>
   </data>
   <data name="DistanceBetweenStreetLamps" xml:space="preserve">
     <value>Distance entre les lampadaires</value>
@@ -1129,7 +1126,7 @@ Dernière génération le {1}</value>
   <data name="AbsoluteElevation" xml:space="preserve">
     <value>Position absolue</value>
   </data>
-  <data name="InResidentialAreas" xml:space="preserve">
+  <data name="InsideResidentialAreas" xml:space="preserve">
     <value>Dans les zones résidentielles</value>
   </data>
   <data name="Sidewalks" xml:space="preserve">
@@ -1245,5 +1242,11 @@ Dernière génération le {1}</value>
   </data>
   <data name="Tags" xml:space="preserve">
     <value>Etiquettes</value>
+  </data>
+  <data name="StreetLampsNearUrban" xml:space="preserve">
+    <value>Proche et dans les zones habitées</value>
+  </data>
+  <data name="StreetLampsUrban" xml:space="preserve">
+    <value>Zones habitées uniquement</value>
   </data>
 </root>

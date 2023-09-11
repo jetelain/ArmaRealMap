@@ -2240,11 +2240,11 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à In residential areas.
+        ///   Recherche une chaîne localisée semblable à Inside residential areas.
         /// </summary>
-        public static string InResidentialAreas {
+        public static string InsideResidentialAreas {
             get {
-                return ResourceManager.GetString("InResidentialAreas", resourceCulture);
+                return ResourceManager.GetString("InsideResidentialAreas", resourceCulture);
             }
         }
         
@@ -3134,20 +3134,29 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à None.
+        ///   Recherche une chaîne localisée semblable à Everywhere.
         /// </summary>
-        public static string StreetLampsNone {
+        public static string StreetLampsEverywhere {
             get {
-                return ResourceManager.GetString("StreetLampsNone", resourceCulture);
+                return ResourceManager.GetString("StreetLampsEverywhere", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Street lamps on the side.
+        ///   Recherche une chaîne localisée semblable à Near and inside urban/inhabited areas.
         /// </summary>
-        public static string StreetLampsOnTheSide {
+        public static string StreetLampsNearUrban {
             get {
-                return ResourceManager.GetString("StreetLampsOnTheSide", resourceCulture);
+                return ResourceManager.GetString("StreetLampsNearUrban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Inside urban/inhabited areas.
+        /// </summary>
+        public static string StreetLampsUrban {
+            get {
+                return ResourceManager.GetString("StreetLampsUrban", resourceCulture);
             }
         }
         

@@ -82,10 +82,16 @@
                             <Run Text="{x:Static r:Labels.StreetLamps}" />
                         </Label>
                         <RadioButton GroupName="StreetLamp" IsChecked="{Binding HasStreetLamp}" VerticalAlignment="Center" Margin="0 0 10 0">
-                            <Run Text="{x:Static r:Labels.StreetLampsOnTheSide}" />
+                            <Run Text="{x:Static r:Labels.StreetLampsEverywhere}" />
+                        </RadioButton>
+                        <RadioButton GroupName="StreetLamp" IsChecked="{Binding HasStreetLampNearUrban}" VerticalAlignment="Center" Margin="0 0 10 0">
+                            <Run Text="{x:Static r:Labels.StreetLampsNearUrban}" />
+                        </RadioButton>
+                        <RadioButton GroupName="StreetLamp" IsChecked="{Binding HasStreetLampUrban}" VerticalAlignment="Center" Margin="0 0 10 0">
+                            <Run Text="{x:Static r:Labels.StreetLampsUrban}" />
                         </RadioButton>
                         <RadioButton GroupName="StreetLamp" IsChecked="{Binding HasNotStreetLamp}" VerticalAlignment="Center">
-                            <Run Text="{x:Static r:Labels.StreetLampsNone}" />
+                            <Run Text="{x:Static r:Labels.Never}" />
                         </RadioButton>
                     </StackPanel>
 
@@ -103,7 +109,7 @@
                             <Run Text="{x:Static r:Labels.Sidewalks}" />
                         </Label>
                         <RadioButton IsChecked="{Binding HasSidewalks}" VerticalAlignment="Center" Margin="0 0 10 0">
-                            <Run Text="{x:Static r:Labels.InResidentialAreas}" />
+                            <Run Text="{x:Static r:Labels.InsideResidentialAreas}" />
                         </RadioButton>
                         <RadioButton IsChecked="{Binding HasNotSidewalks}" VerticalAlignment="Center">
                             <Run Text="{x:Static r:Labels.Never}" />
