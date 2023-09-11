@@ -65,16 +65,25 @@ namespace GameRealisticMap.ManMade.Objects
 
                 foreach (var path in paths)
                 {
-                    foreach (var point in GeometryHelper.PointsOnPathRegular(path.Points, spacing))
+                    var follow = new FollowPath(path.Points);
+                    var nextMove = spacing;
+                    do
                     {
+                        var point = follow.Current;
                         if (!index.Search(point.Vector - margin, point.Vector + margin).Any(o => (o.Point.Vector - point.Vector).Length() < marginDistance))
                         {
                             var angle = GeometryHelper.GetFacing(point, new[] { road.Path }, spacing) ?? OrientedObjectBuilder.GetRandomAngle(point);
                             var lamp = new ProceduralStreetLamp(point, angle, road);
                             lamps.Add(lamp);
                             index.Insert(point.Vector, lamp);
+                            nextMove = spacing;
+                        }
+                        else
+                        {
+                            nextMove = marginDistance;
                         }
                     }
+                    while (follow.Move(nextMove));
                 }
             }
 
