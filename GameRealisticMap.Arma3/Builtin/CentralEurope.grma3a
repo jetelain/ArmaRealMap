@@ -3401,7 +3401,7 @@
       "Id": "TwoLanesMotorway",
       "Width": 10,
       "ClearWidth": 15,
-      "HasStreetLamp": false,
+      "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
       "HasSideWalks": false
     },
@@ -3414,7 +3414,7 @@
       "Id": "TwoLanesPrimaryRoad",
       "Width": 10,
       "ClearWidth": 14,
-      "HasStreetLamp": true,
+      "ProceduralStreetLamps": "NearUrbanAreas",
       "DistanceBetweenStreetLamps": 40,
       "HasSideWalks": true
     },
@@ -3427,7 +3427,7 @@
       "Id": "TwoLanesSecondaryRoad",
       "Width": 7.5,
       "ClearWidth": 11.5,
-      "HasStreetLamp": true,
+      "ProceduralStreetLamps": "NearUrbanAreas",
       "DistanceBetweenStreetLamps": 30,
       "HasSideWalks": true
     },
@@ -3440,7 +3440,7 @@
       "Id": "TwoLanesConcreteRoad",
       "Width": 7,
       "ClearWidth": 10,
-      "HasStreetLamp": true,
+      "ProceduralStreetLamps": "UrbanAreas",
       "DistanceBetweenStreetLamps": 30,
       "HasSideWalks": true
     },
@@ -3453,7 +3453,7 @@
       "Id": "SingleLaneConcreteRoad",
       "Width": 4,
       "ClearWidth": 6,
-      "HasStreetLamp": true,
+      "ProceduralStreetLamps": "UrbanAreas",
       "DistanceBetweenStreetLamps": 30,
       "HasSideWalks": false
     },
@@ -3466,7 +3466,7 @@
       "Id": "SingleLaneDirtRoad",
       "Width": 3.5,
       "ClearWidth": 5,
-      "HasStreetLamp": false,
+      "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
       "HasSideWalks": false
     },
@@ -3479,7 +3479,7 @@
       "Id": "SingleLaneDirtPath",
       "Width": 3.5,
       "ClearWidth": 6,
-      "HasStreetLamp": false,
+      "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
       "HasSideWalks": false
     },
@@ -3492,7 +3492,7 @@
       "Id": "ConcreteFootway",
       "Width": 2,
       "ClearWidth": 3,
-      "HasStreetLamp": false,
+      "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
       "HasSideWalks": false
     },
@@ -3505,7 +3505,7 @@
       "Id": "Trail",
       "Width": 1.5,
       "ClearWidth": 3.5,
-      "HasStreetLamp": false,
+      "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
       "HasSideWalks": false
     }

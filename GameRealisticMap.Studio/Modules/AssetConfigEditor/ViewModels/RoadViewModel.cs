@@ -20,7 +20,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         private string textureEnd;
         private string material;
         private Color satelliteColor;
-        private bool hasStreetLamp;
+        private StreetLampsCondition proceduralStreetLamp;
         private float distanceBetweenStreetLamps;
         private bool hasSidewalks;
 
@@ -34,7 +34,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             textureEnd = arma3RoadTypeInfos?.TextureEnd ?? string.Empty;
             material = arma3RoadTypeInfos?.Material ?? string.Empty;
             textureWidth = arma3RoadTypeInfos?.TextureWidth ?? Width;
-            hasStreetLamp = arma3RoadTypeInfos?.HasStreetLamp ?? defaults.HasStreetLamp;
+            proceduralStreetLamp = arma3RoadTypeInfos?.ProceduralStreetLamps ?? defaults.ProceduralStreetLamps;
             distanceBetweenStreetLamps = arma3RoadTypeInfos?.DistanceBetweenStreetLamps ?? (clearWidth * 2.5f);
             hasSidewalks = arma3RoadTypeInfos?.HasSideWalks ?? defaults.HasSideWalks;
             if (arma3RoadTypeInfos != null)
@@ -116,9 +116,29 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public Color SatelliteColor { get => satelliteColor; set { satelliteColor = value; NotifyOfPropertyChange(); } }
 
-        public bool HasStreetLamp { get => hasStreetLamp; set { if (hasStreetLamp != value) { hasStreetLamp = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(HasNotStreetLamp)); } } }
-        
-        public bool HasNotStreetLamp { get => !HasStreetLamp; set { HasStreetLamp = !value; } }
+        public bool HasStreetLamp 
+        { 
+            get => proceduralStreetLamp == StreetLampsCondition.Everywhere;
+            set { if (value) { proceduralStreetLamp = StreetLampsCondition.Everywhere; } } 
+        }
+
+        public bool HasStreetLampUrban
+        {
+            get => proceduralStreetLamp == StreetLampsCondition.UrbanAreas;
+            set { if (value) { proceduralStreetLamp = StreetLampsCondition.UrbanAreas; } }
+        }
+
+        public bool HasStreetLampNearUrban
+        {
+            get => proceduralStreetLamp == StreetLampsCondition.NearUrbanAreas;
+            set { if (value) { proceduralStreetLamp = StreetLampsCondition.NearUrbanAreas; } }
+        }
+
+        public bool HasNotStreetLamp 
+        { 
+            get => proceduralStreetLamp == StreetLampsCondition.None;
+            set { if (value) { proceduralStreetLamp = StreetLampsCondition.None; } }
+        }
 
         public bool HasSidewalks { get => hasSidewalks; set { if (hasSidewalks != value) { hasSidewalks = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(HasNotSidewalks)); } } }
 
@@ -133,7 +153,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public override Arma3RoadTypeInfos ToDefinition()
         {
-            return new Arma3RoadTypeInfos(FillId, new Rgb24(SatelliteColor.R, SatelliteColor.G, SatelliteColor.B), TextureWidth, Texture, TextureEnd, Material, Width, ClearWidth, HasStreetLamp, DistanceBetweenStreetLamps, HasSidewalks);
+            return new Arma3RoadTypeInfos(FillId, new Rgb24(SatelliteColor.R, SatelliteColor.G, SatelliteColor.B), TextureWidth, Texture, TextureEnd, Material, Width, ClearWidth, proceduralStreetLamp, DistanceBetweenStreetLamps, HasSidewalks);
         }
 
         public BridgeDefinition? ToBridgeDefinition()

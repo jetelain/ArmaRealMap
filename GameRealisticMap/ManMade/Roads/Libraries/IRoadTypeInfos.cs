@@ -11,7 +11,7 @@
         /// <summary>
         /// Generate street lamps (everywhere)
         /// </summary>
-        bool HasStreetLamp { get; }
+        StreetLampsCondition ProceduralStreetLamps { get; }
 
         /// <summary>
         /// Distance in meters between procedural street lamps

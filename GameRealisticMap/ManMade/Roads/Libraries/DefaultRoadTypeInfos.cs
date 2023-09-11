@@ -2,12 +2,12 @@
 {
     internal class DefaultRoadTypeInfos : IRoadTypeInfos
     {
-        public DefaultRoadTypeInfos(RoadTypeId id, float width, float clearWidth, bool hasStreetLamp = false, bool hasSideWalks = false)
+        public DefaultRoadTypeInfos(RoadTypeId id, float width, float clearWidth, StreetLampsCondition proceduralStreetLamps = StreetLampsCondition.None, bool hasSideWalks = false)
         {
             Id = id;
             Width = width;
             ClearWidth = clearWidth;
-            HasStreetLamp = hasStreetLamp;
+            ProceduralStreetLamps = proceduralStreetLamps;
             HasSideWalks = hasSideWalks;
         }
 
@@ -17,7 +17,7 @@
 
         public float ClearWidth { get; }
 
-        public bool HasStreetLamp { get; }
+        public StreetLampsCondition ProceduralStreetLamps { get; }
 
         public float DistanceBetweenStreetLamps => ClearWidth * 2.5f;
 
