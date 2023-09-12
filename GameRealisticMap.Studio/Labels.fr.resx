@@ -295,7 +295,7 @@
     <value>✔ Trouvé</value>
   </data>
   <data name="GenerateAreasOnly" xml:space="preserve">
-    <value>Générer les zones (le plus rapide)</value>
+    <value>Générer un HTML avec les zones uniquement</value>
   </data>
   <data name="GenerateIdMapImage" xml:space="preserve">
     <value>Générer l'image id map</value>
@@ -316,7 +316,7 @@
     <value>Générer l'image satellite</value>
   </data>
   <data name="GenerateWithElevation" xml:space="preserve">
-    <value>Générer les zones avec le dénivelé</value>
+    <value>Générer un HTML avec les zones et le dénivelé</value>
   </data>
   <data name="GettingStarted" xml:space="preserve">
     <value>Démarrer</value>
@@ -1248,5 +1248,8 @@ Dernière génération le {1}</value>
   </data>
   <data name="StreetLampsUrban" xml:space="preserve">
     <value>Zones habitées uniquement</value>
+  </data>
+  <data name="GeneratePreviewToBuiltInViewer" xml:space="preserve">
+    <value>Générer dans l'outil intégré (le plus rapide)</value>
   </data>
 </root>

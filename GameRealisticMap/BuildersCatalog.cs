@@ -27,7 +27,7 @@ namespace GameRealisticMap
     {
         private readonly Dictionary<Type, IBuilderAdapter> builders = new Dictionary<Type, IBuilderAdapter>();
 
-        public BuildersCatalog(IProgressSystem progress, IBuildersConfig config, bool useFullGeoJson = false)
+        public BuildersCatalog(IProgressSystem progress, IBuildersConfig config)
         {
             Register(new OceanBuilder(progress));
             Register(new CoastlineBuilder(progress));
@@ -55,7 +55,7 @@ namespace GameRealisticMap
             Register(new OrientedObjectBuilder(progress));
             Register(new RailwaysBuilder(progress, config.RailwayCrossings));
             Register(new CitiesBuilder(progress));
-            Register(new ElevationBuilder(progress, useFullGeoJson));
+            Register(new ElevationBuilder(progress));
             Register(new VineyardBuilder(progress));
             Register(new OrchardBuilder(progress));
             Register(new TreeRowsBuilder(progress));
@@ -69,6 +69,7 @@ namespace GameRealisticMap
             Register(new DefaultRetailAreasBuilder(progress));
             Register(new DefaultAgriculturalAreasBuilder(progress));
             Register(new ConditionEvaluatorBuilder());
+            Register(new ElevationContourBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)

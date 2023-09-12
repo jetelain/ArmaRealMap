@@ -1943,7 +1943,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Generate areas only (faster).
+        ///   Recherche une chaîne localisée semblable à Generate HTML with areas only.
         /// </summary>
         public static string GenerateAreasOnly {
             get {
@@ -2033,6 +2033,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate to built-in viewer  (faster).
+        /// </summary>
+        public static string GeneratePreviewToBuiltInViewer {
+            get {
+                return ResourceManager.GetString("GeneratePreviewToBuiltInViewer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Generate Preview with linked areas.
         /// </summary>
         public static string GeneratePreviewWithLinkedAreas {
@@ -2060,7 +2069,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Generate with elevation.
+        ///   Recherche une chaîne localisée semblable à Generate HTML with elevation.
         /// </summary>
         public static string GenerateWithElevation {
             get {

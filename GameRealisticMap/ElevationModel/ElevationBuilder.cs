@@ -6,7 +6,6 @@ using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Reporting;
-using MapToolkit.Contours;
 using MapToolkit.DataCells;
 using SixLabors.ImageSharp;
 
@@ -15,12 +14,10 @@ namespace GameRealisticMap.ElevationModel
     internal class ElevationBuilder : IDataBuilder<ElevationData>, IDataSerializer<ElevationData>
     {
         private readonly IProgressSystem progress;
-        private readonly bool useGeoJson;
 
-        public ElevationBuilder(IProgressSystem progress, bool useGeoJson = false)
+        public ElevationBuilder(IProgressSystem progress)
         {
             this.progress = progress;
-            this.useGeoJson = useGeoJson;
         }
 
         public ElevationData Build(IBuildContext context)
@@ -42,17 +39,7 @@ namespace GameRealisticMap.ElevationModel
 
             constraintGrid.SolveAndApplyOnGrid();
 
-            if (useGeoJson)
-            {
-                var contour = new ContourGraph();
-                using (var report = progress.CreateStepPercent("Contours"))
-                {
-                    contour.Add(constraintGrid.Grid.ToDataCell(), new ContourLevelGenerator(-50, 5), false, report);
-                }
-                return new ElevationData(constraintGrid.Grid, contour.Lines.Select(l => new TerrainPath(l.Points.Select(p => new TerrainPoint((float)p.Longitude, (float)p.Latitude)).ToList())));
-            }
-
-            return new ElevationData(constraintGrid.Grid, null);
+            return new ElevationData(constraintGrid.Grid);
         }
 
         private void ProcessWays(ElevationConstraintGrid constraintGrid, IEnumerable<IWay> ways)
@@ -184,24 +171,22 @@ namespace GameRealisticMap.ElevationModel
             constraintGrid.NodeHard(road.Path.LastPoint).PinToInitial();
         }
 
-        public async ValueTask<ElevationData> Read(IPackageReader package, IContext context)
+        public ValueTask<ElevationData> Read(IPackageReader package, IContext context)
         {
-            var contours = await package.ReadJson<List<TerrainPath>>("Contours.json");
-
             using var stream = package.ReadFile("Elevation.ddc");
-            
+
             var grid = new ElevationGrid(DemDataCell.Load(stream).To<float>().AsPixelIsPoint());
 
-            return new ElevationData(grid, contours);
+            return new ValueTask<ElevationData>(new ElevationData(grid));
         }
 
-        public async Task Write(IPackageWriter package, ElevationData data)
+        public Task Write(IPackageWriter package, ElevationData data)
         {
             using (var stream = package.CreateFile("Elevation.ddc"))
             {
                 data.Elevation.ToDataCell().Save(stream);
             }
-            await package.WriteJson("Contours.json", data.Contours);
+            return Task.CompletedTask;
         }
     }
 }
