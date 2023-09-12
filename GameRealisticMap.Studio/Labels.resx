@@ -346,10 +346,10 @@
     <value>Generate Preview</value>
   </data>
   <data name="GenerateWithElevation" xml:space="preserve">
-    <value>Generate with elevation</value>
+    <value>Generate HTML with elevation</value>
   </data>
   <data name="GenerateAreasOnly" xml:space="preserve">
-    <value>Generate areas only (faster)</value>
+    <value>Generate HTML with areas only</value>
   </data>
   <data name="GenerateRawSatelliteImage" xml:space="preserve">
     <value>Generate raw satellite image</value>
@@ -1248,5 +1248,8 @@ Last generated on {1}</value>
   </data>
   <data name="StreetLampsUrban" xml:space="preserve">
     <value>Inside urban/inhabited areas</value>
+  </data>
+  <data name="GeneratePreviewToBuiltInViewer" xml:space="preserve">
+    <value>Generate to built-in viewer  (faster)</value>
   </data>
 </root>

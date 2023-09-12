@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Studio.Shared;
 
@@ -14,24 +14,11 @@ namespace GameRealisticMap.Studio.Controls
 {
     public class GrmMapViewer : FrameworkElement
     {
+        private readonly Dictionary<TerrainPolygon, PathGeometry> polyCache = new Dictionary<TerrainPolygon, PathGeometry>();
+        private readonly Dictionary<TerrainPath, PathGeometry> pathCache = new Dictionary<TerrainPath, PathGeometry>();
 
         private Point start;
         private Point origin;
-
-        private readonly SolidColorBrush OceanBrush = new SolidColorBrush(Color.FromArgb(128, 65, 105, 225));
-        private readonly SolidColorBrush ForestBrush = new SolidColorBrush(Color.FromArgb(128, 34, 139, 34));
-        private readonly SolidColorBrush RoadBrush = new SolidColorBrush(Color.FromArgb(192, 75, 0, 130));
-        private readonly SolidColorBrush BuildingBrush = new SolidColorBrush(Color.FromArgb(128, 139, 69, 19));
-        private readonly SolidColorBrush ScrubsBrush = new SolidColorBrush(Color.FromArgb(128, 244, 164, 96));
-        private readonly Pen RailwayPen = new Pen(new SolidColorBrush(Color.FromArgb(204, 0, 0, 0)), Railway.RailwayWidth);
-
-        // return { fillColor: "black", stroke: false, fillOpacity: 0.8 };
-
-        private readonly Pen FalsePen = new Pen(new SolidColorBrush(Colors.Red), 2);
-        private readonly SolidColorBrush FalseFill = new SolidColorBrush(Colors.White);
-
-        private readonly Pen TruePen = new Pen(new SolidColorBrush(Colors.Green), 2);
-        private readonly SolidColorBrush TrueFill = new SolidColorBrush(Colors.Black);
 
         public GrmMapViewer()
         {
@@ -95,10 +82,16 @@ namespace GameRealisticMap.Studio.Controls
         public static readonly DependencyProperty SizeInMetersProperty =
             DependencyProperty.Register("SizeInMeters", typeof(float), typeof(GrmMapViewer), new PropertyMetadata(2500f, SomePropertyChanged));
 
-
         private static void SomePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as GrmMapViewer)?.InvalidateVisual();
+            (d as GrmMapViewer)?.SomePropertyChanged();
+        }
+
+        private void SomePropertyChanged()
+        {
+            polyCache.Clear();
+            pathCache.Clear();
+            InvalidateVisual();
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -168,14 +161,14 @@ namespace GameRealisticMap.Studio.Controls
             dc.DrawRectangle(Background, null, new Rect(Convert(TerrainPoint.Empty, size), Convert(new TerrainPoint(size, size), size)));
             if (MapData != null)
             {
-                DrawPolygons(dc, size, enveloppe, OceanBrush, MapData.Ocean.Polygons);
-                DrawPolygons(dc, size, enveloppe, OceanBrush, MapData.ElevationWithLakes.Lakes.Select(l => l.TerrainPolygon));
-                DrawPolygons(dc, size, enveloppe, OceanBrush, MapData.Watercourses.Polygons);
-                DrawPolygons(dc, size, enveloppe, ScrubsBrush, MapData.Scrub.Polygons);
-                DrawPolygons(dc, size, enveloppe, ForestBrush, MapData.Forest.Polygons);
+                DrawPolygons(dc, size, enveloppe, GrmMapStyle.OceanBrush, MapData.Ocean.Polygons);
+                DrawPolygons(dc, size, enveloppe, GrmMapStyle.OceanBrush, MapData.ElevationWithLakes.Lakes.Select(l => l.TerrainPolygon));
+                DrawPolygons(dc, size, enveloppe, GrmMapStyle.OceanBrush, MapData.Watercourses.Polygons);
+                DrawPolygons(dc, size, enveloppe, GrmMapStyle.ScrubsBrush, MapData.Scrub.Polygons);
+                DrawPolygons(dc, size, enveloppe, GrmMapStyle.ForestBrush, MapData.Forest.Polygons);
                 if (Scale > 0.5)
                 {
-                    DrawPolygons(dc, size, enveloppe, BuildingBrush, MapData.Buildings.Buildings.Select(b => b.Box.Polygon));
+                    DrawPolygons(dc, size, enveloppe, GrmMapStyle.BuildingBrush, MapData.Buildings.Buildings.Select(b => b.Box.Polygon));
                 }
                 foreach (var road in MapData.Roads.Roads.OrderByDescending(r => r.RoadType))
                 {
@@ -183,14 +176,14 @@ namespace GameRealisticMap.Studio.Controls
                     {
                         if (!RoadBrushes.TryGetValue(road.RoadType, out var pen))
                         {
-                            RoadBrushes.Add(road.RoadType, pen = new Pen(RoadBrush, road.RoadTypeInfos.Width));
+                            RoadBrushes.Add(road.RoadType, pen = new Pen(GrmMapStyle.RoadBrush, road.RoadTypeInfos.Width));
                         }
                         dc.DrawGeometry(null, pen, CreatePath(size, road.Path));
                     }
                 }
                 var paths = MapData.Railways.Railways.Select(r => r.Path);
 
-                DrawPaths(dc, size, enveloppe, RailwayPen, paths);
+                DrawPaths(dc, size, enveloppe, GrmMapStyle.RailwayPen, paths);
 
                 DrawAdditionals(dc, size, enveloppe, MapData.Additional);
             }
@@ -200,19 +193,27 @@ namespace GameRealisticMap.Studio.Controls
                 {
                     if (point.EnveloppeIntersects(enveloppe))
                     {
-                        dc.DrawEllipse(FalseFill, FalsePen, Convert(point, size), 3, 3);
+                        dc.DrawEllipse(GrmMapStyle.FalseFill, GrmMapStyle.FalsePen, Convert(point, size), 3, 3);
                     }
                 }
                 foreach (var point in IsTrue)
                 {
                     if (point.EnveloppeIntersects(enveloppe))
                     {
-                        dc.DrawEllipse(TrueFill, TruePen, Convert(point, size), 3, 3);
+                        dc.DrawEllipse(GrmMapStyle.TrueFill, GrmMapStyle.TruePen, Convert(point, size), 3, 3);
                     }
                 }
             }
             dc.Pop();
             dc.Pop();
+            if (polyCache.Count > 50000)
+            {
+                polyCache.Clear();
+            }
+            if (pathCache.Count > 50000)
+            {
+                pathCache.Clear();
+            }
         }
 
         private void DrawAdditionals(DrawingContext dc, float size, Envelope enveloppe, List<PreviewAdditionalLayer> layers)
@@ -221,20 +222,20 @@ namespace GameRealisticMap.Studio.Controls
             {
                 if (additional.Polygons != null)
                 {
-                    DrawPolygons(dc, size, enveloppe, GetAdditionalBrush(additional.Name)!, additional.Polygons);
+                    DrawPolygons(dc, size, enveloppe, GrmMapStyle.GetAdditionalBrush(additional.Name)!, additional.Polygons);
                 }
                 else if (additional.Paths != null)
                 {
                     if (Scale > 0.5)
                     {
-                        DrawPaths(dc, size, enveloppe, GetAdditionalPen(additional.Name)!, additional.Paths);
+                        DrawPaths(dc, size, enveloppe, GrmMapStyle.GetAdditionalPen(additional.Name)!, additional.Paths);
                     }
                 }
                 else if (additional.Points != null)
                 {
                     if (Scale > 0.7)
                     {
-                        DrawPoints(dc, size, enveloppe, additional.Points, GetAdditionalPen(additional.Name), GetAdditionalBrush(additional.Name), 2);
+                        DrawPoints(dc, size, enveloppe, additional.Points, GrmMapStyle.GetAdditionalPen(additional.Name), GrmMapStyle.GetAdditionalBrush(additional.Name), 2);
                     }
                 }
             }
@@ -251,51 +252,6 @@ namespace GameRealisticMap.Studio.Controls
             }
         }
 
-        private Pen? GetAdditionalPen(string name)
-        {
-            switch(name)
-            {
-                case "Sidewalks":
-                    return new Pen(new SolidColorBrush(Color.FromArgb(204, 0, 0, 0)), 1)
-                    {
-                        DashStyle = new DashStyle(new[] { 2d, 2d }, 0)
-                    };
-
-                case "Fences":
-                    return new Pen(new SolidColorBrush(Colors.Red), 1);
-            }
-            return null;
-        }
-
-        private Brush? GetAdditionalBrush(string name)
-        {
-            switch(name)
-            {
-                case "DefaultAreas":
-                    return CreateStripesFilling(Color.FromArgb(51, 144, 238, 144));
-                case "Meadows":
-                    return new SolidColorBrush(Color.FromArgb(89, 173, 255, 47));
-            }
-            if ( name.StartsWith("Default"))
-            {
-                return CreateStripesFilling(Color.FromArgb(51, 0, 0, 0));
-            }
-            return new SolidColorBrush(Color.FromArgb(204, 0, 0, 0));
-        }
-
-        private static Brush CreateStripesFilling(Color color)
-        {
-            return new LinearGradientBrush(
-                new GradientStopCollection(new[] {
-                            new GradientStop(color, 0), new GradientStop(color, 0.5),
-                            new GradientStop(Colors.Transparent, 0.5), new GradientStop(Colors.Transparent, 1) }))
-            {
-                SpreadMethod = GradientSpreadMethod.Repeat,
-                MappingMode = BrushMappingMode.Absolute,
-                StartPoint = new Point(0, 0),
-                EndPoint = new Point(4, 4)
-            };
-        }
 
         private void DrawPaths(DrawingContext dc, float size, Envelope enveloppe, Pen pen, IEnumerable<TerrainPath> paths)
         {
@@ -333,7 +289,16 @@ namespace GameRealisticMap.Studio.Controls
             }
         }
 
-        private static PathGeometry CreatePolygon(float size, TerrainPolygon poly)
+        private PathGeometry CreatePolygon(float size, TerrainPolygon poly)
+        {
+            if (!polyCache.TryGetValue(poly, out var polygon))
+            {
+                polyCache.Add(poly, polygon = DoCreatePolygon(size, poly));
+            }
+            return polygon;
+        }
+
+        private static PathGeometry DoCreatePolygon(float size, TerrainPolygon poly)
         {
             var path = new PathGeometry();
             path.Figures.Add(CreateFigure(poly.Shell, true, false, size));
@@ -344,7 +309,16 @@ namespace GameRealisticMap.Studio.Controls
             return path;
         }
 
-        private static PathGeometry CreatePath(float size, TerrainPath tpath)
+        private PathGeometry CreatePath(float size, TerrainPath poly)
+        {
+            if (!pathCache.TryGetValue(poly, out var polygon))
+            {
+                pathCache.Add(poly, polygon = DoCreatePath(size, poly));
+            }
+            return polygon;
+        }
+
+        private static PathGeometry DoCreatePath(float size, TerrainPath tpath)
         {
             var path = new PathGeometry();
             path.Figures.Add(CreateFigure(tpath.Points, false, true, size));

@@ -34,10 +34,10 @@ namespace GameRealisticMap.Preview
                 Func<Type, bool>? filter = null;
                 if (ignoreElevation)
                 {
-                    filter = (t) => t != typeof(ElevationData);
+                    filter = (t) => t != typeof(ElevationContourData);
                 }
 
-                var catalog = new BuildersCatalog(progress, config, true);
+                var catalog = new BuildersCatalog(progress, config);
                 var count = catalog.CountOfType<IGeoJsonData>(filter);
                 progress.Total = count + 2;
 
@@ -82,8 +82,7 @@ namespace GameRealisticMap.Preview
         {
             try
             {
-                
-                var catalog = new BuildersCatalog(progress, config, true);
+                var catalog = new BuildersCatalog(progress, config);
                 progress.Total = 3;
 
                 var loader = new OsmDataOverPassLoader(progress);
