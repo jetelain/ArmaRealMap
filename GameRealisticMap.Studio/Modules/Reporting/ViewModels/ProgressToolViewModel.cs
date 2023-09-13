@@ -2,7 +2,6 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Caliburn.Micro;
@@ -26,6 +25,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         private readonly PerformanceCounter? cpuCounter;
         private readonly DispatcherTimer timer;
         private double memoryPeak;
+        private SuccessViewModel? lastSuccess;
         private readonly double totalMemGb;
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
@@ -151,7 +151,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         {
             if (current != null)
             {
-                return windowManager.ShowDialogAsync(new SuccessViewModel(current));
+                return windowManager.ShowDialogAsync(lastSuccess = new SuccessViewModel(current));
             }
             return Task.CompletedTask;
         }
@@ -179,6 +179,11 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
         private async Task DoRunTask(string name, Func<IProgressTaskUI, Task> run, bool prompt)
         {
+            if (lastSuccess != null)
+            {
+                new System.Action(() => lastSuccess?.TryCloseAsync(false)).BeginOnUIThread();
+            }
+
             using var task = (ProgressTask)StartTask(name);
             try
             {
@@ -192,7 +197,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             task.Dispose();
             if (prompt && task.Error == null && !task.CancellationToken.IsCancellationRequested)
             {
-                new System.Action(() => windowManager.ShowDialogAsync(new SuccessViewModel(task))).BeginOnUIThread();
+                new System.Action(() => windowManager.ShowDialogAsync(lastSuccess = new SuccessViewModel(task))).BeginOnUIThread();
             }
         }
 

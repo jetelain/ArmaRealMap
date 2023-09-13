@@ -8,7 +8,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1000" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
@@ -120,7 +120,70 @@
                 </DataGrid>
             </Expander>
             
-            
+            <Expander IsExpanded="True" Margin="10">
+                <Expander.Header>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.Imagery}"/></TextBlock>
+                </Expander.Header>
+
+                <StackPanel>
+
+                    <TextBlock Visibility="{Binding IsNotImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}"><Run Text="{x:Static r:Labels.ImageryIsNotDetectedCannotEditIt}" /></TextBlock>
+
+                    <StackPanel Visibility="{Binding IsImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
+                            <Button Margin="5" Padding="10" cal:Message.Attach="ExportSatMap">
+                                <Run Text="{x:Static r:Labels.ExportSatelliteImage}" />
+                            </Button>
+                            <Button Margin="5" Padding="10" cal:Message.Attach="ExportIdMap">
+                                <Run Text="{x:Static r:Labels.ExportTextureMaskImage}" />
+                            </Button>
+                            <Line X1="1" X2="1" Y1="0" Y2="30" StrokeThickness="1" Height="30" Width="2" Stroke="Gray" Margin="5 0" VerticalAlignment="Center" />
+                            <Button Margin="5" Padding="10" cal:Message.Attach="ImportSatMap">
+                                <Run Text="{x:Static r:Labels.ImportSatelliteImage}" />
+                            </Button>
+                            <Button Margin="5" Padding="10" cal:Message.Attach="ImportIdMap">
+                                <Run Text="{x:Static r:Labels.ImportTextureMaskImage}" />
+                            </Button>
+                            <TextBlock VerticalAlignment="Center">
+                                <Run Text="{x:Static r:Labels.CannotBeReversedWarning}" />
+                            </TextBlock>
+                        </StackPanel>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            
+                            <Label Grid.Row="0" Grid.Column="0">
+                                <Run Text="{x:Static r:Labels.TileSize}" />
+                            </Label>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Imagery.TileSize}" VerticalAlignment="Center" />
+
+                            <Label Grid.Row="1" Grid.Column="0">
+                                <Run Text="{x:Static r:Labels.TotalImageSize}" />
+                            </Label>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Imagery.TotalSize}" VerticalAlignment="Center" />
+
+                            <Label Grid.Row="2" Grid.Column="0">
+                                <Run Text="{x:Static r:Labels.Resolution}" />
+                            </Label>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding Imagery.Resolution}" VerticalAlignment="Center" />
+
+                        </Grid>
+
+
+                    </StackPanel>
+                    
+                </StackPanel>
+                
+                
+            </Expander>
 
         </StackPanel>
     </ScrollViewer>

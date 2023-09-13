@@ -1252,4 +1252,37 @@ Last generated on {1}</value>
   <data name="GeneratePreviewToBuiltInViewer" xml:space="preserve">
     <value>Generate to built-in viewer  (faster)</value>
   </data>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="OpenImage" xml:space="preserve">
+    <value>Open image</value>
+  </data>
+  <data name="ImportSatelliteImage" xml:space="preserve">
+    <value>Import satellite image</value>
+  </data>
+  <data name="ImportTextureMaskImage" xml:space="preserve">
+    <value>Import texture mask image</value>
+  </data>
+  <data name="ExportTextureMaskImage" xml:space="preserve">
+    <value>Export texture mask image</value>
+  </data>
+  <data name="ExportSatelliteImage" xml:space="preserve">
+    <value>Export satellite image</value>
+  </data>
+  <data name="CannotBeReversedWarning" xml:space="preserve">
+    <value>⚠ Those operations cannot be reversed, no backup is done.</value>
+  </data>
+  <data name="TileSize" xml:space="preserve">
+    <value>Tile size</value>
+  </data>
+  <data name="TotalImageSize" xml:space="preserve">
+    <value>Total image size</value>
+  </data>
+  <data name="Imagery" xml:space="preserve">
+    <value>Imagery</value>
+  </data>
+  <data name="ImageryIsNotDetectedCannotEditIt" xml:space="preserve">
+    <value>Imagery is not detected, cannot edit it.</value>
+  </data>
 </root>

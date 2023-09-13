@@ -10,6 +10,7 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit;
+using GameRealisticMap.Arma3.Edit.Imagery;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
@@ -21,7 +22,10 @@ using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
+using HugeImages;
+using HugeImages.Storage;
 using Microsoft.Win32;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
@@ -36,6 +40,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private readonly IWindowManager windowManager;
         private readonly IArma3RecentHistory history;
         private readonly IArma3BackupService worldBackup;
+        private ExistingImageryInfos? _imagery;
 
         public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history, IArma3BackupService worldBackup) 
         {
@@ -82,6 +87,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             TargetModDirectory = HistoryEntry?.ModDirectory ?? Arma3MapConfig.GetAutomaticTargetModDirectory(worldName);
 
             Dependencies = await ReadDependencies(DependenciesFilePath(filePath));
+
+            if (ConfigFile != null && WrpCompiler.SeemsGeneratedByUs(World, ConfigFile.PboPrefix))
+            {
+                Imagery = ExistingImageryInfos.TryCreate(arma3Data.ProjectDrive, ConfigFile.PboPrefix, SizeInMeters!.Value);
+            }
 
             UpdateBackupsList(filePath);
 
@@ -190,6 +200,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             get { return _backups; }
             set { _backups = value; NotifyOfPropertyChange(); }
+        }
+
+        public bool IsImageryEditable => Imagery != null;
+
+        public bool IsNotImageryEditable => Imagery == null;
+
+        public ExistingImageryInfos? Imagery
+        {
+            get { return _imagery; }
+            set { _imagery = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(IsImageryEditable)); NotifyOfPropertyChange(nameof(IsNotImageryEditable)); }
         }
 
         protected override Task DoNew()
@@ -361,6 +381,133 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
         }
 
+        public Task ExportSatMap()
+        {
+            if (_imagery != null)
+            {
+                var dialog = new SaveFileDialog();
+                dialog.Filter = "PNG|*.png";
+                dialog.FileName = Path.GetFileNameWithoutExtension(FileName) + "-satmap.png";
+                if (dialog.ShowDialog() == true)
+                {
+                    var filename = dialog.FileName;
+                    IoC.Get<IProgressTool>()
+                        .RunTask(GameRealisticMap.Studio.Labels.ExportSatelliteImage, ui => DoExport(ui, filename, _imagery.GetSatMap(arma3Data.ProjectDrive)));
+                }
+            }
+            return Task.CompletedTask;
+        }
 
+        public async Task ExportIdMap()
+        {
+            if (_imagery != null)
+            {
+                var dialog = new SaveFileDialog();
+                dialog.Filter = "PNG|*.png";
+                dialog.FileName = Path.GetFileNameWithoutExtension(FileName) + "-idmap.png";
+                if (dialog.ShowDialog() == true)
+                {
+                    var filename = dialog.FileName;
+                    var assets = await GetAssetsFromHistory() ?? await AskUserForAssets();
+                    if (assets != null)
+                    {
+                        _ = IoC.Get<IProgressTool>()
+                            .RunTask(GameRealisticMap.Studio.Labels.ExportTextureMaskImage, ui => DoExport(ui, filename, _imagery.GetIdMap(arma3Data.ProjectDrive, assets.Materials)));
+                    }
+                }
+            }
+        }
+
+        private async Task<Arma3Assets?> AskUserForAssets()
+        {
+            var dialogAssets = new OpenFileDialog();
+            dialogAssets.Title = "Please select assets";
+            dialogAssets.Filter = Labels.Arma3AssetsConfiguration + "|*.grma3a";
+            if (dialogAssets.ShowDialog() == true)
+            {
+                return await Arma3Assets.LoadFromFile(arma3Data.Library, dialogAssets.FileName, true);
+            }
+            return null;
+        }
+
+        private async Task<Arma3Assets?> GetAssetsFromHistory()
+        {
+            try
+            {
+                var configFile = HistoryEntry?.ConfigFile;
+                if (!string.IsNullOrEmpty(configFile) && File.Exists(configFile))
+                {
+                    using var configStream = File.OpenRead(configFile);
+                    var assetConfigFile = (await JsonSerializer.DeserializeAsync<Arma3MapConfigJson>(configStream))?.AssetConfigFile;
+                    if (!string.IsNullOrEmpty(assetConfigFile))
+                    {
+                        return await Arma3Assets.LoadFromFile(arma3Data.Library, assetConfigFile, true);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                // TODO: LOG !
+            }
+            return null;
+        }
+
+        public async Task DoExport(IProgressTaskUI ui, string filename, HugeImage<Rgb24> himage)
+        {
+            using (var task = ui.CreateStep("Write", 1))
+            {
+                using (himage)
+                {
+                    await himage.SaveUniqueAsync(filename);
+                }
+            }
+            ui.AddSuccessAction(() => ShellHelper.OpenUri(filename), GameRealisticMap.Studio.Labels.OpenImage);
+            ui.AddSuccessAction(() => ShellHelper.OpenUri(Path.GetDirectoryName(filename)!), GameRealisticMap.Studio.Labels.OpenFolder);
+        }
+
+        public Task ImportSatMap()
+        {
+            if (_imagery != null)
+            {
+                var dialog = new OpenFileDialog();
+                dialog.Filter = "PNG|*.png";
+                if (dialog.ShowDialog() == true)
+                {
+                    var filename = dialog.FileName;
+                    IoC.Get<IProgressTool>()
+                        .RunTask(GameRealisticMap.Studio.Labels.ImportSatelliteImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, ui).UpdateSatMap(_imagery, filename)));
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        private async Task DoImport(IProgressTaskUI ui, Func<Task> action)
+        {
+            await action();
+
+            if (CanGenerateMod)
+            {
+                ui.AddSuccessAction(() => _ = GenerateMod(), Labels.GenerateModForArma3);
+            }
+        }
+
+        public async Task ImportIdMap()
+        {
+            if (_imagery != null)
+            {
+                var dialog = new OpenFileDialog();
+                dialog.Filter = "PNG|*.png";
+                if (dialog.ShowDialog() == true)
+                {
+                    var filename = dialog.FileName;
+                    var assets = await GetAssetsFromHistory() ?? await AskUserForAssets();
+                    if (assets != null)
+                    {
+                        _ = IoC.Get<IProgressTool>()
+                            .RunTask(GameRealisticMap.Studio.Labels.ImportTextureMaskImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, assets.Materials, ui).UpdateIdMap(_imagery, filename)));
+                    }
+                }
+            }
+        }
     }
 }
