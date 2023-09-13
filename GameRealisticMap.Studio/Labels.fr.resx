@@ -1252,4 +1252,37 @@ Dernière génération le {1}</value>
   <data name="GeneratePreviewToBuiltInViewer" xml:space="preserve">
     <value>Générer dans l'outil intégré (le plus rapide)</value>
   </data>
+  <data name="TileSize" xml:space="preserve">
+    <value>Taille de tuile</value>
+  </data>
+  <data name="TotalImageSize" xml:space="preserve">
+    <value>Taille totale de l'image</value>
+  </data>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Ouvrir le dossier</value>
+  </data>
+  <data name="OpenImage" xml:space="preserve">
+    <value>Ouvrir l'image</value>
+  </data>
+  <data name="ImportTextureMaskImage" xml:space="preserve">
+    <value>Importer le masque de texture</value>
+  </data>
+  <data name="ImportSatelliteImage" xml:space="preserve">
+    <value>Importer l'image satellite</value>
+  </data>
+  <data name="Imagery" xml:space="preserve">
+    <value>Imagerie</value>
+  </data>
+  <data name="ExportSatelliteImage" xml:space="preserve">
+    <value>Exporter l'image satellite</value>
+  </data>
+  <data name="ExportTextureMaskImage" xml:space="preserve">
+    <value>Exporter le masque de texture</value>
+  </data>
+  <data name="CannotBeReversedWarning" xml:space="preserve">
+    <value>⚠ Ces opérations ne peuvent pas être inversées, aucune sauvegarde n'est effectuée.</value>
+  </data>
+  <data name="ImageryIsNotDetectedCannotEditIt" xml:space="preserve">
+    <value>L'imagerie n'est pas détectée, impossible de la modifier.</value>
+  </data>
 </root>

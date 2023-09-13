@@ -90,7 +90,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             }
         }
 
-        private void GenerateSatMapTiles(IArma3MapConfig config, HugeImage<Rgba32> satMap, ImageryTiler tiler)
+        internal void GenerateSatMapTiles(IArma3MapConfig config, HugeImage<Rgba32> satMap, ImageryTiler tiler)
         {
             using var report = progress.CreateStep("SatMapTiling", tiler.Segments.Length);
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
@@ -109,7 +109,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             });
         }
 
-        private void GenerateIdMapTilesAndRvMat(IArma3MapConfig config, HugeImage<Rgba32> idmap, ImageryTiler tiler)
+        internal void GenerateIdMapTilesAndRvMat(IArma3MapConfig config, HugeImage<Rgba32> idmap, ImageryTiler tiler)
         {
             using var report = progress.CreateStep("IdMapTiling", tiler.Segments.Length);
             var textureScale = GetTextureScale(config, materialLibrary);

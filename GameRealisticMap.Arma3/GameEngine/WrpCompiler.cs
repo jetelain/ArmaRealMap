@@ -146,6 +146,27 @@ namespace GameRealisticMap.Arma3.GameEngine
                 }
             }
         }
-        
+
+        public static bool SeemsGeneratedByUs(EditableWrp wrp, string pboPrefix)
+        {
+            // We force LandRange with our internal logic, this is a first hint
+            if (wrp.LandRangeX == LandRange(wrp.LandRangeX * wrp.CellSize)) 
+            {
+                // Then check that rvmat naming is our
+                var wh = (int)Math.Round(Math.Sqrt(wrp.MatNames.Length));
+                for (int x = 0; x < wh; x++)
+                {
+                    for (int y = 0; y < wh; y++)
+                    {
+                        if (!string.Equals(wrp.MatNames[x + (y * wh) + 1],$"{pboPrefix}\\data\\layers\\p_{x:000}-{y:000}.rvmat", StringComparison.OrdinalIgnoreCase))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
     }
 }

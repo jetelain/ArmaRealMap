@@ -1151,6 +1151,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à ⚠ Those operations cannot be reversed, no backup is done..
+        /// </summary>
+        public static string CannotBeReversedWarning {
+            get {
+                return ResourceManager.GetString("CannotBeReversedWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Change.
         /// </summary>
         public static string Change {
@@ -1709,6 +1718,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Export satellite image.
+        /// </summary>
+        public static string ExportSatelliteImage {
+            get {
+                return ResourceManager.GetString("ExportSatelliteImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Export texture mask image.
+        /// </summary>
+        public static string ExportTextureMaskImage {
+            get {
+                return ResourceManager.GetString("ExportTextureMaskImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Satellite image blend.
         /// </summary>
         public static string FakeSatBlend {
@@ -2168,6 +2195,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Imagery.
+        /// </summary>
+        public static string Imagery {
+            get {
+                return ResourceManager.GetString("Imagery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Imagery is not detected, cannot edit it..
+        /// </summary>
+        public static string ImageryIsNotDetectedCannotEditIt {
+            get {
+                return ResourceManager.GetString("ImageryIsNotDetectedCannotEditIt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Import assets.
         /// </summary>
         public static string ImportAssets {
@@ -2240,11 +2285,29 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import satellite image.
+        /// </summary>
+        public static string ImportSatelliteImage {
+            get {
+                return ResourceManager.GetString("ImportSatelliteImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Import objects.
         /// </summary>
         public static string ImportsObjects {
             get {
                 return ResourceManager.GetString("ImportsObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import texture mask image.
+        /// </summary>
+        public static string ImportTextureMaskImage {
+            get {
+                return ResourceManager.GetString("ImportTextureMaskImage", resourceCulture);
             }
         }
         
@@ -2662,6 +2725,24 @@ namespace GameRealisticMap.Studio {
         public static string OpenArma3LauncherWithGeneratedModHint {
             get {
                 return ResourceManager.GetString("OpenArma3LauncherWithGeneratedModHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Open folder.
+        /// </summary>
+        public static string OpenFolder {
+            get {
+                return ResourceManager.GetString("OpenFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Open image.
+        /// </summary>
+        public static string OpenImage {
+            get {
+                return ResourceManager.GetString("OpenImage", resourceCulture);
             }
         }
         
@@ -3274,6 +3355,24 @@ namespace GameRealisticMap.Studio {
         public static string TextureWidth {
             get {
                 return ResourceManager.GetString("TextureWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Tile size.
+        /// </summary>
+        public static string TileSize {
+            get {
+                return ResourceManager.GetString("TileSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Total image size.
+        /// </summary>
+        public static string TotalImageSize {
+            get {
+                return ResourceManager.GetString("TotalImageSize", resourceCulture);
             }
         }
         
