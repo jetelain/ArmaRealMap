@@ -1285,4 +1285,31 @@ Last generated on {1}</value>
   <data name="ImageryIsNotDetectedCannotEditIt" xml:space="preserve">
     <value>Imagery is not detected, cannot edit it.</value>
   </data>
+  <data name="Layers" xml:space="preserve">
+    <value>Layers</value>
+  </data>
+  <data name="EditOnOpenStreetMapOrg" xml:space="preserve">
+    <value>Edit on OpenStreetMap.org</value>
+  </data>
+  <data name="LayerContours" xml:space="preserve">
+    <value>Contour line</value>
+  </data>
+  <data name="LayerOrchard" xml:space="preserve">
+    <value>Orchards</value>
+  </data>
+  <data name="LayerVineyard" xml:space="preserve">
+    <value>Vineyards</value>
+  </data>
+  <data name="LayerFarmlands" xml:space="preserve">
+    <value>Agricultural fields</value>
+  </data>
+  <data name="LayerSandSurfaces" xml:space="preserve">
+    <value>Sand</value>
+  </data>
+  <data name="EnableAll" xml:space="preserve">
+    <value>Enable all</value>
+  </data>
+  <data name="PreviewTitle" xml:space="preserve">
+    <value>{0}: Preview</value>
+  </data>
 </root>

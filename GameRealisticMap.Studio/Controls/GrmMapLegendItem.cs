@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    internal class GrmMapLegendItem : FrameworkElement
+    public sealed class GrmMapLegendItem : FrameworkElement
     {
         public GrmMapLegendItem()
         {

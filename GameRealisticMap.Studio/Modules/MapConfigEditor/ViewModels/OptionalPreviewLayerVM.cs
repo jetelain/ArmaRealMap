@@ -68,5 +68,15 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             }
         }
 
+        public Func<IContext, PreviewAdditionalLayer> Generate => generate;
+
+        internal void SetActualEnabled(bool value)
+        {
+            if (isEnabled != value)
+            {
+                isEnabled = value;
+                NotifyOfPropertyChange(nameof(isEnabled));
+            }
+        }
     }
 }

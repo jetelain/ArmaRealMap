@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:cal="http://caliburnmicro.com"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.MapConfigEditor.Views"
              mc:Ignorable="d" 
@@ -23,9 +24,13 @@
 
         <StackPanel Orientation="Horizontal">
 
-            <Button VerticalAlignment="Center" Click="DispatchViewOSM" Padding="5 2" Margin="5 0">View on OpenStreetMap.org</Button>
+            <Button VerticalAlignment="Center" Click="DispatchViewOSM" Padding="5 2" Margin="5 0">
+                <Run Text="{x:Static r:Labels.ViewOnOpenStreetMapOrg}"/>
+            </Button>
 
-            <Button VerticalAlignment="Center" Click="DispatchEditOSM" Padding="5 2" Margin="5 0">Edit on OpenStreetMap.org</Button>
+            <Button VerticalAlignment="Center" Click="DispatchEditOSM" Padding="5 2" Margin="5 0">
+                <Run Text="{x:Static r:Labels.EditOnOpenStreetMapOrg}" />
+            </Button>
 
             <ProgressBar VerticalAlignment="Center" Width="300" Height="15" Margin="5" IsIndeterminate="True" 
                      Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
@@ -33,10 +38,16 @@
         </StackPanel>
 
         <grm:GrmMapViewer x:Name="Map" Grid.Row="1" MapData="{Binding PreviewMapData}" SizeInMeters="{Binding SizeInMeters}" />
-        
-        <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Padding="5 0">
-            <Run Text="Other layers" />
-        </TextBlock>
+
+        <Grid Grid.Column="1" Grid.Row="0">
+            <TextBlock VerticalAlignment="Center" Padding="5 0" HorizontalAlignment="Left">
+                <Run Text="{x:Static r:Labels.Layers}" />
+            </TextBlock>
+            <Button VerticalAlignment="Center" Padding="5 2" Margin="5 0" HorizontalAlignment="Right" cal:Message.Attach="EnableAll" IsEnabled="{Binding IsNotWorking}">
+                <Run Text="{x:Static r:Labels.EnableAll}" />
+            </Button>
+        </Grid>
+
 
         <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
             <ItemsControl ItemsSource="{Binding Optionals}" IsEnabled="{Binding IsNotWorking}">

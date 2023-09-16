@@ -1646,6 +1646,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Edit on OpenStreetMap.org.
+        /// </summary>
+        public static string EditOnOpenStreetMapOrg {
+            get {
+                return ResourceManager.GetString("EditOnOpenStreetMapOrg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Edit with Eden Editor.
         /// </summary>
         public static string EditWithEdenEditor {
@@ -1678,6 +1687,15 @@ namespace GameRealisticMap.Studio {
         public static string ElevationMode {
             get {
                 return ResourceManager.GetString("ElevationMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Enable all.
+        /// </summary>
+        public static string EnableAll {
+            get {
+                return ResourceManager.GetString("EnableAll", resourceCulture);
             }
         }
         
@@ -2402,6 +2420,60 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Contour line.
+        /// </summary>
+        public static string LayerContours {
+            get {
+                return ResourceManager.GetString("LayerContours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Agricultural fields.
+        /// </summary>
+        public static string LayerFarmlands {
+            get {
+                return ResourceManager.GetString("LayerFarmlands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Orchards.
+        /// </summary>
+        public static string LayerOrchard {
+            get {
+                return ResourceManager.GetString("LayerOrchard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Layers.
+        /// </summary>
+        public static string Layers {
+            get {
+                return ResourceManager.GetString("Layers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Sand.
+        /// </summary>
+        public static string LayerSandSurfaces {
+            get {
+                return ResourceManager.GetString("LayerSandSurfaces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Vineyards.
+        /// </summary>
+        public static string LayerVineyard {
+            get {
+                return ResourceManager.GetString("LayerVineyard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ❌ License not approved.
         /// </summary>
         public static string LicenseNotApproved {
@@ -2824,6 +2896,15 @@ namespace GameRealisticMap.Studio {
         public static string Preview {
             get {
                 return ResourceManager.GetString("Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0}: Preview.
+        /// </summary>
+        public static string PreviewTitle {
+            get {
+                return ResourceManager.GetString("PreviewTitle", resourceCulture);
             }
         }
         

@@ -194,7 +194,7 @@
 
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
-                        <TextBlock FontSize="25">Natural rows</TextBlock>
+                        <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.NaturalRows}" /></TextBlock>
                     </Expander.Header>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 10">

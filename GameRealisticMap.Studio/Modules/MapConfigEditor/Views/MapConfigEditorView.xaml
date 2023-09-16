@@ -131,7 +131,9 @@
                         <toolkit:WatermarkTextBox Width="200" Text="{Binding PboPrefix, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticPboPrefix}"  />
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
-                        <Label Width="200">TileSize</Label>
+                        <Label Width="200">
+                            <Run Text="{x:Static r:Labels.TileSize}"/>
+                        </Label>
                         <toolkit:WatermarkTextBox Width="200" Text="{Binding Config.TileSize,Mode=TwoWay, ValidatesOnExceptions=True}"  Watermark="{Binding AutomaticTileSize}" />
                         <TextBlock Margin="10 0">
                             <Run Text="{x:Static r:Labels.Pixels}" />

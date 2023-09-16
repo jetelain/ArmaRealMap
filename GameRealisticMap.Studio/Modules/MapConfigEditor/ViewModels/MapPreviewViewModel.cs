@@ -43,7 +43,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public MapPreviewViewModel(MapConfigEditorViewModel map)
         {
             this.map = map;
-            DisplayName = string.Format("{0} : Preview", map.FileName);
+            DisplayName = string.Format(GameRealisticMap.Studio.Labels.PreviewTitle, map.FileName);
 
             Optionals = new List<OptionalPreviewLayerVM>()
             {
@@ -171,6 +171,34 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             {
                 ShellHelper.OpenUri("https://www.openstreetmap.org/edit#map=" + GetPosition(mapData.Area, terrainEnvelope));
             }
+        }
+
+        private void DoAllAddional(IContext context)
+        {
+            IsWorking = true;
+            NotifyOfPropertyChange(nameof(IsWorking));
+            NotifyOfPropertyChange(nameof(IsNotWorking));
+
+            PreviewMapData = new PreviewMapData(context, Optionals.Select(o => o.Generate(context)));
+            NotifyOfPropertyChange(nameof(PreviewMapData));
+
+            IsWorking = false;
+            NotifyOfPropertyChange(nameof(IsWorking));
+            NotifyOfPropertyChange(nameof(IsNotWorking));
+
+            foreach(var opt in Optionals)
+            {
+                opt.SetActualEnabled(true);
+            }
+        }
+
+        public Task EnableAll()
+        {
+            if (mapData != null)
+            {
+                Task.Run(() => DoAllAddional(mapData));
+            }
+            return Task.CompletedTask;
         }
     }
 }
