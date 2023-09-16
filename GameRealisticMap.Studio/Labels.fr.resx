@@ -1285,4 +1285,31 @@ Dernière génération le {1}</value>
   <data name="ImageryIsNotDetectedCannotEditIt" xml:space="preserve">
     <value>L'imagerie n'est pas détectée, impossible de la modifier.</value>
   </data>
+  <data name="LayerContours" xml:space="preserve">
+    <value>Courbes de niveau</value>
+  </data>
+  <data name="Layers" xml:space="preserve">
+    <value>Calques</value>
+  </data>
+  <data name="EditOnOpenStreetMapOrg" xml:space="preserve">
+    <value>Modifier sur OpenStreetMap.org</value>
+  </data>
+  <data name="LayerOrchard" xml:space="preserve">
+    <value>Vergers</value>
+  </data>
+  <data name="LayerVineyard" xml:space="preserve">
+    <value>Vignobles</value>
+  </data>
+  <data name="LayerFarmlands" xml:space="preserve">
+    <value>Champs agricoles</value>
+  </data>
+  <data name="LayerSandSurfaces" xml:space="preserve">
+    <value>Sable</value>
+  </data>
+  <data name="EnableAll" xml:space="preserve">
+    <value>Tout activer</value>
+  </data>
+  <data name="PreviewTitle" xml:space="preserve">
+    <value>{0} : Aperçu</value>
+  </data>
 </root>

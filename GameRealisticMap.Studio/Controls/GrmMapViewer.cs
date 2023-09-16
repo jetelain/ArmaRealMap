@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Windows;
@@ -12,7 +11,7 @@ using GameRealisticMap.Studio.Shared;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    public class GrmMapViewer : FrameworkElement
+    public sealed class GrmMapViewer : FrameworkElement
     {
         private readonly Dictionary<TerrainPolygon, PathGeometry> polyCache = new Dictionary<TerrainPolygon, PathGeometry>();
         private readonly Dictionary<TerrainPath, PathGeometry> pathCache = new Dictionary<TerrainPath, PathGeometry>();

@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>grma3</AssemblyName>
-	<FileVersion>0.6</FileVersion>
+	<FileVersion>0.7</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
