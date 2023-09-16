@@ -23,13 +23,13 @@
 
         <StackPanel Orientation="Horizontal">
 
+            <Button VerticalAlignment="Center" Click="DispatchViewOSM" Padding="5 2" Margin="5 0">View on OpenStreetMap.org</Button>
+
+            <Button VerticalAlignment="Center" Click="DispatchEditOSM" Padding="5 2" Margin="5 0">Edit on OpenStreetMap.org</Button>
+
             <ProgressBar VerticalAlignment="Center" Width="300" Height="15" Margin="5" IsIndeterminate="True" 
                      Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-            <Button VerticalAlignment="Center" Click="DispatchViewOSM" Padding="5 2" Visibility="{Binding IsNotWorking, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="5 0">View on OpenStreetMap.org</Button>
-
-            <Button VerticalAlignment="Center" Click="DispatchEditOSM" Padding="5 2" Visibility="{Binding IsNotWorking, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="5 0">Edit on OpenStreetMap.org</Button>
-
+            
         </StackPanel>
 
         <grm:GrmMapViewer x:Name="Map" Grid.Row="1" MapData="{Binding PreviewMapData}" SizeInMeters="{Binding SizeInMeters}" />
