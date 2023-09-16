@@ -74,7 +74,7 @@
             "Model": {
               "Objects": [
                 {
-                  "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                  "Model": "a3\\vegetation_f_enoch\\bush\\b_caragana_arborescens.p3d",
                   "Transform": [0.37681502,1.7445197,-0.25731963]
                 }
               ]
@@ -279,7 +279,7 @@
             "Model": {
               "Objects": [
                 {
-                  "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                  "Model": "a3\\vegetation_f_enoch\\bush\\b_caragana_arborescens.p3d",
                   "Transform": [0.37681502,1.7445197,-0.25731963]
                 }
               ]
@@ -367,7 +367,7 @@
             "Model": {
               "Objects": [
                 {
-                  "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                  "Model": "a3\\vegetation_f_enoch\\bush\\b_caragana_arborescens.p3d",
                   "Transform": [0.37681502,1.7445197,-0.25731963]
                 }
               ]
@@ -2312,7 +2312,7 @@
                 "Model": {
                   "Objects": [
                     {
-                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_caragana_arborescens.p3d",
                       "Transform": [0.37681502,1.7445197,-0.25731963]
                     }
                   ]
@@ -2448,7 +2448,7 @@
                 "Model": {
                   "Objects": [
                     {
-                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_caragana_arborescens.p3d",
                       "Transform": [0.37681502,1.7445197,-0.25731963]
                     }
                   ]
@@ -2512,7 +2512,7 @@
                 "Model": {
                   "Objects": [
                     {
-                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_caragana_arborescens.p3d",
                       "Transform": [0.37681502,1.7445197,-0.25731963]
                     }
                   ]
@@ -2612,7 +2612,7 @@
                 "Model": {
                   "Objects": [
                     {
-                      "Model": "a3\\vegetation_f_enoch\\Bush\\B_Caragana_arborescens.p3d",
+                      "Model": "a3\\vegetation_f_enoch\\bush\\b_caragana_arborescens.p3d",
                       "Transform": [0.37681502,1.7445197,-0.25731963]
                     }
                   ]
@@ -2827,7 +2827,10 @@
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat",
       "Id": "TwoLanesMotorway",
       "Width": 12,
-      "ClearWidth": 18
+      "ClearWidth": 18,
+      "ProceduralStreetLamps": "None",
+      "DistanceBetweenStreetLamps": null,
+      "HasSideWalks": false
     },
     {
       "SatelliteColor": "4D4D4DFF",
@@ -2837,7 +2840,10 @@
       "Material": "a3\\roads_f\\roads_ae\\data\\surf_roadtarmac_highway.rvmat",
       "Id": "TwoLanesPrimaryRoad",
       "Width": 12,
-      "ClearWidth": 16
+      "ClearWidth": 16,
+      "ProceduralStreetLamps": "None",
+      "DistanceBetweenStreetLamps": null,
+      "HasSideWalks": false
     },
     {
       "SatelliteColor": "4D4D4DFF",
@@ -2847,7 +2853,10 @@
       "Material": "a3\\structures_f_exp\\data\\roads\\surf_exp_roadtarmac_road.rvmat",
       "Id": "TwoLanesSecondaryRoad",
       "Width": 7.5,
-      "ClearWidth": 11.5
+      "ClearWidth": 11.5,
+      "ProceduralStreetLamps": "None",
+      "DistanceBetweenStreetLamps": null,
+      "HasSideWalks": false
     },
     {
       "SatelliteColor": "5A4936FF",
@@ -2857,7 +2866,10 @@
       "Material": "z\\arm\\addons\\sahel\\data\\roads\\arm_sahel_dirt_road.rvmat",
       "Id": "TwoLanesConcreteRoad",
       "Width": 7.5,
-      "ClearWidth": 11.5
+      "ClearWidth": 11.5,
+      "ProceduralStreetLamps": "None",
+      "DistanceBetweenStreetLamps": null,
+      "HasSideWalks": false
     },
     {
       "SatelliteColor": "5A4936FF",
@@ -2867,7 +2879,10 @@
       "Material": "z\\arm\\addons\\sahel\\data\\roads\\arm_sahel_dirt_road.rvmat",
       "Id": "SingleLaneConcreteRoad",
       "Width": 5.5,
-      "ClearWidth": 7.5
+      "ClearWidth": 7.5,
+      "ProceduralStreetLamps": "None",
+      "DistanceBetweenStreetLamps": null,
+      "HasSideWalks": false
     },
     {
       "SatelliteColor": "5A4936FF",
@@ -2877,7 +2892,10 @@
       "Material": "z\\arm\\addons\\sahel\\data\\roads\\arm_sahel_dirt_road.rvmat",
       "Id": "SingleLaneDirtRoad",
       "Width": 6,
-      "ClearWidth": 10
+      "ClearWidth": 10,
+      "ProceduralStreetLamps": "None",
+      "DistanceBetweenStreetLamps": null,
+      "HasSideWalks": false
     },
     {
       "SatelliteColor": "5A4936FF",
@@ -2887,7 +2905,10 @@
       "Material": "z\\arm\\addons\\sahel\\data\\roads\\arm_sahel_roaddirt_path.rvmat",
       "Id": "SingleLaneDirtPath",
       "Width": 4.5,
-      "ClearWidth": 6.5
+      "ClearWidth": 6.5,
+      "ProceduralStreetLamps": "None",
+      "DistanceBetweenStreetLamps": null,
+      "HasSideWalks": false
     },
     {
       "SatelliteColor": "5A4936FF",
@@ -2897,7 +2918,10 @@
       "Material": "z\\arm\\addons\\sahel\\data\\roads\\arm_sahel_dirt_road.rvmat",
       "Id": "ConcreteFootway",
       "Width": 2,
-      "ClearWidth": 3
+      "ClearWidth": 3,
+      "ProceduralStreetLamps": "None",
+      "DistanceBetweenStreetLamps": null,
+      "HasSideWalks": false
     },
     {
       "SatelliteColor": "5A4936FF",
@@ -2907,7 +2931,10 @@
       "Material": "z\\arm\\addons\\sahel\\data\\roads\\arm_sahel_path.rvmat",
       "Id": "Trail",
       "Width": 1.5,
-      "ClearWidth": 3.5
+      "ClearWidth": 3.5,
+      "ProceduralStreetLamps": "None",
+      "DistanceBetweenStreetLamps": null,
+      "HasSideWalks": false
     }
   ],
   "Objects": {
@@ -3413,8 +3440,10 @@
     "Straights": [],
     "Crossings": []
   },
+  "NaturalRows": {},
   "BaseWorldName": "arm_world_sahel",
   "BaseDependency": "arm_sahel",
+  "Sidewalks": [],
   "Dependencies": [
     {
       "SteamId": "2982306133"
