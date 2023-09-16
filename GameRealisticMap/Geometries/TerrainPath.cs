@@ -145,6 +145,15 @@ namespace GameRealisticMap.Geometries
             return result;
         }
 
+        public IEnumerable<TerrainPath> ClippedByEnveloppe(ITerrainEnvelope other)
+        {
+            if (!EnveloppeIntersects(other))
+            {
+                return Enumerable.Empty<TerrainPath>();
+            }
+            return Intersection(TerrainPolygon.FromRectangle(other.MinPoint, other.MaxPoint));
+        }
+
         public IEnumerable<TerrainPath> ClippedBy(TerrainPolygon polygon)
         {
             if (!EnveloppeIntersects(polygon))
@@ -305,6 +314,29 @@ namespace GameRealisticMap.Geometries
                 return new TerrainPolygon(Points.Concat(new[] { FirstPoint }).ToList());
             }
             return new TerrainPolygon(Points);
+        }
+
+        public static List<TerrainPoint> Simplify(IReadOnlyList<TerrainPoint> input)
+        {
+            if (input.Count < 3)
+            {
+                return input.ToList();
+            }
+            var previousPoint = input[0];
+            var result = new List<TerrainPoint>() { previousPoint };
+            for (int i = 1; i < input.Count - 1; i++)
+            {
+                var thisPoint = input[i];
+                var nextPoint = input[i + 1];
+                var extrapolated = Vector2.Lerp(previousPoint.Vector, nextPoint.Vector, (thisPoint.Vector - previousPoint.Vector).Length() / (nextPoint.Vector - previousPoint.Vector).Length());
+                if ((extrapolated - thisPoint.Vector).Length() > 0.5)
+                {
+                    result.Add(thisPoint);
+                    previousPoint = thisPoint;
+                }
+            }
+            result.Add(input[input.Count - 1]);
+            return result;
         }
     }
 }

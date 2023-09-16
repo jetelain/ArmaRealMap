@@ -1,4 +1,7 @@
-﻿namespace GameRealisticMap.Reporting
+﻿using GameRealisticMap.Geometries;
+using System.Collections.Concurrent;
+
+namespace GameRealisticMap.Reporting
 {
     public static class ProgressSystemHelper
     {
@@ -45,6 +48,37 @@
                 yield return item;
                 report.ReportOneDone();
             }
+        }
+
+        public static IReadOnlyCollection<TTarget> SelectManyParallel<TSource,TTarget>(this IReadOnlyCollection<TSource> source, IProgressSystem progress, string stepName, Func<TSource,IEnumerable<TTarget>> transform)
+        {
+            var result = new ConcurrentQueue<TTarget>();
+            using (var report = progress.CreateStep(stepName, source.Count))
+            {
+                Parallel.ForEach(source, sourceItem =>
+                {
+                    foreach (var resultItem in transform(sourceItem))
+                    {
+                        result.Enqueue(resultItem);
+                    }
+                    report.ReportOneDone();
+                });
+            }
+            return result;
+        }
+
+        public static IReadOnlyCollection<TTarget> SelectParallel<TSource, TTarget>(this IReadOnlyCollection<TSource> source, IProgressSystem progress, string stepName, Func<TSource, TTarget> transform)
+        {
+            var result = new ConcurrentQueue<TTarget>();
+            using (var report = progress.CreateStep(stepName, source.Count))
+            {
+                Parallel.ForEach(source, sourceItem =>
+                {
+                    result.Enqueue(transform(sourceItem));
+                    report.ReportOneDone();
+                });
+            }
+            return result;
         }
     }
 }

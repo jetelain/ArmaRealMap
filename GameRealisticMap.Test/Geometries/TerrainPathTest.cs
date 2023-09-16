@@ -182,5 +182,28 @@ namespace GameRealisticMap.Test.Geometries
 
             Assert.Empty(path.Substract(TerrainPolygon.FromRectangle(new(2.5f, 0f), new(7.5f, 20f))));
         }
+
+
+        [Fact]
+        public void TerrainPath_Simplify()
+        {
+            Assert.Equal(new TerrainPoint[] { new(0, 0), new(0, 10) }, 
+                TerrainPath.Simplify(new TerrainPoint[] { new(0, 0), new(0, 5), new(0, 10) }));
+
+            Assert.Equal(new TerrainPoint[] { new(0, 0), new(0, 10) },
+                TerrainPath.Simplify(new TerrainPoint[] { new(0, 0), new(0.25f, 5), new(0, 10) }));
+
+            Assert.Equal(new TerrainPoint[] { new(0, 0), new(0, 10) },
+                TerrainPath.Simplify(new TerrainPoint[] { new(0, 0), new(0, 2), new(0, 4), new(0, 6), new(0, 8), new(0, 10) }));
+
+            Assert.Equal(new TerrainPoint[] { new(0, 0), new(0, 10), new(10, 10) },
+                TerrainPath.Simplify(new TerrainPoint[] { new(0, 0), new(0, 10), new(10, 10) }));
+
+            Assert.Equal(new TerrainPoint[] { new(0, 0), new(0, 10) },
+                TerrainPath.Simplify(new TerrainPoint[] { new(0, 0), new(0, 10) }));
+
+            Assert.Equal(new TerrainPoint[] { new(0, 0) },
+                TerrainPath.Simplify(new TerrainPoint[] { new(0, 0) }));
+        }
     }
 }
