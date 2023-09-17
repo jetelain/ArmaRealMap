@@ -104,8 +104,14 @@ namespace GameRealisticMap.Arma3.ManMade
             return false;
         }
 
-        internal static BoundingBox GetFitBox(Building building, float min, float max, BuildingDefinition obj)
+        internal BoundingBox GetFitBox(Building building, float min, float max, BuildingDefinition obj)
         {
+            if (building.TypeId == BuildingTypeId.WindTurbine)
+            {
+                // TODO: Must face dominant wind (hardcoded to WEST)
+                return new BoundingBox(building.Box.Center, obj.Size.X, obj.Size.Y, 90);
+            }
+
             // By convention, building entrance is at SOUTH (Bottom) of model
 
             var fitsNotRotated = obj.FitsNotRotated(building.Box, min, max);

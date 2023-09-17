@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Numerics;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Geometries;
@@ -60,7 +59,7 @@ namespace GameRealisticMap.ManMade.Buildings
             var cache = new ConcurrentDictionary<BuildingTypeId, List<Vector2>>();
 
             foreach(var node in osmSource.Nodes
-                .Where(n => n.Tags != null && n.Tags.ContainsKey("man_made"))
+                .Where(n => n.Tags != null && (n.Tags.ContainsKey("man_made") || n.Tags.GetValue("generator:source") == "wind"))
                 .ProgressStep(progress, "Nodes"))
             {
                 var type = BuildingTypeIdHelper.FromOSM(node.Tags);

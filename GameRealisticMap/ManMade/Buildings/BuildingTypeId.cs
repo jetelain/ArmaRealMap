@@ -16,6 +16,7 @@
         WaterTower,
         BusStopShelter,
         IndividualGarage,
-        Lighthouse
+        Lighthouse,
+        WindTurbine
     }
 }
