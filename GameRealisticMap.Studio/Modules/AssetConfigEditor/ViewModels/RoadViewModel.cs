@@ -119,26 +119,28 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public bool HasStreetLamp 
         { 
             get => proceduralStreetLamp == StreetLampsCondition.Everywhere;
-            set { if (value) { proceduralStreetLamp = StreetLampsCondition.Everywhere; } } 
+            set { if (value) { proceduralStreetLamp = StreetLampsCondition.Everywhere; NotifyOfPropertyChange(nameof(HasStreetLampSomewhere)); } } 
         }
 
         public bool HasStreetLampUrban
         {
             get => proceduralStreetLamp == StreetLampsCondition.UrbanAreas;
-            set { if (value) { proceduralStreetLamp = StreetLampsCondition.UrbanAreas; } }
+            set { if (value) { proceduralStreetLamp = StreetLampsCondition.UrbanAreas; NotifyOfPropertyChange(nameof(HasStreetLampSomewhere)); } }
         }
 
         public bool HasStreetLampNearUrban
         {
             get => proceduralStreetLamp == StreetLampsCondition.NearUrbanAreas;
-            set { if (value) { proceduralStreetLamp = StreetLampsCondition.NearUrbanAreas; } }
+            set { if (value) { proceduralStreetLamp = StreetLampsCondition.NearUrbanAreas; NotifyOfPropertyChange(nameof(HasStreetLampSomewhere)); } }
         }
 
         public bool HasNotStreetLamp 
         { 
             get => proceduralStreetLamp == StreetLampsCondition.None;
-            set { if (value) { proceduralStreetLamp = StreetLampsCondition.None; } }
+            set { if (value) { proceduralStreetLamp = StreetLampsCondition.None; NotifyOfPropertyChange(nameof(HasStreetLampSomewhere)); } }
         }
+
+        public bool HasStreetLampSomewhere => proceduralStreetLamp != StreetLampsCondition.None;
 
         public bool HasSidewalks { get => hasSidewalks; set { if (hasSidewalks != value) { hasSidewalks = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(HasNotSidewalks)); } } }
 

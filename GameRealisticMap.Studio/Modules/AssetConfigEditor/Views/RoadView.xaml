@@ -95,7 +95,7 @@
                         </RadioButton>
                     </StackPanel>
 
-                    <StackPanel Margin="50 0 0 10" Orientation="Horizontal" Visibility="{Binding HasStreetLamp, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                    <StackPanel Margin="50 0 0 10" Orientation="Horizontal" Visibility="{Binding HasStreetLampSomewhere, Converter={StaticResource BooleanToVisibilityConverter}}" >
                         <Label Width="200">
                             <TextBlock TextWrapping="Wrap">
                                 <Run Text="{x:Static r:Labels.DistanceBetweenStreetLamps}" />
