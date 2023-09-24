@@ -2402,6 +2402,19 @@
           ]
         }
       }
+    ],
+    "WindTurbine": [
+      {
+        "Size": [4,4],
+        "Composition": {
+          "Objects": [
+            {
+              "Model": "a3\\structures_f\\ind\\windpowerplant\\wpp_turbine_v2_f.p3d",
+              "Transform": [1,0,-1.7484557E-07,0,1,0,1.7484557E-07,0,1,0.049999807,21.466734,-1.1]
+            }
+          ]
+        }
+      }
     ]
   },
   "ClusterCollections": {

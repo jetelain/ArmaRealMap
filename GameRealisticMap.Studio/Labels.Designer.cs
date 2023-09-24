@@ -1061,6 +1061,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Wind Turbine.
+        /// </summary>
+        public static string AssetWindTurbine {
+            get {
+                return ResourceManager.GetString("AssetWindTurbine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Available criterias.
         /// </summary>
         public static string AvailableCriterias {

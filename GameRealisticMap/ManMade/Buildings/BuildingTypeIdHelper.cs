@@ -83,6 +83,16 @@ namespace GameRealisticMap.ManMade.Buildings
                 case "water_tower":
                     return BuildingTypeId.WaterTower;
             }
+
+            if (tags.GetValue("power") == "generator" && tags.GetValue("generator:source") == "wind")
+            {
+                var method = tags.GetValue("generator:method");
+                if ( method == "wind_turbine" || string.IsNullOrEmpty(method))
+                {
+                    return BuildingTypeId.WindTurbine;
+                }
+            }
+
             return null;
         }
     }

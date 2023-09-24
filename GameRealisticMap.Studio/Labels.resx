@@ -1312,4 +1312,7 @@ Last generated on {1}</value>
   <data name="PreviewTitle" xml:space="preserve">
     <value>{0}: Preview</value>
   </data>
+  <data name="AssetWindTurbine" xml:space="preserve">
+    <value>Wind Turbine</value>
+  </data>
 </root>
