@@ -10,3 +10,6 @@
 [submodule "gemini"]
 	path = gemini
 	url = https://github.com/jetelain/gemini.git
+[submodule "weatherstats"]
+	path = weatherstats
+	url = https://github.com/jetelain/weatherstats.git

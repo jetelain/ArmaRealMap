@@ -18,6 +18,7 @@ using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
 using GameRealisticMap.Nature.Trees;
 using GameRealisticMap.Nature.Watercourses;
+using GameRealisticMap.Nature.Weather;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Satellite;
 
@@ -70,6 +71,7 @@ namespace GameRealisticMap
             Register(new DefaultAgriculturalAreasBuilder(progress));
             Register(new ConditionEvaluatorBuilder());
             Register(new ElevationContourBuilder(progress));
+            Register(new WeatherBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)

@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HugeImages\HugeImages\HugeImages.csproj" />
     <ProjectReference Include="..\mapkit\MapToolkit\MapToolkit.csproj" />
+    <ProjectReference Include="..\weatherstats\WeatherStats\WeatherStats.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using System.Numerics;
+﻿using System.Numerics;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Roads;
+using GameRealisticMap.Nature.Weather;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.ManMade
@@ -54,12 +53,18 @@ namespace GameRealisticMap.Arma3.ManMade
             var buildings = context.GetData<BuildingsData>().Buildings;
             var roads = context.GetData<RoadsData>().Roads;
 
+            var prevailingWind = 0f;
+            if (buildings.Any(b => b.TypeId == BuildingTypeId.WindTurbine))
+            {
+                prevailingWind = context.GetData<WeatherData>().GetPrevailingWindAngle();
+            }
+
             var nonefits = 0;
             using var report = progress.CreateStep("PlaceBuildings", buildings.Count);
             foreach (var building in buildings)
             {
-                if (!TryPlaceBuilding(result, roads, building, 0.5f, 1.25f)
-                    && !TryPlaceBuildingIfNotOverlapping(buildings, result, roads, building, 1.25f, 10f))
+                if (!TryPlaceBuilding(result, roads, building, 0.5f, 1.25f, prevailingWind)
+                    && !TryPlaceBuildingIfNotOverlapping(buildings, result, roads, building, 1.25f, 10f, prevailingWind))
                 {
                     nonefits++;
                 }
@@ -69,13 +74,13 @@ namespace GameRealisticMap.Arma3.ManMade
             return result.SelectMany(p => p.ToObjects());
         }
 
-        private bool TryPlaceBuildingIfNotOverlapping(List<Building> wanted, List<Placed> buildings, List<Road> roads, Building building, float min, float max)
+        private bool TryPlaceBuildingIfNotOverlapping(List<Building> wanted, List<Placed> buildings, List<Road> roads, Building building, float min, float max, float prevailingWind)
         {
             var candidates = GetBuildings(building, min, max);
             if (candidates.Count > 0)
             {
                 var obj = PickOne(building, candidates);
-                var realbox = RealBoxAdjustedToRoad(roads, obj.Size, GetFitBox(building, min, max, obj));
+                var realbox = RealBoxAdjustedToRoad(roads, obj.Size, GetFitBox(building, min, max, obj, prevailingWind));
                 if (!wanted.Where(b => b != building).Any(b => b.Box.Polygon.Intersects(realbox.Polygon))
                     && !buildings.Any(b => b.Box.Polygon.Intersects(realbox.Polygon)))
                 {
@@ -87,13 +92,13 @@ namespace GameRealisticMap.Arma3.ManMade
         }
 
 
-        private bool TryPlaceBuilding(List<Placed> buildings, List<Road> roads, Building building, float min, float max)
+        private bool TryPlaceBuilding(List<Placed> buildings, List<Road> roads, Building building, float min, float max, float prevailingWind)
         {
             var candidates = GetBuildings(building, min, max);
             if (candidates.Count > 0)
             {
                 var obj = PickOne(building, candidates);
-                var box = GetFitBox(building, min, max, obj);
+                var box = GetFitBox(building, min, max, obj, prevailingWind);
                 if (box.Width < obj.Size.X || box.Height < obj.Size.Y) // Object is larger than wanted box
                 {
                     box = RealBoxAdjustedToRoad(roads, obj.Size, box);
@@ -104,12 +109,11 @@ namespace GameRealisticMap.Arma3.ManMade
             return false;
         }
 
-        internal BoundingBox GetFitBox(Building building, float min, float max, BuildingDefinition obj)
+        internal BoundingBox GetFitBox(Building building, float min, float max, BuildingDefinition obj, float prevailingWind)
         {
             if (building.TypeId == BuildingTypeId.WindTurbine)
             {
-                // TODO: Must face dominant wind (hardcoded to WEST)
-                return new BoundingBox(building.Box.Center, obj.Size.X, obj.Size.Y, 90);
+                return new BoundingBox(building.Box.Center, obj.Size.X, obj.Size.Y, prevailingWind);
             }
 
             // By convention, building entrance is at SOUTH (Bottom) of model
