@@ -57,6 +57,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gemini", "gemini\src\Gemini
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gemini.Modules.Output", "gemini\src\Gemini.Modules.Output\Gemini.Modules.Output.csproj", "{20ECA174-C5EC-4357-AA5D-8104222147AC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherStats", "weatherstats\WeatherStats\WeatherStats.csproj", "{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -561,6 +563,26 @@ Global
 		{20ECA174-C5EC-4357-AA5D-8104222147AC}.Release|x64.Build.0 = Release|Any CPU
 		{20ECA174-C5EC-4357-AA5D-8104222147AC}.Release|x86.ActiveCfg = Release|Any CPU
 		{20ECA174-C5EC-4357-AA5D-8104222147AC}.Release|x86.Build.0 = Release|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|ARM.Build.0 = Debug|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|x64.Build.0 = Debug|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|x86.Build.0 = Debug|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|ARM.Build.0 = Release|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|ARM64.Build.0 = Release|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|x64.ActiveCfg = Release|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|x64.Build.0 = Release|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|x86.ActiveCfg = Release|Any CPU
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -581,9 +603,10 @@ Global
 		{7B97A19B-A294-4C14-82A2-0355E9FD0FBB} = {2BC1C49B-84B5-4AAA-89B6-72004913364E}
 		{043F9084-71C4-4493-BFA7-B6129618A293} = {AD947998-A388-4783-B9A6-2410E046C91D}
 		{20ECA174-C5EC-4357-AA5D-8104222147AC} = {AD947998-A388-4783-B9A6-2410E046C91D}
+		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36} = {2BC1C49B-84B5-4AAA-89B6-72004913364E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {67E6979E-AD2E-4E18-82E9-C7B7D491C3E9}
 		RESX_MoveToResources = {"Items":[{"Extensions":".cs,.vb","Patterns":"$Namespace.$File.$Key|$File.$Key|StringResourceKey.$Key|$Namespace.StringResourceKey.$Key|nameof($File.$Key), ResourceType = typeof($File)|ErrorMessageResourceType = typeof($File), ErrorMessageResourceName = nameof($File.$Key)"},{"Extensions":".cshtml,.vbhtml","Patterns":"@$Namespace.$File.$Key|@$File.$Key|@StringResourceKey.$Key|@$Namespace.StringResourceKey.$Key"},{"Extensions":".cpp,.c,.hxx,.h","Patterns":"$File::$Key"},{"Extensions":".aspx,.ascx","Patterns":"<%$ Resources:$File,$Key %>|<%= $File.$Key %>|<%= $Namespace.$File.$Key %>"},{"Extensions":".xaml","Patterns":"\"{x:Static r:$File.$Key}\""},{"Extensions":".ts","Patterns":"resources.$Key"},{"Extensions":".html","Patterns":"{{ resources.$Key }}"}]}
+		SolutionGuid = {67E6979E-AD2E-4E18-82E9-C7B7D491C3E9}
 	EndGlobalSection
 EndGlobal

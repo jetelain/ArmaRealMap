@@ -1,9 +1,11 @@
 ﻿using System.Text;
 using System.Text.Json;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.GameEngine.Extensions;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.Nature.Ocean;
+using GameRealisticMap.Nature.Weather;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
@@ -33,9 +35,10 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\names.hpp", GenerateNames(context.GetData<CitiesData>()));
 
+            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\ace-weather.hpp", AceWeather.GenerateWeather(context.GetData<WeatherData>()));
+
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\grma3-dependencies.json", JsonSerializer.Serialize(assets.Dependencies));
         }
-
 
         private string GenerateMapInfos(IArma3MapConfig config, ITerrainArea area, bool isIsland)
         {
@@ -158,6 +161,7 @@ class CfgWorlds
 			#include ""names.hpp""
 		}};
 		#include""mapinfos.hpp""
+		#include""ace-weather.hpp""
 		loadingTexts[]={{
 			""Loading...""
 		}};
