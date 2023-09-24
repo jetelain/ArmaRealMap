@@ -104,8 +104,8 @@ namespace GameRealisticMap.Nature.Watercourses
                                                         .OfType<ILineString>()
                                                         .Where(l => !l.IsClosed)
                                                         .SelectMany(geometry => TerrainPath.FromGeometry(geometry, context.Area.LatLngToTerrainPoint))
-                                                        .SelectMany(path => path.ClippedBy(context.Area.TerrainBounds))
-                                                        .SelectMany(p => p.SubstractAll(lakesPolygons)))
+                                                        .SelectMany(path => path.ClippedKeepOrientation(context.Area.TerrainBounds))
+                                                        .SelectMany(p => p.SubstractAllKeepOrientation(lakesPolygons)))
                         {
                             waterwaysPaths.Add(new Watercourse(segment, kind.Value));
                         }

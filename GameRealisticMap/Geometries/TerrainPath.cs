@@ -130,6 +130,7 @@ namespace GameRealisticMap.Geometries
             return result.Childs.Select(c => new TerrainPath(c.Contour.Select(p => new TerrainPoint(p)).ToList())).ToList();
         }
 
+
         public IEnumerable<TerrainPath> SubstractAll(IEnumerable<TerrainPolygon> others)
         {
             var result = new List<TerrainPath>() { this };
@@ -140,6 +141,26 @@ namespace GameRealisticMap.Geometries
                 foreach (var subjet in previousResult)
                 {
                     result.AddRange(subjet.Substract(other));
+                }
+            }
+            return result;
+        }
+
+        public List<TerrainPath> SubstractKeepOrientation(TerrainPolygon polygon)
+        {
+            return KeepOrientation(Substract(polygon));
+        }
+
+        public IEnumerable<TerrainPath> SubstractAllKeepOrientation(IEnumerable<TerrainPolygon> others)
+        {
+            var result = new List<TerrainPath>() { this };
+            foreach (var other in others.Where(o => GeometryHelper.EnveloppeIntersects(this, o)))
+            {
+                var previousResult = result.ToList();
+                result.Clear();
+                foreach (var subjet in previousResult)
+                {
+                    result.AddRange(subjet.SubstractKeepOrientation(other));
                 }
             }
             return result;
@@ -272,14 +293,16 @@ namespace GameRealisticMap.Geometries
             {
                 return Enumerable.Empty<TerrainPath>();
             }
+            return KeepOrientation(Intersection(polygon));
+        }
 
+        private List<TerrainPath> KeepOrientation(List<TerrainPath> clipped)
+        {
             var initialPoints = Points.Select(p => p.ToIntPointPrecision()).ToList();
-
-            var clipped = Intersection(polygon);
             foreach (var result in clipped)
             {
                 var indices = result.Points.Select(np => initialPoints.FindIndex(p => TerrainPoint.Equals(np, p))).Where(i => i != -1).Take(2).ToList();
-                if (indices.Count > 1) 
+                if (indices.Count > 1)
                 {
                     if (indices[0] > indices[1])
                     {
