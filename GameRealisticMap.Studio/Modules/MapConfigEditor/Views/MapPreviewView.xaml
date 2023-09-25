@@ -8,6 +8,7 @@
              xmlns:cal="http://caliburnmicro.com"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.MapConfigEditor.Views"
              mc:Ignorable="d" 
+             Foreground="{DynamicResource EnvironmentWindowText}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

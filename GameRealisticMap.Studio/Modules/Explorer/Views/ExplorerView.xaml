@@ -20,7 +20,7 @@
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal" Initialized="StackPanel_Initialized">
                             <Image Source="{Binding Icon}" Height="20" Width="20" Margin="3"/>
-                            <TextBlock Text="{Binding TreeName}" VerticalAlignment="Center" Margin="6 3" />
+                            <TextBlock Text="{Binding TreeName}" VerticalAlignment="Center" Margin="6 3" Foreground="{DynamicResource EnvironmentWindowText}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </local:TreeItemDataTemplateSelector.Basic>
@@ -29,7 +29,7 @@
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal" Initialized="StackPanel_Initialized">
                             <Image Source="{Binding Icon}" Height="20" Width="20" Margin="3"/>
-                            <TextBlock Text="{Binding TreeName}" VerticalAlignment="Center" Margin="6 3" />
+                            <TextBlock Text="{Binding TreeName}" VerticalAlignment="Center" Margin="6 3" Foreground="{DynamicResource EnvironmentWindowText}" />
                             <Border Margin="3 6" CornerRadius="6">
                                 <Border.Style>
                                     <Style TargetType="{x:Type Border}">

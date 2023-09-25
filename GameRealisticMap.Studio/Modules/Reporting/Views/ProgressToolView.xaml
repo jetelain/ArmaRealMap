@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Reporting.Views"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             Foreground="{DynamicResource EnvironmentWindowText}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
