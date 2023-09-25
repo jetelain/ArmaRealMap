@@ -9,8 +9,8 @@
     <UserControl.Resources>
         <local:ColorToBrushConverter x:Key="BrushConverter" />
     </UserControl.Resources>
-    <Grid Width="{x:Static local:PreviewGrid.Size}" Height="{x:Static local:PreviewGrid.Size}" ClipToBounds="True">
-        <Rectangle Fill="White" Width="{Binding PreviewBoxWidthPixels, RelativeSource={RelativeSource AncestorType=UserControl}}" Height="{x:Static local:PreviewGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+    <Grid Width="{x:Static local:PreviewGrid.Size}" Height="{x:Static local:PreviewGrid.Size}" ClipToBounds="True" Margin="10">
+        <Rectangle Fill="{DynamicResource TextBox.Static.Background}" Width="{Binding PreviewBoxWidthPixels, RelativeSource={RelativeSource AncestorType=UserControl}}" Height="{x:Static local:PreviewGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" />
         <ItemsControl ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="10">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>

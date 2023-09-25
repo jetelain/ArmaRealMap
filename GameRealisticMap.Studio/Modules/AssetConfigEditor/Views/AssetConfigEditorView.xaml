@@ -137,7 +137,7 @@
                 </Expander>
 
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.FencesWalls}"/></TextBlock>
                     </Expander.Header>
@@ -193,7 +193,7 @@
 
 
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.NaturalRows}" /></TextBlock>
                     </Expander.Header>
@@ -246,7 +246,7 @@
                     </StackPanel>
                 </Expander>
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Buildings}"/></TextBlock>
                     </Expander.Header>
@@ -269,7 +269,7 @@
                     </StackPanel>
                 </Expander>
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.AssetObjects}"/></TextBlock>
                     </Expander.Header>
@@ -292,7 +292,7 @@
                     </StackPanel>
                 </Expander>
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.GroundMaterials}"/></TextBlock>
                     </Expander.Header>
@@ -331,7 +331,7 @@
                 </Expander>
 
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.RoadsAndBridges}"/></TextBlock>
                     </Expander.Header>
@@ -364,7 +364,7 @@
                     </StackPanel>
                 </Expander>
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Sidewalks}"/></TextBlock>
                     </Expander.Header>
@@ -403,7 +403,7 @@
                     </StackPanel>
                 </Expander>
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Railways}"/></TextBlock>
                     </Expander.Header>
@@ -426,7 +426,7 @@
                     </StackPanel>
                 </Expander>
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.WaterTiles}"/></TextBlock>
                     </Expander.Header>
@@ -440,7 +440,7 @@
                     </StackPanel>
                 </Expander>
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Configuration}"/></TextBlock>
                     </Expander.Header>
