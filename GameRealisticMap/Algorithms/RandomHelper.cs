@@ -73,6 +73,15 @@ namespace GameRealisticMap.Algorithms
             return densityDefinition.MinDensity + (densityDefinition.MaxDensity - densityDefinition.MinDensity) * random.NextDouble();
         }
 
+        public static float GetBetween(Random random, float min, float max)
+        {
+            if (min == max)
+            {
+                return min;
+            }
+            return min + (float)((max - min) * random.NextDouble());
+        }
+
         public static T? GetRandomWithProportion<T>(this IEnumerable<T> list, Random random) where T : IWithProportion
         {
             var value = random.NextDouble();

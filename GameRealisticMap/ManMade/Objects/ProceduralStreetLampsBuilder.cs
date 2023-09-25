@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using GameRealisticMap.Algorithms;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
@@ -50,8 +51,9 @@ namespace GameRealisticMap.ManMade.Objects
 
             foreach (var road in roadsWithLamps.ProgressStep(progress, "Roads"))
             {
-                var spacing = road.RoadTypeInfos.DistanceBetweenStreetLamps;
-                var marginDistance = spacing / 2;
+                var spacingMin = road.RoadTypeInfos.DistanceBetweenStreetLamps;
+                var spacingMax = road.RoadTypeInfos.DistanceBetweenStreetLampsMax;
+                var marginDistance = spacingMin / 2;
                 var margin = new Vector2(marginDistance);
 
                 var mask = GetMask(road.RoadTypeInfos.ProceduralStreetLamps, everywhereMask, urbanMask, nearUrbanMask);
@@ -60,23 +62,24 @@ namespace GameRealisticMap.ManMade.Objects
                     .SelectMany(p => p.Holes.Concat(new[] { p.Shell }))
                     .Select(p => new TerrainPath(p))
                     .SelectMany(p => p.SubstractAll(mask))
-                    .Where(p => p.Length > spacing)
+                    .Where(p => p.Length > spacingMin)
                     .ToList();
 
                 foreach (var path in paths)
                 {
+                    var rnd = RandomHelper.CreateRandom(path.FirstPoint);
                     var follow = new FollowPath(path.Points);
-                    var nextMove = spacing;
+                    var nextMove = RandomHelper.GetBetween(rnd, spacingMin, spacingMax);
                     do
                     {
                         var point = follow.Current;
                         if (!index.Search(point.Vector - margin, point.Vector + margin).Any(o => (o.Point.Vector - point.Vector).Length() < marginDistance))
                         {
-                            var angle = GeometryHelper.GetFacing(point, new[] { road.Path }, spacing) ?? OrientedObjectBuilder.GetRandomAngle(point);
+                            var angle = GeometryHelper.GetFacing(point, new[] { road.Path }, spacingMin) ?? OrientedObjectBuilder.GetRandomAngle(point);
                             var lamp = new ProceduralStreetLamp(point, angle, road);
                             lamps.Add(lamp);
                             index.Insert(point.Vector, lamp);
-                            nextMove = spacing;
+                            nextMove = RandomHelper.GetBetween(rnd, spacingMin, spacingMax);
                         }
                         else
                         {

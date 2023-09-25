@@ -3416,6 +3416,7 @@
       "ClearWidth": 15,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -3429,6 +3430,7 @@
       "ClearWidth": 14,
       "ProceduralStreetLamps": "NearUrbanAreas",
       "DistanceBetweenStreetLamps": 40,
+      "DistanceBetweenStreetLampsMax": 50,
       "HasSideWalks": true
     },
     {
@@ -3442,6 +3444,7 @@
       "ClearWidth": 11.5,
       "ProceduralStreetLamps": "NearUrbanAreas",
       "DistanceBetweenStreetLamps": 30,
+      "DistanceBetweenStreetLampsMax": 40,
       "HasSideWalks": true
     },
     {
@@ -3455,6 +3458,7 @@
       "ClearWidth": 10,
       "ProceduralStreetLamps": "UrbanAreas",
       "DistanceBetweenStreetLamps": 30,
+      "DistanceBetweenStreetLampsMax": 40,
       "HasSideWalks": true
     },
     {
@@ -3468,6 +3472,7 @@
       "ClearWidth": 6,
       "ProceduralStreetLamps": "UrbanAreas",
       "DistanceBetweenStreetLamps": 30,
+      "DistanceBetweenStreetLampsMax": 40,
       "HasSideWalks": false
     },
     {
@@ -3481,6 +3486,7 @@
       "ClearWidth": 5,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -3494,6 +3500,7 @@
       "ClearWidth": 6,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -3507,6 +3514,7 @@
       "ClearWidth": 3,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -3520,6 +3528,7 @@
       "ClearWidth": 3.5,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     }
   ],

@@ -22,5 +22,7 @@
         public float DistanceBetweenStreetLamps => ClearWidth * 2.5f;
 
         public bool HasSideWalks { get; }
+
+        public float DistanceBetweenStreetLampsMax => DistanceBetweenStreetLamps;
     }
 }
