@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using GameRealisticMap.IO.Converters;
-using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
 using SixLabors.ImageSharp.PixelFormats;
@@ -10,7 +9,7 @@ namespace GameRealisticMap.Arma3.Assets
     public class Arma3RoadTypeInfos : IRoadTypeInfos
     {
         [JsonConstructor]
-        public Arma3RoadTypeInfos(RoadTypeId id, Rgb24 satelliteColor, float textureWidth, string texture, string textureEnd, string material, float width, float clearWidth, StreetLampsCondition? proceduralStreetLamps = null, float? distanceBetweenStreetLamps = null, bool? hasSideWalks = null)
+        public Arma3RoadTypeInfos(RoadTypeId id, Rgb24 satelliteColor, float textureWidth, string texture, string textureEnd, string material, float width, float clearWidth, StreetLampsCondition? proceduralStreetLamps = null, float? distanceBetweenStreetLamps = null, float? distanceBetweenStreetLampsMax = null, bool? hasSideWalks = null)
         {
             SatelliteColor = satelliteColor;
             TextureWidth = textureWidth;
@@ -23,7 +22,10 @@ namespace GameRealisticMap.Arma3.Assets
             ProceduralStreetLamps = proceduralStreetLamps ?? DefaultRoadTypeLibrary.Instance.GetInfo(id).ProceduralStreetLamps;
             if ((ProceduralStreetLamps ?? StreetLampsCondition.None) != StreetLampsCondition.None)
             {
-                DistanceBetweenStreetLamps = distanceBetweenStreetLamps ?? (ClearWidth * 2.5f);
+                var min = distanceBetweenStreetLamps ?? (ClearWidth * 2.5f);
+                var max = distanceBetweenStreetLampsMax ?? min;
+                DistanceBetweenStreetLamps = Math.Min(min, max);
+                DistanceBetweenStreetLampsMax = Math.Max(min, max);
             }
             HasSideWalks = hasSideWalks ?? DefaultRoadTypeLibrary.Instance.GetInfo(id).HasSideWalks;
         }
@@ -49,6 +51,8 @@ namespace GameRealisticMap.Arma3.Assets
 
         public float? DistanceBetweenStreetLamps { get; }
 
+        public float? DistanceBetweenStreetLampsMax { get; }
+
         public bool? HasSideWalks { get; }
 
         StreetLampsCondition IRoadTypeInfos.ProceduralStreetLamps => ProceduralStreetLamps ?? StreetLampsCondition.None;
@@ -56,5 +60,7 @@ namespace GameRealisticMap.Arma3.Assets
         float IRoadTypeInfos.DistanceBetweenStreetLamps => DistanceBetweenStreetLamps ?? (ClearWidth * 2.5f);
 
         bool IRoadTypeInfos.HasSideWalks => HasSideWalks ?? false;
+
+        float IRoadTypeInfos.DistanceBetweenStreetLampsMax => DistanceBetweenStreetLampsMax ?? DistanceBetweenStreetLamps ?? (ClearWidth * 2.5f);
     }
 }

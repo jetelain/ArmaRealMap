@@ -22,6 +22,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         private Color satelliteColor;
         private StreetLampsCondition proceduralStreetLamp;
         private float distanceBetweenStreetLamps;
+        private float distanceBetweenStreetLampsMax;
         private bool hasSidewalks;
 
         public RoadViewModel(RoadTypeId id, Arma3RoadTypeInfos? arma3RoadTypeInfos, BridgeDefinition? bridgeDefinition, AssetConfigEditorViewModel parent)
@@ -36,6 +37,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             textureWidth = arma3RoadTypeInfos?.TextureWidth ?? Width;
             proceduralStreetLamp = arma3RoadTypeInfos?.ProceduralStreetLamps ?? defaults.ProceduralStreetLamps;
             distanceBetweenStreetLamps = arma3RoadTypeInfos?.DistanceBetweenStreetLamps ?? (clearWidth * 2.5f);
+            distanceBetweenStreetLampsMax = arma3RoadTypeInfos?.DistanceBetweenStreetLampsMax ?? distanceBetweenStreetLamps;
             hasSidewalks = arma3RoadTypeInfos?.HasSideWalks ?? defaults.HasSideWalks;
             if (arma3RoadTypeInfos != null)
             {
@@ -147,6 +149,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public bool HasNotSidewalks { get => !HasSidewalks; set { HasSidewalks = !value; } }
 
         public float DistanceBetweenStreetLamps { get => distanceBetweenStreetLamps; set { distanceBetweenStreetLamps = value; NotifyOfPropertyChange(); } }
+        public float DistanceBetweenStreetLampsMax { get => distanceBetweenStreetLampsMax; set { distanceBetweenStreetLampsMax = value; NotifyOfPropertyChange(); } }
 
 
         public List<BridgeViewModel> Items { get; }
@@ -155,7 +158,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public override Arma3RoadTypeInfos ToDefinition()
         {
-            return new Arma3RoadTypeInfos(FillId, new Rgb24(SatelliteColor.R, SatelliteColor.G, SatelliteColor.B), TextureWidth, Texture, TextureEnd, Material, Width, ClearWidth, proceduralStreetLamp, DistanceBetweenStreetLamps, HasSidewalks);
+            return new Arma3RoadTypeInfos(FillId, new Rgb24(SatelliteColor.R, SatelliteColor.G, SatelliteColor.B), TextureWidth, Texture, TextureEnd, Material, Width, ClearWidth, proceduralStreetLamp, DistanceBetweenStreetLamps, DistanceBetweenStreetLampsMax, HasSidewalks);
         }
 
         public BridgeDefinition? ToBridgeDefinition()

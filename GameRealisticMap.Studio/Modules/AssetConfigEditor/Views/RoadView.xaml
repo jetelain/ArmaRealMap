@@ -101,7 +101,11 @@
                                 <Run Text="{x:Static r:Labels.DistanceBetweenStreetLamps}" />
                             </TextBlock>
                         </Label>
+                        <TextBlock VerticalAlignment="Center" Margin="0 0 5 0"><Run Text="{x:Static r:Labels.RandomFrom}"/></TextBlock>
                         <TextBox Width="50" Text="{Binding DistanceBetweenStreetLamps,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                        <TextBlock VerticalAlignment="Center" Margin="5 0"><Run Text="{x:Static r:Labels.RandomTo}"/></TextBlock>
+                        <TextBox Width="50" Text="{Binding DistanceBetweenStreetLampsMax,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                        <TextBlock VerticalAlignment="Center" Margin="5 0 0 0"><Run Text="{x:Static r:Labels.MetersUnit}"/></TextBlock>
                     </StackPanel>
 
                     <StackPanel Margin="10" Orientation="Horizontal"  >

@@ -14,9 +14,14 @@
         StreetLampsCondition ProceduralStreetLamps { get; }
 
         /// <summary>
-        /// Distance in meters between procedural street lamps
+        /// Minimal distance in meters between procedural street lamps
         /// </summary>
         float DistanceBetweenStreetLamps { get; }
+
+        /// <summary>
+        /// Maximal distance in meters between procedural street lamps
+        /// </summary>
+        float DistanceBetweenStreetLampsMax { get; }
 
         /// <summary>
         /// Generate sidewalks in Urban areas
