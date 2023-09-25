@@ -3918,7 +3918,7 @@
           ]
         },
         "Probability": 0.5,
-        "Condition": "!IsRoadSimple \u0026\u0026 Elevation \u003E 0.5"
+        "Condition": "!IsRoadSimple \u0026\u0026 Elevation \u003E 0"
       },
       {
         "Composition": {
@@ -3930,7 +3930,7 @@
           ]
         },
         "Probability": 0.5,
-        "Condition": "IsRoadSimple \u0026\u0026 Elevation \u003E 0.5"
+        "Condition": "IsRoadSimple \u0026\u0026 Elevation \u003E 0"
       }
     ],
     "Flagpole": [
