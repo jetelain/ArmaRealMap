@@ -21,7 +21,7 @@
             <TextBlock FontStyle="Italic" Text="{x:Static r:Labels.HomeIntroLimit}" />
         </TextBlock>
 
-            <Expander IsExpanded="True" Margin="0 20 30 0" Foreground="{DynamicResource EnvironmentWindowText}">
+            <Expander IsExpanded="True" Margin="0 20 30 0">
                 <Expander.Header>
                     <TextBlock FontSize="25">Arma 3</TextBlock>
                 </Expander.Header>

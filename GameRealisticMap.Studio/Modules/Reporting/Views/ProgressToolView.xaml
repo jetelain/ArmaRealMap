@@ -27,7 +27,7 @@
             <TextBlock Text="{Binding TaskName, Mode=OneWay}" Grid.Column="0" />
             <ProgressBar Value="{Binding Percent, Mode=OneWay}" Minimum="0" Maximum="100" Grid.Column="1">
                 <ProgressBar.Style>
-                    <Style TargetType="ProgressBar">
+                    <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
                         <Setter Property="Visibility" Value="Visible" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding State}" Value="Failed">
@@ -83,7 +83,7 @@
 
             <Button Padding="5" cal:Message.Attach="CancelTask" Margin="5 0 0 0">
                 <Button.Style>
-                    <Style TargetType="Button">
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Setter Property="IsEnabled" Value="True" />
                         <Style.Triggers>
@@ -102,7 +102,7 @@
             </Button>
             <Button Padding="5" cal:Message.Attach="ShowTaskResult">
                 <Button.Style>
-                    <Style TargetType="Button">
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding State}" Value="Done">
@@ -115,7 +115,7 @@
             </Button>
             <Button Padding="5" cal:Message.Attach="ShowTaskError">
                 <Button.Style>
-                    <Style TargetType="Button">
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding State}" Value="Failed">

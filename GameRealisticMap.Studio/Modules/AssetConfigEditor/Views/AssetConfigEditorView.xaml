@@ -82,7 +82,7 @@
                     </ItemsControl>
                 </StackPanel>
 
-                <Expander IsExpanded="True" Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+                <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.NaturalAreas}"/></TextBlock>
                     </Expander.Header>

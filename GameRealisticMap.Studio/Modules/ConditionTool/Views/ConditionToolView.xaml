@@ -62,7 +62,7 @@
                                     <Button.Template>
                                         <ControlTemplate>
                                             <Border CornerRadius="5" Background="{Binding Brush}" HorizontalAlignment="Right" Cursor="Hand">
-                                                <TextBlock Padding="5 0 5 0" Text="{Binding Name}" />
+                                                <TextBlock Padding="5 0 5 0" Text="{Binding Name}" Foreground="Black" />
                                             </Border>
                                         </ControlTemplate>
                                     </Button.Template>

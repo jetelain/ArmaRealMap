@@ -113,7 +113,7 @@
                 </StackPanel>
             </Border>
 
-            <Expander Margin="10" Foreground="{DynamicResource EnvironmentWindowText}">
+            <Expander Margin="10">
                 <Expander.Header>
                     <TextBlock Text="{x:Static r:Labels.AdvancedParameters}" />
                 </Expander.Header>
