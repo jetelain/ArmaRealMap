@@ -98,7 +98,7 @@
                                             </DataTemplate>
                                         </ContextMenu.ItemTemplate>
                                         <ContextMenu.ItemContainerStyle>
-                                            <Style TargetType="{x:Type MenuItem}">
+                                            <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
                                                 <Setter Property="Command" Value="{Binding}"/>
                                             </Style>
                                         </ContextMenu.ItemContainerStyle>
@@ -153,7 +153,7 @@
                                             </DataTemplate>
                                         </ContextMenu.ItemTemplate>
                                         <ContextMenu.ItemContainerStyle>
-                                            <Style TargetType="{x:Type MenuItem}">
+                                            <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
                                                 <Setter Property="Command" Value="{Binding}"/>
                                             </Style>
                                         </ContextMenu.ItemContainerStyle>
@@ -209,7 +209,7 @@
                                             </DataTemplate>
                                         </ContextMenu.ItemTemplate>
                                         <ContextMenu.ItemContainerStyle>
-                                            <Style TargetType="{x:Type MenuItem}">
+                                            <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
                                                 <Setter Property="Command" Value="{Binding}"/>
                                             </Style>
                                         </ContextMenu.ItemContainerStyle>
