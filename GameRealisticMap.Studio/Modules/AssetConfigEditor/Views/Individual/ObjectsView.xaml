@@ -8,6 +8,7 @@
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:ctrl="clr-namespace:GameRealisticMap.Studio.Modules.ConditionTool.Controls"
              mc:Ignorable="d" 
+             Foreground="{DynamicResource EnvironmentWindowText}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <local:PercentValueConverter x:Key="PercentValueConverter" />

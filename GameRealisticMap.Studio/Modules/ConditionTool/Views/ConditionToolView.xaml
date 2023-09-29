@@ -6,6 +6,7 @@
              xmlns:ctrl="clr-namespace:GameRealisticMap.Studio.Modules.ConditionTool.Controls"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:cal="http://www.caliburnproject.org"
+             Foreground="{DynamicResource EnvironmentWindowText}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -61,7 +62,7 @@
                                     <Button.Template>
                                         <ControlTemplate>
                                             <Border CornerRadius="5" Background="{Binding Brush}" HorizontalAlignment="Right" Cursor="Hand">
-                                                <TextBlock Padding="5 0 5 0" Text="{Binding Name}" />
+                                                <TextBlock Padding="5 0 5 0" Text="{Binding Name}" Foreground="Black" />
                                             </Border>
                                         </ControlTemplate>
                                     </Button.Template>

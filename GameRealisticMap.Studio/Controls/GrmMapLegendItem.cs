@@ -37,14 +37,19 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            switch(ItemType)
+
+            dc.DrawRectangle(new SolidColorBrush(Colors.White), null, new Rect(0, 0, 20, 20));
+
+            switch (ItemType)
             {
                 case LegendItemType.Point:
                     dc.DrawEllipse(GrmMapStyle.GetAdditionalBrush(ItemName), GrmMapStyle.GetAdditionalPen(ItemName), new Point(10, 10), 2, 2);
                     break;
 
                 case LegendItemType.Path:
+                    dc.PushClip(new RectangleGeometry(new Rect(0, 0, 20, 20)));
                     dc.DrawLine(GrmMapStyle.GetAdditionalPen(ItemName), new Point(0, 10), new Point(20, 10));
+                    dc.Pop();
                     break;
 
                 case LegendItemType.Polygon:

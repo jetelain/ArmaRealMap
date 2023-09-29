@@ -8,8 +8,9 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <TreeView ItemsSource="{Binding Items}" x:Name="Tree">
         <TreeView.Resources>
-            <Style TargetType="{x:Type TreeViewItem}">
+            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                 <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick"/>
+                <Setter Property="IsExpanded" Value="False" />
             </Style>
         </TreeView.Resources>
 
@@ -30,18 +31,30 @@
                         <StackPanel Orientation="Horizontal" Initialized="StackPanel_Initialized">
                             <Image Source="{Binding Icon}" Height="20" Width="20" Margin="3"/>
                             <TextBlock Text="{Binding TreeName}" VerticalAlignment="Center" Margin="6 3" />
-                            <Border Margin="3 6" CornerRadius="6">
+                            <Border Margin="3 6" CornerRadius="6" BorderThickness="1">
                                 <Border.Style>
                                     <Style TargetType="{x:Type Border}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Items.Count}" Value="0">
-                                                <Setter Property="Background" Value="LightGray" />
+                                                <Setter Property="Background" Value="{DynamicResource TreeViewItem.Highlight.Inactive}" />
                                             </DataTrigger>
                                         </Style.Triggers>
-                                        <Setter Property="Background" Value="Gray" />
+                                        <Setter Property="Background" Value="{DynamicResource TreeViewItem.Highlight.Static}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource TreeView.Static.Background}" />
                                     </Style>
                                 </Border.Style>
-                                <TextBlock Text="{Binding Items.Count}" Foreground="White" Margin="4 0 5 0" FontSize="8" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding Items.Count}" Margin="4 0 5 0" FontSize="10" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Items.Count}" Value="0">
+                                                    <Setter Property="Foreground" Value="{DynamicResource TreeViewItem.Highlight.Inactive.Text}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                            <Setter Property="Foreground" Value="{DynamicResource TreeViewItem.Highlight.Static.Text}" />
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </Border>
                         </StackPanel>
                     </HierarchicalDataTemplate>

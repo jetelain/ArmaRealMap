@@ -9,6 +9,7 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              mc:Ignorable="d" 
+             Foreground="{DynamicResource EnvironmentWindowText}"
              d:DesignHeight="450" d:DesignWidth="1024">
     <UserControl.Resources>
         <local:CollectionCountValueConverter x:Key="CollectionCountValueConverter" />
@@ -97,7 +98,7 @@
                                             </DataTemplate>
                                         </ContextMenu.ItemTemplate>
                                         <ContextMenu.ItemContainerStyle>
-                                            <Style TargetType="{x:Type MenuItem}">
+                                            <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
                                                 <Setter Property="Command" Value="{Binding}"/>
                                             </Style>
                                         </ContextMenu.ItemContainerStyle>
@@ -152,7 +153,7 @@
                                             </DataTemplate>
                                         </ContextMenu.ItemTemplate>
                                         <ContextMenu.ItemContainerStyle>
-                                            <Style TargetType="{x:Type MenuItem}">
+                                            <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
                                                 <Setter Property="Command" Value="{Binding}"/>
                                             </Style>
                                         </ContextMenu.ItemContainerStyle>
@@ -208,7 +209,7 @@
                                             </DataTemplate>
                                         </ContextMenu.ItemTemplate>
                                         <ContextMenu.ItemContainerStyle>
-                                            <Style TargetType="{x:Type MenuItem}">
+                                            <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
                                                 <Setter Property="Command" Value="{Binding}"/>
                                             </Style>
                                         </ContextMenu.ItemContainerStyle>
@@ -267,7 +268,7 @@
                         </DataGrid>
                     </StackPanel>
                 </Expander>
-                
+
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.AssetObjects}"/></TextBlock>
@@ -362,7 +363,7 @@
                         </DataGrid>
                     </StackPanel>
                 </Expander>
-                
+
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Sidewalks}"/></TextBlock>
@@ -401,7 +402,7 @@
                         </DataGrid>
                     </StackPanel>
                 </Expander>
-                
+
                 <Expander IsExpanded="True" Margin="10">
                     <Expander.Header>
                         <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Railways}"/></TextBlock>

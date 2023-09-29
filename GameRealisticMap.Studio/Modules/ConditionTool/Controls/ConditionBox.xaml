@@ -18,28 +18,28 @@
                     <local:TokenTemplateChooser.Single>
                         <DataTemplate>
                             <Border CornerRadius="5" Background="{Binding Brush}">
-                                <TextBlock Padding="5 0 5 0" Text="{Binding Text}" />
+                                <TextBlock Padding="5 0 5 0" Text="{Binding Text}" Foreground="Black" />
                             </Border>
                         </DataTemplate>
                     </local:TokenTemplateChooser.Single>
                     <local:TokenTemplateChooser.Begin>
                         <DataTemplate>
                             <Border CornerRadius="5 0 0 5" Background="{Binding Brush}">
-                                <TextBlock Padding="5 0 2.5 0" Text="{Binding Text}" />
+                                <TextBlock Padding="5 0 2.5 0" Text="{Binding Text}" Foreground="Black" />
                             </Border>
                         </DataTemplate>
                     </local:TokenTemplateChooser.Begin>
                     <local:TokenTemplateChooser.Middle>
                         <DataTemplate>
                             <Border Background="{Binding Brush}">
-                                <TextBlock Padding="2.5 0" Text="{Binding Text}" />
+                                <TextBlock Padding="2.5 0" Text="{Binding Text}" Foreground="Black" />
                             </Border>
                         </DataTemplate>
                     </local:TokenTemplateChooser.Middle>
                     <local:TokenTemplateChooser.End>
                         <DataTemplate>
                             <Border CornerRadius="0 5 5 0" Background="{Binding Brush}">
-                                <TextBlock Padding="2.5 0 5 0" Text="{Binding Text}" />
+                                <TextBlock Padding="2.5 0 5 0" Text="{Binding Text}" Foreground="Black" />
                             </Border>
                         </DataTemplate>
                     </local:TokenTemplateChooser.End>

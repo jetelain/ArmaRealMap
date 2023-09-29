@@ -7,6 +7,7 @@
              xmlns:ctrl="clr-namespace:GameRealisticMap.Studio.Modules.ConditionTool.Controls"
              xmlns:cal="http://caliburnmicro.com"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             Foreground="{DynamicResource EnvironmentWindowText}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
