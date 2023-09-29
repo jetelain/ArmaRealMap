@@ -301,6 +301,10 @@ namespace GameRealisticMap.Geometries
             var initialPoints = Points.Select(p => p.ToIntPointPrecision()).ToList();
             foreach (var result in clipped)
             {
+                if (result.Points.Count < 2)
+                {
+                    continue;
+                }
                 var indices = result.Points.Select(np => initialPoints.FindIndex(p => TerrainPoint.Equals(np, p))).Where(i => i != -1).Take(2).ToList();
                 if (indices.Count > 1)
                 {
@@ -309,15 +313,56 @@ namespace GameRealisticMap.Geometries
                         result.Points.Reverse();
                     }
                 }
-                else
+                else if (indices.Count == 1)
                 {
+                    var initialReferenceIndex = indices[0];
+                    var sharedReferencePoint = initialPoints[initialReferenceIndex];
+                    var resultReferenceIndex = result.Points.FindIndex(p => TerrainPoint.Equals(sharedReferencePoint, p));
+
+                    if (resultReferenceIndex == result.Points.Count - 1)
+                    {
+                        if (initialReferenceIndex == 0)
+                        {
+                            result.Points.Reverse();
+                        }
+                        else
+                        {
+                            CheckVector(result, sharedReferencePoint, result.Points[resultReferenceIndex - 1], initialPoints[initialReferenceIndex - 1]);
+                        }
+                    }
+                    else
+                    {
+                        if (initialReferenceIndex == initialPoints.Count - 1)
+                        {
+                            result.Points.Reverse();
+                        }
+                        else
+                        {
+                            CheckVector(result, sharedReferencePoint, result.Points[resultReferenceIndex + 1], initialPoints[initialReferenceIndex + 1]);
+                        }
+                    }
+                }
+                else
 #if DEBUG
+                {
                     throw new InvalidOperationException("Unsupported edge case");
 #endif
                 }
             }
             return clipped;
         }
+
+        private static void CheckVector(TerrainPath result, TerrainPoint sharedReferencePoint, TerrainPoint resultComparePoint, TerrainPoint initialComparePoint)
+        {
+            var initialVect = Vector2.Normalize(initialComparePoint.Vector - sharedReferencePoint.Vector);
+            var resultVect = Vector2.Normalize(resultComparePoint.Vector - sharedReferencePoint.Vector);
+            if (Vector2.Dot(initialVect, resultVect) < 0)
+            {
+                result.Points.Reverse();
+            }
+        }
+
+
 
         public bool IsClosed => FirstPoint.Equals(LastPoint);
 

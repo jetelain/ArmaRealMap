@@ -168,6 +168,32 @@ namespace GameRealisticMap.Test.Geometries
         }
 
         [Fact]
+        public void TerrainPath_ClippedKeepOrientation_OneReferencePoint()
+        {
+            var path = new TerrainPath(new(5, 0), new(5, 4.5f), new(5, 5), new(5, 10), new(5, 15), new(5, 20));
+            var clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(2.5f, 0f), new(7.5f, 4f))).ToList();
+            var clipPath = Assert.Single(clip);
+            Assert.Equal(new TerrainPoint[] { new(5, 0), new(5, 4) }, clipPath.Points);
+
+            clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(2.5f, 5f), new(7.5f, 6f))).ToList();
+            clipPath = Assert.Single(clip);
+            Assert.Equal(new TerrainPoint[] { new(5, 5), new(5, 6) }, clipPath.Points);
+
+            clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(2.5f, 19f), new(7.5f, 20f))).ToList();
+            clipPath = Assert.Single(clip);
+            Assert.Equal(new TerrainPoint[] { new(5, 19), new(5, 20) }, clipPath.Points);
+
+            path = new TerrainPath(new(17109.277f, -14502.888f), new(16591.264f, -12701.211f), new(16163.766f, -11304.716f), new(15508.252f, -9480.714f), new(14873.61f, -7825.331f), new(13395f, -4382.8315f), new(13258.774f, -4007.939f), new(13170.557f, -3792.907f), new(13141.093f, -3670.9758f), new(13054.459f, -3426.7131f), new(12794.966f, -2589.082f), new(11699.636f, 1066.6356f), new(10796.126f, 4111.285f));
+            clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(0, 2000), new(26000, 26000))).ToList();
+            clipPath = Assert.Single(clip);
+            Assert.Equal(new TerrainPoint[] { new(11422.656f, 2000f), new(10796.125f, 4111.285f) }, clipPath.Points);
+
+            clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(0, 0), new(26000, 1066.6356f))).ToList();
+            clipPath = Assert.Single(clip);
+            Assert.Equal(new TerrainPoint[] { new(12019.221f, 0), new(11699.635f, 1066.635f) }, clipPath.Points);
+        }
+
+        [Fact]
         public void TerrainPath_Substract()
         {
             var path = new TerrainPath(new(5, 0), new(5, 5), new(5, 10), new(5, 15), new(5, 20));
