@@ -342,12 +342,12 @@ namespace GameRealisticMap.Geometries
                         }
                     }
                 }
-                else
 #if DEBUG
+                else
                 {
                     throw new InvalidOperationException("Unsupported edge case");
-#endif
                 }
+#endif
             }
             return clipped;
         }
