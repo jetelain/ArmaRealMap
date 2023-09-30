@@ -366,20 +366,21 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             foreach (var list in Filling.OfType<FillingAssetClusterViewModel>().GroupBy(c => c.FillId))
             {
-                DefinitionHelper.EquilibrateProbabilities(list.ToList());
+                DefinitionHelper.EquilibrateProbabilities(list.Where(i => !i.IsEmpty).ToList());
             }
             foreach (var list in Filling.OfType<FillingAssetBasicViewModel>().GroupBy(c => c.FillId))
             {
-                DefinitionHelper.EquilibrateProbabilities(list.ToList());
+                DefinitionHelper.EquilibrateProbabilities(list.Where(i => !i.IsEmpty).ToList());
             }
             foreach (var list in Fences.OfType<FencesViewModel>().GroupBy(c => c.FillId))
             {
-                DefinitionHelper.EquilibrateProbabilities(list.ToList());
+                DefinitionHelper.EquilibrateProbabilities(list.Where(i => !i.IsEmpty).ToList());
             }
             foreach (var list in NaturalRows.GroupBy(c => c.FillId))
             {
-                DefinitionHelper.EquilibrateProbabilities(list.ToList());
+                DefinitionHelper.EquilibrateProbabilities(list.Where(i => !i.IsEmpty).ToList());
             }
+            DefinitionHelper.EquilibrateProbabilities(Sidewalks.Where(e => !e.IsEmpty).ToList());
             foreach (var item in Filling.Concat(Fences).Concat(NaturalRows).Concat(Buildings.Cast<IAssetCategory>()).Concat(Objects))
             {
                 item.Equilibrate();
