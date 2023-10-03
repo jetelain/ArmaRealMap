@@ -3336,6 +3336,29 @@
       },
       {
         "Material": {
+          "NormalTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_ice_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_ice_co.paa",
+          "Id": "F5F5F5FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAA1JREFUeJxjuXz9xn8ACJkDhk/AhP0AAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "IceSurface"
+        ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_rock_centraleurope_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_rock_centraleurope_co.paa",
+          "Id": "A9A9A9FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjiYzw/8+AB7AwEADDQwEAHLwCIEMJRWIAAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "ScreeSurface",
+          "RockGround"
+        ]
+      },
+      {
+        "Material": {
           "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_sand_centraleurope_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_sand_centraleurope_co.paa",
           "Id": "F4A460FF",
@@ -3389,17 +3412,6 @@
         "Usages": [
           "RiverGround",
           "LakeGround"
-        ]
-      },
-      {
-        "Material": {
-          "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_rock_centraleurope_nopx.paa",
-          "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_rock_centraleurope_co.paa",
-          "Id": "A9A9A9FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjiYzw/8+AB7AwEADDQwEAHLwCIEMJRWIAAAAASUVORK5CYII="
-        },
-        "Usages": [
-          "RockGround"
         ]
       }
     ]

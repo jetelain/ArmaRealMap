@@ -5,6 +5,8 @@
         Default,
         DefaultUrban,
         DefaultIndustrial,
+        IceSurface,
+        ScreeSurface,
         Coastline,
         OceanGround,
         ForestGround,

@@ -548,6 +548,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Glacier surface.
+        /// </summary>
+        public static string AssetIceSurface {
+            get {
+                return ResourceManager.GetString("AssetIceSurface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Individual Garage.
         /// </summary>
         public static string AssetIndividualGarage {
@@ -805,6 +814,15 @@ namespace GameRealisticMap.Studio {
         public static string AssetsConfiguration {
             get {
                 return ResourceManager.GetString("AssetsConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Scree ground.
+        /// </summary>
+        public static string AssetScreeSurface {
+            get {
+                return ResourceManager.GetString("AssetScreeSurface", resourceCulture);
             }
         }
         
