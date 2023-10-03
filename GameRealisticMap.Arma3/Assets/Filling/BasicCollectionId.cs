@@ -14,6 +14,7 @@
         DefaultIndustrialAreas,
         DefaultMilitaryAreas,
         DefaultResidentialAreas,
-        DefaultRetailAreas
+        DefaultRetailAreas,
+        Scree
     }
 }

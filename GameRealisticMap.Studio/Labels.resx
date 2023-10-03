@@ -1321,4 +1321,7 @@ Last generated on {1}</value>
   <data name="AssetScreeSurface" xml:space="preserve">
     <value>Scree ground</value>
   </data>
+  <data name="AssetScree" xml:space="preserve">
+    <value>Scree</value>
+  </data>
 </root>

@@ -818,6 +818,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Scree.
+        /// </summary>
+        public static string AssetScree {
+            get {
+                return ResourceManager.GetString("AssetScree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Scree ground.
         /// </summary>
         public static string AssetScreeSurface {

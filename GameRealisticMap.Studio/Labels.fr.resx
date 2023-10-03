@@ -1321,4 +1321,7 @@ Dernière génération le {1}</value>
   <data name="AssetScreeSurface" xml:space="preserve">
     <value>Sol des éboulis</value>
   </data>
+  <data name="AssetScree" xml:space="preserve">
+    <value>Eboulis</value>
+  </data>
 </root>
