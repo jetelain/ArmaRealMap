@@ -59,3 +59,7 @@ function setupSelectMap(mapOSM) {
         }
     });
 }
+
+$('.btn-copy').on('click', function () {
+    navigator.clipboard.writeText($('#' + $(this).attr('data-copy')).text());
+});

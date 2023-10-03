@@ -42,7 +42,9 @@ namespace GameRealisticMap.Arma3.GameEngine.Extensions
             var windDirectionProbabilities = weatherData.Data.Months.Select(m => AceDirections.Select(d => Math.Round(m.WindDirection.GetProbability(d), 2)).ToList()).ToList();
 
             return $@"
-// Source: Copernicus Climate Change Service (C3S): ERA5: Fifth generation of ECMWF atmospheric reanalyses of the global climate. Copernicus Climate Change Service Climate Data Store (CDS)
+// Source: Copernicus Climate Change Service (C3S): 
+//         ERA5: Fifth generation of ECMWF atmospheric reanalyses of the global climate. 
+//         Copernicus Climate Change Service Climate Data Store (CDS)
 ACE_TempDay[]   = {Serialize(tempDay)};
 ACE_TempNight[] = {Serialize(tempNight)};
 ACE_Humidity[]  = {Serialize(humidity)};
