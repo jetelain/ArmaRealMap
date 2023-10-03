@@ -2,14 +2,26 @@
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
 @{
-    ViewData["Title"] = "Arma Real Map";
+    ViewData["Title"] = "Game Realistic Map";
 }
 
 <div class="px-4 my-5 text-center">
-    <h1 class="display-5 fw-bold">Arma Realistic Map</h1>
+    <h1 class="display-5 fw-bold">Game Realistic Map for Arma 3</h1>
     <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Cartes réalistes pour Arma 3 générées à partir d'OpenStreeMap</p>
+        <p class="lead mb-4">Toolchain to generate realistic Arma 3 maps from OpenStreetMap data.</p>
+        <p>Game Realistic Map Studio guides you in the process. Experienced terrain creators can generate files for Terrain Builder and get full control over generated map.</p>
     </div>
+    <p>
+        <a href="https://www.microsoft.com/store/productId/9MTJ3C92Q53C"><img src="https://get.microsoft.com/images/en-US%20dark.svg" height="48" /></a> or 
+        <a href="https://github.com/jetelain/ArmaRealMap/releases" class="btn btn-primary btn-lg"><i class="fab fa-github"></i> Download from GitHub</a>
+    </p>
+
+    <p>
+        <a href="https://github.com/jetelain/ArmaRealMap/wiki/Home" class="btn btn-secondary"><i class="fab fa-github"></i> Documentation</a>
+        <a href="https://discord.gg/9JTHHKWJPn" class="btn btn-secondary"><i class="fab fa-discord"></i> Join us on Discord</a>
+    </p>
+
+
 </div>
 
 @if ((await AuthorizationService.AuthorizeAsync(User, "Admin")).Succeeded)

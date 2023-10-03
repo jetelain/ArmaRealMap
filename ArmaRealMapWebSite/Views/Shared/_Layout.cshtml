@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Arma Realistic Map</title>
+    <title>@ViewData["Title"] - Game Realistic Map</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <script src="https://kit.fontawesome.com/bcf9eaf5ce.js" crossorigin="anonymous" async="async"></script>
@@ -13,22 +13,22 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Arma Realistic Map</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Game Realistic Map</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Maps" asp-action="Index">Maps</a>
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="AceWeather" asp-action="Index">ACE3 Weather</a>
                         </li>
-                        <li class="nav-item">
+                        @*                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Assets" asp-action="Index">Objects</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ObjectLibraries" asp-action="Index">Libraries</a>
-                        </li>
+                        </li> *@
                     </ul>
                     <form class="form-inline">
                         @if (User?.Identity?.IsAuthenticated ?? false)
@@ -53,7 +53,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2013-2021 BOHEMIA INTERACTIVE a.s. All rights reserved. &copy; Additional content Authors. Tool by <a href="https://pmad.net/">GrueArbre</a> - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>.<br />
+            Tool by <a href="https://pmad.net/">GrueArbre</a> - <a href="https://pmad.net/privacy.html">Privacy</a>.<br />
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

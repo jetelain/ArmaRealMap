@@ -1,0 +1,36 @@
+﻿@model AceWeatherModel
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
+    ViewData["Title"] = "ACE3 Weather";
+}
+
+<h1>ACE3 Weather Compute Tool</h1>
+
+<p>This tool use weather averages from 2010 to 2020 from <a href="https://climate.copernicus.eu/climate-reanalysis">ERA5 data</a> to generate data expected by <a href="https://ace3.acemod.org/wiki/feature/weather">ACE3 Weather</a>.</p>
+
+<p>Note: GameRealisticMap Studio automatically computes those parameters in the generation process. You can use this tool to get parameters from another location, or for maps created with other tools.</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Coordinates" class="control-label"></label>
+                <input asp-for="Coordinates" class="form-control" />
+                <span asp-validation-for="Coordinates" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Compute" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@if(!string.IsNullOrEmpty(Model?.AceConfig))
+{
+    <pre>
+        @Model.AceConfig
+    </pre>
+}
+
