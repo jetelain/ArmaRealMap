@@ -35,6 +35,7 @@ namespace ArmaRealMapWebSite.Controllers
                 ModelState.AddModelError(nameof(model.Coordinates), "No data for those coordinates");
                 return View(model);
             }
+            model.RawData = data;
             model.AceConfig = AceWeather.GenerateWeather(new WeatherData(data));
             return View(model);
         }

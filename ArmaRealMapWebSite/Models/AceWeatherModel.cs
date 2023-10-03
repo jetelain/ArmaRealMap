@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WeatherStats.Stats;
 
 namespace ArmaRealMapWebSite.Models
 {
@@ -10,5 +11,6 @@ namespace ArmaRealMapWebSite.Models
 
 
         public string AceConfig { get; set; }
+        public YearWeatherStatsPoint RawData { get; internal set; }
     }
 }
