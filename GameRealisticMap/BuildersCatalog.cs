@@ -72,6 +72,7 @@ namespace GameRealisticMap
             Register(new ConditionEvaluatorBuilder());
             Register(new ElevationContourBuilder(progress));
             Register(new WeatherBuilder(progress));
+            Register(new IceSurfaceBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)

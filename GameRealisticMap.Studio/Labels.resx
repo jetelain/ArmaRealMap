@@ -1315,4 +1315,13 @@ Last generated on {1}</value>
   <data name="AssetWindTurbine" xml:space="preserve">
     <value>Wind Turbine</value>
   </data>
+  <data name="AssetIceSurface" xml:space="preserve">
+    <value>Glacier surface</value>
+  </data>
+  <data name="AssetScreeSurface" xml:space="preserve">
+    <value>Scree ground</value>
+  </data>
+  <data name="AssetScree" xml:space="preserve">
+    <value>Scree</value>
+  </data>
 </root>

@@ -1315,4 +1315,13 @@ Dernière génération le {1}</value>
   <data name="AssetWindTurbine" xml:space="preserve">
     <value>Éolienne</value>
   </data>
+  <data name="AssetIceSurface" xml:space="preserve">
+    <value>Surface des glaciers</value>
+  </data>
+  <data name="AssetScreeSurface" xml:space="preserve">
+    <value>Sol des éboulis</value>
+  </data>
+  <data name="AssetScree" xml:space="preserve">
+    <value>Eboulis</value>
+  </data>
 </root>

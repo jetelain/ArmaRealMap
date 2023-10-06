@@ -41,6 +41,7 @@ namespace GameRealisticMap.Arma3
             Generators.Add(new ForestRadialGenerator(progress, assets));
             Generators.Add(new LakeSurfaceGenerator(assets));
             Generators.Add(new RocksGenerator(progress, assets));
+            Generators.Add(new ScreeGenerator(progress, assets));
             Generators.Add(new ScrubGenerator(progress, assets));
             Generators.Add(new ScrubRadialGenerator(progress, assets));
             Generators.Add(new TreesGenerator(progress, assets));

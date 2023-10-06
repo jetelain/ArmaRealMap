@@ -65,6 +65,8 @@ namespace GameRealisticMap.Arma3.Imagery
 
                 DrawPolygons(config, d, TerrainMaterialUsage.FarmLand, context.GetData<FarmlandsData>().Polygons);
 
+                DrawPolygons(config, d, TerrainMaterialUsage.IceSurface, context.GetData<IceSurfaceData>().Polygons);
+
                 DrawPolygons(config, d, TerrainMaterialUsage.Sand, context.GetData<SandSurfacesData>().Polygons);
 
                 DrawPolygons(config, d, TerrainMaterialUsage.Grass, context.GetData<GrassData>().Polygons);
@@ -72,6 +74,8 @@ namespace GameRealisticMap.Arma3.Imagery
                 DrawPolygons(config, d, TerrainMaterialUsage.RiverGround, context.GetData<WatercoursesData>().Polygons);
 
                 DrawPolygons(config, d, TerrainMaterialUsage.LakeGround, context.GetData<ElevationWithLakesData>().Lakes.Select(l => l.TerrainPolygon));
+                
+                DrawPolygons(config, d, TerrainMaterialUsage.ScreeSurface, context.GetData<ScreeData>().Polygons);
 
                 DrawPolygons(config, d, TerrainMaterialUsage.RockGround, context.GetData<RocksData>().Polygons);
             }).GetAwaiter().GetResult();

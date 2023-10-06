@@ -53,6 +53,10 @@ namespace GameRealisticMap.Arma3.Assets
             {
                 return indexByColor.Values.First();
             }
+            if (usage == TerrainMaterialUsage.ScreeSurface)
+            {
+                return GetMaterialByUsage(TerrainMaterialUsage.RockGround);
+            }
             return GetMaterialByUsage(TerrainMaterialUsage.Default);
         }
 
