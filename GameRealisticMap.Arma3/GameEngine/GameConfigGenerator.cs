@@ -50,8 +50,8 @@ namespace GameRealisticMap.Arma3.GameEngine
             var centerUTM = new CoordinateSharp.Coordinate(center.Y, center.X).UTM;
 
             return FormattableString.Invariant(@$"
-latitude={center.Y:0.00000000};
-longitude={center.X:0.0000000};
+latitude={-center.Y:0.00000000}; // positive is south
+longitude={center.X:0.0000000}; // positive is east 
 
 mapArea[] = {{
     {southWest.Y:0.00000000}, {southWest.X:0.0000000}, //Bottom Left => SW
