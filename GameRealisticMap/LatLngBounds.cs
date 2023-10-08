@@ -1,13 +1,21 @@
-﻿using GeoAPI.Geometries;
+﻿using GameRealisticMap.Geometries;
+using GeoAPI.Geometries;
+using MapToolkit;
 
 namespace GameRealisticMap
 {
     public sealed class LatLngBounds
     {
         public LatLngBounds(ITerrainArea area)
-            : this(area.TerrainBounds.Shell.Select(area.TerrainPointToLatLng).ToList())
+            : this(area, area.TerrainBounds.Shell)
         { 
         
+        }
+
+        public LatLngBounds(ITerrainArea area, IEnumerable<TerrainPoint> points)
+            : this(points.Select(area.TerrainPointToLatLng).ToList())
+        {
+
         }
 
         public LatLngBounds(List<Coordinate> points)
@@ -51,6 +59,15 @@ namespace GameRealisticMap
         public override string ToString()
         {
             return Name;
+        }
+
+        public Coordinates Start => new Coordinates(Bottom, Left);
+
+        public Coordinates End => new Coordinates(Top, Right);
+
+        public LatLngBounds WithMargin(double margin)
+        {
+            return new LatLngBounds(Left - margin, Top + margin, Right + margin, Bottom - margin);
         }
     }
 }

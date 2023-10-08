@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
 using GameRealisticMap.Nature.Ocean;
@@ -22,6 +22,10 @@ namespace GameRealisticMap.ElevationModel
             this.progress = progress;
         }
 
+        private const float InvSinCos45 = 1.4142135623730949f;
+        private const int OutOfBoundsDistance = 2500;
+        private const int OutOfBoundsStep = 25;
+
         public RawElevationData Build(IBuildContext context)
         {
             // Prepare data source
@@ -34,20 +38,77 @@ namespace GameRealisticMap.ElevationModel
             var size = context.Area.GridSize;
             var cellSize = context.Area.GridCellSize;
             var done = 0;
-
-            using var report = progress.CreateStep("Elevation", size);
             var grid = new ElevationGrid(size, cellSize);
-            Parallel.For(0, size, y =>
+            using (var report = progress.CreateStep("Elevation", size))
             {
-                for (int x = 0; x < size; x++)
+                Parallel.For(0, size, y =>
                 {
-                    var latLong = context.Area.TerrainPointToLatLng(new TerrainPoint(x * cellSize, y * cellSize));
-                    grid[x, y] = source.GetElevation(latLong, oceanMask[x, y].PackedValue);
-                }
-                report.Report(Interlocked.Increment(ref done));
-            });
+                    for (int x = 0; x < size; x++)
+                    {
+                        var latLong = context.Area.TerrainPointToLatLng(new TerrainPoint(x * cellSize, y * cellSize));
+                        grid[x, y] = source.GetElevation(latLong, oceanMask[x, y].PackedValue);
+                    }
+                    report.Report(Interlocked.Increment(ref done));
+                });
+            }
 
-            return new RawElevationData(grid, source.Credits);
+            // Out of bounds
+            var outOfBounds = GetOutOfBounds(context, source);
+
+            return new RawElevationData(grid, source.Credits, outOfBounds);
+        }
+
+        private ElevationMinMax[] GetOutOfBounds(IBuildContext context, RawElevationSource source)
+        {
+            var outOfBounds = new ElevationMinMax[512];
+            using (var report = progress.CreateStep("OutOfBounds", 512))
+            {
+                var done = 0;
+                var boxSize = new Vector2(context.Area.SizeInMeters);
+                var center = boxSize / 2;
+                Parallel.For(0, 512, a =>
+                {
+                    var boundary = GetBoundaryPoint(a, center);
+                    var vector = Vector2.Normalize(boundary - center) * OutOfBoundsStep;
+                    var pos = boundary;
+                    var min = source.GetElevationNoMask(context.Area.TerrainPointToLatLng(new TerrainPoint(pos))); ;
+                    var max = min;
+                    for (int i = 0; i < OutOfBoundsDistance; i += OutOfBoundsStep)
+                    {
+                        pos += vector;
+                        var value = source.GetElevationNoMask(context.Area.TerrainPointToLatLng(new TerrainPoint(pos)));
+                        if (value < min)
+                        {
+                            min = value;
+                        }
+                        if (value > max)
+                        {
+                            max = value;
+                        }
+                    }
+                    outOfBounds[a] = new ElevationMinMax(min, max);
+                    report.Report(Interlocked.Increment(ref done));
+                });
+            }
+            return outOfBounds;
+        }
+
+        private static Vector2 GetBoundaryPoint(int angleIndex, Vector2 center)
+        {
+            var angle = MathF.PI * angleIndex / 256f;
+            if (angleIndex < 64 || angleIndex >= 448)
+            {
+                return center + new Vector2(center.X, center.Y * MathF.Sin(angle) * InvSinCos45);
+            }
+            if (angleIndex < 192)
+            {
+                return center + new Vector2(center.X * MathF.Cos(angle) * InvSinCos45, center.Y);
+            }
+            if (angleIndex < 320)
+            {
+                return center + new Vector2(-center.X, center.Y * MathF.Sin(angle) * InvSinCos45);
+            }
+            return center + new Vector2(center.X * MathF.Cos(angle) * InvSinCos45, -center.Y);
         }
 
         private static Image<L8> CreateOceanMask(IBuildContext context)
@@ -75,16 +136,24 @@ namespace GameRealisticMap.ElevationModel
             return oceanMask;
         }
 
-        private static RawElevationSource CreateSource(IBuildContext context)
+        private RawElevationSource CreateSource(IBuildContext context)
         {
+            using var report = progress.CreateStep("CreateSource", 1);
+
             var points = new LatLngBounds(context.Area);
             var start = new Coordinates(points.Bottom - 0.002, points.Left - 0.002);
             var end = new Coordinates(points.Top + 0.002, points.Right + 0.002);
+
+            var pointsView = CreateOutOfBounds(context);
+            var startView = new Coordinates(pointsView.Bottom - 0.002, pointsView.Left - 0.002);
+            var endView = new Coordinates(pointsView.Top + 0.002, pointsView.Right + 0.002);
+
             var dbCredits = new List<string>() { "SRTM1", "STRM15+" };
 
             // Elevation of ground, but really low resolution (460m at equator)
             var fulldb = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/SRTM15Plus/")));
-            var viewFull = fulldb.CreateView<float>(start, end).GetAwaiter().GetResult().ToDataCell();
+            var viewFull = fulldb.CreateView<float>(startView, endView).GetAwaiter().GetResult().ToDataCell();
+            var detaildb = fulldb;
 
             // Elevation of surface, Partial world covergae, but better resolution (30m at equator)
             var srtm = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/SRTM1/")));
@@ -100,20 +169,30 @@ namespace GameRealisticMap.ElevationModel
                 else
                 {
                     dbCredits.Add("AW3D30");
-                    view = aw3d30.CreateView<short>(start, end).GetAwaiter().GetResult().ToDataCell(); // TODO: check AW3D30 internal format
+                    detaildb = aw3d30;
+                    view = aw3d30.CreateView<short>(startView, endView).GetAwaiter().GetResult().ToDataCell(); // TODO: check AW3D30 internal format
                 }
             }
             else
             {
-                view = srtm.CreateView<ushort>(start, end).GetAwaiter().GetResult().ToDataCell();
+                detaildb = srtm;
+                view = srtm.CreateView<ushort>(startView, endView).GetAwaiter().GetResult().ToDataCell();
             }
 
             return new RawElevationSource(dbCredits, view, viewFull);
         }
 
+        private static LatLngBounds CreateOutOfBounds(IBuildContext context)
+        {
+            var wantedView = TerrainPolygon.FromRectangle(
+                new TerrainPoint(-OutOfBoundsDistance, -OutOfBoundsDistance),
+                new TerrainPoint(context.Area.SizeInMeters + OutOfBoundsDistance, context.Area.SizeInMeters + OutOfBoundsDistance));
+            return new LatLngBounds(context.Area, wantedView.Shell);
+        }
+
         public ValueTask<RawElevationData> Read(IPackageReader package, IContext context)
         {
-            return ValueTask.FromResult<RawElevationData>(new RawElevationData(context.GetData<ElevationData>().Elevation, new List<string>()));
+            return ValueTask.FromResult<RawElevationData>(new RawElevationData(context.GetData<ElevationData>().Elevation, new List<string>(), new ElevationMinMax[0]));
         }
 
         public Task Write(IPackageWriter package, RawElevationData data)
