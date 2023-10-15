@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
@@ -18,15 +19,24 @@ namespace GameRealisticMap.Algorithms.Filling
 
         protected abstract IReadOnlyList<IClusterDefinition<TModelInfo>> Search(Vector2 start, Vector2 end);
 
-        public override IClusterItemDefinition<TModelInfo> SelectObjectToInsert(TerrainPoint point)
+        public override IClusterItemDefinition<TModelInfo>? SelectObjectToInsert(TerrainPoint point, IPointConditionContext conditionContext)
+        {
+            var cluster = SelectCluster(point, conditionContext);
+            if (cluster != null)
+            {
+                return cluster.Models.GetRandom(area.Random, conditionContext);
+            }
+            return null;
+        }
+
+        private IClusterDefinition<TModelInfo>? SelectCluster(TerrainPoint point, IPointConditionContext conditionContext)
         {
             var potential = Search(point.Vector - ClusterSearchArea, point.Vector + ClusterSearchArea);
             if (potential.Count == 0)
             {
-                potential = defaultClusters;
+                return defaultClusters.GetRandom(area.Random, conditionContext);
             }
-            var cluster = potential.GetEquiprobale(area.Random);
-            return cluster.Models.GetRandom(area.Random);
+            return potential.GetEquiprobale(area.Random); // XXX: May apply condition again ? cluster positions has already applied condition
         }
     }
 }

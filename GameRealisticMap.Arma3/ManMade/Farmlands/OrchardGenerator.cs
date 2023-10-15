@@ -5,6 +5,7 @@ using GameRealisticMap.Algorithms.Following;
 using GameRealisticMap.Algorithms.Rows;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.Reporting;
@@ -47,7 +48,7 @@ namespace GameRealisticMap.Arma3.ManMade.Farmlands
 
                 using (progress.CreateScope("SmallOrchards"))
                 {
-                    new FillAreaBasic<Composition>(progress, lib2).FillPolygons(layer2, small);
+                    new FillAreaBasic<Composition>(progress, lib2).FillPolygons(layer2, small, context.GetData<ConditionEvaluator>());
                 }
             }
             return layer1.SelectMany(o => o.Model.ToTerrainBuilderObjects(o))

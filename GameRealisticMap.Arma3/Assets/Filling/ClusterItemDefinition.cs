@@ -1,18 +1,19 @@
 ﻿using System.Text.Json.Serialization;
 using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Arma3.Assets.Filling
 {
     public class ClusterItemDefinition : IClusterItemDefinition<Composition>
     {
-        public ClusterItemDefinition(float radius, float fitRadius, Composition model, float? maxZ, float? minZ, double probability, float? maxScale, float? minScale)
-            : this(radius, fitRadius, null, model, maxZ, minZ, probability, maxScale, minScale)
+        public ClusterItemDefinition(float radius, float fitRadius, Composition model, float? maxZ, float? minZ, double probability, float? maxScale, float? minScale, PointCondition? condition = null)
+            : this(radius, fitRadius, null, model, maxZ, minZ, probability, maxScale, minScale, condition)
         {
 
         }
 
         [JsonConstructor]
-        public ClusterItemDefinition(float radius, float fitRadius, float? exclusiveRadius, Composition model, float? maxZ, float? minZ, double probability, float? maxScale, float? minScale)
+        public ClusterItemDefinition(float radius, float fitRadius, float? exclusiveRadius, Composition model, float? maxZ, float? minZ, double probability, float? maxScale, float? minScale, PointCondition? condition = null)
         {
             Radius = radius;
             if (exclusiveRadius != null)
@@ -25,6 +26,7 @@ namespace GameRealisticMap.Arma3.Assets.Filling
             }
             Model = model;
             Probability = probability;
+            Condition = condition;
 
             if (maxScale != null && minScale != null)
             {
@@ -73,5 +75,10 @@ namespace GameRealisticMap.Arma3.Assets.Filling
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public float? MinScale { get; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public PointCondition? Condition { get; }
+
+        [JsonIgnore]
+        ICondition<IPointConditionContext>? IWithCondition<IPointConditionContext>.Condition => Condition;
     }
 }

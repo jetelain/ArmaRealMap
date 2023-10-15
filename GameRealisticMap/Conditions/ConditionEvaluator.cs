@@ -11,7 +11,7 @@ using WeatherStats.Stats;
 
 namespace GameRealisticMap.Conditions
 {
-    public class ConditionEvaluator
+    public class ConditionEvaluator : IConditionEvaluator
     {
         private readonly CategoryAreaData areas;
         private readonly CitiesData cities;

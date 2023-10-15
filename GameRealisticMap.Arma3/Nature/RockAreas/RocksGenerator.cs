@@ -5,6 +5,7 @@ using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Reporting;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Arma3.Nature.RockAreas
 {
@@ -17,12 +18,12 @@ namespace GameRealisticMap.Arma3.Nature.RockAreas
 
         protected override BasicCollectionId Id => BasicCollectionId.Rocks;
 
-        protected override void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons)
+        protected override void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons, IConditionEvaluator evaluator)
         {
-            base.Generate(layer, polygons);
+            base.Generate(layer, polygons, evaluator);
 
             var additional = new FillAreaBasic<Composition>(progress, assets.GetBasicCollections(BasicCollectionId.RocksAdditional));
-            additional.FillPolygons(layer, polygons);
+            additional.FillPolygons(layer, polygons, evaluator);
         }
     }
 }

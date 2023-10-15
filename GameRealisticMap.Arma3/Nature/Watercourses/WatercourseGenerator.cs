@@ -5,6 +5,7 @@ using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Reporting;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Arma3.Nature.Watercourses
 {
@@ -17,12 +18,12 @@ namespace GameRealisticMap.Arma3.Nature.Watercourses
 
         protected override ClusterCollectionId Id => ClusterCollectionId.Watercourse;
 
-        protected override void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons)
+        protected override void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons, IConditionEvaluator evaluator)
         {
-            base.Generate(layer, polygons);
+            base.Generate(layer, polygons, evaluator);
 
             var additional = new FillAreaBasic<Composition>(progress, assets.GetBasicCollections(BasicCollectionId.WatercourseAdditional));
-            additional.FillPolygons(layer, polygons);
+            additional.FillPolygons(layer, polygons, evaluator);
         }
     }
 }
