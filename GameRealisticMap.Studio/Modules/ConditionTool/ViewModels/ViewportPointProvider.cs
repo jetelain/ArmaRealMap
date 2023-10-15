@@ -4,7 +4,7 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
-    internal class ViewportPointProvider : ISamplePointProvider
+    internal class ViewportPointProvider : IConditionSampleProvider<TerrainPoint>
     {
         private const int NumX = 20;
         private const int NumY = 15;

@@ -5,7 +5,7 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
-    internal class RandomPointProvider : ISamplePointProvider
+    internal class RandomPointProvider : IConditionSampleProvider<TerrainPoint>
     {
         public IEnumerable<TerrainPoint> GetSamplePoints(IBuildContext buildContext)
         {

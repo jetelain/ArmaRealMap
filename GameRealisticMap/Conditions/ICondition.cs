@@ -1,6 +1,6 @@
 ﻿namespace GameRealisticMap.Conditions
 {
-    public interface ICondition<TContext>
+    public interface ICondition<in TContext>
     {
         bool Evaluate(TContext context);
 

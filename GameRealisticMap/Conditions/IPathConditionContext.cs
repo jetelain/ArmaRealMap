@@ -1,6 +1,8 @@
-﻿namespace GameRealisticMap.Conditions
+﻿using GameRealisticMap.Geometries;
+
+namespace GameRealisticMap.Conditions
 {
-    public interface IPathConditionContext
+    public interface IPathConditionContext : IConditionContext<TerrainPath>
     {
         float Length { get; }
 

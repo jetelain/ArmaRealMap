@@ -77,7 +77,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             OnUIThread(() => IoC.Get<IShell>().ShowTool<IConditionTool>());
         }
 
-        internal Task TestCondition(PointCondition condition, ISamplePointProvider? provider)
+        internal Task TestCondition(PointCondition condition, IConditionSampleProvider<TerrainPoint>? provider)
         {
             if (initialize == null)
             {
@@ -114,7 +114,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             Condition.SamplePointProvider = provider;
 
             var total = isTrue.Count + isFalse.Count;
-            Stats = string.Format(GameRealisticMap.Studio.Labels.TagsTesterStats, total, isTrue.Count * 100.0 / total, (double)sw.ElapsedMilliseconds / total);
+            Stats = string.Format(Labels.TagsTesterStats, total, isTrue.Count * 100.0 / total, (double)sw.ElapsedMilliseconds / total);
 
             NotifyOfPropertyChange(nameof(IsTrue));
             NotifyOfPropertyChange(nameof(IsFalse));

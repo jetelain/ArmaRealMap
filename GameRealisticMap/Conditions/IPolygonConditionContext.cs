@@ -1,6 +1,8 @@
-﻿namespace GameRealisticMap.Conditions
+﻿using GameRealisticMap.Geometries;
+
+namespace GameRealisticMap.Conditions
 {
-    public interface IPolygonConditionContext
+    public interface IPolygonConditionContext : IConditionContext<TerrainPolygon>
     {
         float Area { get; }
 
