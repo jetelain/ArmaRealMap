@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.ComponentModel;
+using System.Numerics;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
@@ -6,6 +7,7 @@ using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Ocean;
+using WeatherStats.Stats;
 
 namespace GameRealisticMap.Conditions
 {
@@ -34,6 +36,16 @@ namespace GameRealisticMap.Conditions
         public IPointConditionContext GetPointContext(TerrainPoint point, Road? road = null)
         {
             return new PointConditionContext(this, point, road);
+        }
+
+        public IPathConditionContext GetPathContext(TerrainPath path)
+        {
+            return new PathConditionContext(this, path);
+        }
+
+        public IPolygonConditionContext GetPolygonContext(TerrainPolygon polygon)
+        {
+            return new PolygonConditionContext(this, polygon);
         }
 
         public bool IsArea(TerrainPoint point, BuildingTypeId buildingType)
@@ -128,6 +140,24 @@ namespace GameRealisticMap.Conditions
                 return nearby;
             }
             return nearby.OrderBy(r => r.Path.Distance(point));
+        }
+
+        public MinMaxAvg GetElevation(TerrainPath path)
+        {
+            return MinMaxAvg.From(elevation.Elevation.GetElevationOnPath(path.Points));
+        }
+
+        public MinMaxAvg GetElevation(TerrainPolygon polygon)
+        {
+            var around = elevation.Elevation.GetElevationOnPath(polygon.Shell).Concat(polygon.Holes.SelectMany(elevation.Elevation.GetElevationOnPath));
+            var inside = elevation.Elevation.GetElevationInside(polygon).ToList();
+            var ext = MinMaxAvg.From(around.Concat(inside));
+            if (inside.Count > 0)
+            {
+                return new MinMaxAvg(ext.Min, inside.Average(), ext.Max);
+            }
+            var centroid = elevation.Elevation.ElevationAround(polygon.Centroid);
+            return new MinMaxAvg(Math.Min(ext.Min, centroid), centroid, Math.Max(ext.Max, centroid));
         }
     }
 }
