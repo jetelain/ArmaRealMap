@@ -2,6 +2,7 @@
 using GameRealisticMap.Algorithms.Following;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Conditions;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.Reporting;
 
@@ -20,6 +21,7 @@ namespace GameRealisticMap.Arma3.ManMade
 
         public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
         {
+            var evaluator = context.GetData<ConditionEvaluator>();
             var fences = context.GetData<FencesData>().Fences;
             var layer = new List<PlacedModel<Composition>>();
             foreach (var fence in fences.ProgressStep(progress, "Fences"))
@@ -28,14 +30,17 @@ namespace GameRealisticMap.Arma3.ManMade
                 if (lib.Count != 0 && fence.Path.Points.Count > 1)
                 {
                     var random = RandomHelper.CreateRandom(fence.Path.FirstPoint);
-                    var def = lib.GetRandom(random);
-                    if (def.Straights.Count > 0)
+                    var def = lib.GetRandom(random, evaluator.GetPathContext(fence.Path));
+                    if (def != null)
                     {
-                        FollowPathWithObjects.PlaceOnPathRightAngle(random, def, layer, fence.Path.Points);
-                    }
-                    else if (def.Objects.Count > 0)
-                    {
-                        FollowPathWithObjects.PlaceObjectsOnPath(random, def.Objects, layer, fence.Path.Points);
+                        if (def.Straights.Count > 0)
+                        {
+                            FollowPathWithObjects.PlaceOnPathRightAngle(random, def, layer, fence.Path.Points);
+                        }
+                        else if (def.Objects.Count > 0)
+                        {
+                            FollowPathWithObjects.PlaceObjectsOnPath(random, def.Objects, layer, fence.Path.Points);
+                        }
                     }
                 }
 
