@@ -18,19 +18,21 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
     {
         private readonly MapConfigEditorViewModel map;
 
+        private IConditionToolWorker? worker;
+
         private Task? initialize;
         private ConditionEvaluator? conditionEvaluator;
         private IBuildContext? mapData;
 
-        public List<TerrainPoint> IsTrue { get; private set; } = new List<TerrainPoint>();
+        public List<ITerrainEnvelope> IsTrue { get; private set; } = new List<ITerrainEnvelope>();
 
-        public List<TerrainPoint> IsFalse { get; private set; } = new List<TerrainPoint>();
+        public List<ITerrainEnvelope> IsFalse { get; private set; } = new List<ITerrainEnvelope>();
 
         public PreviewMapData? PreviewMapData { get; set; }
 
-        public float SizeInMeters { get; private set; } = 2500;
+        public float SizeInMeters { get; private set; } = 250;
 
-        public ConditionVM Condition { get; } = new ConditionVM();
+        public List<ConditionToken> Tokens => worker?.Tokens ?? new List<ConditionToken>();
 
         public bool IsWorking { get; set; } = true;
 
@@ -77,7 +79,10 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             OnUIThread(() => IoC.Get<IShell>().ShowTool<IConditionTool>());
         }
 
-        internal Task TestCondition(PointCondition condition, IConditionSampleProvider<TerrainPoint>? provider)
+        internal Task TestCondition2<TCondition, TContext, TGeometry>(ConditionToolWorker<TCondition, TContext, TGeometry> worker, IConditionSampleProvider<TGeometry> provider)
+            where TCondition : class, ICondition<TContext>
+            where TContext : IConditionContext<TGeometry>
+            where TGeometry : ITerrainEnvelope
         {
             if (initialize == null)
             {
@@ -85,12 +90,13 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             }
             if (!initialize.IsCompleted)
             {
-                initialize.ContinueWith(_ => TestCondition(condition, provider));
+                initialize.ContinueWith(_ => TestCondition2(worker, provider));
                 return Task.CompletedTask;
             }
-            var points = (provider ?? new RandomPointProvider()).GetSamplePoints(mapData!);
-            var isTrue = new List<TerrainPoint>();
-            var isFalse = new List<TerrainPoint>();
+            this.worker = worker;
+            var points = provider.GetSamplePoints(mapData!);
+            var isTrue = new List<ITerrainEnvelope>();
+            var isFalse = new List<ITerrainEnvelope>();
             var sw = Stopwatch.StartNew();
             foreach (var point in points)
             {
@@ -98,7 +104,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
                 {
                     break;
                 }
-                if (condition.Evaluate(conditionEvaluator!.GetPointContext(point)))
+                if (worker.Evaluate(conditionEvaluator!, point))
                 {
                     isTrue.Add(point);
                 }
@@ -110,8 +116,6 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             sw.Stop();
             IsTrue = isTrue;
             IsFalse = isFalse;
-            Condition.SetParsedCondition(condition);
-            Condition.SamplePointProvider = provider;
 
             var total = isTrue.Count + isFalse.Count;
             Stats = string.Format(Labels.TagsTesterStats, total, isTrue.Count * 100.0 / total, (double)sw.ElapsedMilliseconds / total);
@@ -119,31 +123,24 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             NotifyOfPropertyChange(nameof(IsTrue));
             NotifyOfPropertyChange(nameof(IsFalse));
             NotifyOfPropertyChange(nameof(Stats));
+            NotifyOfPropertyChange(nameof(Tokens));
             return Task.CompletedTask;
         }
 
         public Task RunRandom()
         {
-            if (initialize != null && initialize.IsCompleted)
+            if (initialize != null && initialize.IsCompleted && worker != null)
             {
-                var def = Condition.ToDefinition();
-                if (def != null)
-                {
-                    return TestCondition(def, new RandomPointProvider());
-                }
+                return worker.TestOnMapRandom(this);
             }
             return Task.CompletedTask;
         }
 
         public Task RunViewport(ITerrainEnvelope envelope)
         {
-            if (initialize != null && initialize.IsCompleted)
+            if (initialize != null && initialize.IsCompleted && worker != null)
             {
-                var def = Condition.ToDefinition();
-                if (def != null)
-                {
-                    return TestCondition(def, new ViewportPointProvider(envelope));
-                }
+                return worker.TestOnMapViewport(this, envelope);
             }
             return Task.CompletedTask;
         }

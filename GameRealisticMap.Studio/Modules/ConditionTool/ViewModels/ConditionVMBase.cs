@@ -65,5 +65,13 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             tool.SetTarget(this);
             return Task.CompletedTask;
         }
+
+        internal abstract TContext CreateContext(IConditionEvaluator evaluator, TGeometry geometry);
+        internal virtual IConditionSampleProvider<TGeometry> GetDefaultProvider()
+        {
+            return SamplePointProvider ?? GetRandomProvider();
+        }
+        internal abstract IConditionSampleProvider<TGeometry> GetRandomProvider();
+        internal abstract IConditionSampleProvider<TGeometry> GetViewportProvider(ITerrainEnvelope envelope);
     }
 }

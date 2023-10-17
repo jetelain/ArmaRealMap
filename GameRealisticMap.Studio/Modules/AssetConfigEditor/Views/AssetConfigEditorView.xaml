@@ -7,6 +7,7 @@
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
              xmlns:cal="http://caliburnmicro.com"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             xmlns:ctrl="clr-namespace:GameRealisticMap.Studio.Modules.ConditionTool.Controls"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              mc:Ignorable="d" 
              Foreground="{DynamicResource EnvironmentWindowText}"
@@ -113,6 +114,13 @@
                                 <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
                                 <DataGridTextColumn Header="{x:Static r:Labels.Density}" Binding="{Binding DensityText}" IsReadOnly="True" Width="100" />
                                 <DataGridTextColumn Header="{x:Static r:Labels.AssetObjects}" Binding="{Binding Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTemplateColumn Width="200" Header="{x:Static r:Labels.Tags}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ctrl:ConditionBox DataContext="{Binding Condition}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -167,6 +175,13 @@
                                 <DataGridTextColumn Header="{x:Static r:Labels.Label}" Binding="{Binding Label}" Width="150" />
                                 <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
                                 <DataGridTextColumn Header="{x:Static r:Labels.AssetObjects}" Binding="{Binding MainChild.Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTemplateColumn Width="200" Header="{x:Static r:Labels.Tags}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ctrl:ConditionBox DataContext="{Binding Condition}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

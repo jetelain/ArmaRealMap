@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
@@ -17,6 +18,10 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
         Task TestOnMap(ConditionTestMapViewModel tester);
 
         List<CriteriaItem> GenerateCriterias();
+        
+        Task TestOnMapViewport(ConditionTestMapViewModel conditionTestMapViewModel, ITerrainEnvelope envelope);
+
+        Task TestOnMapRandom(ConditionTestMapViewModel conditionTestMapViewModel);
 
         Type ContextType { get; }
     }

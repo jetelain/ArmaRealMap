@@ -19,7 +19,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10"  Visibility="{Binding IsNotWorking, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <ctrl:ConditionBox DataContext="{Binding Condition}" />
+            <ctrl:ConditionBox />
             <Button Padding="10 5" Margin="10 0" cal:Message.Attach="RunRandom">
                 <Run Text="{x:Static r:Labels.TestRandomlyOnMap}" />
             </Button>

@@ -8,6 +8,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
+using GameRealisticMap.Studio.Modules.ConditionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
@@ -28,6 +29,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             RemoveItem = new RelayCommand(item => Items.RemoveUndoable(parent.UndoRedoManager,(FillingItem)item));
             Items.CollectionChanged += Items_CollectionChanged;
             Label = GetDistinctName();
+            Condition = new PointConditionVM(c.Condition);
         }
 
         private void Items_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -76,7 +78,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         }
 
         public string Label { get; set; }
-
+        public PointConditionVM Condition { get; }
         public CompositionImporter CompositionImporter { get; }
 
         public RelayCommand RemoveItem { get; }
@@ -105,7 +107,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         internal ClusterDefinition ToDefinition()
         {
             DefinitionHelper.EquilibrateProbabilities(Items);
-            return new ClusterDefinition(Items.Select(i => i.ToDefinition()).ToList(), Probability);
+            return new ClusterDefinition(Items.Select(i => i.ToDefinition()).ToList(), Probability, Condition.ToDefinition());
         }
         public Task MakeItemsEquiprobable()
         {

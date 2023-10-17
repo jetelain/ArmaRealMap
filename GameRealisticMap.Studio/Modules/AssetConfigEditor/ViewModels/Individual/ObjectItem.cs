@@ -10,7 +10,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
         public ObjectItem(ObjectDefinition d)
         {
             _probability = d.Probability;
-            Condition = new ConditionVM(d.Condition);
+            Condition = new PointConditionVM(d.Condition);
             Composition = new CompositionViewModel(d.Composition);
         }
 
@@ -21,7 +21,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individua
             set { _probability = value; NotifyOfPropertyChange(); }
         }
 
-        public ConditionVM Condition { get; }
+        public PointConditionVM Condition { get; }
 
         public CompositionViewModel Composition { get; }
 

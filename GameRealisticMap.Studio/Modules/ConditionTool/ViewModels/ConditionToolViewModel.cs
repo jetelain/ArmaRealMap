@@ -25,7 +25,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             this.shell = shell;
             DisplayName = Labels.TagsEditor;
             Criterias = new List<CriteriaItem>();
-            SetTarget(new ConditionVM());
+            SetTarget(new PointConditionVM());
         }
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;

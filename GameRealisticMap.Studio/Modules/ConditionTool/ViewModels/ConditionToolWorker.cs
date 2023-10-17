@@ -68,7 +68,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
         public Task TestOnMap(ConditionTestMapViewModel tester)
         {
-            return tester.TestCondition(condition as PointCondition, (target as ConditionVM)?.SamplePointProvider); // TODO !
+            return tester.TestCondition2(this, target.GetDefaultProvider());
         }
 
         public List<CriteriaItem> GenerateCriterias()
@@ -80,6 +80,25 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
                 .OrderBy(p => !p.IsBoolean)
                 .ThenBy(p => p.Name)
                 .ToList();
+        }
+
+        public Task TestOnMapViewport(ConditionTestMapViewModel tester, ITerrainEnvelope envelope)
+        {
+            return tester.TestCondition2(this, target.GetViewportProvider(envelope));
+        }
+
+        public Task TestOnMapRandom(ConditionTestMapViewModel tester)
+        {
+            return tester.TestCondition2(this, target.GetRandomProvider());
+        }
+
+        internal bool Evaluate(ConditionEvaluator conditionEvaluator, TGeometry point)
+        {
+            if (condition != null)
+            {
+                return condition.Evaluate(target.CreateContext(conditionEvaluator, point));
+            }
+            return false;
         }
     }
 }

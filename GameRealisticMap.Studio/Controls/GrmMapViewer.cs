@@ -40,23 +40,23 @@ namespace GameRealisticMap.Studio.Controls
 
         public Dictionary<RoadTypeId,Pen> RoadBrushes { get; } = new Dictionary<RoadTypeId,Pen>();
 
-        public List<TerrainPoint> IsTrue
+        public List<ITerrainEnvelope> IsTrue
         {
-            get { return (List<TerrainPoint>)GetValue(IsTrueProperty); }
+            get { return (List<ITerrainEnvelope>)GetValue(IsTrueProperty); }
             set { SetValue(IsTrueProperty, value); }
         }
 
         public static readonly DependencyProperty IsTrueProperty =
-            DependencyProperty.Register(nameof(IsTrue), typeof(List<TerrainPoint>), typeof(GrmMapViewer), new PropertyMetadata(new List<TerrainPoint>(), SomePropertyChanged));
+            DependencyProperty.Register(nameof(IsTrue), typeof(List<ITerrainEnvelope>), typeof(GrmMapViewer), new PropertyMetadata(new List<ITerrainEnvelope>(), SomePropertyChanged));
 
 
-        public List<TerrainPoint> IsFalse
+        public List<ITerrainEnvelope> IsFalse
         {
-            get { return (List<TerrainPoint>)GetValue(FalseListProperty); }
+            get { return (List<ITerrainEnvelope>)GetValue(FalseListProperty); }
             set { SetValue(FalseListProperty, value); }
         }
         public static readonly DependencyProperty FalseListProperty =
-            DependencyProperty.Register(nameof(IsFalse), typeof(List<TerrainPoint>), typeof(GrmMapViewer), new PropertyMetadata(new List<TerrainPoint>(), SomePropertyChanged));
+            DependencyProperty.Register(nameof(IsFalse), typeof(List<ITerrainEnvelope>), typeof(GrmMapViewer), new PropertyMetadata(new List<ITerrainEnvelope>(), SomePropertyChanged));
 
 
 
@@ -192,14 +192,14 @@ namespace GameRealisticMap.Studio.Controls
                 {
                     if (point.EnveloppeIntersects(enveloppe))
                     {
-                        dc.DrawEllipse(GrmMapStyle.FalseFill, GrmMapStyle.FalsePen, Convert(point, size), 3, 3);
+                        DrawAny(dc, size, point, GrmMapStyle.FalsePen, GrmMapStyle.FalseFill);
                     }
                 }
                 foreach (var point in IsTrue)
                 {
                     if (point.EnveloppeIntersects(enveloppe))
                     {
-                        dc.DrawEllipse(GrmMapStyle.TrueFill, GrmMapStyle.TruePen, Convert(point, size), 3, 3);
+                        DrawAny(dc, size, point, GrmMapStyle.TruePen, GrmMapStyle.TrueFill);
                     }
                 }
             }
@@ -213,6 +213,15 @@ namespace GameRealisticMap.Studio.Controls
             {
                 pathCache.Clear();
             }
+        }
+
+        private static void DrawAny(DrawingContext dc, float size, ITerrainEnvelope point, Pen? pen, Brush? brush)
+        {
+            if (point is TerrainPoint tp)
+            {
+                dc.DrawEllipse(brush, pen, Convert(tp, size), 3, 3);
+            }
+
         }
 
         private void DrawAdditionals(DrawingContext dc, float size, Envelope enveloppe, List<PreviewAdditionalLayer> layers)
