@@ -1,6 +1,8 @@
-﻿namespace GameRealisticMap.Conditions
+﻿using GameRealisticMap.Geometries;
+
+namespace GameRealisticMap.Conditions
 {
-    public interface IPointConditionContext
+    public interface IPointConditionContext : IConditionContext<TerrainPoint>
     {
         float DistanceToOcean { get; }
         float DistanceToRoad { get; }

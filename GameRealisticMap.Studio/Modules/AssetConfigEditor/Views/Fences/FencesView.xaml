@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
+             xmlns:ctrl="clr-namespace:GameRealisticMap.Studio.Modules.ConditionTool.Controls"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
@@ -22,7 +23,7 @@
             </StackPanel>
             
             <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-                <Label VerticalAlignment="Top">
+                <Label Width="100" VerticalAlignment="Top">
                     <Run Text="{x:Static r:Labels.FenceType}" />
                 </Label>
                 <StackPanel>
@@ -33,6 +34,13 @@
                         <RadioButton GroupName="Type" IsChecked="{Binding UseObjects}"><Run Text="{x:Static r:Labels.FenceUseObjects}" /></RadioButton>
                     </TextBlock>
                 </StackPanel>
+            </StackPanel>
+
+            <StackPanel Margin="0 5 0 5" Orientation="Horizontal" >
+                <Label Width="100">
+                    <Run Text="{x:Static r:Labels.Tags}"/>
+                </Label>
+                <ctrl:ConditionEdit DataContext="{Binding Condition}" />
             </StackPanel>
 
             <StackPanel c:CompositionDragDrop.Importer="{Binding Straights.CompositionImporter}" Visibility="{Binding UseSegments, Converter={StaticResource BooleanToVisibilityConverter}}">

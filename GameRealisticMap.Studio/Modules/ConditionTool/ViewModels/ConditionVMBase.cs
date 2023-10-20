@@ -2,16 +2,20 @@
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Conditions;
+using GameRealisticMap.Geometries;
 using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
-    public class ConditionVM : PropertyChangedBase
+    public abstract class ConditionVMBase<TCondition,TContext,TGeometry> : PropertyChangedBase, IConditionVM 
+        where TCondition : class, ICondition<TContext>
+        where TContext : IConditionContext<TGeometry>
+        where TGeometry : ITerrainEnvelope
     {
 
-        private PointCondition? condition;
+        private TCondition? condition;
 
-        public ConditionVM(PointCondition? condition = null) 
+        public ConditionVMBase(TCondition? condition = null) 
         {
             this.condition = condition;
             UpdateTokens();
@@ -23,7 +27,9 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             NotifyOfPropertyChange(nameof(Tokens));
         }
 
-        internal ISamplePointProvider? SamplePointProvider { get; set; }
+        internal IConditionSampleProvider<TGeometry>? SamplePointProvider { get; set; }
+
+        internal abstract TCondition Parse(string value);
 
         public List<ConditionToken> Tokens { get; private set; } = new List<ConditionToken>();
 
@@ -34,20 +40,20 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             { 
                 if (Condition != value)
                 {
-                    condition = string.IsNullOrEmpty(value) ? null : new PointCondition(value);
+                    condition = string.IsNullOrEmpty(value) ? null : Parse(value);
                     NotifyOfPropertyChange();
                     UpdateTokens();
                 } 
             }
         }
 
-        public void SetParsedCondition(PointCondition? condition)
+        public void SetParsedCondition(TCondition? condition)
         {
             this.condition = condition;
             UpdateTokens();
         }
 
-        public PointCondition? ToDefinition()
+        public TCondition? ToDefinition()
         {
             return condition;
         }
@@ -56,8 +62,16 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
         {
             var tool = IoC.Get<IConditionTool>();
             IoC.Get<IShell>().ShowTool(tool);
-            tool.Target = this;
+            tool.SetTarget(this);
             return Task.CompletedTask;
         }
+
+        internal abstract TContext CreateContext(IConditionEvaluator evaluator, TGeometry geometry);
+        internal virtual IConditionSampleProvider<TGeometry> GetDefaultProvider()
+        {
+            return SamplePointProvider ?? GetRandomProvider();
+        }
+        internal abstract IConditionSampleProvider<TGeometry> GetRandomProvider();
+        internal abstract IConditionSampleProvider<TGeometry> GetViewportProvider(ITerrainEnvelope envelope);
     }
 }

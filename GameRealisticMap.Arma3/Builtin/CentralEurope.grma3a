@@ -503,7 +503,8 @@
                 }
               ]
             },
-            "Probability": 0.14285714285714285
+            "Probability": 0.14285714285714285,
+            "Condition": "Elevation \u003E 1"
           }
         ],
         "Probability": 1,

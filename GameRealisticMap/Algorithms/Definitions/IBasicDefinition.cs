@@ -1,6 +1,8 @@
-﻿namespace GameRealisticMap.Algorithms.Definitions
+﻿using GameRealisticMap.Conditions;
+
+namespace GameRealisticMap.Algorithms.Definitions
 {
-    public interface IBasicDefinition<out TModelInfo> : IWithProbability, IWithDensity
+    public interface IBasicDefinition<out TModelInfo> : IWithProbabilityAndCondition<IPolygonConditionContext>, IWithDensity
     {
         IReadOnlyList<IClusterItemDefinition<TModelInfo>> Models { get; }
     }

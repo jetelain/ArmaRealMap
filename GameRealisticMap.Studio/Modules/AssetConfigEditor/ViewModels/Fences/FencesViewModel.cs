@@ -5,6 +5,7 @@ using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Fences;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Generic;
+using GameRealisticMap.Studio.Modules.ConditionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
@@ -36,11 +37,14 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
             Objects = new ObjectsViewModel(definition?.Objects, this);
             SegmentsItems = new() { Straights, LeftCorners, RightCorners, Ends };
             ObjectsItems = new() { Objects };
+            Condition = new PathConditionVM(definition?.Condition);
         }
 
         public override List<IExplorerTreeItem> SegmentsItems { get; }
 
         public override List<IExplorerTreeItem> ObjectsItems { get; }
+
+        public PathConditionVM Condition { get; }
 
         public IEnumerable<FencesCornerOrEndViewModel> CornersAndEnds => new[] { LeftCorners, RightCorners, Ends };
 
@@ -62,9 +66,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences
         {
             if (UseObjects)
             {
-                return new FenceDefinition(Probability, null, null, null, null, Objects.ToDefinition(), useAnySize, Label);
+                return new FenceDefinition(Probability, null, null, null, null, Objects.ToDefinition(), useAnySize, Label, Condition.ToDefinition());
             }
-            return new FenceDefinition(Probability, Straights.ToDefinition(), LeftCorners.ToDefinition(), RightCorners.ToDefinition(), Ends.ToDefinition(), null, useAnySize, Label);
+            return new FenceDefinition(Probability, Straights.ToDefinition(), LeftCorners.ToDefinition(), RightCorners.ToDefinition(), Ends.ToDefinition(), null, useAnySize, Label, Condition.ToDefinition());
         }
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)

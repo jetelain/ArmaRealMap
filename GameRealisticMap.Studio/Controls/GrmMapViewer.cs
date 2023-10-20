@@ -40,23 +40,23 @@ namespace GameRealisticMap.Studio.Controls
 
         public Dictionary<RoadTypeId,Pen> RoadBrushes { get; } = new Dictionary<RoadTypeId,Pen>();
 
-        public List<TerrainPoint> IsTrue
+        public List<ITerrainEnvelope> IsTrue
         {
-            get { return (List<TerrainPoint>)GetValue(IsTrueProperty); }
+            get { return (List<ITerrainEnvelope>)GetValue(IsTrueProperty); }
             set { SetValue(IsTrueProperty, value); }
         }
 
         public static readonly DependencyProperty IsTrueProperty =
-            DependencyProperty.Register(nameof(IsTrue), typeof(List<TerrainPoint>), typeof(GrmMapViewer), new PropertyMetadata(new List<TerrainPoint>(), SomePropertyChanged));
+            DependencyProperty.Register(nameof(IsTrue), typeof(List<ITerrainEnvelope>), typeof(GrmMapViewer), new PropertyMetadata(new List<ITerrainEnvelope>(), SomePropertyChanged));
 
 
-        public List<TerrainPoint> IsFalse
+        public List<ITerrainEnvelope> IsFalse
         {
-            get { return (List<TerrainPoint>)GetValue(FalseListProperty); }
+            get { return (List<ITerrainEnvelope>)GetValue(FalseListProperty); }
             set { SetValue(FalseListProperty, value); }
         }
         public static readonly DependencyProperty FalseListProperty =
-            DependencyProperty.Register(nameof(IsFalse), typeof(List<TerrainPoint>), typeof(GrmMapViewer), new PropertyMetadata(new List<TerrainPoint>(), SomePropertyChanged));
+            DependencyProperty.Register(nameof(IsFalse), typeof(List<ITerrainEnvelope>), typeof(GrmMapViewer), new PropertyMetadata(new List<ITerrainEnvelope>(), SomePropertyChanged));
 
 
 
@@ -192,14 +192,14 @@ namespace GameRealisticMap.Studio.Controls
                 {
                     if (point.EnveloppeIntersects(enveloppe))
                     {
-                        dc.DrawEllipse(GrmMapStyle.FalseFill, GrmMapStyle.FalsePen, Convert(point, size), 3, 3);
+                        DrawAny(dc, size, point, GrmMapStyle.FalsePen, GrmMapStyle.FalseFill);
                     }
                 }
                 foreach (var point in IsTrue)
                 {
                     if (point.EnveloppeIntersects(enveloppe))
                     {
-                        dc.DrawEllipse(GrmMapStyle.TrueFill, GrmMapStyle.TruePen, Convert(point, size), 3, 3);
+                        DrawAny(dc, size, point, GrmMapStyle.TruePen, GrmMapStyle.TrueFill);
                     }
                 }
             }
@@ -212,6 +212,22 @@ namespace GameRealisticMap.Studio.Controls
             if (pathCache.Count > 50000)
             {
                 pathCache.Clear();
+            }
+        }
+
+        private void DrawAny(DrawingContext dc, float size, ITerrainEnvelope geometry, Pen? pen, Brush? brush)
+        {
+            if (geometry is TerrainPoint point)
+            {
+                dc.DrawEllipse(brush, pen, Convert(point, size), 3, 3);
+            }
+            else if ( geometry is TerrainPath path)
+            {
+                dc.DrawGeometry(null, pen, CreatePath(size, path));
+            }
+            else if (geometry is TerrainPolygon polygon)
+            {
+                dc.DrawGeometry(brush, pen, DoCreatePolygon(size, polygon, true));
             }
         }
 
@@ -297,13 +313,13 @@ namespace GameRealisticMap.Studio.Controls
             return polygon;
         }
 
-        private static PathGeometry DoCreatePolygon(float size, TerrainPolygon poly)
+        private static PathGeometry DoCreatePolygon(float size, TerrainPolygon poly, bool isStroked = false)
         {
             var path = new PathGeometry();
-            path.Figures.Add(CreateFigure(poly.Shell, true, false, size));
+            path.Figures.Add(CreateFigure(poly.Shell, true, isStroked, size));
             foreach (var hole in poly.Holes)
             {
-                path.Figures.Add(CreateFigure(hole, true, false, size));
+                path.Figures.Add(CreateFigure(hole, true, isStroked, size));
             }
             return path;
         }

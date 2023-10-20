@@ -207,5 +207,31 @@ namespace GameRealisticMap.ElevationModel
                 }
             }
         }
+
+        public IEnumerable<float> GetElevationInside(TerrainPolygon polygon)
+        {
+            var posMin = ToGrid(polygon.MinPoint);
+            var posMax = ToGrid(polygon.MaxPoint);
+            var x1 = (int)Math.Floor(posMin.X);
+            var y1 = (int)Math.Floor(posMin.Y);
+            var x2 = (int)Math.Ceiling(posMax.X);
+            var y2 = (int)Math.Ceiling(posMax.Y);
+            for (var x = x1; x <= x2; x++)
+            {
+                for (var y = y1; y <= y2; y++)
+                {
+                    var point = ToTerrain(x, y);
+                    if (polygon.Contains(point))
+                    {
+                        yield return ElevationAt(point);
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<float> GetElevationOnPath(List<TerrainPoint> points)
+        {
+            return GeometryHelper.PointsOnPathRegular(points, CellSize.X / 2).Select(ElevationAt);
+        }
     }
 }

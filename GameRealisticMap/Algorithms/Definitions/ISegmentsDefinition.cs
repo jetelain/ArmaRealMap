@@ -1,6 +1,8 @@
-﻿namespace GameRealisticMap.Algorithms.Definitions
+﻿using GameRealisticMap.Conditions;
+
+namespace GameRealisticMap.Algorithms.Definitions
 {
-    public interface ISegmentsDefinition<out TModelInfo> : IWithProbability
+    public interface ISegmentsDefinition<out TModelInfo> : IWithProbabilityAndCondition<IPathConditionContext>
     {
         IReadOnlyCollection<IStraightSegmentProportionDefinition<TModelInfo>> Straights { get; }
 

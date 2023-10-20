@@ -3,6 +3,7 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
+using GameRealisticMap.Studio.Modules.ConditionTool.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
@@ -18,6 +19,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             _probability = d.Probability;
             MaxScale = d.MaxScale;
             MinScale = d.MinScale;
+            Condition = new PointConditionVM(d.Condition);
         }
 
         public float _radius;
@@ -42,10 +44,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public float? MaxScale { get; set; }
 
         public float? MinScale { get; set; }
+        public PointConditionVM Condition { get; }
 
         public ClusterItemDefinition ToDefinition()
         {
-            return new ClusterItemDefinition(Radius, FitRadius, Composition.ToDefinition(), MaxZ, MinZ, Probability, MaxScale, MinScale);
+            return new ClusterItemDefinition(Radius, FitRadius, Composition.ToDefinition(), MaxZ, MinZ, Probability, MaxScale, MinScale, Condition.ToDefinition());
         }
         public void CompositionWasRotated(int degrees)
         {

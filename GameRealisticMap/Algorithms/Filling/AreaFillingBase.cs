@@ -1,5 +1,6 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
@@ -16,7 +17,7 @@ namespace GameRealisticMap.Algorithms.Filling
 
         public double Density { get; }
 
-        public abstract IClusterItemDefinition<TModelInfo> SelectObjectToInsert(TerrainPoint point);
+        public abstract IClusterItemDefinition<TModelInfo>? SelectObjectToInsert(TerrainPoint point, IPointConditionContext conditionContext);
 
         public AreaDefinition Area => area;
 

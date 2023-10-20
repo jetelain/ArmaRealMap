@@ -2,6 +2,7 @@
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature;
 using GameRealisticMap.Reporting;
@@ -28,6 +29,7 @@ namespace GameRealisticMap.Arma3.Nature
             {
                 return new List<TerrainBuilderObject>(0);
             }
+            var evaluator = context.GetData<ConditionEvaluator>();
 
             using var scope = progress.CreateScope(GetType().Name.Replace("Generator",""));
 
@@ -35,11 +37,11 @@ namespace GameRealisticMap.Arma3.Nature
 
             var layer = new RadiusPlacedLayer<Composition>(new Vector2(config.SizeInMeters));
 
-            Generate(layer, polygons);
+            Generate(layer, polygons, evaluator);
 
             return layer.SelectMany(item => item.Model.ToTerrainBuilderObjects(item));
         }
 
-        protected abstract void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons);
+        protected abstract void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons, IConditionEvaluator evaluator);
     }
 }
