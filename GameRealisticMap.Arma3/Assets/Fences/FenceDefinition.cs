@@ -1,4 +1,6 @@
-﻿using GameRealisticMap.Algorithms.Definitions;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Arma3.Assets.Fences
 {
@@ -11,7 +13,8 @@ namespace GameRealisticMap.Arma3.Assets.Fences
             List<FenceCornerOrEndDefinition>? ends = null,
             List<ItemDefinition>? objects = null,
             bool useAnySize = false,
-            string label = "")
+            string label = "",
+            PathCondition? condition = null)
         {
             Probability = probability;
             Straights = straights ?? new List<FenceStraightSegmentDefinition>();
@@ -21,6 +24,7 @@ namespace GameRealisticMap.Arma3.Assets.Fences
             RightCorners = rightCorners ?? new List<FenceCornerOrEndDefinition>();
             Ends = ends ?? new List<FenceCornerOrEndDefinition>();
             Objects = objects ?? new List<ItemDefinition>();
+            Condition = condition;
         }
 
         public double Probability { get; }
@@ -39,6 +43,9 @@ namespace GameRealisticMap.Arma3.Assets.Fences
 
         public bool UseAnySize { get; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public PathCondition? Condition { get; }
+
         IReadOnlyCollection<ICornerOrEndSegmentDefinition<Composition>> ISegmentsDefinition<Composition>.LeftCorners => LeftCorners;
 
         IReadOnlyCollection<ICornerOrEndSegmentDefinition<Composition>> ISegmentsDefinition<Composition>.RightCorners => RightCorners;
@@ -50,5 +57,8 @@ namespace GameRealisticMap.Arma3.Assets.Fences
         IReadOnlyCollection<IStraightSegmentProportionDefinition<Composition>> IRowDefition<Composition>.Straights => Straights;
 
         IReadOnlyCollection<IItemDefinition<Composition>> IRowDefition<Composition>.Objects => Objects;
+
+        [JsonIgnore]
+        ICondition<IPathConditionContext>? IWithCondition<IPathConditionContext>.Condition => Condition;
     }
 }

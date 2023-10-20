@@ -4,6 +4,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
+using GameRealisticMap.Studio.Modules.ConditionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Roads
@@ -30,6 +31,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Roads
             RightCorners = new FencesCornerOrEndViewModel(definition?.RightCorners, Labels.FenceRightCorners, this);
             Ends = new FencesCornerOrEndViewModel(definition?.Ends, Labels.FenceEnds, this);
             Children = new IExplorerTreeItem[] { Straights, LeftCorners, RightCorners, Ends };
+            Condition = new PathConditionVM(definition?.Condition);
         }
 
         public override IEnumerable<IExplorerTreeItem> Children { get; }
@@ -37,6 +39,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Roads
         public IEnumerable<FencesCornerOrEndViewModel> CornersAndEnds => new[] { LeftCorners, RightCorners, Ends };
 
         public bool IsEmpty { get { return Straights.Items.Count == 0; } }
+
+        public PathConditionVM Condition { get; }
 
         public bool UseAnySize
         {
@@ -52,7 +56,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Roads
 
         public override SidewalksDefinition ToDefinition()
         {
-            return new SidewalksDefinition(Probability, Straights.ToDefinition(), LeftCorners.ToDefinition(), RightCorners.ToDefinition(), Ends.ToDefinition(), useAnySize, Label);
+            return new SidewalksDefinition(Probability, Straights.ToDefinition(), LeftCorners.ToDefinition(), RightCorners.ToDefinition(), Ends.ToDefinition(), useAnySize, Label, Condition.ToDefinition());
         }
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)

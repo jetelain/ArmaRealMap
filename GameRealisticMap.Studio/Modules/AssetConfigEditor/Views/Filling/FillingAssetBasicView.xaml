@@ -7,6 +7,7 @@
              xmlns:localf="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views.Filling"
              xmlns:preview="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls"
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
+             xmlns:ctrl="clr-namespace:GameRealisticMap.Studio.Modules.ConditionTool.Controls"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
@@ -32,6 +33,14 @@
                 </Label>
                 <TextBox Width="50" Text="{Binding Probability,Mode=TwoWay,Converter={StaticResource PercentValueConverter}}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
+
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.Tags}"/>
+                </Label>
+                <ctrl:ConditionEdit DataContext="{Binding Condition}" />
+            </StackPanel>
+            
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="Density"/>
@@ -46,6 +55,7 @@
                 </Button>
                 <TextBlock VerticalAlignment="Center" Text="{Binding ComputedMaxDensity}" />
             </StackPanel>
+            
             <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.FillingObjects}"/></TextBlock>
             <StackPanel Orientation="Horizontal" Margin="0 10">
                 <Button Padding="5" Command="{Binding CompositionImporter.AddSingle}">
@@ -75,6 +85,13 @@
                     <DataGridTextColumn Header="{x:Static r:Labels.MinZ}" Binding="{Binding MinZ}" Width="80" />
                     <DataGridTextColumn Header="{x:Static r:Labels.MaxScale}" Binding="{Binding MaxScale}" Width="80" />
                     <DataGridTextColumn Header="{x:Static r:Labels.MinScale}" Binding="{Binding MinScale}" Width="80" />
+                    <DataGridTemplateColumn Width="200" Header="{x:Static r:Labels.Tags}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ctrl:ConditionEdit DataContext="{Binding Condition}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn Width="75">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

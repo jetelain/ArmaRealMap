@@ -1,6 +1,7 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Reporting;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
@@ -22,16 +23,16 @@ namespace GameRealisticMap.Algorithms.Filling
             this.defaultClusters = defaultClusters;
         }
 
-        public override int FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
+        public override int FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons, IConditionEvaluator conditionEvaluator)
         {
             if (map.Count > 0 || defaultClusters.Count > 0)
             {
-                return base.FillPolygons(objects, polygons);
+                return base.FillPolygons(objects, polygons, conditionEvaluator);
             }
             return 0;
         }
 
-        internal override AreaFillingBase<TModelInfo> GenerateAreaSelectData(AreaDefinition fillarea)
+        internal override AreaFillingBase<TModelInfo>? GenerateAreaSelectData(AreaDefinition fillarea, IConditionEvaluator conditionEvaluator)
         {
             return new AreaFillingGlobalClusters<TModelInfo>(fillarea, map, densityDefinition, defaultClusters);
         }

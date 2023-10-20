@@ -1,5 +1,6 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
@@ -13,9 +14,9 @@ namespace GameRealisticMap.Algorithms.Filling
             this.definition = definition;
         }
 
-        public override IClusterItemDefinition<TModelInfo> SelectObjectToInsert(TerrainPoint point)
+        public override IClusterItemDefinition<TModelInfo>? SelectObjectToInsert(TerrainPoint point, IPointConditionContext conditionContext)
         {
-            return definition.Models.GetRandom(area.Random);
+            return definition.Models.GetRandom(area.Random, conditionContext);
         }
     }
 }

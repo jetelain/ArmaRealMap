@@ -10,14 +10,16 @@ using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Algorithms.Filling;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls;
+using GameRealisticMap.Studio.Modules.ConditionTool.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
     internal abstract class AssetDensityBase<TId, TDefinition, TItem> : AssetProbabilityBase<TId, TDefinition>, IWithEditableProbability
         where TId : struct, Enum
-        where TDefinition : class, IWithDensity, IWithProbability
+        where TDefinition : class, IWithDensity, IWithProbabilityAndCondition<IPolygonConditionContext>
         where TItem : class, IWithEditableProbability
     {
 
@@ -28,6 +30,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             _minDensity = definition?.MinDensity ?? 0.01;
             _maxDensity = definition?.MaxDensity ?? 0.01;
+            Condition = new PolygonConditionVM(definition?.Condition as PolygonCondition);
         }
 
         private double _minDensity;
@@ -38,6 +41,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         }
 
         private double _maxDensity;
+
+        public PolygonConditionVM Condition { get; }
+
         public double MaxDensity
         {
             get { return _maxDensity; }

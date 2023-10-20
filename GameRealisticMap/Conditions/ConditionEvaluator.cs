@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.ComponentModel;
+using System.Numerics;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
@@ -6,10 +7,11 @@ using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Ocean;
+using WeatherStats.Stats;
 
 namespace GameRealisticMap.Conditions
 {
-    public class ConditionEvaluator
+    public class ConditionEvaluator : IConditionEvaluator
     {
         private readonly CategoryAreaData areas;
         private readonly CitiesData cities;
@@ -36,14 +38,24 @@ namespace GameRealisticMap.Conditions
             return new PointConditionContext(this, point, road);
         }
 
+        public IPathConditionContext GetPathContext(TerrainPath path)
+        {
+            return new PathConditionContext(this, path);
+        }
+
+        public IPolygonConditionContext GetPolygonContext(TerrainPolygon polygon)
+        {
+            return new PolygonConditionContext(this, polygon);
+        }
+
         public bool IsArea(TerrainPoint point, BuildingTypeId buildingType)
         {
-            return areas.Areas.Any(a => a.BuildingType == buildingType && a.PolyList.Any(p => p.Contains(point)));
+            return areas.Areas.Any(a => a.BuildingType == buildingType && a.PolyList.Any(p => p.ContainsIncludingBorder(point)));
         }
 
         public IEnumerable<BuildingTypeId> GetAreas(TerrainPoint point)
         {
-            return areas.Areas.Where(a => a.PolyList.Any(p => p.Contains(point))).Select(a => a.BuildingType);
+            return areas.Areas.Where(a => a.PolyList.Any(p => p.ContainsIncludingBorder(point))).Select(a => a.BuildingType);
         }
 
         public float GetElevation(TerrainPoint point)
@@ -58,13 +70,13 @@ namespace GameRealisticMap.Conditions
 
         public bool IsCity(TerrainPoint point, CityTypeId cityTypeId)
         {
-            return cities.Cities.Any(c => c.Type == cityTypeId && c.Boundary.Any(p => p.Contains(point)));
+            return cities.Cities.Any(c => c.Type == cityTypeId && c.Boundary.Any(p => p.ContainsIncludingBorder(point)));
         }
 
         public City? GetCity(TerrainPoint point)
         {
             return cities.Cities
-                .Where(c => c.Boundary.Any(p => p.Contains(point))).OrderBy(c => c.Population)
+                .Where(c => c.Boundary.Any(p => p.ContainsIncludingBorder(point))).OrderBy(c => c.Population)
                 .FirstOrDefault()
                 ?? cities.Cities.OrderBy(c => (c.Center.Vector - point.Vector).LengthSquared()).FirstOrDefault();
         }
@@ -128,6 +140,54 @@ namespace GameRealisticMap.Conditions
                 return nearby;
             }
             return nearby.OrderBy(r => r.Path.Distance(point));
+        }
+
+        public MinMaxAvg GetElevation(TerrainPath path)
+        {
+            return MinMaxAvg.From(elevation.Elevation.GetElevationOnPath(path.Points));
+        }
+
+        public MinMaxAvg GetElevation(TerrainPolygon polygon)
+        {
+            var around = elevation.Elevation.GetElevationOnPath(polygon.Shell).Concat(polygon.Holes.SelectMany(elevation.Elevation.GetElevationOnPath));
+            var inside = elevation.Elevation.GetElevationInside(polygon).ToList();
+            var ext = MinMaxAvg.From(around.Concat(inside));
+            if (inside.Count > 0)
+            {
+                return new MinMaxAvg(ext.Min, inside.Average(), ext.Max);
+            }
+            var centroid = elevation.Elevation.ElevationAround(polygon.Centroid);
+            return new MinMaxAvg(Math.Min(ext.Min, centroid), centroid, Math.Max(ext.Max, centroid));
+        }
+
+        internal bool IsArea(TerrainPolygon polygon, BuildingTypeId typeId)
+        {
+            var match = GetAreas(polygon, typeId);
+            if (match.Count > 0)
+            {
+                var outside = polygon.SubstractAll(match).Sum(p => p.Area);
+                return outside < (polygon.Area / 4);
+            }
+            return false;
+        }
+
+        internal bool IsArea(TerrainPath path, BuildingTypeId typeId)
+        {
+            var match = GetAreas(path, typeId);
+            if (match.Count > 0)
+            {
+                var outside = path.SubstractAll(match).Sum(p => p.Length);
+                return outside < (path.Length / 3);
+            }
+            return false;
+        }
+
+        private List<TerrainPolygon> GetAreas(ITerrainEnvelope envelope, BuildingTypeId typeId)
+        {
+            return areas.Areas.Where(a => a.BuildingType == typeId)
+                .SelectMany(a => a.PolyList)
+                .Where(p => p.EnveloppeIntersects(envelope))
+                .ToList();
         }
     }
 }

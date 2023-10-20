@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 
@@ -18,18 +19,23 @@ namespace GameRealisticMap.Algorithms.Filling
             this.basicDefinitions = basicDefinitions;
         }
 
-        public override int FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
+        public override int FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons, IConditionEvaluator conditionEvaluator)
         {
             if (basicDefinitions.Count > 0)
             {
-                return base.FillPolygons(objects, polygons);
+                return base.FillPolygons(objects, polygons, conditionEvaluator);
             }
             return 0;
         }
 
-        internal override AreaFillingBase<TModelInfo> GenerateAreaSelectData(AreaDefinition fillarea)
+        internal override AreaFillingBase<TModelInfo>? GenerateAreaSelectData(AreaDefinition fillarea, IConditionEvaluator conditionEvaluator)
         {
-            return new AreaFillingBasic<TModelInfo>(fillarea, basicDefinitions.GetRandom(fillarea.Random));
+            var result = basicDefinitions.GetRandom(fillarea.Random, conditionEvaluator.GetPolygonContext(fillarea.Polygon));
+            if (result != null)
+            {
+                return new AreaFillingBasic<TModelInfo>(fillarea, result);
+            }
+            return null;
         }
     }
 }

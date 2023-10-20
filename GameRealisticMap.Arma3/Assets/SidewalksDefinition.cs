@@ -1,5 +1,7 @@
-﻿using GameRealisticMap.Algorithms.Definitions;
+﻿using System.Text.Json.Serialization;
+using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Arma3.Assets.Fences;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Arma3.Assets
 {
@@ -11,7 +13,8 @@ namespace GameRealisticMap.Arma3.Assets
             List<FenceCornerOrEndDefinition>? rightCorners = null,
             List<FenceCornerOrEndDefinition>? ends = null,
             bool useAnySize = false,
-            string label = "")
+            string label = "",
+            PathCondition? condition = null)
         {
             Probability = probability;
             Straights = straights ?? new List<FenceStraightSegmentDefinition>();
@@ -20,6 +23,7 @@ namespace GameRealisticMap.Arma3.Assets
             LeftCorners = leftCorners ?? new List<FenceCornerOrEndDefinition>();
             RightCorners = rightCorners ?? new List<FenceCornerOrEndDefinition>();
             Ends = ends ?? new List<FenceCornerOrEndDefinition>();
+            Condition = condition;
         }
 
         public double Probability { get; }
@@ -36,6 +40,9 @@ namespace GameRealisticMap.Arma3.Assets
 
         public bool UseAnySize { get; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public PathCondition? Condition { get; }
+
         IReadOnlyCollection<ICornerOrEndSegmentDefinition<Composition>> ISegmentsDefinition<Composition>.LeftCorners => LeftCorners;
 
         IReadOnlyCollection<ICornerOrEndSegmentDefinition<Composition>> ISegmentsDefinition<Composition>.RightCorners => RightCorners;
@@ -43,5 +50,8 @@ namespace GameRealisticMap.Arma3.Assets
         IReadOnlyCollection<ICornerOrEndSegmentDefinition<Composition>> ISegmentsDefinition<Composition>.Ends => Ends;
 
         IReadOnlyCollection<IStraightSegmentProportionDefinition<Composition>> ISegmentsDefinition<Composition>.Straights => Straights;
+
+        [JsonIgnore]
+        ICondition<IPathConditionContext>? IWithCondition<IPathConditionContext>.Condition => Condition;
     }
 }

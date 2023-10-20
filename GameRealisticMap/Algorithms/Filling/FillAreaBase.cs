@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 
@@ -16,24 +17,29 @@ namespace GameRealisticMap.Algorithms.Filling
             this.cancellationToken = (progress as IProgressTask)?.CancellationToken ?? CancellationToken.None;
         }
 
-        internal abstract AreaFillingBase<TModelInfo> GenerateAreaSelectData(AreaDefinition fillarea);
+        internal abstract AreaFillingBase<TModelInfo>? GenerateAreaSelectData(AreaDefinition fillarea, IConditionEvaluator conditionEvaluator);
 
-        public virtual int FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
+        public int FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons)
         {
-            var areas = GetFillAreas(polygons.ProgressStep(progress,"Areas"));
+            return FillPolygons(objects, polygons, new NoneConditionEvaluator());
+        }
+
+        public virtual int FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons, IConditionEvaluator conditionEvaluator)
+        {
+            var areas = GetFillAreas(polygons.ProgressStep(progress,"Areas"), conditionEvaluator);
             using (var report = progress.CreateStep("Models", areas.Sum(a => a.ItemsToAdd)))
             {
                 var generatedItems = 0;
                 var toprocess = areas.OrderByDescending(r => r.ItemsToAdd).ToList();
                 Parallel.For(0, Math.Max(2, Environment.ProcessorCount * 3 / 4), _ =>
                 {
-                    FillAreaList(toprocess, objects, report, ref generatedItems);
+                    FillAreaList(toprocess, objects, report, conditionEvaluator, ref generatedItems);
                 });
                 return generatedItems;
             }
         }
 
-        private List<AreaFillingBase<TModelInfo>> GetFillAreas(IEnumerable<TerrainPolygon> polygons)
+        private List<AreaFillingBase<TModelInfo>> GetFillAreas(IEnumerable<TerrainPolygon> polygons, IConditionEvaluator conditionEvaluator)
         {
             var areas = new ConcurrentQueue<AreaFillingBase<TModelInfo>>();
             Parallel.ForEach(polygons, new ParallelOptions() { MaxDegreeOfParallelism = Math.Max(2, Environment.ProcessorCount * 3 / 4) }, poly =>
@@ -41,13 +47,17 @@ namespace GameRealisticMap.Algorithms.Filling
                 if (poly.Area > 1)
                 {
                     var definition = new AreaDefinition(poly);
-                    areas.Enqueue(GenerateAreaSelectData(definition));
+                    var result = GenerateAreaSelectData(definition, conditionEvaluator);
+                    if (result != null)
+                    {
+                        areas.Enqueue(result);
+                    }
                 }
             });
             return areas.ToList();
         }
 
-        private void FillAreaList(List<AreaFillingBase<TModelInfo>> areas, RadiusPlacedLayer<TModelInfo> objects, IProgressInteger report, ref int generatedItems)
+        private void FillAreaList(List<AreaFillingBase<TModelInfo>> areas, RadiusPlacedLayer<TModelInfo> objects, IProgressInteger report, IConditionEvaluator conditionEvaluator, ref int generatedItems)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -69,7 +79,7 @@ namespace GameRealisticMap.Algorithms.Filling
                 {
                     using (locker)
                     {
-                        FillSingleArea(objects, report, areaToProcess, ref generatedItems);
+                        FillSingleArea(objects, report, areaToProcess, conditionEvaluator, ref generatedItems);
                     }
                 }
                 else
@@ -79,7 +89,7 @@ namespace GameRealisticMap.Algorithms.Filling
             }
         }
 
-        private void FillSingleArea(RadiusPlacedLayer<TModelInfo> objects, IProgressInteger report, AreaFillingBase<TModelInfo> fillarea, ref int generatedItems)
+        private void FillSingleArea(RadiusPlacedLayer<TModelInfo> objects, IProgressInteger report, AreaFillingBase<TModelInfo> fillarea, IConditionEvaluator conditionEvaluator, ref int generatedItems)
         {
             var remainItems = fillarea.ItemsToAdd;
             var unChangedLoops = 0;
@@ -95,18 +105,21 @@ namespace GameRealisticMap.Algorithms.Filling
                         progress.WriteLine($"Warning: Unable to find any point within the polygon '{fillarea.Area.MinPoint} -> {fillarea.Area.MaxPoint}', Area='{fillarea.Area.Polygon.Area}' EnveloppeArea='{fillarea.Area.Polygon.EnveloppeArea}'");
                         break;
                     }
-                    var obj = fillarea.SelectObjectToInsert(point);
-                    var candidate = Create(obj, point, 0, 0, GetScale(fillarea.Area.Random, obj));
-                    if (WillFit(candidate, fillarea.Area))
+                    var obj = fillarea.SelectObjectToInsert(point, conditionEvaluator.GetPointContext(point));
+                    if (obj != null)
                     {
-                        var potentialConflits = objects.Search(candidate.MinPoint, candidate.MaxPoint);
-                        if (HasRoom(candidate, potentialConflits))
+                        var candidate = Create(obj, point, 0, 0, GetScale(fillarea.Area.Random, obj));
+                        if (WillFit(candidate, fillarea.Area))
                         {
-                            var toinsert = Create(obj, point, (float)(fillarea.Area.Random.NextDouble() * 360), GetElevation(fillarea.Area.Random, obj), candidate.Scale);
-                            objects.Insert(toinsert);
-                            wasChanged = true;
-                            remainItems--;
-                            report.Report(Interlocked.Increment(ref generatedItems));
+                            var potentialConflits = objects.Search(candidate.MinPoint, candidate.MaxPoint);
+                            if (HasRoom(candidate, potentialConflits))
+                            {
+                                var toinsert = Create(obj, point, (float)(fillarea.Area.Random.NextDouble() * 360), GetElevation(fillarea.Area.Random, obj), candidate.Scale);
+                                objects.Insert(toinsert);
+                                wasChanged = true;
+                                remainItems--;
+                                report.Report(Interlocked.Increment(ref generatedItems));
+                            }
                         }
                     }
                 }

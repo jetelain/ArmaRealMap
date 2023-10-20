@@ -1,21 +1,24 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
     internal sealed class AreaFillingLocalClusters<TModelInfo> : AreaFillingClustersBase<TModelInfo>
     {
         private readonly IClusterCollectionDefinition<TModelInfo> definition;
+        private readonly IConditionEvaluator evaluator;
         private SimpleSpacialIndex<IClusterDefinition<TModelInfo>>? map;
 
-        public AreaFillingLocalClusters(AreaDefinition fillarea, IClusterCollectionDefinition<TModelInfo> definition) 
+        public AreaFillingLocalClusters(AreaDefinition fillarea, IClusterCollectionDefinition<TModelInfo> definition, IConditionEvaluator evaluator) 
             : base(fillarea, definition, definition.Clusters)
         {
             this.definition = definition;
+            this.evaluator = evaluator;
         }
 
-        private static SimpleSpacialIndex<IClusterDefinition<TModelInfo>> CreateMap(double density, AreaDefinition fillarea, IClusterCollectionDefinition<TModelInfo> definition)
+        private static SimpleSpacialIndex<IClusterDefinition<TModelInfo>> CreateMap(double density, AreaDefinition fillarea, IClusterCollectionDefinition<TModelInfo> definition, IConditionEvaluator evaluator)
         {
             var size = fillarea.MaxPoint.Vector - fillarea.MinPoint.Vector;
             var clusterCount = Math.Max(density * size.X * size.Y, 100);
@@ -25,7 +28,11 @@ namespace GameRealisticMap.Algorithms.Filling
                 var count = clusterCount * cluster.Probability;
                 for (int i = 0; i < count; ++i)
                 {
-                    map.Insert(fillarea.GetRandomPoint().Vector, cluster);
+                    var point = fillarea.GetRandomPoint();
+                    if (cluster.Condition == null || cluster.Condition.Evaluate(evaluator.GetPointContext(point)))
+                    {
+                        map.Insert(point.Vector, cluster);
+                    }
                 }
             }
 
@@ -36,7 +43,7 @@ namespace GameRealisticMap.Algorithms.Filling
         {
             if ( map == null)
             {
-                map = CreateMap(Density, area, definition);
+                map = CreateMap(Density, area, definition, evaluator);
             }
             return map.Search(start, end);
         }

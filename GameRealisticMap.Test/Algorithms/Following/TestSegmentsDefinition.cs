@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Algorithms.Definitions;
+using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Test.Algorithms.Following
 {
@@ -34,5 +35,7 @@ namespace GameRealisticMap.Test.Algorithms.Following
         public IReadOnlyCollection<ICornerOrEndSegmentDefinition<string>> RightCorners => rightCorners;
 
         public IReadOnlyCollection<ICornerOrEndSegmentDefinition<string>> Ends => ends;
+
+        public ICondition<IPathConditionContext>? Condition => null;
     }
 }

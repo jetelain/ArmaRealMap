@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.Conditions;
-using GameRealisticMap.Studio.Modules.AssetConfigEditor;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Modules.MapConfigEditor;
 using GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 using Microsoft.Win32;
-using StringToExpression.Exceptions;
-using StringToExpression.Util;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
@@ -21,96 +17,36 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
     internal class ConditionToolViewModel : Tool, IConditionTool
     {
         private readonly IShell shell;
-        private ConditionVM? target;
-        private PointCondition? condition;
+        private IConditionToolWorker? worker;
 
         [ImportingConstructor]
         public ConditionToolViewModel(IShell shell)
         {
             this.shell = shell;
-            DisplayName = GameRealisticMap.Studio.Labels.TagsEditor;
-            Criterias = typeof(IPointConditionContext).GetProperties()
-                .Select(p => new CriteriaItem("Point", p.Name, p.PropertyType))
-                .OrderBy(p => !p.IsBoolean)
-                .ThenBy(p => p.Name)
-                .ToList();
+            DisplayName = Labels.TagsEditor;
+            Criterias = new List<CriteriaItem>();
+            SetTarget(new PointConditionVM());
         }
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
 
-        public ConditionVM? Target
-        { 
-            get { return target; }
-            set
-            {
-                target = value;
-                if ( target != null)
-                {
-                    ConditionText = target.Condition;
-                }
-                else
-                {
-                    ConditionText = string.Empty;
-                }
-                NotifyOfPropertyChange(nameof(ConditionText));
-                DoApply();
-            }
-        }
-
         public string ConditionText { get; set; } = string.Empty;
 
-        public string ErrorMessage { get; set; } = string.Empty;
+        public string ErrorMessage => worker?.ErrorMessage ?? string.Empty;
 
-        public List<ConditionToken> Tokens { get; private set; } = new List<ConditionToken>();
+        public List<ConditionToken> Tokens => worker?.Tokens ?? new List<ConditionToken>();
 
-        public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+        public bool HasError => worker?.HasError ?? false;
 
-        public List<CriteriaItem> Criterias { get; }
-
-        public ISamplePointProvider? SamplePointProvider { get; set; }
+        public List<CriteriaItem> Criterias { get; private set; }
 
         public Task Apply()
         {
-            DoApply();
-            return Task.CompletedTask;
-        }
-
-        private void DoApply()
-        {
-            condition = null;
-            StringSegment? error = null;
-            ErrorMessage = string.Empty;
-            try
-            {
-                if (!string.IsNullOrEmpty(ConditionText))
-                {
-                    condition = new PointCondition(ConditionText);
-                }
-            }
-            catch (ParseException ex)
-            {
-                ErrorMessage = ex.InnerException?.Message ?? ex.Message;
-                error = ex.ErrorSegment;
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = ex.Message;
-            }
-            try
-            {
-                Tokens = ConditionToken.Create(ConditionText, error);
-            }
-            catch
-            {
-                Tokens = new List<ConditionToken>();
-            }
-            if (!HasError && target != null)
-            {
-                target.SetParsedCondition(condition);
-            }
+            worker?.SetConditionText(ConditionText);
             NotifyOfPropertyChange(nameof(ErrorMessage));
             NotifyOfPropertyChange(nameof(Tokens));
             NotifyOfPropertyChange(nameof(HasError));
+            return Task.CompletedTask;
         }
 
         public Task AddCriteria(CriteriaItem criteria)
@@ -165,7 +101,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
         public async Task TestOnMap(MapConfigEditorViewModel map)
         {
             await Apply();
-            if (condition == null || map == null)
+            if (worker == null || map == null)
             {
                 return;
             }
@@ -175,7 +111,29 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
                 tester = new ConditionTestMapViewModel(map);
             }
             await shell.OpenDocumentAsync(tester);
-            await tester.TestCondition(condition, Target?.SamplePointProvider);
+            await worker.TestOnMap(tester);
+        }
+
+        public void SetTarget<TCondition, TContext, TGeometry>(ConditionVMBase<TCondition, TContext, TGeometry> target)
+            where TCondition : class, ICondition<TContext>
+            where TContext : IConditionContext<TGeometry>
+            where TGeometry : ITerrainEnvelope
+        {
+            var prevWorker = worker;
+
+            ConditionText = target.Condition;
+            worker = new ConditionToolWorker<TCondition, TContext, TGeometry>(target);
+
+            NotifyOfPropertyChange(nameof(ErrorMessage));
+            NotifyOfPropertyChange(nameof(Tokens));
+            NotifyOfPropertyChange(nameof(HasError));
+            NotifyOfPropertyChange(nameof(ConditionText));
+
+            if (prevWorker == null || worker.ContextType != prevWorker.ContextType)
+            {
+                Criterias = worker.GenerateCriterias();
+                NotifyOfPropertyChange(nameof(Criterias));
+            }
         }
     }
 }
