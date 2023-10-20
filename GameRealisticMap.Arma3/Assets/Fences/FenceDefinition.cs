@@ -4,7 +4,7 @@ using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Arma3.Assets.Fences
 {
-    public class FenceDefinition : ISegmentsDefinition<Composition>, IRowDefition<Composition>, IWithProbabilityAndCondition<IPathConditionContext>
+    public class FenceDefinition : ISegmentsDefinition<Composition>, IRowDefition<Composition>
     {
         public FenceDefinition(double probability,
             List<FenceStraightSegmentDefinition>? straights,
@@ -58,6 +58,7 @@ namespace GameRealisticMap.Arma3.Assets.Fences
 
         IReadOnlyCollection<IItemDefinition<Composition>> IRowDefition<Composition>.Objects => Objects;
 
+        [JsonIgnore]
         ICondition<IPathConditionContext>? IWithCondition<IPathConditionContext>.Condition => Condition;
     }
 }

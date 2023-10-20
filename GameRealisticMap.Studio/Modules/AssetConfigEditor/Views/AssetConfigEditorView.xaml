@@ -395,6 +395,13 @@
                                 <DataGridTextColumn Header="{x:Static r:Labels.Label}" Binding="{Binding Label}" Width="150" />
                                 <DataGridTextColumn Header="{x:Static r:Labels.Probability}" Binding="{Binding Probability, Converter={StaticResource PercentValueConverter}}" Width="50" />
                                 <DataGridTextColumn Header="{x:Static r:Labels.AssetObjects}" Binding="{Binding Straights.Items.Count, Converter={StaticResource CollectionCountValueConverter}}" IsReadOnly="True" Width="100" />
+                                <DataGridTemplateColumn Width="200" Header="{x:Static r:Labels.Tags}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ctrl:ConditionBox DataContext="{Binding Condition}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

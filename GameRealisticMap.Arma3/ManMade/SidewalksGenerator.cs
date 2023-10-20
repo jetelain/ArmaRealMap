@@ -2,6 +2,7 @@
 using GameRealisticMap.Algorithms.Following;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Conditions;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Reporting;
 
@@ -24,14 +25,18 @@ namespace GameRealisticMap.Arma3.ManMade
 
             if (assets.Sidewalks.Count != 0)
             {
+                var evaluator = context.GetData<ConditionEvaluator>();
                 var paths = context.GetData<SidewalksData>().Paths;
                 foreach (var path in paths.ProgressStep(progress, "Sidewalks"))
                 {
                     if (path.Points.Count > 1)
                     {
                         var random = RandomHelper.CreateRandom(path.FirstPoint);
-                        var def = assets.Sidewalks.GetRandom(random);
-                        FollowPathWithObjects.PlaceOnPathRightAngle(random, def, layer, path.Points);
+                        var def = assets.Sidewalks.GetRandom(random, evaluator.GetPathContext(path));
+                        if (def != null)
+                        {
+                            FollowPathWithObjects.PlaceOnPathRightAngle(random, def, layer, path.Points);
+                        }
                     }
                 }
             }
