@@ -17,12 +17,12 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
         internal override IConditionSampleProvider<TerrainPath> GetRandomProvider()
         {
-            throw new System.NotImplementedException(); // FIXME
+            return new RandomSampleProvider();
         }
 
         internal override IConditionSampleProvider<TerrainPath> GetViewportProvider(ITerrainEnvelope envelope)
         {
-            throw new System.NotImplementedException(); // FIXME
+            return new ViewportSampleProvider(envelope);
         }
 
         internal override PathCondition Parse(string value)

@@ -18,5 +18,17 @@ namespace GameRealisticMap.Conditions
         public float MaxElevation => 100;
 
         public float AvgElevation => 100;
+
+        public bool IsCommercial => false;
+
+        public bool IsFarmyard => false;
+
+        public bool IsIndustrial => false;
+
+        public bool IsMilitary => false;
+
+        public bool IsResidential => false;
+
+        public bool IsRetail => false;
     }
 }

@@ -508,6 +508,19 @@ namespace GameRealisticMap.Geometries
             return false;
         }
 
+        public bool ContainsIncludingBorder(TerrainPoint point)
+        {
+            if (point.X <= MaxPoint.X && point.X >= MinPoint.X &&
+                point.Y <= MaxPoint.Y && point.Y >= MinPoint.Y)
+            {
+                if (PointInPolygon(Shell, point) != 0)
+                {
+                    return Holes.All(hole => PointInPolygon(hole, point) == 0);
+                }
+            }
+            return false;
+        }
+
         public bool ContainsOrSimilar(TerrainPolygon other)
         {
             if (GeometryHelper.EnveloppeIntersects(this, other))

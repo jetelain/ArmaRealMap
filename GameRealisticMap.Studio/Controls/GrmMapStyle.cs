@@ -13,11 +13,11 @@ namespace GameRealisticMap.Studio.Controls
         internal static readonly SolidColorBrush ScrubsBrush = new SolidColorBrush(Color.FromArgb(128, 244, 164, 96));
         internal static readonly Pen RailwayPen = new Pen(new SolidColorBrush(Color.FromArgb(204, 0, 0, 0)), Railway.RailwayWidth);
 
-        internal static readonly Pen FalsePen = new Pen(new SolidColorBrush(Colors.Red), 2);
-        internal static readonly SolidColorBrush FalseFill = new SolidColorBrush(Colors.White);
+        internal static readonly Pen FalsePen = new Pen(new SolidColorBrush(Colors.Red), 1);
+        internal static readonly SolidColorBrush FalseFill = new SolidColorBrush(Color.FromArgb(128, 255, 255, 255));
 
-        internal static readonly Pen TruePen = new Pen(new SolidColorBrush(Colors.Green), 2);
-        internal static readonly SolidColorBrush TrueFill = new SolidColorBrush(Colors.Black);
+        internal static readonly Pen TruePen = new Pen(new SolidColorBrush(Colors.Green), 1);
+        internal static readonly SolidColorBrush TrueFill = new SolidColorBrush(Color.FromArgb(128,0,0,0));
 
 
 

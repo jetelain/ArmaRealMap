@@ -1,4 +1,6 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade.Buildings;
+using MathNet.Numerics;
 using WeatherStats.Stats;
 
 namespace GameRealisticMap.Conditions
@@ -22,7 +24,19 @@ namespace GameRealisticMap.Conditions
         public float MinElevation => GetElevation().Min;
 
         public float MaxElevation => GetElevation().Max;
-
         public float AvgElevation => GetElevation().Avg;
+
+        public bool IsResidential => conditionEvaluator.IsArea(polygon, BuildingTypeId.Residential);
+
+        public bool IsCommercial => conditionEvaluator.IsArea(polygon, BuildingTypeId.Commercial);
+
+        public bool IsIndustrial => conditionEvaluator.IsArea(polygon, BuildingTypeId.Industrial);
+
+        public bool IsRetail => conditionEvaluator.IsArea(polygon, BuildingTypeId.Retail);
+
+        public bool IsMilitary => conditionEvaluator.IsArea(polygon, BuildingTypeId.Military);
+
+        public bool IsFarmyard => conditionEvaluator.IsArea(polygon, BuildingTypeId.Agricultural);
+
     }
 }

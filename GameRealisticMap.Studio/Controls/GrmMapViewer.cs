@@ -215,13 +215,20 @@ namespace GameRealisticMap.Studio.Controls
             }
         }
 
-        private static void DrawAny(DrawingContext dc, float size, ITerrainEnvelope point, Pen? pen, Brush? brush)
+        private void DrawAny(DrawingContext dc, float size, ITerrainEnvelope geometry, Pen? pen, Brush? brush)
         {
-            if (point is TerrainPoint tp)
+            if (geometry is TerrainPoint point)
             {
-                dc.DrawEllipse(brush, pen, Convert(tp, size), 3, 3);
+                dc.DrawEllipse(brush, pen, Convert(point, size), 3, 3);
             }
-
+            else if ( geometry is TerrainPath path)
+            {
+                dc.DrawGeometry(null, pen, CreatePath(size, path));
+            }
+            else if (geometry is TerrainPolygon polygon)
+            {
+                dc.DrawGeometry(brush, pen, DoCreatePolygon(size, polygon, true));
+            }
         }
 
         private void DrawAdditionals(DrawingContext dc, float size, Envelope enveloppe, List<PreviewAdditionalLayer> layers)
@@ -306,13 +313,13 @@ namespace GameRealisticMap.Studio.Controls
             return polygon;
         }
 
-        private static PathGeometry DoCreatePolygon(float size, TerrainPolygon poly)
+        private static PathGeometry DoCreatePolygon(float size, TerrainPolygon poly, bool isStroked = false)
         {
             var path = new PathGeometry();
-            path.Figures.Add(CreateFigure(poly.Shell, true, false, size));
+            path.Figures.Add(CreateFigure(poly.Shell, true, isStroked, size));
             foreach (var hole in poly.Holes)
             {
-                path.Figures.Add(CreateFigure(hole, true, false, size));
+                path.Figures.Add(CreateFigure(hole, true, isStroked, size));
             }
             return path;
         }

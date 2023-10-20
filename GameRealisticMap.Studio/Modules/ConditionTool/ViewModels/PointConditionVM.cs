@@ -17,12 +17,12 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
         internal override IConditionSampleProvider<TerrainPoint> GetRandomProvider()
         {
-            return new RandomPointProvider();
+            return new RandomSampleProvider();
         }
 
         internal override IConditionSampleProvider<TerrainPoint> GetViewportProvider(ITerrainEnvelope envelope)
         {
-            return new ViewportPointProvider(envelope);
+            return new ViewportSampleProvider(envelope);
         }
 
         internal override PointCondition Parse(string value)

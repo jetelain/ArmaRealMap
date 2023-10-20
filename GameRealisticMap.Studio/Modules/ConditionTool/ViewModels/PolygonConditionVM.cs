@@ -1,5 +1,6 @@
 ﻿using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
+using GeoAPI.Geometries;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
@@ -18,12 +19,12 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
         internal override IConditionSampleProvider<TerrainPolygon> GetRandomProvider()
         {
-            throw new System.NotImplementedException(); // FIXME
+            return new RandomSampleProvider();
         }
 
         internal override IConditionSampleProvider<TerrainPolygon> GetViewportProvider(ITerrainEnvelope envelope)
         {
-            throw new System.NotImplementedException(); // FIXME
+            return new ViewportSampleProvider(envelope);
         }
 
         internal override PolygonCondition Parse(string value)
