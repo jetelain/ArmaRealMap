@@ -60,14 +60,5 @@ namespace GameRealisticMap
         {
             return Name;
         }
-
-        public Coordinates Start => new Coordinates(Bottom, Left);
-
-        public Coordinates End => new Coordinates(Top, Right);
-
-        public LatLngBounds WithMargin(double margin)
-        {
-            return new LatLngBounds(Left - margin, Top + margin, Right + margin, Bottom - margin);
-        }
     }
 }

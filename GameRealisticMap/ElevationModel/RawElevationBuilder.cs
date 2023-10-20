@@ -23,8 +23,8 @@ namespace GameRealisticMap.ElevationModel
         }
 
         private const float InvSinCos45 = 1.4142135623730949f;
-        private const int OutOfBoundsDistance = 2500;
-        private const int OutOfBoundsStep = 25;
+        private const int OutOfBoundsDistance = ElevationOutOfBoundsData.Distance;
+        private const int OutOfBoundsStep = 20;
 
         public RawElevationData Build(IBuildContext context)
         {

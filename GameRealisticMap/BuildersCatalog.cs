@@ -74,6 +74,7 @@ namespace GameRealisticMap
             Register(new WeatherBuilder(progress));
             Register(new IceSurfaceBuilder(progress));
             Register(new ScreeBuilder(progress));
+            Register(new ElevationOutOfBoundsBuilder());
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)
