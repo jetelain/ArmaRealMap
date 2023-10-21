@@ -3,6 +3,7 @@ using System.Text.Json;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Extensions;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.Nature.Ocean;
 using GameRealisticMap.Nature.Weather;
@@ -31,7 +32,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                 gameFileSystemWriter.WriteTextFile(configCpp, GenerateConfigCpp(config, context.GetData<CitiesData>()));
             }
 
-            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\mapinfos.hpp", GenerateMapInfos(config, area, context.GetData<OceanData>().IsIsland));
+            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\mapinfos.hpp", GenerateMapInfos(config, area, context.GetData<OceanData>().IsIsland, context.GetData<ElevationOutOfBoundsData>()));
 
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\names.hpp", GenerateNames(context.GetData<CitiesData>()));
 
@@ -40,7 +41,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\grma3-dependencies.json", JsonSerializer.Serialize(assets.Dependencies));
         }
 
-        private string GenerateMapInfos(IArma3MapConfig config, ITerrainArea area, bool isIsland)
+        private string GenerateMapInfos(IArma3MapConfig config, ITerrainArea area, bool isIsland, ElevationOutOfBoundsData outOfBoundsData)
         {
             var center = area.TerrainPointToLatLng(new Geometries.TerrainPoint(config.SizeInMeters / 2, config.SizeInMeters / 2));
             var southWest = area.TerrainPointToLatLng(new Geometries.TerrainPoint(0, 0));
@@ -65,7 +66,7 @@ centerPosition[]={{{config.SizeInMeters / 2},{config.SizeInMeters / 2}}};
 class OutsideTerrain
 {{
     colorOutside[] = {{0.227451,0.27451,0.384314,1}};
-	enableTerrainSynth = 0;
+	{GetTerrainSynth(isIsland, outOfBoundsData)}
 	satellite = ""{config.PboPrefix}\data\satout_ca.paa"";
     class Layers
     {{
@@ -106,6 +107,23 @@ class Grid {{
     }};
 }};
 ");
+        }
+
+        private string GetTerrainSynth(bool isIsland, ElevationOutOfBoundsData outOfBoundsData)
+        {
+            if (isIsland || outOfBoundsData.OutOfBounds.Length == 0)
+            {
+                return "enableTerrainSynth = 0;";
+            }
+
+            return FormattableString.Invariant($@"enableTerrainSynth = 1;
+    angleAltitudes[] = {{{Serialize(outOfBoundsData.OutOfBounds)}}};
+    analysisLength = {ElevationOutOfBoundsData.Distance};");
+        }
+
+        private string Serialize(ElevationMinMax[] outOfBounds)
+        {
+            return string.Join(",", outOfBounds.Select(p => FormattableString.Invariant($"{{{p.Min},{p.Max}}}")));
         }
 
         private string GenerateConfigCpp(IArma3MapConfig config, CitiesData cities)
