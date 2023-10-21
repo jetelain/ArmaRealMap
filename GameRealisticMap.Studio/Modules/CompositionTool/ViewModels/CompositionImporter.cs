@@ -23,12 +23,12 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
 
         }
 
-        public CompositionImporter(IModelImporterTarget target, IArma3DataModule arma3DataModule, IWindowManager windowManager)
+        public CompositionImporter(IModelImporterTarget target, IArma3DataModule arma3DataModule, IWindowManager? windowManager = null)
         {
             this.arma3DataModule = arma3DataModule;
             this.target = target;
             AddSingle = new RelayCommand(_ => AddSingleHandler());
-            AddComposition = new AsyncCommand(() => windowManager.ShowDialogAsync(new CompositionSelectorViewModel(target))); // TODO
+            AddComposition = new AsyncCommand(() => (windowManager ?? IoC.Get<IWindowManager>()).ShowDialogAsync(new CompositionSelectorViewModel(target))); // TODO
         }
 
         private void AddSingleHandler()

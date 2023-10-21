@@ -64,5 +64,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             }
         }
 
+        internal static IEnumerable<T> EquilibrateProbabilities<T>(this IEnumerable<T> enumerable)
+            where T : IWithEditableProbability
+        {
+            var result = enumerable.ToList();
+            EquilibrateProbabilities(result);
+            return result;
+        }
+
     }
 }

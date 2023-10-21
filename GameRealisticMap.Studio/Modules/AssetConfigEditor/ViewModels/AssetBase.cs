@@ -31,7 +31,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             Edit = new AsyncCommand(() => parent.EditAssetCategory(this));
             EditComposition = new RelayCommand(c => parent.EditComposition((IWithComposition)c));
             Back = new AsyncCommand(() => parent.EditAssetCategory(parent));
-            CompositionImporter = new CompositionImporter(this);
+            CompositionImporter = new CompositionImporter(this, parent.Arma3DataModule);
         }
 
         public string IdText { get; }

@@ -25,7 +25,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             Items = new ObservableCollection<FillingItem>(c.Models.Select(m => new FillingItem(m)));
             _probability = c.Probability;
             ordinalName = string.Format(Labels.SeedNumber, index + 1);
-            CompositionImporter = new CompositionImporter(this);
+            CompositionImporter = new CompositionImporter(this, parent.ParentEditor.Arma3DataModule);
             RemoveItem = new RelayCommand(item => Items.RemoveUndoable(parent.UndoRedoManager,(FillingItem)item));
             Items.CollectionChanged += Items_CollectionChanged;
             Label = GetDistinctName();
@@ -89,6 +89,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
 
+        public bool IsEmpty => Items.Count == 0;
+
         public void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
         {
             Items.AddUndoable(_parent.UndoRedoManager,new FillingItem(new ClusterItemDefinition(
@@ -109,6 +111,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             DefinitionHelper.EquilibrateProbabilities(Items);
             return new ClusterDefinition(Items.Select(i => i.ToDefinition()).ToList(), Probability, Condition.ToDefinition());
         }
+
         public Task MakeItemsEquiprobable()
         {
             DefinitionHelper.Equiprobable(Items, _parent.UndoRedoManager);

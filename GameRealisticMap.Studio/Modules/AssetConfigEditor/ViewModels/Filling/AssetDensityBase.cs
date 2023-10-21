@@ -66,7 +66,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public abstract ObservableCollection<TItem> Items { get; }
 
-        public bool IsEmpty => Items.Count == 0;
+        public virtual bool IsEmpty => Items.Count == 0;
 
         protected abstract double GetMaxDensity();
 
