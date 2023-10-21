@@ -84,6 +84,15 @@ namespace GameRealisticMap.Studio.Controls
 
                 case "WatercourseRadial":
                     return ForestBrush;
+
+                case "IceSurface":
+                    return new SolidColorBrush(Color.FromArgb(128, 175, 238, 238));
+
+                case "Scree":
+                    return new SolidColorBrush(Color.FromArgb(128, 119, 136, 153));
+
+                case "Airport":
+                    return CreateStripesFilling(Color.FromArgb(64, 205, 133, 63));
             }
             if (name.StartsWith("Default"))
             {
