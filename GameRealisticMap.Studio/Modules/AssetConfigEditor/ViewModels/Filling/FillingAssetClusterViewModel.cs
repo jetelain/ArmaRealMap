@@ -53,11 +53,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         public double PreviewBoxWidthPixels { get; }
 
+        public override bool IsEmpty => Items.All(i => i.IsEmpty);
 
         public override ClusterCollectionDefinition ToDefinition()
         {
-            DefinitionHelper.EquilibrateProbabilities(Items);
-            return new ClusterCollectionDefinition(Items.Select(i => i.ToDefinition()).ToList(), Probability, MinDensity, MaxDensity, Label, Condition.ToDefinition());
+            return new ClusterCollectionDefinition(
+                Items.Where(i => !i.IsEmpty).EquilibrateProbabilities().Select(i => i.ToDefinition()).ToList(), 
+                Probability, MinDensity, MaxDensity, Label, Condition.ToDefinition());
         }
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)

@@ -84,6 +84,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         bool canCopyFrom;
         public bool CanCopyFrom { get => canCopyFrom; set { if (canCopyFrom != value) { canCopyFrom = value; NotifyOfPropertyChange(); } } }
 
+        public IArma3DataModule Arma3DataModule => _arma3Data;
+
         public AssetConfigEditorViewModel(IArma3DataModule arma3Data, IShell shell, ICompositionTool compositionTool)
         {
             _arma3Data = arma3Data;
