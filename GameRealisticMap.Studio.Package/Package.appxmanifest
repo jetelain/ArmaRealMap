@@ -9,7 +9,7 @@
   <Identity
     Name="63155JulienEtelain.GameRealisticMapStudio"
     Publisher="CN=B9AF48D1-9F0E-46A7-B1BB-B050B5B81BD6"
-    Version="1.0.27.0" />
+    Version="1.0.28.0" />
 
   <Properties>
     <DisplayName>GameRealisticMap Studio</DisplayName>
