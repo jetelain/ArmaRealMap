@@ -36,7 +36,7 @@ namespace GameRealisticMap.ManMade.Airports
                         {
                             if (!waysByAirport.TryGetValue(airport, out var apWays))
                             {
-                                waysByAirport.Add(airport, apWays = new AirportsAeroways(airport));
+                                waysByAirport.Add(airport, apWays = new AirportsAeroways(airport, new List<Aeroway>()));
                             }
                             apWays.Aeroways.Add(new Aeroway(segment, type.Value, width: GetWidth(type.Value, way.Tags)));
                         }

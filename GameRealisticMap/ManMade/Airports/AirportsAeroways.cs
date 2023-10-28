@@ -2,14 +2,15 @@
 
 namespace GameRealisticMap.ManMade.Airports
 {
-    public class AirportsAeroways
+    public sealed class AirportsAeroways
     {
-        public AirportsAeroways(TerrainPolygon polygon)
+        public AirportsAeroways(TerrainPolygon polygon, List<Aeroway> aeroways)
         {
+            Aeroways = aeroways;
             Polygon = polygon;
         }
 
-        public List<Aeroway> Aeroways { get; } = new List<Aeroway>();
+        public List<Aeroway> Aeroways { get; }
 
         public TerrainPolygon Polygon { get; }
     }

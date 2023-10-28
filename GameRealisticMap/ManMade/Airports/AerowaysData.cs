@@ -1,6 +1,6 @@
 ﻿namespace GameRealisticMap.ManMade.Airports
 {
-    public class AerowaysData
+    public sealed class AerowaysData
     {
         public AerowaysData(List<AirportsAeroways> airports)
         {
