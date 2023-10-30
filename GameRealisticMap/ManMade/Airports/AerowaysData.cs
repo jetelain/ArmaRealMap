@@ -2,11 +2,14 @@
 {
     public sealed class AerowaysData
     {
-        public AerowaysData(List<AirportsAeroways> airports)
+        public AerowaysData(List<AirportAeroways> insideAirports, List<Aeroway> outsideAirports)
         {
-            Airports = airports;
+            InsideAirports = insideAirports;
+            OutsideAirports = outsideAirports;
         }
 
-        public List<AirportsAeroways> Airports { get; }
+        public List<AirportAeroways> InsideAirports { get; }
+
+        public List<Aeroway> OutsideAirports { get; }
     }
 }

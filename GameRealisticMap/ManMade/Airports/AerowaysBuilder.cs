@@ -17,8 +17,8 @@ namespace GameRealisticMap.ManMade.Airports
         public AerowaysData Build(IBuildContext context)
         {
             var airports = context.GetData<AirportData>().Polygons;
-
-            var waysByAirport = new Dictionary<TerrainPolygon, AirportsAeroways>(ReferenceEqualityComparer.Instance);
+            var outsideAirports = new List<Aeroway>();
+            var insideAirports = new Dictionary<TerrainPolygon, AirportAeroways>(ReferenceEqualityComparer.Instance);
 
             foreach(var way in context.OsmSource.Ways
                 .Where(w => w.Tags != null && w.Tags.ContainsKey("aeroway"))
@@ -31,20 +31,25 @@ namespace GameRealisticMap.ManMade.Airports
                         .SelectMany(g => TerrainPath.FromGeometry(g, context.Area.LatLngToTerrainPoint))
                         .SelectMany(p => p.ClippedKeepOrientation(context.Area.TerrainBounds)))
                     {
+                        var aeroway = new Aeroway(segment, type.Value, width: GetWidth(type.Value, way.Tags));
                         var airport = airports.FirstOrDefault(a => a.Contains(segment));
                         if (airport != null)
                         {
-                            if (!waysByAirport.TryGetValue(airport, out var apWays))
+                            if (!insideAirports.TryGetValue(airport, out var apWays))
                             {
-                                waysByAirport.Add(airport, apWays = new AirportsAeroways(airport, new List<Aeroway>()));
+                                insideAirports.Add(airport, apWays = new AirportAeroways(airport, new List<Aeroway>()));
                             }
-                            apWays.Aeroways.Add(new Aeroway(segment, type.Value, width: GetWidth(type.Value, way.Tags)));
+                            apWays.Aeroways.Add(aeroway);
+                        }
+                        else
+                        {
+                            outsideAirports.Add(aeroway);
                         }
                     }
                 }
             }
 
-            return new AerowaysData(waysByAirport.Values.ToList());
+            return new AerowaysData(insideAirports.Values.ToList(), outsideAirports);
         }
 
         private float GetWidth(AerowayTypeId type, TagsCollectionBase tags)
@@ -56,6 +61,9 @@ namespace GameRealisticMap.ManMade.Airports
             }
             switch(type)
             {
+                case AerowayTypeId.Taxiway:
+                    return 30;
+
                 case AerowayTypeId.Runway:
                 default:
                     return 60;
@@ -68,6 +76,9 @@ namespace GameRealisticMap.ManMade.Airports
             {
                 case "runway":
                     return AerowayTypeId.Runway;
+
+                case "taxiway":
+                    return AerowayTypeId.Taxiway;
             }
             return null;
         }

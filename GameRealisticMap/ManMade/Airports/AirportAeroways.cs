@@ -2,9 +2,9 @@
 
 namespace GameRealisticMap.ManMade.Airports
 {
-    public sealed class AirportsAeroways
+    public sealed class AirportAeroways
     {
-        public AirportsAeroways(TerrainPolygon polygon, List<Aeroway> aeroways)
+        public AirportAeroways(TerrainPolygon polygon, List<Aeroway> aeroways)
         {
             Aeroways = aeroways;
             Polygon = polygon;

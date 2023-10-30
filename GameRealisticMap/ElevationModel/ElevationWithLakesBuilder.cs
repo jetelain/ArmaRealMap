@@ -23,7 +23,7 @@ namespace GameRealisticMap.ElevationModel
     internal class ElevationWithLakesBuilder : IDataBuilder<ElevationWithLakesData>, IDataSerializer<ElevationWithLakesData>
     {
         private readonly IProgressSystem progress;
-
+        private readonly IElevationProcessorStage1[] processors;
         private static readonly Vector2 FlatAreaMargin = new Vector2(FlatAreaOffset25 + 10f);
         private const float FlatAreaOffset25 = 15f;
         private const float FlatAreaOffset50 = 10f;
@@ -40,6 +40,7 @@ namespace GameRealisticMap.ElevationModel
         public ElevationWithLakesBuilder(IProgressSystem progress)
         {
             this.progress = progress;
+            this.processors = new IElevationProcessorStage1[] { new AerowaysElevationProcessor(progress) };
         }
 
         public ElevationWithLakesData Build(IBuildContext context)
@@ -49,7 +50,6 @@ namespace GameRealisticMap.ElevationModel
             var buildings = context.GetData<BuildingsData>();
             var roads = context.GetData<RoadsData>();
             var railways = context.GetData<RailwaysData>();
-            var aeroways = context.GetData<AerowaysData>();
 
             var grid = raw.RawElevation;
 
@@ -63,7 +63,10 @@ namespace GameRealisticMap.ElevationModel
             // - (Flat area for parking lots ?)
             // - Forced elevation by config
 
-            SmoothAeroways(aeroways, grid);
+            foreach(var processor in processors)
+            {
+                processor.ProcessStage1(grid, context);
+            }
 
             FlatLargeAreasSmooth(
                 GetLargeBuildings(buildings)
@@ -72,75 +75,6 @@ namespace GameRealisticMap.ElevationModel
             FlatSmallAreasHard(GetOtherBuildings(buildings), grid);
 
             return new ElevationWithLakesData(grid, lakes);
-        }
-
-        private void SmoothAeroways(AerowaysData aeroways, ElevationGrid grid)
-        {
-            foreach (var airport in aeroways.Airports.ProgressStep(progress, "Aeroways"))
-            {
-                SmoothAeroways(airport, grid);
-            }
-        }
-
-        private void SmoothAeroways(AirportsAeroways airport, ElevationGrid grid)
-        {
-            var inside = grid.GetElevationInside(airport.Polygon).ToList();
-            if (inside.Count == 0)
-            {
-                return;
-            }
-            var mutate = grid.PrepareToMutate(airport.Polygon.MinPoint - grid.CellSize, airport.Polygon.MaxPoint + grid.CellSize, inside.Min() - 10, inside.Max() + 10);
-            var center = airport.Polygon.Centroid;
-            var done = new HashSet<Aeroway>();
-            foreach (var aeroway in airport.Aeroways)
-            {
-                if (done.Contains(aeroway)) 
-                {
-                    continue; 
-                }
-
-                var somepath = new TerrainPath(center + (aeroway.OverallVector * grid.SizeInMeters), center - (aeroway.OverallVector * grid.SizeInMeters))
-                    .ClippedBy(airport.Polygon)
-                    .ToList();
-                if (somepath.Count > 0)
-                {
-                    var parallel = airport.Aeroways.Where(a => a == aeroway || Math.Abs(Vector2.Dot(a.OverallVector, aeroway.OverallVector)) > 0.9).ToList();
-
-                    var p1 = somepath.First().FirstPoint;
-                    var p2 = somepath.Last().LastPoint;
-                    var vi = Vector2.Normalize(p2.Vector - p1.Vector) * 25;
-
-                    p1 += vi;
-                    p2 -= vi;
-
-                    var brush = new LinearGradientBrush(
-                        mutate.ToPixel(p1),
-                        mutate.ToPixel(p2),
-                        GradientRepetitionMode.None,
-                        new ColorStop(0f, mutate.ElevationToColor(grid.ElevationAround(p1))),
-                        new ColorStop(1f, mutate.ElevationToColor(grid.ElevationAround(p2))));
-
-                    mutate.Image.Mutate(p =>
-                    {
-                        foreach (var aw in parallel)
-                        {
-                            foreach (var poly in aw.Segment.ToTerrainPolygonButt(aw.Width + 10))
-                            {
-                                PolygonDrawHelper.DrawPolygon(p, poly, brush, mutate.ToPixels);
-                            }
-                            done.Add(aw);
-                        }
-                    });
-                }
-            }
-
-            var clone = mutate.Image.Clone();
-            mutate.Image.Mutate(p =>
-            {
-                p.BoxBlur(2);
-                p.DrawImage(clone, 1);
-            });
-            mutate.Apply();
         }
 
         private void MakeWayEmbankmentsSmooth(ElevationGrid grid, IEnumerable<IWay> embankmentsSegments)

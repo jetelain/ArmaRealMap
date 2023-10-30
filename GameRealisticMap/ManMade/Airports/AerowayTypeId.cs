@@ -2,6 +2,7 @@
 {
     public enum AerowayTypeId
     {
-        Runway
+        Runway,
+        Taxiway
     }
 }
