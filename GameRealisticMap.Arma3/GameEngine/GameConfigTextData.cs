@@ -9,6 +9,7 @@ namespace GameRealisticMap.Arma3.GameEngine
     public sealed class GameConfigTextData
     {
         public const string FileName = "config.cpp";
+        public const string FileNameRecover = "config-initial.hpp";
 
         private static readonly Regex WorldNameRegex = new Regex(@"worldName\s*=\s*""([^""]+)\.wrp""", RegexOptions.CultureInvariant|RegexOptions.IgnoreCase);
         private static readonly Regex DescriptionRegex = new Regex(@"description\s*=\s*""([^""]+)""", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
