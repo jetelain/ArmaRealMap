@@ -13,7 +13,7 @@ namespace GameRealisticMap.Arma3.GameEngine.Roads
 
         private readonly IGameFileSystem fileSystem;
 
-        private readonly Regex roadClassRegex = new ("class\\s*Road([0-9]+)\\s*{([^}]+)}");
+        private readonly Regex roadClassRegex = new ("class\\s*Road([0-9]+)[^{]*{([^}]+)}");
         private readonly Regex propertyRegex = new("([a-zA-Z]+)\\s*=\\s*([^;]+);");
 
         public RoadsDeserializer(IGameFileSystem fileSystem)
@@ -44,8 +44,11 @@ namespace GameRealisticMap.Arma3.GameEngine.Roads
                         var path = new TerrainPath(line.Coordinates.Select(p => new TerrainPoint((float)(p.X - XShift),(float)p.Y)).ToList());
                         var id = shapeReader.GetInt32(idIndex + shift);
                         var order = orderIndex != -1 ? shapeReader.GetInt32(orderIndex + shift) : 0;
-                        var type = result.RoadTypeInfos.First(i => i.Id == id);
-                        result.Roads.Add(new EditableArma3Road(order, type, path));
+                        var type = result.RoadTypeInfos.FirstOrDefault(i => i.Id == id);
+                        if (type != null)
+                        {
+                            result.Roads.Add(new EditableArma3Road(order, type, path));
+                        }
                     }
                 }
             }

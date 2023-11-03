@@ -15,9 +15,8 @@ namespace GameRealisticMap.Studio.Controls
 
         }
 
-        public Brush Background { get; } = new SolidColorBrush(Colors.White);
 
-        public Brush VoidBackground { get; } = new SolidColorBrush(Colors.Gray);
+        public Brush Background { get; } = new SolidColorBrush(Colors.White);
 
         public Dictionary<RoadTypeId,Pen> RoadBrushes { get; } = new Dictionary<RoadTypeId,Pen>();
 
@@ -48,23 +47,8 @@ namespace GameRealisticMap.Studio.Controls
         public static readonly DependencyProperty MapDataProperty =
             DependencyProperty.Register(nameof(MapData), typeof(PreviewMapData), typeof(GrmMapViewer), new PropertyMetadata(null, SomePropertyChanged));
 
-        protected override void OnRender(DrawingContext dc)
+        protected override void DrawMap(DrawingContext dc, float size, Envelope enveloppe)
         {
-            var actualSize = new Rect(0, 0, ActualWidth, ActualHeight);
-            if (actualSize.Width == 0 || actualSize.Height == 0)
-            {
-                return;
-            }
-
-            dc.DrawRectangle(VoidBackground, null, actualSize);
-
-            var size = SizeInMeters;
-
-            var enveloppe = GetViewportEnveloppe(actualSize, size);
-
-            dc.PushTransform(Translate);
-            dc.PushTransform(ScaleTr);
-
             dc.DrawRectangle(Background, null, new Rect(Convert(TerrainPoint.Empty, size), Convert(new TerrainPoint(size, size), size)));
             if (MapData != null)
             {
@@ -111,9 +95,6 @@ namespace GameRealisticMap.Studio.Controls
                     }
                 }
             }
-            dc.Pop();
-            dc.Pop();
-            CacheCleanup();
         }
 
         private void DrawAny(DrawingContext dc, float size, ITerrainEnvelope geometry, Pen? pen, Brush? brush)

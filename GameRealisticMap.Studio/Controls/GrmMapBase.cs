@@ -22,6 +22,8 @@ namespace GameRealisticMap.Studio.Controls
             ClipToBounds = true;
         }
 
+        public Brush VoidBackground { get; } = new SolidColorBrush(Colors.Gray);
+
         public double DeltaX => -Translate.X;
 
         public double DeltaY => -Translate.Y;
@@ -172,5 +174,32 @@ namespace GameRealisticMap.Studio.Controls
             figure.Segments.Add(new PolyLineSegment(points.Skip(1).Select(p => Convert(p, size)), isStroked));
             return figure;
         }
+
+        protected override sealed void OnRender(DrawingContext dc)
+        {
+            var actualSize = new Rect(0, 0, ActualWidth, ActualHeight);
+            if (actualSize.Width == 0 || actualSize.Height == 0)
+            {
+                return;
+            }
+
+            dc.DrawRectangle(VoidBackground, null, actualSize);
+
+            var size = SizeInMeters;
+
+            var enveloppe = GetViewportEnveloppe(actualSize, size);
+
+            dc.PushTransform(Translate);
+            dc.PushTransform(ScaleTr);
+
+            DrawMap(dc, size, enveloppe);
+
+            dc.Pop();
+            dc.Pop();
+
+            CacheCleanup();
+        }
+
+        protected abstract void DrawMap(DrawingContext dc, float size, Envelope enveloppe);
     }
 }

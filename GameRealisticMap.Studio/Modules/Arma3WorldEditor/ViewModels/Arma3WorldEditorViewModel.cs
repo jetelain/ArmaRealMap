@@ -23,6 +23,7 @@ using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
+using Gemini.Framework.Services;
 using HugeImages;
 using HugeImages.Storage;
 using Microsoft.Win32;
@@ -525,5 +526,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 }
             }
         }
+
+        public Task EditAdvanced()
+        {
+            return IoC.Get<IShell>().OpenDocumentAsync(new Arma3WorldMapViewModel(this, arma3Data));
+        }
+
     }
 }
