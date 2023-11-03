@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Roads;
@@ -11,32 +8,16 @@ using GameRealisticMap.Studio.Shared;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    public sealed class GrmMapViewer : FrameworkElement
+    public sealed class GrmMapViewer : GrmMapBase
     {
-        private readonly Dictionary<TerrainPolygon, PathGeometry> polyCache = new Dictionary<TerrainPolygon, PathGeometry>();
-        private readonly Dictionary<TerrainPath, PathGeometry> pathCache = new Dictionary<TerrainPath, PathGeometry>();
-
-        private Point start;
-        private Point origin;
-
         public GrmMapViewer()
         {
-            ClipToBounds = true;
+
         }
 
         public Brush Background { get; } = new SolidColorBrush(Colors.White);
 
         public Brush VoidBackground { get; } = new SolidColorBrush(Colors.Gray);
-
-        public double DeltaX => -Translate.X;
-
-        public double DeltaY => -Translate.Y;
-
-        public double Scale => ScaleTr.ScaleX;
-
-        public TranslateTransform Translate { get; } = new TranslateTransform();
-
-        public ScaleTransform ScaleTr { get; } = new ScaleTransform(1, 1, 0, 0);
 
         public Dictionary<RoadTypeId,Pen> RoadBrushes { get; } = new Dictionary<RoadTypeId,Pen>();
 
@@ -58,8 +39,6 @@ namespace GameRealisticMap.Studio.Controls
         public static readonly DependencyProperty FalseListProperty =
             DependencyProperty.Register(nameof(IsFalse), typeof(List<ITerrainEnvelope>), typeof(GrmMapViewer), new PropertyMetadata(new List<ITerrainEnvelope>(), SomePropertyChanged));
 
-
-
         public PreviewMapData? MapData
         {
             get { return (PreviewMapData?)GetValue(MapDataProperty); }
@@ -68,77 +47,6 @@ namespace GameRealisticMap.Studio.Controls
 
         public static readonly DependencyProperty MapDataProperty =
             DependencyProperty.Register(nameof(MapData), typeof(PreviewMapData), typeof(GrmMapViewer), new PropertyMetadata(null, SomePropertyChanged));
-
-
-
-        public float SizeInMeters
-        {
-            get { return (float)GetValue(SizeInMetersProperty); }
-            set { SetValue(SizeInMetersProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for SizeInMeters.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SizeInMetersProperty =
-            DependencyProperty.Register("SizeInMeters", typeof(float), typeof(GrmMapViewer), new PropertyMetadata(2500f, SomePropertyChanged));
-
-        private static void SomePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            (d as GrmMapViewer)?.SomePropertyChanged();
-        }
-
-        private void SomePropertyChanged()
-        {
-            polyCache.Clear();
-            pathCache.Clear();
-            InvalidateVisual();
-        }
-
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            CaptureMouse();
-            start = e.GetPosition(this);
-            origin = new Point(Translate.X, Translate.Y);
-            Cursor = Cursors.Hand;
-            base.OnMouseLeftButtonDown(e);
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            if (IsMouseCaptured)
-            {
-                var delta = start - e.GetPosition(this);
-                Translate.X = origin.X - delta.X;
-                Translate.Y = origin.Y - delta.Y;
-                InvalidateVisual();
-            }
-            base.OnMouseMove(e);
-        }
-
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-            ReleaseMouseCapture();
-            Cursor = Cursors.Arrow;
-            base.OnMouseLeftButtonUp(e);
-        }
-
-        protected override void OnMouseWheel(MouseWheelEventArgs e)
-        {
-            var zoom = Math.Max(ScaleTr.ScaleX + (e.Delta > 0 ? 0.25 : -0.25), 0.25);
-
-            var relative = e.GetPosition(this);
-
-            var abosuluteX = (relative.X - Translate.X) / ScaleTr.ScaleX;
-            var abosuluteY = (relative.Y - Translate.Y) / ScaleTr.ScaleY;
-
-            ScaleTr.ScaleX = zoom;
-            ScaleTr.ScaleY = zoom;
-
-            Translate.X = -(abosuluteX * ScaleTr.ScaleX) + relative.X;
-            Translate.Y = -(abosuluteY * ScaleTr.ScaleY) + relative.Y;
-
-            InvalidateVisual();
-            base.OnMouseWheel(e);
-        }
 
         protected override void OnRender(DrawingContext dc)
         {
@@ -205,14 +113,7 @@ namespace GameRealisticMap.Studio.Controls
             }
             dc.Pop();
             dc.Pop();
-            if (polyCache.Count > 50000)
-            {
-                polyCache.Clear();
-            }
-            if (pathCache.Count > 50000)
-            {
-                pathCache.Clear();
-            }
+            CacheCleanup();
         }
 
         private void DrawAny(DrawingContext dc, float size, ITerrainEnvelope geometry, Pen? pen, Brush? brush)
@@ -267,7 +168,6 @@ namespace GameRealisticMap.Studio.Controls
             }
         }
 
-
         private void DrawPaths(DrawingContext dc, float size, Envelope enveloppe, Pen pen, IEnumerable<TerrainPath> paths)
         {
             foreach (var path in paths)
@@ -278,15 +178,6 @@ namespace GameRealisticMap.Studio.Controls
                 }
             }
         }
-
-        private Envelope GetViewportEnveloppe(Rect actualSize, float size)
-        {
-            var northWest = new TerrainPoint((float)(DeltaX / Scale), (float)(size - (DeltaY / Scale)));
-            var southEast = northWest + new Vector2((float)(actualSize.Width / Scale), -(float)(actualSize.Height / Scale));
-            return new Envelope(new TerrainPoint(northWest.X, southEast.Y), new TerrainPoint(southEast.X, northWest.Y));
-        }
-
-        public ITerrainEnvelope GetViewportEnveloppe() => GetViewportEnveloppe(new Rect(0, 0, ActualWidth, ActualHeight), SizeInMeters);
 
         private void DrawPolygons(DrawingContext dc, float size, Envelope enveloppe, Brush brush, IEnumerable<TerrainPolygon> polygons)
         {
@@ -303,60 +194,5 @@ namespace GameRealisticMap.Studio.Controls
                 }
             }
         }
-
-        private PathGeometry CreatePolygon(float size, TerrainPolygon poly)
-        {
-            if (!polyCache.TryGetValue(poly, out var polygon))
-            {
-                polyCache.Add(poly, polygon = DoCreatePolygon(size, poly));
-            }
-            return polygon;
-        }
-
-        private static PathGeometry DoCreatePolygon(float size, TerrainPolygon poly, bool isStroked = false)
-        {
-            var path = new PathGeometry();
-            path.Figures.Add(CreateFigure(poly.Shell, true, isStroked, size));
-            foreach (var hole in poly.Holes)
-            {
-                path.Figures.Add(CreateFigure(hole, true, isStroked, size));
-            }
-            return path;
-        }
-
-        private PathGeometry CreatePath(float size, TerrainPath poly)
-        {
-            if (!pathCache.TryGetValue(poly, out var polygon))
-            {
-                pathCache.Add(poly, polygon = DoCreatePath(size, poly));
-            }
-            return polygon;
-        }
-
-        private static PathGeometry DoCreatePath(float size, TerrainPath tpath)
-        {
-            var path = new PathGeometry();
-            path.Figures.Add(CreateFigure(tpath.Points, false, true, size));
-            return path;
-        }
-
-        private static Point Convert(TerrainPoint point, float size)
-        {
-            return new Point(point.X, size - point.Y);
-        }
-
-        private static PathFigure CreateFigure(IEnumerable<TerrainPoint> points, bool isFilled, bool isStroked, float size)
-        {
-            var figure = new PathFigure
-            {
-                StartPoint = Convert(points.First(), size),
-                IsFilled = isFilled
-            };
-            figure.Segments.Add(new PolyLineSegment(points.Skip(1).Select(p => Convert(p, size)), isStroked));
-            return figure;
-        }
-         
-
-
     }
 }
