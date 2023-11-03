@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using BIS.Core.Config;
 using BIS.Core.Streams;
 using BIS.WRP;
 using Caliburn.Micro;
@@ -71,15 +72,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             World = StreamHelper.Read<AnyWrp>(filePath).GetEditableWrp();
 
-            var configFile = ConfigFilePath(filePath);
-            if (File.Exists(configFile))
-            {
-                ConfigFile = GameConfigTextData.ReadFromFile(configFile, worldName);
-            }
-            else
-            {
-                ConfigFile = null;
-            }
+            ConfigFile = ReadGameConfig(filePath, worldName);
+
             savedRevision = ConfigFile?.Revision ?? 0;
 
             HistoryEntry = await history.GetEntryOrDefault(worldName);
@@ -112,6 +106,28 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             return Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, GameConfigTextData.FileName);
         }
+
+        private GameConfigTextData? ReadGameConfig(string filePath, string worldName)
+        {
+            var configFile = ConfigFilePath(filePath);
+            if (File.Exists(configFile))
+            {
+                return GameConfigTextData.ReadFromFile(configFile, worldName);
+            }
+            var recoverFile = Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, GameConfigTextData.FileNameRecover);
+            if (File.Exists(recoverFile))
+            {
+                return GameConfigTextData.ReadFromFile(recoverFile, worldName);
+            }
+            var binaryFile = Path.ChangeExtension(configFile, ".bin");
+            if (File.Exists(binaryFile))
+            {
+                return GameConfigTextData.ReadFromContent(StreamHelper.Read<ParamFile>(binaryFile).ToString(), worldName);
+            }
+            return null;
+        }
+
+
 
         private async Task<List<ModDependencyDefinition>> ReadDependencies(string dependenciesFile)
         {
