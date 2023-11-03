@@ -9,6 +9,7 @@
 	<Company>GameRealisticMap</Company>
 	<Platforms>AnyCPU;x64</Platforms>
 	<FileVersion>0.8</FileVersion>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
 	<ItemGroup>

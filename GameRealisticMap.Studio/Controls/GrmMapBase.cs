@@ -22,6 +22,8 @@ namespace GameRealisticMap.Studio.Controls
             ClipToBounds = true;
         }
 
+        public Brush Background { get; } = new SolidColorBrush(Colors.White);
+
         public Brush VoidBackground { get; } = new SolidColorBrush(Colors.Gray);
 
         public double DeltaX => -Translate.X;
@@ -191,6 +193,8 @@ namespace GameRealisticMap.Studio.Controls
 
             dc.PushTransform(Translate);
             dc.PushTransform(ScaleTr);
+
+            dc.DrawRectangle(Background, null, new Rect(Convert(TerrainPoint.Empty, size), Convert(new TerrainPoint(size, size), size)));
 
             DrawMap(dc, size, enveloppe);
 

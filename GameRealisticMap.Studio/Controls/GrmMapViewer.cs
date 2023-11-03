@@ -15,9 +15,6 @@ namespace GameRealisticMap.Studio.Controls
 
         }
 
-
-        public Brush Background { get; } = new SolidColorBrush(Colors.White);
-
         public Dictionary<RoadTypeId,Pen> RoadBrushes { get; } = new Dictionary<RoadTypeId,Pen>();
 
         public List<ITerrainEnvelope> IsTrue
@@ -49,7 +46,6 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override void DrawMap(DrawingContext dc, float size, Envelope enveloppe)
         {
-            dc.DrawRectangle(Background, null, new Rect(Convert(TerrainPoint.Empty, size), Convert(new TerrainPoint(size, size), size)));
             if (MapData != null)
             {
                 DrawPolygons(dc, size, enveloppe, GrmMapStyle.OceanBrush, MapData.Ocean.Polygons);

@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using Gemini.Framework;
+using HugeImages;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
@@ -21,6 +23,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public float SizeInMeters => parentEditor.SizeInMeters ?? 2500;
 
+        public HugeImage<Rgb24>? SatMap { get; set; }
+
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             if (parentEditor.ConfigFile != null && !string.IsNullOrEmpty(parentEditor.ConfigFile.Roads))
@@ -28,6 +32,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 Roads = new RoadsDeserializer(arma3Data.ProjectDrive).Deserialize(parentEditor.ConfigFile.Roads);
                 NotifyOfPropertyChange(nameof(Roads));
             }
+
+            if ( parentEditor.Imagery != null)
+            {
+                SatMap = parentEditor.Imagery.GetSatMap(arma3Data.ProjectDrive);
+            }
+
             return base.OnActivateAsync(cancellationToken);
         }
     }

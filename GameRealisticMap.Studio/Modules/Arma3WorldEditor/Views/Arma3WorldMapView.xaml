@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <grm:GrmMapArma3 x:Name="Map" SizeInMeters="{Binding SizeInMeters}" Roads="{Binding Roads}" />
+        <grm:GrmMapArma3 x:Name="Map" SizeInMeters="{Binding SizeInMeters}" Roads="{Binding Roads}" BackgroundImage="{Binding SatMap}" />
 
     </Grid>
 </UserControl>
