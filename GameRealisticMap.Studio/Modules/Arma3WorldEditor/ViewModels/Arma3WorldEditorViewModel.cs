@@ -447,7 +447,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             return null;
         }
 
-        private async Task<Arma3Assets?> GetAssetsFromHistory()
+        internal async Task<Arma3Assets?> GetAssetsFromHistory()
         {
             try
             {

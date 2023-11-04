@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
@@ -34,6 +36,20 @@ namespace GameRealisticMap.Studio.Controls
             DependencyProperty.Register("BackgroundImage", typeof(HugeImage<Rgb24>), typeof(GrmMapArma3), new PropertyMetadata(null, SomePropertyChanged));
 
 
+
+        public double BackgroundImageResolution
+        {
+            get { return (double)GetValue(BackgroundImageResolutionProperty); }
+            set { SetValue(BackgroundImageResolutionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for BackgroundImageResolution.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BackgroundImageResolutionProperty =
+            DependencyProperty.Register("BackgroundImageResolution", typeof(double), typeof(GrmMapArma3), new PropertyMetadata(1d));
+
+
+
+
         public Dictionary<EditableArma3RoadTypeInfos, Pen> RoadBrushes { get; } = new();
 
         protected override void DrawMap(DrawingContext dc, float size, Envelope enveloppe)
@@ -43,11 +59,22 @@ namespace GameRealisticMap.Studio.Controls
             {
                 if (source == null || source.HugeImage != bg)
                 {
-                    source = new HugeImageSource<Rgb24>(bg, () => Dispatcher.BeginInvoke(InvalidateVisual));
+                    source = new HugeImageSource<Rgb24>(bg, InvalidateVisual);
                 }
-                var actualClip = new Rect(DeltaX / Scale, DeltaY / Scale, ActualWidth / Scale, ActualHeight / Scale);
+                var resolution = BackgroundImageResolution;
+                var renderSize = RenderSize;
+
+                var actualClip = new Rect(DeltaX / Scale * resolution, DeltaY / Scale * resolution, renderSize.Width / Scale * resolution, renderSize.Height / Scale * resolution);
                 dc.PushOpacity(0.8);
+                if (resolution != 1)
+                {
+                    dc.PushTransform(new ScaleTransform(1/ resolution, 1/ resolution));
+                }
                 source.DrawTo(dc, actualClip);
+                if (resolution != 1)
+                {
+                    dc.Pop();
+                }
                 dc.Pop();
             }
 
@@ -67,5 +94,51 @@ namespace GameRealisticMap.Studio.Controls
                 }
             }
         }
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            if (e.Source != this)
+            {
+                return;
+            }
+
+            
+
+            var roads = Roads;
+            if (roads != null)
+            {
+                var coordinates = this.ViewportCoordinates(e.GetPosition(this));
+                var enveloppe = new Envelope(coordinates - new Vector2(5), coordinates + new Vector2(5));
+
+                var editRoad = roads.Roads
+                    .Where(r => r.Path.EnveloppeIntersects(enveloppe))
+                    .Select(r => (road: r, distance: r.Path.Distance(coordinates)))
+                    .Where(r => r.distance < r.road.RoadTypeInfos.TextureWidth / 2)
+                    .OrderBy(r => r.distance)
+                    .Select(r => r.road)
+                    .FirstOrDefault();
+
+                if (editRoad != null)
+                {
+                    InternalChildren.Clear();
+                    var pos = 0;
+                    foreach (var point in editRoad.Path.Points)
+                    {
+                        var idx = pos;
+                        var p = new GrmMapDraggableSquare() { TerrainPoint = point };
+                        p.Edited += (_,_) => {
+                            var points = editRoad.Path.Points.ToList();
+                            points[idx] = p.TerrainPoint;
+                            editRoad.Path = new TerrainPath(points);
+                            InvalidateVisual();
+                        };
+                        InternalChildren.Add(p);
+                        pos++;
+                    }
+                }
+            }
+            base.OnMouseLeftButtonDown(e);
+        }
+
+
     }
 }

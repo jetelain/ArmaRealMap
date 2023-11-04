@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    public abstract class GrmMapBase : FrameworkElement
+    public abstract class GrmMapBase : Panel
     {
         private readonly Dictionary<TerrainPolygon, PathGeometry> polyCache = new Dictionary<TerrainPolygon, PathGeometry>();
         private readonly Dictionary<TerrainPath, PathGeometry> pathCache = new Dictionary<TerrainPath, PathGeometry>();
@@ -20,11 +21,10 @@ namespace GameRealisticMap.Studio.Controls
         public GrmMapBase()
         {
             ClipToBounds = true;
+            Background = new SolidColorBrush(Colors.Gray);
         }
 
-        public Brush Background { get; } = new SolidColorBrush(Colors.White);
-
-        public Brush VoidBackground { get; } = new SolidColorBrush(Colors.Gray);
+        public Brush MapBackground { get; } = new SolidColorBrush(Colors.White);
 
         public double DeltaX => -Translate.X;
 
@@ -50,6 +50,10 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
+            if (e.Source != this)
+            {
+                return;
+            }
             CaptureMouse();
             start = e.GetPosition(this);
             origin = new Point(Translate.X, Translate.Y);
@@ -65,6 +69,7 @@ namespace GameRealisticMap.Studio.Controls
                 Translate.X = origin.X - delta.X;
                 Translate.Y = origin.Y - delta.Y;
                 InvalidateVisual();
+                InvalidateArrange();
             }
             base.OnMouseMove(e);
         }
@@ -92,6 +97,7 @@ namespace GameRealisticMap.Studio.Controls
             Translate.Y = -(abosuluteY * ScaleTr.ScaleY) + relative.Y;
 
             InvalidateVisual();
+            InvalidateArrange();
             base.OnMouseWheel(e);
         }
 
@@ -116,14 +122,14 @@ namespace GameRealisticMap.Studio.Controls
         public static readonly DependencyProperty SizeInMetersProperty =
             DependencyProperty.Register(nameof(SizeInMeters), typeof(float), typeof(GrmMapBase), new PropertyMetadata(2500f, SomePropertyChanged));
 
-        protected Envelope GetViewportEnveloppe(Rect actualSize, float size)
+        protected Envelope GetViewportEnveloppe(Size actualSize, float size)
         {
             var northWest = new TerrainPoint((float)(DeltaX / Scale), (float)(size - (DeltaY / Scale)));
             var southEast = northWest + new Vector2((float)(actualSize.Width / Scale), -(float)(actualSize.Height / Scale));
             return new Envelope(new TerrainPoint(northWest.X, southEast.Y), new TerrainPoint(southEast.X, northWest.Y));
         }
 
-        public ITerrainEnvelope GetViewportEnveloppe() => GetViewportEnveloppe(new Rect(0, 0, ActualWidth, ActualHeight), SizeInMeters);
+        public ITerrainEnvelope GetViewportEnveloppe() => GetViewportEnveloppe(RenderSize, SizeInMeters);
 
         protected PathGeometry CreatePolygon(float size, TerrainPolygon poly)
         {
@@ -179,22 +185,22 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override sealed void OnRender(DrawingContext dc)
         {
-            var actualSize = new Rect(0, 0, ActualWidth, ActualHeight);
-            if (actualSize.Width == 0 || actualSize.Height == 0)
+            var renderSize = RenderSize;
+            if (renderSize.Width == 0 || renderSize.Height == 0)
             {
                 return;
             }
 
-            dc.DrawRectangle(VoidBackground, null, actualSize);
+            dc.DrawRectangle(Background, null, new Rect(0.0, 0.0, renderSize.Width, renderSize.Height));
 
             var size = SizeInMeters;
 
-            var enveloppe = GetViewportEnveloppe(actualSize, size);
+            var enveloppe = GetViewportEnveloppe(renderSize, size);
 
             dc.PushTransform(Translate);
             dc.PushTransform(ScaleTr);
 
-            dc.DrawRectangle(Background, null, new Rect(Convert(TerrainPoint.Empty, size), Convert(new TerrainPoint(size, size), size)));
+            dc.DrawRectangle(MapBackground, null, new Rect(Convert(TerrainPoint.Empty, size), Convert(new TerrainPoint(size, size), size)));
 
             DrawMap(dc, size, enveloppe);
 
@@ -205,5 +211,41 @@ namespace GameRealisticMap.Studio.Controls
         }
 
         protected abstract void DrawMap(DrawingContext dc, float size, Envelope enveloppe);
+
+        protected override Size ArrangeOverride(Size arrangeSize)
+        {
+            var size = SizeInMeters;
+
+            foreach (UIElement internalChild in InternalChildren)
+            {
+                if (internalChild is GrmMapDraggableSquare square)
+                {
+                    var s = internalChild.DesiredSize;
+                    var p = Translate.Transform(ScaleTr.Transform(Convert(square.TerrainPoint, size) )) - new System.Windows.Vector(s.Width/2, s.Height/2);
+                    internalChild.Arrange(new Rect(p, s));
+                }
+            }
+            return arrangeSize;
+        }
+        protected override Size MeasureOverride(Size constraint)
+        {
+            Size availableSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
+            foreach (UIElement internalChild in base.InternalChildren)
+            {
+                internalChild?.Measure(availableSize);
+            }
+            return default(Size);
+        }
+        
+        public TerrainPoint ViewportCoordinates(Point viewPortPoint)
+        {
+            var northWest = new TerrainPoint((float)(DeltaX / Scale), (float)(SizeInMeters - (DeltaY / Scale))); // Point(0,0) of view port
+            return northWest + new Vector2((float)(viewPortPoint.X / Scale), -(float)(viewPortPoint.Y / Scale));
+        }
+
+        public TerrainPoint ViewportCoordinatesCenter(Point point, Size size)
+        {
+            return ViewportCoordinates(point + new System.Windows.Vector(size.Width / 2, size.Height / 2));
+        }
     }
 }

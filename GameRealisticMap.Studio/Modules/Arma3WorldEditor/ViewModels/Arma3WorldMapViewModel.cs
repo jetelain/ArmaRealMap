@@ -13,10 +13,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private readonly Arma3WorldEditorViewModel parentEditor;
         private readonly IArma3DataModule arma3Data;
 
+        public double BackgroundResolution { get; }
+
+        private BackgroundMode _backgroundMode;
+
         public Arma3WorldMapViewModel(Arma3WorldEditorViewModel parent, IArma3DataModule arma3Data)
         {
             this.parentEditor = parent;
             this.arma3Data = arma3Data;
+            BackgroundResolution = parentEditor.Imagery?.Resolution ?? 1;
+            DisplayName = parent.DisplayName + " - Editor";
         }
 
         public EditableArma3Roads? Roads { get; set; }
@@ -25,7 +31,39 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public HugeImage<Rgb24>? SatMap { get; set; }
 
-        protected override Task OnActivateAsync(CancellationToken cancellationToken)
+        public HugeImage<Rgb24>? IdMap { get; set; }
+
+        public HugeImage<Rgb24>? BackgroundImage
+        {
+            get
+            {
+                switch (BackgroundMode)
+                {
+                    case BackgroundMode.Satellite: return SatMap;
+                    case BackgroundMode.TextureMask: return IdMap;
+                    default: return null;
+                }
+            }
+        }
+
+        public BackgroundMode BackgroundMode
+        {
+            get { return _backgroundMode; }
+            set
+            {
+                if (_backgroundMode != value)
+                {
+                    _backgroundMode = value;
+                    NotifyOfPropertyChange();
+                    NotifyOfPropertyChange(nameof(BackgroundImage));
+
+                }
+
+
+            }
+        }
+
+        protected async override Task OnInitializeAsync(CancellationToken cancellationToken)
         {
             if (parentEditor.ConfigFile != null && !string.IsNullOrEmpty(parentEditor.ConfigFile.Roads))
             {
@@ -33,12 +71,18 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 NotifyOfPropertyChange(nameof(Roads));
             }
 
-            if ( parentEditor.Imagery != null)
+            if (parentEditor.Imagery != null)
             {
                 SatMap = parentEditor.Imagery.GetSatMap(arma3Data.ProjectDrive);
+
+                var assets = await parentEditor.GetAssetsFromHistory();
+                if (assets != null)
+                {
+                    IdMap = parentEditor.Imagery.GetIdMap(arma3Data.ProjectDrive, assets.Materials);
+                }
             }
 
-            return base.OnActivateAsync(cancellationToken);
+            await base.OnInitializeAsync(cancellationToken);
         }
     }
 }

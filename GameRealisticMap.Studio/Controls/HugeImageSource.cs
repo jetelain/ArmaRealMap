@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using HugeImages;
 using HugeImages.Processing;
 using SixLabors.ImageSharp;
@@ -14,11 +15,12 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    internal sealed class HugeImageSource<TPixel> : IDisposable
+    internal sealed class HugeImageSource<TPixel> : DispatcherObject, IDisposable
         where TPixel : unmanaged, IPixel<TPixel>
     {
         private const int SampleSize = 512;
-        private const int MaxLoaded = 256;
+        private const int SampleStep = SampleSize - 4;
+        private const int MaxLoaded = 512; // Limit to 512 MB of memory
 
         private readonly HugeImage<TPixel> hugeImage;
         private readonly List<DrawPart> parts = new List<DrawPart>();
@@ -29,7 +31,6 @@ namespace GameRealisticMap.Studio.Controls
             private readonly HugeImageSource<TPixel> parent;
             private readonly SixLabors.ImageSharp.Point point;
             private BitmapSource? source;
-            private byte[]? bytes;
             private int state;
 
             public DrawPart(HugeImageSource<TPixel> parent, int x, int y)
@@ -50,8 +51,11 @@ namespace GameRealisticMap.Studio.Controls
                     await image.MutateAsync(async i => await i.DrawHugeImageAsync(parent.hugeImage, point, 1).ConfigureAwait(false)).ConfigureAwait(false);
                     var buffer = new byte[image.Width * image.Height * 4];
                     image.CopyPixelDataTo(new Span<byte>(buffer));
-                    bytes = buffer;
-                    parent.invalidate();
+                    _ = parent.Dispatcher.BeginInvoke(() =>
+                    {
+                        source = BitmapSource.Create((int)Rectangle.Width, (int)Rectangle.Height, 300, 300, PixelFormats.Bgra32, null, buffer, (int)Rectangle.Width * 4);
+                        parent.invalidate();
+                    });
                 }
             }
 
@@ -62,11 +66,6 @@ namespace GameRealisticMap.Studio.Controls
                     if (Interlocked.Exchange(ref state, 1) == 0)
                     { 
                         Task.Run(LoadImageBytes);
-                    }
-                    if (bytes != null)
-                    {
-                        source = BitmapSource.Create((int)Rectangle.Width, (int)Rectangle.Height, 300, 300, PixelFormats.Bgra32, null, bytes, (int)Rectangle.Width * 4);
-                        bytes = null;
                     }
                 }
                 LastRead = Stopwatch.GetTimestamp();
@@ -90,9 +89,9 @@ namespace GameRealisticMap.Studio.Controls
             this.hugeImage = hugeImage;
             this.invalidate = invalidate;
 
-            for (var x = 0; x < hugeImage.Size.Width; x += SampleSize)
+            for (var x = 0; x < hugeImage.Size.Width; x += SampleStep)
             {
-                for (var y = 0; y < hugeImage.Size.Height; y += SampleSize)
+                for (var y = 0; y < hugeImage.Size.Height; y += SampleStep)
                 {
                     parts.Add(new DrawPart(this, x, y));
                 }
@@ -100,6 +99,8 @@ namespace GameRealisticMap.Studio.Controls
         }
 
         public HugeImage<TPixel> HugeImage => hugeImage;
+
+        public Brush PlaceHolderBrush { get; set; } = new SolidColorBrush(Colors.Gray);
 
         public void DrawTo(DrawingContext dc, Rect currentClip)
         {
@@ -111,6 +112,10 @@ namespace GameRealisticMap.Studio.Controls
                     if (source != null)
                     {
                         dc.DrawImage(source, part.Rectangle);
+                    }
+                    else
+                    {
+                        dc.DrawRectangle(PlaceHolderBrush, null, part.Rectangle);
                     }
                 }
             }
