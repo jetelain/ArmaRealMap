@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Windows;
@@ -21,10 +22,8 @@ namespace GameRealisticMap.Studio.Controls
             set { SetValue(RoadsProperty, value); }
         }
 
-
         public static readonly DependencyProperty RoadsProperty =
             DependencyProperty.Register(nameof(Roads), typeof(EditableArma3Roads), typeof(GrmMapArma3), new PropertyMetadata(null, SomePropertyChanged));
-
 
         public HugeImage<Rgb24>? BackgroundImage
         {
@@ -35,20 +34,53 @@ namespace GameRealisticMap.Studio.Controls
         public static readonly DependencyProperty BackgroundImageProperty =
             DependencyProperty.Register("BackgroundImage", typeof(HugeImage<Rgb24>), typeof(GrmMapArma3), new PropertyMetadata(null, SomePropertyChanged));
 
-
-
         public double BackgroundImageResolution
         {
             get { return (double)GetValue(BackgroundImageResolutionProperty); }
             set { SetValue(BackgroundImageResolutionProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for BackgroundImageResolution.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BackgroundImageResolutionProperty =
             DependencyProperty.Register("BackgroundImageResolution", typeof(double), typeof(GrmMapArma3), new PropertyMetadata(1d));
 
+        public EditableArma3Road? SelectedRoad
+        {
+            get { return (EditableArma3Road?)GetValue(SelectedRoadProperty); }
+            set { SetValue(SelectedRoadProperty, value); }
+        }
 
+        public static readonly DependencyProperty SelectedRoadProperty =
+            DependencyProperty.Register("SelectedRoad", typeof(EditableArma3Road), typeof(GrmMapArma3), new PropertyMetadata(null, SelectedItemChangedCallback));
 
+        private static void SelectedItemChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as GrmMapArma3)?.SelectedItemChanged();
+        }
+
+        private void SelectedItemChanged()
+        {
+            InternalChildren.Clear();
+
+            var editRoad = SelectedRoad;
+            if (editRoad != null)
+            {
+                var pos = 0;
+                foreach (var point in editRoad.Path.Points)
+                {
+                    var idx = pos;
+                    var p = new GrmMapDraggableSquare(this, point);
+                    p.Edited += (_, _) =>
+                    {
+                        var points = editRoad.Path.Points.ToList();
+                        points[idx] = p.TerrainPoint;
+                        editRoad.Path = new TerrainPath(points);
+                        InvalidateVisual();
+                    };
+                    InternalChildren.Add(p);
+                    pos++;
+                }
+            }
+        }
 
         public Dictionary<EditableArma3RoadTypeInfos, Pen> RoadBrushes { get; } = new();
 
@@ -101,8 +133,6 @@ namespace GameRealisticMap.Studio.Controls
                 return;
             }
 
-            
-
             var roads = Roads;
             if (roads != null)
             {
@@ -117,24 +147,7 @@ namespace GameRealisticMap.Studio.Controls
                     .Select(r => r.road)
                     .FirstOrDefault();
 
-                if (editRoad != null)
-                {
-                    InternalChildren.Clear();
-                    var pos = 0;
-                    foreach (var point in editRoad.Path.Points)
-                    {
-                        var idx = pos;
-                        var p = new GrmMapDraggableSquare() { TerrainPoint = point };
-                        p.Edited += (_,_) => {
-                            var points = editRoad.Path.Points.ToList();
-                            points[idx] = p.TerrainPoint;
-                            editRoad.Path = new TerrainPath(points);
-                            InvalidateVisual();
-                        };
-                        InternalChildren.Add(p);
-                        pos++;
-                    }
-                }
+                SelectedRoad = editRoad;
             }
             base.OnMouseLeftButtonDown(e);
         }

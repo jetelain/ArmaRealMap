@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -7,16 +6,18 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    public sealed class GrmMapDraggableSquare : FrameworkElement
+    internal sealed class GrmMapDraggableSquare : FrameworkElement
     {
         private Point start;
         private Vector initialOffset;
+        private readonly GrmMapBase map;
 
-        public GrmMapDraggableSquare()
+        public GrmMapDraggableSquare(GrmMapBase map, TerrainPoint terrainPoint)
         {
-            Width = 10;
-            Height = 10;
-            TerrainPoint = new TerrainPoint(100, 100);
+            this.map = map;
+            Width = 16;
+            Height = 16;
+            TerrainPoint = terrainPoint;
         }
 
         public SolidColorBrush Fill { get; set; } = new SolidColorBrush(Colors.White);
@@ -34,8 +35,6 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            var map = (GrmMapBase)Parent;
-
             start = e.GetPosition(map);
             initialOffset = VisualTreeHelper.GetOffset(this);
             Cursor = Cursors.SizeAll;
@@ -48,7 +47,6 @@ namespace GameRealisticMap.Studio.Controls
         {
             if (IsMouseCaptured)
             {
-                var map = (GrmMapBase)Parent;
                 var pos = e.GetPosition(map);
                 var delta = start - pos;
                 var s = DesiredSize;
