@@ -247,5 +247,10 @@ namespace GameRealisticMap.Studio.Controls
         {
             return ViewportCoordinates(point + new System.Windows.Vector(size.Width / 2, size.Height / 2));
         }
+
+        internal virtual void OnPointPositionChanged(GrmMapDraggableSquare grmMapDraggableSquare)
+        {
+
+        }
     }
 }

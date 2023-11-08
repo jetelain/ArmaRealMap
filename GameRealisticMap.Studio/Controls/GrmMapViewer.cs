@@ -63,7 +63,7 @@ namespace GameRealisticMap.Studio.Controls
                     {
                         if (!RoadBrushes.TryGetValue(road.RoadType, out var pen))
                         {
-                            RoadBrushes.Add(road.RoadType, pen = new Pen(GrmMapStyle.RoadBrush, road.RoadTypeInfos.Width));
+                            RoadBrushes.Add(road.RoadType, pen = new Pen(GrmMapStyle.RoadBrush, road.RoadTypeInfos.Width) { StartLineCap = PenLineCap.Square, EndLineCap = PenLineCap.Square });
                         }
                         dc.DrawGeometry(null, pen, CreatePath(size, road.Path));
                     }

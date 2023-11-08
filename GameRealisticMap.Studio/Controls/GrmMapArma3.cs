@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Numerics;
 using System.Windows;
@@ -14,7 +15,9 @@ namespace GameRealisticMap.Studio.Controls
 {
     public sealed class GrmMapArma3 : GrmMapBase
     {
+        private ObservableCollection<TerrainPoint>? selectionPoints;
         private HugeImageSource<Rgb24>? source;
+        private EditableArma3Road? selectedRoad;
 
         public EditableArma3Roads? Roads
         {
@@ -45,40 +48,109 @@ namespace GameRealisticMap.Studio.Controls
 
         public EditableArma3Road? SelectedRoad
         {
-            get { return (EditableArma3Road?)GetValue(SelectedRoadProperty); }
-            set { SetValue(SelectedRoadProperty, value); }
+            get { return selectedRoad; }
+            set 
+            {
+                // ==> This should be done by ViewModel
+                selectedRoad = value;
+                if (selectedRoad == null)
+                {
+                    SelectionPoints = null;
+                }
+                else
+                {
+                    SelectionPoints = new ObservableCollection<TerrainPoint>(selectedRoad.Path.Points);
+                }
+            }
         }
 
-        public static readonly DependencyProperty SelectedRoadProperty =
-            DependencyProperty.Register("SelectedRoad", typeof(EditableArma3Road), typeof(GrmMapArma3), new PropertyMetadata(null, SelectedItemChangedCallback));
+        public ObservableCollection<TerrainPoint>? SelectionPoints 
+        { 
+            get { return selectionPoints; } 
+            set 
+            {
+                if (selectionPoints != value)
+                {
+                    if (selectionPoints != null )
+                    {
+                        selectionPoints.CollectionChanged -= SelectionPoints_CollectionChanged;
+                    }
+                    selectionPoints = value;
+                    if (selectionPoints != null)
+                    {
+                        selectionPoints.CollectionChanged += SelectionPoints_CollectionChanged;
+                    }
+                    CreatePoints(selectionPoints);
+                }
+            } 
+        }
 
-        private static void SelectedItemChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void SelectionPoints_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            (d as GrmMapArma3)?.SelectedItemChanged();
+            if ( e.Action == NotifyCollectionChangedAction.Add)
+            {
+                var terrainPoint = e.NewItems!.Cast<TerrainPoint>().Single();
+                AddSquare(terrainPoint, e.NewStartingIndex);
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Replace)
+            {
+                var oldPoint = e.OldItems!.Cast<TerrainPoint>().Single();
+                var newPoint = e.NewItems!.Cast<TerrainPoint>().Single();
+                UpdateSquare(oldPoint, newPoint, e.NewStartingIndex);
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                var terrainPoint = e.OldItems!.Cast<TerrainPoint>().Single();
+                RemoveSquare(terrainPoint, e.OldStartingIndex);
+            }
+            else
+            {
+                CreatePoints(selectionPoints);
+            }
+            selectedRoad!.Path = new TerrainPath(selectionPoints!.ToList()); // ==> This should be done by ViewModel
+            InvalidateVisual();
         }
 
-        private void SelectedItemChanged()
+        private void RemoveSquare(TerrainPoint terrainPoint, int index)
+        {
+            var square = InternalChildren.OfType<GrmMapDraggableSquare>().FirstOrDefault(s => s.Index == index);
+            if (square != null)
+            {
+                InternalChildren.Remove(square);
+            }
+        }
+
+        private void UpdateSquare(TerrainPoint oldPoint, TerrainPoint newPoint, int index)
+        {
+            var square = InternalChildren.OfType<GrmMapDraggableSquare>().FirstOrDefault(s => s.Index == index);
+            if (square != null && !square.TerrainPoint.Vector.Equals(newPoint.Vector))
+            {
+                square.TerrainPoint = newPoint;
+                InvalidateArrange();
+            }
+        }
+
+        private void CreatePoints(IEnumerable<TerrainPoint>? points)
         {
             InternalChildren.Clear();
 
-            var editRoad = SelectedRoad;
-            if (editRoad != null)
+            if (points != null)
             {
                 var pos = 0;
-                foreach (var point in editRoad.Path.Points)
+                foreach (var point in points)
                 {
-                    var idx = pos;
-                    var p = new GrmMapDraggableSquare(this, point);
-                    p.Edited += (_, _) =>
-                    {
-                        var points = editRoad.Path.Points.ToList();
-                        points[idx] = p.TerrainPoint;
-                        editRoad.Path = new TerrainPath(points);
-                        InvalidateVisual();
-                    };
-                    InternalChildren.Add(p);
+                    InternalChildren.Add(new GrmMapDraggableSquare(this, point, pos));
                     pos++;
                 }
+            }
+        }
+
+        internal override void OnPointPositionChanged(GrmMapDraggableSquare p)
+        {
+            var selectionPoints = SelectionPoints;
+            if (selectionPoints != null)
+            {
+                selectionPoints[p.Index] = p.TerrainPoint;
             }
         }
 
@@ -119,7 +191,7 @@ namespace GameRealisticMap.Studio.Controls
                     {
                         if (!RoadBrushes.TryGetValue(road.RoadTypeInfos, out var pen))
                         {
-                            RoadBrushes.Add(road.RoadTypeInfos, pen = new Pen(GrmMapStyle.RoadBrush, road.RoadTypeInfos.TextureWidth));
+                            RoadBrushes.Add(road.RoadTypeInfos, pen = new Pen(GrmMapStyle.RoadBrush, road.RoadTypeInfos.TextureWidth) { StartLineCap = PenLineCap.Square, EndLineCap = PenLineCap.Square });
                         }
                         dc.DrawGeometry(null, pen, CreatePath(size, road.Path));
                     }
@@ -130,6 +202,17 @@ namespace GameRealisticMap.Studio.Controls
         {
             if (e.Source != this)
             {
+                return;
+            }
+
+            if (Keyboard.Modifiers == ModifierKeys.Control) 
+            {
+                OnControlClick(ViewportCoordinates(e.GetPosition(this)));
+                return;
+            }
+            if (e.ClickCount == 2)
+            {
+                OnDoubleClick(ViewportCoordinates(e.GetPosition(this)));
                 return;
             }
 
@@ -147,11 +230,56 @@ namespace GameRealisticMap.Studio.Controls
                     .Select(r => r.road)
                     .FirstOrDefault();
 
+                // ==> Should rise an event and let this done by ViewModel
+
                 SelectedRoad = editRoad;
             }
             base.OnMouseLeftButtonDown(e);
         }
 
+        private void OnDoubleClick(TerrainPoint terrainPoint)
+        {
+            var selectionPoints = SelectionPoints;
+            if (selectionPoints != null )
+            {
+                var path = new TerrainPath(selectionPoints.ToList());
+                if ( path.Distance(terrainPoint) < 2)
+                {
+                    var index = path.NearestSegmentIndex(terrainPoint) + 1;
+                    selectionPoints.Insert(index, terrainPoint);
+                }
+            }
+        }
 
+        private void OnControlClick(TerrainPoint terrainPoint)
+        {
+            var selectionPoints = SelectionPoints;
+            var focused = InternalChildren.OfType<GrmMapDraggableSquare>().FirstOrDefault(p => p.IsFocused);
+            if (focused != null && selectionPoints != null && (focused.Index == 0 || focused.Index == selectionPoints.Count - 1))
+            {
+                if (focused.Index == 0)
+                {
+                    selectionPoints.Insert(0, terrainPoint);
+                }
+                else
+                {
+                    selectionPoints.Add(terrainPoint);
+                }
+            }
+        }
+
+        private void AddSquare(TerrainPoint terrainPoint, int index)
+        {
+            foreach (var child in InternalChildren.OfType<GrmMapDraggableSquare>())
+            {
+                if (child.Index >= index)
+                {
+                    child.Index++;
+                }
+            }
+            var item = new GrmMapDraggableSquare(this, terrainPoint, index);
+            InternalChildren.Add(item);
+            item.Focus();
+        }
     }
 }
