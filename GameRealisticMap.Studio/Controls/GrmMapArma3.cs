@@ -15,9 +15,11 @@ namespace GameRealisticMap.Studio.Controls
 {
     public sealed class GrmMapArma3 : GrmMapBase
     {
-        private ObservableCollection<TerrainPoint>? selectionPoints;
+        private EditablePointCollection? selectionPoints;
         private HugeImageSource<Rgb24>? source;
         private EditableArma3Road? selectedRoad;
+
+        public Dictionary<EditableArma3RoadTypeInfos, Pen> RoadBrushes { get; } = new();
 
         public EditableArma3Roads? Roads
         {
@@ -59,12 +61,12 @@ namespace GameRealisticMap.Studio.Controls
                 }
                 else
                 {
-                    SelectionPoints = new ObservableCollection<TerrainPoint>(selectedRoad.Path.Points);
+                    SelectionPoints = new EditablePointCollection(selectedRoad);
                 }
             }
         }
 
-        public ObservableCollection<TerrainPoint>? SelectionPoints 
+        public EditablePointCollection? SelectionPoints 
         { 
             get { return selectionPoints; } 
             set 
@@ -80,7 +82,7 @@ namespace GameRealisticMap.Studio.Controls
                     {
                         selectionPoints.CollectionChanged += SelectionPoints_CollectionChanged;
                     }
-                    CreatePoints(selectionPoints);
+                    CreatePoints(selectionPoints?.Points);
                 }
             } 
         }
@@ -105,9 +107,8 @@ namespace GameRealisticMap.Studio.Controls
             }
             else
             {
-                CreatePoints(selectionPoints);
+                CreatePoints(selectionPoints?.Points);
             }
-            selectedRoad!.Path = new TerrainPath(selectionPoints!.ToList()); // ==> This should be done by ViewModel
             InvalidateVisual();
         }
 
@@ -117,6 +118,23 @@ namespace GameRealisticMap.Studio.Controls
             if (square != null)
             {
                 InternalChildren.Remove(square);
+
+                foreach (var child in InternalChildren.OfType<GrmMapDraggableSquare>())
+                {
+                    if (child.Index >= index)
+                    {
+                        child.Index--;
+                    }
+                }
+
+                if (index == 0)
+                {
+                    InternalChildren.OfType<GrmMapDraggableSquare>().FirstOrDefault(s => s.Index == index)?.Focus();
+                }
+                else
+                {
+                    InternalChildren.OfType<GrmMapDraggableSquare>().FirstOrDefault(s => s.Index == index - 1)?.Focus();
+                }
             }
         }
 
@@ -145,16 +163,15 @@ namespace GameRealisticMap.Studio.Controls
             }
         }
 
-        internal override void OnPointPositionChanged(GrmMapDraggableSquare p)
+        internal override void OnPointPositionPreviewChange(GrmMapDraggableSquare p)
         {
-            var selectionPoints = SelectionPoints;
-            if (selectionPoints != null)
-            {
-                selectionPoints[p.Index] = p.TerrainPoint;
-            }
+            SelectionPoints?.PreviewSet(p.Index, p.TerrainPoint);
         }
 
-        public Dictionary<EditableArma3RoadTypeInfos, Pen> RoadBrushes { get; } = new();
+        internal override void OnPointPositionChanged(GrmMapDraggableSquare p, TerrainPoint oldValue)
+        {
+            SelectionPoints?.Set(p.Index, oldValue, p.TerrainPoint);
+        }
 
         protected override void DrawMap(DrawingContext dc, float size, Envelope enveloppe)
         {
@@ -242,7 +259,7 @@ namespace GameRealisticMap.Studio.Controls
             var selectionPoints = SelectionPoints;
             if (selectionPoints != null )
             {
-                var path = new TerrainPath(selectionPoints.ToList());
+                var path = new TerrainPath(selectionPoints.Points.ToList());
                 if ( path.Distance(terrainPoint) < 2)
                 {
                     var index = path.NearestSegmentIndex(terrainPoint) + 1;
@@ -280,6 +297,11 @@ namespace GameRealisticMap.Studio.Controls
             var item = new GrmMapDraggableSquare(this, terrainPoint, index);
             InternalChildren.Add(item);
             item.Focus();
+        }
+
+        internal override void PointPositionDelete(GrmMapDraggableSquare p)
+        {
+            SelectionPoints?.RemoveAt(p.Index);
         }
     }
 }

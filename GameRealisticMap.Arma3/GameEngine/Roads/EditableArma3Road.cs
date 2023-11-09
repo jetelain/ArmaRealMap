@@ -17,6 +17,8 @@ namespace GameRealisticMap.Arma3.GameEngine.Roads
 
         public int Order { get; set; }
 
+        public bool IsRemoved { get; set; }
+
         IArma3RoadTypeInfos IArma3Road.TypeInfos => RoadTypeInfos;
     }
 }

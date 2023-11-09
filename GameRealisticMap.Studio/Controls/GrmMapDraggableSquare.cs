@@ -10,6 +10,7 @@ namespace GameRealisticMap.Studio.Controls
     {
         private Point start;
         private Vector initialOffset;
+        private TerrainPoint initialPoint;
         private readonly GrmMapBase map;
 
         public GrmMapDraggableSquare(GrmMapBase map, TerrainPoint terrainPoint, int index)
@@ -17,7 +18,7 @@ namespace GameRealisticMap.Studio.Controls
             this.map = map;
             Width = 12;
             Height = 12;
-            TerrainPoint = terrainPoint;
+            TerrainPoint = initialPoint = terrainPoint;
             Focusable = true;
             Index = index;
         }
@@ -47,6 +48,7 @@ namespace GameRealisticMap.Studio.Controls
 
             start = e.GetPosition(map);
             initialOffset = VisualTreeHelper.GetOffset(this);
+            initialPoint = TerrainPoint;
 
             e.Handled = true;
             base.OnMouseLeftButtonDown(e);
@@ -74,7 +76,7 @@ namespace GameRealisticMap.Studio.Controls
                 var p = initialOffset - delta;
                 Arrange(new Rect(new Point(p.X , p.Y), s));
                 TerrainPoint = map.ViewportCoordinatesCenter(new Point(p.X, p.Y), RenderSize);
-                map.OnPointPositionChanged(this);
+                map.OnPointPositionPreviewChange(this);
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
             {
@@ -91,7 +93,27 @@ namespace GameRealisticMap.Studio.Controls
         {
             ReleaseMouseCapture();
             Cursor = Cursors.Arrow;
+
+            if (IsFocused && IsMouseCaptured)
+            {
+                if (!initialPoint.Vector.Equals(TerrainPoint.Vector))
+                {
+                    map.OnPointPositionChanged(this, initialPoint);
+                }
+            }
+
             base.OnMouseLeftButtonUp(e);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            if ( e.Key == Key.Delete)
+            {
+                e.Handled = true;
+                map.PointPositionDelete(this);
+            }
+
+            base.OnKeyUp(e);
         }
     }
 }
