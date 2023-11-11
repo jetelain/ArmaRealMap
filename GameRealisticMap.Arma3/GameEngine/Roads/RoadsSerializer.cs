@@ -7,7 +7,7 @@ using NetTopologySuite.IO;
 
 namespace GameRealisticMap.Arma3.GameEngine.Roads
 {
-    internal sealed class RoadsSerializer
+    public sealed class RoadsSerializer
     {
         internal const int XShift = 200000;
 
@@ -16,6 +16,14 @@ namespace GameRealisticMap.Arma3.GameEngine.Roads
         public RoadsSerializer(IGameFileSystemWriter fileSystemWriter)
         {
             this.fileSystemWriter = fileSystemWriter;
+        }
+
+        public static IEnumerable<string> GetFilenames(string basePath)
+        {
+            yield return $"{basePath}\\roadslib.cfg";
+            yield return $"{basePath}\\roads.dbf";
+            yield return $"{basePath}\\roads.shp";
+            yield return $"{basePath}\\roads.shx";
         }
 
         public void Serialize(IArma3MapConfig config, IEnumerable<IArma3Road> roadsList, IEnumerable<IArma3RoadTypeInfos> typeInfos)

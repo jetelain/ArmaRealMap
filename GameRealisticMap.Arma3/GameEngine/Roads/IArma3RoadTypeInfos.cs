@@ -1,6 +1,6 @@
 ﻿namespace GameRealisticMap.Arma3.GameEngine.Roads
 {
-    internal interface IArma3RoadTypeInfos
+    public interface IArma3RoadTypeInfos
 	{
         int Id { get; }
         float TextureWidth { get; }

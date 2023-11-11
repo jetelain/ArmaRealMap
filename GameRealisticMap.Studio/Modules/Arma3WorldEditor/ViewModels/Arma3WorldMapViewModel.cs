@@ -36,15 +36,22 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             if (item is EditableArma3Road road)
             {
                 EditPoints = new EditRoadEditablePointCollection(road, UndoRedoManager);
+                EditPoints.CollectionChanged += MakeRoadsDirty;
             }
             else
             {
                 EditPoints = null;
             }
+            parentEditor.IsRoadsDirty = true;
             NotifyOfPropertyChange(nameof(EditPoints));
         }
 
-        public EditableArma3Roads? Roads { get; set; }
+        private void MakeRoadsDirty(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            parentEditor.IsRoadsDirty = true;
+        }
+
+        public EditableArma3Roads? Roads => parentEditor.Roads;
 
         public float SizeInMeters => parentEditor.SizeInMeters ?? 2500;
 
@@ -86,7 +93,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (parentEditor.ConfigFile != null && !string.IsNullOrEmpty(parentEditor.ConfigFile.Roads))
             {
-                Roads = new RoadsDeserializer(arma3Data.ProjectDrive).Deserialize(parentEditor.ConfigFile.Roads);
+                if (parentEditor.Roads == null)
+                {
+                    parentEditor.Roads = new RoadsDeserializer(arma3Data.ProjectDrive).Deserialize(parentEditor.ConfigFile.Roads);
+                }
                 NotifyOfPropertyChange(nameof(Roads));
             }
 
