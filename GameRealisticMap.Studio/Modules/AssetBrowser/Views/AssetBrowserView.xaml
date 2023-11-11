@@ -80,7 +80,7 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <wpftk:GridView x:Name="Grid" ItemsSource="{Binding AllAssets}" Grid.Row="1" SelectionMode="Extended" PreviewMouseDown="GridView_PreviewMouseDown" MouseUp="GridView_MouseUp">
+        <wpftk:GridView x:Name="Grid" ItemsSource="{Binding AllAssets}" Grid.Row="1" SelectionMode="Extended" PreviewMouseDown="GridView_PreviewMouseDown" MouseUp="GridView_MouseUp" SelectedValue="{Binding SelectedModel, Mode=TwoWay}">
 
             <wpftk:GridView.ItemTemplate>
                 <DataTemplate>

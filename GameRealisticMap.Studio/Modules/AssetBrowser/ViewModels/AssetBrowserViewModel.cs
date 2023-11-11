@@ -15,6 +15,7 @@ using GameRealisticMap.Studio.Modules.AssetBrowser.Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
+using Gemini.Framework.Services;
 using NLog;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
@@ -306,6 +307,8 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         }
 
         private AssetCatalogCategory? filterCategory = null;
+        private object? selectedItem;
+
         public AssetCatalogCategory? FilterCategory
         {
             get { return filterCategory; }
@@ -319,6 +322,29 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 NotifyOfPropertyChange();
             }
         }
+
+        public object? SelectedModel
+        {
+            get 
+            {
+                return selectedItem;
+            }
+            set
+            {
+                selectedItem = value;
+
+                if ( value is AssetViewModel asset)
+                {
+                    var tool = IoC.Get<PreviewToolViewModel>();
+                    tool.SetP3d(asset.Path);
+                    IoC.Get<IShell>().ShowTool(tool);
+                }
+
+                
+
+            }
+        }
+
 
         public ICommand ImportA3 { get; }
         public ICommand ImportUsualMod { get; }
