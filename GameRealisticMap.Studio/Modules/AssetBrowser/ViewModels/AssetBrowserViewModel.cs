@@ -307,7 +307,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         }
 
         private AssetCatalogCategory? filterCategory = null;
-        private object? selectedItem;
 
         public AssetCatalogCategory? FilterCategory
         {
@@ -323,31 +322,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             }
         }
 
-        public object? SelectedModel
-        {
-            get 
-            {
-                return selectedItem;
-            }
-            set
-            {
-                selectedItem = value;
-
-                if ( value is AssetViewModel asset)
-                {
-                    var tool = IoC.Get<PreviewToolViewModel>();
-                    tool.SetP3d(asset.Path);
-                    IoC.Get<IShell>().ShowTool(tool);
-                }
-
-                
-
-            }
-        }
-
-
         public ICommand ImportA3 { get; }
+
         public ICommand ImportUsualMod { get; }
+
         public ICommand ImportActiveMod { get; }
 
         public bool IsImporting { get; set; }

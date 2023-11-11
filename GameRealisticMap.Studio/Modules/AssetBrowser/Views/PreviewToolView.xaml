@@ -14,7 +14,7 @@
                     <PerspectiveCamera Position="0,0,2" LookDirection="0,0,-1" FieldOfView="60" />
                 </HelixToolkit:HelixViewport3D.DefaultCamera>
                 <!-- Remember to add light to the scene -->
-                <HelixToolkit:SunLight/>
+                <HelixToolkit:SunLight Altitude="120" Azimuth="120" />
                 <ModelVisual3D Content="{Binding Model3DGroup}">
                     <ModelVisual3D.Transform>
                         <ScaleTransform3D ScaleX="1" ScaleY="1" ScaleZ="-1" />
