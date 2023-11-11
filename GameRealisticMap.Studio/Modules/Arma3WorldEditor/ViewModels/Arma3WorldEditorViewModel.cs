@@ -45,6 +45,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private readonly IArma3BackupService worldBackup;
         private ExistingImageryInfos? _imagery;
         private bool isRoadsDirty;
+        private Arma3WorldMapViewModel? mapEditor;
+        private EditableArma3Roads? roads;
 
         public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history, IArma3BackupService worldBackup) 
         {
@@ -88,6 +90,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             if (ConfigFile != null && WrpCompiler.SeemsGeneratedByUs(World, ConfigFile.PboPrefix))
             {
                 Imagery = ExistingImageryInfos.TryCreate(arma3Data.ProjectDrive, ConfigFile.PboPrefix, SizeInMeters!.Value);
+            }
+
+            if (Roads != null)
+            {
+                LoadRoads();
             }
 
             UpdateBackupsList(filePath);
@@ -237,7 +244,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             set { isRoadsDirty = value; if (value) { IsDirty = true; } } 
         } 
 
-        public EditableArma3Roads? Roads { get; internal set; }
+        public EditableArma3Roads? Roads 
+        { 
+            get { return roads; } 
+            set { roads = value; mapEditor?.InvalidateRoads(); } 
+        }
 
         protected override Task DoNew()
         {
@@ -272,6 +283,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     await JsonSerializer.SerializeAsync(stream, Dependencies);
                 }
             }
+        }
+
+        internal void LoadRoads()
+        {
+            if (ConfigFile != null && !string.IsNullOrEmpty(ConfigFile.Roads))
+            {
+                Roads = new RoadsDeserializer(arma3Data.ProjectDrive).Deserialize(ConfigFile.Roads);
+            }
+            else
+            {
+                Roads = null;
+            }
+            IsRoadsDirty = false;
         }
 
         private List<string> GetBackupFiles(string filePath)
@@ -561,7 +585,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public Task EditAdvanced()
         {
-            return IoC.Get<IShell>().OpenDocumentAsync(new Arma3WorldMapViewModel(this, arma3Data));
+            if (mapEditor == null)
+            {
+                mapEditor = new Arma3WorldMapViewModel(this, arma3Data);
+            }
+            return IoC.Get<IShell>().OpenDocumentAsync(mapEditor);
         }
 
     }

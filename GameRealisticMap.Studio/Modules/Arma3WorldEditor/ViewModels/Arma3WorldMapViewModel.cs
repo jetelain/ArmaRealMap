@@ -42,7 +42,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 EditPoints = null;
             }
-            parentEditor.IsRoadsDirty = true;
             NotifyOfPropertyChange(nameof(EditPoints));
         }
 
@@ -82,10 +81,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     _backgroundMode = value;
                     NotifyOfPropertyChange();
                     NotifyOfPropertyChange(nameof(BackgroundImage));
-
                 }
-
-
             }
         }
 
@@ -95,9 +91,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 if (parentEditor.Roads == null)
                 {
-                    parentEditor.Roads = new RoadsDeserializer(arma3Data.ProjectDrive).Deserialize(parentEditor.ConfigFile.Roads);
+                    parentEditor.LoadRoads();
                 }
-                NotifyOfPropertyChange(nameof(Roads));
             }
 
             if (parentEditor.Imagery != null)
@@ -112,6 +107,17 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
 
             await base.OnInitializeAsync(cancellationToken);
+        }
+
+        internal void InvalidateRoads()
+        {
+            NotifyOfPropertyChange(nameof(Roads));
+
+            if (EditPoints != null)
+            {
+                EditPoints = null;
+                NotifyOfPropertyChange(nameof(EditPoints));
+            }
         }
     }
 }
