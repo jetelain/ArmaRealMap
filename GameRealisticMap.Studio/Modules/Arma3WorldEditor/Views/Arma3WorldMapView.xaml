@@ -21,7 +21,16 @@
 
         </StackPanel>
 
-        <grm:GrmMapArma3 Grid.Row="1"  x:Name="Map" SizeInMeters="{Binding SizeInMeters}" Roads="{Binding Roads}" BackgroundImage="{Binding BackgroundImage}" BackgroundImageResolution="{Binding BackgroundResolution}" />
+        <grm:GrmMapArma3 Grid.Row="1"  x:Name="Map" 
+                         SizeInMeters="{Binding SizeInMeters}" 
+                         Roads="{Binding Roads}" 
+                         BackgroundImage="{Binding BackgroundImage}" 
+                         BackgroundImageResolution="{Binding BackgroundResolution}"
+                         
+                         SelectItem="{Binding SelectItemCommand}"
+                         EditPoints="{Binding EditPoints}"
+                         
+                         />
 
     </Grid>
 </UserControl>

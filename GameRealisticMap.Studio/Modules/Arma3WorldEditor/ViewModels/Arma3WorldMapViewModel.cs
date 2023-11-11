@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using GameRealisticMap.Arma3.GameEngine.Roads;
+using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using Gemini.Framework;
 using HugeImages;
@@ -23,6 +25,23 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             this.arma3Data = arma3Data;
             BackgroundResolution = parentEditor.Imagery?.Resolution ?? 1;
             DisplayName = parent.DisplayName + " - Editor";
+        }
+
+        public IEditablePointCollection? EditPoints { get; set; }
+
+        public ICommand SelectItemCommand => new RelayCommand(SelectItem);
+
+        public void SelectItem(object? item)
+        {
+            if (item is EditableArma3Road road)
+            {
+                EditPoints = new EditRoadEditablePointCollection(road, UndoRedoManager);
+            }
+            else
+            {
+                EditPoints = null;
+            }
+            NotifyOfPropertyChange(nameof(EditPoints));
         }
 
         public EditableArma3Roads? Roads { get; set; }

@@ -11,9 +11,9 @@ namespace GameRealisticMap.Studio.Controls
         private Point start;
         private Vector initialOffset;
         private TerrainPoint initialPoint;
-        private readonly GrmMapBase map;
+        private readonly GrmMapEditMapBase map;
 
-        public GrmMapDraggableSquare(GrmMapBase map, TerrainPoint terrainPoint, int index)
+        public GrmMapDraggableSquare(GrmMapEditMapBase map, TerrainPoint terrainPoint, int index)
         {
             this.map = map;
             Width = 12;
@@ -91,9 +91,6 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            ReleaseMouseCapture();
-            Cursor = Cursors.Arrow;
-
             if (IsFocused && IsMouseCaptured)
             {
                 if (!initialPoint.Vector.Equals(TerrainPoint.Vector))
@@ -101,6 +98,9 @@ namespace GameRealisticMap.Studio.Controls
                     map.OnPointPositionChanged(this, initialPoint);
                 }
             }
+
+            ReleaseMouseCapture();
+            Cursor = Cursors.Arrow;
 
             base.OnMouseLeftButtonUp(e);
         }

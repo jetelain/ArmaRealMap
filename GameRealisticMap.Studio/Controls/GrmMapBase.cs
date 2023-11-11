@@ -211,31 +211,6 @@ namespace GameRealisticMap.Studio.Controls
         }
 
         protected abstract void DrawMap(DrawingContext dc, float size, Envelope enveloppe);
-
-        protected override Size ArrangeOverride(Size arrangeSize)
-        {
-            var size = SizeInMeters;
-
-            foreach (UIElement internalChild in InternalChildren)
-            {
-                if (internalChild is GrmMapDraggableSquare square)
-                {
-                    var s = internalChild.DesiredSize;
-                    var p = Translate.Transform(ScaleTr.Transform(Convert(square.TerrainPoint, size) )) - new System.Windows.Vector(s.Width/2, s.Height/2);
-                    internalChild.Arrange(new Rect(p, s));
-                }
-            }
-            return arrangeSize;
-        }
-        protected override Size MeasureOverride(Size constraint)
-        {
-            Size availableSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
-            foreach (UIElement internalChild in base.InternalChildren)
-            {
-                internalChild?.Measure(availableSize);
-            }
-            return default(Size);
-        }
         
         public TerrainPoint ViewportCoordinates(Point viewPortPoint)
         {
@@ -246,21 +221,6 @@ namespace GameRealisticMap.Studio.Controls
         public TerrainPoint ViewportCoordinatesCenter(Point point, Size size)
         {
             return ViewportCoordinates(point + new System.Windows.Vector(size.Width / 2, size.Height / 2));
-        }
-
-        internal virtual void OnPointPositionPreviewChange(GrmMapDraggableSquare grmMapDraggableSquare)
-        {
-
-        }
-
-        internal virtual void OnPointPositionChanged(GrmMapDraggableSquare grmMapDraggableSquare, TerrainPoint oldValue)
-        {
-
-        }
-
-        internal virtual void PointPositionDelete(GrmMapDraggableSquare grmMapDraggableSquare)
-        {
-
         }
     }
 }
