@@ -6,17 +6,28 @@
              xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views"
              xmlns:vm="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels"
+             Foreground="{DynamicResource EnvironmentWindowText}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
+            <RowDefinition Height="35" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal">
-            <RadioButton IsChecked="{Binding BackgroundMode, Converter={grm:EnumToBoolean {x:Static vm:BackgroundMode.Satellite}}}">Satellite</RadioButton>
-            <RadioButton IsChecked="{Binding BackgroundMode, Converter={grm:EnumToBoolean {x:Static vm:BackgroundMode.TextureMask}}}">Texture mask</RadioButton>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <RadioButton IsChecked="{Binding BackgroundMode, Converter={grm:EnumToBoolean {x:Static vm:BackgroundMode.Satellite}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/satellite.png" Height="16" />
+                    <TextBlock VerticalAlignment="Center" Margin="5" >Satellite</TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton IsChecked="{Binding BackgroundMode, Converter={grm:EnumToBoolean {x:Static vm:BackgroundMode.TextureMask}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/rgb.png" Height="16" />
+                    <TextBlock VerticalAlignment="Center" Margin="5" >Texture mask</TextBlock>
+                </StackPanel> 
+            </RadioButton>
 
 
         </StackPanel>

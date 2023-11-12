@@ -48,7 +48,7 @@ namespace GameRealisticMap.Studio.Controls
             InvalidateVisual();
         }
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
             if (e.Source != this)
             {
@@ -58,7 +58,7 @@ namespace GameRealisticMap.Studio.Controls
             start = e.GetPosition(this);
             origin = new Point(Translate.X, Translate.Y);
             Cursor = Cursors.Hand;
-            base.OnMouseLeftButtonDown(e);
+            base.OnMouseRightButtonDown(e);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -74,11 +74,14 @@ namespace GameRealisticMap.Studio.Controls
             base.OnMouseMove(e);
         }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
         {
-            ReleaseMouseCapture();
-            Cursor = Cursors.Arrow;
-            base.OnMouseLeftButtonUp(e);
+            if (IsMouseCaptured)
+            {
+                ReleaseMouseCapture();
+                Cursor = Cursors.Arrow;
+            }
+            base.OnMouseRightButtonUp(e);
         }
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
