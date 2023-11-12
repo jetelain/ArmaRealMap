@@ -26,6 +26,7 @@
     <!--<PackageReference Include="Gemini.Modules.Output" Version="1.0.60-beta" />-->
     <!--<PackageReference Include="Gemini.Modules.PropertyGrid" Version="1.0.60-beta" />-->
     <!--<PackageReference Include="GeminiWpf" Version="1.0.60-beta" />-->
+    <PackageReference Include="HelixToolkit.Wpf" Version="2.24.0" />
     <PackageReference Include="NLog" Version="5.2.2" />
     <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
     <PackageReference Include="XAML.MapControl" Version="8.1.0" />

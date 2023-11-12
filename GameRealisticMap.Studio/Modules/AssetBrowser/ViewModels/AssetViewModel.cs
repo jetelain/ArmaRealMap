@@ -1,6 +1,7 @@
 ﻿using System;
 using Caliburn.Micro;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
@@ -38,5 +39,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public string HeightText => $"{item.Height:0.0} m";
 
         public AssetCatalogItem Item => item;
+
+        internal void ShowPreview3D()
+        {
+            var tool = IoC.Get<PreviewToolViewModel>();
+            tool.SetP3d(Path);
+            IoC.Get<IShell>().ShowTool(tool);
+        }
     }
 }
