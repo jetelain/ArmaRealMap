@@ -109,6 +109,8 @@
                         </StackPanel.ToolTip>
                         <StackPanel.ContextMenu>
                             <ContextMenu>
+                                <MenuItem Header="3D Preview" Click="MenuItem_Preview3D" />
+                                <Separator />
                                 <MenuItem Header="Change type"
                                           ItemsSource="{Binding DataContext.SetCategories, Source={x:Reference Root}}"
                                           DisplayMemberPath="Name"
