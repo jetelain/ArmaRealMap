@@ -35,6 +35,7 @@
         <grm:GrmMapArma3 Grid.Row="1"  x:Name="Map" 
                          SizeInMeters="{Binding SizeInMeters}" 
                          Roads="{Binding Roads}" 
+                         Objects="{Binding Objects}" 
                          BackgroundImage="{Binding BackgroundImage}" 
                          BackgroundImageResolution="{Binding BackgroundResolution}"
                          

@@ -120,7 +120,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             return modId;
         }
 
-        private AssetCatalogCategory DetectModel(IModelInfo modelInfo, string name)
+        internal static AssetCatalogCategory DetectModel(IModelInfo modelInfo, string name)
         {
             if (modelInfo.MapType != MapType.Hide)
             {
@@ -133,7 +133,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             }
             return ClassToCategory(modelInfo.Class, name);
         }
-        private AssetCatalogCategory ClassToCategory(string modelClass, string name)
+        private static AssetCatalogCategory ClassToCategory(string modelClass, string name)
         {
             switch (modelClass.ToLowerInvariant())
             {
@@ -155,7 +155,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             return AssetCatalogCategory.Unknown;
         }
 
-        private AssetCatalogCategory ToCategory(IModelInfo modelInfo, string name)
+        private static AssetCatalogCategory ToCategory(IModelInfo modelInfo, string name)
         {
             switch (modelInfo.MapType)
             {

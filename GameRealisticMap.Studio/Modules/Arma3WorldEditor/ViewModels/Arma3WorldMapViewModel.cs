@@ -1,7 +1,11 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BIS.P3D;
 using GameRealisticMap.Arma3.GameEngine.Roads;
+using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using Gemini.Framework;
@@ -28,6 +32,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         }
 
         public IEditablePointCollection? EditPoints { get; set; }
+
+        public TerrainSpacialIndex<TerrainObjectVM>? Objects { get; set; }
+
 
         public ICommand SelectItemCommand => new RelayCommand(SelectItem);
 
@@ -106,7 +113,40 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 }
             }
 
+            _ = Task.Run(DoLoadWorld);
+
             await base.OnInitializeAsync(cancellationToken);
+        }
+
+        private void DoLoadWorld()
+        {
+            var world = parentEditor.World;
+            if (world == null)
+            {
+                return;
+            }
+
+            var cache = new Dictionary<string, IModelInfo>(StringComparer.OrdinalIgnoreCase);
+            var index = new TerrainSpacialIndex<TerrainObjectVM>(SizeInMeters);
+            foreach (var obj in world.Objects)
+            {
+                // TODO: Add bounding box infos to asset manager and use it here
+                if (!cache.TryGetValue(obj.Model, out var modelinfo))
+                {
+                    var odol = arma3Data.Library.ReadODOL(obj.Model);
+                    if (odol != null)
+                    {
+                        cache.Add(obj.Model, modelinfo = odol.ModelInfo);
+                    }
+                }
+
+                if (modelinfo != null)
+                {
+                    index.Insert(new TerrainObjectVM(obj, modelinfo));
+                }
+            }
+            Objects = index;
+            NotifyOfPropertyChange(nameof(Objects));
         }
 
         internal void InvalidateRoads()

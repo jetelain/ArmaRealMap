@@ -18,6 +18,9 @@ namespace GameRealisticMap.Studio.Controls
         private Point start;
         private Point origin;
 
+        private readonly double[] ZoomLevelToScale = new double[] { 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8, 12, 16, 20, 28, 36, 42, 50 };
+        private int zoomLevel = 3;
+
         public GrmMapBase()
         {
             ClipToBounds = true;
@@ -86,7 +89,19 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
-            var zoom = Math.Max(ScaleTr.ScaleX + (e.Delta > 0 ? 0.25 : -0.25), 0.25);
+            if ( e.Delta > 0 )
+            {
+                if (zoomLevel < ZoomLevelToScale.Length - 1)
+                {
+                    zoomLevel++;
+                }
+            }
+            else if (zoomLevel > 0)
+            {
+                zoomLevel--;
+            }
+
+            var zoom = ZoomLevelToScale[zoomLevel];
 
             var relative = e.GetPosition(this);
 

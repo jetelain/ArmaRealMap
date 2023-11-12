@@ -6,6 +6,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels;
+using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using HugeImages;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -53,6 +55,16 @@ namespace GameRealisticMap.Studio.Controls
         public static readonly DependencyProperty BackgroundImageResolutionProperty =
             DependencyProperty.Register("BackgroundImageResolution", typeof(double), typeof(GrmMapArma3), new PropertyMetadata(1d));
 
+
+        public TerrainSpacialIndex<TerrainObjectVM>? Objects
+        {
+            get { return (TerrainSpacialIndex<TerrainObjectVM>)GetValue(ObjectsProperty); }
+            set { SetValue(ObjectsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ObjectsProperty =
+            DependencyProperty.Register("Objects", typeof(TerrainSpacialIndex<TerrainObjectVM>), typeof(GrmMapArma3), new PropertyMetadata(null));
+
         protected override void DrawMap(DrawingContext dc, float size, Envelope enveloppe)
         {
             var bg = BackgroundImage;
@@ -79,6 +91,44 @@ namespace GameRealisticMap.Studio.Controls
                 dc.Pop();
             }
 
+            var objs = Objects;
+            if (objs != null)
+            {
+                dc.PushTransform(new MatrixTransform(1, 0, 0, -1, 0, size));
+                if (Scale > 3)
+                {
+                    var fill = new SolidColorBrush(Color.FromArgb(192, 32, 32, 32));
+                    var water = new SolidColorBrush(Color.FromArgb(192, 65, 105, 225));
+                    var tree = new SolidColorBrush(Color.FromArgb(192, 34, 139, 34));
+                    var bush = new SolidColorBrush(Color.FromArgb(192, 244, 164, 96));
+                    foreach (var obj in objs.Search(enveloppe))
+                    {
+                        if (Scale * obj.Radius > 15)
+                        {
+                            dc.PushTransform(new MatrixTransform(obj.Matrix.M11, obj.Matrix.M13, obj.Matrix.M31, obj.Matrix.M33, obj.Matrix.M41, obj.Matrix.M43));
+
+                            switch (obj.Category)
+                            {
+                                case AssetCatalogCategory.Tree:
+                                    dc.DrawEllipse(tree, null, new Point(), obj.Radius, obj.Radius);
+                                    break;
+                                case AssetCatalogCategory.Bush:
+                                    dc.DrawEllipse(bush, null, new Point(), obj.Radius, obj.Radius);
+                                    break;
+                                case AssetCatalogCategory.WaterSurface:
+                                    dc.DrawRectangle(water, null, obj.Rectangle);
+                                    break;
+                                default:
+                                    dc.DrawRectangle(fill, null, obj.Rectangle);
+                                    break;
+                            }
+                            dc.Pop();
+                        }
+                    }
+                }
+                dc.Pop();
+            }
+
             var roads = Roads;
             if (roads != null)
             {
@@ -90,10 +140,12 @@ namespace GameRealisticMap.Studio.Controls
                         {
                             RoadBrushes.Add(road.RoadTypeInfos, pen = new Pen(GrmMapStyle.RoadBrush, road.RoadTypeInfos.TextureWidth) { StartLineCap = PenLineCap.Square, EndLineCap = PenLineCap.Square });
                         }
+
                         dc.DrawGeometry(null, pen, CreatePath(size, road.Path));
                     }
                 }
             }
+
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
