@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Numerics;
 using System.Windows;
-using BIS.P3D;
 using BIS.WRP;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
@@ -11,16 +10,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
     public class TerrainObjectVM : ITerrainEnvelope
     {
         private readonly EditableWrpObject obj;
-        private readonly IModelInfo modelInfo;
+        private readonly IAssetCatalogItem modelInfo;
 
-        public TerrainObjectVM(EditableWrpObject obj, IModelInfo modelInfo)
+        public TerrainObjectVM(EditableWrpObject obj, IAssetCatalogItem modelInfo)
         {
             this.obj = obj;
             this.modelInfo = modelInfo;
 
             Radius = Math.Max(new Vector2(modelInfo.BboxMin.X, modelInfo.BboxMin.Z).Length(), new Vector2(modelInfo.BboxMax.X, modelInfo.BboxMax.Z).Length());
-
-            Category = AssetsCatalogService.DetectModel(modelInfo, obj.Model); // TODO: get info from asset manager
 
             Rectangle = new Rect(
                 modelInfo.BboxMin.X, 
@@ -28,8 +25,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 modelInfo.BboxMax.X - modelInfo.BboxMin.X,
                 modelInfo.BboxMax.Z - modelInfo.BboxMin.Z); 
         }
-
-        public IModelInfo ModelInfo => modelInfo;
 
         public Matrix4x4 Matrix => obj.Transform.Matrix;
 
@@ -41,7 +36,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public float Radius { get; }
 
-        public AssetCatalogCategory Category { get; }
+        public AssetCatalogCategory Category => modelInfo.Category;
 
         public Rect Rectangle { get; }
     }

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BIS.P3D;
+using Caliburn.Micro;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using Gemini.Framework;
 using HugeImages;
 using SixLabors.ImageSharp.PixelFormats;
@@ -118,7 +118,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             await base.OnInitializeAsync(cancellationToken);
         }
 
-        private void DoLoadWorld()
+        private async Task DoLoadWorld()
         {
             var world = parentEditor.World;
             if (world == null)
@@ -126,21 +126,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 return;
             }
 
-            var cache = new Dictionary<string, IModelInfo>(StringComparer.OrdinalIgnoreCase);
+            var models = world.Objects.Select(o => o.Model).Where(m => !string.IsNullOrEmpty(m)).Distinct();
+
+            var itemsByPath = await IoC.Get<IAssetsCatalogService>().GetItems(models).ConfigureAwait(false);
+
             var index = new TerrainSpacialIndex<TerrainObjectVM>(SizeInMeters);
             foreach (var obj in world.Objects)
             {
-                // TODO: Add bounding box infos to asset manager and use it here
-                if (!cache.TryGetValue(obj.Model, out var modelinfo))
-                {
-                    var odol = arma3Data.Library.ReadODOL(obj.Model);
-                    if (odol != null)
-                    {
-                        cache.Add(obj.Model, modelinfo = odol.ModelInfo);
-                    }
-                }
-
-                if (modelinfo != null)
+                if (itemsByPath.TryGetValue(obj.Model, out var modelinfo))
                 {
                     index.Insert(new TerrainObjectVM(obj, modelinfo));
                 }

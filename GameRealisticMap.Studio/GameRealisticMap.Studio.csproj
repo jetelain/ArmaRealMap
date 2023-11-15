@@ -8,8 +8,7 @@
     <ApplicationIcon>Resources\grms.ico</ApplicationIcon>
 	<Company>GameRealisticMap</Company>
 	<Platforms>AnyCPU;x64</Platforms>
-	<FileVersion>0.8</FileVersion>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<FileVersion>0.9</FileVersion>
   </PropertyGroup>
 
 	<ItemGroup>
