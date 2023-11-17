@@ -2,8 +2,11 @@
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Studio.Behaviors;
+using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Controls
 {
@@ -226,6 +229,22 @@ namespace GameRealisticMap.Studio.Controls
                 internalChild?.Measure(availableSize);
             }
             return default(Size);
+        }
+
+        internal void OpenItemContextMenu(GrmMapDraggableSquare square, MouseButtonEventArgs e)
+        {
+            if (editPoints != null)
+            {
+                var menu = new ContextMenu(); // To do on Xaml side ?
+                menu.Items.Add(new MenuItem()
+                {
+                    Header = "Split",
+                    IsEnabled = editPoints.CanSplit && square.Index > 0 && square.Index < editPoints.Count - 1,
+                    Command = new RelayCommand(_ => editPoints.SplitAt(square.Index))
+                });
+
+                ButtonBehaviors.ShowButtonContextMenu(square, menu);
+            }
         }
     }
 }

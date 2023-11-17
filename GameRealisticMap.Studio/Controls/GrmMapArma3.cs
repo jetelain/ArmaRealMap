@@ -134,7 +134,7 @@ namespace GameRealisticMap.Studio.Controls
             {
                 foreach (var road in roads.Roads.OrderByDescending(r => r.Order))
                 {
-                    if (road.Path.EnveloppeIntersects(enveloppe))
+                    if (!road.IsRemoved && road.Path.EnveloppeIntersects(enveloppe))
                     {
                         if (!RoadBrushes.TryGetValue(road.RoadTypeInfos, out var pen))
                         {
@@ -159,7 +159,7 @@ namespace GameRealisticMap.Studio.Controls
                     var enveloppe = new Envelope(coordinates - new Vector2(5), coordinates + new Vector2(5));
 
                     var editRoad = roads.Roads
-                        .Where(r => r.Path.EnveloppeIntersects(enveloppe))
+                        .Where(r => !r.IsRemoved && r.Path.EnveloppeIntersects(enveloppe))
                         .Select(r => (road: r, distance: r.Path.Distance(coordinates)))
                         .Where(r => r.distance < r.road.RoadTypeInfos.TextureWidth / 2)
                         .OrderBy(r => r.distance)

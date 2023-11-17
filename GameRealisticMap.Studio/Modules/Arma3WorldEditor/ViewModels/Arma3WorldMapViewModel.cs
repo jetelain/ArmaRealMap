@@ -9,15 +9,18 @@ using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using Gemini.Framework;
+using Gemini.Framework.Commands;
+using Gemini.Modules.Shell.Commands;
 using HugeImages;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
-    internal class Arma3WorldMapViewModel : Document
+    internal class Arma3WorldMapViewModel : Document, ICommandHandler<SaveFileCommandDefinition>, ICommandHandler<SaveFileAsCommandDefinition>
     {
         private readonly Arma3WorldEditorViewModel parentEditor;
         private readonly IArma3DataModule arma3Data;
+        private IEditablePointCollection? editPoints;
 
         public double BackgroundResolution { get; }
 
@@ -31,7 +34,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             DisplayName = parent.DisplayName + " - Editor";
         }
 
-        public IEditablePointCollection? EditPoints { get; set; }
+        public IEditablePointCollection? EditPoints {
+            get { return editPoints; } 
+            set { if (editPoints != value) { editPoints = value; NotifyOfPropertyChange(); } } 
+        }
 
         public TerrainSpacialIndex<TerrainObjectVM>? Objects { get; set; }
 
@@ -42,14 +48,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (item is EditableArma3Road road)
             {
-                EditPoints = new EditRoadEditablePointCollection(road, UndoRedoManager);
+                EditPoints = new EditRoadEditablePointCollection(road, this);
                 EditPoints.CollectionChanged += MakeRoadsDirty;
             }
             else
             {
                 EditPoints = null;
             }
-            NotifyOfPropertyChange(nameof(EditPoints));
         }
 
         private void MakeRoadsDirty(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -151,6 +156,27 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 EditPoints = null;
                 NotifyOfPropertyChange(nameof(EditPoints));
             }
+        }
+
+
+        void ICommandHandler<SaveFileCommandDefinition>.Update(Command command)
+        {
+            ((ICommandHandler<SaveFileCommandDefinition>)parentEditor).Update(command);
+        }
+
+        Task ICommandHandler<SaveFileCommandDefinition>.Run(Command command)
+        {
+            return ((ICommandHandler<SaveFileCommandDefinition>)parentEditor).Run(command);
+        }
+
+        void ICommandHandler<SaveFileAsCommandDefinition>.Update(Command command)
+        {
+            ((ICommandHandler<SaveFileAsCommandDefinition>)parentEditor).Update(command);
+        }
+
+        Task ICommandHandler<SaveFileAsCommandDefinition>.Run(Command command)
+        {
+            return ((ICommandHandler<SaveFileAsCommandDefinition>)parentEditor).Run(command);
         }
     }
 }

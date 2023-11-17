@@ -19,5 +19,9 @@ namespace GameRealisticMap.Studio.Controls
         void Set(int index, TerrainPoint oldValue, TerrainPoint newValue);
 
         void PreviewSet(int index, TerrainPoint value);
+
+        bool CanSplit { get; }
+
+        void SplitAt(int index);
     }
 }

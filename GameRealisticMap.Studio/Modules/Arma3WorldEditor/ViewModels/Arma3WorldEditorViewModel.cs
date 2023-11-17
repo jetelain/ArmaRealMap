@@ -21,6 +21,7 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
@@ -32,7 +33,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
-    internal class Arma3WorldEditorViewModel : PersistedDocument
+    internal class Arma3WorldEditorViewModel : PersistedDocument, IExplorerRootTreeItem
     {
         private EditableWrp? _world;
         private GameConfigTextData? _configFile;
@@ -100,6 +101,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             UpdateBackupsList(filePath);
 
             NotifyOfPropertyChange(nameof(HistoryEntry));
+            NotifyOfPropertyChange(nameof(TreeName));
         }
 
         private void UpdateBackupsList(string filePath)
@@ -249,6 +251,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             get { return roads; } 
             set { roads = value; mapEditor?.InvalidateRoads(); } 
         }
+
+        public string TreeName => FileName;
+
+        public string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapFile.png";
+
+        public IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
 
         protected override Task DoNew()
         {

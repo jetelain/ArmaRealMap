@@ -27,7 +27,7 @@ namespace GameRealisticMap.Studio.Behaviors
             }
         }
 
-        internal static void ShowButtonContextMenu(Button button, ContextMenu context)
+        internal static void ShowButtonContextMenu(FrameworkElement button, ContextMenu context)
         {
             context.Placement = PlacementMode.Relative;
             context.PlacementTarget = button;

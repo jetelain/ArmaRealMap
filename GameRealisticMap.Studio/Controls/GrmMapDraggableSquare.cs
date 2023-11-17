@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using GameRealisticMap.Geometries;
@@ -114,6 +115,16 @@ namespace GameRealisticMap.Studio.Controls
             }
 
             base.OnKeyUp(e);
+        }
+
+        protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
+        {
+            Focus();
+
+            base.OnMouseRightButtonUp(e);
+
+            e.Handled = true;
+            map.OpenItemContextMenu(this, e);
         }
     }
 }
