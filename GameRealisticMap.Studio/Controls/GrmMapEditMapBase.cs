@@ -214,7 +214,7 @@ namespace GameRealisticMap.Studio.Controls
                 if (internalChild is GrmMapDraggableSquare square)
                 {
                     var s = internalChild.DesiredSize;
-                    var p = Translate.Transform(ScaleTr.Transform(Convert(square.TerrainPoint, size))) - new System.Windows.Vector(s.Width / 2, s.Height / 2);
+                    var p = Translate.Transform(ScaleTr.Transform(ProjectToPoint(square.TerrainPoint, size))) - new System.Windows.Vector(s.Width / 2, s.Height / 2);
                     internalChild.Arrange(new Rect(p, s));
                 }
             }

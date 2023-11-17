@@ -149,55 +149,60 @@ namespace GameRealisticMap.Studio.Controls
 
         public ITerrainEnvelope GetViewportEnveloppe() => GetViewportEnveloppe(RenderSize, SizeInMeters);
 
-        protected PathGeometry CreatePolygon(float size, TerrainPolygon poly)
+        protected PathGeometry CreatePolygon(TerrainPolygon poly)
         {
             if (!polyCache.TryGetValue(poly, out var polygon))
             {
-                polyCache.Add(poly, polygon = DoCreatePolygon(size, poly));
+                polyCache.Add(poly, polygon = DoCreatePolygon(poly));
             }
             return polygon;
         }
 
-        protected static PathGeometry DoCreatePolygon(float size, TerrainPolygon poly, bool isStroked = false)
+        protected static PathGeometry DoCreatePolygon(TerrainPolygon poly, bool isStroked = false)
         {
             var path = new PathGeometry();
-            path.Figures.Add(CreateFigure(poly.Shell, true, isStroked, size));
+            path.Figures.Add(CreateFigure(poly.Shell, true, isStroked));
             foreach (var hole in poly.Holes)
             {
-                path.Figures.Add(CreateFigure(hole, true, isStroked, size));
+                path.Figures.Add(CreateFigure(hole, true, isStroked));
             }
             return path;
         }
 
-        protected PathGeometry CreatePath(float size, TerrainPath poly)
+        protected PathGeometry CreatePath(TerrainPath poly)
         {
             if (!pathCache.TryGetValue(poly, out var polygon))
             {
-                pathCache.Add(poly, polygon = DoCreatePath(size, poly));
+                pathCache.Add(poly, polygon = DoCreatePath(poly));
             }
             return polygon;
         }
 
-        protected static PathGeometry DoCreatePath(float size, TerrainPath tpath)
+        protected static PathGeometry DoCreatePath(TerrainPath tpath)
         {
             var path = new PathGeometry();
-            path.Figures.Add(CreateFigure(tpath.Points, false, true, size));
+            path.Figures.Add(CreateFigure(tpath.Points, false, true));
             return path;
         }
 
-        protected static Point Convert(TerrainPoint point, float size)
+        protected static Point ConvertToPoint(TerrainPoint point)
+        {
+            return new Point(point.X, point.Y);
+        }
+
+        protected static Point ProjectToPoint(TerrainPoint point, float size)
         {
             return new Point(point.X, size - point.Y);
         }
 
-        protected static PathFigure CreateFigure(IEnumerable<TerrainPoint> points, bool isFilled, bool isStroked, float size)
+        protected static PathFigure CreateFigure(IEnumerable<TerrainPoint> points, bool isFilled, bool isStroked)
         {
             var figure = new PathFigure
             {
-                StartPoint = Convert(points.First(), size),
+                StartPoint = ConvertToPoint(points.First()),
                 IsFilled = isFilled
             };
-            figure.Segments.Add(new PolyLineSegment(points.Skip(1).Select(p => Convert(p, size)), isStroked));
+            figure.Segments.Add(new PolyLineSegment(points.Skip(1).Select(ConvertToPoint), isStroked));
             return figure;
         }
 
@@ -218,7 +223,7 @@ namespace GameRealisticMap.Studio.Controls
             dc.PushTransform(Translate);
             dc.PushTransform(ScaleTr);
 
-            dc.DrawRectangle(MapBackground, null, new Rect(Convert(TerrainPoint.Empty, size), Convert(new TerrainPoint(size, size), size)));
+            dc.DrawRectangle(MapBackground, null, new Rect(ConvertToPoint(TerrainPoint.Empty), ConvertToPoint(new TerrainPoint(size, size))));
 
             DrawMap(dc, size, enveloppe);
 

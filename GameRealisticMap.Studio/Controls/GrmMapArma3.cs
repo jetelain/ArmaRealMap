@@ -91,10 +91,11 @@ namespace GameRealisticMap.Studio.Controls
                 dc.Pop();
             }
 
+            dc.PushTransform(new MatrixTransform(1, 0, 0, -1, 0, size));
+
             var objs = Objects;
             if (objs != null)
             {
-                dc.PushTransform(new MatrixTransform(1, 0, 0, -1, 0, size));
                 if (Scale > 3)
                 {
                     var fill = new SolidColorBrush(Color.FromArgb(192, 32, 32, 32));
@@ -126,7 +127,6 @@ namespace GameRealisticMap.Studio.Controls
                         }
                     }
                 }
-                dc.Pop();
             }
 
             var roads = Roads;
@@ -141,11 +141,12 @@ namespace GameRealisticMap.Studio.Controls
                             RoadBrushes.Add(road.RoadTypeInfos, pen = new Pen(GrmMapStyle.RoadBrush, road.RoadTypeInfos.TextureWidth) { StartLineCap = PenLineCap.Square, EndLineCap = PenLineCap.Square });
                         }
 
-                        dc.DrawGeometry(null, pen, CreatePath(size, road.Path));
+                        dc.DrawGeometry(null, pen, CreatePath(road.Path));
                     }
                 }
             }
 
+            dc.Pop();
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
