@@ -111,10 +111,10 @@ namespace GameRealisticMap.Studio.Controls
                             switch (obj.Category)
                             {
                                 case AssetCatalogCategory.Tree:
-                                    dc.DrawEllipse(tree, null, new Point(), obj.Radius, obj.Radius);
+                                    dc.DrawEllipse(tree, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
                                     break;
                                 case AssetCatalogCategory.Bush:
-                                    dc.DrawEllipse(bush, null, new Point(), obj.Radius, obj.Radius);
+                                    dc.DrawEllipse(bush, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
                                     break;
                                 case AssetCatalogCategory.WaterSurface:
                                     dc.DrawRectangle(water, null, obj.Rectangle);

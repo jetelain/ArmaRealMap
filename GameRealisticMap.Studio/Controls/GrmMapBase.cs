@@ -18,7 +18,7 @@ namespace GameRealisticMap.Studio.Controls
         private Point start;
         private Point origin;
 
-        private readonly double[] ZoomLevelToScale = new double[] { 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8, 12, 16, 20, 28, 36, 42, 50 };
+        private readonly double[] ZoomLevelToScale = new double[] { 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8, 12, 16, 20, 28, 36, 42, 50, 75, 100 };
         private int zoomLevel = 3;
 
         public GrmMapBase()
@@ -185,6 +185,13 @@ namespace GameRealisticMap.Studio.Controls
             return path;
         }
 
+        protected static PathGeometry DoCreatePath(IEnumerable<TerrainPoint> points)
+        {
+            var path = new PathGeometry();
+            path.Figures.Add(CreateFigure(points, false, true));
+            return path;
+        }
+
         protected static Point ConvertToPoint(TerrainPoint point)
         {
             return new Point(point.X, point.Y);
@@ -206,7 +213,7 @@ namespace GameRealisticMap.Studio.Controls
             return figure;
         }
 
-        protected override sealed void OnRender(DrawingContext dc)
+        protected override void OnRender(DrawingContext dc)
         {
             var renderSize = RenderSize;
             if (renderSize.Width == 0 || renderSize.Height == 0)
@@ -234,7 +241,7 @@ namespace GameRealisticMap.Studio.Controls
         }
 
         protected abstract void DrawMap(DrawingContext dc, float size, Envelope enveloppe);
-        
+
         public TerrainPoint ViewportCoordinates(Point viewPortPoint)
         {
             var northWest = new TerrainPoint((float)(DeltaX / Scale), (float)(SizeInMeters - (DeltaY / Scale))); // Point(0,0) of view port
