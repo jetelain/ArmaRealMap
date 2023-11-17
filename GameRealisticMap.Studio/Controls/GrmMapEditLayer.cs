@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -13,12 +12,25 @@ using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    public abstract class GrmMapEditMapBase : GrmMapBase
+    public sealed class GrmMapEditLayer : Panel, IGrmMapLayer
     {
+        public static readonly DependencyProperty ClearSelectionProperty =
+            DependencyProperty.Register(nameof(ClearSelection), typeof(ICommand), typeof(GrmMapEditLayer), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty EditPointsProperty =
+            DependencyProperty.Register(nameof(EditPoints), typeof(IEditablePointCollection), typeof(GrmMapEditLayer), new PropertyMetadata(null, EditPoints_Changed));
+
+        private readonly GrmMapEditLayerOverlay overlay;
+        private GrmMap? parentMap;
         private IEditablePointCollection? editPoints;
         private bool isPointInsertPreview;
         private Point previewInsertPoint = new Point();
         private bool isPreviewEnd;
+
+        public GrmMapEditLayer()
+        {
+            overlay = new GrmMapEditLayerOverlay(this);
+        }
 
         public IEditablePointCollection? EditPoints
         {
@@ -26,12 +38,28 @@ namespace GameRealisticMap.Studio.Controls
             set { SetValue(EditPointsProperty, value); }
         }
 
-        public static readonly DependencyProperty EditPointsProperty =
-            DependencyProperty.Register("EditPoints", typeof(IEditablePointCollection), typeof(GrmMapEditMapBase), new PropertyMetadata(null, EditPoints_Changed));
+        public GrmMap? ParentMap 
+        { 
+            get { return parentMap; }
+            set 
+            { 
+                parentMap = value; 
+                foreach(var layer in InternalChildren.OfType<IGrmMapLayer>())
+                {
+                    layer.ParentMap = parentMap;
+                }
+            }
+        }
+
+        public ICommand? ClearSelection
+        {
+            get { return (ICommand?)GetValue(ClearSelectionProperty); }
+            set { SetValue(ClearSelectionProperty, value); }
+        }
 
         private static void EditPoints_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((GrmMapEditMapBase)d).ChangeEditPoints((IEditablePointCollection?)e.OldValue, (IEditablePointCollection?)e.NewValue);
+            ((GrmMapEditLayer)d).ChangeEditPoints((IEditablePointCollection?)e.OldValue, (IEditablePointCollection?)e.NewValue);
         }
 
         private void ChangeEditPoints(IEditablePointCollection? oldValue, IEditablePointCollection? newValue)
@@ -46,7 +74,7 @@ namespace GameRealisticMap.Studio.Controls
             }
             editPoints = newValue;
             CreatePoints(newValue);
-            InvalidateVisual();
+            overlay.InvalidateVisual();
         }
 
         private void SelectionPoints_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -71,7 +99,7 @@ namespace GameRealisticMap.Studio.Controls
             {
                 CreatePoints(editPoints);
             }
-            InvalidateVisual();
+            OnViewportChanged();
         }
 
         private void RemoveSquare(TerrainPoint terrainPoint, int index)
@@ -112,8 +140,16 @@ namespace GameRealisticMap.Studio.Controls
 
         private void CreatePoints(IEnumerable<TerrainPoint>? points)
         {
-            InternalChildren.Clear();
-
+            if (!InternalChildren.Contains(overlay))
+            {
+                InternalChildren.Add(overlay);
+            }
+            var first = InternalChildren.OfType<GrmMapDraggableSquare>().FirstOrDefault();
+            if (first != null)
+            {
+                var index = InternalChildren.IndexOf(first);
+                InternalChildren.RemoveRange(index, InternalChildren.Count - index);
+            }
             if (points != null)
             {
                 var pos = 0;
@@ -125,26 +161,23 @@ namespace GameRealisticMap.Studio.Controls
             }
         }
 
-
-
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (e.Source != this)
+            var parent = ParentMap;
+            if (parent != null)
             {
-                return;
+                if (Keyboard.Modifiers == ModifierKeys.Control)
+                {
+                    OnControlClick(parent.ViewportCoordinates(e.GetPosition(parent)), e);
+                    return;
+                }
+                if (e.ClickCount == 2)
+                {
+                    OnDoubleClick(parent.ViewportCoordinates(e.GetPosition(parent)), e);
+                    return;
+                }
             }
-
-            if (Keyboard.Modifiers == ModifierKeys.Control)
-            {
-                OnControlClick(ViewportCoordinates(e.GetPosition(this)), e);
-                return;
-            }
-            if (e.ClickCount == 2)
-            {
-                OnDoubleClick(ViewportCoordinates(e.GetPosition(this)), e);
-                return;
-            }
-
+            ClearSelection?.Execute(null);
             base.OnMouseLeftButtonDown(e);
         }
 
@@ -215,23 +248,27 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override Size ArrangeOverride(Size arrangeSize)
         {
-            var size = SizeInMeters;
-            foreach (UIElement internalChild in InternalChildren)
+            var rect = new Rect(new Point(), RenderSize);
+            var map = ParentMap;
+            if (map != null)
             {
-                if (internalChild is GrmMapDraggableSquare square)
+                foreach (UIElement internalChild in InternalChildren)
                 {
-                    var s = internalChild.DesiredSize;
-                    var p = ProjectViewport(square.TerrainPoint, size) - new System.Windows.Vector(s.Width / 2, s.Height / 2);
-                    internalChild.Arrange(new Rect(p, s));
+                    if (internalChild is GrmMapDraggableSquare square)
+                    {
+                        var s = internalChild.DesiredSize;
+                        var p = map.ProjectViewport(square.TerrainPoint) - new System.Windows.Vector(s.Width / 2, s.Height / 2);
+                        internalChild.Arrange(new Rect(p, s));
+                    }
+                    else
+                    {
+                        internalChild.Arrange(rect);
+                    }
                 }
             }
             return arrangeSize;
         }
 
-        private Point ProjectViewport(TerrainPoint point, float size)
-        {
-            return Translate.Transform(ScaleTr.Transform(ProjectToPoint(point, size)));
-        }
 
         protected override Size MeasureOverride(Size constraint)
         {
@@ -263,29 +300,18 @@ namespace GameRealisticMap.Studio.Controls
             }
         }
 
-        //protected override void DrawMap(DrawingContext dc, float size, Envelope enveloppe)
-        //{
-        //    if (editPoints != null)
-        //    {
-        //        dc.PushTransform(new MatrixTransform(1, 0, 0, -1, 0, size));
-        //        dc.DrawGeometry(null, new Pen(new SolidColorBrush(Colors.White), 0.5) { DashStyle = DashStyles.Dash }, DoCreatePath(editPoints));
-        //        dc.Pop();
-        //    }
-        //}
-
-        protected override void OnRender(DrawingContext dc)
+        internal PathGeometry? CreateEditPointGeometry()
         {
-            base.OnRender(dc);
             if (editPoints != null)
             {
-                dc.DrawGeometry(null, new Pen(new SolidColorBrush(Colors.White), 2) { DashStyle = DashStyles.Dot }, CreateEditPointGeometry(editPoints));
+                return CreateEditPointGeometry(editPoints);
             }
+            return null;
         }
 
         private PathGeometry CreateEditPointGeometry(IEditablePointCollection source)
         {
-            var size = SizeInMeters;
-            var points = source.Select(p => ProjectViewport(p, size)).ToList();
+            var points = source.Select(p => ParentMap!.ProjectViewport(p)).ToList();
             if (isPointInsertPreview)
             {
                 if (isPreviewEnd)
@@ -326,7 +352,7 @@ namespace GameRealisticMap.Studio.Controls
                 {
                     isPointInsertPreview = isInsertMode;
                     previewInsertPoint = Mouse.GetPosition(this);
-                    InvalidateVisual();
+                    overlay.InvalidateVisual();
                 }
             }
         }
@@ -349,8 +375,37 @@ namespace GameRealisticMap.Studio.Controls
             if (isPointInsertPreview)
             {
                 previewInsertPoint = e.GetPosition(this);
-                InvalidateVisual();
+                overlay.InvalidateVisual();
             }
+        }
+
+        public void OnViewportChanged()
+        {
+            foreach (var layer in InternalChildren.OfType<IGrmMapLayer>())
+            {
+                layer.OnViewportChanged();
+            }
+            InvalidateVisual();
+            InvalidateArrange();
+            overlay.InvalidateVisual();
+        }
+
+        protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
+        {
+            if (visualAdded is IGrmMapLayer layerAdded)
+            {
+                layerAdded.ParentMap = parentMap;
+            }
+            if (visualRemoved is IGrmMapLayer layerRemoved)
+            {
+                layerRemoved.ParentMap = parentMap;
+            }
+            base.OnVisualChildrenChanged(visualAdded, visualRemoved);
+        }
+
+        protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
+        {
+            return new PointHitTestResult(this, hitTestParameters.HitPoint);
         }
     }
 }

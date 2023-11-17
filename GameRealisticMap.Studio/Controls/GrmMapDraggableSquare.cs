@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using GameRealisticMap.Geometries;
@@ -12,9 +10,9 @@ namespace GameRealisticMap.Studio.Controls
         private Point start;
         private Vector initialOffset;
         private TerrainPoint initialPoint;
-        private readonly GrmMapEditMapBase map;
+        private readonly GrmMapEditLayer map;
 
-        public GrmMapDraggableSquare(GrmMapEditMapBase map, TerrainPoint terrainPoint, int index)
+        public GrmMapDraggableSquare(GrmMapEditLayer map, TerrainPoint terrainPoint, int index)
         {
             this.map = map;
             Width = 12;
@@ -47,7 +45,7 @@ namespace GameRealisticMap.Studio.Controls
         {
             Focus();
 
-            start = e.GetPosition(map);
+            start = e.GetPosition(map!.ParentMap);
             initialOffset = VisualTreeHelper.GetOffset(this);
             initialPoint = TerrainPoint;
 
@@ -71,12 +69,12 @@ namespace GameRealisticMap.Studio.Controls
         {
             if (IsMouseCaptured)
             {
-                var pos = e.GetPosition(map);
+                var pos = e.GetPosition(map.ParentMap!);
                 var delta = start - pos;
                 var s = DesiredSize;
                 var p = initialOffset - delta;
                 Arrange(new Rect(new Point(p.X , p.Y), s));
-                TerrainPoint = map.ViewportCoordinatesCenter(new Point(p.X, p.Y), RenderSize);
+                TerrainPoint = map.ParentMap!.ViewportCoordinatesCenter(new Point(p.X, p.Y), RenderSize);
                 map.OnPointPositionPreviewChange(this);
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
@@ -117,14 +115,18 @@ namespace GameRealisticMap.Studio.Controls
             base.OnKeyUp(e);
         }
 
-        protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
+        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
             Focus();
+            e.Handled = true;
+            base.OnMouseRightButtonDown(e);
+        }
 
-            base.OnMouseRightButtonUp(e);
-
+        protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
+        {
             e.Handled = true;
             map.OpenItemContextMenu(this, e);
+            base.OnMouseRightButtonUp(e);
         }
     }
 }

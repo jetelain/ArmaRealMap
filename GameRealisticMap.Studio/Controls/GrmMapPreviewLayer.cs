@@ -8,13 +8,8 @@ using GameRealisticMap.Studio.Shared;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    public sealed class GrmMapViewer : GrmMapBase
+    public sealed class GrmMapPreviewLayer : GrmMapDrawLayerBase
     {
-        public GrmMapViewer()
-        {
-
-        }
-
         public Dictionary<RoadTypeId,Pen> RoadBrushes { get; } = new Dictionary<RoadTypeId,Pen>();
 
         public List<ITerrainEnvelope> IsTrue
@@ -24,8 +19,7 @@ namespace GameRealisticMap.Studio.Controls
         }
 
         public static readonly DependencyProperty IsTrueProperty =
-            DependencyProperty.Register(nameof(IsTrue), typeof(List<ITerrainEnvelope>), typeof(GrmMapViewer), new PropertyMetadata(new List<ITerrainEnvelope>(), SomePropertyChanged));
-
+            DependencyProperty.Register(nameof(IsTrue), typeof(List<ITerrainEnvelope>), typeof(GrmMapPreviewLayer), new PropertyMetadata(new List<ITerrainEnvelope>(), SomePropertyChanged));
 
         public List<ITerrainEnvelope> IsFalse
         {
@@ -33,7 +27,7 @@ namespace GameRealisticMap.Studio.Controls
             set { SetValue(FalseListProperty, value); }
         }
         public static readonly DependencyProperty FalseListProperty =
-            DependencyProperty.Register(nameof(IsFalse), typeof(List<ITerrainEnvelope>), typeof(GrmMapViewer), new PropertyMetadata(new List<ITerrainEnvelope>(), SomePropertyChanged));
+            DependencyProperty.Register(nameof(IsFalse), typeof(List<ITerrainEnvelope>), typeof(GrmMapPreviewLayer), new PropertyMetadata(new List<ITerrainEnvelope>(), SomePropertyChanged));
 
         public PreviewMapData? MapData
         {
@@ -42,23 +36,20 @@ namespace GameRealisticMap.Studio.Controls
         }
 
         public static readonly DependencyProperty MapDataProperty =
-            DependencyProperty.Register(nameof(MapData), typeof(PreviewMapData), typeof(GrmMapViewer), new PropertyMetadata(null, SomePropertyChanged));
+            DependencyProperty.Register(nameof(MapData), typeof(PreviewMapData), typeof(GrmMapPreviewLayer), new PropertyMetadata(null, SomePropertyChanged));
 
-        protected override void DrawMap(DrawingContext dc, float size, Envelope enveloppe)
+        protected override void DrawMap(DrawingContext dc, Envelope enveloppe, double scale)
         {
-            dc.PushTransform(new MatrixTransform(1, 0, 0, -1, 0, size));
-
             if (MapData != null)
             {
-
-                DrawPolygons(dc, enveloppe, GrmMapStyle.OceanBrush, MapData.Ocean.Polygons);
-                DrawPolygons(dc, enveloppe, GrmMapStyle.OceanBrush, MapData.ElevationWithLakes.Lakes.Select(l => l.TerrainPolygon));
-                DrawPolygons(dc, enveloppe, GrmMapStyle.OceanBrush, MapData.Watercourses.Polygons);
-                DrawPolygons(dc, enveloppe, GrmMapStyle.ScrubsBrush, MapData.Scrub.Polygons);
-                DrawPolygons(dc, enveloppe, GrmMapStyle.ForestBrush, MapData.Forest.Polygons);
-                if (Scale > 0.5)
+                DrawPolygons(dc, enveloppe, GrmMapStyle.OceanBrush, MapData.Ocean.Polygons, scale);
+                DrawPolygons(dc, enveloppe, GrmMapStyle.OceanBrush, MapData.ElevationWithLakes.Lakes.Select(l => l.TerrainPolygon), scale);
+                DrawPolygons(dc, enveloppe, GrmMapStyle.OceanBrush, MapData.Watercourses.Polygons, scale);
+                DrawPolygons(dc, enveloppe, GrmMapStyle.ScrubsBrush, MapData.Scrub.Polygons, scale);
+                DrawPolygons(dc, enveloppe, GrmMapStyle.ForestBrush, MapData.Forest.Polygons, scale);
+                if (scale > 0.5)
                 {
-                    DrawPolygons(dc, enveloppe, GrmMapStyle.BuildingBrush, MapData.Buildings.Buildings.Select(b => b.Box.Polygon));
+                    DrawPolygons(dc, enveloppe, GrmMapStyle.BuildingBrush, MapData.Buildings.Buildings.Select(b => b.Box.Polygon), scale);
                 }
                 foreach (var road in MapData.Roads.Roads.OrderByDescending(r => r.RoadType))
                 {
@@ -75,9 +66,9 @@ namespace GameRealisticMap.Studio.Controls
 
                 DrawPaths(dc, enveloppe, GrmMapStyle.RailwayPen, paths);
 
-                DrawAdditionals(dc, enveloppe, MapData.Additional);
+                DrawAdditionals(dc, enveloppe, MapData.Additional, scale);
             }
-            if (Scale > 0.7)
+            if (scale > 0.7)
             {
                 foreach (var point in IsFalse)
                 {
@@ -94,7 +85,6 @@ namespace GameRealisticMap.Studio.Controls
                     }
                 }
             }
-            dc.Pop();
         }
 
         private void DrawAny(DrawingContext dc, ITerrainEnvelope geometry, Pen? pen, Brush? brush)
@@ -113,24 +103,24 @@ namespace GameRealisticMap.Studio.Controls
             }
         }
 
-        private void DrawAdditionals(DrawingContext dc, Envelope enveloppe, List<PreviewAdditionalLayer> layers)
+        private void DrawAdditionals(DrawingContext dc, Envelope enveloppe, List<PreviewAdditionalLayer> layers, double scale)
         {
             foreach (var additional in layers)
             {
                 if (additional.Polygons != null)
                 {
-                    DrawPolygons(dc, enveloppe, GrmMapStyle.GetAdditionalBrush(additional.Name)!, additional.Polygons);
+                    DrawPolygons(dc, enveloppe, GrmMapStyle.GetAdditionalBrush(additional.Name)!, additional.Polygons, scale);
                 }
                 else if (additional.Paths != null)
                 {
-                    if (Scale > 0.5)
+                    if (scale > 0.5)
                     {
                         DrawPaths(dc, enveloppe, GrmMapStyle.GetAdditionalPen(additional.Name)!, additional.Paths);
                     }
                 }
                 else if (additional.Points != null)
                 {
-                    if (Scale > 0.7)
+                    if (scale > 0.7)
                     {
                         DrawPoints(dc, enveloppe, additional.Points, GrmMapStyle.GetAdditionalPen(additional.Name), GrmMapStyle.GetAdditionalBrush(additional.Name), 2);
                     }
@@ -160,9 +150,9 @@ namespace GameRealisticMap.Studio.Controls
             }
         }
 
-        private void DrawPolygons(DrawingContext dc, Envelope enveloppe, Brush brush, IEnumerable<TerrainPolygon> polygons)
+        private void DrawPolygons(DrawingContext dc, Envelope enveloppe, Brush brush, IEnumerable<TerrainPolygon> polygons, double scale)
         {
-            var isLowScale = Scale < 1;
+            var isLowScale = scale < 1;
             foreach (var poly in polygons)
             {
                 if (isLowScale && poly.EnveloppeArea < 200)

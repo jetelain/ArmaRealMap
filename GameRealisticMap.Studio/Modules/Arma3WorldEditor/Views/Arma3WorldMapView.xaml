@@ -32,17 +32,18 @@
 
         </StackPanel>
 
-        <grm:GrmMapArma3 Grid.Row="1"  x:Name="Map" 
-                         SizeInMeters="{Binding SizeInMeters}" 
-                         Roads="{Binding Roads}" 
-                         Objects="{Binding Objects}" 
-                         BackgroundImage="{Binding BackgroundImage}" 
-                         BackgroundImageResolution="{Binding BackgroundResolution}"
-                         
-                         SelectItem="{Binding SelectItemCommand}"
-                         EditPoints="{Binding EditPoints}"
-                         
-                         />
+        <grm:GrmMap Grid.Row="1" SizeInMeters="{Binding SizeInMeters}" >
+
+            <grm:GrmMapEditLayer EditPoints="{Binding EditPoints}" ClearSelection="{Binding SelectItemCommand}">
+                
+                <grm:GrmMapHugeImageLayer Image="{Binding BackgroundImage}"  Resolution="{Binding BackgroundResolution}" Opacity="0.8" IsHitTestVisible="False" />
+
+                <grm:GrmMapArma3 Roads="{Binding Roads}" Objects="{Binding Objects}" SelectItem="{Binding SelectItemCommand}" />
+                
+            </grm:GrmMapEditLayer>
+
+        </grm:GrmMap>
+        
 
     </Grid>
 </UserControl>

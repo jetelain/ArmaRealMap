@@ -8,15 +8,11 @@ using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
-using HugeImages;
-using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    public sealed class GrmMapArma3 : GrmMapEditMapBase
+    public sealed class GrmMapArma3 : GrmMapDrawLayerBase
     {
-        private HugeImageSource<Rgb24>? source;
-
         public ICommand? SelectItem
         {
             get { return (ICommand?)GetValue(SelectItemProperty); }
@@ -37,25 +33,6 @@ namespace GameRealisticMap.Studio.Controls
         public static readonly DependencyProperty RoadsProperty =
             DependencyProperty.Register(nameof(Roads), typeof(EditableArma3Roads), typeof(GrmMapArma3), new PropertyMetadata(null, SomePropertyChanged));
 
-        public HugeImage<Rgb24>? BackgroundImage
-        {
-            get { return (HugeImage<Rgb24>?)GetValue(BackgroundImageProperty); }
-            set { SetValue(BackgroundImageProperty, value); }
-        }
-
-        public static readonly DependencyProperty BackgroundImageProperty =
-            DependencyProperty.Register("BackgroundImage", typeof(HugeImage<Rgb24>), typeof(GrmMapArma3), new PropertyMetadata(null, SomePropertyChanged));
-
-        public double BackgroundImageResolution
-        {
-            get { return (double)GetValue(BackgroundImageResolutionProperty); }
-            set { SetValue(BackgroundImageResolutionProperty, value); }
-        }
-
-        public static readonly DependencyProperty BackgroundImageResolutionProperty =
-            DependencyProperty.Register("BackgroundImageResolution", typeof(double), typeof(GrmMapArma3), new PropertyMetadata(1d));
-
-
         public TerrainSpacialIndex<TerrainObjectVM>? Objects
         {
             get { return (TerrainSpacialIndex<TerrainObjectVM>)GetValue(ObjectsProperty); }
@@ -63,40 +40,14 @@ namespace GameRealisticMap.Studio.Controls
         }
 
         public static readonly DependencyProperty ObjectsProperty =
-            DependencyProperty.Register("Objects", typeof(TerrainSpacialIndex<TerrainObjectVM>), typeof(GrmMapArma3), new PropertyMetadata(null));
+            DependencyProperty.Register("Objects", typeof(TerrainSpacialIndex<TerrainObjectVM>), typeof(GrmMapArma3), new PropertyMetadata(null, SomePropertyChanged));
 
-        protected override void DrawMap(DrawingContext dc, float size, Envelope enveloppe)
+        protected override void DrawMap(DrawingContext dc, Envelope enveloppe, double scale)
         {
-            var bg = BackgroundImage;
-            if (bg != null)
-            {
-                if (source == null || source.HugeImage != bg)
-                {
-                    source = new HugeImageSource<Rgb24>(bg, InvalidateVisual);
-                }
-                var resolution = BackgroundImageResolution;
-                var renderSize = RenderSize;
-
-                var actualClip = new Rect(DeltaX / Scale * resolution, DeltaY / Scale * resolution, renderSize.Width / Scale * resolution, renderSize.Height / Scale * resolution);
-                dc.PushOpacity(0.8);
-                if (resolution != 1)
-                {
-                    dc.PushTransform(new ScaleTransform(1 / resolution, 1 / resolution));
-                }
-                source.DrawTo(dc, actualClip);
-                if (resolution != 1)
-                {
-                    dc.Pop();
-                }
-                dc.Pop();
-            }
-
-            dc.PushTransform(new MatrixTransform(1, 0, 0, -1, 0, size));
-
             var objs = Objects;
             if (objs != null)
             {
-                if (Scale > 3)
+                if (scale > 3)
                 {
                     var fill = new SolidColorBrush(Color.FromArgb(192, 32, 32, 32));
                     var water = new SolidColorBrush(Color.FromArgb(192, 65, 105, 225));
@@ -104,7 +55,7 @@ namespace GameRealisticMap.Studio.Controls
                     var bush = new SolidColorBrush(Color.FromArgb(192, 244, 164, 96));
                     foreach (var obj in objs.Search(enveloppe))
                     {
-                        if (Scale * obj.Radius > 15)
+                        if (scale * obj.Radius > 15)
                         {
                             dc.PushTransform(new MatrixTransform(obj.Matrix.M11, obj.Matrix.M13, obj.Matrix.M31, obj.Matrix.M33, obj.Matrix.M41, obj.Matrix.M43));
 
@@ -145,8 +96,6 @@ namespace GameRealisticMap.Studio.Controls
                     }
                 }
             }
-
-            dc.Pop();
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -156,7 +105,7 @@ namespace GameRealisticMap.Studio.Controls
                 var roads = Roads;
                 if (roads != null)
                 {
-                    var coordinates = this.ViewportCoordinates(e.GetPosition(this));
+                    var coordinates = ParentMap!.ViewportCoordinates(e.GetPosition(ParentMap));
                     var enveloppe = new Envelope(coordinates - new Vector2(5), coordinates + new Vector2(5));
 
                     var editRoad = roads.Roads
@@ -168,6 +117,7 @@ namespace GameRealisticMap.Studio.Controls
                         .FirstOrDefault();
 
                     SelectItem?.Execute(editRoad);
+                    e.Handled = true;
                 }
             }
             base.OnMouseLeftButtonDown(e);
