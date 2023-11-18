@@ -1,14 +1,13 @@
-﻿using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Studio.Resources;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    public sealed class GrmMap : Panel
+    public sealed class GrmMap : GrmMapLayerGroup
     {
         private Point start;
         private Point origin;
@@ -18,6 +17,7 @@ namespace GameRealisticMap.Studio.Controls
 
         public GrmMap()
         {
+            this.parentMap = this;
             ClipToBounds = true;
             Background = new SolidColorBrush(Colors.Gray);
         }
@@ -43,7 +43,7 @@ namespace GameRealisticMap.Studio.Controls
             base.OnMouseRightButtonDown(e);
             start = e.GetPosition(this);
             origin = new Point(Translate.X, Translate.Y);
-            Cursor = Cursors.Hand;
+            Cursor = GrmCursors.Grabbing;
             CaptureMouse();
         }
 
@@ -164,14 +164,11 @@ namespace GameRealisticMap.Studio.Controls
             base.OnRenderSizeChanged(sizeInfo);
         }
 
-        public void ViewportChanged()
+        private void ViewportChanged()
         {
             InvalidateVisual();
             RenderEnvelope = GetViewportEnveloppe(RenderSize, BaseDrawTransform.Matrix.OffsetY);
-            foreach (var child in InternalChildren.OfType<IGrmMapLayer>())
-            {
-                child.OnViewportChanged();
-            }
+            OnViewportChanged();
         }
 
         public TerrainPoint ViewportCoordinates(Point viewPortPoint)
@@ -188,29 +185,6 @@ namespace GameRealisticMap.Studio.Controls
         public Point ProjectViewport(TerrainPoint point)
         {
             return Translate.Transform(ScaleTr.Transform(BaseDrawTransform.Transform(new Point(point.X, point.Y))));
-        }
-
-        protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
-        {
-            if (visualAdded is IGrmMapLayer layerAdded)
-            {
-                layerAdded.ParentMap = this;
-            }
-            if (visualRemoved is IGrmMapLayer layerRemoved)
-            {
-                layerRemoved.ParentMap = null;
-            }
-            base.OnVisualChildrenChanged(visualAdded, visualRemoved);
-        }
-
-        protected override Size ArrangeOverride(Size arrangeSize)
-        {
-            var rect = new Rect(new Point(), RenderSize);
-            foreach (UIElement child in InternalChildren)
-            {
-                child.Arrange(rect);
-            }
-            return arrangeSize;
         }
     }
 }

@@ -43,9 +43,19 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
+            if (map.EditMode != GrmMapEditMode.None)
+            {
+                if (IsFocused)
+                {
+                    map.EditMode = GrmMapEditMode.None;
+                    e.Handled = true;
+                }
+                return;
+            }
+
             Focus();
 
-            start = e.GetPosition(map!.ParentMap);
+            start = e.GetPosition(map.ParentMap!);
             initialOffset = VisualTreeHelper.GetOffset(this);
             initialPoint = TerrainPoint;
 
@@ -99,7 +109,7 @@ namespace GameRealisticMap.Studio.Controls
             }
 
             ReleaseMouseCapture();
-            Cursor = Cursors.Arrow;
+            Cursor = null;
 
             base.OnMouseLeftButtonUp(e);
         }

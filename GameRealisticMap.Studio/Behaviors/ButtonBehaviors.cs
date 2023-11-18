@@ -6,7 +6,7 @@ namespace GameRealisticMap.Studio.Behaviors
 {
     internal static class ButtonBehaviors
     {
-        public static void SetOpenContextOnClick(Button button, bool value)
+        public static void SetOpenContextOnClick(ButtonBase button, bool value)
         {
             if (value)
             {
@@ -16,7 +16,7 @@ namespace GameRealisticMap.Studio.Behaviors
 
         private static void Button_Click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
+            var button = sender as ButtonBase;
             if (button != null)
             {
                 var context = button.ContextMenu;
