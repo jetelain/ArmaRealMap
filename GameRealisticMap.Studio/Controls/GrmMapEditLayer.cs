@@ -97,14 +97,21 @@ namespace GameRealisticMap.Studio.Controls
             if (oldValue != null)
             {
                 oldValue.CollectionChanged -= SelectionPoints_CollectionChanged;
+                oldValue.PropertyChanged -= SelectionPoints_PropertyChanged;
             }
             if (newValue != null)
             {
                 newValue.CollectionChanged += SelectionPoints_CollectionChanged;
+                newValue.PropertyChanged += SelectionPoints_PropertyChanged;
             }
             editPoints = newValue;
             CreatePoints(newValue);
             overlay.InvalidateVisual();
+        }
+
+        private void SelectionPoints_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            OnViewportChanged();
         }
 
         private void SelectionPoints_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

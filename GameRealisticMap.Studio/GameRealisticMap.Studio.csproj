@@ -34,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
     <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
+    <ProjectReference Include="..\gemini\src\Gemini.Modules.Inspector\Gemini.Modules.Inspector.csproj" />
     <ProjectReference Include="..\gemini\src\Gemini.Modules.Output\Gemini.Modules.Output.csproj" />
     <ProjectReference Include="..\gemini\src\Gemini\Gemini.csproj" />
   </ItemGroup>

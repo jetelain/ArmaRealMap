@@ -8,15 +8,15 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
     internal class RoadTypeSelectVM : PropertyChangedBase, ICommand
     {
         private readonly EditableArma3RoadTypeInfos rti;
-        private readonly Arma3WorldMapViewModel arma3WorldMapViewModel;
+        private readonly Arma3WorldMapViewModel parent;
 
-        public RoadTypeSelectVM(EditableArma3RoadTypeInfos rti, Arma3WorldMapViewModel arma3WorldMapViewModel)
+        public RoadTypeSelectVM(EditableArma3RoadTypeInfos rti, Arma3WorldMapViewModel parent)
         {
             this.rti = rti;
-            this.arma3WorldMapViewModel = arma3WorldMapViewModel;
+            this.parent = parent;
         }
 
-        public bool IsSelected { get => arma3WorldMapViewModel.SelectectedRoadType == rti; set { } }
+        public bool IsSelected { get => parent.SelectectedRoadType == rti; set { } }
 
         public string Label => $"#{rti.Id}: {rti.Map}, {rti.TextureWidth}m";
 
@@ -26,6 +26,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public event EventHandler? CanExecuteChanged;
 
+        public EditableArma3RoadTypeInfos Value => rti;
+
         public bool CanExecute(object? parameter)
         {
             return true;
@@ -33,7 +35,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public void Execute(object? parameter)
         {
-            arma3WorldMapViewModel.SelectectedRoadType = rti;
+            parent.SelectectedRoadType = rti;
         }
     }
 }

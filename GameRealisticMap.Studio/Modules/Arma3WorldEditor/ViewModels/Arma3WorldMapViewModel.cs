@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +11,7 @@ using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using Gemini.Framework;
 using Gemini.Framework.Commands;
+using Gemini.Modules.Inspector;
 using Gemini.Modules.Shell.Commands;
 using HugeImages;
 using SixLabors.ImageSharp.PixelFormats;
@@ -24,6 +24,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
     {
         private readonly Arma3WorldEditorViewModel parentEditor;
         private readonly IArma3DataModule arma3Data;
+        private readonly IInspectorTool inspectorTool;
 
         private IEditablePointCollection? editPoints;
 
@@ -38,6 +39,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             this.parentEditor = parent;
             this.arma3Data = arma3Data;
+            this.inspectorTool = IoC.Get<IInspectorTool>();
             BackgroundResolution = parentEditor.Imagery?.Resolution ?? 1;
             DisplayName = parent.DisplayName + " - Editor";
         }
@@ -45,7 +47,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public IEditablePointCollection? EditPoints
         {
             get { return editPoints; }
-            set { if (editPoints != value) { editPoints = value; NotifyOfPropertyChange(); } }
+            set { if (editPoints != value) { editPoints = value; NotifyOfPropertyChange(); inspectorTool.SelectedObject = value as IInspectableObject; } }
         }
 
         public TerrainSpacialIndex<TerrainObjectVM>? Objects { get; set; }

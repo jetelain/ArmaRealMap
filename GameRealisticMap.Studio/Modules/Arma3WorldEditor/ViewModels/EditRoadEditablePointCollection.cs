@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using Caliburn.Micro;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.UndoRedo;
+using Gemini.Modules.Inspector;
+using Gemini.Modules.Inspector.Inspectors;
 using Gemini.Modules.UndoRedo;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
-    public class EditRoadEditablePointCollection : IEditablePointCollection
+    public class EditRoadEditablePointCollection : PropertyChangedBase, IEditablePointCollection, IInspectableObject
     {
         private readonly ObservableCollection<TerrainPoint> points;
         private readonly EditableArma3Road road;
@@ -23,6 +26,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             points.CollectionChanged += Points_CollectionChanged;
             this.road = road;
             this.editor = editor;
+
+            Inspectors =
+                new InspectableObjectBuilder()
+                    .WithEditor(this, r => r.RoadTypeInfos, new RoadTypeInfosInspectorViewModel(editor))
+                    .ToInspectableObject()
+                    .Inspectors;
         }
 
         internal EditableArma3Road Road => road;
@@ -103,5 +112,21 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             editor.UndoRedoManager.ExecuteAction(new UndoableFocusWrapper(action, EnsureFocus));
         }
+
+        public EditableArma3RoadTypeInfos RoadTypeInfos
+        {
+            get { return road.RoadTypeInfos; }
+            set
+            {
+                if (road.RoadTypeInfos != value)
+                {
+                    EnsureFocus();
+                    road.RoadTypeInfos = value;
+                    NotifyOfPropertyChange();
+                }
+            }
+        }
+
+        public IEnumerable<IInspector> Inspectors { get; }
     }
 }

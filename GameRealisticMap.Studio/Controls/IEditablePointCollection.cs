@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Studio.Controls
 {
-    public interface IEditablePointCollection : INotifyCollectionChanged, IReadOnlyCollection<TerrainPoint>
+    public interface IEditablePointCollection : INotifyCollectionChanged, IReadOnlyCollection<TerrainPoint>, INotifyPropertyChanged
     {
         bool CanInsertAtEnds { get; }
 
