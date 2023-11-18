@@ -57,26 +57,27 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private void InsertPoint(TerrainPoint point)
         {
             var roads = Roads;
-            if (roads != null && SelectectedRoadType != null)
+            if (roads != null && selectectedRoadType != null)
             {
-                var road = new EditableArma3Road(
-                    SelectectedRoadType.Id,
-                    SelectectedRoadType,
-                    new TerrainPath(point));
-                road.IsRemoved = true;
-                roads.Roads.Add(road);
-                SelectItem(road);
+                UndoRedoManager.ExecuteAction(new AddRoadAction(this, roads, selectectedRoadType, point));
                 _editMode = GrmMapEditMode.ContinuePath;
                 NotifyOfPropertyChange(nameof(GrmMapEditMode));
             }
         }
 
+        internal EditRoadEditablePointCollection CreateEdit(EditableArma3Road road)
+        {
+            var edit = new EditRoadEditablePointCollection(road, this);
+            edit.CollectionChanged += MakeRoadsDirty;
+            return edit;
+        }
+
+
         public void SelectItem(object? item)
         {
             if (item is EditableArma3Road road)
             {
-                EditPoints = new EditRoadEditablePointCollection(road, this);
-                EditPoints.CollectionChanged += MakeRoadsDirty;
+                EditPoints = CreateEdit(road);
             }
             else
             {

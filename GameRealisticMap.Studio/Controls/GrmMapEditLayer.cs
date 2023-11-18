@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Behaviors;
 using Gemini.Framework;
@@ -310,6 +311,7 @@ namespace GameRealisticMap.Studio.Controls
                     menu.Items.Add(new MenuItem()
                     {
                         Header = "Split into two paths",
+                        Icon = new Image() { Source = new BitmapImage(new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/split.png")) },
                         IsEnabled = square.Index > 0 && square.Index < editPoints.Count - 1,
                         Command = new RelayCommand(_ => editPoints.SplitAt(square.Index))
                     });
@@ -319,6 +321,7 @@ namespace GameRealisticMap.Studio.Controls
                     menu.Items.Add(new MenuItem()
                     {
                         Header = "Continue path",
+                        Icon = new Image() { Source = new BitmapImage(new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/path.png")) },
                         IsEnabled = square.Index == 0 || square.Index == editPoints.Count - 1,
                         Command = new RelayCommand(_ => ContinuePathFrom(square))
                     });
@@ -326,6 +329,7 @@ namespace GameRealisticMap.Studio.Controls
                 menu.Items.Add(new MenuItem()
                 {
                     Header = "Delete point",
+                    Icon = new Image() { Source = new BitmapImage(new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/bin.png")) },
                     Command = new RelayCommand(_ => PointPositionDelete(square))
                 });
                 ButtonBehaviors.ShowButtonContextMenu(square, menu);
