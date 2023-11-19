@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +26,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private readonly Arma3WorldEditorViewModel parentEditor;
         private readonly IArma3DataModule arma3Data;
         private readonly IInspectorTool inspectorTool;
-
         private IEditablePointCollection? editPoints;
 
         public double BackgroundResolution { get; }
@@ -34,6 +34,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private EditTool _editTool;
         private GrmMapEditMode _editMode;
         private EditableArma3RoadTypeInfos? selectectedRoadType;
+        private IEnumerable<IEditablePointCollection>? selectedItems;
 
         public Arma3WorldMapViewModel(Arma3WorldEditorViewModel parent, IArma3DataModule arma3Data)
         {
@@ -44,17 +45,88 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             DisplayName = parent.DisplayName + " - Editor";
         }
 
+        public bool CanMerge => selectedItems != null 
+            && selectedItems.All(i => i is EditRoadEditablePointCollection)
+            && CanMergeRoads(selectedItems.Cast<EditRoadEditablePointCollection>().ToList());
+
+        private static bool CanMergeRoads(List<EditRoadEditablePointCollection> editRoadEditablePointCollections)
+        {
+            return editRoadEditablePointCollections.Count == 2 && editRoadEditablePointCollections[0].RoadTypeInfos == editRoadEditablePointCollections[1].RoadTypeInfos;
+        }
+
         public IEditablePointCollection? EditPoints
         {
             get { return editPoints; }
-            set { if (editPoints != value) { editPoints = value; NotifyOfPropertyChange(); inspectorTool.SelectedObject = value as IInspectableObject; } }
+            set 
+            { 
+                if (editPoints != value) 
+                {
+                    editPoints = value; 
+                    NotifyOfPropertyChange(); 
+                    inspectorTool.SelectedObject = value as IInspectableObject; 
+                } 
+            }
+        }
+        public IEnumerable<IEditablePointCollection>? SelectedItems
+        {
+            get { return selectedItems; }
+            set
+            {
+                if (selectedItems != value)
+                {
+                    selectedItems = value;
+                    NotifyOfPropertyChange();
+
+                    if (editPoints != null && selectedItems != null)
+                    {
+                        EditPoints = null;
+                    }
+
+                    NotifyOfPropertyChange(nameof(CanMerge));
+                }
+            }
         }
 
         public TerrainSpacialIndex<TerrainObjectVM>? Objects { get; set; }
 
         public ICommand SelectItemCommand => new RelayCommand(SelectItem);
 
+        public ICommand AddToSelectionCommand => new RelayCommand(AddToSelection);
+
         public ICommand InsertPointCommand => new RelayCommand(p => InsertPoint((TerrainPoint)p));
+
+        public ICommand DeleteSelectionCommand => new RelayCommand(_ => DeleteSelection());
+
+        public ICommand MergeSelectionCommand => new RelayCommand(_ => MergeSelection());
+
+        private void MergeSelection()
+        {
+            if (selectedItems != null)
+            {
+                var items = selectedItems.Cast<EditRoadEditablePointCollection>().ToList();
+                if (CanMergeRoads(items))
+                {
+                    UndoRedoManager.ExecuteAction(new MergeRoadAction(this, items[0], items[1]));
+                }
+            }
+        }
+
+        private void DeleteSelection()
+        {
+            if (selectedItems != null)
+            {
+                foreach (var road in selectedItems.OfType<IEditablePointCollection>())
+                {
+                    road.Remove();
+                }
+                SelectedItems = null;
+            }
+            else if (editPoints != null)
+            {
+                editPoints.Remove();
+                EditPoints = null;
+            }
+        }
 
         private void InsertPoint(TerrainPoint point)
         {
@@ -77,6 +149,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public void SelectItem(object? item)
         {
+            SelectedItems = null;
+
             if (item is EditableArma3Road road)
             {
                 EditPoints = CreateEdit(road);
@@ -84,6 +158,25 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             else
             {
                 EditPoints = null;
+            }
+        }
+
+        public void AddToSelection(object? item)
+        {
+            if (item is EditableArma3Road road)
+            {
+                if (selectedItems != null)
+                {
+                    SelectedItems = selectedItems.Concat(new[] { CreateEdit(road) }).ToList();
+                }
+                else if (editPoints != null)
+                {
+                    SelectedItems = new[] { editPoints, CreateEdit(road) }.ToList();
+                }
+                else
+                {
+                    EditPoints = CreateEdit(road);
+                }
             }
         }
 

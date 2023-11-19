@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -24,6 +25,9 @@ namespace GameRealisticMap.Studio.Controls
 
         public static readonly DependencyProperty EditPointsProperty =
             DependencyProperty.Register(nameof(EditPoints), typeof(IEditablePointCollection), typeof(GrmMapEditLayer), new PropertyMetadata(null, EditPoints_Changed));
+
+        public static readonly DependencyProperty OutlineProperty =
+            DependencyProperty.Register(nameof(Outline), typeof(IEnumerable<IReadOnlyCollection<TerrainPoint>>), typeof(GrmMapEditLayer), new PropertyMetadata(null, Outline_Changed));
 
         public static readonly DependencyProperty EditModeProperty =
             DependencyProperty.Register(nameof(EditMode), typeof(GrmMapEditMode), typeof(GrmMapEditLayer), new PropertyMetadata(GrmMapEditMode.None, EditMode_Changed));
@@ -49,6 +53,12 @@ namespace GameRealisticMap.Studio.Controls
             set { SetValue(EditPointsProperty, value); }
         }
 
+        public IEnumerable<IReadOnlyCollection<TerrainPoint>>? Outline
+        {
+            get { return (IEnumerable<IReadOnlyCollection<TerrainPoint>>?)GetValue(OutlineProperty); }
+            set { SetValue(OutlineProperty, value); }
+        }
+
         public ICommand? ClearSelection
         {
             get { return (ICommand?)GetValue(ClearSelectionProperty); }
@@ -61,6 +71,10 @@ namespace GameRealisticMap.Studio.Controls
             set { SetValue(InsertPointCommandProperty, value); }
         }
 
+        public ContextMenu? SelectionContextMenu { get; set; }
+
+        public bool IsPreviewEnd => isPreviewEnd;
+
         private static void EditPoints_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((GrmMapEditLayer)d).ChangeEditPoints((IEditablePointCollection?)e.OldValue, (IEditablePointCollection?)e.NewValue);
@@ -69,6 +83,16 @@ namespace GameRealisticMap.Studio.Controls
         private static void EditMode_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((GrmMapEditLayer)d).ChangeEditMode((GrmMapEditMode)e.OldValue, (GrmMapEditMode)e.NewValue);
+        }
+
+        private static void Outline_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((GrmMapEditLayer)d).ChangeOutline((IEnumerable<IReadOnlyCollection<TerrainPoint>>?)e.OldValue, (IEnumerable<IReadOnlyCollection<TerrainPoint>>?)e.NewValue);
+        }
+
+        private void ChangeOutline(IEnumerable<IReadOnlyCollection<TerrainPoint>>? oldValue, IEnumerable<IReadOnlyCollection<TerrainPoint>>? newValue)
+        {
+            overlay.InvalidateVisual();
         }
 
         private void ChangeEditMode(GrmMapEditMode oldValue, GrmMapEditMode newValue)
@@ -80,11 +104,11 @@ namespace GameRealisticMap.Studio.Controls
             else
             {
                 Cursor = Cursors.Cross;
-
                 if (newValue == GrmMapEditMode.ContinuePath)
                 {
                     if (!InternalChildren.OfType<GrmMapDraggableSquare>().Any(p => p.IsFocused))
                     {
+                        isPreviewEnd = false;
                         InternalChildren.OfType<GrmMapDraggableSquare>().First(p => p.Index == 0).Focus();
                     }
                 }
@@ -213,6 +237,7 @@ namespace GameRealisticMap.Studio.Controls
                 if (mode == GrmMapEditMode.ContinuePath)
                 {
                     ContinuePath(parent.ViewportCoordinates(e.GetPosition(parent)), e);
+                    e.Handled = true;
                     return;
                 }
                 if (e.ClickCount == 2)
@@ -221,7 +246,10 @@ namespace GameRealisticMap.Studio.Controls
                     return;
                 }
             }
-            ClearSelection?.Execute(null);
+            if (Keyboard.Modifiers == ModifierKeys.None)
+            {
+                ClearSelection?.Execute(null);
+            }
             base.OnMouseLeftButtonDown(e);
         }
 
@@ -343,37 +371,6 @@ namespace GameRealisticMap.Studio.Controls
             }
         }
 
-        internal PathGeometry? CreateEditPointGeometry()
-        {
-            if (editPoints != null && editPoints.Count > 0)
-            {
-                return CreateEditPointGeometry(editPoints);
-            }
-            return null;
-        }
-
-        private PathGeometry CreateEditPointGeometry(IEditablePointCollection source)
-        {
-            var points = source.Select(p => ParentMap!.ProjectViewport(p)).ToList();
-            if (EditMode == GrmMapEditMode.ContinuePath)
-            {
-                var previewInsertPoint = Mouse.GetPosition(parentMap);
-                if (isPreviewEnd)
-                { 
-                    points.Add(previewInsertPoint); 
-                }
-                else
-                {
-                    points.Insert(0, previewInsertPoint);
-                }
-            }
-            var path = new PathGeometry();
-            var figure = new PathFigure { StartPoint = points.First() };
-            figure.Segments.Add(new PolyLineSegment(points.Skip(1), true));
-            path.Figures.Add(figure);
-            return path;
-        }
-
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -439,6 +436,64 @@ namespace GameRealisticMap.Studio.Controls
             base.OnViewportChanged();
             InvalidateArrange();
             overlay.InvalidateVisual();
+        }
+
+        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+        {
+            var parent = ParentMap;
+            if (parent != null)
+            {
+                var outline = Outline;
+                if (outline != null)
+                {
+                    var point = parent.ViewportCoordinates(e.GetPosition(parent));
+                    foreach (var segment in outline)
+                    {
+                        if (HitTestPath(point, segment))
+                        {
+                            e.Handled = true;
+                            return;
+                        }
+                    }
+                }
+                else if ( editPoints != null)
+                {
+                    var point = parent.ViewportCoordinates(e.GetPosition(parent));
+                    if (HitTestPath(point, editPoints))
+                    {
+                        e.Handled = true;
+                        return;
+                    }
+                }
+            }
+            base.OnMouseRightButtonDown(e);
+        }
+
+        private static bool HitTestPath(TerrainPoint point, IReadOnlyCollection<TerrainPoint> segment)
+        {
+            if (segment.Count == 0)
+            {
+                return false;
+            }
+            if (segment.Count == 1)
+            {
+                return (segment.First().Vector - point.Vector).Length() < 2;
+            }
+            return new TerrainPath(segment.ToList()).Distance(point) < 2;
+        }
+
+        protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
+        {
+            var context = SelectionContextMenu;
+            if (context != null)
+            {
+                context.PlacementTarget = this;
+                context.Placement = PlacementMode.MousePoint;
+                context.IsOpen = true;
+            }
+
+            // TODO: Open context menu
+            base.OnMouseRightButtonUp(e);
         }
 
         protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)

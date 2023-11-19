@@ -13,14 +13,23 @@ namespace GameRealisticMap.Studio.Controls
 {
     public sealed class GrmMapArma3 : GrmMapDrawLayerBase
     {
+        public static readonly DependencyProperty SelectItemProperty =
+            DependencyProperty.Register("SelectItem", typeof(ICommand), typeof(GrmMapArma3), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty AddToSelectionCommandProperty =
+            DependencyProperty.Register("AddToSelectionCommand", typeof(ICommand), typeof(GrmMapArma3), new PropertyMetadata(null));
+
         public ICommand? SelectItem
         {
             get { return (ICommand?)GetValue(SelectItemProperty); }
             set { SetValue(SelectItemProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectItemProperty =
-            DependencyProperty.Register("SelectItem", typeof(ICommand), typeof(GrmMapArma3), new PropertyMetadata(null));
+        public ICommand? AddToSelectionCommand
+        {
+            get { return (ICommand?)GetValue(AddToSelectionCommandProperty); }
+            set { SetValue(AddToSelectionCommandProperty, value); }
+        }
 
         public Dictionary<EditableArma3RoadTypeInfos, Pen> RoadBrushes { get; } = new();
 
@@ -100,7 +109,7 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (e.Source == this && Keyboard.Modifiers == ModifierKeys.None && e.ClickCount == 1)
+            if (e.Source == this && e.ClickCount == 1)
             {
                 var roads = Roads;
                 if (roads != null)
@@ -116,7 +125,14 @@ namespace GameRealisticMap.Studio.Controls
                         .Select(r => r.road)
                         .FirstOrDefault();
 
-                    SelectItem?.Execute(editRoad);
+                    if (Keyboard.Modifiers == ModifierKeys.Control)
+                    {
+                        AddToSelectionCommand?.Execute(editRoad);
+                    }
+                    else
+                    {
+                        SelectItem?.Execute(editRoad);
+                    }
                     e.Handled = true;
                 }
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -16,13 +17,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
     public class EditRoadEditablePointCollection : PropertyChangedBase, IEditablePointCollection, IInspectableObject
     {
-        private readonly ObservableCollection<TerrainPoint> points;
+        private readonly UndoableObservableCollection<TerrainPoint> points;
         private readonly EditableArma3Road road;
         private readonly Arma3WorldMapViewModel editor;
 
         internal EditRoadEditablePointCollection(EditableArma3Road road, Arma3WorldMapViewModel editor)
         {
-            points = new ObservableCollection<TerrainPoint>(road.Path.Points);
+            points = new UndoableObservableCollection<TerrainPoint>(road.Path.Points);
             points.CollectionChanged += Points_CollectionChanged;
             this.road = road;
             this.editor = editor;
@@ -30,13 +31,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             Inspectors =
                 new InspectableObjectBuilder()
                     .WithEditor(this, r => r.RoadTypeInfos, new RoadTypeInfosInspectorViewModel(editor))
+                    .WithEditor(this, r => r.Order, new TextBoxEditorViewModel<int>())
                     .ToInspectableObject()
                     .Inspectors;
         }
 
         internal EditableArma3Road Road => road;
 
-        internal ObservableCollection<TerrainPoint> Points => points;
+        internal UndoableObservableCollection<TerrainPoint> Points => points;
 
         internal Arma3WorldMapViewModel Editor => editor;
 
@@ -113,6 +115,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             editor.UndoRedoManager.ExecuteAction(new UndoableFocusWrapper(action, EnsureFocus));
         }
 
+        public void Remove()
+        {
+            points.ClearUndoable(Execute);
+        }
+
         public EditableArma3RoadTypeInfos RoadTypeInfos
         {
             get { return road.RoadTypeInfos; }
@@ -128,5 +135,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         }
 
         public IEnumerable<IInspector> Inspectors { get; }
+
+        public int Order
+        {
+            get { return road.Order; }
+            set
+            {
+                if (road.Order != value)
+                {
+                    EnsureFocus();
+                    road.Order = value;
+                    NotifyOfPropertyChange();
+                }
+            }
+        }
     }
 }

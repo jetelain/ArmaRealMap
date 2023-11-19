@@ -24,5 +24,7 @@ namespace GameRealisticMap.Studio.Controls
         bool CanSplit { get; }
 
         void SplitAt(int index);
+
+        void Remove();
     }
 }
