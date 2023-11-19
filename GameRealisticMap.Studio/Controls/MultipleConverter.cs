@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
+namespace GameRealisticMap.Studio.Controls
 {
-    internal class MultipleConverter : IValueConverter
+    public sealed class MultipleConverter : IValueConverter
     {
         public double Scale { get; set; } = 1;
 

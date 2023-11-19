@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
-             xmlns:xxxx="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             xmlns:a3="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Controls"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views"
              xmlns:vm="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels"
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
@@ -12,8 +12,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <xxxx:TexturePreviewConverter x:Key="TexturePreviewConverter" />
-        <xxxx:MultipleConverter Scale="10" x:Key="X10" />
+        <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" />
+        <grm:MultipleConverter Scale="10" x:Key="X10" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
