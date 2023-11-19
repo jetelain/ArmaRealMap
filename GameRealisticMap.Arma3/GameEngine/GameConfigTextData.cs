@@ -14,13 +14,15 @@ namespace GameRealisticMap.Arma3.GameEngine
         private static readonly Regex WorldNameRegex = new Regex(@"worldName\s*=\s*""([^""]+)\.wrp""", RegexOptions.CultureInvariant|RegexOptions.IgnoreCase);
         private static readonly Regex DescriptionRegex = new Regex(@"description\s*=\s*""([^""]+)""", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
         private static readonly Regex RevisionRegex = new Regex(@"grma3_revision\s*=\s*([0-9]+)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        private static readonly Regex RoadsRegex = new Regex(@"newRoadsShape\s*=\s*""([^""]+)\\roads.shp""", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
-        public GameConfigTextData(string initialContent, string pboPrefix, string worldName, string description, int revision)
+        public GameConfigTextData(string initialContent, string pboPrefix, string worldName, string description, string roads, int revision)
         {
             InitialContent = initialContent; 
             PboPrefix = pboPrefix;
             WorldName = worldName;
             Description = description;
+            Roads = roads;
             Revision = revision;
         }
 
@@ -45,6 +47,11 @@ namespace GameRealisticMap.Arma3.GameEngine
         public string Description { get; set; }
 
         /// <summary>
+        /// Path to roads shape file
+        /// </summary>
+        public string Roads { get; set; }
+
+        /// <summary>
         /// GRM specific revision number
         /// </summary>
         public int Revision { get; set; }
@@ -58,6 +65,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         {
             var pboPrefix = string.Empty;
             var description = string.Empty;
+            var roads = string.Empty;
             var revision = 0;
 
             var match = WorldNameRegex.Match(content);
@@ -94,7 +102,13 @@ namespace GameRealisticMap.Arma3.GameEngine
                 revision = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
             }
 
-            return new GameConfigTextData(content, pboPrefix, worldName ?? string.Empty, description, revision);
+            match = RoadsRegex.Match(content);
+            if (match.Success)
+            {
+                roads = match.Groups[1].Value;
+            }
+
+            return new GameConfigTextData(content, pboPrefix, worldName ?? string.Empty, description, roads, revision);
         }
 
         public void SaveIncrementalToFile(string filePath)

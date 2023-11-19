@@ -91,7 +91,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             try
             {
-                var library = new ImportLibrary(await IoC.Get<IAssetsCatalogService>().Load(), parent.Library);
+                var library = new ImportLibrary(await IoC.Get<IAssetsCatalogService>().GetOrLoad(), parent.Library);
 
                 list.Clear();
                 using (var task = new BasicProgressSystem(this, logger))

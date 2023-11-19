@@ -8,6 +8,7 @@
              xmlns:cal="http://caliburnmicro.com"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:ctrl="clr-namespace:GameRealisticMap.Studio.Modules.ConditionTool.Controls"
+             xmlns:a3="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Controls"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              mc:Ignorable="d" 
              Foreground="{DynamicResource EnvironmentWindowText}"
@@ -15,7 +16,7 @@
     <UserControl.Resources>
         <local:CollectionCountValueConverter x:Key="CollectionCountValueConverter" />
         <local:PercentValueConverter x:Key="PercentValueConverter" />
-        <local:TexturePreviewConverter x:Key="TexturePreviewConverter" />
+        <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 

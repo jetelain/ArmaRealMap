@@ -35,7 +35,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
         {
             var part = partitioner.GetPartFromId(partId);
 
-            var textures = await GetTexturesFromRvMat(part);
+            var textures = (await GetTexturesFromRvMat(part)).Select(t => t.Id).ToList();
 
             var imageFileName = $"{path}\\data\\layers\\M_{part.X:000}_{part.Y:000}_lca.png";
             using var streamImage = fileSystem.OpenFileIfExists(imageFileName);
@@ -77,29 +77,29 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
             return textures;
         }
 
-        private static Rgb24 GetColor(Rgba32 rgba32, List<TerrainMaterial> textures)
+        private static Rgb24 GetColor(Rgba32 rgba32, List<Rgb24> textures)
         {
             if (rgba32.B == 255)
             {
                 if (rgba32.A == 0)
                 {
-                    return textures[5].Id;
+                    return textures[5];
                 }
                 if (rgba32.A == 128)
                 {
-                    return textures[4].Id;
+                    return textures[4];
                 }
-                return textures[3].Id;
+                return textures[3];
             }
             if (rgba32.G == 255)
             {
-                return textures[2].Id;
+                return textures[2];
             }
             if (rgba32.R == 255)
             {
-                return textures[1].Id;
+                return textures[1];
             }
-            return textures[0].Id;
+            return textures[0];
         }
 
         public Task SaveImagePart<TPixel>(int partId, Image<TPixel> partImage)

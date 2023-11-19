@@ -19,7 +19,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.Views
             var vm = DataContext as ConditionTestMapViewModel;
             if (vm != null)
             {
-                await vm.RunViewport(map.GetViewportEnveloppe());
+                await vm.RunViewport(Map.GetViewportEnveloppe());
             }
         }
     }

@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Arma3WorldMapView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
+             xmlns:a3="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Controls"
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views"
+             xmlns:vm="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels"
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             Foreground="{DynamicResource EnvironmentWindowText}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" />
+        <grm:MultipleConverter Scale="10" x:Key="X10" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <RadioButton GroupName="View" IsChecked="{Binding BackgroundMode, Converter={grm:EnumToBoolean {x:Static vm:BackgroundMode.Satellite}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/satellite.png" Height="16" />
+                    <TextBlock VerticalAlignment="Center" Margin="5" >Satellite</TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton GroupName="View" IsChecked="{Binding BackgroundMode, Converter={grm:EnumToBoolean {x:Static vm:BackgroundMode.TextureMask}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/rgb.png" Height="16" />
+                    <TextBlock VerticalAlignment="Center" Margin="5" >Texture mask</TextBlock>
+                </StackPanel> 
+            </RadioButton>
+
+            <RadioButton GroupName="Tool" IsChecked="{Binding EditTool, Converter={grm:EnumToBoolean {x:Static vm:EditTool.Cursor}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0" Margin="10 0 0 0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/cursor.png" Height="16" />
+                </StackPanel>
+            </RadioButton>
+            <RadioButton b:ButtonBehaviors.OpenContextOnClick="True"  GroupName="Tool" IsChecked="{Binding EditTool, Converter={grm:EnumToBoolean {x:Static vm:EditTool.AddRoad}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/road.png" Height="16" />
+                    <TextBlock VerticalAlignment="Center" Margin="5" >Add road</TextBlock>
+                </StackPanel>
+                <RadioButton.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding RoadTypes}">
+                        <ContextMenu.ItemContainerStyle>
+                            <Style>
+                                <Setter Property="MenuItem.Header" Value="{Binding}" />
+                                <Setter Property="MenuItem.Command" Value="{Binding}" />
+                                <Setter Property="MenuItem.IsChecked" Value="{Binding IsSelected}" />
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
+                        <ContextMenu.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0 5">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Grid.Column="0" Source="{Binding Texture, Converter={StaticResource TexturePreviewConverter}}" 
+                                        Width="{Binding TextureWidth, Converter={StaticResource X10}}" />
+                                    
+                                    <TextBlock Grid.Column="1" Text="{Binding Label}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ContextMenu.ItemTemplate>
+                    </ContextMenu>
+                </RadioButton.ContextMenu>
+            </RadioButton>
+
+        </StackPanel>
+
+        <grm:GrmMap Grid.Row="1" SizeInMeters="{Binding SizeInMeters}" >
+
+            <grm:GrmMapEditLayer EditPoints="{Binding EditPoints}" ClearSelection="{Binding SelectItemCommand}" InsertPointCommand="{Binding InsertPointCommand}"  EditMode="{Binding GrmMapEditMode, Mode=TwoWay}" Outline="{Binding SelectedItems}">
+                
+                <grm:GrmMapHugeImageLayer Image="{Binding BackgroundImage}"  Resolution="{Binding BackgroundResolution}" Opacity="0.8" IsHitTestVisible="False" />
+
+                <grm:GrmMapArma3 Roads="{Binding Roads}" Objects="{Binding Objects}" SelectItem="{Binding SelectItemCommand}" AddToSelectionCommand="{Binding AddToSelectionCommand}" />
+
+                <grm:GrmMapEditLayer.SelectionContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Merge selection" Command="{Binding MergeSelectionCommand}" Visibility="{Binding CanMerge, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/merge.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Delete selection" Command="{Binding DeleteSelectionCommand}">
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/bin.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </grm:GrmMapEditLayer.SelectionContextMenu>
+                
+            </grm:GrmMapEditLayer>
+
+        </grm:GrmMap>
+        
+
+    </Grid>
+</UserControl>

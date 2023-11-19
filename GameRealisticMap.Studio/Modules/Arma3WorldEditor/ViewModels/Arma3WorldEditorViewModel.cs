@@ -13,6 +13,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Arma3.Edit.Imagery;
 using GameRealisticMap.Arma3.GameEngine;
+using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
@@ -20,9 +21,11 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
+using Gemini.Framework.Services;
 using HugeImages;
 using HugeImages.Storage;
 using Microsoft.Win32;
@@ -30,7 +33,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
-    internal class Arma3WorldEditorViewModel : PersistedDocument
+    internal class Arma3WorldEditorViewModel : PersistedDocument, IExplorerRootTreeItem
     {
         private EditableWrp? _world;
         private GameConfigTextData? _configFile;
@@ -42,6 +45,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private readonly IArma3RecentHistory history;
         private readonly IArma3BackupService worldBackup;
         private ExistingImageryInfos? _imagery;
+        private bool isRoadsDirty;
+        private Arma3WorldMapViewModel? mapEditor;
+        private EditableArma3Roads? roads;
 
         public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history, IArma3BackupService worldBackup) 
         {
@@ -87,9 +93,15 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 Imagery = ExistingImageryInfos.TryCreate(arma3Data.ProjectDrive, ConfigFile.PboPrefix, SizeInMeters!.Value);
             }
 
+            if (Roads != null)
+            {
+                LoadRoads();
+            }
+
             UpdateBackupsList(filePath);
 
             NotifyOfPropertyChange(nameof(HistoryEntry));
+            NotifyOfPropertyChange(nameof(TreeName));
         }
 
         private void UpdateBackupsList(string filePath)
@@ -228,6 +240,24 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             set { _imagery = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(IsImageryEditable)); NotifyOfPropertyChange(nameof(IsNotImageryEditable)); }
         }
 
+        public bool IsRoadsDirty 
+        { 
+            get { return isRoadsDirty; } 
+            set { isRoadsDirty = value; if (value) { IsDirty = true; } } 
+        } 
+
+        public EditableArma3Roads? Roads 
+        { 
+            get { return roads; } 
+            set { roads = value; mapEditor?.InvalidateRoads(); } 
+        }
+
+        public string TreeName => FileName;
+
+        public string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapFile.png";
+
+        public IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
+
         protected override Task DoNew()
         {
             throw new NotSupportedException("You cannot create an empty world file.");
@@ -237,9 +267,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (World != null)
             {
+                if (IsRoadsDirty && Roads != null && ConfigFile != null && !string.IsNullOrEmpty(ConfigFile.Roads))
+                {
+                    new RoadsSerializer(arma3Data.ProjectDrive).Serialize(
+                        ConfigFile.Roads, Roads.Roads.Where(r => !r.IsRemoved), Roads.RoadTypeInfos);
+                    ConfigFile.Revision++;
+                    IsRoadsDirty = false;
+                }
                 if (IsDirty)
                 {
-                    worldBackup.CreateBackup(filePath, savedRevision, ConfigFilePath(filePath), DependenciesFilePath(filePath));
+                    worldBackup.CreateBackup(filePath, savedRevision, GetBackupFiles(filePath));
                     StreamHelper.Write(World, filePath);
                     UpdateBackupsList(filePath);
                 }
@@ -254,6 +291,34 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     await JsonSerializer.SerializeAsync(stream, Dependencies);
                 }
             }
+        }
+
+        internal void LoadRoads()
+        {
+            if (ConfigFile != null && !string.IsNullOrEmpty(ConfigFile.Roads))
+            {
+                Roads = new RoadsDeserializer(arma3Data.ProjectDrive).Deserialize(ConfigFile.Roads);
+            }
+            else
+            {
+                Roads = null;
+            }
+            IsRoadsDirty = false;
+        }
+
+        private List<string> GetBackupFiles(string filePath)
+        {
+            var filesToBackup = new List<string>()
+                    {
+                        ConfigFilePath(filePath),
+                        DependenciesFilePath(filePath)
+                    };
+            var roadBasePath = ConfigFile?.Roads;
+            if (!string.IsNullOrEmpty(roadBasePath))
+            {
+                filesToBackup.AddRange(RoadsSerializer.GetFilenames(roadBasePath).Select(arma3Data.ProjectDrive.GetFullPath));
+            }
+            return filesToBackup;
         }
 
         public async Task GenerateMod()
@@ -446,7 +511,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             return null;
         }
 
-        private async Task<Arma3Assets?> GetAssetsFromHistory()
+        internal async Task<Arma3Assets?> GetAssetsFromHistory()
         {
             try
             {
@@ -525,5 +590,15 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 }
             }
         }
+
+        public Task EditAdvanced()
+        {
+            if (mapEditor == null)
+            {
+                mapEditor = new Arma3WorldMapViewModel(this, arma3Data);
+            }
+            return IoC.Get<IShell>().OpenDocumentAsync(mapEditor);
+        }
+
     }
 }

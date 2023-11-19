@@ -29,8 +29,10 @@
             <TextBlock Text="{Binding Stats}" />
         </StackPanel>
         <ProgressBar HorizontalAlignment="Left" Width="300" Height="15" Margin="5" IsIndeterminate="True"  Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-        <grm:GrmMapViewer x:Name="map" Grid.Row="1" MapData="{Binding PreviewMapData}" IsTrue="{Binding IsTrue}" IsFalse="{Binding IsFalse}" SizeInMeters="{Binding SizeInMeters}" />
-
+        
+        <grm:GrmMap x:Name="Map" Grid.Row="1" SizeInMeters="{Binding SizeInMeters}">
+            <grm:GrmMapPreviewLayer MapData="{Binding PreviewMapData}" IsTrue="{Binding IsTrue}" IsFalse="{Binding IsFalse}" />
+        </grm:GrmMap>
+        
     </Grid>
 </UserControl>

@@ -24,8 +24,13 @@
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
+
+
             
             <StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
+                <Button Margin="5" Padding="10" cal:Message.Attach="EditAdvanced" IsEnabled="{Binding CanGenerateMod}">
+                    <Run Text="Go Advanded Editor"/>
+                </Button>
                 <Button Margin="5" Padding="10" cal:Message.Attach="ImportEden">
                     <Run Text="{x:Static r:Labels.ImportChangesFromEdenEditor}" />
                 </Button>

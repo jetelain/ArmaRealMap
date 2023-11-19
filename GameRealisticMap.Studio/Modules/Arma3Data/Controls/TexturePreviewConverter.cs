@@ -3,12 +3,10 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
-using GameRealisticMap.Studio.Modules.Arma3Data;
-using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 
-namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.Views
+namespace GameRealisticMap.Studio.Modules.Arma3Data.Controls
 {
-    internal class TexturePreviewConverter : IValueConverter
+    public sealed class TexturePreviewConverter : IValueConverter
     {
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

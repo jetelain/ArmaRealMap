@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
-using BIS.Core.Streams;
 using BIS.P3D;
-using BIS.P3D.ODOL;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using NLog;
 
@@ -16,10 +16,13 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
     [Export(typeof(IAssetsCatalogService))]
     internal class AssetsCatalogService : IAssetsCatalogService
     {
-        private static readonly Logger logger = NLog.LogManager.GetLogger("AssetsCatalogService");
+        private static readonly Logger logger = LogManager.GetLogger("AssetsCatalogService");
+
+        private readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
+        private List<AssetCatalogItem>? cachedList;
 
         private readonly IArma3DataModule arma3DataModule;
-        public string AssetsCatalogPath { get; set; } = System.IO.Path.Combine(
+        public string AssetsCatalogPath { get; set; } = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "GameRealisticMap",
             "Arma3",
@@ -31,30 +34,73 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             this.arma3DataModule = arma3DataModule;
         }
 
-        public Task<List<AssetCatalogItem>> Load()
+        public async Task<List<AssetCatalogItem>> GetOrLoad()
         {
-            return LoadFrom(AssetsCatalogPath);
+            if (cachedList == null)
+            {
+                await semaphoreSlim.WaitAsync().ConfigureAwait(false);
+                try
+                {
+                    if (cachedList == null)
+                    {
+                        cachedList = await EnsureLibraryModels(await LoadFromFile().ConfigureAwait(false)).ConfigureAwait(false);
+                    }
+                }
+                finally
+                { 
+                    semaphoreSlim.Release(); 
+                }
+            }
+            return cachedList;
         }
 
-        public async Task<List<AssetCatalogItem>> LoadFrom(string fileName)
+        private async Task<List<AssetCatalogItem>> LoadFromFile()
         {
-            if ( File.Exists(fileName))
+            if (File.Exists(AssetsCatalogPath))
             {
-                using var stream = File.OpenRead(fileName);
-                return await JsonSerializer.DeserializeAsync<List<AssetCatalogItem>>(stream, new JsonSerializerOptions() { Converters = { new JsonStringEnumConverter() } }) ?? new List<AssetCatalogItem>();
+                using var stream = File.OpenRead(AssetsCatalogPath);
+                return await JsonSerializer.DeserializeAsync<List<AssetCatalogItem>>(stream, new JsonSerializerOptions() { Converters = { new JsonStringEnumConverter() } }).ConfigureAwait(false)
+                    ?? new List<AssetCatalogItem>();
             }
             return new List<AssetCatalogItem>();
         }
 
-        public Task Save(List<AssetCatalogItem> items)
+        private async Task<List<AssetCatalogItem>> EnsureLibraryModels(List<AssetCatalogItem> items)
         {
-            return SaveTo(AssetsCatalogPath, items);
+            await EnsurePaths(items, arma3DataModule.Library.Models.Select(m => m.Path)).ConfigureAwait(false);
+            return items;
         }
 
-        public async Task SaveTo(string fileName, List<AssetCatalogItem> items)
+        private async Task EnsurePaths(List<AssetCatalogItem> items, IEnumerable<string> paths)
         {
-            using var stream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(stream, items, new JsonSerializerOptions() { Converters = { new JsonStringEnumConverter() } });
+            var known = new HashSet<string>(items.Select(i => i.Path), StringComparer.OrdinalIgnoreCase);
+            var missing = await ImportItems(paths.Where(m => !known.Contains(m))).ConfigureAwait(false);
+            items.AddRange(missing);
+            if (missing.Count > 0)
+            {
+                await SaveToFile(items).ConfigureAwait(false);
+            }
+        }
+
+        public async Task Save(List<AssetCatalogItem> items)
+        {
+            await semaphoreSlim.WaitAsync().ConfigureAwait(false);
+            try
+            {
+                cachedList = items;
+
+                await SaveToFile(items).ConfigureAwait(false);
+            }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+        }
+
+        private async Task SaveToFile(List<AssetCatalogItem> items)
+        {
+            using var stream = File.Create(AssetsCatalogPath);
+            await JsonSerializer.SerializeAsync(stream, items, new JsonSerializerOptions() { Converters = { new JsonStringEnumConverter() } }).ConfigureAwait(false);
         }
 
         public Task<List<AssetCatalogItem>> ImportItems(IEnumerable<string> paths, string modId = "")
@@ -64,11 +110,18 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             {
                 try
                 {
-                    using var stream = arma3DataModule.ProjectDrive.OpenFileIfExists(path);
-                    if (stream != null)
+                    var infos = arma3DataModule.Library.ReadModelInfoOnly(path);
+                    if (infos != null)
                     {
-                        var infos = StreamHelper.Read<P3DInfosOnly>(stream);
-                        result.Add(new AssetCatalogItem(path, GetModId(modId, path), DetectModel(infos.ModelInfo, path), infos.ModelInfo.BboxMax.Vector3 - infos.ModelInfo.BboxMin.Vector3, GetHeight(infos.ModelInfo)));
+                        result.Add(new AssetCatalogItem(path,
+                            GetModId(modId, path),
+                            DetectModel(infos, path),
+                            infos.BboxMax.Vector3 - infos.BboxMin.Vector3,
+                            (infos.BoundingCenter.Vector3 + infos.BboxMax.Vector3).Y,
+                            infos.BboxMin.Vector3,
+                            infos.BboxMax.Vector3,
+                            infos.BoundingCenter.Vector3,
+                            arma3DataModule.ProjectDrive.GetLastWriteTimeUtc(path)));
                     }
                 }
                 catch(Exception ex)
@@ -77,15 +130,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 }
             }
             return Task.FromResult(result);
-        }
-
-        private float GetHeight(IModelInfo modelInfo)
-        {
-            if ( modelInfo is ModelInfo odolModel)
-            {
-                return (odolModel.BoundingCenter.Vector3 + odolModel.BboxMax.Vector3).Y;
-            }
-            return modelInfo.BboxMax.Y;
         }
 
         private string GetModId(string modId, string path)
@@ -120,7 +164,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             return modId;
         }
 
-        private AssetCatalogCategory DetectModel(IModelInfo modelInfo, string name)
+        private static AssetCatalogCategory DetectModel(IModelInfo modelInfo, string name)
         {
             if (modelInfo.MapType != MapType.Hide)
             {
@@ -133,7 +177,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             }
             return ClassToCategory(modelInfo.Class, name);
         }
-        private AssetCatalogCategory ClassToCategory(string modelClass, string name)
+        private static AssetCatalogCategory ClassToCategory(string modelClass, string name)
         {
             switch (modelClass.ToLowerInvariant())
             {
@@ -155,7 +199,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             return AssetCatalogCategory.Unknown;
         }
 
-        private AssetCatalogCategory ToCategory(IModelInfo modelInfo, string name)
+        private static AssetCatalogCategory ToCategory(IModelInfo modelInfo, string name)
         {
             switch (modelInfo.MapType)
             {
@@ -223,6 +267,60 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             }
             logger.Debug($"Unknown map='{modelInfo.MapType}' for '{name}'");
             return AssetCatalogCategory.Unknown;
+        }
+
+        public async Task<Dictionary<string, AssetCatalogItem>> GetItems(IEnumerable<string> paths)
+        {
+            var items = await GetOrLoad().ConfigureAwait(false);
+
+            await EnsurePaths(items, paths).ConfigureAwait(false);
+
+            var requestedItems = new Dictionary<string, AssetCatalogItem>(StringComparer.OrdinalIgnoreCase);
+            var allItems = items.ToDictionary(k => k.Path, k => k, StringComparer.OrdinalIgnoreCase);
+            var upgraded = false;
+            foreach(var path in paths)
+            {
+                if (allItems.TryGetValue(path, out var item))
+                {
+                    if (!item.HasBounding || IsObsolete(item))
+                    {
+                        var infos = arma3DataModule.Library.ReadModelInfoOnly(path);
+                        if (infos != null)
+                        {
+                            item.BboxMin = infos.BboxMin.Vector3;
+                            item.BboxMax = infos.BboxMax.Vector3;
+                            item.BoundingCenter = infos.BoundingCenter.Vector3;
+                            item.Timestamp = arma3DataModule.ProjectDrive.GetLastWriteTimeUtc(path);
+                            upgraded = true;
+                            logger.Warn("Model {0} has been updated.", path);
+                        }
+                        else
+                        {
+                            logger.Warn("Model {0} is unresolved.", path);
+                        }
+                    }
+                    requestedItems[path] = item;
+                }
+            }
+            if (upgraded)
+            {
+                await SaveToFile(items).ConfigureAwait(false);
+            }
+            return requestedItems;
+        }
+
+        private bool IsObsolete(AssetCatalogItem item)
+        {
+            if (item.Timestamp == null)
+            {
+                return true;
+            }
+            var timestamp = arma3DataModule.ProjectDrive.GetLastWriteTimeUtc(item.Path);
+            if (timestamp != null)
+            {
+                return timestamp.Value > item.Timestamp.Value;
+            }
+            return false;
         }
     }
 }

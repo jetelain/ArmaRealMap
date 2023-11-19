@@ -176,15 +176,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            var items = await _catalogService.Load();
-
-            var known = new HashSet<string>(items.Select(i => i.Path), StringComparer.OrdinalIgnoreCase);
-            var missing = await _catalogService.ImportItems(_arma3DataModule.Library.Models.Where(m => !known.Contains(m.Path)).Select(m => m.Path));
-            items.AddRange(missing);
-            if (missing.Count > 0)
-            {
-                await _catalogService.Save(items);
-            }
+            var items = await _catalogService.GetOrLoad();
 
             AllAssets = new BindableCollection<AssetViewModel>(items.Select(m => new AssetViewModel(m, _arma3Previews.GetPreviewFast(m.Path))));
             Assets = CollectionViewSource.GetDefaultView(AllAssets);
