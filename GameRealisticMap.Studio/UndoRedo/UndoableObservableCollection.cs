@@ -8,10 +8,18 @@ namespace GameRealisticMap.Studio.UndoRedo
 {
     public class UndoableObservableCollection<T> : ObservableCollection<T>, IList<T>
     {
+        public UndoableObservableCollection()
+        {
+        }
+
+        public UndoableObservableCollection(IEnumerable<T> collection)
+            : base(collection)
+        {
+        }
+
         public UndoableObservableCollection(List<T> collection)
             : base(collection)
         {
-
         }
 
         public void AddRange(IEnumerable<T> items)
