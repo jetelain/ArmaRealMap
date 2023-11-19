@@ -35,6 +35,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private GrmMapEditMode _editMode;
         private EditableArma3RoadTypeInfos? selectectedRoadType;
         private IEnumerable<IEditablePointCollection>? selectedItems;
+        private readonly Dictionary<EditableArma3Road, EditRoadEditablePointCollection> cache = new Dictionary<EditableArma3Road, EditRoadEditablePointCollection>();
 
         public Arma3WorldMapViewModel(Arma3WorldEditorViewModel parent, IArma3DataModule arma3Data)
         {
@@ -63,7 +64,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 {
                     editPoints = value; 
                     NotifyOfPropertyChange(); 
-                    inspectorTool.SelectedObject = value as IInspectableObject; 
+                    inspectorTool.SelectedObject = value as IInspectableObject;
+
+                    if (editPoints != null && selectedItems != null)
+                    {
+                        SelectedItems = null;
+                    }
                 } 
             }
         }
@@ -141,8 +147,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         internal EditRoadEditablePointCollection CreateEdit(EditableArma3Road road)
         {
-            var edit = new EditRoadEditablePointCollection(road, this);
-            edit.CollectionChanged += MakeRoadsDirty;
+            if (!cache.TryGetValue(road, out var edit))
+            {
+                edit = new EditRoadEditablePointCollection(road, this);
+                edit.CollectionChanged += MakeRoadsDirty;
+                cache[road] = edit;
+            }
             return edit;
         }
 
@@ -338,13 +348,21 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         internal void InvalidateRoads()
         {
-            NotifyOfPropertyChange(nameof(Roads));
-
             if (EditPoints != null)
             {
                 EditPoints = null;
-                NotifyOfPropertyChange(nameof(EditPoints));
             }
+
+            if (SelectedItems != null)
+            {
+                SelectedItems = null;
+            }
+
+            cache.Clear();
+
+            // Clear Undo/Redo history
+            UndoRedoManager.UndoCountLimit = 0;
+            UndoRedoManager.UndoCountLimit = null;
 
             var roads = Roads;
             if (roads != null)
@@ -357,6 +375,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 RoadTypes = new List<RoadTypeSelectVM>();
             }
 
+            NotifyOfPropertyChange(nameof(Roads));
         }
 
 
