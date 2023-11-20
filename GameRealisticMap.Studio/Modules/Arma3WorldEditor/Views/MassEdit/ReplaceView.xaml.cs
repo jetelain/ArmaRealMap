@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views
+namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.MassEdit
 {
     /// <summary>
-    /// Logique d'interaction pour FileImporterView.xaml
+    /// Logique d'interaction pour ReplaceView.xaml
     /// </summary>
-    public partial class FileImporterView : Window
+    public partial class ReplaceView : Window
     {
-        public FileImporterView()
+        public ReplaceView()
         {
             InitializeComponent();
         }

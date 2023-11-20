@@ -67,7 +67,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
 
         private async Task<List<AssetCatalogItem>> EnsureLibraryModels(List<AssetCatalogItem> items)
         {
-            await EnsurePaths(items, arma3DataModule.Library.Models.Select(m => m.Path)).ConfigureAwait(false);
+            await EnsurePaths(items, arma3DataModule.Library.Models.Select(m => m.Path).Distinct(StringComparer.OrdinalIgnoreCase)).ConfigureAwait(false);
             return items;
         }
 

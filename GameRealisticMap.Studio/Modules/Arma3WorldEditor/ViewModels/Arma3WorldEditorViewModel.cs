@@ -21,6 +21,9 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
@@ -48,6 +51,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private bool isRoadsDirty;
         private Arma3WorldMapViewModel? mapEditor;
         private EditableArma3Roads? roads;
+        private List<ObjectStatsItem> objectStatsItems = new List<ObjectStatsItem>();
 
         public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history, IArma3BackupService worldBackup) 
         {
@@ -173,8 +177,31 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public EditableWrp? World
         {
             get { return _world; }
-            set { _world = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Size)); }
+            set { _world = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Size)); UpdateObjectStats(); }
         }
+
+        private void UpdateObjectStats()
+        {
+            if (_world != null)
+            {
+                objectStatsItems = _world
+                    .GetNonDummyObjects()
+                    .GroupBy(o => o.Model, StringComparer.OrdinalIgnoreCase)
+                    .Select(g => new ObjectStatsItem(g.Key, g.Count()))
+                    .ToList();
+                objectStatsItems.Sort((a, b) => b.Count.CompareTo(a.Count));
+            }
+            else
+            {
+                objectStatsItems = new List<ObjectStatsItem>();
+            }
+            NotifyOfPropertyChange(nameof(ObjectStatsItems));
+            NotifyOfPropertyChange(nameof(ObjectStatsText));
+        }
+
+        public string ObjectStatsText => string.Format("{0:N0} objects, {1:N0} distinct models", _world?.ObjectsCount ?? 0, objectStatsItems.Count);
+
+        public List<ObjectStatsItem> ObjectStatsItems => objectStatsItems;
 
         public GameConfigTextData? ConfigFile
         {
@@ -600,5 +627,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             return IoC.Get<IShell>().OpenDocumentAsync(mapEditor);
         }
 
+        public Task OpenReduce()
+        {
+            return windowManager.ShowDialogAsync(new ReduceViewModel(this));
+        }
+
+        public Task OpenReplace()
+        {
+            return windowManager.ShowDialogAsync(new ReplaceViewModel(this));
+        }
+
+        public Task OpenObjectExport()
+        {
+            return windowManager.ShowDialogAsync(new FileExporterViewModel(this));
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
+namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
 {
     internal class AmbiguousItem
     {
@@ -23,7 +23,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public Task Resolve()
         {
-            return parent.Resolve(Name,Path);
+            return parent.Resolve(Name, Path);
         }
     }
 }

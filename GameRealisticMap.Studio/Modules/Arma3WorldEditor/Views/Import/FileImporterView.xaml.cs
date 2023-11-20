@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views
+namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Import
 {
     /// <summary>
-    /// Logique d'interaction pour EdenImporterView.xaml
+    /// Logique d'interaction pour FileImporterView.xaml
     /// </summary>
-    public partial class EdenImporterView : Window
+    public partial class FileImporterView : Window
     {
-        public EdenImporterView()
+        public FileImporterView()
         {
             InitializeComponent();
         }

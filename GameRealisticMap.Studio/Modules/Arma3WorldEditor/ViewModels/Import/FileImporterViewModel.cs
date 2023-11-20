@@ -11,7 +11,7 @@ using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using Gemini.Framework;
 
-namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
+namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
 {
     internal class FileImporterViewModel : WindowBase, IProgress<double>
     {
@@ -108,11 +108,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 }
                 if (list.Count == 0)
                 {
-                    Error = GameRealisticMap.Studio.Labels.NoValidObjectDefinitionFoundInFile;
+                    Error = Labels.NoValidObjectDefinitionFoundInFile;
                 }
                 else
                 {
-                    Message = string.Format(GameRealisticMap.Studio.Labels.NumObjectsToImport, list.Count);
+                    Message = string.Format(Labels.NumObjectsToImport, list.Count);
                 }
             }
             catch (Exception ex)
@@ -146,9 +146,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             var preview = IoC.Get<IArma3Previews>();
             var items = new List<AmbiguousItem>();
-            foreach(var path in amn.Candidates)
+            foreach (var path in amn.Candidates)
             {
-                items.Add(new AmbiguousItem(this, amn.Name,  path, await preview.GetPreview(path)));
+                items.Add(new AmbiguousItem(this, amn.Name, path, await preview.GetPreview(path)));
             }
             AmbigousModels = items;
         }
