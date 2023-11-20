@@ -1,4 +1,5 @@
-﻿using Gemini.Framework;
+﻿using System.Threading.Tasks;
+using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export
 {
@@ -10,5 +11,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export
         {
             this.worldEditor = worldEditor;
         }
+        public Task Cancel() => TryCloseAsync(false);
     }
 }

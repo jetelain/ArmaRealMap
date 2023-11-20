@@ -4,6 +4,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:geminibehaviors="clr-namespace:Gemini.Framework.Behaviors;assembly=Gemini"
+        xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:r="clr-namespace:GameRealisticMap.Studio"
         xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
         Background="{DynamicResource EnvironmentWindowBackground}"
@@ -32,15 +33,45 @@
 
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="10" />
             </Grid.RowDefinitions>
 
-            <ScrollViewer IsTabStop="False" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-
-
-
-            </ScrollViewer>
+            <DataGrid ItemsSource="{Binding ReduceItems}" AutoGenerateColumns="false" Grid.Row="1" CanUserAddRows="True">
+                <DataGrid.Columns>
+                    <DataGridComboBoxColumn Header="Model" SelectedValueBinding="{Binding Source}" Width="300" SelectedValuePath="Model" DisplayMemberPath="Model">
+                        <DataGridComboBoxColumn.EditingElementStyle>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="IsEditable" Value="True" />
+                                <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Models, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel IsItemsHost="True" IsVirtualizing="True" KeyboardNavigation.DirectionalNavigation="Contained" VirtualizationMode="Recycling" />
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGridComboBoxColumn.EditingElementStyle>
+                        <DataGridComboBoxColumn.ElementStyle>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Models, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel IsItemsHost="True" IsVirtualizing="True" KeyboardNavigation.DirectionalNavigation="Contained" VirtualizationMode="Recycling" />
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGridComboBoxColumn.ElementStyle>
+                    </DataGridComboBoxColumn>
+                    <DataGridTextColumn Header="Factor" Binding="{Binding Factor}" Width="100" />
+                    <DataGridTextColumn Header="Initial count" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="100" />
+                    <DataGridTextColumn Header="Target count" Binding="{Binding TargetCount, Mode=OneWay}" IsReadOnly="True" Width="100" />
+                </DataGrid.Columns>
+            </DataGrid>
 
             <Rectangle Grid.Row="1" Height="1" Fill="{x:Static SystemColors.ActiveBorderBrush}"
                        VerticalAlignment="Bottom"/>
@@ -60,7 +91,9 @@
                 <ColumnDefinition SharedSizeGroup="WindowButtons" />
             </Grid.ColumnDefinitions>
 
-            <!--<Button Grid.Column="0" IsDefault="True" cal:Message.Attach="SaveChanges">OK</Button>-->
+            <Button Grid.Column="0" IsDefault="True" MinWidth="80" cal:Message.Attach="Process">
+                <Run Text="Process changes"/>
+            </Button>
             <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">
                 <Run Text="{x:Static r:Labels.Cancel}"/>
             </Button>

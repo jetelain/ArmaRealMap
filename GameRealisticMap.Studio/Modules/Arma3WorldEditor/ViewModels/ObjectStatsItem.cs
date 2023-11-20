@@ -9,6 +9,9 @@
         }
 
         public string Model { get; }
+
         public int Count { get; }
+
+        public string Label => $"{Model} ({Count})";
     }
 }
