@@ -67,9 +67,9 @@
                             </Style>
                         </DataGridComboBoxColumn.ElementStyle>
                     </DataGridComboBoxColumn>
-                    <DataGridTextColumn Header="Factor" Binding="{Binding Factor}" Width="100" />
+                    <DataGridTextColumn Header="Remove Factor" Binding="{Binding Factor}" Width="100" />
                     <DataGridTextColumn Header="Initial count" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="100" />
-                    <DataGridTextColumn Header="Target count" Binding="{Binding TargetCount, Mode=OneWay}" IsReadOnly="True" Width="100" />
+                    <DataGridTextColumn Header="Estimated remain count" Binding="{Binding TargetCount, Mode=OneWay}" IsReadOnly="True" Width="150" />
                 </DataGrid.Columns>
             </DataGrid>
 

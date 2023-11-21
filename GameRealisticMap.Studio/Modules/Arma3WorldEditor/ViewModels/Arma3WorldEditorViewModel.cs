@@ -421,6 +421,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }, false);
         }
 
+        internal void Apply(WrpMassEditBatch batch)
+        {
+            IoC.Get<IProgressTool>().RunTask("Mass edit", task => {
+                Apply(batch, task);
+                return Task.CompletedTask;
+            }, false);
+        }
+
         internal void Apply(List<TerrainBuilderObject> list)
         {
             IoC.Get<IProgressTool>().RunTask("Import", async task =>
@@ -456,6 +464,22 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
             var processor = new WrpEditProcessor(task);
             processor.Process(World, batch);
+            PostEdit();
+        }
+
+        private void Apply(WrpMassEditBatch batch, IProgressTaskUI task)
+        {
+            if (World == null)
+            {
+                return;
+            }
+            var processor = new WrpMassEditProcessor(task, arma3Data.Library);
+            processor.Process(World, batch);
+            PostEdit();
+        }
+
+        private void PostEdit()
+        {
             if (ConfigFile != null)
             {
                 if (Backups.Count > 0)
@@ -470,6 +494,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             // TODO: Update dependencies !
             IsDirty = true;
             ClearActive();
+
+            UpdateObjectStats();
         }
 
         public async Task OpenConfigFile()

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
+using GameRealisticMap.Arma3.Edit;
 using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit
@@ -30,7 +32,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit
 
         public Task Process()
         {
-            return Task.CompletedTask;
+            var batch = new WrpMassEditBatch();
+            batch.Reduce.AddRange(ReduceItems.Select(i => i.ToOperation()));
+            worldEditor.Apply(batch);
+            return TryCloseAsync(false);
         }
 
         public Arma3WorldEditorViewModel ParentEditor => worldEditor;

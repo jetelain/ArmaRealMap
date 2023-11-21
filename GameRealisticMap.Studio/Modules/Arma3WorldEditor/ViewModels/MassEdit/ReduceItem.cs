@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Caliburn.Micro;
+using GameRealisticMap.Arma3.Edit;
+using NLog.Targets;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit
 {
@@ -28,7 +30,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit
             }
         }
 
-        public int TargetCount => (int)(Count * Factor);
+        public int TargetCount => (int)(Count * (1.0 - Factor));
 
         internal void Attach(ReduceViewModel replaceViewModel)
         {
@@ -38,6 +40,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit
                 NotifyOfPropertyChange(nameof(Count));
                 NotifyOfPropertyChange(nameof(TargetCount));
             }
+        }
+
+        internal WrpMassReduce ToOperation()
+        {
+            return new WrpMassReduce(Source, Factor);
         }
     }
 }

@@ -8,7 +8,7 @@
         xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
         Background="{DynamicResource EnvironmentWindowBackground}"
         Foreground="{DynamicResource EnvironmentWindowText}"
-        Width="840" Height="500" MinWidth="512" MinHeight="300" 
+        Width="900" Height="500" MinWidth="512" MinHeight="300" 
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
         Title="Replace objects">
@@ -94,7 +94,10 @@
                             </Style>
                         </DataGridComboBoxColumn.ElementStyle>
                     </DataGridComboBoxColumn>
-                    <DataGridTextColumn Header="Count" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="50" />
+                    <DataGridTextColumn Header="Shift X" Binding="{Binding ShiftX}" Width="50" />
+                    <DataGridTextColumn Header="Shift Y" Binding="{Binding ShiftY}" Width="50" />
+                    <DataGridTextColumn Header="Shift Z" Binding="{Binding ShiftZ}" Width="50" />
+                    <DataGridTextColumn Header="Affected Count" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="75" />
                 </DataGrid.Columns>
             </DataGrid>
 
