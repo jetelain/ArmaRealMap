@@ -247,7 +247,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public IGameFileSystem GameFileSystem => arma3Data.ProjectDrive;
 
-        public IModelInfoLibrary Library => arma3Data.Library;
+        public ModelInfoLibrary Library => arma3Data.Library;
 
         public List<ModDependencyDefinition> Dependencies { get; set; } = new List<ModDependencyDefinition>();
 
@@ -421,14 +421,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }, false);
         }
 
-        internal void Apply(WrpMassEditBatch batch)
-        {
-            IoC.Get<IProgressTool>().RunTask("Mass edit", task => {
-                Apply(batch, task);
-                return Task.CompletedTask;
-            }, false);
-        }
-
         internal void Apply(List<TerrainBuilderObject> list)
         {
             IoC.Get<IProgressTool>().RunTask("Import", async task =>
@@ -467,18 +459,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             PostEdit();
         }
 
-        private void Apply(WrpMassEditBatch batch, IProgressTaskUI task)
-        {
-            if (World == null)
-            {
-                return;
-            }
-            var processor = new WrpMassEditProcessor(task, arma3Data.Library);
-            processor.Process(World, batch);
-            PostEdit();
-        }
-
-        private void PostEdit()
+        internal void PostEdit()
         {
             if (ConfigFile != null)
             {
