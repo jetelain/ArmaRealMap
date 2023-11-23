@@ -4,6 +4,8 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:geminibehaviors="clr-namespace:Gemini.Framework.Behaviors;assembly=Gemini"
+        xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
+        xmlns:vm="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export"
         xmlns:r="clr-namespace:GameRealisticMap.Studio"
         xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
         Background="{DynamicResource EnvironmentWindowBackground}"
@@ -38,7 +40,27 @@
 
             <ScrollViewer IsTabStop="False" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 
+                <StackPanel>
 
+                    <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="Export objects to file"/></TextBlock>
+                    
+                    <RadioButton IsChecked="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.SingleFile}}}" GroupName="FileMode" Margin="10 10 10 5">Export objects to a single file</RadioButton>
+
+                    <StackPanel Orientation="Horizontal" Margin="25 0 0 0" IsEnabled="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.SingleFile}}}">
+                        <Label Width="100">File name</Label>
+                        <TextBox Width="600" Text="{Binding SingleFilePath}"></TextBox>
+                        <Button Padding="10 0" Margin="5 0">...</Button>
+                    </StackPanel>
+
+                    <RadioButton IsChecked="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.FilePerKind}}}" GroupName="FileMode" Margin="10 10 10 5">Export objects to a file per object type</RadioButton>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="25 0 0 0" IsEnabled="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.FilePerKind}}}">
+                        <Label Width="100">Folder</Label>
+                        <TextBox Width="600" Text="{Binding FilePerKindPath}"></TextBox>
+                        <Button Padding="10 0" Margin="5 0">...</Button>
+                    </StackPanel>
+
+                </StackPanel>
 
             </ScrollViewer>
 
@@ -60,7 +82,9 @@
                 <ColumnDefinition SharedSizeGroup="WindowButtons" />
             </Grid.ColumnDefinitions>
 
-            <!--<Button Grid.Column="0" IsDefault="True" cal:Message.Attach="SaveChanges">OK</Button>-->
+            <Button Grid.Column="0" IsDefault="True" MinWidth="80" cal:Message.Attach="Export">
+                <Run Text="Export"/>
+            </Button>
             <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">
                 <Run Text="{x:Static r:Labels.Cancel}"/>
             </Button>

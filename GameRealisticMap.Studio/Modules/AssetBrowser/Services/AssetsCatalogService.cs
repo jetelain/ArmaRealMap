@@ -276,7 +276,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             await EnsurePaths(items, paths).ConfigureAwait(false);
 
             var requestedItems = new Dictionary<string, AssetCatalogItem>(StringComparer.OrdinalIgnoreCase);
-            var allItems = items.ToDictionary(k => k.Path, k => k, StringComparer.OrdinalIgnoreCase);
+            var allItems = new Dictionary<string, AssetCatalogItem>(StringComparer.OrdinalIgnoreCase);
+            foreach(var item in items)
+            {
+                allItems[item.Path] = item;
+            }
             var upgraded = false;
             foreach(var path in paths)
             {
