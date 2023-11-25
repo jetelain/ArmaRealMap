@@ -1,5 +1,4 @@
-﻿<Window
-    x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Import.FileImporterView"
+﻿<Window x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Import.ImportElevationView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cal="http://www.caliburnproject.org"
@@ -12,7 +11,7 @@
     Width="840" Height="500" MinWidth="512" MinHeight="300" 
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="False"
-    Title="{x:Static r:Labels.ImportObjectsFromFile}">
+    Title="Import evelation from file">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -41,11 +40,11 @@
 
                 <StackPanel>
 
-                    <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.ImportObjectsFromFile}"/></TextBlock>
+                    <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="Import evelation from file"/></TextBlock>
                     <Label Margin="10 0 0 0">
                         <TextBlock Text="{Binding FileName}"/>
                     </Label>
-                    
+
                     <ProgressBar Maximum="100" Minimum="0" Value="{Binding WorkingPercent}" Height="15" Margin="15 5"  Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                     <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsNotValid, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -55,44 +54,23 @@
                     
                     <StackPanel Margin="10" Orientation="Horizontal" Visibility="{Binding IsValid, Converter={StaticResource BooleanToVisibilityConverter}}" >
                         <Label Margin="0 0 10 0">
-                            <Run Text="{x:Static r:Labels.ElevationMode}" />
+                            <Run Text="Elevation changes" />
                         </Label>
-                        <RadioButton IsChecked="{Binding IsAbsolute, Mode=TwoWay}" VerticalAlignment="Center" Margin="0 0 10 0">
-                            <Run Text="{x:Static r:Labels.AbsoluteElevation}" />
+                        <RadioButton IsChecked="{Binding IsUpdateElevation, Mode=TwoWay}" VerticalAlignment="Center" Margin="0 0 10 0">
+                            <Run Text="Update objects elevation" />
                         </RadioButton>
-                        <RadioButton  IsChecked="{Binding IsRelative, Mode=TwoWay}" VerticalAlignment="Center">
-                            <Run Text="{x:Static r:Labels.RelativeElevation}" />
+                        <RadioButton  IsChecked="{Binding IsKeepElevation, Mode=TwoWay}" VerticalAlignment="Center">
+                            <Run Text="Keep objects elevation" />
                         </RadioButton>
                     </StackPanel>
                     
                     <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsValid, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Button Padding="10 5" Margin="5 0" cal:Message.Attach="Import">
-                            <Run Text="{x:Static r:Labels.ImportsObjects}"/>
+                            <Run Text="Import evelation"/>
                         </Button>
                         <TextBlock VerticalAlignment="Center" Foreground="Green" Margin="0 0 5 0">✔</TextBlock>
                         <TextBlock VerticalAlignment="Center"><Run Text="{x:Static r:Labels.DataSeemsValid}"/></TextBlock>
                     </StackPanel>
-
-                    <ItemsControl Margin="10" Visibility="{Binding HasAmbigousModels, Converter={StaticResource BooleanToVisibilityConverter}}" ItemsSource="{Binding AmbigousModels}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Button Width="200" Margin="5" cal:Message.Attach="Resolve">
-                                    <StackPanel Orientation="Vertical">
-                                        <Image Source="{Binding Preview}" />
-                                        <TextBlock Text="{Binding Path}" TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </Button>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-
-                    </ItemsControl>
-
-                    <TextBlock Margin="10" Text="{Binding Message}"/>
 
                 </StackPanel>
 
@@ -122,4 +100,4 @@
             </Button>
         </Grid>
     </Grid>
-</Window>
+    </Window>
