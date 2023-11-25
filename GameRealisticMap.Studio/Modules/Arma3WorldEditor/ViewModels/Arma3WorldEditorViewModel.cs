@@ -648,5 +648,20 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             return windowManager.ShowDialogAsync(new FileExporterViewModel(this));
         }
+
+        public Task ExportElevation()
+        {
+            if (_world != null)
+            {
+                var dialog = new SaveFileDialog();
+                dialog.Filter = "Esri ASCII raster|*.asc";
+                dialog.FileName = Path.GetFileNameWithoutExtension(FileName) + ".asc";
+                if (dialog.ShowDialog() == true)
+                {
+                    ProgressToolHelper.Start(new ExportElevationTask(_world, dialog.FileName));
+                }
+            }
+            return Task.CompletedTask;
+        }
     }
 }
