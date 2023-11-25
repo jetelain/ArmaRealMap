@@ -67,7 +67,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
 
         private async Task<List<AssetCatalogItem>> EnsureLibraryModels(List<AssetCatalogItem> items)
         {
-            await EnsurePaths(items, arma3DataModule.Library.Models.Select(m => m.Path)).ConfigureAwait(false);
+            await EnsurePaths(items, arma3DataModule.Library.Models.Select(m => m.Path).Distinct(StringComparer.OrdinalIgnoreCase)).ConfigureAwait(false);
             return items;
         }
 
@@ -276,7 +276,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             await EnsurePaths(items, paths).ConfigureAwait(false);
 
             var requestedItems = new Dictionary<string, AssetCatalogItem>(StringComparer.OrdinalIgnoreCase);
-            var allItems = items.ToDictionary(k => k.Path, k => k, StringComparer.OrdinalIgnoreCase);
+            var allItems = new Dictionary<string, AssetCatalogItem>(StringComparer.OrdinalIgnoreCase);
+            foreach(var item in items)
+            {
+                allItems[item.Path] = item;
+            }
             var upgraded = false;
             foreach(var path in paths)
             {

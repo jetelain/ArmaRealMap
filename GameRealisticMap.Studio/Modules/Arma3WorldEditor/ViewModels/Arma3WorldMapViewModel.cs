@@ -330,7 +330,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 return;
             }
 
-            var models = world.Objects.Select(o => o.Model).Where(m => !string.IsNullOrEmpty(m)).Distinct();
+            var models = world.Objects.Select(o => o.Model).Where(m => !string.IsNullOrEmpty(m)).Distinct(StringComparer.OrdinalIgnoreCase);
 
             var itemsByPath = await IoC.Get<IAssetsCatalogService>().GetItems(models).ConfigureAwait(false);
 

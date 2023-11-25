@@ -1,0 +1,101 @@
+﻿<Window x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Export.FileExporterView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:geminibehaviors="clr-namespace:Gemini.Framework.Behaviors;assembly=Gemini"
+        xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
+        xmlns:vm="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export"
+        xmlns:r="clr-namespace:GameRealisticMap.Studio"
+        xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+        Background="{DynamicResource EnvironmentWindowBackground}"
+        Foreground="{DynamicResource EnvironmentWindowText}"
+        Width="840" Height="500" MinWidth="512" MinHeight="300" 
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Title="{x:Static r:Labels.ExportObjectsToFile}">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    <behaviors:Interaction.Behaviors>
+        <geminibehaviors:WindowOptionsBehavior ShowIcon="False"
+                                               ShowMinimizeBox="False"
+                                               ShowMaximizeBox="False" />
+    </behaviors:Interaction.Behaviors>
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="230" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="10" />
+            </Grid.RowDefinitions>
+
+            <ScrollViewer IsTabStop="False" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+                <StackPanel>
+
+                    <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.ExportObjectsToFile}"/></TextBlock>
+
+                    <RadioButton IsChecked="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.SingleFile}}}" GroupName="FileMode" Margin="10 10 10 5">
+                        <Run Text="{x:Static r:Labels.ExportObjectsToASingleFile}"/>
+                    </RadioButton>
+
+                    <StackPanel Orientation="Horizontal" Margin="25 0 0 0" IsEnabled="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.SingleFile}}}">
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.FilePath}"/>
+                        </Label>
+                        <TextBox Width="600" Text="{Binding SingleFilePath}"></TextBox>
+                        <!--<Button Padding="10 0" Margin="5 0">...</Button>-->
+                    </StackPanel>
+
+                    <RadioButton IsChecked="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.FilePerKind}}}" GroupName="FileMode" Margin="10 10 10 5">
+                        <Run Text="{x:Static r:Labels.ExportObjectsToAFilePerObjectType}"/>
+                    </RadioButton>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="25 0 0 0" IsEnabled="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.FilePerKind}}}">
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.FolderPath}"/>
+                        </Label>
+                        <TextBox Width="600" Text="{Binding FilePerKindPath}"></TextBox>
+                        <!--<Button Padding="10 0" Margin="5 0">...</Button>-->
+                    </StackPanel>
+
+                </StackPanel>
+
+            </ScrollViewer>
+
+            <Rectangle Grid.Row="1" Height="1" Fill="{x:Static SystemColors.ActiveBorderBrush}"
+                       VerticalAlignment="Bottom"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 12 0 0" HorizontalAlignment="Right"
+              IsSharedSizeScope="True">
+            <Grid.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Margin" Value="6 0 0 0" />
+                    <Setter Property="Padding" Value="15 7" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="WindowButtons" />
+                <ColumnDefinition SharedSizeGroup="WindowButtons" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" IsDefault="True" MinWidth="80" cal:Message.Attach="Export">
+                <Run Text="{x:Static r:Labels.Export}"/>
+            </Button>
+            <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">
+                <Run Text="{x:Static r:Labels.Cancel}"/>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

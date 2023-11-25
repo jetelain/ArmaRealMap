@@ -14,7 +14,7 @@ using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 using NLog;
 
-namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
+namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
 {
     internal class EdenImporterViewModel : WindowBase, IProgress<double>
     {
@@ -117,7 +117,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                             var intersect = Batch.PartIndexes.Intersect(batch.PartIndexes).ToList();
                             if (intersect.Any())
                             {
-                                ClipboardError = string.Format(GameRealisticMap.Studio.Labels.PartHasBeenAlreadyImported, intersect.First());
+                                ClipboardError = string.Format(Labels.PartHasBeenAlreadyImported, intersect.First());
                             }
                             else
                             {
@@ -165,7 +165,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 return string.Empty;
             }
-            return string.Format(GameRealisticMap.Studio.Labels.ImportNextPartPrompt, missing.Min() + 1);
+            return string.Format(Labels.ImportNextPartPrompt, missing.Min() + 1);
         }
 
         public Task ClipboardImport()

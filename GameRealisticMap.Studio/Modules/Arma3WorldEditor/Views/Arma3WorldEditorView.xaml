@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views"
+             xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
@@ -58,21 +59,21 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.MapSizeSquare}"/></Label>
-                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Size}" VerticalAlignment="Center" />
+                        <Label Grid.Row="0" Grid.Column="0" Margin="5 0"><Run Text="{x:Static r:Labels.MapSizeSquare}"/></Label>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="5 0" Text="{Binding Size}" VerticalAlignment="Center" />
 
-                        <Label Grid.Row="1" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.WrpLandRange}"/></Label>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding World.LandRangeX}" VerticalAlignment="Center" />
+                        <Label Grid.Row="1" Grid.Column="0" Margin="5 0"><Run Text="{x:Static r:Labels.WrpLandRange}"/></Label>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5 0" Text="{Binding World.LandRangeX}" VerticalAlignment="Center" />
 
-                        <Label Grid.Row="2" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.PboPrefix}"/></Label>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center">
+                        <Label Grid.Row="2" Grid.Column="0" Margin="5 0"><Run Text="{x:Static r:Labels.PboPrefix}"/></Label>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5 0" VerticalAlignment="Center">
                             <Hyperlink Command="{Binding OpenDirectoryCommand}">
                                 <TextBlock Text="{Binding ConfigFile.PboPrefix}" />
                             </Hyperlink>
                         </TextBlock>
 
-                        <Label Grid.Row="3" Grid.Column="0" Margin="5"><Run Text="{x:Static r:Labels.UsedMapConfiguration}"/></Label>
-                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center">
+                        <Label Grid.Row="3" Grid.Column="0" Margin="5 0"><Run Text="{x:Static r:Labels.UsedMapConfiguration}"/></Label>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="5 0" VerticalAlignment="Center">
                             <Hyperlink Command="{Binding OpenConfigFileCommand}"><TextBlock Text="{Binding HistoryEntry.ConfigFile}" /></Hyperlink>
                         </TextBlock>
                     </Grid>
@@ -103,7 +104,7 @@
                 <Expander.Header>
                     <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.MapRevisionHistory}"/></TextBlock>
                 </Expander.Header>
-                <DataGrid ItemsSource="{Binding Backups}" AutoGenerateColumns="false" Margin="12">
+                <DataGrid ItemsSource="{Binding Backups}" AutoGenerateColumns="false" Margin="12" grm:ScrollBehaviors.WheelBubble="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Revision" Binding="{Binding Revision}" IsReadOnly="True" Width="100" />
                         <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True" Width="200" />
@@ -131,12 +132,12 @@
                     <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.Imagery}"/></TextBlock>
                 </Expander.Header>
 
-                <StackPanel>
+                <StackPanel Margin="10">
 
                     <TextBlock Visibility="{Binding IsNotImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}"><Run Text="{x:Static r:Labels.ImageryIsNotDetectedCannotEditIt}" /></TextBlock>
 
                     <StackPanel Visibility="{Binding IsImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
+                        <StackPanel Orientation="Horizontal" >
                             <Button Margin="5" Padding="10" cal:Message.Attach="ExportSatMap">
                                 <Run Text="{x:Static r:Labels.ExportSatelliteImage}" />
                             </Button>
@@ -154,7 +155,7 @@
                                 <Run Text="{x:Static r:Labels.CannotBeReversedWarning}" />
                             </TextBlock>
                         </StackPanel>
-                        
+
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="200" />
@@ -189,6 +190,38 @@
                 </StackPanel>
                 
                 
+            </Expander>
+
+            <Expander IsExpanded="True" Margin="10">
+                <Expander.Header>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.AssetObjects}"/></TextBlock>
+                </Expander.Header>
+                <StackPanel Margin="10">
+                    <StackPanel Margin="0" Orientation="Horizontal" >
+                        <Button Margin="5" Padding="10" cal:Message.Attach="ImportFile">
+                            <Run Text="{x:Static r:Labels.ImportFromFile}" />
+                        </Button>
+                        <Button Margin="5" Padding="10" cal:Message.Attach="OpenObjectExport">
+                            <Run Text="{x:Static r:Labels.ExportToFile}" />
+                        </Button>
+                        <Button Margin="5" Padding="10" cal:Message.Attach="OpenReplace">
+                            <Run Text="{x:Static r:Labels.Replace}" />
+                        </Button>
+                        <Button Margin="5" Padding="10" cal:Message.Attach="OpenReduce">
+                            <Run Text="{x:Static r:Labels.Reduce}" />
+                        </Button>
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding ObjectStatsText}" Margin="0 0 0 10" />
+
+                    <DataGrid ItemsSource="{Binding ObjectStatsItems}" AutoGenerateColumns="false" MaxHeight="500" grm:ScrollBehaviors.WheelBubble="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{x:Static r:Labels.Model}" Binding="{Binding Model}" IsReadOnly="True" Width="500" />
+                            <DataGridTextColumn Header="{x:Static r:Labels.Count}" Binding="{Binding Count}" IsReadOnly="True" Width="100" />
+                        </DataGrid.Columns>
+                    
+                    </DataGrid>
+                </StackPanel>
             </Expander>
 
         </StackPanel>

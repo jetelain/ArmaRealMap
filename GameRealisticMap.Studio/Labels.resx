@@ -1324,4 +1324,73 @@ Last generated on {1}</value>
   <data name="AssetScree" xml:space="preserve">
     <value>Scree</value>
   </data>
+  <data name="ImportFromFile" xml:space="preserve">
+    <value>Import from file</value>
+  </data>
+  <data name="ExportToFile" xml:space="preserve">
+    <value>Export to file</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="Reduce" xml:space="preserve">
+    <value>Reduce</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="ExportObjectsToFile" xml:space="preserve">
+    <value>Export objects to file</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ReduceObjects" xml:space="preserve">
+    <value>Reduce objects</value>
+  </data>
+  <data name="ReplaceObjects" xml:space="preserve">
+    <value>Replace objects</value>
+  </data>
+  <data name="ApplyChanges" xml:space="preserve">
+    <value>Apply changes</value>
+  </data>
+  <data name="SourceModel" xml:space="preserve">
+    <value>Model to replace</value>
+  </data>
+  <data name="TargetModel" xml:space="preserve">
+    <value>Replacement model</value>
+  </data>
+  <data name="ShiftX" xml:space="preserve">
+    <value>Shift X</value>
+  </data>
+  <data name="ShiftY" xml:space="preserve">
+    <value>Shift Y</value>
+  </data>
+  <data name="ShiftZ" xml:space="preserve">
+    <value>Shift Z</value>
+  </data>
+  <data name="AffectedCount" xml:space="preserve">
+    <value>Affected Count</value>
+  </data>
+  <data name="RemovalRate" xml:space="preserve">
+    <value>Removal rate</value>
+  </data>
+  <data name="InitialCount" xml:space="preserve">
+    <value>Initial count</value>
+  </data>
+  <data name="EstimatedRemainCount" xml:space="preserve">
+    <value>Estimated remaining count</value>
+  </data>
+  <data name="ExportObjectsToASingleFile" xml:space="preserve">
+    <value>Export objects to a single file</value>
+  </data>
+  <data name="ExportObjectsToAFilePerObjectType" xml:space="preserve">
+    <value>Export objects to a file per object type</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>File path</value>
+  </data>
+  <data name="FolderPath" xml:space="preserve">
+    <value>Folder path</value>
+  </data>
 </root>

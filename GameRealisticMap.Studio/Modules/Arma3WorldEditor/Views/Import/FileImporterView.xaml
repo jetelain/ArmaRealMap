@@ -6,7 +6,7 @@
     xmlns:geminibehaviors="clr-namespace:Gemini.Framework.Behaviors;assembly=Gemini"
     xmlns:r="clr-namespace:GameRealisticMap.Studio"
     xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
-    x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.FileImporterView"
+    x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Import.FileImporterView"
     Background="{DynamicResource EnvironmentWindowBackground}"
     Foreground="{DynamicResource EnvironmentWindowText}"
     Width="840" Height="500" MinWidth="512" MinHeight="300" 

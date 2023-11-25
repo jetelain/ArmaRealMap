@@ -4,7 +4,7 @@ using System.Linq;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 
-namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
+namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
 {
     internal class ImportLibrary : IModelInfoLibrary
     {

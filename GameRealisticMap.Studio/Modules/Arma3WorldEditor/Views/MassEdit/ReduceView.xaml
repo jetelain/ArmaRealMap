@@ -1,0 +1,102 @@
+﻿<Window x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.MassEdit.ReduceView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:geminibehaviors="clr-namespace:Gemini.Framework.Behaviors;assembly=Gemini"
+        xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:r="clr-namespace:GameRealisticMap.Studio"
+        xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+        Background="{DynamicResource EnvironmentWindowBackground}"
+        Foreground="{DynamicResource EnvironmentWindowText}"
+        Width="840" Height="500" MinWidth="512" MinHeight="300" 
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Title="{x:Static r:Labels.ReduceObjects}">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    <behaviors:Interaction.Behaviors>
+        <geminibehaviors:WindowOptionsBehavior ShowIcon="False"
+                                               ShowMinimizeBox="False"
+                                               ShowMaximizeBox="False" />
+    </behaviors:Interaction.Behaviors>
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="230" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="10" />
+            </Grid.RowDefinitions>
+
+            <DataGrid ItemsSource="{Binding ReduceItems}" AutoGenerateColumns="false" Grid.Row="1" CanUserAddRows="True">
+                <DataGrid.Columns>
+                    <DataGridComboBoxColumn Header="{x:Static r:Labels.Model}" SelectedValueBinding="{Binding Source}" Width="300" SelectedValuePath="Model" DisplayMemberPath="Model">
+                        <DataGridComboBoxColumn.EditingElementStyle>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="IsEditable" Value="True" />
+                                <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Models, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel IsItemsHost="True" IsVirtualizing="True" KeyboardNavigation.DirectionalNavigation="Contained" VirtualizationMode="Recycling" />
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGridComboBoxColumn.EditingElementStyle>
+                        <DataGridComboBoxColumn.ElementStyle>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Models, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel IsItemsHost="True" IsVirtualizing="True" KeyboardNavigation.DirectionalNavigation="Contained" VirtualizationMode="Recycling" />
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGridComboBoxColumn.ElementStyle>
+                    </DataGridComboBoxColumn>
+                    <DataGridTextColumn Header="{x:Static r:Labels.RemovalRate}" Binding="{Binding Factor}" Width="100" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.InitialCount}" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="100" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.EstimatedRemainCount}" Binding="{Binding TargetCount, Mode=OneWay}" IsReadOnly="True" Width="175" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Rectangle Grid.Row="1" Height="1" Fill="{x:Static SystemColors.ActiveBorderBrush}"
+                       VerticalAlignment="Bottom"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 12 0 0" HorizontalAlignment="Right"
+              IsSharedSizeScope="True">
+            <Grid.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Margin" Value="6 0 0 0" />
+                    <Setter Property="Padding" Value="15 7" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="WindowButtons" />
+                <ColumnDefinition SharedSizeGroup="WindowButtons" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" IsDefault="True" MinWidth="80" cal:Message.Attach="Process">
+                <Run Text="{x:Static r:Labels.ApplyChanges}"/>
+            </Button>
+            <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">
+                <Run Text="{x:Static r:Labels.Cancel}"/>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

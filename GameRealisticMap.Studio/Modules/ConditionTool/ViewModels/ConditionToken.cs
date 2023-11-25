@@ -6,6 +6,7 @@ using GameRealisticMap.Conditions;
 using System.Linq;
 using StringToExpression.Tokenizer;
 using StringToExpression.Util;
+using GameRealisticMap.Algorithms;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
@@ -117,21 +118,8 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
         private static Color AllocateColor(string name)
         {
-            var rnd = new Random(HashString(name));
+            var rnd = RandomHelper.CreateRandom(name);
             return Color.FromRgb((byte)rnd.Next(180, 250), (byte)rnd.Next(180, 250), (byte)rnd.Next(180, 250));
-        }
-
-        public static int HashString(string text)
-        {
-            unchecked
-            {
-                int hash = 23;
-                foreach (char c in text)
-                {
-                    hash = hash * 31 + c;
-                }
-                return hash;
-            }
         }
 
         private static void CloseLastInList(ConditionToken? previous)

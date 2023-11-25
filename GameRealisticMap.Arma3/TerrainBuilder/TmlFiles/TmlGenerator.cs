@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Arma3.TerrainBuilder.TmlFiles
 {
-    internal class TmlGenerator
+    public class TmlGenerator
     {
         public static readonly XmlSerializer Serializer = new XmlSerializer(typeof(TmlLibrary));
 
