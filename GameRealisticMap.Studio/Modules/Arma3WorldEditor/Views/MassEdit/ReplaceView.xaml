@@ -11,7 +11,7 @@
         Width="900" Height="500" MinWidth="512" MinHeight="300" 
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
-        Title="Replace objects">
+        Title="{x:Static r:Labels.ReplaceObjects}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -39,7 +39,7 @@
 
             <DataGrid ItemsSource="{Binding ReplaceItems}" AutoGenerateColumns="false" Grid.Row="1" CanUserAddRows="True">
                 <DataGrid.Columns>
-                    <DataGridComboBoxColumn Header="Source Model" SelectedValueBinding="{Binding Source}" Width="300" SelectedValuePath="Model" DisplayMemberPath="Model">
+                    <DataGridComboBoxColumn Header="{x:Static r:Labels.SourceModel}" SelectedValueBinding="{Binding Source}" Width="300" SelectedValuePath="Model" DisplayMemberPath="Model">
                         <DataGridComboBoxColumn.EditingElementStyle>
                             <Style TargetType="ComboBox">
                                 <Setter Property="IsEditable" Value="True" />
@@ -67,7 +67,7 @@
                         </DataGridComboBoxColumn.ElementStyle>
                     </DataGridComboBoxColumn>
 
-                    <DataGridComboBoxColumn Header="Target Model" SelectedValueBinding="{Binding Target}" Width="300" SelectedValuePath="Path" DisplayMemberPath="Path">
+                    <DataGridComboBoxColumn Header="{x:Static r:Labels.TargetModel}" SelectedValueBinding="{Binding Target}" Width="300" SelectedValuePath="Path" DisplayMemberPath="Path">
                         <DataGridComboBoxColumn.EditingElementStyle>
                             <Style TargetType="ComboBox">
                                 <Setter Property="IsEditable" Value="True" />
@@ -94,10 +94,10 @@
                             </Style>
                         </DataGridComboBoxColumn.ElementStyle>
                     </DataGridComboBoxColumn>
-                    <DataGridTextColumn Header="Shift X" Binding="{Binding ShiftX}" Width="50" />
-                    <DataGridTextColumn Header="Shift Y" Binding="{Binding ShiftY}" Width="50" />
-                    <DataGridTextColumn Header="Shift Z" Binding="{Binding ShiftZ}" Width="50" />
-                    <DataGridTextColumn Header="Affected Count" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="75" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.ShiftX}" Binding="{Binding ShiftX}" Width="50" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.ShiftY}" Binding="{Binding ShiftY}" Width="50" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.ShiftZ}" Binding="{Binding ShiftZ}" Width="50" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.AffectedCount}" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="100" />
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -109,8 +109,8 @@
               IsSharedSizeScope="True">
             <Grid.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="Margin" Value="12 0 0 0" />
-                    <Setter Property="Padding" Value="4" />
+                    <Setter Property="Margin" Value="6 0 0 0" />
+                    <Setter Property="Padding" Value="15 7" />
                 </Style>
             </Grid.Resources>
 
@@ -120,7 +120,7 @@
             </Grid.ColumnDefinitions>
             
             <Button Grid.Column="0" IsDefault="True" MinWidth="80" cal:Message.Attach="Process">
-                <Run Text="Process changes"/>
+                <Run Text="{x:Static r:Labels.ApplyChanges}"/>
             </Button>
 
             <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">

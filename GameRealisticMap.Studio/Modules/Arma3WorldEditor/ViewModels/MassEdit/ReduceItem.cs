@@ -16,7 +16,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit
 
         public string Source { get { return _source; } set { if (value != _source ) { _source = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Count)); NotifyOfPropertyChange(nameof(TargetCount)); } } }
 
-        public double Factor { get { return _factor; } set { if (value != _factor) { _factor = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Count)); NotifyOfPropertyChange(nameof(TargetCount)); } } }
+        public double Factor { get { return _factor; } set { if (value != _factor) { _factor = Math.Clamp(value, 0, 1); NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Count)); NotifyOfPropertyChange(nameof(TargetCount)); } } }
 
         public int Count
         {

@@ -12,7 +12,7 @@
         Width="840" Height="500" MinWidth="512" MinHeight="300" 
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
-        Title="Reduce objects">
+        Title="{x:Static r:Labels.ReduceObjects}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -40,7 +40,7 @@
 
             <DataGrid ItemsSource="{Binding ReduceItems}" AutoGenerateColumns="false" Grid.Row="1" CanUserAddRows="True">
                 <DataGrid.Columns>
-                    <DataGridComboBoxColumn Header="Model" SelectedValueBinding="{Binding Source}" Width="300" SelectedValuePath="Model" DisplayMemberPath="Model">
+                    <DataGridComboBoxColumn Header="{x:Static r:Labels.Model}" SelectedValueBinding="{Binding Source}" Width="300" SelectedValuePath="Model" DisplayMemberPath="Model">
                         <DataGridComboBoxColumn.EditingElementStyle>
                             <Style TargetType="ComboBox">
                                 <Setter Property="IsEditable" Value="True" />
@@ -67,9 +67,9 @@
                             </Style>
                         </DataGridComboBoxColumn.ElementStyle>
                     </DataGridComboBoxColumn>
-                    <DataGridTextColumn Header="Remove Factor" Binding="{Binding Factor}" Width="100" />
-                    <DataGridTextColumn Header="Initial count" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="100" />
-                    <DataGridTextColumn Header="Estimated remain count" Binding="{Binding TargetCount, Mode=OneWay}" IsReadOnly="True" Width="150" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.RemovalRate}" Binding="{Binding Factor}" Width="100" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.InitialCount}" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="100" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.EstimatedRemainCount}" Binding="{Binding TargetCount, Mode=OneWay}" IsReadOnly="True" Width="175" />
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -81,8 +81,8 @@
               IsSharedSizeScope="True">
             <Grid.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="Margin" Value="12 0 0 0" />
-                    <Setter Property="Padding" Value="4" />
+                    <Setter Property="Margin" Value="6 0 0 0" />
+                    <Setter Property="Padding" Value="15 7" />
                 </Style>
             </Grid.Resources>
 
@@ -92,7 +92,7 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" IsDefault="True" MinWidth="80" cal:Message.Attach="Process">
-                <Run Text="Process changes"/>
+                <Run Text="{x:Static r:Labels.ApplyChanges}"/>
             </Button>
             <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">
                 <Run Text="{x:Static r:Labels.Cancel}"/>

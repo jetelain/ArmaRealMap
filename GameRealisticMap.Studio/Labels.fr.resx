@@ -1324,4 +1324,73 @@ Dernière génération le {1}</value>
   <data name="AssetScree" xml:space="preserve">
     <value>Eboulis</value>
   </data>
+  <data name="Count" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="ExportObjectsToFile" xml:space="preserve">
+    <value>Exporter les objets vers un fichier</value>
+  </data>
+  <data name="ExportToFile" xml:space="preserve">
+    <value>Exporter vers un fichier</value>
+  </data>
+  <data name="ImportFromFile" xml:space="preserve">
+    <value>Importer depuis un fichier</value>
+  </data>
+  <data name="ApplyChanges" xml:space="preserve">
+    <value>Appliquer les changement</value>
+  </data>
+  <data name="Reduce" xml:space="preserve">
+    <value>Réduire</value>
+  </data>
+  <data name="ReduceObjects" xml:space="preserve">
+    <value>Réduire des objets</value>
+  </data>
+  <data name="Replace" xml:space="preserve">
+    <value>Remplacer</value>
+  </data>
+  <data name="ReplaceObjects" xml:space="preserve">
+    <value>Remplacer des objets</value>
+  </data>
+  <data name="AffectedCount" xml:space="preserve">
+    <value>Nombre concerné</value>
+  </data>
+  <data name="EstimatedRemainCount" xml:space="preserve">
+    <value>Nombre estimé restant</value>
+  </data>
+  <data name="InitialCount" xml:space="preserve">
+    <value>Nombre initial</value>
+  </data>
+  <data name="RemovalRate" xml:space="preserve">
+    <value>Taux de suppression</value>
+  </data>
+  <data name="ShiftX" xml:space="preserve">
+    <value>Décalage X</value>
+  </data>
+  <data name="ShiftY" xml:space="preserve">
+    <value>Décalage Y</value>
+  </data>
+  <data name="ShiftZ" xml:space="preserve">
+    <value>Décalage Z</value>
+  </data>
+  <data name="SourceModel" xml:space="preserve">
+    <value>Modèle à remplacer</value>
+  </data>
+  <data name="TargetModel" xml:space="preserve">
+    <value>Modèle de remplacement</value>
+  </data>
+  <data name="FolderPath" xml:space="preserve">
+    <value>Chemin du dossier</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>Chemin du fichier</value>
+  </data>
+  <data name="ExportObjectsToAFilePerObjectType" xml:space="preserve">
+    <value>Exporter les objets vers un fichier par type d'objet</value>
+  </data>
+  <data name="ExportObjectsToASingleFile" xml:space="preserve">
+    <value>Exporter les objets vers un seul fichier</value>
+  </data>
 </root>

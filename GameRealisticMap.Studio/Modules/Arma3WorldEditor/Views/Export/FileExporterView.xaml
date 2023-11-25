@@ -13,7 +13,7 @@
         Width="840" Height="500" MinWidth="512" MinHeight="300" 
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
-        Title="Export objects to file">
+        Title="{x:Static r:Labels.ExportObjectsToFile}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -42,22 +42,30 @@
 
                 <StackPanel>
 
-                    <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="Export objects to file"/></TextBlock>
-                    
-                    <RadioButton IsChecked="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.SingleFile}}}" GroupName="FileMode" Margin="10 10 10 5">Export objects to a single file</RadioButton>
+                    <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.ExportObjectsToFile}"/></TextBlock>
+
+                    <RadioButton IsChecked="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.SingleFile}}}" GroupName="FileMode" Margin="10 10 10 5">
+                        <Run Text="{x:Static r:Labels.ExportObjectsToASingleFile}"/>
+                    </RadioButton>
 
                     <StackPanel Orientation="Horizontal" Margin="25 0 0 0" IsEnabled="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.SingleFile}}}">
-                        <Label Width="100">File name</Label>
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.FilePath}"/>
+                        </Label>
                         <TextBox Width="600" Text="{Binding SingleFilePath}"></TextBox>
-                        <Button Padding="10 0" Margin="5 0">...</Button>
+                        <!--<Button Padding="10 0" Margin="5 0">...</Button>-->
                     </StackPanel>
 
-                    <RadioButton IsChecked="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.FilePerKind}}}" GroupName="FileMode" Margin="10 10 10 5">Export objects to a file per object type</RadioButton>
+                    <RadioButton IsChecked="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.FilePerKind}}}" GroupName="FileMode" Margin="10 10 10 5">
+                        <Run Text="{x:Static r:Labels.ExportObjectsToAFilePerObjectType}"/>
+                    </RadioButton>
                     
                     <StackPanel Orientation="Horizontal" Margin="25 0 0 0" IsEnabled="{Binding FileExportMode, Converter={grm:EnumToBoolean {x:Static vm:FileExportMode.FilePerKind}}}">
-                        <Label Width="100">Folder</Label>
+                        <Label Width="100">
+                            <Run Text="{x:Static r:Labels.FolderPath}"/>
+                        </Label>
                         <TextBox Width="600" Text="{Binding FilePerKindPath}"></TextBox>
-                        <Button Padding="10 0" Margin="5 0">...</Button>
+                        <!--<Button Padding="10 0" Margin="5 0">...</Button>-->
                     </StackPanel>
 
                 </StackPanel>
@@ -72,8 +80,8 @@
               IsSharedSizeScope="True">
             <Grid.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="Margin" Value="12 0 0 0" />
-                    <Setter Property="Padding" Value="4" />
+                    <Setter Property="Margin" Value="6 0 0 0" />
+                    <Setter Property="Padding" Value="15 7" />
                 </Style>
             </Grid.Resources>
 
@@ -83,7 +91,7 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" IsDefault="True" MinWidth="80" cal:Message.Attach="Export">
-                <Run Text="Export"/>
+                <Run Text="{x:Static r:Labels.Export}"/>
             </Button>
             <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">
                 <Run Text="{x:Static r:Labels.Cancel}"/>
