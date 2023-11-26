@@ -54,7 +54,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         {
             var wrp = InitWrp(elevationGrid, LandRange(elevationGrid.SizeInMeters.X));
 
-            SetElevation(elevationGrid, wrp);
+            wrp.FillFromElevationGrid(elevationGrid);
 
             SetMaterialAndIndexes(terrainTiler, wrp, pboPrefix);
 
@@ -131,19 +131,6 @@ namespace GameRealisticMap.Arma3.GameEngine
                     wrp.MaterialIndex[x + (y * landRange)] = (ushort)(segment.X + (segment.Y * h) + 1);
                 }
                 report.ReportOneDone();
-            }
-        }
-
-        private void SetElevation(ElevationGrid elevationGrid, EditableWrp wrp)
-        {
-            var size = elevationGrid.Size;
-            wrp.Elevation = new float[size * size];
-            for (int x = 0; x < size; x++)
-            {
-                for (int y = 0; y < size; y++)
-                {
-                    wrp.Elevation[x + (y * size)] = elevationGrid[x, y];
-                }
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using BIS.Core.Streams;
 using BIS.WRP;
+using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
@@ -54,23 +55,7 @@ namespace GameRealisticMap.Arma3.Edit
                 }
                 if (batch.ElevationAdjustObjects)
                 {
-                    using (var report = _progressSystem.CreateStep("Adjust", world.Objects.Count))
-                    {
-                        foreach (var obj in world.Objects)
-                        {
-                            if (!string.IsNullOrEmpty(obj.Model))
-                            {
-                                var ychange = delta.ElevationAt(new TerrainPoint(obj.Transform.Matrix.M41, obj.Transform.Matrix.M43));
-                                if (MathF.Abs(ychange) > 0.0001f)
-                                {
-                                    var matrix = obj.Transform.Matrix;
-                                    matrix.M42 += ychange;
-                                    obj.Transform.Matrix = matrix;
-                                }
-                                report.ReportOneDone();
-                            }
-                        }
-                    }
+                    AdjustObjectsElevation(world, delta);
                 }
             }
             
@@ -91,6 +76,60 @@ namespace GameRealisticMap.Arma3.Edit
                 }
 
                 world.Objects = objects;
+            }
+        }
+
+        public void UpdateElevationGrid(EditableWrp world, ElevationGrid newGrid)
+        {
+            var oldGrid = world.ToElevationGrid();
+            UpdateElevationGridAbsolute(world, newGrid);
+            AdjustObjectsElevation(world, GridDelta(newGrid, oldGrid));
+        }
+
+        private static ElevationGrid GridDelta(ElevationGrid newGrid, ElevationGrid oldGrid)
+        {
+            var size = newGrid.Size;
+            var delta = new ElevationGrid(size, newGrid.CellSize.X);
+            for (int x = 0; x < size; x++)
+            {
+                for (int y = 0; y < size; y++)
+                {
+                    delta[x, y] = newGrid[x, y] - oldGrid[x, y];
+                }
+            }
+            return delta;
+        }
+
+        public void UpdateElevationGridAbsolute(EditableWrp world, ElevationGrid newGrid)
+        {
+            using (_progressSystem.CreateStep("Elevation", 1))
+            {
+                world.FillFromElevationGrid(newGrid);
+            }
+        }
+
+        private void AdjustObjectsElevation(EditableWrp world, ElevationGrid delta)
+        {
+            using (var report = _progressSystem.CreateStep("Adjust", world.Objects.Count))
+            {
+                var changes = 0;
+
+                foreach (var obj in world.Objects)
+                {
+                    if (!string.IsNullOrEmpty(obj.Model))
+                    {
+                        var ychange = delta.ElevationAt(new TerrainPoint(obj.Transform.Matrix.M41, obj.Transform.Matrix.M43));
+                        if (MathF.Abs(ychange) >= 0.01f)
+                        {
+                            var matrix = obj.Transform.Matrix;
+                            matrix.M42 += ychange;
+                            obj.Transform.Matrix = matrix;
+                            changes++;
+                        }
+                        report.ReportOneDone();
+                    }
+                }
+                _progressSystem.WriteLine($"{changes} objects elevation was changed.");
             }
         }
 

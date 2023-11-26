@@ -17,7 +17,6 @@ using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
@@ -430,15 +429,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     return;
                 }
                 await arma3Data.SaveLibraryCache();
-                var size = World.TerrainRangeX;
-                var grid = new ElevationGrid(size, CellSize!.Value);
-                for (int x = 0; x < size; x++)
-                {
-                    for (int y = 0; y < size; y++)
-                    {
-                        grid[x, y] = World.Elevation[x + (y * size)];
-                    }
-                }
+                var grid = World.ToElevationGrid();
                 var batch = new WrpEditBatch();
                 batch.Add.AddRange(list
                     .ProgressStep(task, "ToWrpObject")
@@ -647,6 +638,36 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public Task OpenObjectExport()
         {
             return windowManager.ShowDialogAsync(new FileExporterViewModel(this));
+        }
+
+        public Task ExportElevation()
+        {
+            if (_world != null)
+            {
+                var dialog = new SaveFileDialog();
+                dialog.Filter = "Esri ASCII raster|*.asc";
+                dialog.FileName = Path.GetFileNameWithoutExtension(FileName) + ".asc";
+                if (dialog.ShowDialog() == true)
+                {
+                    ProgressToolHelper.Start(new ExportElevationTask(_world, dialog.FileName));
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task ImportElevation()
+        {
+            if (_world != null)
+            {
+                var dialog = new OpenFileDialog();
+                dialog.Filter = "Esri ASCII raster|*.asc";
+                dialog.FileName = Path.GetFileNameWithoutExtension(FileName) + ".asc";
+                if (dialog.ShowDialog() == true)
+                {
+                    return windowManager.ShowDialogAsync(new ImportElevationViewModel(this, dialog.FileName));
+                }
+            }
+            return Task.CompletedTask;
         }
     }
 }

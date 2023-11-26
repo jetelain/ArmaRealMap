@@ -3,11 +3,11 @@
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Import
 {
     /// <summary>
-    /// Logique d'interaction pour FileImporterView.xaml
+    /// Logique d'interaction pour ImportElevationView.xaml
     /// </summary>
-    public partial class FileImporterView : Window
+    public partial class ImportElevationView : Window
     {
-        public FileImporterView()
+        public ImportElevationView()
         {
             InitializeComponent();
         }

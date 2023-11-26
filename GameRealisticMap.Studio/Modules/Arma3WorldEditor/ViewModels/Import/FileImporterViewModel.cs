@@ -9,19 +9,16 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
-using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
 {
-    internal class FileImporterViewModel : WindowBase, IProgress<double>
+    internal class FileImporterViewModel : ModalProgressBase
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetLogger("FileImporter");
 
         private readonly Arma3WorldEditorViewModel parent;
         private readonly List<TerrainBuilderObject> list = new List<TerrainBuilderObject>();
         private readonly string fileName;
-        private bool _isWorking;
-        private double _workingPercent;
         private bool isAbsolute;
         private List<AmbiguousItem> ambigousModels = new List<AmbiguousItem>();
 
@@ -31,27 +28,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
             this.fileName = fileName;
         }
 
-        public Task Cancel() => TryCloseAsync(false);
-
-        public bool IsWorking
-        {
-            get { return _isWorking; }
-            set { _isWorking = value; NotifyOfPropertyChange(); }
-        }
-
-        public double WorkingPercent
-        {
-            get { return _workingPercent; }
-            set { _workingPercent = value; NotifyOfPropertyChange(); }
-        }
-
-        public string Error { get; set; } = string.Empty;
-
         public string Message { get; set; } = string.Empty;
-
-        public bool IsNotValid => !IsWorking && !string.IsNullOrEmpty(Error);
-
-        public bool IsValid => !IsWorking && string.IsNullOrEmpty(Error);
 
         public string FileName => fileName;
 
@@ -77,8 +54,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
             IsWorking = true;
-            NotifyOfPropertyChange(nameof(IsNotValid));
-            NotifyOfPropertyChange(nameof(IsValid));
             AmbigousModels = new List<AmbiguousItem>();
 
             _ = Task.Run(() => DoReadFile());
@@ -127,9 +102,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
 
             IsWorking = false;
 
-            NotifyOfPropertyChange(nameof(Error));
-            NotifyOfPropertyChange(nameof(IsNotValid));
-            NotifyOfPropertyChange(nameof(IsValid));
             NotifyOfPropertyChange(nameof(Message));
 
             if (list.All(o => o.Elevation == 0))
@@ -151,11 +123,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
                 items.Add(new AmbiguousItem(this, amn.Name, path, await preview.GetPreview(path)));
             }
             AmbigousModels = items;
-        }
-
-        public void Report(double value)
-        {
-            WorkingPercent = value;
         }
 
         public Task Import()

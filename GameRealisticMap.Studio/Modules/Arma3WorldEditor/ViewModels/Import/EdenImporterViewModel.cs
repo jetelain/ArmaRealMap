@@ -11,18 +11,15 @@ using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Toolkit;
-using Gemini.Framework;
 using NLog;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
 {
-    internal class EdenImporterViewModel : WindowBase, IProgress<double>
+    internal class EdenImporterViewModel : ModalProgressBase
     {
         private static readonly Logger logger = NLog.LogManager.GetLogger("EdenImporter");
 
         private readonly Arma3WorldEditorViewModel parent;
-        private bool _isWorking;
-        private double _workingPercent;
 
         public EdenImporterViewModel(Arma3WorldEditorViewModel parent)
         {
@@ -42,18 +39,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
         public bool IsClipboardValid => !IsWorking && string.IsNullOrEmpty(ClipboardError) && string.IsNullOrEmpty(ClipboardWarning);
 
         public WrpEditBatch? Batch { get; set; }
-
-        public bool IsWorking
-        {
-            get { return _isWorking; }
-            set { _isWorking = value; NotifyOfPropertyChange(); }
-        }
-
-        public double WorkingPercent
-        {
-            get { return _workingPercent; }
-            set { _workingPercent = value; NotifyOfPropertyChange(); }
-        }
 
         public bool IsReadyToImport => Batch != null && Batch.IsComplete && string.IsNullOrEmpty(ClipboardError);
 
@@ -180,13 +165,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
         protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
             await ClipboardRefresh();
-        }
-
-        public Task Cancel() => TryCloseAsync(false);
-
-        public void Report(double value)
-        {
-            WorkingPercent = value;
         }
 
         public Task LaunchArma3()

@@ -6,32 +6,28 @@ using BIS.WRP;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Arma3.TerrainBuilder.TmlFiles;
 using GameRealisticMap.Studio.Modules.Reporting;
-using GameRealisticMap.Studio.Toolkit;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export
 {
-    internal sealed class FileExportSingleTask : IProcessTask
+    internal sealed class FileExportSingleTask : SingleFileExportBase
     {
-        private readonly string targetFile;
         private readonly EditableWrp? world;
         private readonly IModelInfoLibrary library;
 
         public FileExportSingleTask(string targetFile, EditableWrp? world, IModelInfoLibrary library)
+            : base(targetFile)
         {
-            this.targetFile = targetFile;
             this.world = world;
             this.library = library;
         }
 
-        public string Title => "Export objects to file";
+        public override string Title => "Export objects to file";
 
-        public bool Prompt => true;
-
-        public async Task Run(IProgressTaskUI ui)
+        protected override async Task<bool> Export(IProgressTaskUI ui, string targetFile)
         {
             if (world == null)
             {
-                return;
+                return false;
             }
 
             var targetDirectory = Path.GetDirectoryName(targetFile)!;
@@ -44,10 +40,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export
 
             var models = world.Objects.Select(o => o.Model).Where(m => !string.IsNullOrEmpty(m)).Distinct(StringComparer.OrdinalIgnoreCase);
 
-            new TmlGenerator().WriteLibrariesTo(models.Select(library.ResolveByPath), Path.Combine(targetDirectory,Path.GetFileNameWithoutExtension(targetFile)));
+            new TmlGenerator().WriteLibrariesTo(models.Select(library.ResolveByPath), Path.Combine(targetDirectory, Path.GetFileNameWithoutExtension(targetFile)));
 
-            ui.AddSuccessAction(() => ShellHelper.OpenUri(targetFile), Labels.OpenResult);
-            ui.AddSuccessAction(() => ShellHelper.OpenUri(Path.GetDirectoryName(targetFile)!), Labels.OpenFolder);
+            return true;
         }
     }
 }
