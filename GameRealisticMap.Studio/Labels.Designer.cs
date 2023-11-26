@@ -1223,6 +1223,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Change type.
+        /// </summary>
+        public static string ChangeType {
+            get {
+                return ResourceManager.GetString("ChangeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Clear.
         /// </summary>
         public static string Clear {
@@ -1372,6 +1381,15 @@ namespace GameRealisticMap.Studio {
         public static string CoordinatesSouthWestOfMap {
             get {
                 return ResourceManager.GetString("CoordinatesSouthWestOfMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Copy path.
+        /// </summary>
+        public static string CopyPath {
+            get {
+                return ResourceManager.GetString("CopyPath", resourceCulture);
             }
         }
         
@@ -1741,6 +1759,15 @@ namespace GameRealisticMap.Studio {
         public static string EditWithEdenEditorHint {
             get {
                 return ResourceManager.GetString("EditWithEdenEditorHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Elevation grid.
+        /// </summary>
+        public static string ElevationGrid {
+            get {
+                return ResourceManager.GetString("ElevationGrid", resourceCulture);
             }
         }
         
@@ -2972,6 +2999,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Open Map Editor.
+        /// </summary>
+        public static string OpenMapEditor {
+            get {
+                return ResourceManager.GetString("OpenMapEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Open result.
         /// </summary>
         public static string OpenResult {
@@ -3049,6 +3085,15 @@ namespace GameRealisticMap.Studio {
         public static string Preview {
             get {
                 return ResourceManager.GetString("Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à 3D Preview.
+        /// </summary>
+        public static string Preview3D {
+            get {
+                return ResourceManager.GetString("Preview3D", resourceCulture);
             }
         }
         
@@ -3202,6 +3247,15 @@ namespace GameRealisticMap.Studio {
         public static string Remove {
             get {
                 return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Remove from list.
+        /// </summary>
+        public static string RemoveFromList {
+            get {
+                return ResourceManager.GetString("RemoveFromList", resourceCulture);
             }
         }
         

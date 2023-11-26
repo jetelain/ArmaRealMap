@@ -30,7 +30,7 @@
             
             <StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
                 <Button Margin="5" Padding="10" cal:Message.Attach="EditAdvanced" IsEnabled="{Binding CanGenerateMod}">
-                    <Run Text="Go Advanded Editor"/>
+                    <Run Text="{x:Static r:Labels.OpenMapEditor}"/>
                 </Button>
                 <Button Margin="5" Padding="10" cal:Message.Attach="ImportEden">
                     <Run Text="{x:Static r:Labels.ImportChangesFromEdenEditor}" />
@@ -194,7 +194,7 @@
             
             <Expander IsExpanded="True" Margin="10">
                 <Expander.Header>
-                    <TextBlock FontSize="20"><Run Text="Elevation grid"/></TextBlock>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.ElevationGrid}"/></TextBlock>
                 </Expander.Header>
                 
                 <StackPanel Margin="10">

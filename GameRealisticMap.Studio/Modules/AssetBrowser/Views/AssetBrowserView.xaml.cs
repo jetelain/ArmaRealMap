@@ -89,5 +89,14 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Views
                 asset.ShowPreview3D();
             }
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var asset = Grid.SelectedItems.OfType<AssetViewModel>().FirstOrDefault();
+            if (asset != null)
+            {
+                Clipboard.SetText(asset.Path);
+            }
+        }
     }
 }

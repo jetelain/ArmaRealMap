@@ -17,7 +17,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public PreviewToolViewModel(IArma3Preview3D arma3Preview3D)
         {
             _arma3Preview3D = arma3Preview3D;
-            DisplayName = "3D Preview";
+            DisplayName = Labels.Preview3D;
         }
 
         public void SetP3d(string path)
