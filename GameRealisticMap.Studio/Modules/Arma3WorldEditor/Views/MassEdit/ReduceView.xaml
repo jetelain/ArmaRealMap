@@ -15,6 +15,9 @@
         Title="{x:Static r:Labels.ReduceObjects}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style TargetType="ComboBoxItem">
+            <!-- Reset to default (also done for ComboBox), as Gemini theme ComboBox is bugged -->
+        </Style>
     </Window.Resources>
     <behaviors:Interaction.Behaviors>
         <geminibehaviors:WindowOptionsBehavior ShowIcon="False"
@@ -91,7 +94,7 @@
                 <ColumnDefinition SharedSizeGroup="WindowButtons" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" IsDefault="True" MinWidth="80" cal:Message.Attach="Process">
+            <Button Grid.Column="0" MinWidth="80" cal:Message.Attach="Process">
                 <Run Text="{x:Static r:Labels.ApplyChanges}"/>
             </Button>
             <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">

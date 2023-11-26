@@ -1393,4 +1393,22 @@ Dernière génération le {1}</value>
   <data name="ExportObjectsToASingleFile" xml:space="preserve">
     <value>Exporter les objets vers un seul fichier</value>
   </data>
+  <data name="ChangeType" xml:space="preserve">
+    <value>Changer la catégorie</value>
+  </data>
+  <data name="CopyPath" xml:space="preserve">
+    <value>Copier le chemin</value>
+  </data>
+  <data name="Preview3D" xml:space="preserve">
+    <value>Aperçu 3D</value>
+  </data>
+  <data name="RemoveFromList" xml:space="preserve">
+    <value>Supprimer de la liste</value>
+  </data>
+  <data name="ElevationGrid" xml:space="preserve">
+    <value>Grille de dénivelé</value>
+  </data>
+  <data name="OpenMapEditor" xml:space="preserve">
+    <value>Ouvrir l'éditeur de carte</value>
+  </data>
 </root>

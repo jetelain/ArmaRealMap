@@ -1393,4 +1393,22 @@ Last generated on {1}</value>
   <data name="FolderPath" xml:space="preserve">
     <value>Folder path</value>
   </data>
+  <data name="Preview3D" xml:space="preserve">
+    <value>3D Preview</value>
+  </data>
+  <data name="CopyPath" xml:space="preserve">
+    <value>Copy path</value>
+  </data>
+  <data name="ChangeType" xml:space="preserve">
+    <value>Change type</value>
+  </data>
+  <data name="RemoveFromList" xml:space="preserve">
+    <value>Remove from list</value>
+  </data>
+  <data name="OpenMapEditor" xml:space="preserve">
+    <value>Open Map Editor</value>
+  </data>
+  <data name="ElevationGrid" xml:space="preserve">
+    <value>Elevation grid</value>
+  </data>
 </root>
