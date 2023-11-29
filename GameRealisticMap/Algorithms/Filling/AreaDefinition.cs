@@ -1,14 +1,12 @@
 ﻿using System.Numerics;
+using GameRealisticMap.Algorithms.RandomGenerators;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
-    public class AreaDefinition : ITerrainEnvelope
+    public sealed class AreaDefinition : ITerrainEnvelope
     {
-        private readonly int rndX1;
-        private readonly int rndX2;
-        private readonly int rndY1;
-        private readonly int rndY2;
+        private readonly IRandomPointGenerator randomPointGenerator;
 
         internal AreaDefinition(TerrainPolygon polygon)
         {
@@ -16,10 +14,7 @@ namespace GameRealisticMap.Algorithms.Filling
             MinPoint = polygon.MinPoint - new Vector2(2);
             MaxPoint = polygon.MaxPoint + new Vector2(2);
             Random = RandomHelper.CreateRandom(polygon.Centroid);
-            rndX1 = (int)(polygon.MinPoint.X * 100);
-            rndX2 = (int)(polygon.MaxPoint.X * 100);
-            rndY1 = (int)(polygon.MinPoint.Y * 100);
-            rndY2 = (int)(polygon.MaxPoint.Y * 100);
+            randomPointGenerator = new UniformRandomPointGenerator(Random, polygon.MinPoint, polygon.MaxPoint);
         }
 
         public TerrainPolygon Polygon { get; }
@@ -32,9 +27,7 @@ namespace GameRealisticMap.Algorithms.Filling
 
         internal TerrainPoint GetRandomPoint()
         {
-            var x = Random.Next(rndX1, rndX2) / 100f;
-            var y = Random.Next(rndY1, rndY2) / 100f;
-            return new TerrainPoint(x, y);
+            return randomPointGenerator.GetRandomPoint();
         }
 
         internal TerrainPoint? GetRandomPointInside()
