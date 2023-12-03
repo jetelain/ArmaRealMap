@@ -98,7 +98,7 @@ namespace GameRealisticMap.Algorithms.Filling
                 var wasChanged = false;
                 for (int i = 0; i < Math.Max(10, fillarea.ItemsToAdd) && remainItems > 0; ++i)
                 {
-                    var point = fillarea.Area.GetRandomPointInside();
+                    var point = fillarea.GetRandomPointInside();
                     if (point == null)
                     {
                         unChangedLoops = 100;

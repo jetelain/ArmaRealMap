@@ -8,7 +8,7 @@ namespace GameRealisticMap.Algorithms.Filling
     {
         private readonly SimpleSpacialIndex<IClusterDefinition<TModelInfo>> map;
 
-        public AreaFillingGlobalClusters(AreaDefinition fillarea, SimpleSpacialIndex<IClusterDefinition<TModelInfo>> map, IWithDensity densityDefinition, IReadOnlyList<IClusterDefinition<TModelInfo>> defaultClusters) 
+        public AreaFillingGlobalClusters(AreaDefinition fillarea, SimpleSpacialIndex<IClusterDefinition<TModelInfo>> map, IDensityDefinition densityDefinition, IReadOnlyList<IClusterDefinition<TModelInfo>> defaultClusters) 
             : base(fillarea, densityDefinition, defaultClusters)
         {
             this.map = map;

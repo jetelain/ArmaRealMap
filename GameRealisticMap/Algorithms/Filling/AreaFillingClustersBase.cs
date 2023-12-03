@@ -11,7 +11,7 @@ namespace GameRealisticMap.Algorithms.Filling
 
         private readonly IReadOnlyList<IClusterDefinition<TModelInfo>> defaultClusters;
 
-        public AreaFillingClustersBase(AreaDefinition fillarea, IWithDensity densityDefinition, IReadOnlyList<IClusterDefinition<TModelInfo>> defaultClusters) 
+        public AreaFillingClustersBase(AreaDefinition fillarea, IDensityDefinition densityDefinition, IReadOnlyList<IClusterDefinition<TModelInfo>> defaultClusters) 
             : base(fillarea, densityDefinition)
         {
             this.defaultClusters = defaultClusters;
