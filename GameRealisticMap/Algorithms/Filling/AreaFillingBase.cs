@@ -38,7 +38,7 @@ namespace GameRealisticMap.Algorithms.Filling
             }
             var diagonal = polygon.MaxPoint.Vector - polygon.MinPoint.Vector;
             var narrowing = area / diagonal.Length();
-            return narrowing < 20;
+            return narrowing < 30;
         }
 
         public double Density { get; }
