@@ -34,25 +34,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
             Condition = new PolygonConditionVM(definition?.Condition as PolygonCondition);
         }
 
-        public double MinDensity
-        {
-            get { return Density.MinDensity; }
-            set { Density.MinDensity = value; NotifyOfPropertyChange(nameof(DensityText)); }
-        }
-
         public DensityConfigVM Density { get; }
 
         public PolygonConditionVM Condition { get; }
 
-        public double MaxDensity
-        {
-            get { return Density.MaxDensity; }
-            set { Density.MaxDensity = value; NotifyOfPropertyChange(nameof(DensityText)); }
-        }
-
         public double? ComputedMaxDensity { get; set; }
-
-        public string DensityText => Density.ToText();
 
         public abstract ObservableCollection<TItem> Items { get; }
 
