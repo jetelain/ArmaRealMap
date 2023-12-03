@@ -510,7 +510,7 @@
     <value>Clôtures,murs</value>
   </data>
   <data name="Density" xml:space="preserve">
-    <value>Densité</value>
+    <value>Densité moyenne</value>
   </data>
   <data name="ClearWidth" xml:space="preserve">
     <value>Largeur sans objets</value>

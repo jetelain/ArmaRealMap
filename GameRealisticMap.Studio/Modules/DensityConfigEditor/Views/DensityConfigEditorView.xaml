@@ -1,0 +1,173 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.DensityConfigEditor.Views.DensityConfigEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             xmlns:cal="http://caliburnmicro.com"
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.DensityConfigEditor.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="1000" d:DesignWidth="1000">
+    <ScrollViewer >
+        <StackPanel>
+
+            <TextBlock FontSize="30">Density configuration</TextBlock>
+
+
+            <TextBlock Text="{Binding Config.Label}" />
+
+
+            <TextBlock FontSize="25">Default</TextBlock>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Width="150">
+                    <Run Text="{x:Static r:Labels.Density}"/>
+                </Label>
+                <TextBlock VerticalAlignment="Center" Margin="0 0 5 0"><Run Text="{x:Static r:Labels.RandomFrom}"/></TextBlock>
+                <TextBox Width="100" Text="{Binding Config.MinDensity,Mode=TwoWay}" />
+                <TextBlock VerticalAlignment="Center" Margin="5 0"><Run Text="{x:Static r:Labels.RandomTo}"/></TextBlock>
+                <TextBox Width="100" Text="{Binding Config.MaxDensity,Mode=TwoWay}" />
+                <TextBlock VerticalAlignment="Center" Margin="5 0 0 0"><Run Text="{x:Static r:Labels.ObjectsPerM2}"/></TextBlock>
+            </StackPanel>
+
+            <Grid Height="150">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+
+                <Label>
+                    <Run Text="Preview"/>
+                </Label>
+                
+                <StackPanel Grid.Column="1" Margin="5">
+
+                    <Label>Preview count</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding DefaultPreviewCount, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <Slider Value="{Binding DefaultPreviewCount, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="250" Maximum="2500" Width="100" 
+                        TickFrequency="250" TickPlacement="BottomRight" IsSnapToTickEnabled="True" />
+                    </StackPanel>
+
+                    <Label>Preview size</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="150" Text="{Binding DefaultPreviewSize, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                    </StackPanel>
+
+                </StackPanel>
+                <Border BorderBrush="Gray" BorderThickness="2" Grid.Column="2" Margin="0 10 0 0">
+                    <grm:GrmMap SizeInMeters="{Binding DefaultPreviewSize}">
+                        <grm:GrmMapPointsLayer Points="{Binding DefaultPoints}" />
+                    </grm:GrmMap>
+                </Border>
+            </Grid>
+
+            <TextBlock FontSize="25">Large areas</TextBlock>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Width="150">
+                    <Run Text="{x:Static r:Labels.Density}"/>
+                </Label>
+                <StackPanel>
+                    <RadioButton GroupName="DensityMode" VerticalAlignment="Center" IsChecked="{Binding Config.NoiseUseDefault}">Use default</RadioButton>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton GroupName="DensityMode" VerticalAlignment="Center" IsChecked="{Binding Config.NoiseUseSpecific}">Use specific</RadioButton>
+                        <Label VerticalAlignment="Center" Margin="5 0">
+                            <Run Text="{x:Static r:Labels.RandomFrom}"/>
+                        </Label>
+                        <TextBox Width="100" Text="{Binding Config.NoiseMinDensity,Mode=TwoWay}" />
+                        <TextBlock VerticalAlignment="Center" Margin="5 0"><Run Text="{x:Static r:Labels.RandomTo}"/></TextBlock>
+                        <TextBox Width="100" Text="{Binding Config.NoiseMaxDensity,Mode=TwoWay}" />
+                        <TextBlock VerticalAlignment="Center" Margin="5 0 0 0"><Run Text="{x:Static r:Labels.ObjectsPerM2}"/></TextBlock>
+                        <Button cal:Message.Attach="ComputeNoiseDensity">
+                            Compute from default
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+
+            <Grid Height="500">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+
+                <Label>
+                    <Run Text="Randomization"/>
+                </Label>
+                <StackPanel Grid.Column="1" Margin="5">
+
+
+
+                    <Label>Noise proportion</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding Config.NoiseProportion, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <Slider Value="{Binding Config.NoiseProportion, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="0" Maximum="1" Width="100" 
+                        TickFrequency="0.05" TickPlacement="BottomRight" IsSnapToTickEnabled="True" />
+                    </StackPanel>
+
+                    <Label>Noise Type</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox Width="150" ItemsSource="{Binding Config.NoiseTypes}" SelectedValue="{Binding Config.NoiseType}" IsEnabled="{Binding Config.HasNoise}" />
+                    </StackPanel>
+
+                    <Label>Samples</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding Config.Samples, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" />
+                        <Slider Value="{Binding Config.Samples, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="2" Maximum="10" Width="100" 
+                        TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" />
+                    </StackPanel>
+
+                    <Label>Threshold</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding Config.Threshold, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" />
+                        <Slider Value="{Binding Config.Threshold, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="-1" Maximum="1" Width="100" 
+                        TickFrequency="0.05" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" />
+                    </StackPanel>
+
+                    <Label>Frequency</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding Config.Frequency, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" />
+                        <Slider Value="{Binding Config.Frequency, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="0.001" Maximum="0.050" Width="100" 
+                        TickFrequency="0.001" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" />
+                    </StackPanel>
+
+                    <Label Margin="0 20 0 0">Preview count</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding NoisePreviewCount, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <Slider Value="{Binding NoisePreviewCount, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="250" Maximum="2500" Width="100" 
+                        TickFrequency="250" TickPlacement="BottomRight" IsSnapToTickEnabled="True" />
+                    </StackPanel>
+
+                    <Label>Preview size</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="150" Text="{Binding NoisePreviewSize, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                    </StackPanel>
+                    
+                </StackPanel>
+
+                <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="2" Margin="0 10 0 0">
+                    <grm:GrmMap SizeInMeters="{Binding NoisePreviewSize}" >
+                        <grm:GrmMapPointsLayer Points="{Binding NoisePoints}" />
+                    </grm:GrmMap>
+
+                </Border>
+
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

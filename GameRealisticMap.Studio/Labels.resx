@@ -498,7 +498,7 @@
     <value>Probability</value>
   </data>
   <data name="Density" xml:space="preserve">
-    <value>Density</value>
+    <value>Average density</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>

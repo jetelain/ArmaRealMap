@@ -1628,7 +1628,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Density.
+        ///   Recherche une chaîne localisée semblable à Average density.
         /// </summary>
         public static string Density {
             get {
