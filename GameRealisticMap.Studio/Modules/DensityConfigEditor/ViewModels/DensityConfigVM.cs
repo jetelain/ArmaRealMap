@@ -1,6 +1,10 @@
 ﻿using System;
 using Caliburn.Micro;
+using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Algorithms.RandomGenerators;
+using Gemini.Framework;
+using Gemini.Framework.Services;
+using Gemini.Modules.UndoRedo;
 using static GameRealisticMap.Algorithms.RandomGenerators.FastNoiseLite;
 
 namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
@@ -18,18 +22,40 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
         private double _noiseMinDensity;
         private double _noiseMaxDensity;
         private bool _noiseUseDefault;
+        private DensityConfigEditorViewModel? editor;
 
-        public DensityConfigVM(IRandomPointGenerationOptions options)
+        public IUndoRedoManager? UndoRedoManager { get; }
+        public AsyncCommand OpenEditorCommand { get; }
+
+        public DensityConfigVM(IDensityDefinition? options, IUndoRedoManager? undoRedoManager = null)
+            : this(options?.Default, options?.LargeAreas, undoRedoManager)
         {
-            var noiseOptions = options.NoiseOptions ?? NoiseBasedRandomPointOptions.Default;
+
+        }
+
+        public DensityConfigVM(IWithDensity? @default, IDensityWithNoiseDefinition? largeAreas, IUndoRedoManager? undoRedoManager = null)
+        {
+            NoiseTypes = Enum.GetValues<NoiseType>();
+
+            var noiseOptions = largeAreas?.NoiseOptions ?? NoiseBasedRandomPointOptions.Default;
             _threshold = noiseOptions.Threshold;
             _frequency = noiseOptions.Frequency;
             _noiseType = noiseOptions.NoiseType;
             _samples = noiseOptions.Samples;
-            _proportion = options.NoiseProportion;
-            NoiseTypes = Enum.GetValues<NoiseType>();
-            _minDensity = _maxDensity = _noiseMinDensity = _noiseMaxDensity = 0.01d;
-            _noiseUseDefault = (_maxDensity == _noiseMaxDensity) && (_minDensity == _noiseMinDensity);
+
+            _proportion = largeAreas?.NoiseProportion ?? 0d;
+
+            _minDensity = @default?.MinDensity ?? 0.01;
+            _maxDensity = @default?.MaxDensity ?? 0.01;
+
+            _noiseMinDensity = largeAreas?.MinDensity ?? _minDensity;
+            _noiseMaxDensity = largeAreas?.MaxDensity ?? _maxDensity;
+
+            _noiseUseDefault = largeAreas == null || (_maxDensity == _noiseMaxDensity) && (_minDensity == _noiseMinDensity);
+
+            UndoRedoManager = undoRedoManager;
+
+            OpenEditorCommand = new AsyncCommand(() => IoC.Get<IShell>().OpenDocumentAsync(editor ??= new DensityConfigEditorViewModel(this)));
         }
 
         public NoiseType[] NoiseTypes { get; }
@@ -138,6 +164,7 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
         int? INoiseOptions.Seed => _seed;
 
         public bool IsBasic => _proportion == 0 && (_noiseUseDefault || (_maxDensity == _noiseMaxDensity) && (_minDensity == _noiseMinDensity));
+        public bool IsAdvanced => !IsBasic;
 
         public string Label => ToText();
 
@@ -172,7 +199,27 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
         private void Update()
         {
             NotifyOfPropertyChange(nameof(IsBasic));
+            NotifyOfPropertyChange(nameof(IsAdvanced));
             NotifyOfPropertyChange(nameof(Label));
         }
+
+        public DensityWithNoiseDefinition? ToDefinition()
+        {
+            if (_noiseUseDefault && _proportion == 0)
+            {
+                return null;
+            }
+            return new DensityWithNoiseDefinition(_noiseMinDensity, _noiseMaxDensity, _proportion, ToNoiseDefinition());
+        }
+
+        private NoiseBasedRandomPointOptions? ToNoiseDefinition()
+        {
+            if (_proportion == 0)
+            {
+                return null;
+            }
+            return new NoiseBasedRandomPointOptions(null, _threshold, _samples, _frequency, _noiseType);
+        }
+
     }
 }

@@ -14,12 +14,13 @@ using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls;
 using GameRealisticMap.Studio.Modules.ConditionTool.ViewModels;
+using GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
     internal abstract class AssetDensityBase<TId, TDefinition, TItem> : AssetProbabilityBase<TId, TDefinition>, IWithEditableProbability
         where TId : struct, Enum
-        where TDefinition : class, IWithDensity, IWithProbabilityAndCondition<IPolygonConditionContext>
+        where TDefinition : class, IDensityDefinition, IWithProbabilityAndCondition<IPolygonConditionContext>
         where TItem : class, IWithEditableProbability
     {
 
@@ -28,41 +29,30 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         protected AssetDensityBase(TId id, TDefinition? definition, AssetConfigEditorViewModel parent)
             : base(id, definition, parent)
         {
-            _minDensity = definition?.MinDensity ?? 0.01;
-            _maxDensity = definition?.MaxDensity ?? 0.01;
+            Density = new DensityConfigVM(definition, parent.UndoRedoManager);
+
             Condition = new PolygonConditionVM(definition?.Condition as PolygonCondition);
         }
 
-        private double _minDensity;
         public double MinDensity
         {
-            get { return _minDensity; }
-            set { _minDensity = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(DensityText)); }
+            get { return Density.MinDensity; }
+            set { Density.MinDensity = value; NotifyOfPropertyChange(nameof(DensityText)); }
         }
 
-        private double _maxDensity;
+        public DensityConfigVM Density { get; }
 
         public PolygonConditionVM Condition { get; }
 
         public double MaxDensity
         {
-            get { return _maxDensity; }
-            set { _maxDensity = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(DensityText)); }
+            get { return Density.MaxDensity; }
+            set { Density.MaxDensity = value; NotifyOfPropertyChange(nameof(DensityText)); }
         }
 
         public double? ComputedMaxDensity { get; set; }
 
-        public string DensityText
-        {
-            get
-            {
-                if (MaxDensity == MinDensity)
-                {
-                    return $"{MaxDensity} {Labels.ObjectsPerM2}";
-                }
-                return string.Format(Labels.RangeObjectsPerM2, MinDensity, MaxDensity);
-            }
-        }
+        public string DensityText => Density.ToText();
 
         public abstract ObservableCollection<TItem> Items { get; }
 
@@ -129,7 +119,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 
         protected virtual List<TerrainBuilderObject> GenerateFullPreviewItems()
         {
-            var (obj, status) = GeneratePreviewItems();
+            var (obj, _) = GeneratePreviewItems();
             return obj;
         }
 

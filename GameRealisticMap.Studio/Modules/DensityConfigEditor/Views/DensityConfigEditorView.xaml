@@ -7,6 +7,7 @@
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:cal="http://caliburnmicro.com"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.DensityConfigEditor.Views"
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1000">
     <ScrollViewer >
@@ -25,9 +26,9 @@
                     <Run Text="{x:Static r:Labels.Density}"/>
                 </Label>
                 <TextBlock VerticalAlignment="Center" Margin="0 0 5 0"><Run Text="{x:Static r:Labels.RandomFrom}"/></TextBlock>
-                <TextBox Width="100" Text="{Binding Config.MinDensity,Mode=TwoWay}" />
+                <TextBox Width="100" Text="{Binding Config.MinDensity,Mode=TwoWay}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                 <TextBlock VerticalAlignment="Center" Margin="5 0"><Run Text="{x:Static r:Labels.RandomTo}"/></TextBlock>
-                <TextBox Width="100" Text="{Binding Config.MaxDensity,Mode=TwoWay}" />
+                <TextBox Width="100" Text="{Binding Config.MaxDensity,Mode=TwoWay}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                 <TextBlock VerticalAlignment="Center" Margin="5 0 0 0"><Run Text="{x:Static r:Labels.ObjectsPerM2}"/></TextBlock>
             </StackPanel>
 
@@ -80,9 +81,9 @@
                         <Label VerticalAlignment="Center" Margin="5 0">
                             <Run Text="{x:Static r:Labels.RandomFrom}"/>
                         </Label>
-                        <TextBox Width="100" Text="{Binding Config.NoiseMinDensity,Mode=TwoWay}" />
+                        <TextBox Width="100" Text="{Binding Config.NoiseMinDensity,Mode=TwoWay}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                         <TextBlock VerticalAlignment="Center" Margin="5 0"><Run Text="{x:Static r:Labels.RandomTo}"/></TextBlock>
-                        <TextBox Width="100" Text="{Binding Config.NoiseMaxDensity,Mode=TwoWay}" />
+                        <TextBox Width="100" Text="{Binding Config.NoiseMaxDensity,Mode=TwoWay}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                         <TextBlock VerticalAlignment="Center" Margin="5 0 0 0"><Run Text="{x:Static r:Labels.ObjectsPerM2}"/></TextBlock>
                         <Button cal:Message.Attach="ComputeNoiseDensity">
                             Compute from default
@@ -110,10 +111,10 @@
 
                     <Label>Noise proportion</Label>
                     <StackPanel Orientation="Horizontal">
-                        <TextBox Width="50" Text="{Binding Config.NoiseProportion, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBox Width="50" Text="{Binding Config.NoiseProportion, Mode=TwoWay, ValidatesOnExceptions=True}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                         <Slider Value="{Binding Config.NoiseProportion, Mode=TwoWay, ValidatesOnExceptions=True}" 
                         Minimum="0" Maximum="1" Width="100" 
-                        TickFrequency="0.05" TickPlacement="BottomRight" IsSnapToTickEnabled="True" />
+                        TickFrequency="0.05" TickPlacement="BottomRight" IsSnapToTickEnabled="True" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                     </StackPanel>
 
                     <Label>Noise Type</Label>
@@ -123,26 +124,26 @@
 
                     <Label>Samples</Label>
                     <StackPanel Orientation="Horizontal">
-                        <TextBox Width="50" Text="{Binding Config.Samples, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" />
+                        <TextBox Width="50" Text="{Binding Config.Samples, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                         <Slider Value="{Binding Config.Samples, Mode=TwoWay, ValidatesOnExceptions=True}" 
                         Minimum="2" Maximum="10" Width="100" 
-                        TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" />
+                        TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                     </StackPanel>
 
                     <Label>Threshold</Label>
                     <StackPanel Orientation="Horizontal">
-                        <TextBox Width="50" Text="{Binding Config.Threshold, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" />
+                        <TextBox Width="50" Text="{Binding Config.Threshold, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                         <Slider Value="{Binding Config.Threshold, Mode=TwoWay, ValidatesOnExceptions=True}" 
                         Minimum="-1" Maximum="1" Width="100" 
-                        TickFrequency="0.05" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" />
+                        TickFrequency="0.05" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                     </StackPanel>
 
                     <Label>Frequency</Label>
                     <StackPanel Orientation="Horizontal">
-                        <TextBox Width="50" Text="{Binding Config.Frequency, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" />
+                        <TextBox Width="50" Text="{Binding Config.Frequency, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                         <Slider Value="{Binding Config.Frequency, Mode=TwoWay, ValidatesOnExceptions=True}" 
                         Minimum="0.001" Maximum="0.050" Width="100" 
-                        TickFrequency="0.001" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" />
+                        TickFrequency="0.001" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
                     </StackPanel>
 
                     <Label Margin="0 20 0 0">Preview count</Label>

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Algorithms.RandomGenerators;
 using GameRealisticMap.Geometries;
 using Gemini.Framework;
+using Gemini.Modules.UndoRedo;
 
 namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
 {
@@ -17,45 +20,50 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
         private int _defaultPreviewSize = 0;
 
         public DensityConfigEditorViewModel()
-            : this(RandomPointGenerationOptions.Default)
+            : this(new DensityConfigVM(new DensityWithNoiseDefinition(0.01, 0.01), null))
         {
-            UpdateNoisePreviewSize();
-            UpdateDefaultPreviewSize();
+
         }
 
-        public DensityConfigEditorViewModel(IRandomPointGenerationOptions options)
+        public DensityConfigEditorViewModel(DensityConfigVM config)
         {
-            _config = new DensityConfigVM(options);
-            _config.PropertyChanged += (_, p) =>
-            {
-                switch (p.PropertyName)
-                {
-                    case nameof(DensityConfigVM.Threshold):
-                    case nameof(DensityConfigVM.Samples):
-                    case nameof(DensityConfigVM.Seed):
-                    case nameof(DensityConfigVM.Frequency):
-                    case nameof(DensityConfigVM.NoiseType):
-                    case nameof(DensityConfigVM.NoiseProportion):
-                        UpdateNoisePreview();
-                        return;
-                    case nameof(DensityConfigVM.NoiseMinDensity):
-                    case nameof(DensityConfigVM.NoiseMaxDensity):
-                        UpdateNoisePreviewSize();
-                        return;
-                    case nameof(DensityConfigVM.MinDensity):
-                    case nameof(DensityConfigVM.MaxDensity):
-                        UpdateDefaultPreviewSize();
-                        return;
-                }
-            };
-            UpdateNoisePreview();
+            _config = config;
             DisplayName = "Density Configuration";
+        }
+
+        protected override IUndoRedoManager CreateUndoRedoManager()
+        {
+            return _config.UndoRedoManager ?? base.CreateUndoRedoManager();
+        }
+
+        private void ConfigPropertyChanged(object? _, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(DensityConfigVM.Threshold):
+                case nameof(DensityConfigVM.Samples):
+                case nameof(DensityConfigVM.Seed):
+                case nameof(DensityConfigVM.Frequency):
+                case nameof(DensityConfigVM.NoiseType):
+                case nameof(DensityConfigVM.NoiseProportion):
+                    UpdateNoisePreview();
+                    return;
+                case nameof(DensityConfigVM.NoiseMinDensity):
+                case nameof(DensityConfigVM.NoiseMaxDensity):
+                    UpdateNoisePreviewSize();
+                    return;
+                case nameof(DensityConfigVM.MinDensity):
+                case nameof(DensityConfigVM.MaxDensity):
+                    UpdateDefaultPreviewSize();
+                    return;
+            }
         }
 
         private void UpdateNoisePreviewSize()
         {
             NoisePreviewSize = (int)Math.Sqrt(_noisePreviewCount / ((_config.NoiseMaxDensity + _config.NoiseMinDensity) / 2d));
         }
+
         private void UpdateDefaultPreviewSize()
         {
             DefaultPreviewSize = (int)Math.Sqrt(_defaultPreviewCount / ((_config.MaxDensity + _config.MinDensity) / 2d));
@@ -165,5 +173,21 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
             }
             return (double)used / (double)count;
         }
+
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
+        {
+            _config.PropertyChanged -= ConfigPropertyChanged;
+            _config.PropertyChanged += ConfigPropertyChanged;
+            UpdateNoisePreviewSize();
+            UpdateDefaultPreviewSize();
+            return base.OnActivateAsync(cancellationToken);
+        }
+
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        {
+            _config.PropertyChanged -= ConfigPropertyChanged;
+            return base.OnDeactivateAsync(close, cancellationToken);
+        }
+
     }
 }

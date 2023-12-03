@@ -40,7 +40,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         public override BasicCollectionDefinition ToDefinition()
         {
             DefinitionHelper.EquilibrateProbabilities(Items);
-            return new BasicCollectionDefinition(Items.Select(i => i.ToDefinition()).ToList(), Probability, MinDensity, MaxDensity, Label, Condition.ToDefinition());
+            return new BasicCollectionDefinition(Items.Select(i => i.ToDefinition()).ToList(), Probability, Density.MinDensity, Density.MaxDensity, Label, Condition.ToDefinition(), Density.ToDefinition());
         }
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
