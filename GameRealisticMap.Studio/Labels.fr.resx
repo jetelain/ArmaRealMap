@@ -1453,4 +1453,19 @@ Dernière génération le {1}</value>
   <data name="UseSpecificDensity" xml:space="preserve">
     <value>Utiliser des valeurs spécifiques</value>
   </data>
+  <data name="DensityDefaultLargeAreasLabel" xml:space="preserve">
+    <value>Par défaut {0}, Grandes zones {1}</value>
+  </data>
+  <data name="DensityDefaultLargeAreasWithNoiseLabel" xml:space="preserve">
+    <value>Par défaut {0}, Grandes zones {1} avec {2:0}% de bruit {3}.</value>
+  </data>
+  <data name="Seed" xml:space="preserve">
+    <value>Graine</value>
+  </data>
+  <data name="UseConstant" xml:space="preserve">
+    <value>Utiliser une constante</value>
+  </data>
+  <data name="UseRandomForEachArea" xml:space="preserve">
+    <value>Utiliser une valeur aléatoire par zone</value>
+  </data>
 </root>

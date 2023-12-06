@@ -16,7 +16,8 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
         private float _frequency;
         private NoiseType _noiseType;
         private double _proportion;
-        private int? _seed;
+        private int _seed;
+        private bool _useRandomSeed;
         private double _minDensity;
         private double _maxDensity;
         private double _noiseMinDensity;
@@ -42,6 +43,8 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
             _frequency = noiseOptions.Frequency;
             _noiseType = noiseOptions.NoiseType;
             _samples = noiseOptions.Samples;
+            _seed = noiseOptions.Seed ?? 1234;
+            _useRandomSeed = noiseOptions.Seed == null;
 
             _proportion = largeAreas?.NoiseProportion ?? 0d;
 
@@ -149,7 +152,11 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
 
         public int Samples { get { return _samples; } set { if (_samples != value) { _samples = Math.Max(2, value); NotifyOfPropertyChange(); } } }
 
-        public int Seed { get { return _seed ?? 0; } set { if (_seed != value) { _seed = value; NotifyOfPropertyChange(); } } }
+        public int Seed { get { return _seed; } set { if (_seed != value) { _seed = value; NotifyOfPropertyChange(); } } }
+
+        public bool UseRandomSeed { get { return _useRandomSeed; } set { if (_useRandomSeed != value) { _useRandomSeed = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(UseConstantSeed)); } } }
+
+        public bool UseConstantSeed { get { return !UseRandomSeed; } set { UseRandomSeed = !value; } }
 
         public bool HasNoise => _proportion > 0;
 
@@ -161,7 +168,7 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
 
         public INoiseBasedRandomPointOptions? NoiseOptions => this;
 
-        int? INoiseOptions.Seed => _seed;
+        int? INoiseOptions.Seed => _useRandomSeed ? null : _seed;
 
         public bool IsBasic => _proportion == 0 && (_noiseUseDefault || (_maxDensity == _noiseMaxDensity) && (_minDensity == _noiseMinDensity));
         public bool IsAdvanced => !IsBasic;
@@ -176,11 +183,11 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
                 {
                     return DensityText(_minDensity, _maxDensity);
                 }
-                return string.Format("Default {0}, Large areas {1}", 
+                return string.Format(Labels.DensityDefaultLargeAreasLabel, 
                     DensityText(_minDensity, _maxDensity), 
                     DensityText(_noiseMinDensity, _noiseMaxDensity));
             }
-            return string.Format("Default {0}, Large areas {1} with {2:0}% {3} noise.",
+            return string.Format(Labels.DensityDefaultLargeAreasWithNoiseLabel,
                 DensityText(_minDensity, _maxDensity),
                 DensityText(_noiseMinDensity, _noiseMaxDensity),
                 NoiseProportion * 100,
@@ -218,7 +225,7 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
             {
                 return null;
             }
-            return new NoiseBasedRandomPointOptions(null, _threshold, _samples, _frequency, _noiseType);
+            return new NoiseBasedRandomPointOptions(_useRandomSeed ? null : _seed, _threshold, _samples, _frequency, _noiseType);
         }
 
     }

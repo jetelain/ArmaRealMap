@@ -39,11 +39,39 @@ namespace GameRealisticMap.Studio.Behaviors
                 range.GotFocus += (sender, _) => GotFocus<double>((FrameworkElement)sender!, RangeBase.ValueProperty);
                 range.LostFocus += (sender, _) => LostFocus<double>((FrameworkElement)sender!, RangeBase.ValueProperty);
             }
+            else if (d is RadioButton radio)
+            {
+                radio.Unchecked += Radio_Unchecked;
+                radio.Click += Radio_Click;
+            }
             //else if (d is Selector selector)
             //{
             //    selector.GotFocus += (sender, _) => GotFocus<object>((FrameworkElement)sender!, Selector.SelectedValueProperty);
             //    selector.LostFocus += (sender, _) => LostFocus<object>((FrameworkElement)sender!, Selector.SelectedValueProperty);
             //}
+        }
+
+        private static void Radio_Click(object sender, RoutedEventArgs e)
+        {
+            var radio = (RadioButton)sender;
+            if (radio.IsChecked == true)
+            {
+                var manager = GetManager(radio);
+
+                if (lastUncheckedRadio != null
+                    && radio.GroupName == lastUncheckedRadio.GroupName
+                    && manager == GetManager(lastUncheckedRadio))
+                {
+                    manager.PushAction(new RadioButtonAction(radio, lastUncheckedRadio));
+                }
+            }
+        }
+
+        private static RadioButton? lastUncheckedRadio;
+
+        private static void Radio_Unchecked(object sender, RoutedEventArgs e)
+        {
+            lastUncheckedRadio = (RadioButton)sender;
         }
 
         internal static readonly DependencyProperty ValueWhenGotFocusProperty = DependencyProperty.RegisterAttached(

@@ -1664,6 +1664,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default {0}, Large areas {1}.
+        /// </summary>
+        public static string DensityDefaultLargeAreasLabel {
+            get {
+                return ResourceManager.GetString("DensityDefaultLargeAreasLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default {0}, Large areas {1} with {2:0}% {3} noise..
+        /// </summary>
+        public static string DensityDefaultLargeAreasWithNoiseLabel {
+            get {
+                return ResourceManager.GetString("DensityDefaultLargeAreasWithNoiseLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à {0:0.00} msec/100 m². Density is OK..
         /// </summary>
         public static string DensityResultsOK {
@@ -3575,6 +3593,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Seed.
+        /// </summary>
+        public static string Seed {
+            get {
+                return ResourceManager.GetString("Seed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Seed #{0}.
         /// </summary>
         public static string SeedNumber {
@@ -3899,6 +3926,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use constant.
+        /// </summary>
+        public static string UseConstant {
+            get {
+                return ResourceManager.GetString("UseConstant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Use default.
         /// </summary>
         public static string UseDefaultDensity {
@@ -3922,6 +3958,15 @@ namespace GameRealisticMap.Studio {
         public static string UsePBOProject {
             get {
                 return ResourceManager.GetString("UsePBOProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use random for each area.
+        /// </summary>
+        public static string UseRandomForEachArea {
+            get {
+                return ResourceManager.GetString("UseRandomForEachArea", resourceCulture);
             }
         }
         

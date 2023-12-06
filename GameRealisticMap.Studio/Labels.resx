@@ -1453,4 +1453,19 @@ Last generated on {1}</value>
   <data name="NoiseFrequency" xml:space="preserve">
     <value>Frequency</value>
   </data>
+  <data name="DensityDefaultLargeAreasLabel" xml:space="preserve">
+    <value>Default {0}, Large areas {1}</value>
+  </data>
+  <data name="DensityDefaultLargeAreasWithNoiseLabel" xml:space="preserve">
+    <value>Default {0}, Large areas {1} with {2:0}% {3} noise.</value>
+  </data>
+  <data name="Seed" xml:space="preserve">
+    <value>Seed</value>
+  </data>
+  <data name="UseRandomForEachArea" xml:space="preserve">
+    <value>Use random for each area</value>
+  </data>
+  <data name="UseConstant" xml:space="preserve">
+    <value>Use constant</value>
+  </data>
 </root>

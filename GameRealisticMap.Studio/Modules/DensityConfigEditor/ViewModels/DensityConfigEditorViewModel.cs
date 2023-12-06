@@ -43,6 +43,7 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
                 case nameof(DensityConfigVM.Threshold):
                 case nameof(DensityConfigVM.Samples):
                 case nameof(DensityConfigVM.Seed):
+                case nameof(DensityConfigVM.UseRandomSeed):
                 case nameof(DensityConfigVM.Frequency):
                 case nameof(DensityConfigVM.NoiseType):
                 case nameof(DensityConfigVM.NoiseProportion):
