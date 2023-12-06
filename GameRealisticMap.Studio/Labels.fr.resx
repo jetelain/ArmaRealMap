@@ -1411,4 +1411,46 @@ Dernière génération le {1}</value>
   <data name="OpenMapEditor" xml:space="preserve">
     <value>Ouvrir l'éditeur de carte</value>
   </data>
+  <data name="ComputeDensityFromDefault" xml:space="preserve">
+    <value>Calculer depuis les valeurs par défaut</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Par défaut</value>
+  </data>
+  <data name="DensityConfiguration" xml:space="preserve">
+    <value>Configuration de la densité</value>
+  </data>
+  <data name="LargeAreas" xml:space="preserve">
+    <value>Grande zones</value>
+  </data>
+  <data name="NoiseFrequency" xml:space="preserve">
+    <value>Fréquence</value>
+  </data>
+  <data name="NoiseProportion" xml:space="preserve">
+    <value>Proportion de bruit</value>
+  </data>
+  <data name="NoiseSamples" xml:space="preserve">
+    <value>Echantillons</value>
+  </data>
+  <data name="NoiseThreshold" xml:space="preserve">
+    <value>Seuil</value>
+  </data>
+  <data name="NoiseType" xml:space="preserve">
+    <value>Type de bruit</value>
+  </data>
+  <data name="PreviewCount" xml:space="preserve">
+    <value>Nombre d'aperçu</value>
+  </data>
+  <data name="PreviewSize" xml:space="preserve">
+    <value>Taille de l'aperçu</value>
+  </data>
+  <data name="Randomization" xml:space="preserve">
+    <value>Échantillonnage aléatoire</value>
+  </data>
+  <data name="UseDefaultDensity" xml:space="preserve">
+    <value>Utiliser les valeurs par défaut</value>
+  </data>
+  <data name="UseSpecificDensity" xml:space="preserve">
+    <value>Utiliser des valeurs spécifiques</value>
+  </data>
 </root>

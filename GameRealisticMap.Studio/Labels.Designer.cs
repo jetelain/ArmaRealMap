@@ -1331,6 +1331,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Compute from default.
+        /// </summary>
+        public static string ComputeDensityFromDefault {
+            get {
+                return ResourceManager.GetString("ComputeDensityFromDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Compute maximum.
         /// </summary>
         public static string ComputeMaximum {
@@ -1628,11 +1637,29 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Default.
+        /// </summary>
+        public static string Default {
+            get {
+                return ResourceManager.GetString("Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Average density.
         /// </summary>
         public static string Density {
             get {
                 return ResourceManager.GetString("Density", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Density configuration.
+        /// </summary>
+        public static string DensityConfiguration {
+            get {
+                return ResourceManager.GetString("DensityConfiguration", resourceCulture);
             }
         }
         
@@ -2555,6 +2582,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Large areas.
+        /// </summary>
+        public static string LargeAreas {
+            get {
+                return ResourceManager.GetString("LargeAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Launch to approve license.
         /// </summary>
         public static string LaunchApproveLicense {
@@ -2908,6 +2944,51 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Frequency.
+        /// </summary>
+        public static string NoiseFrequency {
+            get {
+                return ResourceManager.GetString("NoiseFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Noise proportion.
+        /// </summary>
+        public static string NoiseProportion {
+            get {
+                return ResourceManager.GetString("NoiseProportion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Samples.
+        /// </summary>
+        public static string NoiseSamples {
+            get {
+                return ResourceManager.GetString("NoiseSamples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Threshold.
+        /// </summary>
+        public static string NoiseThreshold {
+            get {
+                return ResourceManager.GetString("NoiseThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Noise Type.
+        /// </summary>
+        public static string NoiseType {
+            get {
+                return ResourceManager.GetString("NoiseType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Normal Texture.
         /// </summary>
         public static string NormalTexture {
@@ -3098,6 +3179,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Preview count.
+        /// </summary>
+        public static string PreviewCount {
+            get {
+                return ResourceManager.GetString("PreviewCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Preview size.
+        /// </summary>
+        public static string PreviewSize {
+            get {
+                return ResourceManager.GetString("PreviewSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à {0}: Preview.
         /// </summary>
         public static string PreviewTitle {
@@ -3157,6 +3256,15 @@ namespace GameRealisticMap.Studio {
         public static string RandomFrom {
             get {
                 return ResourceManager.GetString("RandomFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Randomization.
+        /// </summary>
+        public static string Randomization {
+            get {
+                return ResourceManager.GetString("Randomization", resourceCulture);
             }
         }
         
@@ -3791,6 +3899,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use default.
+        /// </summary>
+        public static string UseDefaultDensity {
+            get {
+                return ResourceManager.GetString("UseDefaultDensity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Used Map Configuration.
         /// </summary>
         public static string UsedMapConfiguration {
@@ -3814,6 +3931,15 @@ namespace GameRealisticMap.Studio {
         public static string UseSameTexteAs {
             get {
                 return ResourceManager.GetString("UseSameTexteAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use specific.
+        /// </summary>
+        public static string UseSpecificDensity {
+            get {
+                return ResourceManager.GetString("UseSpecificDensity", resourceCulture);
             }
         }
         

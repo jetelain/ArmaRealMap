@@ -1411,4 +1411,46 @@ Last generated on {1}</value>
   <data name="ElevationGrid" xml:space="preserve">
     <value>Elevation grid</value>
   </data>
+  <data name="Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="DensityConfiguration" xml:space="preserve">
+    <value>Density configuration</value>
+  </data>
+  <data name="PreviewCount" xml:space="preserve">
+    <value>Preview count</value>
+  </data>
+  <data name="PreviewSize" xml:space="preserve">
+    <value>Preview size</value>
+  </data>
+  <data name="LargeAreas" xml:space="preserve">
+    <value>Large areas</value>
+  </data>
+  <data name="UseSpecificDensity" xml:space="preserve">
+    <value>Use specific</value>
+  </data>
+  <data name="UseDefaultDensity" xml:space="preserve">
+    <value>Use default</value>
+  </data>
+  <data name="ComputeDensityFromDefault" xml:space="preserve">
+    <value>Compute from default</value>
+  </data>
+  <data name="Randomization" xml:space="preserve">
+    <value>Randomization</value>
+  </data>
+  <data name="NoiseProportion" xml:space="preserve">
+    <value>Noise proportion</value>
+  </data>
+  <data name="NoiseType" xml:space="preserve">
+    <value>Noise Type</value>
+  </data>
+  <data name="NoiseSamples" xml:space="preserve">
+    <value>Samples</value>
+  </data>
+  <data name="NoiseThreshold" xml:space="preserve">
+    <value>Threshold</value>
+  </data>
+  <data name="NoiseFrequency" xml:space="preserve">
+    <value>Frequency</value>
+  </data>
 </root>
