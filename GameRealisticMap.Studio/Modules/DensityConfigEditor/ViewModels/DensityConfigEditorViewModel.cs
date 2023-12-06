@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Algorithms.RandomGenerators;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 using Gemini.Modules.UndoRedo;
 
@@ -151,9 +152,12 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
         {
             var normal = GetUsedSurface(RandomPointGenerator.Create(new System.Random(0), new Envelope(TerrainPoint.Empty, new TerrainPoint(1000, 1000))));
             var noise = GetUsedSurface(RandomPointGenerator.Create(new System.Random(0), new Envelope(TerrainPoint.Empty, new TerrainPoint(1000, 1000)), Config));
-            Config.NoiseUseSpecific = true;
-            Config.NoiseMinDensity = Math.Round(Config.MinDensity * (noise*noise) / (normal*normal), 6);
-            Config.NoiseMaxDensity = Math.Round(Config.MaxDensity * (noise*noise) / (normal*normal), 6);
+            UndoRedoManager.ExecuteAction(new BatchAction(Labels.ComputeDensityFromDefault)
+                {
+                    new PropertyAction<bool>(true, Config.NoiseUseSpecific, "", value => Config.NoiseUseSpecific = value),
+                    new PropertyAction<double>(Math.Round(Config.MinDensity * (noise*noise) / (normal*normal), 6), Config.NoiseMinDensity, "", value => Config.NoiseMinDensity = value),
+                    new PropertyAction<double>(Math.Round(Config.MaxDensity * (noise*noise) / (normal*normal), 6), Config.NoiseMaxDensity, "", value => Config.NoiseMaxDensity = value),
+                });
             return Task.CompletedTask;
         }
 
