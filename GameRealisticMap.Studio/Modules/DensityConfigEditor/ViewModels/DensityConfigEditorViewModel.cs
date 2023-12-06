@@ -28,7 +28,7 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
         public DensityConfigEditorViewModel(DensityConfigVM config)
         {
             _config = config;
-            DisplayName = "Density Configuration";
+            DisplayName = Labels.DensityConfiguration;
         }
 
         protected override IUndoRedoManager CreateUndoRedoManager()
@@ -49,8 +49,8 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
                 case nameof(DensityConfigVM.NoiseProportion):
                     UpdateNoisePreview();
                     return;
-                case nameof(DensityConfigVM.NoiseMinDensity):
-                case nameof(DensityConfigVM.NoiseMaxDensity):
+                case nameof(DensityConfigVM.ActualNoiseMinDensity):
+                case nameof(DensityConfigVM.ActualNoiseMaxDensity):
                     UpdateNoisePreviewSize();
                     return;
                 case nameof(DensityConfigVM.MinDensity):
@@ -62,7 +62,7 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
 
         private void UpdateNoisePreviewSize()
         {
-            NoisePreviewSize = (int)Math.Sqrt(_noisePreviewCount / ((_config.NoiseMaxDensity + _config.NoiseMinDensity) / 2d));
+            NoisePreviewSize = (int)Math.Sqrt(_noisePreviewCount / ((_config.ActualNoiseMaxDensity + _config.ActualNoiseMinDensity) / 2d));
         }
 
         private void UpdateDefaultPreviewSize()
@@ -151,6 +151,7 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
         {
             var normal = GetUsedSurface(RandomPointGenerator.Create(new System.Random(0), new Envelope(TerrainPoint.Empty, new TerrainPoint(1000, 1000))));
             var noise = GetUsedSurface(RandomPointGenerator.Create(new System.Random(0), new Envelope(TerrainPoint.Empty, new TerrainPoint(1000, 1000)), Config));
+            Config.NoiseUseSpecific = true;
             Config.NoiseMinDensity = Math.Round(Config.MinDensity * (noise*noise) / (normal*normal), 6);
             Config.NoiseMaxDensity = Math.Round(Config.MaxDensity * (noise*noise) / (normal*normal), 6);
             return Task.CompletedTask;

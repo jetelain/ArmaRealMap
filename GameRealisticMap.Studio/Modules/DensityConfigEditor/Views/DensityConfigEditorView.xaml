@@ -79,12 +79,12 @@
                     <Run Text="{x:Static r:Labels.Density}"/>
                 </Label>
                 <StackPanel>
-                    <RadioButton GroupName="DensityMode" VerticalAlignment="Center" IsChecked="{Binding Config.NoiseUseDefault}">
-                        <Run Text="{x:Static r:Labels.UseDefaultDensity}"/>
+                    <RadioButton GroupName="DensityMode" VerticalAlignment="Center" IsChecked="{Binding Config.NoiseUseDefault}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}">
+                        <TextBlock Text="{x:Static r:Labels.UseDefaultDensity}"/>
                     </RadioButton>
                     <StackPanel Orientation="Horizontal">
-                        <RadioButton GroupName="DensityMode" VerticalAlignment="Center" IsChecked="{Binding Config.NoiseUseSpecific}">
-                            <Run Text="{x:Static r:Labels.UseSpecificDensity}"/>
+                        <RadioButton GroupName="DensityMode" VerticalAlignment="Center" IsChecked="{Binding Config.NoiseUseSpecific}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}">
+                            <TextBlock Text="{x:Static r:Labels.UseSpecificDensity}"/>
                         </RadioButton>
                         <Label VerticalAlignment="Center" Margin="5 0">
                             <Run Text="{x:Static r:Labels.RandomFrom}"/>
@@ -167,10 +167,10 @@
                     <Label>
                         <Run Text="{x:Static r:Labels.Seed}"/>
                     </Label>
-                    <RadioButton IsEnabled="{Binding Config.HasNoise}" IsChecked="{Binding Config.UseRandomSeed}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}">
+                    <RadioButton GroupName="SeedMode" IsEnabled="{Binding Config.HasNoise}" IsChecked="{Binding Config.UseRandomSeed}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}">
                         <TextBlock Text="{x:Static r:Labels.UseRandomForEachArea}" TextWrapping="Wrap"/>
                     </RadioButton>
-                    <RadioButton IsEnabled="{Binding Config.HasNoise}" IsChecked="{Binding Config.UseConstantSeed}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}">
+                    <RadioButton GroupName="SeedMode" IsEnabled="{Binding Config.HasNoise}" IsChecked="{Binding Config.UseConstantSeed}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}">
                         <TextBlock Text="{x:Static r:Labels.UseConstant}"/>
                     </RadioButton>
                     <TextBox Text="{Binding Config.Seed, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />

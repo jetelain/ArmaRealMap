@@ -70,8 +70,12 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
             {
                 if (_minDensity != value)
                 {
-                    _minDensity = value; NotifyOfPropertyChange(); if (_noiseUseDefault)
-                    { NoiseMinDensity = MinDensity; }
+                    _minDensity = value; 
+                    NotifyOfPropertyChange(); 
+                    if (_noiseUseDefault)
+                    { 
+                        NotifyOfPropertyChange(nameof(ActualNoiseMinDensity)); 
+                    }
                     Update();
                 }
             }
@@ -84,12 +88,18 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
             {
                 if (_maxDensity != value)
                 {
-                    _maxDensity = value; NotifyOfPropertyChange(); if (_noiseUseDefault)
-                    { NoiseMaxDensity = MaxDensity; }
+                    _maxDensity = value; 
+                    NotifyOfPropertyChange();
+                    if (_noiseUseDefault)
+                    {
+                        NotifyOfPropertyChange(nameof(ActualNoiseMaxDensity));
+                    }
                     Update();
                 }
             }
         }
+
+        public double ActualNoiseMinDensity => NoiseUseDefault ? MinDensity : NoiseMinDensity;
 
         public double NoiseMinDensity
         {
@@ -100,14 +110,13 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
                 {
                     _noiseMinDensity = value;
                     NotifyOfPropertyChange();
-                    if (_noiseMinDensity != _minDensity)
-                    {
-                        NoiseUseDefault = false;
-                    }
+                    NotifyOfPropertyChange(nameof(ActualNoiseMinDensity));
                     Update();
                 }
             }
         }
+
+        public double ActualNoiseMaxDensity => NoiseUseDefault ? MaxDensity : NoiseMaxDensity;
 
         public double NoiseMaxDensity
         {
@@ -118,10 +127,7 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
                 {
                     _noiseMaxDensity = value;
                     NotifyOfPropertyChange();
-                    if (_noiseMaxDensity != _maxDensity)
-                    {
-                        NoiseUseDefault = false;
-                    }
+                    NotifyOfPropertyChange(nameof(ActualNoiseMaxDensity));
                     Update();
                 }
             }
@@ -139,12 +145,9 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
                     _noiseUseDefault = value;
                     NotifyOfPropertyChange();
                     NotifyOfPropertyChange(nameof(NoiseUseSpecific));
-                    if (_noiseUseDefault)
-                    {
-                        NoiseMinDensity = MinDensity;
-                        NoiseMaxDensity = MaxDensity;
-                    }
-                }
+                    NotifyOfPropertyChange(nameof(ActualNoiseMinDensity));
+                    NotifyOfPropertyChange(nameof(ActualNoiseMaxDensity));
+                 }
             }
         }
 
@@ -170,7 +173,7 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
 
         int? INoiseOptions.Seed => _useRandomSeed ? null : _seed;
 
-        public bool IsBasic => _proportion == 0 && (_noiseUseDefault || (_maxDensity == _noiseMaxDensity) && (_minDensity == _noiseMinDensity));
+        public bool IsBasic => _proportion == 0 && (_noiseUseDefault || (_maxDensity == _noiseMaxDensity && _minDensity == _noiseMinDensity));
         public bool IsAdvanced => !IsBasic;
 
         public string Label => ToText();
@@ -179,17 +182,17 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
         {
             if (_proportion == 0)
             {
-                if (_maxDensity == _noiseMaxDensity && _minDensity == _noiseMinDensity)
+                if (MaxDensity == ActualNoiseMaxDensity && MinDensity == ActualNoiseMinDensity)
                 {
-                    return DensityText(_minDensity, _maxDensity);
+                    return DensityText(MinDensity, MaxDensity);
                 }
                 return string.Format(Labels.DensityDefaultLargeAreasLabel, 
-                    DensityText(_minDensity, _maxDensity), 
-                    DensityText(_noiseMinDensity, _noiseMaxDensity));
+                    DensityText(MinDensity, MaxDensity), 
+                    DensityText(ActualNoiseMinDensity, ActualNoiseMaxDensity));
             }
             return string.Format(Labels.DensityDefaultLargeAreasWithNoiseLabel,
-                DensityText(_minDensity, _maxDensity),
-                DensityText(_noiseMinDensity, _noiseMaxDensity),
+                DensityText(MinDensity, MaxDensity),
+                DensityText(ActualNoiseMinDensity, ActualNoiseMaxDensity),
                 NoiseProportion * 100,
                 NoiseType);
         }
@@ -216,7 +219,7 @@ namespace GameRealisticMap.Studio.Modules.DensityConfigEditor.ViewModels
             {
                 return null;
             }
-            return new DensityWithNoiseDefinition(_noiseMinDensity, _noiseMaxDensity, _proportion, ToNoiseDefinition());
+            return new DensityWithNoiseDefinition(ActualNoiseMinDensity, ActualNoiseMaxDensity, _proportion, ToNoiseDefinition());
         }
 
         private NoiseBasedRandomPointOptions? ToNoiseDefinition()
