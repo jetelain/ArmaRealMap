@@ -1,0 +1,208 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.DensityConfigEditor.Views.DensityConfigEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             xmlns:cal="http://caliburnmicro.com"
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.DensityConfigEditor.Views"
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="1000" d:DesignWidth="1000">
+    <ScrollViewer >
+        <StackPanel>
+
+            <TextBlock FontSize="30"><Run Text="{x:Static r:Labels.DensityConfiguration}" /></TextBlock>
+
+
+            <TextBlock Text="{Binding Config.Label}" />
+
+
+            <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.Default}" /></TextBlock>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Width="150">
+                    <Run Text="{x:Static r:Labels.Density}"/>
+                </Label>
+                <TextBlock VerticalAlignment="Center" Margin="0 0 5 0"><Run Text="{x:Static r:Labels.RandomFrom}"/></TextBlock>
+                <TextBox Width="100" Text="{Binding Config.MinDensity,Mode=TwoWay}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                <TextBlock VerticalAlignment="Center" Margin="5 0"><Run Text="{x:Static r:Labels.RandomTo}"/></TextBlock>
+                <TextBox Width="100" Text="{Binding Config.MaxDensity,Mode=TwoWay}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                <TextBlock VerticalAlignment="Center" Margin="5 0 0 0"><Run Text="{x:Static r:Labels.ObjectsPerM2}"/></TextBlock>
+            </StackPanel>
+
+            <Grid Height="150">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+
+                <Label>
+                    <Run Text="{x:Static r:Labels.Preview}" />
+                </Label>
+                
+                <StackPanel Grid.Column="1" Margin="5">
+
+                    <Label>
+                        <Run Text="{x:Static r:Labels.PreviewCount}"/>
+                    </Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding DefaultPreviewCount, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <Slider Value="{Binding DefaultPreviewCount, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="250" Maximum="2500" Width="100" 
+                        TickFrequency="250" TickPlacement="BottomRight" IsSnapToTickEnabled="True" />
+                    </StackPanel>
+
+                    <Label>
+                        <Run Text="{x:Static r:Labels.PreviewSize}"/>
+                    </Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="150" Text="{Binding DefaultPreviewSize, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                    </StackPanel>
+
+                </StackPanel>
+                <Border BorderBrush="Gray" BorderThickness="2" Grid.Column="2" Margin="0 10 0 0">
+                    <grm:GrmMap SizeInMeters="{Binding DefaultPreviewSize}">
+                        <grm:GrmMapPointsLayer Points="{Binding DefaultPoints}" />
+                    </grm:GrmMap>
+                </Border>
+            </Grid>
+
+            <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.LargeAreas}"/></TextBlock>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Width="150">
+                    <Run Text="{x:Static r:Labels.Density}"/>
+                </Label>
+                <StackPanel>
+                    <RadioButton GroupName="DensityMode" VerticalAlignment="Center" IsChecked="{Binding Config.NoiseUseDefault}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}">
+                        <TextBlock Text="{x:Static r:Labels.UseDefaultDensity}"/>
+                    </RadioButton>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton GroupName="DensityMode" VerticalAlignment="Center" IsChecked="{Binding Config.NoiseUseSpecific}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}">
+                            <TextBlock Text="{x:Static r:Labels.UseSpecificDensity}"/>
+                        </RadioButton>
+                        <Label VerticalAlignment="Center" Margin="5 0">
+                            <Run Text="{x:Static r:Labels.RandomFrom}"/>
+                        </Label>
+                        <TextBox Width="100" Text="{Binding Config.NoiseMinDensity,Mode=TwoWay}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                        <TextBlock VerticalAlignment="Center" Margin="5 0"><Run Text="{x:Static r:Labels.RandomTo}"/></TextBlock>
+                        <TextBox Width="100" Text="{Binding Config.NoiseMaxDensity,Mode=TwoWay}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                        <TextBlock VerticalAlignment="Center" Margin="5 0 0 0"><Run Text="{x:Static r:Labels.ObjectsPerM2}"/></TextBlock>
+                        <Button cal:Message.Attach="ComputeNoiseDensity">
+                            <Run Text="{x:Static r:Labels.ComputeDensityFromDefault}"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+
+            <Grid Height="500">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+
+                <Label>
+                    <Run Text="{x:Static r:Labels.Randomization}"/>
+                </Label>
+                <StackPanel Grid.Column="1" Margin="5">
+
+
+
+                    <Label>
+                        <Run Text="{x:Static r:Labels.NoiseProportion}"/>
+                    </Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding Config.NoiseProportion, Mode=TwoWay, ValidatesOnExceptions=True}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                        <Slider Value="{Binding Config.NoiseProportion, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="0" Maximum="1" Width="100" 
+                        TickFrequency="0.05" TickPlacement="BottomRight" IsSnapToTickEnabled="True" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+
+                    <Label>
+                        <Run Text="{x:Static r:Labels.NoiseType}"/>
+                    </Label>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox Width="150" ItemsSource="{Binding Config.NoiseTypes}" SelectedValue="{Binding Config.NoiseType}" IsEnabled="{Binding Config.HasNoise}" />
+                    </StackPanel>
+
+                    <Label>
+                        <Run Text="{x:Static r:Labels.NoiseSamples}"/>
+                    </Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding Config.Samples, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                        <Slider Value="{Binding Config.Samples, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="2" Maximum="10" Width="100" 
+                        TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+
+                    <Label>
+                        <Run Text="{x:Static r:Labels.NoiseThreshold}"/>
+                    </Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding Config.Threshold, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                        <Slider Value="{Binding Config.Threshold, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="-1" Maximum="1" Width="100" 
+                        TickFrequency="0.05" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+
+                    <Label>
+                        <Run Text="{x:Static r:Labels.NoiseFrequency}"/>
+                    </Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding Config.Frequency, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                        <Slider Value="{Binding Config.Frequency, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="0.001" Maximum="0.050" Width="100" 
+                        TickFrequency="0.001" TickPlacement="BottomRight" IsSnapToTickEnabled="True" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+                    </StackPanel>
+
+                    <Label>
+                        <Run Text="{x:Static r:Labels.Seed}"/>
+                    </Label>
+                    <RadioButton GroupName="SeedMode" IsEnabled="{Binding Config.HasNoise}" IsChecked="{Binding Config.UseRandomSeed}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}">
+                        <TextBlock Text="{x:Static r:Labels.UseRandomForEachArea}" TextWrapping="Wrap"/>
+                    </RadioButton>
+                    <RadioButton GroupName="SeedMode" IsEnabled="{Binding Config.HasNoise}" IsChecked="{Binding Config.UseConstantSeed}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}">
+                        <TextBlock Text="{x:Static r:Labels.UseConstant}"/>
+                    </RadioButton>
+                    <TextBox Text="{Binding Config.Seed, Mode=TwoWay, ValidatesOnExceptions=True}" IsEnabled="{Binding Config.HasNoise}" b:UndoRedoBehaviors.Manager="{Binding UndoRedoManager}" />
+
+
+                    <Label Margin="0 20 0 0">
+                        <Run Text="{x:Static r:Labels.PreviewCount}"/>
+                    </Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="50" Text="{Binding NoisePreviewCount, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <Slider Value="{Binding NoisePreviewCount, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        Minimum="250" Maximum="2500" Width="100" 
+                        TickFrequency="250" TickPlacement="BottomRight" IsSnapToTickEnabled="True" />
+                    </StackPanel>
+
+                    <Label>
+                        <Run Text="{x:Static r:Labels.PreviewSize}"/>
+                    </Label>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="150" Text="{Binding NoisePreviewSize, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                    </StackPanel>
+                    
+                </StackPanel>
+
+                <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="2" Margin="0 10 0 0">
+                    <grm:GrmMap SizeInMeters="{Binding NoisePreviewSize}" >
+                        <grm:GrmMapPointsLayer Points="{Binding NoisePoints}" />
+                    </grm:GrmMap>
+
+                </Border>
+
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

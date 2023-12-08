@@ -8,6 +8,7 @@
              xmlns:preview="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls"
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
              xmlns:ctrl="clr-namespace:GameRealisticMap.Studio.Modules.ConditionTool.Controls"
+             xmlns:dens="clr-namespace:GameRealisticMap.Studio.Modules.DensityConfigEditor.Controls"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
@@ -43,13 +44,9 @@
             
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">
-                    <Run Text="Density"/>
+                    <Run Text="{x:Static r:Labels.Density}"/>
                 </Label>
-                <TextBlock VerticalAlignment="Center" Margin="0 0 5 0"><Run Text="{x:Static r:Labels.RandomFrom}"/></TextBlock>
-                <TextBox Width="100" Text="{Binding MinDensity,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
-                <TextBlock VerticalAlignment="Center" Margin="5 0"><Run Text="{x:Static r:Labels.RandomTo}"/></TextBlock>
-                <TextBox Width="100" Text="{Binding MaxDensity,Mode=TwoWay}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
-                <TextBlock VerticalAlignment="Center" Margin="5 0 0 0"><Run Text="{x:Static r:Labels.ObjectsPerM2}"/></TextBlock>
+                <dens:DensityControl DataContext="{Binding Density}" />
                 <Button cal:Message.Attach="ComputeMaxDensity" Margin="15 0 5 0">
                     <Run Text="{x:Static r:Labels.ComputeMaximum}"/>
                 </Button>

@@ -28,8 +28,8 @@ namespace GameRealisticMap.Studio.Test.Modules.AssetConfigEditor.ViewModels.Fill
             var vm = new FillingAssetClusterViewModel(Arma3.Assets.Filling.ClusterCollectionId.Forest, null, AssetConfigHelper.CreateEditor());
 
             vm.Probability = 0.5;
-            vm.MinDensity = 0.01;
-            vm.MaxDensity = 0.1;
+            vm.Density.MinDensity = 0.01;
+            vm.Density.MaxDensity = 0.1;
             vm.Label = "Label";
 
             var definition = vm.ToDefinition();

@@ -510,7 +510,7 @@
     <value>Clôtures,murs</value>
   </data>
   <data name="Density" xml:space="preserve">
-    <value>Densité</value>
+    <value>Densité moyenne</value>
   </data>
   <data name="ClearWidth" xml:space="preserve">
     <value>Largeur sans objets</value>
@@ -1410,5 +1410,62 @@ Dernière génération le {1}</value>
   </data>
   <data name="OpenMapEditor" xml:space="preserve">
     <value>Ouvrir l'éditeur de carte</value>
+  </data>
+  <data name="ComputeDensityFromDefault" xml:space="preserve">
+    <value>Calculer depuis les valeurs par défaut</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Par défaut</value>
+  </data>
+  <data name="DensityConfiguration" xml:space="preserve">
+    <value>Configuration de la densité</value>
+  </data>
+  <data name="LargeAreas" xml:space="preserve">
+    <value>Grande zones</value>
+  </data>
+  <data name="NoiseFrequency" xml:space="preserve">
+    <value>Fréquence</value>
+  </data>
+  <data name="NoiseProportion" xml:space="preserve">
+    <value>Proportion de bruit</value>
+  </data>
+  <data name="NoiseSamples" xml:space="preserve">
+    <value>Echantillons</value>
+  </data>
+  <data name="NoiseThreshold" xml:space="preserve">
+    <value>Seuil</value>
+  </data>
+  <data name="NoiseType" xml:space="preserve">
+    <value>Type de bruit</value>
+  </data>
+  <data name="PreviewCount" xml:space="preserve">
+    <value>Nombre d'aperçu</value>
+  </data>
+  <data name="PreviewSize" xml:space="preserve">
+    <value>Taille de l'aperçu</value>
+  </data>
+  <data name="Randomization" xml:space="preserve">
+    <value>Échantillonnage aléatoire</value>
+  </data>
+  <data name="UseDefaultDensity" xml:space="preserve">
+    <value>Utiliser les valeurs par défaut</value>
+  </data>
+  <data name="UseSpecificDensity" xml:space="preserve">
+    <value>Utiliser des valeurs spécifiques</value>
+  </data>
+  <data name="DensityDefaultLargeAreasLabel" xml:space="preserve">
+    <value>Par défaut {0}, Grandes zones {1}</value>
+  </data>
+  <data name="DensityDefaultLargeAreasWithNoiseLabel" xml:space="preserve">
+    <value>Par défaut {0}, Grandes zones {1} avec {2:0}% de bruit {3}.</value>
+  </data>
+  <data name="Seed" xml:space="preserve">
+    <value>Graine</value>
+  </data>
+  <data name="UseConstant" xml:space="preserve">
+    <value>Utiliser une constante</value>
+  </data>
+  <data name="UseRandomForEachArea" xml:space="preserve">
+    <value>Utiliser une valeur aléatoire par zone</value>
   </data>
 </root>

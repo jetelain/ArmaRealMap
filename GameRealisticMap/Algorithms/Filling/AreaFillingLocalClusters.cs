@@ -18,7 +18,7 @@ namespace GameRealisticMap.Algorithms.Filling
             this.evaluator = evaluator;
         }
 
-        private static SimpleSpacialIndex<IClusterDefinition<TModelInfo>> CreateMap(double density, AreaDefinition fillarea, IClusterCollectionDefinition<TModelInfo> definition, IConditionEvaluator evaluator)
+        private SimpleSpacialIndex<IClusterDefinition<TModelInfo>> CreateMap(double density, AreaDefinition fillarea, IClusterCollectionDefinition<TModelInfo> definition, IConditionEvaluator evaluator)
         {
             var size = fillarea.MaxPoint.Vector - fillarea.MinPoint.Vector;
             var clusterCount = Math.Max(density * size.X * size.Y, 100);
@@ -28,7 +28,7 @@ namespace GameRealisticMap.Algorithms.Filling
                 var count = clusterCount * cluster.Probability;
                 for (int i = 0; i < count; ++i)
                 {
-                    var point = fillarea.GetRandomPoint();
+                    var point = GetRandomPoint();
                     if (cluster.Condition == null || cluster.Condition.Evaluate(evaluator.GetPointContext(point)))
                     {
                         map.Insert(point.Vector, cluster);

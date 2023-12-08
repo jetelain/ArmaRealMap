@@ -5,10 +5,10 @@ using GameRealisticMap.Conditions;
 
 namespace GameRealisticMap.Arma3.Assets.Filling
 {
-    public class ClusterCollectionDefinition : IClusterCollectionDefinition<Composition>
+    public class ClusterCollectionDefinition : IClusterCollectionDefinition<Composition>, IWithDensity
     {
         [JsonConstructor]
-        public ClusterCollectionDefinition(IReadOnlyList<ClusterDefinition> clusters, double probability, double minDensity, double maxDensity, string label = "", PolygonCondition? condition = null)
+        public ClusterCollectionDefinition(IReadOnlyList<ClusterDefinition> clusters, double probability, double minDensity, double maxDensity, string label = "", PolygonCondition? condition = null, DensityWithNoiseDefinition? largeAreas = null)
         {
             Label = label;
             Clusters = clusters;
@@ -17,6 +17,7 @@ namespace GameRealisticMap.Arma3.Assets.Filling
             MaxDensity = maxDensity;
             Condition = condition;
             Clusters.CheckProbabilitySum();
+            LargeAreas = largeAreas;
         }
 
         public IReadOnlyList<ClusterDefinition> Clusters { get; }
@@ -32,10 +33,19 @@ namespace GameRealisticMap.Arma3.Assets.Filling
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public PolygonCondition? Condition { get; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public DensityWithNoiseDefinition? LargeAreas { get; }
+
         [JsonIgnore]
         IReadOnlyList<IClusterDefinition<Composition>> IClusterCollectionDefinition<Composition>.Clusters => Clusters;
 
         [JsonIgnore]
         ICondition<IPolygonConditionContext>? IWithCondition<IPolygonConditionContext>.Condition => Condition;
+
+        [JsonIgnore]
+        IWithDensity IDensityDefinition.Default => this;
+
+        [JsonIgnore]
+        IDensityWithNoiseDefinition? IDensityDefinition.LargeAreas => LargeAreas;
     }
 }
