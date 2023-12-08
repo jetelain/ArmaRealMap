@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Algorithms.Definitions
 {
-    public interface IClusterCollectionDefinition<out TModelInfo> : IWithDensity, IWithProbabilityAndCondition<IPolygonConditionContext>
+    public interface IClusterCollectionDefinition<out TModelInfo> : IDensityDefinition, IWithProbabilityAndCondition<IPolygonConditionContext>
     {
         IReadOnlyList<IClusterDefinition<TModelInfo>> Clusters { get; }
     }

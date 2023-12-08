@@ -11,6 +11,8 @@ using BIS.WRP;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
+using GameRealisticMap.Arma3.GameEngine.Roads;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
@@ -40,10 +42,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public string Date { get; }
 
-        public bool IsActive 
-        { 
-            get { return _isActive; } 
-            set { if (_isActive != value) { _isActive = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(IsNotActive)); } } 
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { if (_isActive != value) { _isActive = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(IsNotActive)); } }
         }
 
         public bool IsNotActive => !_isActive;
@@ -99,10 +101,23 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             var depEntry = archive.GetEntry("grma3-dependencies.json");
             if (depEntry != null)
             {
-                var stream = depEntry.Open();
+                using var stream = depEntry.Open();
                 parent.Dependencies = await JsonSerializer.DeserializeAsync<List<ModDependencyDefinition>>(stream) ?? new List<ModDependencyDefinition>();
             }
 
+            if (parent.ConfigFile != null)
+            {
+                var roadsBase = parent.ConfigFile.Roads;
+                if (!string.IsNullOrEmpty(roadsBase))
+                {
+                    var files = RoadsSerializer.GetFilenames(roadsBase);
+                    if (files.All(f => archive.GetEntry(Path.GetFileName(f)) != null))
+                    {
+                        parent.Roads = new RoadsDeserializer(new Arma3BackupFileSystem(archive, files)).Deserialize(roadsBase);
+                        parent.IsRoadsDirty = true;
+                    }
+                }
+            }
             return true;
         }
     }

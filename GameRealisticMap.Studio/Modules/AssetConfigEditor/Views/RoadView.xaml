@@ -7,14 +7,16 @@
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:a3="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Controls"
+             xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
              mc:Ignorable="d" 
              Foreground="{DynamicResource EnvironmentWindowText}"
              d:DesignHeight="800" d:DesignWidth="800">
     <UserControl.Resources>
-        <local:TexturePreviewConverter x:Key="TexturePreviewConverter" />
-        <local:MultipleConverter Scale="15" x:Key="X15" />
-        <local:MarginConverter Scale="15" x:Key="Margin15" />
-        <local:MarginConverter Scale="15" x:Key="Margin15R" Right="True" />
+        <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" />
+        <grm:MultipleConverter Scale="15" x:Key="X15" />
+        <grm:MarginConverter Scale="15" x:Key="Margin15" />
+        <grm:MarginConverter Scale="15" x:Key="Margin15R" Right="True" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <ScrollViewer local:Behaviors.EnforceScroll="True">

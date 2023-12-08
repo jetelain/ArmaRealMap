@@ -16,7 +16,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
 
         public int MaxBackup { get; set; } = 10;
 
-        public void CreateBackup(string wrpFilePath, int revision, params string[] additionalFiles)
+        public void CreateBackup(string wrpFilePath, int revision, IEnumerable<string> additionalFiles)
         {
             var timestamp = File.GetLastWriteTimeUtc(wrpFilePath);
             var backupDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameRealisticMap", "Arma3", "Backups", Path.GetFileNameWithoutExtension(wrpFilePath));

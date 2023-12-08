@@ -209,6 +209,16 @@ namespace GameRealisticMap.Geometries
             return new TerrainPoint((float)segment[0].X, (float)segment[0].Y);
         }
 
+        public int NearestSegmentIndex(TerrainPoint p)
+        {
+            return Points.Take(Points.Count - 1)
+                .Zip(Points.Skip(1), (a, b) => new TerrainPath(a, b))
+                .Select((segment, index) => (distance: segment.Distance(p), index))
+                .OrderBy(s => s.distance)
+                .Select(s => s.index)
+                .FirstOrDefault();
+        }
+
         public TerrainPath PreventSplines(float threshold)
         {
             return new TerrainPath(GeometryHelper.PointsOnPath(PreventSplines(Points, threshold), threshold * 10));

@@ -38,8 +38,10 @@
             
         </StackPanel>
 
-        <grm:GrmMapViewer x:Name="Map" Grid.Row="1" MapData="{Binding PreviewMapData}" SizeInMeters="{Binding SizeInMeters}" />
-
+        <grm:GrmMap x:Name="Map" Grid.Row="1" SizeInMeters="{Binding SizeInMeters}">
+            <grm:GrmMapPreviewLayer  MapData="{Binding PreviewMapData}" />
+        </grm:GrmMap>
+        
         <Grid Grid.Column="1" Grid.Row="0">
             <TextBlock VerticalAlignment="Center" Padding="5 0" HorizontalAlignment="Left">
                 <Run Text="{x:Static r:Labels.Layers}" />

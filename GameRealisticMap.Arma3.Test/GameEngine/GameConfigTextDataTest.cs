@@ -23,6 +23,7 @@ class CfgWorlds
 	{
 		description = ""Some map name, GameRealisticMap"";
 		worldName = ""z\arm\addons\m_30rxq741595s81\m_30rxq741595s81.wrp"";
+        newRoadsShape = ""z\arm\addons\m_30rxq741595s81\data\roads\roads.shp"";
 	};
 };";
 
@@ -41,6 +42,7 @@ class CfgWorlds
 		description = ""Some map name, GameRealisticMap"";
 		worldName = ""z\arm\addons\m_30rxq741595s81\m_30rxq741595s81.wrp"";
 		grma3_revision = 1234;
+        newRoadsShape = ""z\arm\addons\m_30rxq741595s81\data\roads\roads.shp"";
 	};
 };";
 
@@ -53,18 +55,21 @@ class CfgWorlds
 			Assert.Equal("m_30rxq741595s81", config.WorldName);
             Assert.Equal("Some map name, GameRealisticMap", config.Description);
             Assert.Equal("z\\arm\\addons\\m_30rxq741595s81", config.PboPrefix);
+            Assert.Equal("z\\arm\\addons\\m_30rxq741595s81\\data\\roads", config.Roads);
             Assert.Equal(0, config.Revision);
 
             config = GameConfigTextData.ReadFromContent(OutOfGeneratorConfig, "m_30rxq741595s81");
             Assert.Equal("m_30rxq741595s81", config.WorldName);
             Assert.Equal("Some map name, GameRealisticMap", config.Description);
             Assert.Equal("z\\arm\\addons\\m_30rxq741595s81", config.PboPrefix);
+            Assert.Equal("z\\arm\\addons\\m_30rxq741595s81\\data\\roads", config.Roads);
             Assert.Equal(0, config.Revision);
 
             config = GameConfigTextData.ReadFromContent(OutOfGeneratorConfig, "M_30RXQ741595s81");
             Assert.Equal("M_30RXQ741595s81", config.WorldName);
             Assert.Equal("Some map name, GameRealisticMap", config.Description);
             Assert.Equal("z\\arm\\addons\\m_30rxq741595s81", config.PboPrefix);
+            Assert.Equal("z\\arm\\addons\\m_30rxq741595s81\\data\\roads", config.Roads);
             Assert.Equal(0, config.Revision);
 
             // WorldName mismatch
@@ -79,12 +84,14 @@ class CfgWorlds
             Assert.Equal("m_30rxq741595s81", config.WorldName);
             Assert.Equal("Some map name, GameRealisticMap", config.Description);
             Assert.Equal("z\\arm\\addons\\m_30rxq741595s81", config.PboPrefix);
+            Assert.Equal("z\\arm\\addons\\m_30rxq741595s81\\data\\roads", config.Roads);
             Assert.Equal(1234, config.Revision);
 
             config = GameConfigTextData.ReadFromContent(WithRevisionConfig, "m_30rxq741595s81");
             Assert.Equal("m_30rxq741595s81", config.WorldName);
             Assert.Equal("Some map name, GameRealisticMap", config.Description);
             Assert.Equal("z\\arm\\addons\\m_30rxq741595s81", config.PboPrefix);
+            Assert.Equal("z\\arm\\addons\\m_30rxq741595s81\\data\\roads", config.Roads);
             Assert.Equal(1234, config.Revision);
         }
         [Fact]
@@ -114,6 +121,7 @@ class CfgWorlds
 		description = ""An other name"";
 		worldName = ""z\arm\addons\m_30rxq741595s81\m_30rxq741595s81.wrp"";
 		grma3_revision = 6789;
+        newRoadsShape = ""z\arm\addons\m_30rxq741595s81\data\roads\roads.shp"";
 	};
 };", config.ToUpdatedContent());
         }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using BIS.Core.Config;
 using BIS.Core.Streams;
 using BIS.WRP;
 using Caliburn.Micro;
@@ -12,16 +13,21 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Arma3.Edit.Imagery;
 using GameRealisticMap.Arma3.GameEngine;
+using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit;
+using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
+using Gemini.Framework.Services;
 using HugeImages;
 using HugeImages.Storage;
 using Microsoft.Win32;
@@ -29,7 +35,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
-    internal class Arma3WorldEditorViewModel : PersistedDocument
+    internal class Arma3WorldEditorViewModel : PersistedDocument, IExplorerRootTreeItem
     {
         private EditableWrp? _world;
         private GameConfigTextData? _configFile;
@@ -41,6 +47,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private readonly IArma3RecentHistory history;
         private readonly IArma3BackupService worldBackup;
         private ExistingImageryInfos? _imagery;
+        private bool isRoadsDirty;
+        private Arma3WorldMapViewModel? mapEditor;
+        private EditableArma3Roads? roads;
+        private List<ObjectStatsItem> objectStatsItems = new List<ObjectStatsItem>();
 
         public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history, IArma3BackupService worldBackup) 
         {
@@ -71,15 +81,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             World = StreamHelper.Read<AnyWrp>(filePath).GetEditableWrp();
 
-            var configFile = ConfigFilePath(filePath);
-            if (File.Exists(configFile))
-            {
-                ConfigFile = GameConfigTextData.ReadFromFile(configFile, worldName);
-            }
-            else
-            {
-                ConfigFile = null;
-            }
+            ConfigFile = ReadGameConfig(filePath, worldName);
+
             savedRevision = ConfigFile?.Revision ?? 0;
 
             HistoryEntry = await history.GetEntryOrDefault(worldName);
@@ -93,9 +96,15 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 Imagery = ExistingImageryInfos.TryCreate(arma3Data.ProjectDrive, ConfigFile.PboPrefix, SizeInMeters!.Value);
             }
 
+            if (Roads != null)
+            {
+                LoadRoads();
+            }
+
             UpdateBackupsList(filePath);
 
             NotifyOfPropertyChange(nameof(HistoryEntry));
+            NotifyOfPropertyChange(nameof(TreeName));
         }
 
         private void UpdateBackupsList(string filePath)
@@ -112,6 +121,28 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             return Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, GameConfigTextData.FileName);
         }
+
+        private GameConfigTextData? ReadGameConfig(string filePath, string worldName)
+        {
+            var configFile = ConfigFilePath(filePath);
+            if (File.Exists(configFile))
+            {
+                return GameConfigTextData.ReadFromFile(configFile, worldName);
+            }
+            var recoverFile = Path.Combine(Path.GetDirectoryName(filePath) ?? string.Empty, GameConfigTextData.FileNameRecover);
+            if (File.Exists(recoverFile))
+            {
+                return GameConfigTextData.ReadFromFile(recoverFile, worldName);
+            }
+            var binaryFile = Path.ChangeExtension(configFile, ".bin");
+            if (File.Exists(binaryFile))
+            {
+                return GameConfigTextData.ReadFromContent(StreamHelper.Read<ParamFile>(binaryFile).ToString(), worldName);
+            }
+            return null;
+        }
+
+
 
         private async Task<List<ModDependencyDefinition>> ReadDependencies(string dependenciesFile)
         {
@@ -145,8 +176,31 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public EditableWrp? World
         {
             get { return _world; }
-            set { _world = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Size)); }
+            set { _world = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Size)); UpdateObjectStats(); }
         }
+
+        private void UpdateObjectStats()
+        {
+            if (_world != null)
+            {
+                objectStatsItems = _world
+                    .GetNonDummyObjects()
+                    .GroupBy(o => o.Model, StringComparer.OrdinalIgnoreCase)
+                    .Select(g => new ObjectStatsItem(g.Key, g.Count()))
+                    .ToList();
+                objectStatsItems.Sort((a, b) => b.Count.CompareTo(a.Count));
+            }
+            else
+            {
+                objectStatsItems = new List<ObjectStatsItem>();
+            }
+            NotifyOfPropertyChange(nameof(ObjectStatsItems));
+            NotifyOfPropertyChange(nameof(ObjectStatsText));
+        }
+
+        public string ObjectStatsText => string.Format("{0:N0} objects, {1:N0} distinct models", _world?.ObjectsCount ?? 0, objectStatsItems.Count);
+
+        public List<ObjectStatsItem> ObjectStatsItems => objectStatsItems;
 
         public GameConfigTextData? ConfigFile
         {
@@ -192,7 +246,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public IGameFileSystem GameFileSystem => arma3Data.ProjectDrive;
 
-        public IModelInfoLibrary Library => arma3Data.Library;
+        public ModelInfoLibrary Library => arma3Data.Library;
 
         public List<ModDependencyDefinition> Dependencies { get; set; } = new List<ModDependencyDefinition>();
 
@@ -212,6 +266,24 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             set { _imagery = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(IsImageryEditable)); NotifyOfPropertyChange(nameof(IsNotImageryEditable)); }
         }
 
+        public bool IsRoadsDirty 
+        { 
+            get { return isRoadsDirty; } 
+            set { isRoadsDirty = value; if (value) { IsDirty = true; } } 
+        } 
+
+        public EditableArma3Roads? Roads 
+        { 
+            get { return roads; } 
+            set { roads = value; mapEditor?.InvalidateRoads(); } 
+        }
+
+        public string TreeName => FileName;
+
+        public string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapFile.png";
+
+        public IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
+
         protected override Task DoNew()
         {
             throw new NotSupportedException("You cannot create an empty world file.");
@@ -221,9 +293,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (World != null)
             {
+                if (IsRoadsDirty && Roads != null && ConfigFile != null && !string.IsNullOrEmpty(ConfigFile.Roads))
+                {
+                    new RoadsSerializer(arma3Data.ProjectDrive).Serialize(
+                        ConfigFile.Roads, Roads.Roads.Where(r => !r.IsRemoved), Roads.RoadTypeInfos);
+                    ConfigFile.Revision++;
+                    IsRoadsDirty = false;
+                }
                 if (IsDirty)
                 {
-                    worldBackup.CreateBackup(filePath, savedRevision, ConfigFilePath(filePath), DependenciesFilePath(filePath));
+                    worldBackup.CreateBackup(filePath, savedRevision, GetBackupFiles(filePath));
                     StreamHelper.Write(World, filePath);
                     UpdateBackupsList(filePath);
                 }
@@ -238,6 +317,34 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     await JsonSerializer.SerializeAsync(stream, Dependencies);
                 }
             }
+        }
+
+        internal void LoadRoads()
+        {
+            if (ConfigFile != null && !string.IsNullOrEmpty(ConfigFile.Roads))
+            {
+                Roads = new RoadsDeserializer(arma3Data.ProjectDrive).Deserialize(ConfigFile.Roads);
+            }
+            else
+            {
+                Roads = null;
+            }
+            IsRoadsDirty = false;
+        }
+
+        private List<string> GetBackupFiles(string filePath)
+        {
+            var filesToBackup = new List<string>()
+                    {
+                        ConfigFilePath(filePath),
+                        DependenciesFilePath(filePath)
+                    };
+            var roadBasePath = ConfigFile?.Roads;
+            if (!string.IsNullOrEmpty(roadBasePath))
+            {
+                filesToBackup.AddRange(RoadsSerializer.GetFilenames(roadBasePath).Select(arma3Data.ProjectDrive.GetFullPath));
+            }
+            return filesToBackup;
         }
 
         public async Task GenerateMod()
@@ -322,15 +429,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     return;
                 }
                 await arma3Data.SaveLibraryCache();
-                var size = World.TerrainRangeX;
-                var grid = new ElevationGrid(size, CellSize!.Value);
-                for (int x = 0; x < size; x++)
-                {
-                    for (int y = 0; y < size; y++)
-                    {
-                        grid[x, y] = World.Elevation[x + (y * size)];
-                    }
-                }
+                var grid = World.ToElevationGrid();
                 var batch = new WrpEditBatch();
                 batch.Add.AddRange(list
                     .ProgressStep(task, "ToWrpObject")
@@ -348,6 +447,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
             var processor = new WrpEditProcessor(task);
             processor.Process(World, batch);
+            PostEdit();
+        }
+
+        internal void PostEdit()
+        {
             if (ConfigFile != null)
             {
                 if (Backups.Count > 0)
@@ -362,6 +466,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             // TODO: Update dependencies !
             IsDirty = true;
             ClearActive();
+
+            UpdateObjectStats();
         }
 
         public async Task OpenConfigFile()
@@ -430,7 +536,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             return null;
         }
 
-        private async Task<Arma3Assets?> GetAssetsFromHistory()
+        internal async Task<Arma3Assets?> GetAssetsFromHistory()
         {
             try
             {
@@ -508,6 +614,60 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     }
                 }
             }
+        }
+
+        public Task EditAdvanced()
+        {
+            if (mapEditor == null)
+            {
+                mapEditor = new Arma3WorldMapViewModel(this, arma3Data);
+            }
+            return IoC.Get<IShell>().OpenDocumentAsync(mapEditor);
+        }
+
+        public Task OpenReduce()
+        {
+            return windowManager.ShowDialogAsync(new ReduceViewModel(this));
+        }
+
+        public Task OpenReplace()
+        {
+            return windowManager.ShowDialogAsync(new ReplaceViewModel(this));
+        }
+
+        public Task OpenObjectExport()
+        {
+            return windowManager.ShowDialogAsync(new FileExporterViewModel(this));
+        }
+
+        public Task ExportElevation()
+        {
+            if (_world != null)
+            {
+                var dialog = new SaveFileDialog();
+                dialog.Filter = "Esri ASCII raster|*.asc";
+                dialog.FileName = Path.GetFileNameWithoutExtension(FileName) + ".asc";
+                if (dialog.ShowDialog() == true)
+                {
+                    ProgressToolHelper.Start(new ExportElevationTask(_world, dialog.FileName));
+                }
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task ImportElevation()
+        {
+            if (_world != null)
+            {
+                var dialog = new OpenFileDialog();
+                dialog.Filter = "Esri ASCII raster|*.asc";
+                dialog.FileName = Path.GetFileNameWithoutExtension(FileName) + ".asc";
+                if (dialog.ShowDialog() == true)
+                {
+                    return windowManager.ShowDialogAsync(new ImportElevationViewModel(this, dialog.FileName));
+                }
+            }
+            return Task.CompletedTask;
         }
     }
 }

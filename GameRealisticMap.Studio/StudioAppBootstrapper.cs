@@ -15,6 +15,7 @@ namespace GameRealisticMap.Studio
                 yield return typeof(StudioAppBootstrapper).Assembly;
                 yield return typeof(Gemini.AppBootstrapper).Assembly;
                 yield return typeof(Gemini.Modules.Output.IOutput).Assembly;
+                yield return typeof(Gemini.Modules.Inspector.IInspectorTool).Assembly;
             }
         }
 

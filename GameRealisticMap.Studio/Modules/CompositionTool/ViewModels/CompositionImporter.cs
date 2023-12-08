@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Windows.Input;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;

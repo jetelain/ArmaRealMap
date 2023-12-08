@@ -8,7 +8,7 @@
     <ApplicationIcon>Resources\grms.ico</ApplicationIcon>
 	<Company>GameRealisticMap</Company>
 	<Platforms>AnyCPU;x64</Platforms>
-	<FileVersion>0.8</FileVersion>
+	<FileVersion>0.9</FileVersion>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -25,6 +25,7 @@
     <!--<PackageReference Include="Gemini.Modules.Output" Version="1.0.60-beta" />-->
     <!--<PackageReference Include="Gemini.Modules.PropertyGrid" Version="1.0.60-beta" />-->
     <!--<PackageReference Include="GeminiWpf" Version="1.0.60-beta" />-->
+    <PackageReference Include="HelixToolkit.Core.Wpf" Version="2.24.0" />
     <PackageReference Include="NLog" Version="5.2.2" />
     <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
     <PackageReference Include="XAML.MapControl" Version="8.1.0" />
@@ -33,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
     <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
+    <ProjectReference Include="..\gemini\src\Gemini.Modules.Inspector\Gemini.Modules.Inspector.csproj" />
     <ProjectReference Include="..\gemini\src\Gemini.Modules.Output\Gemini.Modules.Output.csproj" />
     <ProjectReference Include="..\gemini\src\Gemini\Gemini.csproj" />
   </ItemGroup>
@@ -40,8 +42,12 @@
   <ItemGroup>
 	<Resource Include="Resources\**\*.png" />
     <EmbeddedResource Include="Modules\AssetBrowser\Data\*.txt" />
+    <None Remove="Resources\hand_grab.cur" />
+    <None Remove="Resources\hand_grabbing.cur" />
     <None Remove="Resources\Icons\WatercourseAdditional.png" />
     <Content Include="Resources\grms.ico" />
+    <EmbeddedResource Include="Resources\hand_grab.cur" />
+    <EmbeddedResource Include="Resources\hand_grabbing.cur" />
     <EmbeddedResource Include="ThirdParty.txt" />
   </ItemGroup>
 	

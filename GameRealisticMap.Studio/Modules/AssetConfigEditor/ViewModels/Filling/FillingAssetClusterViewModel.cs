@@ -59,7 +59,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             return new ClusterCollectionDefinition(
                 Items.Where(i => !i.IsEmpty).EquilibrateProbabilities().Select(i => i.ToDefinition()).ToList(), 
-                Probability, MinDensity, MaxDensity, Label, Condition.ToDefinition());
+                Probability, Density.MinDensity, Density.MaxDensity, Label, Condition.ToDefinition(), Density.ToDefinition());
         }
 
         public override void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)

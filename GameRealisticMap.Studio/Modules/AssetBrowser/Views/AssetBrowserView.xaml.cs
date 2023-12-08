@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Caliburn.Micro;
 using GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.Views
@@ -89,6 +78,24 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Views
             if (category != null)
             {
                 (DataContext as AssetBrowserViewModel)?.ChangeAssetsCategoryAsync(Grid.SelectedItems.OfType<AssetViewModel>(), category.Category);
+            }
+        }
+
+        private void MenuItem_Preview3D(object sender, RoutedEventArgs e)
+        {
+            var asset = Grid.SelectedItems.OfType<AssetViewModel>().FirstOrDefault();
+            if (asset != null)
+            {
+                asset.ShowPreview3D();
+            }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var asset = Grid.SelectedItems.OfType<AssetViewModel>().FirstOrDefault();
+            if (asset != null)
+            {
+                Clipboard.SetText(asset.Path);
             }
         }
     }

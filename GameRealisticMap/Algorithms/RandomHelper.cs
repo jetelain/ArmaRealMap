@@ -12,6 +12,10 @@ namespace GameRealisticMap.Algorithms
         {
             return new Random((int)Math.Truncate(seed.X + seed.Y));
         }
+        public static Random CreateRandom(string seed)
+        {
+            return new Random(HashString(seed));
+        }
 
         public static void CheckProbabilitySum<T>(this IReadOnlyCollection<T> list) where T : IWithProbability
         {
@@ -186,6 +190,19 @@ namespace GameRealisticMap.Algorithms
             where TItem : class, IWithProbabilityAndCondition<TContext>
         {
             return list.Where(i => i != ignore && (i.Condition == null || i.Condition.Evaluate(context))).ToList();
+        }
+
+        public static int HashString(string text)
+        {
+            unchecked
+            {
+                int hash = 23;
+                foreach (char c in text)
+                {
+                    hash = hash * 31 + c;
+                }
+                return hash;
+            }
         }
     }
 }

@@ -109,13 +109,31 @@
                         </StackPanel.ToolTip>
                         <StackPanel.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Change type"
+                                <MenuItem Header="{x:Static r:Labels.Preview3D}" Click="MenuItem_Preview3D">
+                                    <MenuItem.Icon>
+                                        <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/3d-view.png" Height="16" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="{x:Static r:Labels.CopyPath}" Click="MenuItem_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/copy.png" Height="16" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="{x:Static r:Labels.ChangeType}"
                                           ItemsSource="{Binding DataContext.SetCategories, Source={x:Reference Root}}"
                                           DisplayMemberPath="Name"
                                           Click="MenuItem_ChangeType">
+                                    <MenuItem.Icon>
+                                        <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/tag.png" Height="16" />
+                                    </MenuItem.Icon>
                                 </MenuItem>
                                 <Separator />
-                                <MenuItem Header="Remove from list" Click="MenuItem_Remove" />
+                                <MenuItem Header="{x:Static r:Labels.RemoveFromList}" Click="MenuItem_Remove">
+                                    <MenuItem.Icon>
+                                        <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/bin.png" Height="16" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
                             </ContextMenu>
                         </StackPanel.ContextMenu>
                         <Image Source="{Binding Preview}" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="UniformToFill" Width="250" />
