@@ -39,6 +39,12 @@ namespace GameRealisticMap.Studio.Controls
 
                 case "Contours":
                     return new Pen(new SolidColorBrush(Color.FromArgb(64,0,0,0)), 1);
+
+                case "Aeroways":
+                    return new Pen(new SolidColorBrush(Color.FromArgb(128, 0, 0, 0)), 3)
+                    {
+                        DashStyle = new DashStyle(new[] { 2d, 2d }, 0)
+                    };
             }
             return null;
         }

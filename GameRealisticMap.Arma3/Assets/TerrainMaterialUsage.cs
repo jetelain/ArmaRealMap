@@ -16,6 +16,7 @@
         FarmLand,
         RiverGround,
         LakeGround,
-        RockGround
+        RockGround,
+        Asphalt
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade.Airports;
 using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
@@ -62,7 +63,10 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 new OptionalPreviewLayerVM(this, "Objects",
                     ctx => ctx.GetData<OrientedObjectData>().Objects.Where(o => o.TypeId != ObjectTypeId.StreetLamp).Select(p => p.Point).ToList()),
 
-                new OptionalPreviewLayerVM(this, "Contours", ctx => ctx.GetData<ElevationContourData>().Contours)
+                new OptionalPreviewLayerVM(this, "Contours", ctx => ctx.GetData<ElevationContourData>().Contours),
+
+                new OptionalPreviewLayerVM(this, "Aeroways", ctx => ctx.GetData<AerowaysData>().Aeroways.Select(a => a.Segment).ToList())
+
             };
 
             var builders = new BuildersCatalog(new NoProgressSystem(), new DefaultBuildersConfig());

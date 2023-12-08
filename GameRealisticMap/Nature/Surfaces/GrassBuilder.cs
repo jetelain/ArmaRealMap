@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade.Airports;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
@@ -23,6 +24,10 @@ namespace GameRealisticMap.Nature.Surfaces
             var surface = tags.GetValue("surface");
             if (!string.IsNullOrEmpty(surface))
             {
+                if (AerowaysBuilder.GetAerowayType(tags) != null)
+                {
+                    return false;
+                }
                 return surface == "grass";
             }
             switch (tags.GetValue("landuse"))
@@ -51,6 +56,12 @@ namespace GameRealisticMap.Nature.Surfaces
         {
             return base.GetPriority(context)
                 .Concat(context.GetData<ForestData>().Polygons);
+        }
+        public override GrassData Build(IBuildContext context)
+        {
+            return CreateWrapper(GetPolygons(context, 
+                    context.GetData<AerowaysData>().Aeroways.Where(a => a.Surface == AerowaySurface.Grass).SelectMany(a => a.ToPolygons())
+                ));
         }
     }
 }

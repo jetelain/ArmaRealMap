@@ -31,7 +31,7 @@ namespace GameRealisticMap.ManMade.Airports
                         .SelectMany(g => TerrainPath.FromGeometry(g, context.Area.LatLngToTerrainPoint))
                         .SelectMany(p => p.ClippedKeepOrientation(context.Area.TerrainBounds)))
                     {
-                        var aeroway = new Aeroway(segment, type.Value, width: GetWidth(type.Value, way.Tags));
+                        var aeroway = new Aeroway(segment, type.Value, width: GetWidth(type.Value, way.Tags), surface: GetSurface(way.Tags));
                         var airport = airports.FirstOrDefault(a => a.Contains(segment));
                         if (airport != null)
                         {
@@ -52,6 +52,19 @@ namespace GameRealisticMap.ManMade.Airports
             return new AerowaysData(insideAirports.Values.ToList(), outsideAirports);
         }
 
+        private AerowaySurface GetSurface(TagsCollectionBase tags)
+        {
+            switch(tags.GetValue("surface"))
+            {
+                case "grass": 
+                    return AerowaySurface.Grass;
+
+                case "asphalt": 
+                    return AerowaySurface.Asphalt;
+            }
+            return AerowaySurface.Default;
+        }
+
         private float GetWidth(AerowayTypeId type, TagsCollectionBase tags)
         {
             var width = tags.GetValue("width");
@@ -70,7 +83,7 @@ namespace GameRealisticMap.ManMade.Airports
             }
         }
 
-        private AerowayTypeId? GetAerowayType(TagsCollectionBase tags)
+        internal static AerowayTypeId? GetAerowayType(TagsCollectionBase tags)
         {
             switch(tags.GetValue("aeroway"))
             {
