@@ -26,13 +26,13 @@ namespace GameRealisticMap.ManMade.Airports
 
         public AerowaySurface Surface { get; }
 
-        public IEnumerable<TerrainPolygon> ToPolygons()
+        public IEnumerable<TerrainPolygon> ToPolygons(float margin = 0)
         {
             if ( Type == AerowayTypeId.Runway)
             {
-                return Segment.ToTerrainPolygonButt(Width);
+                return Segment.ToTerrainPolygonButt(Width + margin);
             }
-            return Segment.ToTerrainPolygon(Width);
+            return Segment.ToTerrainPolygon(Width + margin);
         }
     }
 }
