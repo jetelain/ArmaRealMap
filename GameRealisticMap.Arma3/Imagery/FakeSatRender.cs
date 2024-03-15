@@ -46,7 +46,7 @@ namespace GameRealisticMap.Arma3.Imagery
             return image;
         }
 
-        protected override IBrush GetBrush(TerrainMaterial material)
+        protected override Brush GetBrush(TerrainMaterial material)
         {
             if (!cache.TryGetValue(material.ColorTexture, out var image))
             {
@@ -59,7 +59,7 @@ namespace GameRealisticMap.Arma3.Imagery
             return new ImageBrush(image);
         }
 
-        protected override IBrush GetEdgeBrush(TerrainMaterial material)
+        protected override Brush GetEdgeBrush(TerrainMaterial material)
         {
             var pattern = GeneratePattern(GetSeed(material));
             var transparent = new Rgba32(0, 0, 0, 0);
@@ -82,7 +82,7 @@ namespace GameRealisticMap.Arma3.Imagery
         {
             if (material.FakeSatPngImage != null)
             {
-                return Image.Load<Rgba32>(material.FakeSatPngImage, new PngDecoder());
+                return Image.Load<Rgba32>(material.FakeSatPngImage);
             }
             using var paaStream = gameFileSystem.OpenFileIfExists(material.ColorTexture);
             if (paaStream == null)
@@ -102,7 +102,7 @@ namespace GameRealisticMap.Arma3.Imagery
             {
                 return null;
             }
-            var image = Image.Load<Rgba32>(pngStream, new PngDecoder());
+            var image = Image.Load<Rgba32>(pngStream);
             image.Mutate(i => i.Resize(8, 8));
             return image;
         }

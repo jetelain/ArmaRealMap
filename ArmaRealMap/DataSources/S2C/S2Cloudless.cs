@@ -122,7 +122,7 @@ namespace ArmaRealMap.DataSources.S2C
 
             try
             {
-                return await Image.LoadAsync<Rgb24>(cacheFile, new JpegDecoder()).ConfigureAwait(false);
+                return await Image.LoadAsync<Rgb24>(cacheFile).ConfigureAwait(false);
             }
             catch
             {

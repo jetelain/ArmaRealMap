@@ -33,9 +33,9 @@ namespace ArmaRealMap
             {
                 if (idx == 0)
                 {
-                    return new Tuple<IBrush, IBrush>(null, new SolidBrush(Color.Gray));
+                    return new Tuple<Brush, Brush>(null, new SolidBrush(Color.Gray));
                 }
-                return new Tuple<IBrush, IBrush>(new SolidBrush(Colors[(idx + 1) % Colors.Length]), null);
+                return new Tuple<Brush, Brush>(new SolidBrush(Colors[(idx + 1) % Colors.Length]), null);
             });
         }
         public static void Polygons(MapData data, string filename, float scale, IEnumerable<TerrainPolygon> polygons)
@@ -44,9 +44,9 @@ namespace ArmaRealMap
             {
                 if (idx == 0)
                 {
-                    return new Tuple<IBrush, IBrush>(null, new SolidBrush(Color.Gray));
+                    return new Tuple<Brush, Brush>(null, new SolidBrush(Color.Gray));
                 }
-                return new Tuple<IBrush, IBrush>(new SolidBrush(Colors[(idx + 1) % Colors.Length]), null);
+                return new Tuple<Brush, Brush>(new SolidBrush(Colors[(idx + 1) % Colors.Length]), null);
             });
         }
         //public static void Polygons(MapData data, string filename, List<TerrainPolygon> polygons)
@@ -54,7 +54,7 @@ namespace ArmaRealMap
         //    Polygons(data, filename, 1f / (float)data.MapInfos.ImageryResolution, polygons);
         //}
 
-        public static void Polygons(MapData data, string filename, float scale, List<TerrainPolygon> polygons, Func<TerrainPolygon, int,Tuple<IBrush,IBrush>> getBrush)
+        public static void Polygons(MapData data, string filename, float scale, List<TerrainPolygon> polygons, Func<TerrainPolygon, int,Tuple<Brush,Brush>> getBrush)
         {
             var min = new TerrainPoint(MathF.Floor(polygons.Min(p => p.MinPoint.X)), MathF.Floor(polygons.Min(p => p.MinPoint.Y)));
             var max = new TerrainPoint(MathF.Ceiling(polygons.Max(p => p.MaxPoint.X)), MathF.Ceiling(polygons.Max(p => p.MaxPoint.Y)));
