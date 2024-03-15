@@ -13,17 +13,17 @@ namespace ArmaRealMap
 {
     public static class DrawHelper
     {
-        internal static void FillPolygonWithHoles(Image<Rgb24> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, DrawingOptions shapeGraphicsOptions)
+        internal static void FillPolygonWithHoles(Image<Rgb24> img, List<PointF> outer, List<List<PointF>> holes, Brush brush, DrawingOptions shapeGraphicsOptions)
         {
             FillPolygonWithHoles<Rgb24, Rgba32>(img, outer, holes, brush, Color.Transparent, shapeGraphicsOptions);
         }
 
-        internal static void FillPolygonWithHoles(Image<Rgba32> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, DrawingOptions shapeGraphicsOptions)
+        internal static void FillPolygonWithHoles(Image<Rgba32> img, List<PointF> outer, List<List<PointF>> holes, Brush brush, DrawingOptions shapeGraphicsOptions)
         {
             FillPolygonWithHoles<Rgba32, Rgba32>(img, outer, holes, brush, Color.Transparent, shapeGraphicsOptions);
         }
 
-        internal static void FillPolygonWithHoles<TPixel,TPixelAlpha>(Image<TPixel> img, List<PointF> outer, List<List<PointF>> holes, IBrush brush, TPixelAlpha transparent, DrawingOptions shapeGraphicsOptions)
+        internal static void FillPolygonWithHoles<TPixel,TPixelAlpha>(Image<TPixel> img, List<PointF> outer, List<List<PointF>> holes, Brush brush, TPixelAlpha transparent, DrawingOptions shapeGraphicsOptions)
             where TPixel : unmanaged, IPixel<TPixel>
             where TPixelAlpha : unmanaged, IPixel<TPixelAlpha>
         {
@@ -62,29 +62,29 @@ namespace ArmaRealMap
         internal static void DrawPath<T>(IImageProcessingContext d, IEnumerable<T> points, float width, SolidBrush brush, Func<T, PointF> project, DrawingOptions shapeGraphicsOptions)
         {
             var pixelsPoints = points.Select(project).ToArray();
-            d.DrawLines(shapeGraphicsOptions, brush, width, pixelsPoints);
+            d.DrawLine(shapeGraphicsOptions, brush, width, pixelsPoints);
         }
 
-        internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, bool antiAlias = true)
+        internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, Brush brush, MapInfos map, bool antiAlias = true)
         {
             DrawPolygon(d, polygon, brush,map, new DrawingOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
         }
 
-        internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, DrawingOptions shapeGraphicsOptions)
+        internal static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, Brush brush, MapInfos map, DrawingOptions shapeGraphicsOptions)
         {
             FillPolygonWithHoles(d, polygon.Shell.Select(map.TerrainToPixelsPoint), polygon.Holes.Select(map.TerrainToPixelsPoints).ToList(), brush, shapeGraphicsOptions);
         }
-        public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels)
+        public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, Brush brush, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels)
         {
             FillPolygonWithHoles(d, toPixels(polygon.Shell), polygon.Holes.Select(toPixels).ToList(), brush, new DrawingOptions());
         }
 
-        public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels, DrawingOptions shapeGraphicsOptions)
+        public static void DrawPolygon(IImageProcessingContext d, TerrainPolygon polygon, Brush brush, Func<IEnumerable<TerrainPoint>, IEnumerable<PointF>> toPixels, DrawingOptions shapeGraphicsOptions)
         {
             FillPolygonWithHoles(d, toPixels(polygon.Shell), polygon.Holes.Select(toPixels).ToList(), brush, shapeGraphicsOptions);
         }
 
-        internal static void FillPolygonWithHoles(IImageProcessingContext p, IEnumerable<PointF> outer, List<IEnumerable<PointF>> holes, IBrush brush, DrawingOptions shapeGraphicsOptions)
+        internal static void FillPolygonWithHoles(IImageProcessingContext p, IEnumerable<PointF> outer, List<IEnumerable<PointF>> holes, Brush brush, DrawingOptions shapeGraphicsOptions)
         {
             if (holes.Any())
             {
@@ -127,17 +127,17 @@ namespace ArmaRealMap
             }
         }
 
-        internal static void DrawPolygonEdges(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, float width, bool antiAlias = true)
+        internal static void DrawPolygonEdges(IImageProcessingContext d, TerrainPolygon polygon, Brush brush, MapInfos map, float width, bool antiAlias = true)
         {
             DrawPolygonEdges(d, polygon, brush, map, new DrawingOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } }, width);
         }
 
-        internal static void DrawPolygonEdges(IImageProcessingContext d, TerrainPolygon polygon, IBrush brush, MapInfos map, DrawingOptions shapeGraphicsOptions, float width)
+        internal static void DrawPolygonEdges(IImageProcessingContext d, TerrainPolygon polygon, Brush brush, MapInfos map, DrawingOptions shapeGraphicsOptions, float width)
         {
             DrawPolygonEdgesWithHoles(d, polygon.Shell.Select(map.TerrainToPixelsPoint), polygon.Holes.Select(map.TerrainToPixelsPoints).ToList(), brush, shapeGraphicsOptions, width);
         }
 
-        internal static void DrawPolygonEdgesWithHoles(IImageProcessingContext p, IEnumerable<PointF> outer, List<IEnumerable<PointF>> holes, IBrush brush, DrawingOptions shapeGraphicsOptions, float width)
+        internal static void DrawPolygonEdgesWithHoles(IImageProcessingContext p, IEnumerable<PointF> outer, List<IEnumerable<PointF>> holes, Brush brush, DrawingOptions shapeGraphicsOptions, float width)
         {
             p.DrawPolygon(shapeGraphicsOptions, brush, width, outer.ToArray());
 

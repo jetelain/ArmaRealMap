@@ -105,7 +105,7 @@ namespace GameRealisticMap.Arma3.Imagery
             return satMap;
         }
 
-        private IBrush GetBrush(Arma3RoadTypeInfos roadTypeInfos)
+        private Brush GetBrush(Arma3RoadTypeInfos roadTypeInfos)
         {
             return new SolidBrush(roadTypeInfos.SatelliteColor);
         }

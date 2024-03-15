@@ -35,7 +35,7 @@ namespace ArmaRealMap
             return p.Select(Project);
         }
 
-        internal void Fill(OsmShape shape, IBrush brush)
+        internal void Fill(OsmShape shape, Brush brush)
         {
             foreach(var poly in shape.TerrainPolygons)
             {
@@ -43,7 +43,7 @@ namespace ArmaRealMap
             }
         }
 
-        public void Fill(TerrainPolygon polygon, IBrush brush)
+        public void Fill(TerrainPolygon polygon, Brush brush)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace ArmaRealMap
             }
         }
 
-        public void Draw(TerrainPolygon polygon, IBrush brush, float width = 1f)
+        public void Draw(TerrainPolygon polygon, Brush brush, float width = 1f)
         {
             try
             {

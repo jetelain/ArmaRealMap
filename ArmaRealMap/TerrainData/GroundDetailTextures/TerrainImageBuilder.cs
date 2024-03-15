@@ -127,7 +127,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
                 {
                     for (var y = 0; y < num; ++y)
                     {
-                        using (var tile = Image.Load(LayersHelper.GetLocalPath(config, $"S_{x:000}_{y:000}_lco.png"), new PngDecoder()))
+                        using (var tile = Image.Load(LayersHelper.GetLocalPath(config, $"S_{x:000}_{y:000}_lco.png")))
                         {
                             tile.Mutate(t => t.Crop(new Rectangle(config.RealTileOverlap, config.RealTileOverlap, step, step)));
                             sat.Mutate(s => s.DrawImage(tile, new Point(x * step, y * step), 1f));
@@ -140,7 +140,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             }
         }
         
-        private static IBrush GetBrush(RoadTypeInfos roadType)
+        private static Brush GetBrush(RoadTypeInfos roadType)
         {
             return new SolidBrush(Color.ParseHex(roadType.SatelliteColor));
         }
@@ -197,7 +197,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
 
         private static Image<Bgra32> GetImage(MapConfig config, TerrainMaterial mat, TerrainMaterialLibrary terrainMaterialLibrary)
         {
-            return Image.Load(terrainMaterialLibrary.GetInfo(mat, config.Terrain).FakeSatPngImage, new PngDecoder()).CloneAs<Bgra32>();
+            return Image.Load(terrainMaterialLibrary.GetInfo(mat, config.Terrain).FakeSatPngImage).CloneAs<Bgra32>();
         }
 
         private class Polygons
@@ -241,7 +241,7 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             }
         }
 
-        private static IBrush GetBrush(MapData data, OsmShapeCategory category)
+        private static Brush GetBrush(MapData data, OsmShapeCategory category)
         {
             var color = category.TerrainMaterial.GetColor(data.Config.Terrain);
             if (category == OsmShapeCategory.Forest || category == OsmShapeCategory.Rocks)
@@ -265,13 +265,13 @@ namespace ArmaRealMap.TerrainData.GroundDetailTextures
             return new SolidBrush(color);
         }
 
-        private static IBrush GetEdgeBrush(MapData data, OsmShapeCategory category)
+        private static Brush GetEdgeBrush(MapData data, OsmShapeCategory category)
         {
             var color = category.TerrainMaterial.GetColor(data.Config.Terrain);
             return new PatternBrush(color, Color.Transparent, Generate(category.GroundTexturePriority, 0.6f));
         }
 
-        private static void Draw(MapInfos area, IImageProcessingContext d, ProgressReport report, Polygons category, IBrush brush, IBrush edgeBrush)
+        private static void Draw(MapInfos area, IImageProcessingContext d, ProgressReport report, Polygons category, Brush brush, Brush edgeBrush)
         {
             var crown = category.Category.TerrainMaterial != TerrainMaterial.WetLand ? 18f : 8f;
 

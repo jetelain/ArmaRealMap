@@ -16,12 +16,12 @@ namespace GameRealisticMap.Arma3.Imagery
             drawingOptions.GraphicsOptions.Antialias = false;
         }
 
-        protected override IBrush GetBrush(TerrainMaterial material)
+        protected override Brush GetBrush(TerrainMaterial material)
         {
             return new SolidBrush(new Color(material.Id));
         }
 
-        protected override IBrush GetEdgeBrush(TerrainMaterial material)
+        protected override Brush GetEdgeBrush(TerrainMaterial material)
         {
             return new PatternBrush(new Color(material.Id), Color.Transparent, GeneratePattern(GetSeed(material)));
         }

@@ -11,13 +11,13 @@ namespace ArmaRealMap.Osm
 {
     internal static class OsmDrawHelper
     {
-        internal static void Draw(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, OsmShape shape, bool antiAlias = true)
+        internal static void Draw(MapInfos mapInfos, Image<Rgb24> img, Brush solidBrush, OsmShape shape, bool antiAlias = true)
         {
             DrawGeometry(mapInfos, img, solidBrush, shape.Geometry, (float)(6 / mapInfos.ImageryResolution), new DrawingOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = antiAlias } });
             //DrawHelper.FillGeometry(img, solidBrush, shape.Geometry, mapInfos.LatLngToPixelsPoints);
         }
 
-        private static void DrawGeometry(MapInfos mapInfos, Image<Rgb24> img, IBrush solidBrush, IGeometry geometry, float defaultWidth, DrawingOptions shapeGraphicsOptions)
+        private static void DrawGeometry(MapInfos mapInfos, Image<Rgb24> img, Brush solidBrush, IGeometry geometry, float defaultWidth, DrawingOptions shapeGraphicsOptions)
         {
             if (geometry.OgcGeometryType == OgcGeometryType.MultiPolygon)
             {
@@ -54,7 +54,7 @@ namespace ArmaRealMap.Osm
                     }
                     else
                     {
-                        img.Mutate(p => p.DrawLines(shapeGraphicsOptions, solidBrush, defaultWidth, points));
+                        img.Mutate(p => p.DrawLine(shapeGraphicsOptions, solidBrush, defaultWidth, points));
                     }
                 }
                 catch
