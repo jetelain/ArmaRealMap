@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.AssetBrowser.Views.GdtDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             xmlns:a3="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Controls"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:cal="http://caliburnmicro.com"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" />
+    </UserControl.Resources>
+
+    <ScrollViewer local:Behaviors.EnforceScroll="True">
+        <StackPanel Margin="10 0">
+
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.ColorId}"/>
+                </Label>
+                <toolkit:ColorPicker 
+                SelectedColor="{Binding ColorId,Mode=TwoWay}" 
+                Width="100"
+                UsingAlphaChannel="False" 
+                IsEnabled="{Binding IsNotSameAs}"
+                local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
+                />
+            </StackPanel>
+
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.ColorTexture}"/>
+                </Label>
+                <TextBox Width="400" Text="{Binding ColorTexture,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+            </StackPanel>
+
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.NormalTexture}"/>
+                </Label>
+                <TextBox Width="400" Text="{Binding NormalTexture,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+
+
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.SatelliteRenderImage}" />
+                </Label>
+
+                <Border Width="60" >
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding FakeSatPreview}" 
+                            TileMode="Tile"  
+                            Stretch="Uniform"
+                            AlignmentY="Top"
+                            Viewport="0,0,10,10" 
+                            ViewportUnits="Absolute" />
+                    </Border.Background>
+                </Border>
+
+                <StackPanel Margin="10 0 0 0">
+                    <Button cal:Message.Attach="RegenerateFakeSatImage" Padding="5 3">
+                        <Run Text="{x:Static r:Labels.GenerateFromTexture}" />
+                    </Button>
+                    <Button cal:Message.Attach="SelectFakeSatImage" Padding="5 3" Margin="0 5 0 0 ">
+                        <Run Text="{x:Static r:Labels.SelectAnImage}" />
+                    </Button>
+                </StackPanel>
+
+            </StackPanel>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding ColorTexture, Converter={StaticResource TexturePreviewConverter}}" Margin="5" />
+                <Image Source="{Binding NormalTexture, Converter={StaticResource TexturePreviewConverter}}" Grid.Column="1" Margin="5" />
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
