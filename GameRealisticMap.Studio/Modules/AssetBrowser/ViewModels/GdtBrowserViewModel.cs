@@ -115,7 +115,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             if (avgColor != null)
             {
                 var hsl = ColorSpaceConverter.ToHsl(new Rgb24(avgColor.Value.R, avgColor.Value.G, avgColor.Value.B));
-                wanted = HslToWpfRgb(new Hsl(hsl.H, 1f, 0.5f));
+                wanted = HslToWpfRgb(new Hsl(hsl.H, 1f, Math.Clamp(hsl.L, 0.25f, 0.75f)));
             }
             else
             {

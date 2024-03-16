@@ -88,9 +88,20 @@
                 <DataTemplate>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Height="280" Width="260" >
                         <Image Source="{Binding ColorTexture, Converter={StaticResource TexturePreviewConverter}}" Margin="5" Height="250" Width="250" />
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom">
+
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Border Width="16" Height="16" Margin="0 0 8 0">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{Binding ColorId}" />
+                                </Border.Background>
+
+                            </Border>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                           
                             <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="#"><Run Text="{Binding DisplayName}" /></Hyperlink>
-                        </TextBlock>
+                            </TextBlock>
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </wpftk:GridView.ItemTemplate>

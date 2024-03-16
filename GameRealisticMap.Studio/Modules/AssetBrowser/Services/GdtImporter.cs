@@ -107,13 +107,13 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                         soundEnviron: surface.GetValue<string>("soundEnviron"),
                         soundHit: surface.GetValue<string>("soundHit"),
                         rough: surface.GetValue<double>("rough"),
-                        maxSpeedCoef: surface.GetValue<double>("maxSpeedCoef"),
+                        maxSpeedCoef: surface.GetValue<double>("maxSpeedCoef", 1),
                         dust: surface.GetValue<double>("dust"),
                         lucidity: surface.GetValue<double>("lucidity"),
                         grassCover: surface.GetValue<double>("grassCover"),
                         impact: surface.GetValue<string>("impact"),
                         surfaceFriction: surface.GetValue<double>("surfaceFriction"),
-                        // TODO: maxClutterColoringCoef
+                        maxClutterColoringCoef: surface.GetValue<double>("maxClutterColoringCoef", 1),
                         GetClutters(characters, clutters, surface.GetValue<string>("character"))));
                 }
             }

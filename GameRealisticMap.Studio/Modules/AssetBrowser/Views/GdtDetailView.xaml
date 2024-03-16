@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-
+             xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:a3="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Controls"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
@@ -18,7 +18,7 @@
     <ScrollViewer local:Behaviors.EnforceScroll="True">
         <StackPanel Margin="10 0">
 
-            <StackPanel Margin="10" Orientation="Horizontal" >
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.ColorId}"/>
                 </Label>
@@ -26,19 +26,18 @@
                 SelectedColor="{Binding ColorId,Mode=TwoWay}" 
                 Width="100"
                 UsingAlphaChannel="False" 
-                IsEnabled="{Binding IsNotSameAs}"
                 local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
                 />
             </StackPanel>
 
-            <StackPanel Margin="10" Orientation="Horizontal" >
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.ColorTexture}"/>
                 </Label>
                 <TextBox Width="400" Text="{Binding ColorTexture,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
 
-            <StackPanel Margin="10" Orientation="Horizontal" >
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.NormalTexture}"/>
                 </Label>
@@ -46,7 +45,7 @@
             </StackPanel>
 
 
-            <StackPanel Margin="10" Orientation="Horizontal" >
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.SatelliteRenderImage}" />
                 </Label>
@@ -73,6 +72,103 @@
 
             </StackPanel>
 
+            <TextBlock FontSize="25" Padding="0 15 0 5" Text="Settings" />
+            
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="SoundEnviron"/>
+                </Label>
+                <ComboBox Width="150" IsEditable="True" Text="{Binding SoundEnviron,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label Width="150">
+                    <Run Text="SoundHit"/>
+                </Label>
+                <ComboBox Width="150" IsEditable="True" Text="{Binding SoundHit,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+            
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="Rough"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding Rough,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label Width="150">
+                    <Run Text="MaxSpeedCoef"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding MaxSpeedCoef,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+            
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="Dust"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding Dust,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label Width="150">
+                    <Run Text="SurfaceFriction"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding SurfaceFriction,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+            
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="Lucidity"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding Lucidity,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label Width="150">
+                    <Run Text="GrassCover"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding GrassCover,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+           
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="Impact"/>
+                </Label>
+                <ComboBox Width="150" IsEditable="True" Text="{Binding Impact,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label Width="150">
+                    <Run Text="MaxClutterColoringCoef"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding MaxClutterColoringCoef,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+
+            <TextBlock FontSize="25" Padding="0 15 0 5" Text="Clutter" />
+
+            <DataGrid ItemsSource="{Binding ClutterList}" IsEnabled="{Binding IsEditable}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{x:Static r:Labels.Name}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                    <DataGridTemplateColumn Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image c:CompositionPreview.Source="{Binding Composition}" />                            
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Header="Probability" Binding="{Binding Probability}" Width="100" />
+                    <DataGridTextColumn Header="ScaleMin" Binding="{Binding ScaleMin}" Width="100" />
+                    <DataGridTextColumn Header="ScaleMax" Binding="{Binding ScaleMax}" Width="100" />
+                    <DataGridTextColumn Header="AffectedByWind" Binding="{Binding AffectedByWind}" Width="100" />
+                    <DataGridCheckBoxColumn Header="IsSwLighting" Binding="{Binding IsSwLighting}" Width="100" />
+
+
+                    <!--<DataGridTemplateColumn Width="75">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Button Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                        <Run Text="{x:Static r:Labels.Edit}"/>
+                                    </Button>
+                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                        <Run Text="{x:Static r:Labels.Remove}"/>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>-->
+                </DataGrid.Columns>
+            </DataGrid>
+
+
+            <TextBlock FontSize="25" Padding="0 15 0 5" Text="Preview" />
+            
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
