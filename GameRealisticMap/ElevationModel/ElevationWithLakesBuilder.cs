@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
+using System.Runtime.Intrinsics.X86;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
 using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Airports;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
@@ -21,7 +23,7 @@ namespace GameRealisticMap.ElevationModel
     internal class ElevationWithLakesBuilder : IDataBuilder<ElevationWithLakesData>, IDataSerializer<ElevationWithLakesData>
     {
         private readonly IProgressSystem progress;
-
+        private readonly IElevationProcessorStage1[] processors;
         private static readonly Vector2 FlatAreaMargin = new Vector2(FlatAreaOffset25 + 10f);
         private const float FlatAreaOffset25 = 15f;
         private const float FlatAreaOffset50 = 10f;
@@ -38,6 +40,7 @@ namespace GameRealisticMap.ElevationModel
         public ElevationWithLakesBuilder(IProgressSystem progress)
         {
             this.progress = progress;
+            this.processors = new IElevationProcessorStage1[] { new AerowaysElevationProcessor(progress) };
         }
 
         public ElevationWithLakesData Build(IBuildContext context)
@@ -57,9 +60,13 @@ namespace GameRealisticMap.ElevationModel
             var withElevation = context.OsmSource.Ways.Where(w => w.Tags != null && (w.Tags.ContainsKey("ele") || w.Tags.ContainsKey("ele:wgs84"))).ToList();
 
             // TODO :
-            // - Forced elevation for airstrip,
             // - (Flat area for parking lots ?)
             // - Forced elevation by config
+
+            foreach(var processor in processors)
+            {
+                processor.ProcessStage1(grid, context);
+            }
 
             FlatLargeAreasSmooth(
                 GetLargeBuildings(buildings)

@@ -3414,6 +3414,17 @@
           "RiverGround",
           "LakeGround"
         ]
+      },
+      {
+        "Material": {
+          "NormalTexture": "a3\\map_data_exp\\gdt_asphalt_nopx.paa",
+          "ColorTexture": "a3\\map_data_exp\\gdt_asphalt_co.paa",
+          "Id": "000000FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjcXRy+M+AB7AwEADDQwEA3jYB41LKJgwAAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "Asphalt"
+        ]
       }
     ]
   },
