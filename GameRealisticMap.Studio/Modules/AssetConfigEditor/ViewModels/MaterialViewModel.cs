@@ -7,11 +7,14 @@ using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
+using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using Microsoft.Win32;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using Color = System.Windows.Media.Color;
 using Image = SixLabors.ImageSharp.Image;
 
@@ -153,6 +156,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public override TerrainMaterial ToDefinition()
         {
             return new TerrainMaterial(_normalTexture, _colorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), FakeSatPngImage);
+        }
+
+        public SurfaceConfig? GetSurfaceConfig(List<GdtCatalogItem> catalogItems)
+        {
+            return catalogItems.FirstOrDefault(i => string.Equals(_colorTexture, i.Material.ColorTexture, StringComparison.OrdinalIgnoreCase))?.Config;
         }
 
         private void GenerateFakeSatPngImage()

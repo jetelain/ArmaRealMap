@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Linq;
+using System.Text.Json.Serialization;
+using GameRealisticMap.Arma3.GameEngine.Materials;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.Assets
@@ -7,6 +9,7 @@ namespace GameRealisticMap.Arma3.Assets
     {
         private readonly Dictionary<Rgb24, TerrainMaterial> indexByColor = new Dictionary<Rgb24, TerrainMaterial>();
         private readonly Dictionary<TerrainMaterialUsage, TerrainMaterial> indexByUsage = new Dictionary<TerrainMaterialUsage, TerrainMaterial>();
+        private readonly List<SurfaceConfig> surfaces = new List<SurfaceConfig>();
 
         public const double DefaultTextureSizeInMeters = 4;
 
@@ -33,6 +36,7 @@ namespace GameRealisticMap.Arma3.Assets
                     indexByUsage[usage] = definition.Material;
                 }
             }
+            surfaces.AddRange(definitions.Select(s => s.Surface).Where(s => s != null)!);
             TextureSizeInMeters = textureSizeInMeters;
         }
 
@@ -60,11 +64,19 @@ namespace GameRealisticMap.Arma3.Assets
             return GetMaterialByUsage(TerrainMaterialUsage.Default);
         }
 
-        public List<TerrainMaterialDefinition> Definitions => indexByColor.Values.Select(m => new TerrainMaterialDefinition(m, GetUsage(m))).ToList();
+        public List<TerrainMaterialDefinition> Definitions => indexByColor.Values
+            .Select(m => new TerrainMaterialDefinition(m, GetUsage(m), GetSurface(m)))
+            .ToList();
 
         private TerrainMaterialUsage[] GetUsage(TerrainMaterial m)
         {
             return indexByUsage.Where(p => p.Value == m).Select(p => p.Key).ToArray();
+        }
+
+        private SurfaceConfig? GetSurface(TerrainMaterial m)
+        {
+            var name = Path.GetFileNameWithoutExtension(m.ColorTexture);
+            return surfaces.FirstOrDefault(s => s.Match(name));
         }
     }
 }

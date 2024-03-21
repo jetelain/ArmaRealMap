@@ -16,6 +16,7 @@ using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual;
@@ -331,8 +332,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             return collection;
         }
 
-        internal Arma3Assets ToJson()
+        internal async Task<Arma3Assets> ToJson()
         {
+            var surfaceCatalog = await IoC.Get<IGdtCatalogStorage>().GetOrLoad();
+
             EquilibrateProbabilities();
             var json = new Arma3Assets();
             json.ClusterCollections = Filling.OfType<FillingAssetClusterViewModel>().Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
@@ -343,7 +346,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             json.NaturalRows = NaturalRows.Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
             var materialDefintions = Materials
                 .Where(m => m.SameAs == null)
-                .Select(m => new TerrainMaterialDefinition(m.ToDefinition(), Materials.Where(o => o == m || o.SameAs == m).Select(o => o.FillId).OrderBy(m => m).ToArray()))
+                .Select(m => new TerrainMaterialDefinition(m.ToDefinition(), Materials.Where(o => o == m || o.SameAs == m).Select(o => o.FillId).OrderBy(m => m).ToArray(), m.GetSurfaceConfig(surfaceCatalog)))
                 .OrderBy(m => m.Usages.Min())
                 .ToList();
             json.Materials = new TerrainMaterialLibrary(materialDefintions, TextureSizeInMeters);
@@ -485,8 +488,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         private async Task DoGenerateMod(IProgressTaskUI task)
         {
             var name = Path.GetFileNameWithoutExtension(FileName);
-            var assets = ToJson();
-            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
+            var assets = await ToJson();
+            var generator = new Arma3DemoMapGenerator(assets, _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
             var config = await generator.GenerateMod(task);
             if (config != null)
             {
@@ -500,8 +503,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         private async Task DoGenerateWrp(IProgressTaskUI task)
         {
             var name = Path.GetFileNameWithoutExtension(FileName);
-            var assets = ToJson();
-            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
+            var assets = await ToJson();
+            var generator = new Arma3DemoMapGenerator(assets, _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
             var config = await generator.GenerateWrp(task);
             if (config != null)
             {
@@ -510,7 +513,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         }
         public async Task SaveTo(Stream stream)
         {
-            await JsonSerializer.SerializeAsync(stream, ToJson(), Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library)).ConfigureAwait(false);
+            await JsonSerializer.SerializeAsync(stream, await ToJson(), Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library)).ConfigureAwait(false);
         }
     }
 }

@@ -369,7 +369,7 @@ namespace ArmToGrmA3
             MapMaterial(terrainMaterialLibrary, ArmaRealMap.GroundTextureDetails.TerrainMaterial.WetLand, TerrainMaterialUsage.RiverGround, mats, region);
             MapMaterial(terrainMaterialLibrary, ArmaRealMap.GroundTextureDetails.TerrainMaterial.Sand, TerrainMaterialUsage.Sand, mats, region);
             MapMaterial(terrainMaterialLibrary, ArmaRealMap.GroundTextureDetails.TerrainMaterial.Rock, TerrainMaterialUsage.RockGround, mats, region);
-            newAssets.Materials = new TerrainMaterialLibrary(mats.Select(pair => new TerrainMaterialDefinition(pair.Key, pair.Value.OrderBy(m => m).ToArray())).OrderBy(m => m.Usages.Min()).ToList());
+            newAssets.Materials = new TerrainMaterialLibrary(mats.Select(pair => new TerrainMaterialDefinition(pair.Key, pair.Value.OrderBy(m => m).ToArray(), null)).OrderBy(m => m.Usages.Min()).ToList());
         }
 
         private static void MapMaterial(ArmaRealMap.TerrainData.GroundDetailTextures.TerrainMaterialLibrary oldLib, ArmaRealMap.GroundTextureDetails.TerrainMaterial oldId, TerrainMaterialUsage usage, Dictionary<TerrainMaterial, List<TerrainMaterialUsage>> newMaterials, TerrainRegion region)

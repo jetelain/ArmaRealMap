@@ -486,7 +486,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             var doc = GetAssetConfigEditor(a3config.AssetConfigFile);
             if (doc != null)
             {
-                return doc.ToJson();
+                return await doc.ToJson();
             }
 
             var file = GetAssetFullPath(a3config.AssetConfigFile);
