@@ -1,44 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Studio.Modules.Arma3Data.Services;
-using GameRealisticMap.Studio.Modules.Arma3Data;
-using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
-using Gemini.Framework;
 using System.Threading;
-using Caliburn.Micro;
+using System.Threading.Tasks;
 using System.Windows.Data;
-using System.ComponentModel;
-using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Arma3;
-using System.IO;
-using BIS.PBO;
-using BIS.Core.Config;
-using SixLabors.ImageSharp.PixelFormats;
 using System.Windows.Media;
-using ISColor = SixLabors.ImageSharp.Color;
-using SixLabors.ImageSharp.ColorSpaces;
-using SixLabors.ImageSharp.ColorSpaces.Conversion;
-using Gemini.Framework.Services;
+using Caliburn.Micro;
+using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.Toolkit;
+using NLog;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
     [Export(typeof(GdtBrowserViewModel))]
     internal class GdtBrowserViewModel : BrowserViewModelBase
     {
+        private static readonly Logger logger = NLog.LogManager.GetLogger("GdtBrowser");
+
         private readonly IArma3Previews _arma3Previews;
-        private readonly IGdtCatalogService _catalogService;
+        private readonly IGdtCatalogStorage _catalogService;
+        private bool isSaving;
 
         [ImportingConstructor]
-        public GdtBrowserViewModel(IArma3DataModule arma3DataModule, IArma3Previews arma3Previews, IGdtCatalogService catalogService, IArma3ModsService arma3ModsService)
+        public GdtBrowserViewModel(IArma3DataModule arma3DataModule, IArma3Previews arma3Previews, IGdtCatalogStorage catalogService, IArma3ModsService arma3ModsService)
             : base(arma3DataModule, arma3ModsService)
         {
             _arma3Previews = arma3Previews;
             _catalogService = catalogService;
-            DisplayName = "Ground Detail Texture Browser";
+            DisplayName = "Ground Detail Texture Library";
         }
 
         public BindableCollection<GdtDetailViewModel>? AllItems { get; private set; }
@@ -47,47 +41,33 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public IArma3Previews Previews => _arma3Previews;
 
-        protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
+        protected override Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            var items = await _catalogService.GetOrLoad();
-
-            AllItems = new BindableCollection<GdtDetailViewModel>(items.Select(m => new GdtDetailViewModel(this, m)));
+            AllItems = new BindableCollection<GdtDetailViewModel>();
             Items = CollectionViewSource.GetDefaultView(AllItems);
             Items.SortDescriptions.Add(new SortDescription(nameof(GdtDetailViewModel.DisplayName), ListSortDirection.Ascending));
             Items.Filter = (item) => Filter((GdtDetailViewModel)item);
 
             NotifyOfPropertyChange(nameof(Items));
 
-            _ = Task.Run(() => UpdateActiveMods());
+            _ = Task.Run(() => DoLoad());
 
-            if (items.Count == 0)
-            {
-                _ = Task.Run(() => ImportVanilla());
-            }
+            _catalogService.Updated += CatalogServiceUpdated;
+
+            return Task.CompletedTask;
         }
 
-        private void ImportVanilla()
+        private void CatalogServiceUpdated(object? sender, List<GdtCatalogItem> catalogItems)
         {
-            var pboFS = (_arma3DataModule.ProjectDrive.SecondarySource as PboFileSystem);
-            if (pboFS != null)
-            {
-                ImportItems(new GdtImporter(_arma3DataModule.Library).ImportVanilla(pboFS));
-            }
-        }
-
-        private void ImportItems(List<GdtImporterItem> gdtImporterItems)
-        {
-            IsImporting = true;
-
             var items = AllItems;
-            if (items != null)
+            if (!isSaving && items != null)
             {
-                foreach (var item in gdtImporterItems)
+                foreach (var item in catalogItems)
                 {
-                    var existing = items.FirstOrDefault(i => string.Equals(i.ColorTexture, item.ColorTexture, StringComparison.OrdinalIgnoreCase));
+                    var existing = items.FirstOrDefault(i => string.Equals(i.ColorTexture, item.Material.ColorTexture, StringComparison.OrdinalIgnoreCase));
                     if (existing != null)
                     {
-                        existing.RefreshConfig(item);
+                        existing.SyncCatalog(item);
                     }
                     else
                     {
@@ -95,8 +75,61 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                     }
                 }
             }
+        }
+
+        private async Task DoLoad()
+        {
+            IsImporting = true;
+            try
+            {
+                var items = await _catalogService.GetOrLoad();
+                AllItems?.AddRange(items.Select(m => new GdtDetailViewModel(this, m)));
+                UpdateActiveMods();
+            }
+            catch (Exception ex)
+            {
+            }
 
             IsImporting = false;
+        }
+
+        public Task ImportA3()
+        {
+            Task.Run(async () =>
+            {
+                IsImporting = true;
+                await _catalogService.ImportVanilla();
+                IsImporting = false;
+            });
+            return Task.CompletedTask;
+        }
+
+        public Task ImportARM()
+        {
+            DoImportMod("2982306133");
+            return Task.CompletedTask;
+        }
+
+        private void DoImportMod(string steamId)
+        {
+            var installed = _modsService.GetMod(steamId);
+            if (installed == null)
+            {
+                // Not installed
+                ShellHelper.OpenUri("steam://url/CommunityFilePage/" + steamId);
+                return;
+            }
+            if (!ActiveMods.Any(m => m.SteamId == steamId))
+            {
+                // Not active, activate him
+                _arma3DataModule.ChangeActiveMods(_arma3DataModule.ActiveMods.Concat(new[] { installed.Path }));
+            }
+            Task.Run(async () =>
+            {
+                IsImporting = true;
+                await _catalogService.ImportMod(installed);
+                IsImporting = false;
+            });
         }
 
         private async Task SaveChanges()
@@ -104,50 +137,17 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             var items = AllItems;
             if (items != null)
             {
+                isSaving = true;
                 await _catalogService.SaveChanges(items.Select(i => i.ToDefinition()).ToList());
+                isSaving = false;
             }
         }
 
-        internal Color AllocateUniqueColor(Color? avgColor)
+        private IEnumerable<Color> GetUsedColors()
         {
-            Color wanted;
-
-            if (avgColor != null)
-            {
-                var hsl = ColorSpaceConverter.ToHsl(new Rgb24(avgColor.Value.R, avgColor.Value.G, avgColor.Value.B));
-                wanted = HslToWpfRgb(new Hsl(hsl.H, 1f, Math.Clamp(hsl.L, 0.25f, 0.75f)));
-            }
-            else
-            {
-                wanted = RandomColor();
-            }
-            var items = AllItems;
-            if (items != null)
-            {
-                int attempt = 1;
-                while (items.Any(i => i.ColorId == wanted))
-                {
-                    wanted = RandomColor(attempt);
-                    attempt++;
-                }
-            }
-            return wanted;
+            return AllItems?.Select(i => i.ColorId) ?? Enumerable.Empty<Color>();
         }
 
-        private static Color HslToWpfRgb(Hsl hsl)
-        {
-            var rgb = (Rgb24)ColorSpaceConverter.ToRgb(hsl);
-            return Color.FromRgb(rgb.R, rgb.G, rgb.B);
-        }
-
-        private static Color RandomColor(int attempt = 0)
-        {
-            if (attempt < 3)
-            {
-                return HslToWpfRgb(new Hsl(Random.Shared.Next(0, 360), 1f, 0.5f));
-            }
-            return Color.FromRgb((byte)Random.Shared.Next(64, 192), (byte)Random.Shared.Next(64, 192), (byte)Random.Shared.Next(64, 192));
-        }
         private bool Filter(GdtDetailViewModel item)
         {
             if (!string.IsNullOrEmpty(filterText))

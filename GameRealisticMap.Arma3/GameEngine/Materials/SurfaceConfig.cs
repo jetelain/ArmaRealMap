@@ -11,7 +11,7 @@ namespace GameRealisticMap.Arma3.GameEngine.Materials
     {
 
         [JsonConstructor]
-        public SurfaceConfig(string? name, bool aceCanDig, string files, string soundEnviron, string soundHit, double rough, double maxSpeedCoef, double dust, double lucidity, double grassCover, string impact, double surfaceFriction, double maxClutterColoringCoef, List<ClutterConfig> character)
+        public SurfaceConfig(string name, bool aceCanDig, string files, string soundEnviron, string soundHit, double rough, double maxSpeedCoef, double dust, double lucidity, double grassCover, string impact, double surfaceFriction, double maxClutterColoringCoef, List<ClutterConfig> character)
         {
             Name = name;
             AceCanDig = aceCanDig;
@@ -29,7 +29,7 @@ namespace GameRealisticMap.Arma3.GameEngine.Materials
             MaxClutterColoringCoef = maxClutterColoringCoef;
         }
 
-        public string? Name { get; }
+        public string Name { get; }
 
         public bool AceCanDig { get; }
 

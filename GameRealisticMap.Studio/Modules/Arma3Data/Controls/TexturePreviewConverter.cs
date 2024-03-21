@@ -8,12 +8,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Controls
 {
     public sealed class TexturePreviewConverter : IValueConverter
     {
+        public int? Size { get; set; }
+
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var texture = value as string;
             if (!string.IsNullOrEmpty(texture))
             {
-                var uri = IoC.Get<IArma3Previews>().GetTexturePreview(texture); // GetTexturePreview can be really slow, find a way to make this lazy
+                var previews = IoC.Get<IArma3Previews>();
+
+                var uri = Size == null ? previews.GetTexturePreview(texture)
+                    : previews.GetTexturePreviewSmall(texture, Size.Value)
+
+                    ; // GetTexturePreview can be really slow, find a way to make this lazy
                 if (uri != null)
                 {
                     return new BitmapImage(uri) { CreateOptions = BitmapCreateOptions.DelayCreation };

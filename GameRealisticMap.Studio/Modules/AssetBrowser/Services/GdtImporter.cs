@@ -8,6 +8,7 @@ using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using NLog;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
@@ -41,6 +42,16 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             var pboToScanForConfig = WellKnownVanillaConfig.Select(p => Path.Combine(basePath, p));
 
             return Import(pboFS, pboToScanForConfig, DefaultPattern);
+        }
+
+        internal List<GdtImporterItem> ImportMod(ModInfo mod)
+        {
+            var pattern = DefaultPattern; 
+            if (mod.SteamId == "2982306133")
+            {
+                pattern = "arm_*_co.paa";
+            }
+            return ImportMod(mod.Path, pattern);
         }
 
         internal List<GdtImporterItem> ImportMod(string modPath, string pattern = DefaultPattern)

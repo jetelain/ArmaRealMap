@@ -13,7 +13,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" />
+        <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" Size="256" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -51,35 +51,24 @@
 
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <ProgressBar Visibility="{Binding IsImporting, Converter={StaticResource BooleanToVisibilityConverter}}" IsIndeterminate="{Binding IsImporting}" Width="100" Margin="0 5 10 5" />
-
-                <!--<Button Padding="15 0" b:ButtonBehaviors.OpenContextOnClick="True">
-                    <Run Text="{x:Static r:Labels.ImportAssets}"/>
+                <Button Padding="15 0" Margin="0 0 10 0" b:ButtonBehaviors.OpenContextOnClick="True"  IsEnabled="{Binding IsNotImporting}">
+                    <Run Text="Create Texture"/>
                     <Button.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Arma 3" Command="{Binding ImportA3}" CommandParameter="Base" />
-                            <MenuItem Header="Arma 3: Livonia" Command="{Binding ImportA3}" CommandParameter="Livonia" />
-                            <MenuItem Header="Arma 3: Tanoa" Command="{Binding ImportA3}" CommandParameter="Tanoa" />
-                            <MenuItem Header="{x:Static r:Labels.UsualTerrainMods}" ItemsSource="{Binding UsualMods}">
-                                <MenuItem.ItemContainerStyle>
-                                    <Style>
-                                        <Setter Property="MenuItem.Header" Value="{Binding Name}" />
-                                        <Setter Property="MenuItem.Command" Value="{Binding DataContext.ImportUsualMod, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
-                                        <Setter Property="MenuItem.CommandParameter" Value="{Binding}" />
-                                    </Style>
-                                </MenuItem.ItemContainerStyle>
-                            </MenuItem>
-                            <MenuItem Header="{x:Static r:Labels.ActiveMods}" ItemsSource="{Binding ActiveMods}">
-                                <MenuItem.ItemContainerStyle>
-                                    <Style>
-                                        <Setter Property="MenuItem.Header" Value="{Binding Name}"/>
-                                        <Setter Property="MenuItem.Command" Value="{Binding DataContext.ImportActiveMod, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
-                                        <Setter Property="MenuItem.CommandParameter" Value="{Binding}" />
-                                    </Style>
-                                </MenuItem.ItemContainerStyle>
-                            </MenuItem>
+                            <MenuItem Header="Register existing PAA file" />
+                            <MenuItem Header="Create from image..." />
                         </ContextMenu>
                     </Button.ContextMenu>
-                </Button>-->
+                </Button>
+                <Button Padding="15 0" b:ButtonBehaviors.OpenContextOnClick="True" IsEnabled="{Binding IsNotImporting}">
+                    <Run Text="Import Textures"/>
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Arma 3 (all)" cal:Message.Attach="ImportA3" />
+                            <MenuItem Header="ARM" cal:Message.Attach="ImportARM" />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
             </StackPanel>
         </Grid>
         <wpftk:GridView x:Name="Grid" ItemsSource="{Binding AllItems}" Grid.Row="1">
@@ -87,7 +76,7 @@
             <wpftk:GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Height="280" Width="260" >
-                        <Image Source="{Binding ColorTexture, Converter={StaticResource TexturePreviewConverter}}" Margin="5" Height="250" Width="250" />
+                        <Image Source="{Binding ColorTexture, Converter={StaticResource TexturePreviewConverter}}" Margin="5" Height="256" Width="256" />
 
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

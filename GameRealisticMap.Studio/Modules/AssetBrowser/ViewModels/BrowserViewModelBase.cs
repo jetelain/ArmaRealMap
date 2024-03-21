@@ -49,8 +49,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public bool IsImporting 
         {
             get { return _isImporting; }
-            set { if (value != _isImporting) { _isImporting = value; NotifyOfPropertyChange(); } }
+            set { if (value != _isImporting) { _isImporting = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(IsNotImporting)); } }
         }
+
+        public bool IsNotImporting => !IsImporting;
 
         protected string filterText = string.Empty;
         public string FilterText

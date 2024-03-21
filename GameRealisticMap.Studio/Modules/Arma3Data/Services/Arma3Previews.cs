@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BIS.PAA;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using Color = System.Windows.Media.Color;
 
 namespace GameRealisticMap.Studio.Modules.Arma3Data
 {
@@ -153,6 +156,24 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
                 }
             }
             return null;
+        }
+
+        public Uri? GetTexturePreviewSmall(string texture, int size = 512)
+        {
+            var fullImage = GetTexturePreview(texture);
+            if (fullImage == null)
+            {
+                return null;
+            }
+            var cachePng = fullImage.LocalPath;
+            var smallPng = Path.ChangeExtension(cachePng, $".{size}.png");
+            if (!File.Exists(smallPng) || File.GetLastWriteTimeUtc(cachePng) > File.GetLastWriteTimeUtc(smallPng))
+            {
+                using var image = Image.Load(cachePng);
+                image.Mutate(i => i.Resize(size, size));
+                image.SaveAsPng(smallPng);
+            }
+            return new Uri(smallPng);
         }
 
         private static BitmapSource ReadPaaAsBitmapSource(Stream? paaStream)

@@ -1,22 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
-using System.Text.Json.Serialization;
+using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.IO.Converters;
 using GameRealisticMap.Studio.Modules.Arma3Data;
-using System.ComponentModel.Composition;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Toolkit;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
 {
-    [Export(typeof(IGdtCatalogService))]
-    internal class GdtCatalogService : IGdtCatalogService
+    [Export(typeof(IGdtCatalogStorage))]
+    internal class GdtCatalogService : IGdtCatalogStorage
     {
         private List<GdtCatalogItem>? cachedList;
         private readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly IArma3DataModule _arma3DataModule;
+        private readonly IArma3Previews _arma3Previews;
+        private readonly IArma3ModsService _arma3ModsService;
+
+        public event EventHandler<List<GdtCatalogItem>>? Updated;
 
         public string GdtCatalogPath { get; set; } = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -25,9 +33,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             "gdt.json");
 
         [ImportingConstructor]
-        public GdtCatalogService(IArma3DataModule arma3DataModule)
+        public GdtCatalogService(IArma3DataModule arma3DataModule, IArma3Previews arma3Previews, IArma3ModsService arma3ModsService)
         {
             _arma3DataModule = arma3DataModule;
+            _arma3Previews = arma3Previews;
+            _arma3ModsService = arma3ModsService;
         }
 
         public async Task<List<GdtCatalogItem>> GetOrLoad()
@@ -58,9 +68,41 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 return await JsonSerializer.DeserializeAsync<List<GdtCatalogItem>>(stream, CreateJsonOptions()).ConfigureAwait(false)
                     ?? new List<GdtCatalogItem>();
             }
-            return new List<GdtCatalogItem>();
+            var list = new List<GdtCatalogItem>();
+            var pboFS = (_arma3DataModule.ProjectDrive.SecondarySource as PboFileSystem);
+            if (pboFS != null)
+            {
+                Import(list, new GdtImporter(_arma3DataModule.Library).ImportVanilla(pboFS));
+            }
+            var armMod = _arma3ModsService.GetModsList().FirstOrDefault(m => m.SteamId == "2982306133");
+            if(armMod != null)
+            {
+                Import(list, new GdtImporter(_arma3DataModule.Library).ImportMod(armMod));
+            }
+            await Save(list).ConfigureAwait(false);
+            return list;
         }
 
+        private void Import(List<GdtCatalogItem> list, List<GdtImporterItem> gdtImporterItems)
+        {
+            foreach (var item in gdtImporterItems)
+            {
+                var existing = list.FirstOrDefault(i => string.Equals(i.Material.ColorTexture, item.ColorTexture));
+                if (existing != null)
+                {
+                    list.Remove(existing);
+                }
+
+                using var fakeSat = GdtHelper.GenerateFakeSatPngImage(_arma3Previews, item.ColorTexture);
+
+                var color = GdtHelper.AllocateUniqueColor(fakeSat == null ? null : fakeSat[0, 0].ToWpfColor(), list.Select(i => i.Material.Id.ToWpfColor()));
+
+                list.Add(new GdtCatalogItem(
+                    new Arma3.Assets.TerrainMaterial(item.NormalTexture, item.ColorTexture, color.ToRgb24(), fakeSat?.ToPngByteArray()),
+                    item.Config));
+            }
+        }
+    
         private JsonSerializerOptions CreateJsonOptions()
         {
             return new JsonSerializerOptions()
@@ -84,6 +126,8 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             {
                 semaphoreSlim.Release();
             }
+
+            Updated?.Invoke(this, cachedList);
         }
 
         private async Task Save(List<GdtCatalogItem> list)
@@ -91,5 +135,45 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             using var stream = File.Create(GdtCatalogPath);
             await JsonSerializer.SerializeAsync(stream, list, CreateJsonOptions()).ConfigureAwait(false);
         }
+
+        public async Task<GdtCatalogItem?> Resolve(string path)
+        {
+            var items = await GetOrLoad();
+            return items.FirstOrDefault(i => string.Equals(path, i.Material.ColorTexture, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public async Task ImportVanilla()
+        {
+            var pboFS = (_arma3DataModule.ProjectDrive.SecondarySource as PboFileSystem);
+            if (pboFS != null)
+            {
+                await Import(new GdtImporter(_arma3DataModule.Library).ImportVanilla(pboFS));
+            }
+        }
+
+        public async Task ImportMod(ModInfo installed)
+        {
+            await Import(new GdtImporter(_arma3DataModule.Library).ImportMod(installed));
+        }
+
+        private async Task Import(List<GdtImporterItem> gdtImporterItems)
+        {
+            await semaphoreSlim.WaitAsync().ConfigureAwait(false);
+            try
+            {
+                if (cachedList == null)
+                {
+                    cachedList = await Load().ConfigureAwait(false);
+                }
+                Import(cachedList, gdtImporterItems);
+            }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+
+            Updated?.Invoke(this, cachedList);
+        }
+
     }
 }

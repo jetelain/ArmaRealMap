@@ -9,6 +9,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
 
         Task<Uri> GetPreview(string modelPath);
 
-        Uri? GetTexturePreview(string texture);
+        Uri? GetTexturePreview(string texture); 
+        
+        Uri? GetTexturePreviewSmall(string texture, int size = 512);
     }
 }

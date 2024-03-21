@@ -19,7 +19,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Commands
 
         public override string Text
         {
-            get { return "Ground Detail Texture Browser"; }
+            get { return "Ground Detail Texture Library"; }
         }
 
         public override Uri IconSource => new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Materials.png");

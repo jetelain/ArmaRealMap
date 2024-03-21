@@ -9,6 +9,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.Toolkit;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 using Gemini.Framework.Services;
@@ -27,7 +28,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         {
             ParentEditor = parent;
 
-            Name = config.Name;
+            _name = config.Name;
             Files = config.Files;
             _aceCanDig = config.AceCanDig;
             _soundEnviron = config.SoundEnviron;
@@ -49,19 +50,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         {
             _colorTexture = item.Material.ColorTexture;
             _normalTexture = item.Material.NormalTexture;
-            _colorId = Color.FromRgb(item.Material.Id.R, item.Material.Id.G, item.Material.Id.B);
-            _fakeSatPngImage = item.Material.FakeSatPngImage;
-        }
+            _colorId = item.Material.Id.ToWpfColor();
+            FakeSatPngImage = item.Material.FakeSatPngImage;
 
-        public GdtDetailViewModel(GdtBrowserViewModel parent, GdtImporterItem item)
-            : this(parent, item.Config)
-        {
-            _colorTexture = item.ColorTexture;
-            _normalTexture = item.NormalTexture;
-            var avgColor = GenerateFakeSatPngImage();
-            _colorId = parent.AllocateUniqueColor(avgColor);
             DisplayName = Path.GetFileNameWithoutExtension(ColorTexture);
-            IsEditable = false;
         }
 
         public GdtBrowserViewModel ParentEditor { get; }
@@ -119,9 +111,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public bool IsEditable { get; }
 
+        public bool IsReadOnly => !IsEditable;
+
         public UndoableObservableCollection<GdtClutterViewModel> ClutterList { get; }
 
-        public string? Name { get; }
+        private string _name;
+        public string Name { get { return _name; } set { Set(ref _name, value); } }
 
         public string Files { get; }
 
@@ -160,18 +155,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         private Color? GenerateFakeSatPngImage()
         {
-            var uri = IoC.Get<IArma3Previews>().GetTexturePreview(_colorTexture);
-            if (uri != null && uri.IsFile)
+            using var img = GdtHelper.GenerateFakeSatPngImage(IoC.Get<IArma3Previews>(), _colorTexture);
+            if (img != null)
             {
-                using var img = Image.Load<Rgb24>(uri.LocalPath);
-                img.Mutate(d =>
-                {
-                    d.Resize(1, 1);
-                    d.Resize(8, 8);
-                });
                 SetFakeSatImage(img);
-                var px = img[0, 0];
-                return Color.FromRgb(px.R, px.G, px.B);
+                return img[0, 0].ToWpfColor();
             }
             return null;
         }
@@ -197,9 +185,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         private void SetFakeSatImage(Image img)
         {
-            var mem = new MemoryStream();
-            img.SaveAsPng(mem);
-            FakeSatPngImage = mem.ToArray();
+            FakeSatPngImage = img.ToPngByteArray();
         }
 
         public GdtCatalogItem ToDefinition()
@@ -225,16 +211,31 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return new GdtCatalogItem(material, config);
         }
 
-        internal void RefreshConfig(GdtImporterItem item)
-        {
-            
-
-            throw new NotImplementedException();
-        }
-
         public Task OpenMaterial()
         {
             return IoC.Get<IShell>().OpenDocumentAsync(this);
+        }
+
+        internal void SyncCatalog(GdtCatalogItem item)
+        {
+
+            // ColorTexture = item.Material.ColorTexture;
+            // NormalTexture = item.Material.NormalTexture;
+            // ColorId = item.Material.Id.ToWpfColor();
+            // FakeSatPngImage = item.Material.FakeSatPngImage; 
+
+            Name = item.Config.Name;
+            AceCanDig = item.Config.AceCanDig;
+            SoundEnviron = item.Config.SoundEnviron;
+            SoundHit = item.Config.SoundHit;
+            Rough = item.Config.Rough;
+            MaxSpeedCoef = item.Config.MaxSpeedCoef;
+            Dust = item.Config.Dust;
+            Lucidity = item.Config.Lucidity;
+            GrassCover = item.Config.GrassCover;
+            Impact = item.Config.Impact;
+            SurfaceFriction = item.Config.SurfaceFriction;
+            MaxClutterColoringCoef = item.Config.MaxClutterColoringCoef;
         }
     }
 }
