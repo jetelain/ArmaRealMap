@@ -6,7 +6,7 @@ namespace GameRealisticMap.Arma3.GameEngine.Materials
     public sealed class ClutterConfig
     {
         [JsonConstructor]
-        public ClutterConfig(string? name, double probability, ModelInfo model, double affectedByWind, bool isSwLighting, double scaleMin, double scaleMax)
+        public ClutterConfig(string name, double probability, ModelInfo model, double affectedByWind, bool isSwLighting, double scaleMin, double scaleMax)
         {
             Name = name;
             Probability = probability;
@@ -17,7 +17,7 @@ namespace GameRealisticMap.Arma3.GameEngine.Materials
             ScaleMax = scaleMax;
         }
 
-        public string? Name { get; }
+        public string Name { get; }
 
         public double Probability { get; }
 
@@ -31,5 +31,17 @@ namespace GameRealisticMap.Arma3.GameEngine.Materials
 
         public double ScaleMax { get; }
 
+        internal void WriteTo(StringWriter sw)
+        {
+            sw.WriteLine(FormattableString.Invariant($@"class {Name} : DefaultClutter
+{{
+	model=""{Model}"";
+	affectedByWind={AffectedByWind};
+	swLighting={(IsSwLighting?1:0)};
+	scaleMin={ScaleMin};
+	scaleMax={ScaleMax};
+}};"));
+
+        }
     }
 }

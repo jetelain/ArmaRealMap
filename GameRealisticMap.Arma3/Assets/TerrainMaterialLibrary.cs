@@ -78,5 +78,8 @@ namespace GameRealisticMap.Arma3.Assets
             var name = Path.GetFileNameWithoutExtension(m.ColorTexture);
             return surfaces.FirstOrDefault(s => s.Match(name));
         }
+
+        [JsonIgnore]
+        public IEnumerable<SurfaceConfig> Surfaces => surfaces;
     }
 }

@@ -1,9 +1,6 @@
-﻿using System;
-using Caliburn.Micro;
-using GameRealisticMap.Arma3.Assets;
+﻿using Caliburn.Micro;
 using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.Studio.Modules.CompositionTool.Behaviors;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
@@ -29,7 +26,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         }
 
-        public string? Name { get; }
+        public string Name { get; }
 
         public ModelInfo Model { get; }
 

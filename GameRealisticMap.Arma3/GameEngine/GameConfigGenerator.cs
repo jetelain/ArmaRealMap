@@ -2,6 +2,7 @@
 using System.Text.Json;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Extensions;
+using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
@@ -38,7 +39,23 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\ace-weather.hpp", AceWeather.GenerateWeather(context.GetData<WeatherData>()));
 
+            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\clutter.hpp", GenerateClutters(assets.Materials.Surfaces));
+
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\grma3-dependencies.json", JsonSerializer.Serialize(assets.Dependencies));
+        }
+
+        private string GenerateClutters(IEnumerable<SurfaceConfig> surfaces)
+        {
+            var sw = new StringWriter();
+            var done = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach(var clutter in surfaces.SelectMany(s => s.Character))
+            {
+                if (done.Add(clutter.Name))
+                {
+                    clutter.WriteTo(sw);
+                }
+            }
+            return sw.ToString();
         }
 
         private string GenerateMapInfos(IArma3MapConfig config, ITerrainArea area, bool isIsland, ElevationOutOfBoundsData outOfBoundsData)
@@ -175,8 +192,12 @@ class CfgWorlds
 		minTreesInForestSquare = 5;
 		minRocksInRockSquare = 10;
 		class Subdivision{{}};
-		class Names{{
+		class Names {{
 			#include ""names.hpp""
+		}};
+        class DefaultClutter;
+		class clutter {{
+			#include ""clutter.hpp""
 		}};
 		#include""mapinfos.hpp""
 		#include""ace-weather.hpp""
