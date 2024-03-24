@@ -73,7 +73,7 @@ namespace GameRealisticMap.Arma3.Assets
             return indexByUsage.Where(p => p.Value == m).Select(p => p.Key).ToArray();
         }
 
-        private SurfaceConfig? GetSurface(TerrainMaterial m)
+        public SurfaceConfig? GetSurface(TerrainMaterial m)
         {
             var name = Path.GetFileNameWithoutExtension(m.ColorTexture);
             return surfaces.FirstOrDefault(s => s.Match(name));

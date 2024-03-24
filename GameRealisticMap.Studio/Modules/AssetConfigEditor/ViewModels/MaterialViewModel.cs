@@ -1,207 +1,178 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.GameEngine.Materials;
-using GameRealisticMap.Studio.Modules.Arma3Data;
-using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
-using Microsoft.Win32;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels;
+using GameRealisticMap.Studio.Toolkit;
 using Color = System.Windows.Media.Color;
-using Image = SixLabors.ImageSharp.Image;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
     internal class MaterialViewModel : AssetIdBase<TerrainMaterialUsage, TerrainMaterial>
     {
         private byte[]? _fakeSatPngImage;
-        private BitmapFrame? _fakeSatPreview;
+        private string _colorTexture;
+        private string _normalTexture;
+        private Color _colorId;
+        private bool _useLibraryColor;
 
-        public MaterialViewModel(TerrainMaterialUsage id, TerrainMaterial terrainMaterial, AssetConfigEditorViewModel parent)
+        public MaterialViewModel(TerrainMaterialUsage id, TerrainMaterial terrainMaterial, GdtDetailViewModel? libraryItem, AssetConfigEditorViewModel parent)
             : base(id, parent)
         {
-            _colorId = Color.FromRgb(terrainMaterial.Id.R, terrainMaterial.Id.G, terrainMaterial.Id.B);
-            _sameAs = parent.Materials.FirstOrDefault(m => m.ColorId == ColorId);
+            _colorId = terrainMaterial.Id.ToWpfColor();
             _colorTexture = terrainMaterial.ColorTexture;
             _normalTexture = terrainMaterial.NormalTexture;
-            FakeSatPngImage = terrainMaterial.FakeSatPngImage;
+            _fakeSatPngImage = terrainMaterial.FakeSatPngImage;
+            _libraryItem = libraryItem;
+            if (libraryItem != null)
+            {
+                _useLibraryColor = libraryItem.ColorId == _colorId;
+            }
+        }
+
+        internal static async Task<MaterialViewModel> Create(TerrainMaterialUsage id, Arma3Assets arma3Assets, AssetConfigEditorViewModel parent)
+        {
+            var mat = arma3Assets.Materials.GetMaterialByUsage(id);
+            var surf = arma3Assets.Materials.GetSurface(mat);
+
+            GdtDetailViewModel? libraryItem = null;
+            if (!string.IsNullOrEmpty(mat.ColorTexture))
+            {
+                libraryItem = await IoC.Get<GdtBrowserViewModel>().Resolve(mat, surf);
+            }
+            return new MaterialViewModel(id, mat, libraryItem, parent);
         }
 
         public override string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Generic.png";
 
-        public List<string> Others =>
-            ParentEditor.Materials.Where(m => m != this && m.SameAs == null)
-            .Select(m => m.PageTitle)
-            .Concat(new[] { string.Empty })
-            .ToList();
-
-        MaterialViewModel? _sameAs;
-
-        public MaterialViewModel? SameAs
+        protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            get { return _sameAs; }
-            set
-            {
-                // TODO: Undo/redo as it cannot be handled only on property value
-                if (value != null)
+            LibraryItemsViewSource = new CollectionViewSource();
+            LibraryItemsViewSource.Source = IoC.Get<GdtBrowserViewModel>().AllItems;
+            LibraryItemsViewSource.SortDescriptions.Add(new SortDescription(nameof(GdtDetailViewModel.DisplayName), ListSortDirection.Ascending));
+            NotifyOfPropertyChange(nameof(LibraryItemsViewSource));
+
+            await base.OnInitializeAsync(cancellationToken);
+        }
+
+        public bool UseLibraryColor
+        {
+            get { return _useLibraryColor; }
+            set 
+            { 
+                if (Set(ref _useLibraryColor, value)) 
                 {
-                    ColorId = value.ColorId;
-                    ColorTexture = value.ColorTexture;
-                    NormalTexture = value.NormalTexture;
-                    foreach (var sameAsSelf in ParentEditor.Materials.Where(m => m != this && m.SameAs == this))
-                    {
-                        sameAsSelf.SameAs = value;
-                    }
+                    NotifyOfPropertyChange(nameof(ColorId));
+                    NotifyOfPropertyChange(nameof(UseCustomColor));
                 }
-                else if (value == null && _sameAs != null)
-                {
-                    // TODO: Find an unique color
-                }
-                _sameAs = value;
-                NotifyOfPropertyChange();
-                NotifyOfPropertyChange(nameof(SameAsText));
-                NotifyOfPropertyChange(nameof(IsNotSameAs));
             }
         }
 
-        public bool IsNotSameAs
+        public bool UseCustomColor
         {
-            get { return _sameAs == null; }
+            get { return !UseLibraryColor; }
+            set { UseLibraryColor = !UseLibraryColor; }
         }
 
-        public string SameAsText
-        {
-            get { return SameAs?.PageTitle ?? string.Empty; }
-            set { SameAs = ParentEditor.Materials.FirstOrDefault(m => m != this && m.PageTitle == value); }
-        }
-
-        private Color _colorId;
         public Color ColorId
         {
-            get { return _colorId; }
+            get 
+            { 
+                if (UseLibraryColor)
+                {
+                    return LibraryItem?.ColorId ?? _colorId;
+                }
+                return _colorId; 
+            }
             set
             {
-                _colorId = value;
-                NotifyOfPropertyChange();
-                foreach (var sameAsSelf in ParentEditor.Materials.Where(m => m != this && m.SameAs == this))
-                {
-                    sameAsSelf.ColorId = value;
-                }
+                Set(ref _colorId, value);
             }
         }
 
-        private string _colorTexture;
         public string ColorTexture
         {
-            get { return _colorTexture; }
-            set
+            get 
             {
-                _colorTexture = value;
-                GenerateFakeSatPngImage();
-                NotifyOfPropertyChange();
-                foreach (var sameAsSelf in ParentEditor.Materials.Where(m => m != this && m.SameAs == this))
+                if (_libraryItem != null)
                 {
-                    sameAsSelf.ColorTexture = value;
+                    return _libraryItem.ColorTexture;
                 }
+                return _colorTexture;
             }
         }
-
-        private string _normalTexture;
 
         public string NormalTexture
         {
-            get { return _normalTexture; }
-            set
+            get 
             {
-                _normalTexture = value;
-                NotifyOfPropertyChange();
-                foreach (var sameAsSelf in ParentEditor.Materials.Where(m => m != this && m.SameAs == this))
+                if (_libraryItem != null)
                 {
-                    sameAsSelf.NormalTexture = value;
+                    return _libraryItem.NormalTexture;
                 }
+                return _normalTexture; 
             }
         }
 
-        private byte[]? FakeSatPngImage
+        public CollectionViewSource? LibraryItemsViewSource { get; private set; }
+
+        public BitmapSource? FakeSatPreview 
         {
-            get { return _fakeSatPngImage; }
-            set
+            get
             {
-                _fakeSatPngImage = value;
-                if (_fakeSatPngImage != null)
+                return _libraryItem?.FakeSatPreview;
+            }
+        }
+
+        private GdtDetailViewModel? _libraryItem;
+        public GdtDetailViewModel? LibraryItem
+        {
+            get { return _libraryItem; }
+            set 
+            {
+                if (Set(ref _libraryItem, value))
                 {
-                    using (MemoryStream stream = new MemoryStream(_fakeSatPngImage))
+                    NotifyOfPropertyChange(nameof(ColorTexture));
+                    NotifyOfPropertyChange(nameof(NormalTexture));
+                    NotifyOfPropertyChange(nameof(FakeSatPreview));
+                    if (_useLibraryColor)
                     {
-                        _fakeSatPreview = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                        NotifyOfPropertyChange(nameof(ColorId));
                     }
                 }
-                else
-                {
-                    _fakeSatPreview = null;
-                }
-                NotifyOfPropertyChange(nameof(FakeSatPreview));
             }
         }
-
-        public BitmapSource? FakeSatPreview => _fakeSatPreview;
 
         public override TerrainMaterial ToDefinition()
         {
-            return new TerrainMaterial(_normalTexture, _colorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), FakeSatPngImage);
-        }
-
-        public SurfaceConfig? GetSurfaceConfig(List<GdtCatalogItem> catalogItems)
-        {
-            return catalogItems.FirstOrDefault(i => string.Equals(_colorTexture, i.Material.ColorTexture, StringComparison.OrdinalIgnoreCase))?.Config;
-        }
-
-        private void GenerateFakeSatPngImage()
-        {
-            var uri = IoC.Get<IArma3Previews>().GetTexturePreview(_colorTexture);
-            if (uri != null && uri.IsFile)
+            if (_libraryItem != null)
             {
-                using var img = Image.Load(uri.LocalPath);
-                img.Mutate(d =>
+                var material = _libraryItem.ToDefinition().Material;
+                if (!_useLibraryColor)
                 {
-                    d.Resize(1, 1);
-                    d.Resize(8, 8);
-                });
-                SetFakeSatImage(img);
+                    return new TerrainMaterial(material.NormalTexture, material.ColorTexture, _colorId.ToRgb24(), material.FakeSatPngImage);
+                }
+                return material;
             }
+            // Was unable to find item in library, keep as-is
+            return new TerrainMaterial(_normalTexture, _colorTexture, _colorId.ToRgb24(), _fakeSatPngImage);
         }
 
-        public Task RegenerateFakeSatImage()
+        public SurfaceConfig? GetSurfaceConfig()
         {
-            GenerateFakeSatPngImage();
-            return Task.CompletedTask;
-        }
-
-        public Task SelectFakeSatImage()
-        {
-            var dialog = new OpenFileDialog();
-            dialog.Filter = "PNG Image|*.png";
-            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            if (dialog.ShowDialog() == true)
+            if (_libraryItem != null)
             {
-                using var img = Image.Load(dialog.FileName);
-                SetFakeSatImage(img);
+                return _libraryItem.ToDefinition().Config;
             }
-            return Task.CompletedTask;
-        }
-
-        private void SetFakeSatImage(Image img)
-        {
-            var mem = new MemoryStream();
-            img.SaveAsPng(mem);
-            FakeSatPngImage = mem.ToArray();
+            // Was unable to find item in library, keep as-is
+            return null;
         }
 
         public override void Equilibrate()
@@ -217,6 +188,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public override IEnumerable<string> GetModels()
         {
             return Enumerable.Empty<string>();
+        }
+
+        public Task OpenMaterial()
+        {
+            return LibraryItem?.OpenMaterial() ?? Task.CompletedTask;
         }
     }
 }

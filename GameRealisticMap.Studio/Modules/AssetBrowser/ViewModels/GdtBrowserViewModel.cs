@@ -6,9 +6,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using System.Windows.Media;
 using Caliburn.Micro;
-using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
@@ -24,73 +24,76 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         private readonly IArma3Previews _arma3Previews;
         private readonly IGdtCatalogStorage _catalogService;
+        private readonly Task<BindableCollection<GdtDetailViewModel>> awaitableItems;
         private bool isSaving;
 
         [ImportingConstructor]
         public GdtBrowserViewModel(IArma3DataModule arma3DataModule, IArma3Previews arma3Previews, IGdtCatalogStorage catalogService, IArma3ModsService arma3ModsService)
             : base(arma3DataModule, arma3ModsService)
         {
+            AllItems = new BindableCollection<GdtDetailViewModel>();
+
             _arma3Previews = arma3Previews;
             _catalogService = catalogService;
+            _catalogService.Updated += CatalogServiceUpdated;
             DisplayName = "Ground Detail Texture Library";
+            awaitableItems = Task.Run(DoLoad);
         }
 
-        public BindableCollection<GdtDetailViewModel>? AllItems { get; private set; }
+        public BindableCollection<GdtDetailViewModel> AllItems { get; private set; }
 
         public ICollectionView? Items { get; private set; }
 
         public IArma3Previews Previews => _arma3Previews;
 
-        protected override Task OnInitializeAsync(CancellationToken cancellationToken)
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            AllItems = new BindableCollection<GdtDetailViewModel>();
             Items = CollectionViewSource.GetDefaultView(AllItems);
             Items.SortDescriptions.Add(new SortDescription(nameof(GdtDetailViewModel.DisplayName), ListSortDirection.Ascending));
             Items.Filter = (item) => Filter((GdtDetailViewModel)item);
 
-            NotifyOfPropertyChange(nameof(Items));
-
-            _ = Task.Run(() => DoLoad());
-
-            _catalogService.Updated += CatalogServiceUpdated;
-
-            return Task.CompletedTask;
+            return base.OnActivateAsync(cancellationToken);
         }
 
         private void CatalogServiceUpdated(object? sender, List<GdtCatalogItem> catalogItems)
         {
-            var items = AllItems;
-            if (!isSaving && items != null)
+            if (isSaving)
             {
-                foreach (var item in catalogItems)
+                return;
+            }
+
+            var items = AllItems;
+            foreach (var item in catalogItems)
+            {
+                var existing = items.FirstOrDefault(i => string.Equals(i.ColorTexture, item.Material.ColorTexture, StringComparison.OrdinalIgnoreCase));
+                if (existing != null)
                 {
-                    var existing = items.FirstOrDefault(i => string.Equals(i.ColorTexture, item.Material.ColorTexture, StringComparison.OrdinalIgnoreCase));
-                    if (existing != null)
-                    {
-                        existing.SyncCatalog(item);
-                    }
-                    else
-                    {
-                        items.Add(new GdtDetailViewModel(this, item));
-                    }
+                    existing.SyncCatalog(item);
+                }
+                else
+                {
+                    items.Add(new GdtDetailViewModel(this, item));
                 }
             }
         }
 
-        private async Task DoLoad()
+        private async Task<BindableCollection<GdtDetailViewModel>> DoLoad()
         {
             IsImporting = true;
             try
             {
                 var items = await _catalogService.GetOrLoad();
-                AllItems?.AddRange(items.Select(m => new GdtDetailViewModel(this, m)));
+                AllItems.AddRange(items.Select(m => new GdtDetailViewModel(this, m)));
                 UpdateActiveMods();
             }
             catch (Exception ex)
             {
+                logger.Error(ex);
             }
 
             IsImporting = false;
+
+            return AllItems;
         }
 
         public Task ImportA3()
@@ -134,18 +137,9 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         private async Task SaveChanges()
         {
-            var items = AllItems;
-            if (items != null)
-            {
-                isSaving = true;
-                await _catalogService.SaveChanges(items.Select(i => i.ToDefinition()).ToList());
-                isSaving = false;
-            }
-        }
-
-        private IEnumerable<Color> GetUsedColors()
-        {
-            return AllItems?.Select(i => i.ColorId) ?? Enumerable.Empty<Color>();
+            isSaving = true;
+            await _catalogService.SaveChanges(AllItems.Select(i => i.ToDefinition()).ToList());
+            isSaving = false;
         }
 
         private bool Filter(GdtDetailViewModel item)
@@ -161,6 +155,28 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         protected override void RefreshFilter()
         {
             Items?.Refresh();
+        }
+
+        internal async Task<GdtDetailViewModel?> ImportExternal(TerrainMaterial terrainMaterial, SurfaceConfig? surfaceConfig)
+        {
+            if (surfaceConfig == null)
+            {
+                return null;
+            }
+            var vm = new GdtDetailViewModel(this, new GdtCatalogItem(terrainMaterial, surfaceConfig));
+            (await awaitableItems).Add(vm);
+            return vm;
+        }
+
+        internal async Task<GdtDetailViewModel?> Resolve(TerrainMaterial mat, SurfaceConfig? surf)
+        {
+            var items = await awaitableItems;
+            var libraryItem = items.FirstOrDefault(i => string.Equals(i.ColorTexture, mat.ColorTexture, StringComparison.OrdinalIgnoreCase));
+            if (libraryItem == null)
+            {
+                libraryItem = await ImportExternal(mat, surf);
+            }
+            return libraryItem;
         }
     }
 }

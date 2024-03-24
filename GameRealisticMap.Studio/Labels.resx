@@ -1468,4 +1468,16 @@ Last generated on {1}</value>
   <data name="UseConstant" xml:space="preserve">
     <value>Use constant</value>
   </data>
+  <data name="UseLibraryValue" xml:space="preserve">
+    <value>Use library value</value>
+  </data>
+  <data name="UseOverridenValue" xml:space="preserve">
+    <value>Use overriden value</value>
+  </data>
+  <data name="UseTexture" xml:space="preserve">
+    <value>Use texture</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
 </root>

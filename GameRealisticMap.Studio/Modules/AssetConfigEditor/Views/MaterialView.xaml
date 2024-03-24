@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
              xmlns:a3="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Controls"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             
+             xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:cal="http://caliburnmicro.com"
              mc:Ignorable="d" 
@@ -13,59 +15,92 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" />
+        <a3:TexturePreviewConverter x:Key="TexturePreviewConverter256" Size="256" />
     </UserControl.Resources>
 
-    <ScrollViewer local:Behaviors.EnforceScroll="True">
+    <ScrollViewer>
         <StackPanel Margin="10 0">
             <StackPanel Orientation="Horizontal" Margin="0 10">
                 <Button Padding="10" Command="{Binding Back}">🡰</Button>
                 <TextBlock FontSize="30" Margin="20 0" Text="{Binding PageTitle}" />
             </StackPanel>
-
-
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">
-                    <Run Text="{x:Static r:Labels.UseSameTexteAs}"/>
+                    <Run Text="{x:Static r:Labels.UseTexture}"/>
                 </Label>
                 <ComboBox 
-                    Width="200" 
-                    ItemsSource="{Binding Others}"
-                    SelectedValue="{Binding SameAsText}" />
+                    Width="220" Height="160"
+                    ItemsSource="{Binding LibraryItemsViewSource.View}"
+                    SelectedValue="{Binding LibraryItem}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Height="160" Width="190" >
+                                <Image Source="{Binding ColorTexture, Converter={StaticResource TexturePreviewConverter256}}" Margin="5" Height="128" Width="128" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Border Width="16" Height="16" Margin="0 0 8 0">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{Binding ColorId}" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding DisplayName}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Width="600" />
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+
+                </ComboBox>
+                <StackPanel Margin="10 0">
+                    <Button cal:Message.Attach="OpenMaterial" Padding="5">
+                        <Run Text="{x:Static r:Labels.Open}" />
+                    </Button>
+                    <Button Padding="5" Margin="0 5">
+                        <Run Text="Import custom texture..." />
+                    </Button>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Margin="10" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.ColorId}"/>
                 </Label>
+                <RadioButton GroupName="ColorIdMode" VerticalAlignment="Center" IsChecked="{Binding UseLibraryColor}">
+                    <Run Text="{x:Static r:Labels.UseLibraryValue}" />
+                </RadioButton>
+                <RadioButton GroupName="ColorIdMode" VerticalAlignment="Center" Margin="5 0" IsChecked="{Binding UseCustomColor}">
+                    <Run Text="{x:Static r:Labels.UseOverridenValue}" />
+                </RadioButton>
                 <toolkit:ColorPicker 
-                    SelectedColor="{Binding ColorId,Mode=TwoWay}" 
-                    Width="100"
-                    UsingAlphaChannel="False" 
-                    IsEnabled="{Binding IsNotSameAs}"
-                    local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
-                    />
+                            SelectedColor="{Binding ColorId,Mode=TwoWay}" 
+                            Width="100"
+                            UsingAlphaChannel="False" 
+                            IsEnabled="{Binding IsNotSameAs}"
+                            local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
+                        />
             </StackPanel>
             
-            <StackPanel Margin="10" Orientation="Horizontal" >
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.ColorTexture}"/>
                 </Label>
-                <TextBox Width="400" Text="{Binding ColorTexture,Mode=TwoWay}" IsEnabled="{Binding IsNotSameAs}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                <TextBlock Text="{Binding ColorTexture}" />
             </StackPanel>
-            
-            <StackPanel Margin="10" Orientation="Horizontal" >
+
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.NormalTexture}"/>
                 </Label>
-                <TextBox Width="400" Text="{Binding NormalTexture,Mode=TwoWay}" IsEnabled="{Binding IsNotSameAs}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <TextBlock Text="{Binding NormalTexture}" />
             </StackPanel>
 
-
-            <StackPanel Margin="10" Orientation="Horizontal" >
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.SatelliteRenderImage}" />
                 </Label>
-                
                 <Border Width="60" >
                     <Border.Background>
                         <ImageBrush ImageSource="{Binding FakeSatPreview}" 
@@ -76,16 +111,6 @@
                                 ViewportUnits="Absolute" />
                     </Border.Background>
                 </Border>
-
-                <StackPanel Margin="10 0 0 0">
-                    <Button cal:Message.Attach="RegenerateFakeSatImage" Padding="5 3">
-                        <Run Text="{x:Static r:Labels.GenerateFromTexture}" />
-                    </Button>
-                    <Button cal:Message.Attach="SelectFakeSatImage" Padding="5 3" Margin="0 5 0 0 ">
-                        <Run Text="{x:Static r:Labels.SelectAnImage}" />
-                    </Button>
-                </StackPanel>
-                
             </StackPanel>
 
             <Grid>

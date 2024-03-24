@@ -3061,6 +3061,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Open.
+        /// </summary>
+        public static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Open Arma3 Launcher.
         /// </summary>
         public static string OpenArma3Launcher {
@@ -3953,6 +3962,24 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use library value.
+        /// </summary>
+        public static string UseLibraryValue {
+            get {
+                return ResourceManager.GetString("UseLibraryValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use overriden value.
+        /// </summary>
+        public static string UseOverridenValue {
+            get {
+                return ResourceManager.GetString("UseOverridenValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Use Mikero&apos;s pboProject.
         /// </summary>
         public static string UsePBOProject {
@@ -3985,6 +4012,15 @@ namespace GameRealisticMap.Studio {
         public static string UseSpecificDensity {
             get {
                 return ResourceManager.GetString("UseSpecificDensity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use texture.
+        /// </summary>
+        public static string UseTexture {
+            get {
+                return ResourceManager.GetString("UseTexture", resourceCulture);
             }
         }
         
