@@ -31,7 +31,9 @@
                 <ComboBox 
                     Width="220" Height="160"
                     ItemsSource="{Binding LibraryItemsViewSource.View}"
-                    SelectedValue="{Binding LibraryItem}">
+                    SelectedValue="{Binding LibraryItem}"
+                    TextSearch.TextPath="DisplayName"
+                    IsTextSearchEnabled="True">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Height="160" Width="190" >
