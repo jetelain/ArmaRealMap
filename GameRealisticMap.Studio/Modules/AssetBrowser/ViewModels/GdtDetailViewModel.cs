@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
@@ -15,9 +14,6 @@ using Gemini.Framework;
 using Gemini.Framework.Services;
 using Microsoft.Win32;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using Color = System.Windows.Media.Color;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
@@ -190,25 +186,31 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public GdtCatalogItem ToDefinition()
         {
-            var config = new SurfaceConfig(
-                Name,
-                AceCanDig,
-                Files,
-                SoundEnviron,
-                SoundHit,
-                Rough,
-                MaxSpeedCoef,
-                Dust,
-                Lucidity,
-                GrassCover,
-                Impact,
-                SurfaceFriction,
-                MaxClutterColoringCoef,
-                ClutterList.Select(c => c.ToDefinition()).ToList());
+            return new GdtCatalogItem(ToMaterial(), ToSurfaceConfig());
+        }
 
-            var material = new TerrainMaterial(NormalTexture, ColorTexture, new Rgb24(_colorId.R, _colorId.G, _colorId.B), FakeSatPngImage);
+        public SurfaceConfig ToSurfaceConfig()
+        {
+            return new SurfaceConfig(
+                            Name,
+                            AceCanDig,
+                            Files,
+                            SoundEnviron,
+                            SoundHit,
+                            Rough,
+                            MaxSpeedCoef,
+                            Dust,
+                            Lucidity,
+                            GrassCover,
+                            Impact,
+                            SurfaceFriction,
+                            MaxClutterColoringCoef,
+                            ClutterList.Select(c => c.ToDefinition()).ToList());
+        }
 
-            return new GdtCatalogItem(material, config);
+        public TerrainMaterial ToMaterial()
+        {
+            return new TerrainMaterial(NormalTexture, ColorTexture, _colorId.ToRgb24(), FakeSatPngImage);
         }
 
         public Task OpenMaterial()

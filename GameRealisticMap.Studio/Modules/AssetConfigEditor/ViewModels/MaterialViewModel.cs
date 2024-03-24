@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
@@ -22,6 +21,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         private string _normalTexture;
         private Color _colorId;
         private bool _useLibraryColor;
+        private GdtDetailViewModel? _libraryItem;
 
         public MaterialViewModel(TerrainMaterialUsage id, TerrainMaterial terrainMaterial, GdtDetailViewModel? libraryItem, AssetConfigEditorViewModel parent)
             : base(id, parent)
@@ -83,17 +83,19 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public Color ColorId
         {
-            get 
-            { 
+            get { return _colorId; }
+            set { Set(ref _colorId, value); }
+        }
+
+        public Color ActualColorId
+        {
+            get
+            {
                 if (UseLibraryColor)
                 {
                     return LibraryItem?.ColorId ?? _colorId;
                 }
-                return _colorId; 
-            }
-            set
-            {
-                Set(ref _colorId, value);
+                return _colorId;
             }
         }
 
@@ -123,15 +125,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public CollectionViewSource? LibraryItemsViewSource { get; private set; }
 
-        public BitmapSource? FakeSatPreview 
-        {
-            get
-            {
-                return _libraryItem?.FakeSatPreview;
-            }
-        }
-
-        private GdtDetailViewModel? _libraryItem;
         public GdtDetailViewModel? LibraryItem
         {
             get { return _libraryItem; }
@@ -141,7 +134,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 {
                     NotifyOfPropertyChange(nameof(ColorTexture));
                     NotifyOfPropertyChange(nameof(NormalTexture));
-                    NotifyOfPropertyChange(nameof(FakeSatPreview));
                     if (_useLibraryColor)
                     {
                         NotifyOfPropertyChange(nameof(ColorId));
@@ -154,8 +146,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             if (_libraryItem != null)
             {
-                var material = _libraryItem.ToDefinition().Material;
-                if (!_useLibraryColor)
+                var material = _libraryItem.ToMaterial();
+                if (UseCustomColor)
                 {
                     return new TerrainMaterial(material.NormalTexture, material.ColorTexture, _colorId.ToRgb24(), material.FakeSatPngImage);
                 }
@@ -169,7 +161,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             if (_libraryItem != null)
             {
-                return _libraryItem.ToDefinition().Config;
+                return _libraryItem.ToSurfaceConfig();
             }
             // Was unable to find item in library, keep as-is
             return null;

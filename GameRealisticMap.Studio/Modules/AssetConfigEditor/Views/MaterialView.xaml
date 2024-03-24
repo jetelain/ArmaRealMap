@@ -80,7 +80,7 @@
                             SelectedColor="{Binding ColorId,Mode=TwoWay}" 
                             Width="100"
                             UsingAlphaChannel="False" 
-                            IsEnabled="{Binding IsNotSameAs}"
+                            IsEnabled="{Binding UseCustomColor}"
                             local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
                         />
             </StackPanel>
@@ -105,7 +105,7 @@
                 </Label>
                 <Border Width="60" >
                     <Border.Background>
-                        <ImageBrush ImageSource="{Binding FakeSatPreview}" 
+                        <ImageBrush ImageSource="{Binding LibraryItem.FakeSatPreview}" 
                                 TileMode="Tile"  
                                 Stretch="Uniform"
                                 AlignmentY="Top"

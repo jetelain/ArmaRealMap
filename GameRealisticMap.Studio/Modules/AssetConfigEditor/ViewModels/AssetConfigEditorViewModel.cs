@@ -352,7 +352,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             json.NaturalRows = NaturalRows.Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
 
             var materialDefintions = Materials
-                .GroupBy(m => new { m.ColorId, m.ColorTexture, m.NormalTexture })
+                .GroupBy(m => new { m.ActualColorId, m.ColorTexture, m.NormalTexture })
                 .Select(m => new TerrainMaterialDefinition(
                     m.First().ToDefinition(),
                     m.Select(o => o.FillId).OrderBy(m => m).ToArray(),
