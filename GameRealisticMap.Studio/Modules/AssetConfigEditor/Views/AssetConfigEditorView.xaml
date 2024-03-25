@@ -331,7 +331,6 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="{x:Static r:Labels.SameAs}" Binding="{Binding SameAs.PageTitle}" IsReadOnly="True" />
                                 <DataGridTemplateColumn Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -485,10 +484,30 @@
                 </Expander>
 
             </StackPanel>
-            <TextBlock
-                FontSize="20"
-                Background="#bfff"
-                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Padding="50" Grid.ColumnSpan="2"><Run Text="{x:Static r:Labels.Loading}"/></TextBlock>
+
+
+            <Border  Padding="50" Background="#bfff" Grid.ColumnSpan="2" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel>
+                    
+                <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                    <ProgressBar 
+
+                        IsIndeterminate="True"
+                        
+                        Width="100" Grid.Column="0" Margin="10 2" />
+
+                    <TextBlock FontSize="20" Grid.Column="1">
+                        <Run Text="{x:Static r:Labels.Loading}"/>
+                    </TextBlock>
+
+                    </Grid>
+                </StackPanel>
+            </Border>
+            
         </Grid>
 
 

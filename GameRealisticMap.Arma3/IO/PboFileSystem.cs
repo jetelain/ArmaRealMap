@@ -11,7 +11,7 @@ namespace GameRealisticMap.Arma3.IO
             "map_", "missions_", "sounds_", "musics_", "dubbing_", 
             "editorpreviews_", "ui_", "functions_", "anims_", "air_", "armor_", "characters_", "boat_"
         };
-        private static readonly string[] PboWhiteList = new[] { "map_enoch_data.pbo", "map_data.pbo" };
+        private static readonly string[] PboWhiteList = new[] { "map_enoch_data.pbo", "map_data.pbo", "map_data_exp.pbo", "map_malden_data.pbo" };
         
 
         private readonly IEnumerable<string> gamePaths;

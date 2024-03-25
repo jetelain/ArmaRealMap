@@ -24,5 +24,22 @@ namespace GameRealisticMap.Arma3.Assets
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public byte[]? FakeSatPngImage { get; }
+
+        internal string GetNormalTexturePath(IArma3MapConfig context)
+        {
+            return Format(NormalTexture, context);
+        }
+
+        internal string GetColorTexturePath(IArma3MapConfig context)
+        {
+            return Format(ColorTexture, context);
+        }
+
+        internal static string Format(string texture, IArma3MapConfig context)
+        {
+            return texture
+                .Replace("{PboPrefix}", context.PboPrefix)
+                .Replace("{WorldName}", context.WorldName);
+        }
     }
 }

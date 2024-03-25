@@ -1,6 +1,7 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.TerrainBuilder
 {
@@ -8,15 +9,19 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
     {
         private readonly TerrainMaterialLibrary materials;
         private readonly IGameFileSystemWriter fileSystemWriter;
+        private readonly IProgressSystem progress;
 
-        public LayersCfgGenerator(TerrainMaterialLibrary materials, IGameFileSystemWriter fileSystemWriter)
+        public LayersCfgGenerator(TerrainMaterialLibrary materials, IProgressSystem progress, IGameFileSystemWriter fileSystemWriter)
         {
             this.materials = materials;
             this.fileSystemWriter = fileSystemWriter;
+            this.progress = progress;
         }
 
         public void WriteLayersCfg(Arma3MapConfig config)
         {
+            TerrainMaterialHelper.UnpackEmbeddedFiles(materials, progress, fileSystemWriter, config);
+
             fileSystemWriter.CreateDirectory($"{config.PboPrefix}\\data\\gdt");
 
             var textureScale = ImageryCompiler.GetTextureScale(config, materials);
@@ -29,7 +34,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 cfg.WriteLine($"    class arm_{name} {{");
                 cfg.WriteLine($"        material = \"{rvmat}\";");
                 cfg.WriteLine("    };");
-                fileSystemWriter.WriteTextFile(rvmat, CreateRvMat(def.Material, textureScale));
+                fileSystemWriter.WriteTextFile(rvmat, CreateRvMat(def.Material, textureScale, config));
             }
             cfg.WriteLine("};");
             cfg.WriteLine("class Legend {");
@@ -46,7 +51,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             fileSystemWriter.WriteTextFile(config.PboPrefix + "\\data\\gdt\\layers.cfg", cfg.ToString());
         }
 
-        private static string CreateRvMat(TerrainMaterial material, double textureScale)
+        private static string CreateRvMat(TerrainMaterial material, double textureScale, IArma3MapConfig config)
         {
             return
 $@"ambient[]={{0.9,0.9,0.9,1}};
@@ -59,7 +64,7 @@ PixelShaderID=""NormalMapDiffuse"";
 VertexShaderID=""NormalMapDiffuseAlpha"";
 class Stage1
 {{
-	texture=""{material.NormalTexture}"";
+	texture=""{material.GetNormalTexturePath(config)}"";
 	uvSource=""tex"";
 	class uvTransform
 	{{
@@ -71,7 +76,7 @@ class Stage1
 }};
 class Stage2
 {{
-	texture=""{material.ColorTexture}"";
+	texture=""{material.GetColorTexturePath(config)}"";
 	uvSource=""tex"";
 	class uvTransform
 	{{

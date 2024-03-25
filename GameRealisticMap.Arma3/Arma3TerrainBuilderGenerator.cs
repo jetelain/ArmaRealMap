@@ -163,7 +163,7 @@ namespace GameRealisticMap.Arma3
         {
             using (var report = progress.CreateStepPercent("LayersCfg"))
             {
-                new LayersCfgGenerator(assets.Materials, projectDrive).WriteLayersCfg(config);
+                new LayersCfgGenerator(assets.Materials, progress, projectDrive).WriteLayersCfg(config);
                 progress.ReportOneDone();
             }
 

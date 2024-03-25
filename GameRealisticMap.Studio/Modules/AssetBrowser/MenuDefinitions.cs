@@ -9,7 +9,11 @@ namespace GameRealisticMap.Studio.AssetBrowser.Explorer
     public static class MenuDefinitions
     {
         [Export]
-        public static readonly MenuItemDefinition ViewHomeMenuItem = new CommandMenuItemDefinition<ViewAssetsBrowserCommandDefinition>(
+        public static readonly MenuItemDefinition AssetMenuItem = new CommandMenuItemDefinition<ViewAssetsBrowserCommandDefinition>(
             Gemini.Modules.MainMenu.MenuDefinitions.ToolsOptionsMenuGroup, 0);
+
+        [Export]
+        public static readonly MenuItemDefinition GdtMenuItem = new CommandMenuItemDefinition<ViewGdtBrowserCommandDefinition>(
+            Gemini.Modules.MainMenu.MenuDefinitions.ToolsOptionsMenuGroup, 1);
     }
 }

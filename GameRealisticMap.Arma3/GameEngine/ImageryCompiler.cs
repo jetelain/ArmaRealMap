@@ -50,6 +50,8 @@ namespace GameRealisticMap.Arma3.GameEngine
         {
             gameFileSystemWriter.CreateDirectory($"{config.PboPrefix}\\data\\layers");
 
+            TerrainMaterialHelper.UnpackEmbeddedFiles(materialLibrary, progress, gameFileSystemWriter, config);
+
             var tiler = new ImageryTiler(config);
 
             using (var idMap = source.CreateIdMap())
@@ -66,7 +68,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                 GenerateSatMapTiles(config, satMap, tiler);
             }
 
-             return tiler;
+            return tiler;
         }
 
         public static void CreateConfigCppImages(IGameFileSystemWriter gameFileSystemWriter, IArma3MapConfig config, IImagerySource source)
@@ -321,12 +323,12 @@ class Stage2
             {
                 sw.WriteLine(FormattableString.Invariant($@"class Stage{stage}
 {{
-	texture=""{texture.NormalTexture}"";
+	texture=""{texture.GetNormalTexturePath(config)}"";
 	texGen=1;
 }};
 class Stage{stage+1}
 {{
-	texture=""{texture.ColorTexture}"";
+	texture=""{texture.GetColorTexturePath(config)}"";
 	texGen=2;
 }};"));
                 stage += 2;

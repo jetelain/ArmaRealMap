@@ -1468,4 +1468,16 @@ Dernière génération le {1}</value>
   <data name="UseRandomForEachArea" xml:space="preserve">
     <value>Utiliser une valeur aléatoire par zone</value>
   </data>
+  <data name="UseLibraryValue" xml:space="preserve">
+    <value>Utiliser la valeur de la bibliothèque</value>
+  </data>
+  <data name="UseOverridenValue" xml:space="preserve">
+    <value>Utiliser une autre valeiur</value>
+  </data>
+  <data name="UseTexture" xml:space="preserve">
+    <value>Utiliser la texture</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Ouvrir</value>
+  </data>
 </root>
