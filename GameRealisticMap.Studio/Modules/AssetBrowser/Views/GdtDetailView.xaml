@@ -29,6 +29,15 @@
                 UsingAlphaChannel="False" 
                 local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
                 />
+
+                <StackPanel Orientation="Horizontal" Visibility="{Binding IsNotColorUnique, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Label Foreground="Red">
+                        ⚠ Color is not unique within library.
+                    </Label>
+                    <Button  Padding="5 3" cal:Message.Attach="GenerateColorId">
+                        Generate an unique color
+                    </Button>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Margin="10 5" Orientation="Horizontal" >

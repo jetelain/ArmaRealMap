@@ -58,7 +58,21 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public Color ColorId
         {
             get { return _colorId; }
-            set { Set(ref _colorId, value); }
+            set
+            {
+                if (Set(ref _colorId, value))
+                {
+                    ParentEditor.ComputeColorUniqueness();
+                }
+            }
+        }
+
+        private bool _isNotColorUnique;
+
+        public bool IsNotColorUnique
+        {
+            get { return _isNotColorUnique; }
+            set { Set(ref _isNotColorUnique, value); }
         }
 
         private string _colorTexture = string.Empty;
@@ -67,9 +81,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             get { return _colorTexture; }
             set
             {
-                _colorTexture = value;
-                GenerateFakeSatPngImage();
-                NotifyOfPropertyChange();
+                if (Set(ref _colorTexture, value))
+                {
+                    GenerateFakeSatPngImage();
+                }
             }
         }
 
@@ -149,15 +164,13 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         private double _maxClutterColoringCoef;
         public double MaxClutterColoringCoef { get { return _maxClutterColoringCoef; } set { Set(ref _maxClutterColoringCoef, value); } }
 
-        private Color? GenerateFakeSatPngImage()
+        private void GenerateFakeSatPngImage()
         {
             using var img = GdtHelper.GenerateFakeSatPngImage(IoC.Get<IArma3Previews>(), _colorTexture);
             if (img != null)
             {
                 SetFakeSatImage(img);
-                return img[0, 0].ToWpfColor();
             }
-            return null;
         }
 
         public Task RegenerateFakeSatImage()
@@ -239,5 +252,13 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             SurfaceFriction = item.Config.SurfaceFriction;
             MaxClutterColoringCoef = item.Config.MaxClutterColoringCoef;
         }
+
+        public Task GenerateColorId()
+        {
+            using var img = GdtHelper.GenerateFakeSatPngImage(IoC.Get<IArma3Previews>(), _colorTexture);
+            ColorId = GdtHelper.AllocateUniqueColor(img == null ? ColorId : img[0, 0].ToWpfColor(), ParentEditor.AllItems.Where(a => a != this).Select(a => a.ColorId));
+            return Task.CompletedTask;
+        }
+
     }
 }

@@ -91,6 +91,8 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 logger.Error(ex);
             }
 
+            ComputeColorUniqueness();
+
             IsImporting = false;
 
             return AllItems;
@@ -163,8 +165,14 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             {
                 return null;
             }
+            var allItems = (await awaitableItems);
             var vm = new GdtDetailViewModel(this, new GdtCatalogItem(terrainMaterial, surfaceConfig));
-            (await awaitableItems).Add(vm);
+            if (allItems.Any(i => i.ColorId == vm.ColorId))
+            {
+                // Ensure uniqueness
+                vm.ColorId = GdtHelper.AllocateUniqueColor(vm.ColorId, allItems.Select(i => i.ColorId));
+            }
+            allItems.Add(vm);
             return vm;
         }
 
@@ -177,6 +185,18 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 libraryItem = await ImportExternal(mat, surf);
             }
             return libraryItem;
+        }
+
+        internal void ComputeColorUniqueness()
+        {
+            foreach(var grp in AllItems.GroupBy(i => i.ColorId))
+            {
+                var isNotUnique = grp.Count() != 1;
+                foreach(var entry in grp)
+                {
+                    entry.IsNotColorUnique = isNotUnique;
+                }
+            }
         }
     }
 }
