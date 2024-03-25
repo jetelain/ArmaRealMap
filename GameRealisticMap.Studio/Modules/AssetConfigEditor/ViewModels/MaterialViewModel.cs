@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
@@ -159,12 +160,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public SurfaceConfig? GetSurfaceConfig()
         {
-            if (_libraryItem != null)
-            {
-                return _libraryItem.ToSurfaceConfig();
-            }
-            // Was unable to find item in library, keep as-is
-            return null;
+            return _libraryItem?.ToSurfaceConfig();
         }
 
         public override void Equilibrate()
@@ -185,6 +181,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         public Task OpenMaterial()
         {
             return LibraryItem?.OpenMaterial() ?? Task.CompletedTask;
+        }
+
+        internal TerrainMaterialData? GetData()
+        {
+            return _libraryItem?.ToData();
         }
     }
 }

@@ -89,8 +89,8 @@ class OutsideTerrain
     {{
 		class Layer0
         {{
-			nopx    = ""{material.NormalTexture}"";
-			texture = ""{material.ColorTexture}""; 
+			nopx    = ""{material.GetNormalTexturePath(config)}"";
+			texture = ""{material.GetColorTexturePath(config)}""; 
 		}};
     }};
 }};

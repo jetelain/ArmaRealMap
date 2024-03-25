@@ -9,7 +9,7 @@ namespace GameRealisticMap.Arma3.Assets
     {
         private readonly Dictionary<Rgb24, TerrainMaterial> indexByColor = new Dictionary<Rgb24, TerrainMaterial>();
         private readonly Dictionary<TerrainMaterialUsage, TerrainMaterial> indexByUsage = new Dictionary<TerrainMaterialUsage, TerrainMaterial>();
-        private readonly List<SurfaceConfig> surfaces = new List<SurfaceConfig>();
+        private readonly List<TerrainMaterialDefinition> definitions = new List<TerrainMaterialDefinition>();
 
         public const double DefaultTextureSizeInMeters = 4;
 
@@ -26,6 +26,8 @@ namespace GameRealisticMap.Arma3.Assets
         [JsonConstructor]
         public TerrainMaterialLibrary(List<TerrainMaterialDefinition> definitions, double textureSizeInMeters = DefaultTextureSizeInMeters)
         {
+            this.definitions.AddRange(definitions);
+
             foreach (var definition in definitions)
             {
                 indexByColor.Add(definition.Material.Id, definition.Material);
@@ -36,7 +38,6 @@ namespace GameRealisticMap.Arma3.Assets
                     indexByUsage[usage] = definition.Material;
                 }
             }
-            surfaces.AddRange(definitions.Select(s => s.Surface).Where(s => s != null)!);
             TextureSizeInMeters = textureSizeInMeters;
         }
 
@@ -64,22 +65,14 @@ namespace GameRealisticMap.Arma3.Assets
             return GetMaterialByUsage(TerrainMaterialUsage.Default);
         }
 
-        public List<TerrainMaterialDefinition> Definitions => indexByColor.Values
-            .Select(m => new TerrainMaterialDefinition(m, GetUsage(m), GetSurface(m)))
-            .ToList();
-
-        private TerrainMaterialUsage[] GetUsage(TerrainMaterial m)
-        {
-            return indexByUsage.Where(p => p.Value == m).Select(p => p.Key).ToArray();
-        }
+        public List<TerrainMaterialDefinition> Definitions => definitions;
 
         public SurfaceConfig? GetSurface(TerrainMaterial m)
         {
-            var name = Path.GetFileNameWithoutExtension(m.ColorTexture);
-            return surfaces.FirstOrDefault(s => s.Match(name));
+            return definitions.FirstOrDefault(d => d.Material == m)?.Surface;
         }
 
         [JsonIgnore]
-        public IEnumerable<SurfaceConfig> Surfaces => surfaces;
+        public IEnumerable<SurfaceConfig> Surfaces => definitions.Where(d => d.Surface != null).Select(d => d.Surface!);
     }
 }

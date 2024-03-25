@@ -356,7 +356,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .Select(m => new TerrainMaterialDefinition(
                     m.First().ToDefinition(),
                     m.Select(o => o.FillId).OrderBy(m => m).ToArray(),
-                    m.First().GetSurfaceConfig()))
+                    m.First().GetSurfaceConfig(),
+                    m.First().GetData()))
                 .OrderBy(m => m.Usages.Min())
                 .ToList();
 

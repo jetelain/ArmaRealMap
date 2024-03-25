@@ -260,5 +260,9 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return Task.CompletedTask;
         }
 
+        internal TerrainMaterialData? ToData()
+        {
+            return null;
+        }
     }
 }
