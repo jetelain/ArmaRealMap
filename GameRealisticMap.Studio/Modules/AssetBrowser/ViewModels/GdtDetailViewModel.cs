@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Toolkit;
 using GameRealisticMap.Studio.UndoRedo;
@@ -18,32 +19,41 @@ using Color = System.Windows.Media.Color;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
-    internal class GdtDetailViewModel : Document
+    internal class GdtDetailViewModel : Document, IPersistedDocument
     {
-        private GdtDetailViewModel(GdtBrowserViewModel parent, SurfaceConfig config)
+        private readonly GdtCatalogItemType itemType;
+
+        private GdtDetailViewModel(GdtBrowserViewModel parent, SurfaceConfig? config)
         {
             ParentEditor = parent;
-
-            _name = config.Name;
-            Files = config.Files;
-            _aceCanDig = config.AceCanDig;
-            _soundEnviron = config.SoundEnviron;
-            _soundHit = config.SoundHit;
-            _rough = config.Rough;
-            _maxSpeedCoef = config.MaxSpeedCoef;
-            _dust = config.Dust;
-            _lucidity = config.Lucidity;
-            _grassCover = config.GrassCover;
-            _impact = config.Impact;
-            _surfaceFriction = config.SurfaceFriction;
-            _maxClutterColoringCoef = config.MaxClutterColoringCoef;
-
-            ClutterList = new UndoableObservableCollection<GdtClutterViewModel>(config.Character.Select(c => new GdtClutterViewModel(c)));
+            if (config != null)
+            {
+                _name = config.Name;
+                Files = config.Files;
+                _aceCanDig = config.AceCanDig;
+                _soundEnviron = config.SoundEnviron;
+                _soundHit = config.SoundHit;
+                _rough = config.Rough;
+                _maxSpeedCoef = config.MaxSpeedCoef;
+                _dust = config.Dust;
+                _lucidity = config.Lucidity;
+                _grassCover = config.GrassCover;
+                _impact = config.Impact;
+                _surfaceFriction = config.SurfaceFriction;
+                _maxClutterColoringCoef = config.MaxClutterColoringCoef;
+                ClutterList = new UndoableObservableCollection<GdtClutterViewModel>(config.Character.Select(c => new GdtClutterViewModel(c)));
+            }
+            else
+            {
+                _name = string.Empty;
+                ClutterList = new UndoableObservableCollection<GdtClutterViewModel>();
+            }
         }
 
         public GdtDetailViewModel(GdtBrowserViewModel parent, GdtCatalogItem item)
             : this(parent, item.Config)
         {
+            itemType = item.ItemType;
             _colorTexture = item.Material.ColorTexture;
             _normalTexture = item.Material.NormalTexture;
             _colorId = item.Material.Id.ToWpfColor();
@@ -120,7 +130,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public BitmapSource? FakeSatPreview { get; private set; }
 
-        public bool IsEditable { get; }
+        public bool IsEditable => itemType == GdtCatalogItemType.Image;
 
         public bool IsReadOnly => !IsEditable;
 
@@ -164,6 +174,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         private double _maxClutterColoringCoef;
         public double MaxClutterColoringCoef { get { return _maxClutterColoringCoef; } set { Set(ref _maxClutterColoringCoef, value); } }
 
+        public bool IsNew => false;
+
+        public string FileName => string.Empty;
+
+        public string FilePath => string.Empty;
+
         private void GenerateFakeSatPngImage()
         {
             using var img = GdtHelper.GenerateFakeSatPngImage(IoC.Get<IArma3Previews>(), _colorTexture);
@@ -199,10 +215,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public GdtCatalogItem ToDefinition()
         {
-            return new GdtCatalogItem(ToMaterial(), ToSurfaceConfig());
+            return new GdtCatalogItem(ToMaterial(), ToSurfaceConfig(), itemType);
         }
 
-        public SurfaceConfig ToSurfaceConfig()
+        public SurfaceConfig? ToSurfaceConfig()
         {
             return new SurfaceConfig(
                             Name,
@@ -238,31 +254,59 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             // NormalTexture = item.Material.NormalTexture;
             // ColorId = item.Material.Id.ToWpfColor();
             // FakeSatPngImage = item.Material.FakeSatPngImage; 
-
-            Name = item.Config.Name;
-            AceCanDig = item.Config.AceCanDig;
-            SoundEnviron = item.Config.SoundEnviron;
-            SoundHit = item.Config.SoundHit;
-            Rough = item.Config.Rough;
-            MaxSpeedCoef = item.Config.MaxSpeedCoef;
-            Dust = item.Config.Dust;
-            Lucidity = item.Config.Lucidity;
-            GrassCover = item.Config.GrassCover;
-            Impact = item.Config.Impact;
-            SurfaceFriction = item.Config.SurfaceFriction;
-            MaxClutterColoringCoef = item.Config.MaxClutterColoringCoef;
+            if (item.Config != null)
+            {
+                Name = item.Config.Name;
+                AceCanDig = item.Config.AceCanDig;
+                SoundEnviron = item.Config.SoundEnviron;
+                SoundHit = item.Config.SoundHit;
+                Rough = item.Config.Rough;
+                MaxSpeedCoef = item.Config.MaxSpeedCoef;
+                Dust = item.Config.Dust;
+                Lucidity = item.Config.Lucidity;
+                GrassCover = item.Config.GrassCover;
+                Impact = item.Config.Impact;
+                SurfaceFriction = item.Config.SurfaceFriction;
+                MaxClutterColoringCoef = item.Config.MaxClutterColoringCoef;
+            }
         }
 
         public Task GenerateColorId()
         {
             using var img = GdtHelper.GenerateFakeSatPngImage(IoC.Get<IArma3Previews>(), _colorTexture);
-            ColorId = GdtHelper.AllocateUniqueColor(img == null ? ColorId : img[0, 0].ToWpfColor(), ParentEditor.AllItems.Where(a => a != this).Select(a => a.ColorId));
+            ColorId = GdtHelper.AllocateUniqueColor(img, ParentEditor.AllItems.Where(a => a != this).Select(a => a.ColorId));
             return Task.CompletedTask;
         }
 
         internal TerrainMaterialData? ToData()
         {
+            if (itemType == GdtCatalogItemType.Image)
+            {
+                var imgStore = IoC.Get<IArma3ImageStorage>();
+
+                return new TerrainMaterialData(
+                    TerrainMaterialDataFormat.PNG, 
+                    imgStore.ReadPngBytes(ColorTexture), 
+                    imgStore.ReadPngBytes(NormalTexture));
+            }
             return null;
+        }
+
+        public bool IsDirty { get; set; }
+
+        public Task New(string fileName)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task Load(string filePath)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task Save(string filePath)
+        {
+            return ParentEditor.SaveChanges();
         }
     }
 }

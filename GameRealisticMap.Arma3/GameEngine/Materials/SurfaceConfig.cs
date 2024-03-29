@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace GameRealisticMap.Arma3.GameEngine.Materials
 {
     public sealed class SurfaceConfig
     {
-
         [JsonConstructor]
         public SurfaceConfig(string name, bool aceCanDig, string files, string soundEnviron, string soundHit, double rough, double maxSpeedCoef, double dust, double lucidity, double grassCover, string impact, double surfaceFriction, double maxClutterColoringCoef, List<ClutterConfig> character)
         {
@@ -54,6 +48,7 @@ namespace GameRealisticMap.Arma3.GameEngine.Materials
         public double SurfaceFriction { get; }
 
         public List<ClutterConfig> Character { get; }
+
         public double MaxClutterColoringCoef { get; }
 
         public bool Match(string fileName)
@@ -63,6 +58,34 @@ namespace GameRealisticMap.Arma3.GameEngine.Materials
                 return fileName.StartsWith(Files.Substring(0, Files.Length - 1), StringComparison.OrdinalIgnoreCase);
             }
             return string.Equals(Files, fileName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public SurfaceConfig WithNameAndFiles(string className, string files)
+        {
+            return new SurfaceConfig(
+                    className,
+                    AceCanDig,
+                    files,
+                    SoundEnviron,
+                    SoundHit,
+                    Rough,
+                    MaxSpeedCoef,
+                    Dust,
+                    Lucidity,
+                    GrassCover,
+                    Impact,
+                    SurfaceFriction,
+                    MaxClutterColoringCoef,
+                    Character.Select(c =>
+                        new ClutterConfig(
+                            className + c.Name,
+                            c.Probability,
+                            c.Model,
+                            c.AffectedByWind,
+                            c.IsSwLighting,
+                            c.ScaleMin,
+                            c.ScaleMax)).ToList()
+                    );
         }
     }
 }

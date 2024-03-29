@@ -51,14 +51,11 @@
 
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <ProgressBar Visibility="{Binding IsImporting, Converter={StaticResource BooleanToVisibilityConverter}}" IsIndeterminate="{Binding IsImporting}" Width="100" Margin="0 5 10 5" />
-                <Button Padding="15 0" Margin="0 0 10 0" b:ButtonBehaviors.OpenContextOnClick="True"  IsEnabled="{Binding IsNotImporting}">
+                <Button Padding="15 0" Margin="0 0 10 0" cal:Message.Attach="GenerateDemoMap"  IsEnabled="{Binding IsNotImporting}">
+                    <Run Text="{x:Static r:Labels.GenerateADemoWorld}"/>
+                </Button>
+                <Button Padding="15 0" Margin="0 0 10 0" cal:Message.Attach="Create"  IsEnabled="{Binding IsNotImporting}">
                     <Run Text="Create Texture"/>
-                    <Button.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Register existing PAA file" />
-                            <MenuItem Header="Create from image..." />
-                        </ContextMenu>
-                    </Button.ContextMenu>
                 </Button>
                 <Button Padding="15 0" b:ButtonBehaviors.OpenContextOnClick="True" IsEnabled="{Binding IsNotImporting}">
                     <Run Text="Import Textures"/>

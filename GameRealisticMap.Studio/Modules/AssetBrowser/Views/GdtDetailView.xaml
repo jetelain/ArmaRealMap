@@ -71,14 +71,18 @@
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.ColorTexture}"/>
                 </Label>
-                <TextBox Width="400" Text="{Binding ColorTexture,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                <Label>
+                    <Run Text="{Binding ColorTexture, Mode=OneWay}" />
+                </Label>
             </StackPanel>
 
             <StackPanel Margin="10 5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.NormalTexture}"/>
                 </Label>
-                <TextBox Width="400" Text="{Binding NormalTexture,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label>
+                    <Run Text="{Binding NormalTexture, Mode=OneWay}" />
+                </Label>
             </StackPanel>
             
             <TextBlock FontSize="25" Padding="0 15 0 5" Text="Surface Settings" />
@@ -93,18 +97,26 @@
                 <Label Width="150">
                     <Run Text="CfgSurface Name"/>
                 </Label>
-                <TextBox Width="150" Text="{Binding Name,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+                <Label Width="150">
+                    <Run Text="{Binding Name, Mode=OneWay}"/>
+                </Label>
+                <Label Width="150">
+                    <Run Text="Files"/>
+                </Label>
+                <Label Width="150">
+                    <Run Text="{Binding Files, Mode=OneWay}"/>
+                </Label>
             </StackPanel>
             
             <StackPanel Margin="10 5" Orientation="Horizontal" >
                 <Label Width="150">
                     <Run Text="SoundEnviron"/>
                 </Label>
-                <ComboBox Width="150" IsEditable="True" Text="{Binding SoundEnviron,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <TextBox Width="150" Text="{Binding SoundEnviron,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
                 <Label Width="150">
                     <Run Text="SoundHit"/>
                 </Label>
-                <ComboBox Width="150" IsEditable="True" Text="{Binding SoundHit,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <TextBox Width="150" Text="{Binding SoundHit,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
             </StackPanel>
             
             <StackPanel Margin="10 5" Orientation="Horizontal" >
@@ -144,7 +156,7 @@
                 <Label Width="150">
                     <Run Text="Impact"/>
                 </Label>
-                <ComboBox Width="150" IsEditable="True" Text="{Binding Impact,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <TextBox Width="150" Text="{Binding Impact,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
                 <Label Width="150">
                     <Run Text="MaxClutterColoringCoef"/>
                 </Label>

@@ -95,11 +95,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
 
                 using var fakeSat = GdtHelper.GenerateFakeSatPngImage(_arma3Previews, item.ColorTexture);
 
-                var color = GdtHelper.AllocateUniqueColor(fakeSat == null ? null : fakeSat[0, 0].ToWpfColor(), list.Select(i => i.Material.Id.ToWpfColor()));
+                var color = GdtHelper.AllocateUniqueColor(fakeSat, list.Select(i => i.Material.Id.ToWpfColor()));
 
                 list.Add(new GdtCatalogItem(
                     new Arma3.Assets.TerrainMaterial(item.NormalTexture, item.ColorTexture, color.ToRgb24(), fakeSat?.ToPngByteArray()),
-                    item.Config));
+                    item.Config,
+                    GdtCatalogItemType.GameData));
             }
         }
     

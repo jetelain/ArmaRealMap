@@ -187,5 +187,14 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             return _libraryItem?.ToData();
         }
+
+        public async Task CreateMaterial()
+        {
+            var result = await IoC.Get<GdtBrowserViewModel>().Create();
+            if (result != null)
+            {
+                LibraryItem = result;
+            }
+        }
     }
 }

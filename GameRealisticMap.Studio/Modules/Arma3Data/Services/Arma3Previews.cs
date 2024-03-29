@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BIS.PAA;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using Color = System.Windows.Media.Color;
@@ -15,7 +16,8 @@ using Color = System.Windows.Media.Color;
 namespace GameRealisticMap.Studio.Modules.Arma3Data
 {
     [Export(typeof(IArma3Previews))]
-    internal class Arma3Previews : IArma3Previews, IDisposable
+    [Export(typeof(IArma3ImageStorage))]
+    internal class Arma3Previews : IArma3Previews, IArma3ImageStorage, IDisposable
     {
         private readonly IArma3DataModule _dataModule;
 
@@ -30,6 +32,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             "GameRealisticMap",
             "Arma3",
             "Previews");
+        private static string ImageStoragePath { get; } = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "GameRealisticMap",
+            "Arma3",
+            "Images");
 
         [ImportingConstructor]
         public Arma3Previews(IArma3DataModule dataModule)
@@ -131,6 +138,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
 
         public Uri? GetTexturePreview(string texture)
         {
+            if (texture.StartsWith("{"))
+            {
+                var storagePng = Path.Combine(ImageStoragePath, Path.ChangeExtension(texture, ".png"));
+                if (File.Exists(storagePng))
+                {
+                    return new Uri(storagePng);
+                }
+            }
             var cachePng = Path.Combine(PreviewCachePath, Path.ChangeExtension(texture, ".png"));
             if (File.Exists(cachePng))
             {
@@ -188,6 +203,17 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
         public void Dispose()
         {
             _dataModule.Reloaded -= DataModuleWasReloaded;
+        }
+
+        public Stream CreatePng(string path)
+        {
+            Directory.CreateDirectory(Path.Combine(ImageStoragePath, Path.GetDirectoryName(path)!));
+            return File.Create(Path.Combine(ImageStoragePath, Path.ChangeExtension(path, ".png")));
+        }
+
+        public byte[] ReadPngBytes(string path)
+        {
+            return File.ReadAllBytes(Path.Combine(ImageStoragePath, Path.ChangeExtension(path, ".png")));
         }
     }
 }

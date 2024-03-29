@@ -15,6 +15,15 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
 {
     internal static class GdtHelper
     {
+        internal static Color AllocateUniqueColor(Image<Rgb24>? fakeSat, IEnumerable<Color> usedColors)
+        {
+            if (fakeSat == null)
+            {
+                return AllocateUniqueColor((Color?)null, usedColors);
+            }
+            return AllocateUniqueColor(fakeSat[0, 0].ToWpfColor(), usedColors);
+        }
+
         internal static Color AllocateUniqueColor(Color? avgColor, IEnumerable<Color> usedColors)
         {
             Color wanted;

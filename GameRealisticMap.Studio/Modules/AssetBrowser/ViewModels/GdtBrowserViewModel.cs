@@ -11,14 +11,16 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Toolkit;
+using Gemini.Framework;
 using NLog;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
     [Export(typeof(GdtBrowserViewModel))]
-    internal class GdtBrowserViewModel : BrowserViewModelBase
+    internal class GdtBrowserViewModel : BrowserViewModelBase, IPersistedDocument
     {
         private static readonly Logger logger = NLog.LogManager.GetLogger("GdtBrowser");
 
@@ -45,6 +47,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public ICollectionView? Items { get; private set; }
 
         public IArma3Previews Previews => _arma3Previews;
+
+        public bool IsNew => false;
+
+        public string FileName => string.Empty;
+
+        public string FilePath => string.Empty;
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
@@ -115,6 +123,18 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return Task.CompletedTask;
         }
 
+        public async Task<GdtDetailViewModel?> Create()
+        {
+            var createTextureVm = new GdtCreateViewModel(this);
+
+            if ((await IoC.Get<IWindowManager>().ShowDialogAsync(createTextureVm)) ?? false)
+            {
+                return createTextureVm.Result;
+            }
+
+            return null;
+        }
+
         private void DoImportMod(string steamId)
         {
             var installed = _modsService.GetMod(steamId);
@@ -137,10 +157,14 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             });
         }
 
-        private async Task SaveChanges()
+        internal async Task SaveChanges()
         {
             isSaving = true;
             await _catalogService.SaveChanges(AllItems.Select(i => i.ToDefinition()).ToList());
+            foreach(var item in AllItems)
+            {
+                item.IsDirty = false;
+            }
             isSaving = false;
         }
 
@@ -161,12 +185,8 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         internal async Task<GdtDetailViewModel?> ImportExternal(TerrainMaterial terrainMaterial, SurfaceConfig? surfaceConfig)
         {
-            if (surfaceConfig == null)
-            {
-                return null;
-            }
             var allItems = (await awaitableItems);
-            var vm = new GdtDetailViewModel(this, new GdtCatalogItem(terrainMaterial, surfaceConfig));
+            var vm = new GdtDetailViewModel(this, new GdtCatalogItem(terrainMaterial, surfaceConfig, GdtCatalogItemType.GameData));
             if (allItems.Any(i => i.ColorId == vm.ColorId))
             {
                 // Ensure uniqueness
@@ -197,6 +217,26 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                     entry.IsNotColorUnique = isNotUnique;
                 }
             }
+        }
+
+        public Task GenerateDemoMap()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task New(string fileName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task Load(string filePath)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task Save(string filePath)
+        {
+            return SaveChanges();
         }
     }
 }
