@@ -23,9 +23,9 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public void SetP3d(string path)
         {
             Model3DGroup = _arma3Preview3D.GetModel(path);
-            NotifyOfPropertyChange(nameof(Model3DGroup));
         }
 
-        public Model3DGroup? Model3DGroup {  get; set; }
+        private Model3DGroup? _model3DGroup;
+        public Model3DGroup? Model3DGroup { get => _model3DGroup; set { Set(ref _model3DGroup, value); } }
     }
 }

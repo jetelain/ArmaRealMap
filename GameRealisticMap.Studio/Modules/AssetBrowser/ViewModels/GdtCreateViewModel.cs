@@ -101,8 +101,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
             var lcName = Name.ToLowerInvariant();
 
-            SaveImageTo($"{{PboPrefix}}\\data\\gdt\\{lcName}_co.paa", ImageColor);
-            SaveImageTo($"{{PboPrefix}}\\data\\gdt\\{lcName}_nopx.paa", ImageNormal);
+            var storage = IoC.Get<IArma3ImageStorage>();
+
+            storage.Save($"{{PboPrefix}}\\data\\gdt\\{lcName}_co.paa", ImageColor);
+            storage.Save($"{{PboPrefix}}\\data\\gdt\\{lcName}_nopx.paa", ImageNormal);
 
             var surfaceConfig = CopyConfigFrom?.ToSurfaceConfig();
             if (surfaceConfig != null)
@@ -117,15 +119,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 GdtCatalogItemType.Image);
         }
 
-        private static void SaveImageTo(string path, BitmapFrame img)
-        {
-            using (var stream = IoC.Get<IArma3ImageStorage>().CreatePng(path))
-            {
-                var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(img);
-                encoder.Save(stream);
-            }
-        }
 
         public Task BrowseExistingColor()
         {
@@ -182,30 +175,19 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task BrowseImageColor()
         {
-            ImageColor = BrowseImage() ?? ImageColor;
+            ImageColor = FileDialogHelper.BrowseImage() ?? ImageColor;
             return Task.CompletedTask;
         }
         
         public Task BrowseImageNormal()
         {
-            ImageNormal = BrowseImage() ?? ImageNormal;
+            ImageNormal = FileDialogHelper.BrowseImage() ?? ImageNormal;
             return Task.CompletedTask;
         }
         
         public Task GenerateImageNormal()
         {
             return Task.CompletedTask;
-        }
-
-        private BitmapFrame? BrowseImage()
-        {
-            var dialog = new OpenFileDialog();
-            dialog.Filter = "Image|*.png;*.tiff;*.tif;*.bmp";
-            if (dialog.ShowDialog() == true)
-            {
-                return BitmapFrame.Create(new Uri(dialog.FileName));
-            }
-            return null;
         }
     }
 }

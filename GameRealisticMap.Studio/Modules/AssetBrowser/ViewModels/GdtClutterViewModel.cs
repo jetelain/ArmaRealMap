@@ -23,7 +23,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             Name = config.Name;
             Model = config.Model;
             Composition = new CompositionViewModel(new Arma3.Assets.Composition(new Arma3.Assets.CompositionObject(Model, System.Numerics.Matrix4x4.Identity)));
-
         }
 
         public string Name { get; }
@@ -31,6 +30,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public ModelInfo Model { get; }
 
         public CompositionViewModel Composition { get; }
+        public GdtDetailViewModel Parent { get; }
 
         public double ScaleMin
         {

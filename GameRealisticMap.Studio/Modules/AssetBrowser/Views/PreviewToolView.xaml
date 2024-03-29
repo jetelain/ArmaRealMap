@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetBrowser.Views"
+        xmlns:imageeffects="clr-namespace:WPF.ImageEffects;assembly=WPF.ImageEffects"
              xmlns:HelixToolkit="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Core.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -13,13 +14,15 @@
                 <HelixToolkit:HelixViewport3D.DefaultCamera>
                     <PerspectiveCamera Position="0,0,2" LookDirection="0,0,-1" FieldOfView="60" />
                 </HelixToolkit:HelixViewport3D.DefaultCamera>
-                <!-- Remember to add light to the scene -->
-                <HelixToolkit:SunLight Altitude="120" Azimuth="120" />
+                <HelixToolkit:SunLight Altitude="160" Azimuth="120" Ambient="0.7" Brightness="1" />
                 <ModelVisual3D Content="{Binding Model3DGroup}">
                     <ModelVisual3D.Transform>
                         <ScaleTransform3D ScaleX="1" ScaleY="1" ScaleZ="-1" />
                     </ModelVisual3D.Transform>
                 </ModelVisual3D>
+                <HelixToolkit:HelixViewport3D.Effect>
+                    <imageeffects:BrightnessContrastEffect Brightness="0.05" Contrast="0.05" />
+                </HelixToolkit:HelixViewport3D.Effect>
             </HelixToolkit:HelixViewport3D>
         </Border>
     </Grid>

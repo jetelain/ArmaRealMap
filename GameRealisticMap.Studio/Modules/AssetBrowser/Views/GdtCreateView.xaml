@@ -8,7 +8,7 @@
     xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
     Background="{DynamicResource EnvironmentWindowBackground}"
     Foreground="{DynamicResource EnvironmentWindowText}"
-    Width="840" Height="840" MinWidth="512" MinHeight="300" 
+    Width="900" Height="820" MinWidth="512" MinHeight="300" 
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="False"
     Title="Create a ground detail texture">
@@ -106,37 +106,47 @@
                             </StackPanel>
 
                             <StackPanel Margin="5 0" Orientation="Horizontal">
-                                <Border Margin="5">
-                                    <StackPanel>
-                                        <Label>
-                                            <Run Text="Color texture" />
-                                        </Label>
-                                        <Border Margin="0 10" Background="{DynamicResource TextBox.Static.Background}" BorderThickness="1" BorderBrush="{DynamicResource TextBox.Static.Border}">
-                                            <Image Width="256" Height="256" Source="{Binding ImageColor}" />
-                                        </Border>
-                                        <Button Padding="10 5" HorizontalAlignment="Left" cal:Message.Attach="BrowseImageColor">
+                                <StackPanel Margin="5">
+                                    <Label>
+                                        <Run Text="Color texture" />
+                                    </Label>
+                                    <Button Padding="10 5" HorizontalAlignment="Left" cal:Message.Attach="BrowseImageColor">
+                                        <Run Text="Browse..." />
+                                    </Button>
+                                    <Border Margin="0 5 0 0" Background="{DynamicResource TextBox.Static.Background}" BorderThickness="1" BorderBrush="{DynamicResource TextBox.Static.Border}">
+                                        <Image Width="256" Height="256" Source="{Binding ImageColor}" />
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Margin="5">
+                                    <Label>
+                                        <Run Text="Normal texture"/>
+                                    </Label>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <Button Padding="10 5" cal:Message.Attach="BrowseImageNormal">
                                             <Run Text="Browse..." />
                                         </Button>
+                                        <Button Padding="10 5" Margin="5 0 0 0" cal:Message.Attach="GenerateImageNormal">
+                                            <Run Text="Generate" />
+                                        </Button>
                                     </StackPanel>
-                                </Border>
-                                <Border Margin="5">
-                                    <StackPanel>
-                                        <Label>
-                                            <Run Text="Normal texture"/>
-                                        </Label>
-                                        <Border Margin="0 10" Background="{DynamicResource TextBox.Static.Background}" BorderThickness="1" BorderBrush="{DynamicResource TextBox.Static.Border}">
-                                            <Image Width="256" Height="256" Source="{Binding ImageNormal}" />
-                                        </Border>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                            <Button Padding="10 5" cal:Message.Attach="BrowseImageNormal">
-                                                <Run Text="Browse..." />
-                                            </Button>
-                                            <Button Padding="10 5" Margin="5 0 0 0" cal:Message.Attach="GenerateImageNormal">
-                                                <Run Text="Generate" />
-                                            </Button>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Border>
+                                    <Border Margin="0 5 0 0" Background="{DynamicResource TextBox.Static.Background}" BorderThickness="1" BorderBrush="{DynamicResource TextBox.Static.Border}">
+                                        <Image Width="256" Height="256" Source="{Binding ImageNormal}" />
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Margin="5">
+                                    <TextBlock>
+                                        Color texture is usually called "Diffuse".<LineBreak />
+                                        It must be 1024x1024, 2048x2048, or 4096x4096.<LineBreak />
+                                        Arma 3 makes textures appear brighter in game.<LineBreak />
+                                        Normal texture must use DirectX standrad.
+                                    </TextBlock>
+                                    <TextBlock Margin="0 10 0 0">
+                                        Popular free sources: <LineBreak />
+                                        <Hyperlink NavigateUri="https://polyhaven.com/textures/terrain">
+                                            Poly Haven
+                                        </Hyperlink> (CC0 Licence)
+                                    </TextBlock>
+                                </StackPanel>
                             </StackPanel>
 
 

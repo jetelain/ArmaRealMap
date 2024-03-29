@@ -163,6 +163,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             await _catalogService.SaveChanges(AllItems.Select(i => i.ToDefinition()).ToList());
             foreach(var item in AllItems)
             {
+                await item.SaveImage();
                 item.IsDirty = false;
             }
             isSaving = false;

@@ -10,7 +10,10 @@
              xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:cal="http://caliburnmicro.com"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1000" d:DesignWidth="800"
+             
+             c:CompositionDragDrop.Importer="{Binding CompositionImporter}"
+             >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" />
@@ -18,7 +21,22 @@
 
     <ScrollViewer local:Behaviors.EnforceScroll="True">
         <StackPanel Margin="10 0">
+
+            <StackPanel Orientation="Horizontal">
+                <!--<Button Padding="10" Command="{Binding Back}">🡰</Button>-->
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
+                <Button cal:Message.Attach="ShowPreview3D" Padding="5" Margin="0 5">
+                    <Run Text="{x:Static r:Labels.Preview3D}"  />
+                </Button>
+                <Button cal:Message.Attach="ShowPreview3DClutter" Padding="5" Margin="10 5">
+                    <Run Text="3D Preview with clutter"  />
+                </Button>
+            </StackPanel>
             
+            <StackPanel Orientation="Horizontal" >
+
+            </StackPanel>
+
             <StackPanel Margin="10 5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.ColorId}"/>
@@ -167,7 +185,7 @@
 
             <DataGrid ItemsSource="{Binding ClutterList}" IsReadOnly="{Binding IsReadOnly}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="{x:Static r:Labels.Name}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                    <DataGridTextColumn Header="{x:Static r:Labels.Model}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
                     <DataGridTemplateColumn Width="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -183,33 +201,42 @@
                     <DataGridCheckBoxColumn Header="IsSwLighting" Binding="{Binding IsSwLighting}" Width="100" />
 
 
-                    <!--<DataGridTemplateColumn Width="75">
+                    <DataGridTemplateColumn Width="75">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <Button Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.EditComposition, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
-                                        <Run Text="{x:Static r:Labels.Edit}"/>
-                                    </Button>
-                                    <Button Margin="0 5 0 0" Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                <StackPanel Visibility="{Binding DataContext.IsEditable, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                    <Button Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
                                         <Run Text="{x:Static r:Labels.Remove}"/>
                                     </Button>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>-->
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
 
-            <TextBlock FontSize="25" Padding="0 15 0 5" Text="Preview" />
+            <TextBlock FontSize="25" Padding="0 15 0 5" Text="Images" />
             
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding ColorTexture, Converter={StaticResource TexturePreviewConverter}}" Margin="5" />
-                <Image Source="{Binding NormalTexture, Converter={StaticResource TexturePreviewConverter}}" Grid.Column="1" Margin="5" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"  />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Button Padding="5" cal:Message.Attach="BrowseImageColor">Browse...</Button>
+                </StackPanel>
+                <Image Source="{Binding ImageColor}" Margin="5" Grid.Row="1" />
+
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Button Padding="5" cal:Message.Attach="BrowseImageNormal">Browse...</Button>
+                    <Button Padding="5" cal:Message.Attach="GenerateImageNormal" Margin="5 0">Generate</Button>
+                </StackPanel>
+                <Image Source="{Binding ImageNormal}" Grid.Column="1" Margin="5" Grid.Row="1"  />
             </Grid>
 
         </StackPanel>
