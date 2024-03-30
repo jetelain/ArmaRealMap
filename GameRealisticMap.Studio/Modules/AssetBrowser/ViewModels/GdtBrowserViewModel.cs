@@ -7,12 +7,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
+using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.Demo;
 using GameRealisticMap.Arma3.GameEngine.Materials;
+using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
+using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 using NLog;
@@ -222,6 +227,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task GenerateDemoMap()
         {
+            Arma3ToolsHelper.EnsureProjectDrive();
+
+            IoC.Get<IProgressTool>()
+                .RunTask(Labels.GenerateDemoMod, DoGenerateMod);
+
             return Task.CompletedTask;
         }
 
@@ -238,6 +248,24 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public Task Save(string filePath)
         {
             return SaveChanges();
+        }
+
+        private async Task DoGenerateMod(IProgressTaskUI task)
+        {
+            var dependencies = new List<ModDependencyDefinition>
+            {
+                new ModDependencyDefinition("2982306133")
+            };
+            var name = DisplayName;
+            var generator = new Arma3GdtDemoMapGenerator(AllItems.OrderBy(a => a.DisplayName).Select(a => new TerrainMaterialDefinition(a.ToMaterial(), new TerrainMaterialUsage[0], a.ToSurfaceConfig(), a.ToData())), _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory()); ;
+            var config = await generator.GenerateMod(task);
+            if (config != null)
+            {
+                task.AddSuccessAction(() => ShellHelper.OpenUri(config.TargetModDirectory), Labels.ViewInFileExplorer);
+                task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, name));
+                task.AddSuccessAction(() => Arma3Helper.Launch(dependencies, config.TargetModDirectory, config.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
+                await Arma3LauncherHelper.CreateLauncherPresetAsync(dependencies, config.TargetModDirectory, "GRM - " + name);
+            }
         }
     }
 }

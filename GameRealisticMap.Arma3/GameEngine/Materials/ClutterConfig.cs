@@ -31,11 +31,11 @@ namespace GameRealisticMap.Arma3.GameEngine.Materials
 
         public double ScaleMax { get; }
 
-        internal void WriteTo(StringWriter sw)
+        internal void WriteTo(TextWriter sw)
         {
             sw.WriteLine(FormattableString.Invariant($@"class {Name} : DefaultClutter
 {{
-	model=""{Model}"";
+	model=""{Model.Path}"";
 	affectedByWind={AffectedByWind};
 	swLighting={(IsSwLighting?1:0)};
 	scaleMin={ScaleMin};

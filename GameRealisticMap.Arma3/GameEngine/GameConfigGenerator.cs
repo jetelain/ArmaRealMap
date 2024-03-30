@@ -41,7 +41,33 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\clutter.hpp", GenerateClutters(assets.Materials.Surfaces));
 
+            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\surfaces.hpp", GenerateSurfaces(assets.Materials.Definitions));
+            
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\grma3-dependencies.json", JsonSerializer.Serialize(assets.Dependencies));
+        }
+
+        private string GenerateSurfaces(List<TerrainMaterialDefinition> definitions)
+        {
+            var surfaces = definitions.Where(d => d.Data != null && d.Surface != null).Select(d => d.Surface!);
+            if (!surfaces.Any())
+            {
+                return string.Empty;
+            }
+            var sw = new StringWriter();
+            sw.WriteLine("class CfgSurfaces {");
+            sw.WriteLine("class Default;");
+            foreach (var surface in surfaces)
+            {
+                surface.WriteCfgSurfacesTo(sw);
+            }
+            sw.WriteLine("};");
+            sw.WriteLine("class CfgSurfaceCharacters {");
+            foreach (var surface in surfaces)
+            {
+                surface.WriteCfgSurfaceCharactersTo(sw);
+            }
+            sw.WriteLine("};");
+            return sw.ToString();
         }
 
         private string GenerateClutters(IEnumerable<SurfaceConfig> surfaces)
@@ -206,7 +232,9 @@ class CfgWorlds
 		}};
 		pictureMap = ""{config.PboPrefix}\data\picturemap_ca.paa"";
 	}};
-}};";
+}};
+#include ""surfaces.hpp""
+";
         }
 
         internal static string GetFreindlyName(IArma3MapConfig config, CitiesData cities)

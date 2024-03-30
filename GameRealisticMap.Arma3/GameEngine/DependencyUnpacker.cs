@@ -16,23 +16,23 @@ namespace GameRealisticMap.Arma3.GameEngine
             this.projectDrive = projectDrive;
         }
 
-        public void Unpack(IProgressTask progress, WrpCompiler wrpBuilder)
+        public void Unpack(IProgressTask progress, IArma3MapConfig config, WrpCompiler wrpBuilder)
         {
-            UnpackFiles(progress, GetRequiredFiles(wrpBuilder.UsedModels));
+            UnpackFiles(progress, GetRequiredFiles(wrpBuilder.UsedModels, config));
         }
 
-        public void Unpack(IProgressTask progress, IEnumerable<string> usedModels)
+        public void Unpack(IProgressTask progress, IArma3MapConfig config, IEnumerable<string> usedModels)
         {
-            UnpackFiles(progress, GetRequiredFiles(usedModels));
+            UnpackFiles(progress, GetRequiredFiles(usedModels, config));
         }
 
-        private List<string> GetRequiredFiles(IEnumerable<string> usedModels)
+        private List<string> GetRequiredFiles(IEnumerable<string> usedModels, IArma3MapConfig config)
         {
             var materials = Enum.GetValues<TerrainMaterialUsage>().Select(u => assets.Materials.GetMaterialByUsage(u)).ToList();
             var roads = Enum.GetValues<RoadTypeId>().Select(u => assets.RoadTypeLibrary.GetInfo(u)).ToList();
             return usedModels
-                .Concat(materials.Select(m => m.NormalTexture).Distinct())
-                .Concat(materials.Select(m => m.ColorTexture).Distinct())
+                .Concat(materials.Select(m => m.GetNormalTexturePath(config)).Distinct())
+                .Concat(materials.Select(m => m.GetColorTexturePath(config)).Distinct())
                 .Concat(roads.Select(m => m.TextureEnd).Distinct())
                 .Concat(roads.Select(m => m.Texture).Distinct())
                 .Concat(roads.Select(m => m.Material).Distinct())

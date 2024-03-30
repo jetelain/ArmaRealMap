@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace GameRealisticMap.Arma3.GameEngine.Materials
 {
@@ -27,7 +28,7 @@ namespace GameRealisticMap.Arma3.GameEngine.Materials
 
         public bool AceCanDig { get; }
 
-		public string Files { get; }
+        public string Files { get; }
 
         public string SoundEnviron { get; }
 
@@ -87,5 +88,58 @@ namespace GameRealisticMap.Arma3.GameEngine.Materials
                             c.ScaleMax)).ToList()
                     );
         }
+
+        internal void WriteCfgSurfacesTo(TextWriter sw)
+        {
+            sw.WriteLine(FormattableString.Invariant($@"
+	class {Name} : Default
+	{{
+        ACE_canDig={(AceCanDig?1:0)};
+		files=""{Files}"";
+		character=""{(Character.Count > 0 ? Name + "Clutter" : "empty")}"";
+		soundEnviron=""{SoundEnviron}"";
+		soundHit=""{SoundHit}"";
+		rough={Rough};
+		maxSpeedCoef={MaxSpeedCoef};
+		dust={Dust};
+		lucidity={Lucidity};
+		grassCover={GrassCover};
+		impact=""{Impact}"";
+		surfaceFriction={SurfaceFriction};
+        maxClutterColoringCoef={MaxClutterColoringCoef};
+	}};"));
+        }
+
+        internal void WriteCfgSurfaceCharactersTo(TextWriter sw)
+        {
+            if (Character.Count > 0)
+            {
+                sw.WriteLine(@$"
+    class {Name}Clutter
+	{{
+		probability[]={{{string.Join(',', Character.Select(c => c.Probability.ToString(CultureInfo.InvariantCulture)))}}};
+		names[]={{""{string.Join("\",\"", Character.Select(c => c.Name))}""}};
+	}};");
+            }
+        }
+
+        public string ToConfigPreview()
+        {
+            var sw = new StringWriter();
+            sw.WriteLine("class CfgSurfaces {");
+            WriteCfgSurfacesTo(sw);
+            sw.WriteLine("}");
+            sw.WriteLine("class CfgSurfaceCharacters {");
+            WriteCfgSurfaceCharactersTo(sw);
+            sw.WriteLine("}");
+            sw.WriteLine("class Clutter {");
+            foreach(var clutter in Character)
+            {
+                clutter.WriteTo(sw);
+            }
+            sw.WriteLine("}");
+            return sw.ToString();
+        }
+
     }
 }

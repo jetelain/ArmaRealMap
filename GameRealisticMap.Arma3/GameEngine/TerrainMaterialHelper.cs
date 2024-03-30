@@ -32,7 +32,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             else if (format == TerrainMaterialDataFormat.PNG)
             {
                 using var png = Image.Load(bytes);
-                gameFileSystemWriter.WritePngImage(path, png);
+                gameFileSystemWriter.WritePngImage(Path.ChangeExtension(path,".png"), png);
             }
         }
     }
