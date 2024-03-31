@@ -42,6 +42,9 @@
 
                     <TextBlock FontSize="24"><Run Text="Create a ground detail texture"/></TextBlock>
 
+                    <Rectangle Height="1" Fill="{x:Static SystemColors.ActiveBorderBrush}"
+                       VerticalAlignment="Bottom" Margin="0 5" />
+                    
                     <Expander IsExpanded="True">
                         <Expander.Header>
                             <TextBlock FontSize="18">
@@ -70,6 +73,9 @@
                             </StackPanel>
 
                             <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Label Foreground="Red">
+                                    <Run Text="{Binding TextureError}"/>
+                                </Label>
                                 <Button cal:Message.Attach="ImportExisting" Padding="15 7">
                                     <Run Text="Import existing file"/>
                                 </Button>
@@ -77,7 +83,9 @@
                         </StackPanel>
                     </Expander>
 
-
+                    <Rectangle Height="1" Fill="{x:Static SystemColors.ActiveBorderBrush}"
+                       VerticalAlignment="Bottom" Margin="0 5" />
+                    
                     <Expander IsExpanded="True">
                         <Expander.Header>
                             <TextBlock FontSize="18">
@@ -151,6 +159,9 @@
 
 
                             <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Label Foreground="Red">
+                                    <Run Text="{Binding ImageError}"/>
+                                </Label>
                                 <Button cal:Message.Attach="ImportImage" Padding="15 7">
                                     <Run Text="Import image"/>
                                 </Button>

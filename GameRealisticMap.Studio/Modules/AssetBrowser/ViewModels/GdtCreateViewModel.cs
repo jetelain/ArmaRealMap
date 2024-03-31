@@ -59,61 +59,96 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task ImportExisting()
         {
-            if (parent.AllItems.Any(p => string.Equals(p.ColorTexture, ColorTexture, StringComparison.OrdinalIgnoreCase)))
+            if ( string.IsNullOrEmpty(ColorTexture))
             {
-                // Duplicate
+                TextureError = "Color texture is required.";
                 return Task.CompletedTask;
             }
-
+            if (string.IsNullOrEmpty(NormalTexture))
+            {
+                TextureError = "Normal texture is required.";
+                return Task.CompletedTask;
+            }
+            if (parent.AllItems.Any(p => string.Equals(p.ColorTexture, ColorTexture, StringComparison.OrdinalIgnoreCase)))
+            {
+                TextureError = "Texture is already registred.";
+                return Task.CompletedTask;
+            }
             return Import(ColorTexture, NormalTexture, null, GdtCatalogItemType.GameData);
         }
 
-        private Task Import(string colorTexture, string normalTexture, SurfaceConfig? surfaceConfig, GdtCatalogItemType itemType)
+        private async Task Import(string colorTexture, string normalTexture, SurfaceConfig? surfaceConfig, GdtCatalogItemType itemType)
         {
             using var fakeSat = GdtHelper.GenerateFakeSatPngImage(parent.Previews, colorTexture);
             if (fakeSat == null)
             {
-                // File not found
-                return Task.CompletedTask;
+                TextureError = "Texture was not found.";
+                return;
             }
             var color = GdtHelper.AllocateUniqueColor(fakeSat, parent.AllItems.Select(i => i.ColorId));
             var config = new GdtCatalogItem(new TerrainMaterial(normalTexture, colorTexture, color.ToRgb24(), fakeSat?.ToPngByteArray()), surfaceConfig, itemType);
             Result = new GdtDetailViewModel(parent, config);
             parent.AllItems.Add(Result);
-            return TryCloseAsync(true);
+            await Result.OpenMaterial();
+            await TryCloseAsync(true);
         }
 
         public async Task ImportImage()
         {
             if (ImageColor == null)
             {
-                // Missing
+                ImageError = "Color texture image is required.";
                 return;
             }
-
+            if (!Arma3ImageHelper.IsValidSize(ImageColor))
+            {
+                ImageError = "Color texture image size is invalid.";
+                return;
+            }
             if (ImageNormal == null)
             {
                 await GenerateImageNormal();
                 if (ImageNormal == null)
                 {
+                    ImageError = "Normal texture image is required.";
+                    return;
+                }
+            }
+            if (!Arma3ImageHelper.IsValidSize(ImageColor))
+            {
+                ImageError = "Normal texture image size is invalid.";
+                return;
+            }
+            var lcName = Name.ToLowerInvariant();
+            if (!Arma3ConfigHelper.IsValidClassName(Name))
+            {
+                ImageError = Arma3ConfigHelper.ValidClassNameMessage(Name);
+                return;
+            }
+            var nameWithoutExtension = $"{lcName}_co";
+            if (parent.AllItems.Any(i => (i.ToSurfaceConfig()?.Match(nameWithoutExtension) ?? false) || string.Equals(nameWithoutExtension, Path.GetFileNameWithoutExtension(i.ColorTexture), StringComparison.OrdinalIgnoreCase) ))
+            {
+                ImageError = "Name is already used.";
+                return;
+            }
+            var surfaceConfig = CopyConfigFrom?.ToSurfaceConfig();
+            if (surfaceConfig != null)
+            {
+                surfaceConfig = surfaceConfig.WithNameAndFiles(CaseConverter.ToPascalCase(Name), $"{lcName}_*"); 
+                if (parent.AllItems.Any(i => surfaceConfig.Match(Path.GetFileNameWithoutExtension(i.ColorTexture))))
+                {
+                    ImageError = "Name would conflict with existing textures.";
                     return;
                 }
             }
 
-            var lcName = Name.ToLowerInvariant();
-
             var storage = IoC.Get<IArma3ImageStorage>();
 
             storage.SavePng($"{{PboPrefix}}\\data\\gdt\\{lcName}_co.paa", ImageColor);
+
             storage.SavePng($"{{PboPrefix}}\\data\\gdt\\{lcName}_nopx.paa", ImageNormal);
 
             IoC.Get<IArma3ImageStorage>().ProcessPngToPaaBackground();
-
-            var surfaceConfig = CopyConfigFrom?.ToSurfaceConfig();
-            if (surfaceConfig != null)
-            {
-                surfaceConfig = surfaceConfig.WithNameAndFiles(CaseConverter.ToPascalCase(Name), $"{lcName}_*");
-            }
 
             await Import(
                 $"{{PboPrefix}}\\data\\gdt\\{lcName}_co.paa", 
@@ -121,6 +156,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 surfaceConfig,
                 GdtCatalogItemType.Image);
         }
+
 
 
         public Task BrowseExistingColor()
@@ -174,6 +210,20 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         {
             get { return _name; }
             set { Set(ref _name, value); }
+        }
+
+        private string _imageError = string.Empty;
+        public string ImageError
+        {
+            get { return _imageError; }
+            set { Set(ref _imageError, value); }
+        }
+
+        private string _textureError = string.Empty;
+        public string TextureError
+        {
+            get { return _textureError; }
+            set { Set(ref _textureError, value); }
         }
 
         public Task BrowseImageColor()

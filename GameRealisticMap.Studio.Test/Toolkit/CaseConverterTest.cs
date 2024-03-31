@@ -17,6 +17,8 @@ namespace GameRealisticMap.Studio.Test.Toolkit
             Assert.Equal("AaaBbb", CaseConverter.ToPascalCase("AAA_BBB"));
             Assert.Equal("Aaa", CaseConverter.ToPascalCase("AAA"));
             Assert.Equal("AAA", CaseConverter.ToPascalCase("A-A-A"));
+            Assert.Equal("Aaa", CaseConverter.ToPascalCase("aaa_"));
+            Assert.Equal("A", CaseConverter.ToPascalCase("a"));
         }
 
     }

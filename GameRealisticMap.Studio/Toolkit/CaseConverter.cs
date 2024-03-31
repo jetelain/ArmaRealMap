@@ -13,8 +13,14 @@ namespace GameRealisticMap.Studio.Toolkit
             var sb = new StringBuilder();
             foreach (var token in name.Split('_', '-'))
             {
-                sb.Append(char.ToUpperInvariant(token[0]));
-                sb.Append(token.Substring(1).ToLowerInvariant());
+                if (token.Length > 0)
+                {
+                    sb.Append(char.ToUpperInvariant(token[0]));
+                    if (token.Length > 1)
+                    {
+                        sb.Append(token.Substring(1).ToLowerInvariant());
+                    }
+                }
             }
             return sb.ToString();
         }
