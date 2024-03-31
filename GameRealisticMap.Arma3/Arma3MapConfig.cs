@@ -84,6 +84,9 @@ namespace GameRealisticMap.Arma3
 
         public int TileSize { get; }
 
+        /// <summary>
+        /// (m/px)
+        /// </summary>
         public double Resolution { get; }
 
         public string PboPrefix { get; }

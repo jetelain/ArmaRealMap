@@ -28,7 +28,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         private List<string> GetRequiredFiles(IEnumerable<string> usedModels, IArma3MapConfig config)
         {
-            var materials = Enum.GetValues<TerrainMaterialUsage>().Select(u => assets.Materials.GetMaterialByUsage(u)).ToList();
+            var materials = assets.Materials.Definitions.Where(m => m.Data == null).Select(m => m.Material);
             var roads = Enum.GetValues<RoadTypeId>().Select(u => assets.RoadTypeLibrary.GetInfo(u)).ToList();
             return usedModels
                 .Concat(materials.Select(m => m.GetNormalTexturePath(config)).Distinct())

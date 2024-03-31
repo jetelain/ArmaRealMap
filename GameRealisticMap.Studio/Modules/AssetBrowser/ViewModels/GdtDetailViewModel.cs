@@ -16,6 +16,7 @@ using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
+using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
@@ -295,9 +296,9 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 var imgStore = IoC.Get<IArma3ImageStorage>();
 
                 return new TerrainMaterialData(
-                    TerrainMaterialDataFormat.PNG, 
-                    imgStore.ReadPngBytes(ColorTexture), 
-                    imgStore.ReadPngBytes(NormalTexture));
+                    TerrainMaterialDataFormat.PAA, 
+                    imgStore.ReadPaaBytes(ColorTexture), 
+                    imgStore.ReadPaaBytes(NormalTexture));
             }
             return null;
         }
@@ -327,12 +328,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             {
                 if (_imageColorWasChanged && _imageColor != null)
                 {
-                    IoC.Get<IArma3ImageStorage>().Save(ColorTexture, _imageColor);
+                    IoC.Get<IArma3ImageStorage>().SavePng(ColorTexture, _imageColor);
                     _imageColorWasChanged = false;
                 }
                 if (_imageNormalWasChanged && _imageNormal != null)
                 {
-                    IoC.Get<IArma3ImageStorage>().Save(ColorTexture, _imageNormal);
+                    IoC.Get<IArma3ImageStorage>().SavePng(NormalTexture, _imageNormal);
                     _imageNormalWasChanged = false;
                 }
             }
@@ -373,8 +374,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         private BitmapFrame? GetTextureImage(string texture)
         {
-            var uri = ParentEditor.Previews.GetTexturePreview(texture);
-            return uri == null ? null : BitmapFrame.Create(uri);
+            return Arma3PreviewsHelper.GetBitmapFrame(ParentEditor.Previews.GetTexturePreview(texture));
         }
 
         public Task ShowPreview3D()
@@ -543,6 +543,16 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public Task GenerateImageNormal()
         {
             return Task.CompletedTask;
+        }
+
+        public IEnumerable<string> GetModels()
+        {
+            return ClutterList.Select(c => c.Model.Path);
+        }
+
+        public IEnumerable<string> GetTextures()
+        {
+            return new[] { ColorTexture, NormalTexture };
         }
     }
 }

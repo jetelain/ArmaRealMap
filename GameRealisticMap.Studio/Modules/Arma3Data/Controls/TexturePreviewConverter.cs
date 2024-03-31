@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
+using System.Net.Cache;
+using System.Security.Policy;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using PdfSharpCore.Drawing;
 
 namespace GameRealisticMap.Studio.Modules.Arma3Data.Controls
 {
@@ -18,13 +23,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Controls
                 var previews = IoC.Get<IArma3Previews>();
 
                 var uri = Size == null ? previews.GetTexturePreview(texture)
-                    : previews.GetTexturePreviewSmall(texture, Size.Value)
+                    : previews.GetTexturePreviewSmall(texture, Size.Value);
 
-                    ; // GetTexturePreview can be really slow, find a way to make this lazy
-                if (uri != null)
-                {
-                    return new BitmapImage(uri) { CreateOptions = BitmapCreateOptions.DelayCreation };
-                }
+                return Arma3PreviewsHelper.GetBitmapSource(uri);
             }
             return null;
         }

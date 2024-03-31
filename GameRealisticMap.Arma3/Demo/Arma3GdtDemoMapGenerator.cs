@@ -45,6 +45,23 @@ namespace GameRealisticMap.Arma3.Demo
 
             var cities = new List<City>();
 
+            var x = 0.0f;
+            var y = 0.0f;
+            var squareSize = (float)(Arma3GdtDemoImagerySource.SquareSizeInPixels * a3config.Resolution);
+
+            foreach (var def in assets.Materials.Definitions)
+            {
+                var center = new Geometries.TerrainPoint((x + (squareSize / 2)), a3config.SizeInMeters - (y + (squareSize / 2)));
+                cities.Add(City.Square(center, squareSize / 2, Path.GetFileNameWithoutExtension(def.Material.ColorTexture)));
+                x += squareSize;
+                if ((x + squareSize) >= a3config.SizeInMeters)
+                {
+                    x = 0;
+                    y += squareSize;
+                }
+            }
+            cities.Add(City.Square(new Geometries.TerrainPoint(a3config.SizeInMeters/2, 512f), 512f, "GDT Library Demo", CityTypeId.City, 1000));
+
             context.SetData(new CitiesData(cities));
             return context;
         }

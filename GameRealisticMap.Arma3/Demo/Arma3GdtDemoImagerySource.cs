@@ -16,9 +16,9 @@ namespace GameRealisticMap.Arma3.Demo
         private readonly Arma3MapConfig config;
         private readonly IContext context;
         private readonly TerrainMaterialLibrary materials;
-        private readonly TerrainMaterialDefinition defaultMaterial;
+        private readonly TerrainMaterial defaultMaterial;
 
-        private const int SquareSize = 256;
+        internal const int SquareSizeInPixels = 480;
 
         public Arma3GdtDemoImagerySource(IProgressTask progress, Arma3MapConfig config, IContext context, TerrainMaterialLibrary materials)
         {
@@ -26,13 +26,13 @@ namespace GameRealisticMap.Arma3.Demo
             this.config = config;
             this.context = context;
             this.materials = materials;
-            this.defaultMaterial = materials.Definitions[0];
+            this.defaultMaterial = materials.GetMaterialByUsage(TerrainMaterialUsage.Default);
         }
 
         public HugeImage<Rgba32> CreateIdMap()
         {
             Rgba32 defaultColor = default;
-            defaultMaterial.Material.Id.ToRgba32(ref defaultColor);
+            defaultMaterial.Id.ToRgba32(ref defaultColor);
             var size = config.GetImagerySize();
             var image = new HugeImage<Rgba32>(context.HugeImageStorage, GetType().Name, new Size(size.Width, size.Height), defaultColor);
             var x = 0;
@@ -43,12 +43,12 @@ namespace GameRealisticMap.Arma3.Demo
                 p.Fill(defaultColor);
                 foreach (var def in materials.Definitions)
                 {
-                    p.Fill(opt, def.Material.Id, new RectangleF(x, y, SquareSize, SquareSize));
-                    x += SquareSize;
-                    if (x >= size.Width)
+                    p.Fill(opt, def.Material.Id, new RectangleF(x, y, SquareSizeInPixels, SquareSizeInPixels));
+                    x += SquareSizeInPixels;
+                    if ((x + SquareSizeInPixels) >= size.Width)
                     {
                         x = 0;
-                        y += SquareSize;
+                        y += SquareSizeInPixels;
                     }
                 }
             }).GetAwaiter().GetResult();
@@ -67,19 +67,19 @@ namespace GameRealisticMap.Arma3.Demo
             var image = new HugeImage<Rgba32>(context.HugeImageStorage, GetType().Name, new Size(size.Width, size.Height));
             var x = 0;
             var y = 0;
-            var defaultBrush = new ImageBrush(Image.Load(defaultMaterial.Material.FakeSatPngImage));
+            var defaultBrush = new ImageBrush(Image.Load(defaultMaterial.FakeSatPngImage));
             image.MutateAllAsync(p =>
             {
                 p.Fill(defaultBrush);
                 foreach (var def in materials.Definitions)
                 {
                     var img = Image.Load(def.Material.FakeSatPngImage);
-                    p.Fill(new ImageBrush(img), new RectangleF(x, y, SquareSize, SquareSize));
-                    x += SquareSize;
-                    if (x >= size.Width)
+                    p.Fill(new ImageBrush(img), new RectangleF(x, y, SquareSizeInPixels, SquareSizeInPixels));
+                    x += SquareSizeInPixels;
+                    if ((x + SquareSizeInPixels) >= size.Width)
                     {
                         x = 0;
-                        y += SquareSize;
+                        y += SquareSizeInPixels;
                     }
                 }
             }).GetAwaiter().GetResult();
@@ -90,7 +90,7 @@ namespace GameRealisticMap.Arma3.Demo
         public Image CreateSatOut()
         {
             var img = new Image<Rgba32>(config.TileSize / 2, config.TileSize / 2);
-            img.Mutate(p => p.Fill(new ImageBrush(Image.Load(defaultMaterial.Material.FakeSatPngImage))));
+            img.Mutate(p => p.Fill(new ImageBrush(Image.Load(defaultMaterial.FakeSatPngImage))));
             return img;
         }
     }

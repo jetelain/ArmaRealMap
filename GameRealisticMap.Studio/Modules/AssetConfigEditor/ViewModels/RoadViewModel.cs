@@ -190,5 +190,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             return Items.SelectMany(i => i.Composition.Items.Select(i => i.Model.Path));
         }
+
+        public IEnumerable<string> GetTextures()
+        {
+            return new[] { Texture, TextureEnd, Material };
+        }
     }
 }

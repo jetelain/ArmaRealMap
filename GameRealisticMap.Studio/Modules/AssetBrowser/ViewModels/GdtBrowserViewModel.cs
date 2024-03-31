@@ -171,6 +171,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 await item.SaveImage();
                 item.IsDirty = false;
             }
+            IoC.Get<IArma3ImageStorage>().ProcessPngToPaaBackground();
             isSaving = false;
         }
 
@@ -189,7 +190,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             Items?.Refresh();
         }
 
-        internal async Task<GdtDetailViewModel?> ImportExternal(TerrainMaterial terrainMaterial, SurfaceConfig? surfaceConfig)
+        internal async Task<GdtDetailViewModel> ImportExternal(TerrainMaterial terrainMaterial, SurfaceConfig? surfaceConfig)
         {
             var allItems = (await awaitableItems);
             var vm = new GdtDetailViewModel(this, new GdtCatalogItem(terrainMaterial, surfaceConfig, GdtCatalogItemType.GameData));
@@ -202,7 +203,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return vm;
         }
 
-        internal async Task<GdtDetailViewModel?> Resolve(TerrainMaterial mat, SurfaceConfig? surf)
+        internal async Task<GdtDetailViewModel> Resolve(TerrainMaterial mat, SurfaceConfig? surf)
         {
             var items = await awaitableItems;
             var libraryItem = items.FirstOrDefault(i => string.Equals(i.ColorTexture, mat.ColorTexture, StringComparison.OrdinalIgnoreCase));
@@ -252,12 +253,23 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         private async Task DoGenerateMod(IProgressTaskUI task)
         {
-            var dependencies = new List<ModDependencyDefinition>
-            {
-                new ModDependencyDefinition("2982306133")
-            };
+            var dependencies = 
+                IoC.Get<IArma3Dependencies>()
+                .ComputeModDependencies(
+                    AllItems.SelectMany(i => i.GetModels())
+                    .Concat(AllItems.SelectMany(i => i.GetTextures()))
+                    .Where(f => !string.IsNullOrEmpty(f))
+                    .Distinct(StringComparer.OrdinalIgnoreCase))
+                .ToList();
+
             var name = DisplayName;
-            var generator = new Arma3GdtDemoMapGenerator(AllItems.OrderBy(a => a.DisplayName).Select(a => new TerrainMaterialDefinition(a.ToMaterial(), new TerrainMaterialUsage[0], a.ToSurfaceConfig(), a.ToData())), _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory()); ;
+
+            var generator = new Arma3GdtDemoMapGenerator(AllItems.OrderBy(a => a.DisplayName).Select(a => new TerrainMaterialDefinition(
+                a.ToMaterial(),
+                new TerrainMaterialUsage[0], 
+                a.ToSurfaceConfig(), 
+                a.ToData())), _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory());
+
             var config = await generator.GenerateMod(task);
             if (config != null)
             {

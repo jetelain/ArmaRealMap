@@ -175,7 +175,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public override IEnumerable<string> GetModels()
         {
-            return Enumerable.Empty<string>();
+            return LibraryItem?.GetModels() ?? Enumerable.Empty<string>();
+        }
+
+        public IEnumerable<string> GetTextures()
+        {
+            return new[] { ColorTexture, NormalTexture };
         }
 
         public Task OpenMaterial()

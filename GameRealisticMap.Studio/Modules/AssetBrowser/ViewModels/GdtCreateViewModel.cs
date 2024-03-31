@@ -11,6 +11,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 using Microsoft.Win32;
@@ -103,8 +104,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
             var storage = IoC.Get<IArma3ImageStorage>();
 
-            storage.Save($"{{PboPrefix}}\\data\\gdt\\{lcName}_co.paa", ImageColor);
-            storage.Save($"{{PboPrefix}}\\data\\gdt\\{lcName}_nopx.paa", ImageNormal);
+            storage.SavePng($"{{PboPrefix}}\\data\\gdt\\{lcName}_co.paa", ImageColor);
+            storage.SavePng($"{{PboPrefix}}\\data\\gdt\\{lcName}_nopx.paa", ImageNormal);
+
+            IoC.Get<IArma3ImageStorage>().ProcessPngToPaaBackground();
 
             var surfaceConfig = CopyConfigFrom?.ToSurfaceConfig();
             if (surfaceConfig != null)
