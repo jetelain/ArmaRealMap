@@ -9,12 +9,14 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Materials;
+using GameRealisticMap.Images;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 using Microsoft.Win32;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
@@ -240,6 +242,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         
         public Task GenerateImageNormal()
         {
+            if (ImageColor != null)
+            {
+                ImageNormal = GdtHelper.GenerateNormalMap(ImageColor);
+            }
             return Task.CompletedTask;
         }
     }

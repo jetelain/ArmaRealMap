@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GameRealisticMap.Images;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Toolkit;
 using SixLabors.ImageSharp;
@@ -71,5 +73,17 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             }
             return null;
         }
+
+        internal static BitmapFrame GenerateNormalMap(BitmapFrame imageColor)
+        {
+            using var img = imageColor.ToImageSharp<Rgba32>();
+            if (img.Width >= 256)
+            {
+                img.Mutate(i => i.BoxBlur(4));
+            }
+            using var nrm = NormalMapGenerator.FromHeightBumpMap(img);
+            return BitmapFrame.Create(nrm.ToWpf());
+        }
+
     }
 }

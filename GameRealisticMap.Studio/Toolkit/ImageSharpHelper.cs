@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using BIS.PAA;
+using PdfSharpCore.Drawing;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.ColorSpaces.Conversion;
 using SixLabors.ImageSharp.ColorSpaces;
+using SixLabors.ImageSharp.ColorSpaces.Conversion;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Toolkit
@@ -29,10 +32,77 @@ namespace GameRealisticMap.Studio.Toolkit
             img.SaveAsPng(mem);
             return mem.ToArray();
         }
+
         internal static System.Windows.Media.Color ToWpfColor(this Hsl hsl)
         {
             var rgb = (Rgb24)ColorSpaceConverter.ToRgb(hsl);
             return System.Windows.Media.Color.FromRgb(rgb.R, rgb.G, rgb.B);
+        }
+
+        internal static Image<TPixel> ToImageSharp<TPixel>(this BitmapSource bitmapFrame)
+            where TPixel : unmanaged, IPixel<TPixel>
+        {
+            using var image = ToImageSharp(bitmapFrame);
+            return image.CloneAs<TPixel>();
+        }
+
+        internal static Image ToImageSharp(this BitmapSource bitmapFrame)
+        {
+            if (bitmapFrame.Format == PixelFormats.Bgra32)
+            {
+                return ConvertFromBitmap<Bgra32>(bitmapFrame);
+            }
+            if (bitmapFrame.Format == PixelFormats.Bgr24)
+            {
+                return ConvertFromBitmap<Bgr24>(bitmapFrame);
+            }
+            if (bitmapFrame.Format == PixelFormats.Rgb24)
+            {
+                return ConvertFromBitmap<Rgb24>(bitmapFrame);
+            }
+            var converted = new FormatConvertedBitmap();
+            converted.BeginInit();
+            converted.Source = bitmapFrame;
+            converted.DestinationFormat = PixelFormats.Bgra32;
+            converted.EndInit();
+            return ToImageSharp(converted);
+        }
+
+        private static Image<TPixel> ConvertFromBitmap<TPixel>(BitmapSource bitmap)
+            where TPixel : unmanaged, IPixel<TPixel>
+        {
+            var sizeOfPixel = Marshal.SizeOf<TPixel>();
+            var pixels = new byte[bitmap.PixelWidth * bitmap.PixelHeight * sizeOfPixel];
+            bitmap.CopyPixels(new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), pixels, bitmap.PixelWidth * sizeOfPixel, 0);
+            return Image.LoadPixelData<TPixel>(pixels, bitmap.PixelWidth, bitmap.PixelHeight);
+        }
+
+        internal static BitmapSource ToWpf<TPixel>(this Image<TPixel> image)
+            where TPixel : unmanaged, IPixel<TPixel>
+        {
+            using var clone = image.CloneAs<Bgra32>();
+            return ToWpf(clone);
+        }
+
+        internal static BitmapSource ToWpf(this Image<Bgra32> image)
+        {
+            var bmp = new WriteableBitmap(image.Width, image.Height, image.Metadata.HorizontalResolution, image.Metadata.VerticalResolution, PixelFormats.Bgra32, null);
+            bmp.Lock();
+            try
+            {
+                image.ProcessPixelRows(pixels =>
+                {
+                    for (var y = 0; y < image.Height; y++)
+                    {
+                        bmp.WritePixels(new Int32Rect(0, y, image.Width, 1), pixels.GetRowSpan(y).ToArray(), image.Width * 4, 0);
+                    }
+                });
+            }
+            finally
+            {
+                bmp.Unlock();
+            }
+            return bmp;
         }
     }
 }

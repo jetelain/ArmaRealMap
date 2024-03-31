@@ -12,6 +12,7 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.GameEngine.Materials;
+using GameRealisticMap.Images;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
@@ -25,6 +26,7 @@ using HelixToolkit.Wpf;
 using Microsoft.Win32;
 using NetTopologySuite.GeometriesGraph;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using Color = System.Windows.Media.Color;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
@@ -530,6 +532,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task BrowseImageColor()
         {
+            if (itemType != GdtCatalogItemType.Image)
+            {
+                return Task.CompletedTask;
+            }
             var img = FileDialogHelper.BrowseImage();
             if (img != null)
             {
@@ -541,6 +547,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task BrowseImageNormal()
         {
+            if (itemType != GdtCatalogItemType.Image)
+            {
+                return Task.CompletedTask;
+            }
             var img = FileDialogHelper.BrowseImage();
             if (img != null)
             {
@@ -552,6 +562,14 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task GenerateImageNormal()
         {
+            if (itemType != GdtCatalogItemType.Image)
+            {
+                return Task.CompletedTask;
+            }
+            if (ImageColor != null)
+            {
+                ImageNormal = GdtHelper.GenerateNormalMap(ImageColor);
+            }
             return Task.CompletedTask;
         }
 
