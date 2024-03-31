@@ -3206,6 +3206,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à 3D Preview with clutter.
+        /// </summary>
+        public static string Preview3DWithClutter {
+            get {
+                return ResourceManager.GetString("Preview3DWithClutter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Preview count.
         /// </summary>
         public static string PreviewCount {

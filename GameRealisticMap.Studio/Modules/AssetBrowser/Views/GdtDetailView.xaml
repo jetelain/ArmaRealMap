@@ -29,7 +29,7 @@
                     <Run Text="{x:Static r:Labels.Preview3D}"  />
                 </Button>
                 <Button cal:Message.Attach="ShowPreview3DClutter" Padding="5" Margin="10 5">
-                    <Run Text="3D Preview with clutter"  />
+                    <Run Text="{x:Static r:Labels.Preview3DWithClutter}"  />
                 </Button>
             </StackPanel>
             

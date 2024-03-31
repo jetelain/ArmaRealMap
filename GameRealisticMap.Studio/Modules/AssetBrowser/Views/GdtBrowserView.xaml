@@ -84,14 +84,35 @@
 
                             </Border>
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                           
-                            <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="#"><Run Text="{Binding DisplayName}" /></Hyperlink>
+                                <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="#"><Run Text="{Binding DisplayName}" /></Hyperlink>
                             </TextBlock>
                         </StackPanel>
+
+                        <StackPanel.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{x:Static r:Labels.Open}" cal:Message.Attach="OpenMaterial" />
+                                <Separator />
+                                <MenuItem Header="{x:Static r:Labels.Preview3D}" cal:Message.Attach="ShowPreview3D">
+                                    <MenuItem.Icon>
+                                        <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/3d-view.png" Height="16" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="{x:Static r:Labels.Preview3DWithClutter}" cal:Message.Attach="ShowPreview3DClutter">
+                                    <MenuItem.Icon>
+                                        <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/3d-view.png" Height="16" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="{x:Static r:Labels.RemoveFromList}" cal:Message.Attach="Remove">
+                                    <MenuItem.Icon>
+                                        <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/bin.png" Height="16" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
                     </StackPanel>
                 </DataTemplate>
             </wpftk:GridView.ItemTemplate>
-            <!--   cal:Message.Attach="[Event RequestNavigate] = [Action Open]"-->
         </wpftk:GridView>
 
         <TextBlock FontSize="10" Margin="5"  Grid.Row="2">Copyright © Bohemia Interactive, Community authors.</TextBlock>

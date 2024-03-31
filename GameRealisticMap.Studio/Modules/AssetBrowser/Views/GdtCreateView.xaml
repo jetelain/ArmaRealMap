@@ -146,11 +146,12 @@
                                         Color texture is usually called "Diffuse".<LineBreak />
                                         It must be 1024x1024, 2048x2048, or 4096x4096.<LineBreak />
                                         Arma 3 makes textures appear brighter in game.<LineBreak />
-                                        Normal texture must use DirectX standrad.
+                                        Normal texture must use DirectX standard.<LineBreak />
+                                        Typical expected size is 4x4m.<LineBreak />
                                     </TextBlock>
                                     <TextBlock Margin="0 10 0 0">
                                         Popular free sources: <LineBreak />
-                                        <Hyperlink NavigateUri="https://polyhaven.com/textures/terrain">
+                                        <Hyperlink NavigateUri="https://polyhaven.com/textures/terrain" b:HyperLinkBehaviors.ShellExecute="True">
                                             Poly Haven
                                         </Hyperlink> (CC0 Licence)
                                     </TextBlock>

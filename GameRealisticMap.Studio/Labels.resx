@@ -1480,4 +1480,7 @@ Last generated on {1}</value>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
   </data>
+  <data name="Preview3DWithClutter" xml:space="preserve">
+    <value>3D Preview with clutter</value>
+  </data>
 </root>

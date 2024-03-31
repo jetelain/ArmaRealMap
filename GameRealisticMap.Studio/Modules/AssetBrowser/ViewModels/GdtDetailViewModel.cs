@@ -365,11 +365,16 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         protected override Task OnInitializeAsync(CancellationToken cancellationToken)
         {
+            LoadImages();
+            return base.OnInitializeAsync(cancellationToken);
+        }
+
+        private void LoadImages()
+        {
             ImageColor = GetTextureImage(ColorTexture);
             ImageNormal = GetTextureImage(NormalTexture);
             _imageColorWasChanged = false;
             _imageNormalWasChanged = false;
-            return base.OnInitializeAsync(cancellationToken);
         }
 
         private BitmapFrame? GetTextureImage(string texture)
@@ -422,6 +427,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         private Model3DGroup CreateBasePreview3d()
         {
+            if (ImageColor == null || ImageNormal == null)
+            {
+                LoadImages();
+            }
+
             var group = new Model3DGroup();
 
             var meshGdt = new MeshGeometry3D();
@@ -553,6 +563,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public IEnumerable<string> GetTextures()
         {
             return new[] { ColorTexture, NormalTexture };
+        }
+
+        public Task Remove()
+        {
+            ParentEditor.AllItems.Remove(this);
+            return Task.CompletedTask;
         }
     }
 }
