@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
@@ -12,28 +11,25 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.GameEngine.Materials;
-using GameRealisticMap.Images;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
-using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 using Gemini.Framework.Services;
+using Gemini.Modules.UndoRedo;
 using HelixToolkit.Wpf;
 using Microsoft.Win32;
-using NetTopologySuite.GeometriesGraph;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 using Color = System.Windows.Media.Color;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
     internal class GdtDetailViewModel : Document, IPersistedDocument, IModelImporterTarget
     {
-        private readonly GdtCatalogItemType itemType;
+        private readonly GdtCatalogItemType _itemType;
 
         public GdtDetailViewModel(GdtBrowserViewModel parent, GdtCatalogItem item)
         {
@@ -42,7 +38,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             var config = item.Config;
             if (config != null)
             {
-                _name = config.Name;
+                Name = config.Name;
                 Files = config.Files;
                 _aceCanDig = config.AceCanDig;
                 _soundEnviron = config.SoundEnviron;
@@ -59,23 +55,28 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             }
             else
             {
-                _name = string.Empty;
                 ClutterList = new UndoableObservableCollection<GdtClutterViewModel>();
             }
 
             CompositionImporter = new CompositionImporter(this);
             RemoveItem = new RelayCommand(i => ClutterList.RemoveUndoable(UndoRedoManager, (GdtClutterViewModel)i));
 
-            itemType = item.ItemType;
+            _itemType = item.ItemType;
             _colorTexture = item.Material.ColorTexture;
             _normalTexture = item.Material.NormalTexture;
             _colorId = item.Material.Id.ToWpfColor();
             FakeSatPngImage = item.Material.FakeSatPngImage;
-
-            DisplayName = Path.GetFileNameWithoutExtension(ColorTexture);
+            Title = item.Title;
+            UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; };
         }
 
         public GdtBrowserViewModel ParentEditor { get; }
+
+
+        protected override IUndoRedoManager CreateUndoRedoManager()
+        {
+            return ParentEditor.UndoRedoManager;
+        }
 
         private Color _colorId;
         public Color ColorId
@@ -143,24 +144,29 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public BitmapSource? FakeSatPreview { get; private set; }
 
-        public bool IsEditable => itemType == GdtCatalogItemType.Image;
+        public bool IsEditable => _itemType == GdtCatalogItemType.Image;
 
         public bool IsReadOnly => !IsEditable;
 
         public UndoableObservableCollection<GdtClutterViewModel> ClutterList { get; }
 
-        private string _name;
-        public string Name { get { return _name; } set { Set(ref _name, value); } }
+        private string _title = string.Empty;
+        public string Title { get { return _title; } set { if (Set(ref _title, value)) { UpdateDisplayName(); } } }
 
-        public string Files { get; }
+        private bool _isDirty;
+        public bool IsDirty { get { return _isDirty; } set { if (Set(ref _isDirty, value)) { UpdateDisplayName(); } } }
+
+        public string Name { get; } = string.Empty;
+
+        public string Files { get; } = string.Empty;
 
         private bool _aceCanDig;
         public bool AceCanDig { get { return _aceCanDig; } set { Set(ref _aceCanDig, value); } }
 
-        private string _soundEnviron;
+        private string _soundEnviron = string.Empty;
         public string SoundEnviron { get { return _soundEnviron; } set { Set(ref _soundEnviron, value); } }
 
-        private string _soundHit;
+        private string _soundHit = string.Empty;
         public string SoundHit { get { return _soundHit; } set { Set(ref _soundHit, value); } }
 
         private double _rough;
@@ -178,7 +184,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         private double _grassCover;
         public double GrassCover { get { return _grassCover; } set { Set(ref _grassCover, value); } }
 
-        private string _impact;
+        private string _impact = string.Empty;
         public string Impact { get { return _impact; } set { Set(ref _impact, value); } }
 
         private double _surfaceFriction;
@@ -228,7 +234,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public GdtCatalogItem ToDefinition()
         {
-            return new GdtCatalogItem(ToMaterial(), ToSurfaceConfig(), itemType);
+            return new GdtCatalogItem(ToMaterial(), ToSurfaceConfig(), _itemType, Title);
         }
 
         public SurfaceConfig? ToSurfaceConfig()
@@ -262,14 +268,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         internal void SyncCatalog(GdtCatalogItem item)
         {
-
             // ColorTexture = item.Material.ColorTexture;
             // NormalTexture = item.Material.NormalTexture;
             // ColorId = item.Material.Id.ToWpfColor();
             // FakeSatPngImage = item.Material.FakeSatPngImage; 
             if (item.Config != null)
             {
-                Name = item.Config.Name;
                 AceCanDig = item.Config.AceCanDig;
                 SoundEnviron = item.Config.SoundEnviron;
                 SoundHit = item.Config.SoundHit;
@@ -281,6 +285,8 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 Impact = item.Config.Impact;
                 SurfaceFriction = item.Config.SurfaceFriction;
                 MaxClutterColoringCoef = item.Config.MaxClutterColoringCoef;
+                ClutterList.Clear();
+                ClutterList.AddRange(item.Config.Character.Select(c => new GdtClutterViewModel(c)));
             }
         }
 
@@ -293,7 +299,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         internal TerrainMaterialData? ToData()
         {
-            if (itemType == GdtCatalogItemType.Image)
+            if (_itemType == GdtCatalogItemType.Image)
             {
                 var imgStore = IoC.Get<IArma3ImageStorage>();
 
@@ -305,7 +311,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return null;
         }
 
-        public bool IsDirty { get; set; }
         public CompositionImporter CompositionImporter { get; }
         public RelayCommand RemoveItem { get; }
 
@@ -324,9 +329,9 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return ParentEditor.SaveChanges();
         }
 
-        public Task SaveImage()
+        internal void OnSave()
         {
-            if (itemType == GdtCatalogItemType.Image )
+            if (_itemType == GdtCatalogItemType.Image )
             {
                 if (_imageColorWasChanged && _imageColor != null)
                 {
@@ -339,7 +344,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                     _imageNormalWasChanged = false;
                 }
             }
-            return Task.CompletedTask;
+            IsDirty = false;
         }
 
         public void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected)
@@ -532,7 +537,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task BrowseImageColor()
         {
-            if (itemType != GdtCatalogItemType.Image)
+            if (_itemType != GdtCatalogItemType.Image)
             {
                 return Task.CompletedTask;
             }
@@ -540,6 +545,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             if (img != null)
             {
                 ImageColor = img;
+                UndoRedoManager.ChangeProperty(this, o => o.ImageColor, img);
                 _imageColorWasChanged = true;
             }
             return Task.CompletedTask;
@@ -547,14 +553,14 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task BrowseImageNormal()
         {
-            if (itemType != GdtCatalogItemType.Image)
+            if (_itemType != GdtCatalogItemType.Image)
             {
                 return Task.CompletedTask;
             }
             var img = FileDialogHelper.BrowseImage();
             if (img != null)
             {
-                ImageNormal = img;
+                UndoRedoManager.ChangeProperty(this, o => o.ImageNormal, img);
                 _imageNormalWasChanged = true;
             }
             return Task.CompletedTask;
@@ -562,13 +568,13 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task GenerateImageNormal()
         {
-            if (itemType != GdtCatalogItemType.Image)
+            if (_itemType != GdtCatalogItemType.Image)
             {
                 return Task.CompletedTask;
             }
             if (ImageColor != null)
             {
-                ImageNormal = GdtHelper.GenerateNormalMap(ImageColor);
+                UndoRedoManager.ChangeProperty(this, o => o.ImageNormal, GdtHelper.GenerateNormalMap(ImageColor));
             }
             return Task.CompletedTask;
         }
@@ -585,8 +591,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task Remove()
         {
-            ParentEditor.AllItems.Remove(this);
-            return Task.CompletedTask;
+            return ParentEditor.Remove(this);
+        }
+
+        private void UpdateDisplayName()
+        {
+            DisplayName = IsDirty ? Title + "*" : Title;
         }
     }
 }

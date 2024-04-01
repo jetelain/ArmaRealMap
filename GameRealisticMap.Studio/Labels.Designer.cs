@@ -2168,6 +2168,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ground Detail Texture Library.
+        /// </summary>
+        public static string GdtBrowserTitle {
+            get {
+                return ResourceManager.GetString("GdtBrowserTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à General.
         /// </summary>
         public static string GeneralSettings {

@@ -32,9 +32,13 @@
                     <Run Text="{x:Static r:Labels.Preview3DWithClutter}"  />
                 </Button>
             </StackPanel>
-            
-            <StackPanel Orientation="Horizontal" >
 
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.Label}"/>
+                </Label>
+                <TextBox Text="{Binding Title}" Width="200"
+                         local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
             </StackPanel>
 
             <StackPanel Margin="10 5" Orientation="Horizontal" >
@@ -42,11 +46,10 @@
                     <Run Text="{x:Static r:Labels.ColorId}"/>
                 </Label>
                 <toolkit:ColorPicker 
-                SelectedColor="{Binding ColorId,Mode=TwoWay}" 
-                Width="100"
-                UsingAlphaChannel="False" 
-                local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"
-                />
+                    SelectedColor="{Binding ColorId,Mode=TwoWay}" 
+                    Width="100"
+                    UsingAlphaChannel="False" 
+                    local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
 
                 <StackPanel Orientation="Horizontal" Visibility="{Binding IsNotColorUnique, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Label Foreground="Red">

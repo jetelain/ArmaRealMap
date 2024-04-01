@@ -1480,4 +1480,7 @@ Dernière génération le {1}</value>
   <data name="Open" xml:space="preserve">
     <value>Ouvrir</value>
   </data>
+  <data name="GdtBrowserTitle" xml:space="preserve">
+    <value>Bibliothèque des textures de sol</value>
+  </data>
 </root>

@@ -11,6 +11,7 @@ using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.IO.Converters;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.AssetBrowser.Data;
 using GameRealisticMap.Studio.Toolkit;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
@@ -69,21 +70,22 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                     ?? new List<GdtCatalogItem>();
             }
             var list = new List<GdtCatalogItem>();
+            var titles = BuiltinObjectsList.ReadCsv("GdtTitles");
             var pboFS = (_arma3DataModule.ProjectDrive.SecondarySource as PboFileSystem);
             if (pboFS != null)
             {
-                Import(list, new GdtImporter(_arma3DataModule.Library).ImportVanilla(pboFS));
+                Import(list, new GdtImporter(_arma3DataModule.Library).ImportVanilla(pboFS), titles);
             }
             var armMod = _arma3ModsService.GetModsList().FirstOrDefault(m => m.SteamId == "2982306133");
             if(armMod != null)
             {
-                Import(list, new GdtImporter(_arma3DataModule.Library).ImportMod(armMod));
+                Import(list, new GdtImporter(_arma3DataModule.Library).ImportMod(armMod), titles);
             }
             await Save(list).ConfigureAwait(false);
             return list;
         }
 
-        private void Import(List<GdtCatalogItem> list, List<GdtImporterItem> gdtImporterItems)
+        private void Import(List<GdtCatalogItem> list, List<GdtImporterItem> gdtImporterItems, List<string[]> titles)
         {
             foreach (var item in gdtImporterItems)
             {
@@ -97,10 +99,13 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
 
                 var color = GdtHelper.AllocateUniqueColor(fakeSat, list.Select(i => i.Material.Id.ToWpfColor()));
 
+                var title = titles.FirstOrDefault(e => e.Length == 2 && string.Equals(e[0], item.ColorTexture, StringComparison.OrdinalIgnoreCase))?[1];
+
                 list.Add(new GdtCatalogItem(
                     new Arma3.Assets.TerrainMaterial(item.NormalTexture, item.ColorTexture, color.ToRgb24(), fakeSat?.ToPngByteArray()),
                     item.Config,
-                    GdtCatalogItemType.GameData));
+                    GdtCatalogItemType.GameData,
+                    title));
             }
         }
     
@@ -166,7 +171,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 {
                     cachedList = await Load().ConfigureAwait(false);
                 }
-                Import(cachedList, gdtImporterItems);
+                Import(cachedList, gdtImporterItems, BuiltinObjectsList.ReadCsv("GdtTitles"));
             }
             finally
             {

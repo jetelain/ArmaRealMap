@@ -19,6 +19,7 @@ using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
+using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 using NLog;
 
@@ -33,6 +34,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         private readonly IGdtCatalogStorage _catalogService;
         private readonly Task<BindableCollection<GdtDetailViewModel>> awaitableItems;
         private bool isSaving;
+        private bool _isDirty;
 
         [ImportingConstructor]
         public GdtBrowserViewModel(IArma3DataModule arma3DataModule, IArma3Previews arma3Previews, IGdtCatalogStorage catalogService, IArma3ModsService arma3ModsService)
@@ -43,8 +45,9 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             _arma3Previews = arma3Previews;
             _catalogService = catalogService;
             _catalogService.Updated += CatalogServiceUpdated;
-            DisplayName = "Ground Detail Texture Library";
+            DisplayName = Labels.GdtBrowserTitle;
             awaitableItems = Task.Run(DoLoad);
+            UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; };
         }
 
         public BindableCollection<GdtDetailViewModel> AllItems { get; private set; }
@@ -58,6 +61,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public string FileName => string.Empty;
 
         public string FilePath => string.Empty;
+        public bool IsDirty { get { return _isDirty; } set { if (Set(ref _isDirty, value)) { UpdateDisplayName(); } } }
+
+        private void UpdateDisplayName()
+        {
+            DisplayName = IsDirty ? Labels.GdtBrowserTitle + "*" : Labels.GdtBrowserTitle;
+        }
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
@@ -168,11 +177,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             await _catalogService.SaveChanges(AllItems.Select(i => i.ToDefinition()).ToList());
             foreach(var item in AllItems)
             {
-                await item.SaveImage();
-                item.IsDirty = false;
+                item.OnSave();
             }
-            IoC.Get<IArma3ImageStorage>().ProcessPngToPaaBackground();
             isSaving = false;
+            IsDirty = false;
+            IoC.Get<IArma3ImageStorage>().ProcessPngToPaaBackground();
         }
 
         private bool Filter(GdtDetailViewModel item)
@@ -190,10 +199,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             Items?.Refresh();
         }
 
-        internal async Task<GdtDetailViewModel> ImportExternal(TerrainMaterial terrainMaterial, SurfaceConfig? surfaceConfig)
+        internal async Task<GdtDetailViewModel> ImportExternal(TerrainMaterial terrainMaterial, SurfaceConfig? surfaceConfig, string? title = null)
         {
             var allItems = (await awaitableItems);
-            var vm = new GdtDetailViewModel(this, new GdtCatalogItem(terrainMaterial, surfaceConfig, GdtCatalogItemType.GameData));
+            var vm = new GdtDetailViewModel(this, new GdtCatalogItem(terrainMaterial, surfaceConfig, GdtCatalogItemType.GameData, title));
             if (allItems.Any(i => i.ColorId == vm.ColorId))
             {
                 // Ensure uniqueness
@@ -203,13 +212,13 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return vm;
         }
 
-        internal async Task<GdtDetailViewModel> Resolve(TerrainMaterial mat, SurfaceConfig? surf)
+        internal async Task<GdtDetailViewModel> Resolve(TerrainMaterial mat, SurfaceConfig? surf, string? title = null)
         {
             var items = await awaitableItems;
             var libraryItem = items.FirstOrDefault(i => string.Equals(i.ColorTexture, mat.ColorTexture, StringComparison.OrdinalIgnoreCase));
             if (libraryItem == null)
             {
-                libraryItem = await ImportExternal(mat, surf);
+                libraryItem = await ImportExternal(mat, surf, title);
             }
             return libraryItem;
         }
@@ -278,6 +287,20 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 task.AddSuccessAction(() => Arma3Helper.Launch(dependencies, config.TargetModDirectory, config.WorldName), Labels.LaunchArma3, Labels.LaunchArma3Hint);
                 await Arma3LauncherHelper.CreateLauncherPresetAsync(dependencies, config.TargetModDirectory, "GRM - " + name);
             }
+        }
+
+        internal async Task<GdtDetailViewModel> Add(GdtCatalogItem config)
+        {
+            var result = new GdtDetailViewModel(this, config);
+            AllItems.AddUndoable(UndoRedoManager, result);
+            await result.OpenMaterial();
+            return result;
+        }
+
+        internal async Task Remove(GdtDetailViewModel gdtDetailViewModel)
+        {
+            await gdtDetailViewModel.TryCloseAsync();
+            AllItems.RemoveUndoable(UndoRedoManager, gdtDetailViewModel);
         }
     }
 }

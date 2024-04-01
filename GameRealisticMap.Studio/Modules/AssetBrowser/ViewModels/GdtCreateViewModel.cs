@@ -9,14 +9,11 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Materials;
-using GameRealisticMap.Images;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
-using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 using Microsoft.Win32;
-using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
@@ -36,7 +33,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
             CopyConfigFrom = parent.AllItems.FirstOrDefault();
 
-            Name = "gdt_" + Base36Converter.Convert(Random.Shared.NextInt64());
+            Name = "gdt_grm_" + Base36Converter.Convert(Random.Shared.NextInt64());
         }
 
         public GdtDetailViewModel? Result { get; internal set; }
@@ -76,10 +73,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 TextureError = "Texture is already registred.";
                 return Task.CompletedTask;
             }
-            return Import(ColorTexture, NormalTexture, null, GdtCatalogItemType.GameData);
+            return Import(ColorTexture, NormalTexture, null, GdtCatalogItemType.GameData, TextureTitle);
         }
 
-        private async Task Import(string colorTexture, string normalTexture, SurfaceConfig? surfaceConfig, GdtCatalogItemType itemType)
+        private async Task Import(string colorTexture, string normalTexture, SurfaceConfig? surfaceConfig, GdtCatalogItemType itemType, string title)
         {
             using var fakeSat = GdtHelper.GenerateFakeSatPngImage(parent.Previews, colorTexture);
             if (fakeSat == null)
@@ -89,9 +86,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             }
             var color = GdtHelper.AllocateUniqueColor(fakeSat, parent.AllItems.Select(i => i.ColorId));
             var config = new GdtCatalogItem(new TerrainMaterial(normalTexture, colorTexture, color.ToRgb24(), fakeSat?.ToPngByteArray()), surfaceConfig, itemType);
-            Result = new GdtDetailViewModel(parent, config);
-            parent.AllItems.Add(Result);
-            await Result.OpenMaterial();
+
+
+            Result = await parent.Add(config);
+
             await TryCloseAsync(true);
         }
 
@@ -156,7 +154,8 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 $"{{PboPrefix}}\\data\\gdt\\{lcName}_co.paa", 
                 $"{{PboPrefix}}\\data\\gdt\\{lcName}_nopx.paa",
                 surfaceConfig,
-                GdtCatalogItemType.Image);
+                GdtCatalogItemType.Image,
+                ImageTitle);
         }
 
 
@@ -212,6 +211,21 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         {
             get { return _name; }
             set { Set(ref _name, value); }
+        }
+
+        private string _textureTitle = string.Empty;
+        public string TextureTitle
+        {
+            get { return _textureTitle; }
+            set { Set(ref _textureTitle, value); }
+        }
+
+
+        private string _imageTitle = string.Empty;
+        public string ImageTitle
+        {
+            get { return _imageTitle; }
+            set { Set(ref _imageTitle, value); }
         }
 
         private string _imageError = string.Empty;

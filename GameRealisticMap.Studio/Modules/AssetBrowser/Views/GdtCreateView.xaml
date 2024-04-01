@@ -52,17 +52,23 @@
                             </TextBlock>
                         </Expander.Header>
                         <StackPanel>
-                            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                            <StackPanel Margin="10 3" Orientation="Horizontal" >
+                                <Label Width="200">
+                                    <Run Text="{x:Static r:Labels.Label}"/>
+                                </Label>
+                                <TextBox Width="200" Text="{Binding TextureTitle, Mode=TwoWay}" />
+                            </StackPanel>
+                            <StackPanel Margin="10 3" Orientation="Horizontal" >
                                 <Label Width="200">
                                     <Run Text="{x:Static r:Labels.ColorTexture}"/>
                                 </Label>
                                 <TextBox Width="400" Text="{Binding ColorTexture,Mode=TwoWay}" />
-                                <Button Padding="10 5" HorizontalAlignment="Left" cal:Message.Attach="BrowseExistingColor">
+                                <Button Padding="10 2" HorizontalAlignment="Left" cal:Message.Attach="BrowseExistingColor">
                                     <Run Text="..." />
                                 </Button>
                             </StackPanel>
 
-                            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                            <StackPanel Margin="10 3" Orientation="Horizontal" >
                                 <Label Width="200">
                                     <Run Text="{x:Static r:Labels.NormalTexture}"/>
                                 </Label>
@@ -72,7 +78,7 @@
                                 </Button>
                             </StackPanel>
 
-                            <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <StackPanel Margin="10 0" Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Label Foreground="Red">
                                     <Run Text="{Binding TextureError}"/>
                                 </Label>
@@ -93,7 +99,13 @@
                             </TextBlock>
                         </Expander.Header>
                         <StackPanel>
-                            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                            <StackPanel Margin="10 3" Orientation="Horizontal" >
+                                <Label Width="200">
+                                    <Run Text="{x:Static r:Labels.Label}"/>
+                                </Label>
+                                <TextBox Width="200" Text="{Binding ImageTitle, Mode=TwoWay}" />
+                            </StackPanel>
+                            <StackPanel Margin="10 3" Orientation="Horizontal" >
                                 <Label Width="200">
                                     <Run Text="{x:Static r:Labels.Name}"/>
                                 </Label>
@@ -103,7 +115,7 @@
                                 </Label>
                             </StackPanel>
 
-                            <StackPanel Margin="10" Orientation="Horizontal">
+                            <StackPanel Margin="10 3" Orientation="Horizontal">
                                 <Label Width="200">
                                     <Run Text="Copy configuration from" />
                                 </Label>
@@ -159,7 +171,7 @@
                             </StackPanel>
 
 
-                            <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <StackPanel Margin="10 0" Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Label Foreground="Red">
                                     <Run Text="{Binding ImageError}"/>
                                 </Label>

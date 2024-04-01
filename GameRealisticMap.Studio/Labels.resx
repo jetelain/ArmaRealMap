@@ -1483,4 +1483,7 @@ Last generated on {1}</value>
   <data name="Preview3DWithClutter" xml:space="preserve">
     <value>3D Preview with clutter</value>
   </data>
+  <data name="GdtBrowserTitle" xml:space="preserve">
+    <value>Ground Detail Texture Library</value>
+  </data>
 </root>
