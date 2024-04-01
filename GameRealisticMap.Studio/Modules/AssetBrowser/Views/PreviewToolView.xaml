@@ -6,10 +6,35 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetBrowser.Views"
         xmlns:imageeffects="clr-namespace:WPF.ImageEffects;assembly=WPF.ImageEffects"
              xmlns:HelixToolkit="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Core.Wpf"
+             xmlns:cal="http://caliburnmicro.com"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Border Background="White" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        
+        
+        <Border Grid.Row="0" Grid.ColumnSpan="5" >
+            <Border.Background>
+
+                <LinearGradientBrush StartPoint="0 0" EndPoint="0 1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0.1" Color="DarkGray" />
+                        <GradientStop Offset="1" Color="White" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+
+            </Border.Background>
+            
             <HelixToolkit:HelixViewport3D ZoomExtentsWhenLoaded="True" ModelUpDirection="0,1,0" x:Name="Viewport" ZoomRectangleCursor="ScrollSE" ZoomCursor="SizeNS" RotateCursor="SizeAll" PanCursor="Hand" ChangeFieldOfViewCursor="ScrollNS">
                 <HelixToolkit:HelixViewport3D.DefaultCamera>
                     <PerspectiveCamera Position="0,0,2" LookDirection="0,0,-1" FieldOfView="60" />
@@ -21,9 +46,19 @@
                     </ModelVisual3D.Transform>
                 </ModelVisual3D>
                 <HelixToolkit:HelixViewport3D.Effect>
-                    <imageeffects:BrightnessContrastEffect Brightness="0.05" Contrast="0.05" />
+                    <imageeffects:BrightnessContrastEffect Brightness="{Binding Brightness}" Contrast="{Binding Contrast}" />
                 </HelixToolkit:HelixViewport3D.Effect>
             </HelixToolkit:HelixViewport3D>
         </Border>
+
+
+        <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/brightness.png" Height="16"  Grid.Column="0" Grid.Row="1" Margin="5 0 0 0" />
+        <Slider Value="{Binding Brightness}" Maximum="0.5" Minimum="-0.5" TickFrequency="0.5" SmallChange="0.025" Grid.Column="1" Grid.Row="1" TickPlacement="Both" Margin="2" />
+
+        <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/contrast.png" Height="16"  Grid.Column="2" Grid.Row="1" Margin="5 0 0 0"  />
+        <Slider Value="{Binding Contrast}" Maximum="0.5" Minimum="-0.5" TickFrequency="0.5" SmallChange="0.025" Grid.Column="3" Grid.Row="1" TickPlacement="Both" Margin="2" />
+
+        <Button Grid.Column="4" Grid.Row="1" Padding="5" cal:Message.Attach="Reset">Reset</Button>
+
     </Grid>
 </UserControl>

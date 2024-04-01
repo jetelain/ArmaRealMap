@@ -142,12 +142,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             await JsonSerializer.SerializeAsync(stream, list, CreateJsonOptions()).ConfigureAwait(false);
         }
 
-        public async Task<GdtCatalogItem?> Resolve(string path)
-        {
-            var items = await GetOrLoad();
-            return items.FirstOrDefault(i => string.Equals(path, i.Material.ColorTexture, StringComparison.OrdinalIgnoreCase));
-        }
-
         public async Task ImportVanilla()
         {
             var pboFS = (_arma3DataModule.ProjectDrive.SecondarySource as PboFileSystem);

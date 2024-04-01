@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Gemini.Framework.Commands;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.Commands
@@ -19,7 +15,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Commands
 
         public override string Text
         {
-            get { return "Ground Detail Texture Library"; }
+            get { return Labels.GdtBrowserTitle; }
         }
 
         public override Uri IconSource => new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Materials.png");

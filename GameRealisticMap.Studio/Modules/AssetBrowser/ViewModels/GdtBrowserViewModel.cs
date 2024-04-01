@@ -123,6 +123,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             Task.Run(async () =>
             {
                 IsImporting = true;
+                await SaveChanges();
                 await _catalogService.ImportVanilla();
                 IsImporting = false;
             });
@@ -164,6 +165,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             Task.Run(async () =>
             {
                 IsImporting = true;
+                await SaveChanges();
                 await _catalogService.ImportMod(installed);
                 IsImporting = false;
             });
