@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Studio.Toolkit;
-using GameRealisticMap.Studio.UndoRedo;
+﻿using GameRealisticMap.Toolkit;
 
-namespace GameRealisticMap.Studio.Test.Toolkit
+namespace GameRealisticMap.Test.Toolkit
 {
     public class CaseConverterTest
     {
@@ -19,7 +13,7 @@ namespace GameRealisticMap.Studio.Test.Toolkit
             Assert.Equal("AAA", CaseConverter.ToPascalCase("A-A-A"));
             Assert.Equal("Aaa", CaseConverter.ToPascalCase("aaa_"));
             Assert.Equal("A", CaseConverter.ToPascalCase("a"));
+            Assert.Equal("", CaseConverter.ToPascalCase("_"));
         }
-
     }
 }

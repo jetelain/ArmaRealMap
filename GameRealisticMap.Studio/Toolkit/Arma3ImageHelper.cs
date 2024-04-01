@@ -1,17 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Media.Imaging;
+using GameRealisticMap.Arma3;
 
 namespace GameRealisticMap.Studio.Toolkit
 {
     internal static class Arma3ImageHelper
     {
-        internal static int[] ValidSizes = new[] { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096 };
-
-        public static bool IsValidSize(BitmapFrame image)
+        public static bool IsValidSize(BitmapSource image)
         {
-            return image.PixelWidth == image.PixelHeight && ValidSizes.Contains(image.PixelWidth);
+            return image.PixelWidth == image.PixelHeight && Arma3ConfigHelper.IsValidImageSize(image.PixelWidth, image.PixelHeight);
         }
     }
 }

@@ -12,6 +12,7 @@ using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Toolkit;
+using GameRealisticMap.Toolkit;
 using Gemini.Framework;
 using Microsoft.Win32;
 
@@ -120,7 +121,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 return;
             }
             var lcName = Name.ToLowerInvariant();
-            if (!Arma3ConfigHelper.IsValidClassName(Name))
+            if (!Arma3ConfigHelper.IsValidClassName(lcName))
             {
                 ImageError = Arma3ConfigHelper.ValidClassNameMessage(Name);
                 return;
