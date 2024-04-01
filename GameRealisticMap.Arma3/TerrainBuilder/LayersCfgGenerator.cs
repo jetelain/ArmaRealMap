@@ -18,7 +18,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             this.progress = progress;
         }
 
-        public void WriteLayersCfg(Arma3MapConfig config)
+        public void WriteLayersCfg(IArma3MapConfig config)
         {
             TerrainMaterialHelper.UnpackEmbeddedFiles(materials, progress, fileSystemWriter, config);
 
