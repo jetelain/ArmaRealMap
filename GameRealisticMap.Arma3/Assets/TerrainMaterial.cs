@@ -38,8 +38,7 @@ namespace GameRealisticMap.Arma3.Assets
         internal static string Format(string texture, IArma3MapConfig context)
         {
             return texture
-                .Replace("{PboPrefix}", context.PboPrefix)
-                .Replace("{WorldName}", context.WorldName);
+                .Replace("{PboPrefix}", context.PboPrefix);
         }
     }
 }

@@ -10,6 +10,15 @@
 
   <ItemGroup>
     <EmbeddedResource Include="GameEngine\*.txt" />
+	<EmbeddedResource Include="GameEngine\GameConfigGeneratorTest\**\*" />
+	<None Remove="GameEngine\GameConfigGeneratorTest\Generate_Surfaces\index.txt" />
+	<None Remove="GameEngine\GameConfigGeneratorTest\Generate_Surfaces\z.arm.addons.arm_testworld.ace-weather.hpp" />
+	<None Remove="GameEngine\GameConfigGeneratorTest\Generate_Surfaces\z.arm.addons.arm_testworld.clutter.hpp" />
+	<None Remove="GameEngine\GameConfigGeneratorTest\Generate_Surfaces\z.arm.addons.arm_testworld.config.cpp" />
+	<None Remove="GameEngine\GameConfigGeneratorTest\Generate_Surfaces\z.arm.addons.arm_testworld.grma3-dependencies.json" />
+	<None Remove="GameEngine\GameConfigGeneratorTest\Generate_Surfaces\z.arm.addons.arm_testworld.mapinfos.hpp" />
+	<None Remove="GameEngine\GameConfigGeneratorTest\Generate_Surfaces\z.arm.addons.arm_testworld.names.hpp" />
+	<None Remove="GameEngine\GameConfigGeneratorTest\Generate_Surfaces\z.arm.addons.arm_testworld.surfaces.hpp" />
     <EmbeddedResource Include="TerrainBuilder\world01.txt" />
     <EmbeddedResource Include="TerrainBuilder\world01.wrp" />
     <EmbeddedResource Include="TerrainBuilder\world02.wrp" />
