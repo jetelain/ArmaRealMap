@@ -1483,4 +1483,52 @@ Dernière génération le {1}</value>
   <data name="GdtBrowserTitle" xml:space="preserve">
     <value>Bibliothèque des textures de sol</value>
   </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Parcourir...</value>
+  </data>
+  <data name="BrowseGdt" xml:space="preserve">
+    <value>Parcourir les textures de sol</value>
+  </data>
+  <data name="BrowseGdtDescription" xml:space="preserve">
+    <value>Parcourir les textures de sol existantes, or crée les siennes, pour choisir les plus adaptées pour votre style de carte.</value>
+  </data>
+  <data name="CopyConfigurationFrom" xml:space="preserve">
+    <value>Copier la configuration de</value>
+  </data>
+  <data name="CreateAGroundDetailTexture" xml:space="preserve">
+    <value>Créer une texture de sol</value>
+  </data>
+  <data name="CreateATexture" xml:space="preserve">
+    <value>Créer une texture...</value>
+  </data>
+  <data name="GdtCopyConfigurationHint" xml:space="preserve">
+    <value>Choisir la surface existante la plus approchante.</value>
+  </data>
+  <data name="GdtNameHint" xml:space="preserve">
+    <value>Choisir le nom de manière judicieuse: il doit être globallement unique et ne peut pas être changé.</value>
+  </data>
+  <data name="GdtNonEditableReason" xml:space="preserve">
+    <value>Cette texture du sol provient du jeu de base ou d'un mod. Sa configuration ne peut pas être changée.</value>
+  </data>
+  <data name="Generate" xml:space="preserve">
+    <value>Générer</value>
+  </data>
+  <data name="ImportAnExistingTextureFromProjectDrive" xml:space="preserve">
+    <value>Importer une texture existante du Project Drive</value>
+  </data>
+  <data name="ImportExistingFile" xml:space="preserve">
+    <value>Importer le fichier existant</value>
+  </data>
+  <data name="ImportFromAnImage" xml:space="preserve">
+    <value>Importer depuis une image</value>
+  </data>
+  <data name="ImportImage" xml:space="preserve">
+    <value>Importer l'image</value>
+  </data>
+  <data name="ImportTextures" xml:space="preserve">
+    <value>Importer des textures</value>
+  </data>
+  <data name="Preview3DWithClutter" xml:space="preserve">
+    <value>Aperçu 3D avec clutter</value>
+  </data>
 </root>

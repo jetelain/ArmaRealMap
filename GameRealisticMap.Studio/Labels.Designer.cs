@@ -1169,6 +1169,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Browse....
+        /// </summary>
+        public static string Browse {
+            get {
+                return ResourceManager.GetString("Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Browse Assets.
         /// </summary>
         public static string BrowseAssets {
@@ -1183,6 +1192,24 @@ namespace GameRealisticMap.Studio {
         public static string BrowseAssetsDescription {
             get {
                 return ResourceManager.GetString("BrowseAssetsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Browse ground detail textures.
+        /// </summary>
+        public static string BrowseGdt {
+            get {
+                return ResourceManager.GetString("BrowseGdt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Browse existing ground detail textures, or create yours, to pick the best ones for your assets configuration..
+        /// </summary>
+        public static string BrowseGdtDescription {
+            get {
+                return ResourceManager.GetString("BrowseGdtDescription", resourceCulture);
             }
         }
         
@@ -1394,6 +1421,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Copy configuration from.
+        /// </summary>
+        public static string CopyConfigurationFrom {
+            get {
+                return ResourceManager.GetString("CopyConfigurationFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Copy path.
         /// </summary>
         public static string CopyPath {
@@ -1430,6 +1466,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Create a ground detail texture.
+        /// </summary>
+        public static string CreateAGroundDetailTexture {
+            get {
+                return ResourceManager.GetString("CreateAGroundDetailTexture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Create a Map Configuration.
         /// </summary>
         public static string CreateAMapConfiguration {
@@ -1462,6 +1507,15 @@ namespace GameRealisticMap.Studio {
         public static string CreateAnAssetsConfigurationDescription {
             get {
                 return ResourceManager.GetString("CreateAnAssetsConfigurationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Create a texture....
+        /// </summary>
+        public static string CreateATexture {
+            get {
+                return ResourceManager.GetString("CreateATexture", resourceCulture);
             }
         }
         
@@ -2177,11 +2231,47 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Pick the most approching existing surface..
+        /// </summary>
+        public static string GdtCopyConfigurationHint {
+            get {
+                return ResourceManager.GetString("GdtCopyConfigurationHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Choose name wisely: it must be globally unique and it cannot be changed..
+        /// </summary>
+        public static string GdtNameHint {
+            get {
+                return ResourceManager.GetString("GdtNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à This ground texture is from base game or a mod. Configuration cannot be edited..
+        /// </summary>
+        public static string GdtNonEditableReason {
+            get {
+                return ResourceManager.GetString("GdtNonEditableReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à General.
         /// </summary>
         public static string GeneralSettings {
             get {
                 return ResourceManager.GetString("GeneralSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate.
+        /// </summary>
+        public static string Generate {
+            get {
+                return ResourceManager.GetString("Generate", resourceCulture);
             }
         }
         
@@ -2447,6 +2537,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import an existing texture from Project Drive.
+        /// </summary>
+        public static string ImportAnExistingTextureFromProjectDrive {
+            get {
+                return ResourceManager.GetString("ImportAnExistingTextureFromProjectDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Import assets.
         /// </summary>
         public static string ImportAssets {
@@ -2461,6 +2560,24 @@ namespace GameRealisticMap.Studio {
         public static string ImportChangesFromEdenEditor {
             get {
                 return ResourceManager.GetString("ImportChangesFromEdenEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import existing file.
+        /// </summary>
+        public static string ImportExistingFile {
+            get {
+                return ResourceManager.GetString("ImportExistingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import from an image.
+        /// </summary>
+        public static string ImportFromAnImage {
+            get {
+                return ResourceManager.GetString("ImportFromAnImage", resourceCulture);
             }
         }
         
@@ -2510,6 +2627,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import image.
+        /// </summary>
+        public static string ImportImage {
+            get {
+                return ResourceManager.GetString("ImportImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Click on Refresh button when part #{0} is copied to continue import..
         /// </summary>
         public static string ImportNextPartPrompt {
@@ -2551,6 +2677,15 @@ namespace GameRealisticMap.Studio {
         public static string ImportTextureMaskImage {
             get {
                 return ResourceManager.GetString("ImportTextureMaskImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import Textures.
+        /// </summary>
+        public static string ImportTextures {
+            get {
+                return ResourceManager.GetString("ImportTextures", resourceCulture);
             }
         }
         

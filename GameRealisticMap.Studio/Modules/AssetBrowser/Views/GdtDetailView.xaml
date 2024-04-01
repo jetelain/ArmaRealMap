@@ -110,7 +110,7 @@
             
             <StackPanel Margin="10 5" Orientation="Horizontal" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}" >
                 <TextBlock>
-                    This ground texture is from base game or a mod. Configuration cannot be edited.
+                    <Run Text="{x:Static r:Labels.GdtNonEditableReason}" />
                 </TextBlock>
             </StackPanel>
             

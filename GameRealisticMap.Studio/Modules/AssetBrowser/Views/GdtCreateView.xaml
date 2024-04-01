@@ -11,7 +11,7 @@
     Width="900" Height="820" MinWidth="512" MinHeight="300" 
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="False"
-    Title="Create a ground detail texture">
+    Title="{x:Static r:Labels.CreateAGroundDetailTexture}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -40,7 +40,7 @@
 
                 <StackPanel>
 
-                    <TextBlock FontSize="24"><Run Text="Create a ground detail texture"/></TextBlock>
+                    <TextBlock FontSize="24"><Run Text="{x:Static r:Labels.CreateAGroundDetailTexture}"/></TextBlock>
 
                     <Rectangle Height="1" Fill="{x:Static SystemColors.ActiveBorderBrush}"
                        VerticalAlignment="Bottom" Margin="0 5" />
@@ -48,7 +48,7 @@
                     <Expander IsExpanded="True">
                         <Expander.Header>
                             <TextBlock FontSize="18">
-                                <Run Text="Import an existing texture from Project Drive" />
+                                <Run Text="{x:Static r:Labels.ImportAnExistingTextureFromProjectDrive}" />
                             </TextBlock>
                         </Expander.Header>
                         <StackPanel>
@@ -83,7 +83,7 @@
                                     <Run Text="{Binding TextureError}"/>
                                 </Label>
                                 <Button cal:Message.Attach="ImportExisting" Padding="15 7">
-                                    <Run Text="Import existing file"/>
+                                    <Run Text="{x:Static r:Labels.ImportExistingFile}"/>
                                 </Button>
                             </StackPanel>
                         </StackPanel>
@@ -95,7 +95,7 @@
                     <Expander IsExpanded="True">
                         <Expander.Header>
                             <TextBlock FontSize="18">
-                        <Run Text="Import from an image" />
+                                <Run Text="{x:Static r:Labels.ImportFromAnImage}" />
                             </TextBlock>
                         </Expander.Header>
                         <StackPanel>
@@ -111,27 +111,27 @@
                                 </Label>
                                 <TextBox Width="200" Text="{Binding Name, Mode=TwoWay}" />
                                 <Label>
-                                    <Run Text="Choose name wisely: it must be globally unique and it cannot be changed"/>
+                                    <Run Text="{x:Static r:Labels.GdtNameHint}"/>
                                 </Label>
                             </StackPanel>
 
                             <StackPanel Margin="10 3" Orientation="Horizontal">
                                 <Label Width="200">
-                                    <Run Text="Copy configuration from" />
+                                    <Run Text="{x:Static r:Labels.CopyConfigurationFrom}" />
                                 </Label>
                                 <ComboBox Width="200" ItemsSource="{Binding LibraryItemsViewSource.View}" SelectedValue="{Binding CopyConfigFrom}" DisplayMemberPath="DisplayName" />
                                 <Label>
-                                    <Run Text="Pick the most approching existing surface"/>
+                                    <Run Text="{x:Static r:Labels.GdtCopyConfigurationHint}"/>
                                 </Label>
                             </StackPanel>
 
                             <StackPanel Margin="5 0" Orientation="Horizontal">
                                 <StackPanel Margin="5">
                                     <Label>
-                                        <Run Text="Color texture" />
+                                        <Run Text="{x:Static r:Labels.ColorTexture}" />
                                     </Label>
                                     <Button Padding="10 5" HorizontalAlignment="Left" cal:Message.Attach="BrowseImageColor">
-                                        <Run Text="Browse..." />
+                                        <Run Text="{x:Static r:Labels.Browse}" />
                                     </Button>
                                     <Border Margin="0 5 0 0" Background="{DynamicResource TextBox.Static.Background}" BorderThickness="1" BorderBrush="{DynamicResource TextBox.Static.Border}">
                                         <Image Width="256" Height="256" Source="{Binding ImageColor}" />
@@ -139,14 +139,14 @@
                                 </StackPanel>
                                 <StackPanel Margin="5">
                                     <Label>
-                                        <Run Text="Normal texture"/>
+                                        <Run Text="{x:Static r:Labels.NormalTexture}"/>
                                     </Label>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                         <Button Padding="10 5" cal:Message.Attach="BrowseImageNormal">
-                                            <Run Text="Browse..." />
+                                            <Run Text="{x:Static r:Labels.Browse}" />
                                         </Button>
                                         <Button Padding="10 5" Margin="5 0 0 0" cal:Message.Attach="GenerateImageNormal">
-                                            <Run Text="Generate" />
+                                            <Run Text="{x:Static r:Labels.Generate}" />
                                         </Button>
                                     </StackPanel>
                                     <Border Margin="0 5 0 0" Background="{DynamicResource TextBox.Static.Background}" BorderThickness="1" BorderBrush="{DynamicResource TextBox.Static.Border}">
@@ -176,7 +176,7 @@
                                     <Run Text="{Binding ImageError}"/>
                                 </Label>
                                 <Button cal:Message.Attach="ImportImage" Padding="15 7">
-                                    <Run Text="Import image"/>
+                                    <Run Text="{x:Static r:Labels.ImportImage}"/>
                                 </Button>
                             </StackPanel>
                         </StackPanel>

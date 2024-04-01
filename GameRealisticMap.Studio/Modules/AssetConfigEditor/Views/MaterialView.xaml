@@ -61,7 +61,7 @@
                         <Run Text="{x:Static r:Labels.Open}" />
                     </Button>
                     <Button cal:Message.Attach="CreateMaterial" Padding="5" Margin="0 5">
-                        <Run Text="Create a texture..." />
+                        <Run Text="{x:Static r:Labels.CreateATexture}" />
                     </Button>
                 </StackPanel>
             </StackPanel>

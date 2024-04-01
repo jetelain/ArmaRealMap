@@ -33,20 +33,6 @@
                     <Run Text="{x:Static r:Labels.Filter}"/>
                 </Label>
                 <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=500}" Width="200" />
-                <!--
-                <Label>
-                    <Run Text="{x:Static r:Labels.DetectedType}"/>
-                </Label>
-                <ComboBox SelectedValue="{Binding FilterCategory}" ItemsSource="{Binding Categories}" SelectedValuePath="Category" DisplayMemberPath="Name" />
-                <Label>DLC/Mod</Label>
-                <ComboBox SelectedValue="{Binding FilterModId}" ItemsSource="{Binding Mods}" SelectedValuePath="ModId" DisplayMemberPath="Name" />
-
-                <TextBlock Margin="5"><Run Text="{x:Static r:Labels.Matching}"/>:</TextBlock>
-                <TextBlock Margin="5" Text="{Binding Assets.Count}" />
-
-                <TextBlock Margin="5"><Run Text="{x:Static r:Labels.All}"/>:</TextBlock>
-                <TextBlock Margin="5" Text="{Binding AllAssets.Count}" />-->
-
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Grid.Column="1">
@@ -55,10 +41,10 @@
                     <Run Text="{x:Static r:Labels.GenerateADemoWorld}"/>
                 </Button>
                 <Button Padding="15 0" Margin="0 0 10 0" cal:Message.Attach="Create"  IsEnabled="{Binding IsNotImporting}">
-                    <Run Text="Create Texture"/>
+                    <Run Text="{x:Static r:Labels.CreateATexture}"/>
                 </Button>
                 <Button Padding="15 0" b:ButtonBehaviors.OpenContextOnClick="True" IsEnabled="{Binding IsNotImporting}">
-                    <Run Text="Import Textures"/>
+                    <Run Text="{x:Static r:Labels.ImportTextures}"/>
                     <Button.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Arma 3 (all)" cal:Message.Attach="ImportA3" />
