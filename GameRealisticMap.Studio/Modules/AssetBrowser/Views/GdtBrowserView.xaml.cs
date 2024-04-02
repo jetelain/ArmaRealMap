@@ -30,5 +30,12 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Views
         {
             ((sender as Hyperlink)?.DataContext as GdtDetailViewModel)?.OpenMaterial();
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var items = Grid.SelectedItems.OfType<GdtDetailViewModel>().ToList();
+            var vm = (Grid.DataContext as GdtBrowserViewModel);
+            vm?.GenerateDemoMap(items);
+        }
     }
 }

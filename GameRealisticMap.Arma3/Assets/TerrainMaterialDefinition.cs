@@ -5,13 +5,13 @@ namespace GameRealisticMap.Arma3.Assets
 {
     public class TerrainMaterialDefinition
     {
-        public TerrainMaterialDefinition(TerrainMaterial material, TerrainMaterialUsage[] usages, SurfaceConfig? surface = null, TerrainMaterialData? data = null)
+        public TerrainMaterialDefinition(TerrainMaterial material, TerrainMaterialUsage[] usages, SurfaceConfig? surface = null, TerrainMaterialData? data = null, string? title = null)
         {
             Material = material;
             Usages = usages;
             Surface = surface;
             Data = data;
-
+            Title = title;
             if (surface != null && !surface.Match(Path.GetFileNameWithoutExtension(material.ColorTexture)))
             {
                 throw new ArgumentException($"Pattern '{surface.Files}' does not matches material file '{material.ColorTexture}'");
@@ -27,5 +27,8 @@ namespace GameRealisticMap.Arma3.Assets
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public TerrainMaterialData? Data { get; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? Title { get; }
     }
 }

@@ -45,7 +45,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             _catalogService.Updated += CatalogServiceUpdated;
             DisplayName = Labels.GdtBrowserTitle;
             awaitableItems = Task.Run(DoLoad);
-            UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; };
+            UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; }; 
         }
 
         public BindableCollection<GdtDetailViewModel> AllItems { get; private set; }
@@ -60,7 +60,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public string FilePath => string.Empty;
         public bool IsDirty { get { return _isDirty; } set { if (Set(ref _isDirty, value)) { UpdateDisplayName(); } } }
-
+        
         private void UpdateDisplayName()
         {
             DisplayName = IsDirty ? Labels.GdtBrowserTitle + "*" : Labels.GdtBrowserTitle;
@@ -237,10 +237,15 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public Task GenerateDemoMap()
         {
+            return GenerateDemoMap(AllItems);
+        }
+
+        public Task GenerateDemoMap(IEnumerable<GdtDetailViewModel> items)
+        {
             Arma3ToolsHelper.EnsureProjectDrive();
 
             IoC.Get<IProgressTool>()
-                .RunTask(Labels.GenerateDemoMod, DoGenerateMod);
+                .RunTask(Labels.GenerateDemoMod, task => DoGenerateMod(task, items));
 
             return Task.CompletedTask;
         }
@@ -260,24 +265,25 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return SaveChanges();
         }
 
-        private async Task DoGenerateMod(IProgressTaskUI task)
+        private async Task DoGenerateMod(IProgressTaskUI task, IEnumerable<GdtDetailViewModel> items)
         {
             var dependencies = 
                 IoC.Get<IArma3Dependencies>()
                 .ComputeModDependencies(
-                    AllItems.SelectMany(i => i.GetModels())
-                    .Concat(AllItems.SelectMany(i => i.GetTextures()))
+                    items.SelectMany(i => i.GetModels())
+                    .Concat(items.SelectMany(i => i.GetTextures()))
                     .Where(f => !string.IsNullOrEmpty(f))
                     .Distinct(StringComparer.OrdinalIgnoreCase))
                 .ToList();
 
             var name = DisplayName;
 
-            var generator = new Arma3GdtDemoMapGenerator(AllItems.OrderBy(a => a.DisplayName).Select(a => new TerrainMaterialDefinition(
+            var generator = new Arma3GdtDemoMapGenerator(items.OrderBy(a => a.DisplayName).Select(a => new TerrainMaterialDefinition(
                 a.ToMaterial(),
                 new TerrainMaterialUsage[0], 
                 a.ToSurfaceConfig(), 
-                a.ToData())), _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory());
+                a.ToData(),
+                a.Title)), _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory());
 
             var config = await generator.GenerateMod(task);
             if (config != null)

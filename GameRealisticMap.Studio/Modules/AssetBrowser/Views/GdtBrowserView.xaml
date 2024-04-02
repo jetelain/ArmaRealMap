@@ -37,9 +37,9 @@
 
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <ProgressBar Visibility="{Binding IsImporting, Converter={StaticResource BooleanToVisibilityConverter}}" IsIndeterminate="{Binding IsImporting}" Width="100" Margin="0 5 10 5" />
-                <Button Padding="15 0" Margin="0 0 10 0" cal:Message.Attach="GenerateDemoMap"  IsEnabled="{Binding IsNotImporting}">
+                <!--<Button Padding="15 0" Margin="0 0 10 0" cal:Message.Attach="GenerateDemoMap"  IsEnabled="{Binding IsNotImporting}">
                     <Run Text="{x:Static r:Labels.GenerateADemoWorld}"/>
-                </Button>
+                </Button>-->
                 <Button Padding="15 0" Margin="0 0 10 0" cal:Message.Attach="Create"  IsEnabled="{Binding IsNotImporting}">
                     <Run Text="{x:Static r:Labels.CreateATexture}"/>
                 </Button>
@@ -88,6 +88,8 @@
                                         <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/3d-view.png" Height="16" />
                                     </MenuItem.Icon>
                                 </MenuItem>
+                                <Separator />
+                                <MenuItem Header="{x:Static r:Labels.GenerateADemoWorld}" Click="MenuItem_Click" />
                                 <Separator />
                                 <MenuItem Header="{x:Static r:Labels.RemoveFromList}" cal:Message.Attach="Remove">
                                     <MenuItem.Icon>

@@ -7,6 +7,7 @@ using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
+using GameRealisticMap.Nature.Weather;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using HugeImages.Storage;
@@ -42,7 +43,6 @@ namespace GameRealisticMap.Arma3.Demo
             var grid = new ElevationGrid(context.Area.GridSize, context.Area.GridCellSize);
             grid.Fill(15f);
             context.SetData(new RawElevationData(grid));
-
             var cities = new List<City>();
 
             var x = 0.0f;
@@ -52,7 +52,7 @@ namespace GameRealisticMap.Arma3.Demo
             foreach (var def in assets.Materials.Definitions)
             {
                 var center = new Geometries.TerrainPoint((x + (squareSize / 2)), a3config.SizeInMeters - (y + (squareSize / 2)));
-                cities.Add(City.Square(center, squareSize / 2, Path.GetFileNameWithoutExtension(def.Material.ColorTexture)));
+                cities.Add(City.Square(center, squareSize / 2, def.Title ?? Path.GetFileNameWithoutExtension(def.Material.ColorTexture)));
                 x += squareSize;
                 if ((x + squareSize) >= a3config.SizeInMeters)
                 {
@@ -63,6 +63,7 @@ namespace GameRealisticMap.Arma3.Demo
             cities.Add(City.Square(new Geometries.TerrainPoint(a3config.SizeInMeters/2, 512f), 512f, "GDT Library Demo", CityTypeId.City, 1000));
 
             context.SetData(new CitiesData(cities));
+            context.SetData(new WeatherData(null));
             return context;
         }
 
