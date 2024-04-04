@@ -1,6 +1,9 @@
 ﻿using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Studio.Modules.Reporting;
+using GameRealisticMap.Studio.Toolkit;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 
 namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
 {
@@ -10,9 +13,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
         {
             using (var stream = storage.CreatePng(path))
             {
-                var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(img);
-                encoder.Save(stream);
+                using var imgs = img.ToImageSharp();
+                imgs.SaveAsPng(stream, new PngEncoder() { ColorType = PngColorType.Rgb, BitDepth = PngBitDepth.Bit8 });
             }
         }
 

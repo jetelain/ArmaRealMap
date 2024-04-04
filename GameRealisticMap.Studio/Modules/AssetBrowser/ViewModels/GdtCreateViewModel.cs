@@ -86,7 +86,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 return;
             }
             var color = GdtHelper.AllocateUniqueColor(fakeSat, parent.AllItems.Select(i => i.ColorId));
-            var config = new GdtCatalogItem(new TerrainMaterial(normalTexture, colorTexture, color.ToRgb24(), fakeSat?.ToPngByteArray()), surfaceConfig, itemType);
+            var config = new GdtCatalogItem(new TerrainMaterial(normalTexture, colorTexture, color.ToRgb24(), fakeSat?.ToPngByteArray()), surfaceConfig, itemType, title);
 
 
             Result = await parent.Add(config);
