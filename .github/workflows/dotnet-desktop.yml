@@ -57,7 +57,7 @@ jobs:
 
     env:
       Solution_Name: ArmaRealMap.sln                                                             # Replace with your solution name, i.e. MyWpfApp.sln.
-      Test_Project_Path: GameRealisticMap.Test\GameRealisticMap.Test.csproj                      # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Test_Project_Path: GameRealisticMap.Studio.Test\GameRealisticMap.Studio.Test.csproj        # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
       Wap_Project_Directory: GameRealisticMap.Studio.Package                                     # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
       Wap_Project_Path: GameRealisticMap.Studio.Package\GameRealisticMap.Studio.Package.wapproj  # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
 
@@ -80,7 +80,7 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test $env:Solution_Name
+      run: dotnet test $env:Test_Project_Path
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
