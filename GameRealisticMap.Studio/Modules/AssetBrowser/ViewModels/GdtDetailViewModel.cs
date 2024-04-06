@@ -456,7 +456,21 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             }
             if (ImageColor != null)
             {
-                UndoRedoManager.ChangeProperty(this, o => o.ImageNormal, GdtHelper.GenerateNormalMap(ImageColor));
+                UndoRedoManager.ChangeProperty(this, o => o.ImageNormal, BitmapFrame.Create(GdtHelper.GenerateNormalMap(ImageColor)));
+            }
+            return Task.CompletedTask;
+        }
+
+
+        public Task ColorFromArma3()
+        {
+            if (_itemType != GdtCatalogItemType.Image)
+            {
+                return Task.CompletedTask;
+            }
+            if (ImageColor != null)
+            {
+                UndoRedoManager.ChangeProperty(this, o => o.ImageColor, BitmapFrame.Create(ColorFix.FromArma3(ImageColor)));
             }
             return Task.CompletedTask;
         }

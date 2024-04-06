@@ -263,5 +263,14 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             }
             return Task.CompletedTask;
         }
+
+        public Task ColorFromArma3()
+        {
+            if (ImageColor != null)
+            {
+                ImageColor = BitmapFrame.Create(ColorFix.FromArma3(ImageColor));
+            }
+            return Task.CompletedTask;
+        }
     }
 }

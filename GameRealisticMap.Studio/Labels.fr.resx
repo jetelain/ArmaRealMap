@@ -1531,4 +1531,10 @@ Dernière génération le {1}</value>
   <data name="Preview3DWithClutter" xml:space="preserve">
     <value>Aperçu 3D avec clutter</value>
   </data>
+  <data name="ConvertColors" xml:space="preserve">
+    <value>Convertir les couleurs</value>
+  </data>
+  <data name="InGameColorsShouldBeCurrentColors" xml:space="preserve">
+    <value>Les couleurs en jeu devraient être les couleurs actuelles</value>
+  </data>
 </root>

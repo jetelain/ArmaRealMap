@@ -29,16 +29,16 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         private Model3DGroup? _model3DGroup;
         public Model3DGroup? Model3DGroup { get => _model3DGroup; set { Set(ref _model3DGroup, value); } }
 
-        private double _contrast = 0.2;
+        private double _contrast = 0;
         public double Contrast { get => _contrast; set { Set(ref _contrast, value); } }
 
-        private double _brightness = 0.2;
+        private double _brightness = 0;
         public double Brightness { get => _brightness; set { Set(ref _brightness, value); } }
 
         public Task Reset()
         {
-            Brightness = 0.2;
-            Contrast = 0.2;
+            Brightness = 0;
+            Contrast = 0;
             return Task.CompletedTask;
         }
 

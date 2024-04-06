@@ -130,9 +130,19 @@
                                     <Label>
                                         <Run Text="{x:Static r:Labels.ColorTexture}" />
                                     </Label>
-                                    <Button Padding="10 5" HorizontalAlignment="Left" cal:Message.Attach="BrowseImageColor">
-                                        <Run Text="{x:Static r:Labels.Browse}" />
-                                    </Button>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <Button Padding="10 5" cal:Message.Attach="BrowseImageColor">
+                                            <Run Text="{x:Static r:Labels.Browse}" />
+                                        </Button>
+                                        <Button Padding="10 5" Margin="5 0" b:ButtonBehaviors.OpenContextOnClick="True">
+                                            <Run Text="{x:Static r:Labels.ConvertColors}"/>
+                                            <Button.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{x:Static r:Labels.InGameColorsShouldBeCurrentColors}" cal:Message.Attach="ColorFromArma3"></MenuItem>
+                                                </ContextMenu>
+                                            </Button.ContextMenu>
+                                        </Button>
+                                    </StackPanel>
                                     <Border Margin="0 5 0 0" Background="{DynamicResource TextBox.Static.Background}" BorderThickness="1" BorderBrush="{DynamicResource TextBox.Static.Border}">
                                         <Image Width="256" Height="256" Source="{Binding ImageColor}" />
                                     </Border>

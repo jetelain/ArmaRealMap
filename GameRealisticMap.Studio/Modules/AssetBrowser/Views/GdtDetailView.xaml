@@ -9,6 +9,7 @@
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:cal="http://caliburnmicro.com"
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="800"
              
@@ -231,13 +232,27 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Button Padding="5" cal:Message.Attach="BrowseImageColor">Browse...</Button>
+                    <Button Padding="5" cal:Message.Attach="BrowseImageColor">
+                        <Run Text="{x:Static r:Labels.Browse}" />
+                    </Button>
+                    <Button Padding="5" Margin="5 0" b:ButtonBehaviors.OpenContextOnClick="True">
+                        <Run Text="{x:Static r:Labels.ConvertColors}"/>
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{x:Static r:Labels.InGameColorsShouldBeCurrentColors}" cal:Message.Attach="ColorFromArma3"></MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
                 </StackPanel>
                 <Image Source="{Binding ImageColor}" Margin="5" Grid.Row="1" />
 
                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Button Padding="5" cal:Message.Attach="BrowseImageNormal">Browse...</Button>
-                    <Button Padding="5" cal:Message.Attach="GenerateImageNormal" Margin="5 0">Generate</Button>
+                    <Button Padding="5" cal:Message.Attach="BrowseImageNormal">
+                        <Run Text="{x:Static r:Labels.Browse}" />
+                    </Button>
+                    <Button Padding="5" cal:Message.Attach="GenerateImageNormal" Margin="5 0">
+                        <Run Text="{x:Static r:Labels.Generate}" />
+                    </Button>
                 </StackPanel>
                 <Image Source="{Binding ImageNormal}" Grid.Column="1" Margin="5" Grid.Row="1"  />
             </Grid>

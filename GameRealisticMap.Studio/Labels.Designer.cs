@@ -1394,6 +1394,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Convert colors.
+        /// </summary>
+        public static string ConvertColors {
+            get {
+                return ResourceManager.GetString("ConvertColors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à You can use map below to select an area (Ctrl+Mouse, or Alt+Mouse).
         /// </summary>
         public static string CoordinatesHint {
@@ -2686,6 +2695,15 @@ namespace GameRealisticMap.Studio {
         public static string ImportTextures {
             get {
                 return ResourceManager.GetString("ImportTextures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à In game colors should be current colors.
+        /// </summary>
+        public static string InGameColorsShouldBeCurrentColors {
+            get {
+                return ResourceManager.GetString("InGameColorsShouldBeCurrentColors", resourceCulture);
             }
         }
         

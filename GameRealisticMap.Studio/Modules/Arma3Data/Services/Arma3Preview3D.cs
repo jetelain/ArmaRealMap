@@ -107,7 +107,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
             var file = _arma3Previews.GetTexturePreview(texture);
             if (file != null)
             {
-                return new DiffuseMaterial(new ImageBrush(new BitmapImage(file)));
+                return new DiffuseMaterial(new ImageBrush(ColorFix.ToArma3(new BitmapImage(file))));
             }
             return new DiffuseMaterial(new SolidColorBrush(Colors.DarkRed));
         }

@@ -100,7 +100,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services.Gdt
                 14, 15, 12
             };
 
-            group.Children.Add(new GeometryModel3D(meshGdt, new DiffuseMaterial(new ImageBrush(diffuse))));
+            group.Children.Add(new GeometryModel3D(meshGdt, new DiffuseMaterial(new ImageBrush(ColorFix.ToArma3(diffuse)))));
 
             var meshSat = new MeshGeometry3D();
             meshSat.Positions = new Point3DCollection() {
@@ -131,7 +131,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services.Gdt
                 4, 5, 6,
                 6, 7, 4,
             };
-            group.Children.Add(new GeometryModel3D(meshSat, new DiffuseMaterial(new ImageBrush(fakeSat))));
+            group.Children.Add(new GeometryModel3D(meshSat, new DiffuseMaterial(new ImageBrush(ColorFix.ToArma3(fakeSat)))));
 
             return group;
         }

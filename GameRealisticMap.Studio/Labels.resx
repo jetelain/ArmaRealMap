@@ -1531,4 +1531,10 @@ Last generated on {1}</value>
   <data name="GdtNonEditableReason" xml:space="preserve">
     <value>This ground texture is from base game or a mod. Configuration cannot be edited.</value>
   </data>
+  <data name="ConvertColors" xml:space="preserve">
+    <value>Convert colors</value>
+  </data>
+  <data name="InGameColorsShouldBeCurrentColors" xml:space="preserve">
+    <value>In game colors should be current colors</value>
+  </data>
 </root>
