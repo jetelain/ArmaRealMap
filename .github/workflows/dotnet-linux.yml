@@ -27,3 +27,12 @@ jobs:
 
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Release GameRealisticMap-LinuxCI.sln
+      
+    - name: Build Linux Command Line
+      run: dotnet publish --no-self-contained -f net6.0 -r linux-x64 -c Release GameRealisticMap.Arma3.CommandLine\GameRealisticMap.Arma3.CommandLine.csproj -o Output
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Linux Command Line
+        path: Output\grma3
