@@ -83,7 +83,7 @@ namespace GameRealisticMap.Arma3
             return string.Empty;
         }
 
-        internal static async Task ImageToPAA(IProgressSystem system, IReadOnlyCollection<string> paths, int? maxDegreeOfParallelism = null)
+        public static async Task ImageToPAA(IProgressSystem system, IReadOnlyCollection<string> paths, int? maxDegreeOfParallelism = null)
         {
             if (!OperatingSystem.IsWindows())
             {
@@ -99,6 +99,13 @@ namespace GameRealisticMap.Arma3
                 await Run(system, imageToPaaExe, "\"" + x + "\"").ConfigureAwait(false);
                 report.ReportOneDone();
             }).ConfigureAwait(false);
+        }
+
+        [SupportedOSPlatform("windows")]
+        public static async Task ImageToPAA(IProgressSystem system, string path)
+        {
+            string imageToPaaExe = Path.Combine(GetArma3ToolsPath(), "ImageToPAA", "ImageToPAA.exe");
+            await Run(system, imageToPaaExe, "\"" + path + "\"").ConfigureAwait(false);
         }
 
         [SupportedOSPlatform("windows")]

@@ -1,0 +1,7 @@
+﻿z\arm\addons\arm_testworld\ace-weather.hpp
+z\arm\addons\arm_testworld\clutter.hpp
+z\arm\addons\arm_testworld\config.cpp
+z\arm\addons\arm_testworld\grma3-dependencies.json
+z\arm\addons\arm_testworld\mapinfos.hpp
+z\arm\addons\arm_testworld\names.hpp
+z\arm\addons\arm_testworld\surfaces.hpp

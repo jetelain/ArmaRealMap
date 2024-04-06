@@ -1,0 +1,262 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.AssetBrowser.Views.GdtDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.AssetConfigEditor.Views"
+             xmlns:a3="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Controls"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:cal="http://caliburnmicro.com"
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="1000" d:DesignWidth="800"
+             
+             c:CompositionDragDrop.Importer="{Binding CompositionImporter}"
+             >
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" />
+    </UserControl.Resources>
+
+    <ScrollViewer local:Behaviors.EnforceScroll="True">
+        <StackPanel Margin="10 0">
+
+            <StackPanel Orientation="Horizontal">
+                <!--<Button Padding="10" Command="{Binding Back}">🡰</Button>-->
+                <TextBlock FontSize="30" Margin="20 0" Text="{Binding DisplayName}" />
+                <Button cal:Message.Attach="ShowPreview3D" Padding="5" Margin="0 5">
+                    <Run Text="{x:Static r:Labels.Preview3D}"  />
+                </Button>
+                <Button cal:Message.Attach="ShowPreview3DClutter" Padding="5" Margin="10 5">
+                    <Run Text="{x:Static r:Labels.Preview3DWithClutter}"  />
+                </Button>
+            </StackPanel>
+
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.Label}"/>
+                </Label>
+                <TextBox Text="{Binding Title}" Width="200"
+                         local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+            </StackPanel>
+
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.ColorId}"/>
+                </Label>
+                <toolkit:ColorPicker 
+                    SelectedColor="{Binding ColorId,Mode=TwoWay}" 
+                    Width="100"
+                    UsingAlphaChannel="False" 
+                    local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}" />
+
+                <StackPanel Orientation="Horizontal" Visibility="{Binding IsNotColorUnique, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Label Foreground="Red">
+                        ⚠ Color is not unique within library.
+                    </Label>
+                    <Button  Padding="5 3" cal:Message.Attach="GenerateColorId">
+                        Generate an unique color
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.SatelliteRenderImage}" />
+                </Label>
+
+                <Border Width="60" >
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding FakeSatPreview}" 
+                            TileMode="Tile"  
+                            Stretch="Uniform"
+                            AlignmentY="Top"
+                            Viewport="0,0,10,10" 
+                            ViewportUnits="Absolute" />
+                    </Border.Background>
+                </Border>
+
+                <StackPanel Margin="10 0 0 0">
+                    <Button cal:Message.Attach="RegenerateFakeSatImage" Padding="5 3">
+                        <Run Text="{x:Static r:Labels.GenerateFromTexture}" />
+                    </Button>
+                    <Button cal:Message.Attach="SelectFakeSatImage" Padding="5 3" Margin="0 5 0 0 ">
+                        <Run Text="{x:Static r:Labels.SelectAnImage}" />
+                    </Button>
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.ColorTexture}"/>
+                </Label>
+                <Label>
+                    <Run Text="{Binding ColorTexture, Mode=OneWay}" />
+                </Label>
+            </StackPanel>
+
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.NormalTexture}"/>
+                </Label>
+                <Label>
+                    <Run Text="{Binding NormalTexture, Mode=OneWay}" />
+                </Label>
+            </StackPanel>
+            
+            <TextBlock FontSize="25" Padding="0 15 0 5" Text="Surface Settings" />
+            
+            <StackPanel Margin="10 5" Orientation="Horizontal" Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                <TextBlock>
+                    <Run Text="{x:Static r:Labels.GdtNonEditableReason}" />
+                </TextBlock>
+            </StackPanel>
+            
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="CfgSurface Name"/>
+                </Label>
+                <Label Width="150">
+                    <Run Text="{Binding Name, Mode=OneWay}"/>
+                </Label>
+                <Label Width="150">
+                    <Run Text="Files"/>
+                </Label>
+                <Label Width="150">
+                    <Run Text="{Binding Files, Mode=OneWay}"/>
+                </Label>
+            </StackPanel>
+            
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="SoundEnviron"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding SoundEnviron,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label Width="150">
+                    <Run Text="SoundHit"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding SoundHit,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+            
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="Rough"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding Rough,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label Width="150">
+                    <Run Text="MaxSpeedCoef"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding MaxSpeedCoef,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+            
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="Dust"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding Dust,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label Width="150">
+                    <Run Text="SurfaceFriction"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding SurfaceFriction,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+            
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="Lucidity"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding Lucidity,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label Width="150">
+                    <Run Text="GrassCover"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding GrassCover,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+           
+            <StackPanel Margin="10 5" Orientation="Horizontal" >
+                <Label Width="150">
+                    <Run Text="Impact"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding Impact,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+                <Label Width="150">
+                    <Run Text="MaxClutterColoringCoef"/>
+                </Label>
+                <TextBox Width="150" Text="{Binding MaxClutterColoringCoef,Mode=TwoWay}" IsEnabled="{Binding IsEditable}" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}"  />
+            </StackPanel>
+
+            <TextBlock FontSize="25" Padding="0 15 0 5" Text="Clutter" />
+
+            <DataGrid ItemsSource="{Binding ClutterList}" IsReadOnly="{Binding IsReadOnly}" AutoGenerateColumns="false" local:Behaviors.UndoRedoManager="{Binding UndoRedoManager}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{x:Static r:Labels.Model}" Binding="{Binding Composition.Name}" IsReadOnly="True" Width="200" />
+                    <DataGridTemplateColumn Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image c:CompositionPreview.Source="{Binding Composition}" />                            
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Header="Probability" Binding="{Binding Probability}" Width="100" />
+                    <DataGridTextColumn Header="ScaleMin" Binding="{Binding ScaleMin}" Width="100" />
+                    <DataGridTextColumn Header="ScaleMax" Binding="{Binding ScaleMax}" Width="100" />
+                    <DataGridTextColumn Header="AffectedByWind" Binding="{Binding AffectedByWind}" Width="100" />
+                    <DataGridCheckBoxColumn Header="IsSwLighting" Binding="{Binding IsSwLighting}" Width="100" />
+
+
+                    <DataGridTemplateColumn Width="75">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Visibility="{Binding DataContext.IsEditable, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                    <Button Padding="5" CommandParameter="{Binding}" Command="{Binding DataContext.RemoveItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                        <Run Text="{x:Static r:Labels.Remove}"/>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+
+            <TextBlock FontSize="25" Padding="0 15 0 5" Text="Images" />
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"  />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Button Padding="5" cal:Message.Attach="BrowseImageColor">
+                        <Run Text="{x:Static r:Labels.Browse}" />
+                    </Button>
+                    <Button Padding="5" Margin="5 0" b:ButtonBehaviors.OpenContextOnClick="True">
+                        <Run Text="{x:Static r:Labels.ConvertColors}"/>
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{x:Static r:Labels.InGameColorsShouldBeCurrentColors}" cal:Message.Attach="ColorFromArma3"></MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                </StackPanel>
+                <Image Source="{Binding ImageColor}" Margin="5" Grid.Row="1" />
+
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Button Padding="5" cal:Message.Attach="BrowseImageNormal">
+                        <Run Text="{x:Static r:Labels.Browse}" />
+                    </Button>
+                    <Button Padding="5" cal:Message.Attach="GenerateImageNormal" Margin="5 0">
+                        <Run Text="{x:Static r:Labels.Generate}" />
+                    </Button>
+                </StackPanel>
+                <Image Source="{Binding ImageNormal}" Grid.Column="1" Margin="5" Grid.Row="1"  />
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

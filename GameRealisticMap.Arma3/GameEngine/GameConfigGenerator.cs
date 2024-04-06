@@ -2,6 +2,7 @@
 using System.Text.Json;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Extensions;
+using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
@@ -38,7 +39,49 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\ace-weather.hpp", AceWeather.GenerateWeather(context.GetData<WeatherData>()));
 
+            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\clutter.hpp", GenerateClutters(assets.Materials.Surfaces));
+
+            gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\surfaces.hpp", GenerateSurfaces(assets.Materials.Definitions));
+            
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\grma3-dependencies.json", JsonSerializer.Serialize(assets.Dependencies));
+        }
+
+        private string GenerateSurfaces(List<TerrainMaterialDefinition> definitions)
+        {
+            var surfaces = definitions.Where(d => d.Data != null && d.Surface != null).Select(d => d.Surface!);
+            if (!surfaces.Any())
+            {
+                return string.Empty;
+            }
+            var sw = new StringWriter();
+            sw.WriteLine("class CfgSurfaces {");
+            sw.WriteLine("class Default;");
+            foreach (var surface in surfaces)
+            {
+                surface.WriteCfgSurfacesTo(sw);
+            }
+            sw.WriteLine("};");
+            sw.WriteLine("class CfgSurfaceCharacters {");
+            foreach (var surface in surfaces)
+            {
+                surface.WriteCfgSurfaceCharactersTo(sw);
+            }
+            sw.WriteLine("};");
+            return sw.ToString();
+        }
+
+        private string GenerateClutters(IEnumerable<SurfaceConfig> surfaces)
+        {
+            var sw = new StringWriter();
+            var done = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach(var clutter in surfaces.SelectMany(s => s.Character))
+            {
+                if (done.Add(clutter.Name))
+                {
+                    clutter.WriteTo(sw);
+                }
+            }
+            return sw.ToString();
         }
 
         private string GenerateMapInfos(IArma3MapConfig config, ITerrainArea area, bool isIsland, ElevationOutOfBoundsData outOfBoundsData)
@@ -72,8 +115,8 @@ class OutsideTerrain
     {{
 		class Layer0
         {{
-			nopx    = ""{material.NormalTexture}"";
-			texture = ""{material.ColorTexture}""; 
+			nopx    = ""{material.GetNormalTexturePath(config)}"";
+			texture = ""{material.GetColorTexturePath(config)}""; 
 		}};
     }};
 }};
@@ -175,8 +218,12 @@ class CfgWorlds
 		minTreesInForestSquare = 5;
 		minRocksInRockSquare = 10;
 		class Subdivision{{}};
-		class Names{{
+		class Names {{
 			#include ""names.hpp""
+		}};
+        class DefaultClutter;
+		class clutter {{
+			#include ""clutter.hpp""
 		}};
 		#include""mapinfos.hpp""
 		#include""ace-weather.hpp""
@@ -185,7 +232,9 @@ class CfgWorlds
 		}};
 		pictureMap = ""{config.PboPrefix}\data\picturemap_ca.paa"";
 	}};
-}};";
+}};
+#include ""surfaces.hpp""
+";
         }
 
         internal static string GetFreindlyName(IArma3MapConfig config, CitiesData cities)

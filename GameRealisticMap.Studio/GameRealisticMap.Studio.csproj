@@ -28,6 +28,7 @@
     <PackageReference Include="HelixToolkit.Core.Wpf" Version="2.24.0" />
     <PackageReference Include="NLog" Version="5.2.2" />
     <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
+    <PackageReference Include="WPF.ImageEffects" Version="1.5.0" />
     <PackageReference Include="XAML.MapControl" Version="8.1.0" />
   </ItemGroup>
 
@@ -42,6 +43,8 @@
   <ItemGroup>
 	<Resource Include="Resources\**\*.png" />
     <EmbeddedResource Include="Modules\AssetBrowser\Data\*.txt" />
+	<EmbeddedResource Include="Modules\AssetBrowser\Data\*.csv" />
+    <None Remove="Modules\AssetBrowser\Data\GdtTitles.csv" />
     <None Remove="Resources\hand_grab.cur" />
     <None Remove="Resources\hand_grabbing.cur" />
     <None Remove="Resources\Icons\WatercourseAdditional.png" />

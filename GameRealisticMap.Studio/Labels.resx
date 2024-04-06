@@ -1468,4 +1468,73 @@ Last generated on {1}</value>
   <data name="UseConstant" xml:space="preserve">
     <value>Use constant</value>
   </data>
+  <data name="UseLibraryValue" xml:space="preserve">
+    <value>Use library value</value>
+  </data>
+  <data name="UseOverridenValue" xml:space="preserve">
+    <value>Use overriden value</value>
+  </data>
+  <data name="UseTexture" xml:space="preserve">
+    <value>Use texture</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Preview3DWithClutter" xml:space="preserve">
+    <value>3D Preview with clutter</value>
+  </data>
+  <data name="GdtBrowserTitle" xml:space="preserve">
+    <value>Ground Detail Texture Library</value>
+  </data>
+  <data name="BrowseGdt" xml:space="preserve">
+    <value>Browse ground detail textures</value>
+  </data>
+  <data name="BrowseGdtDescription" xml:space="preserve">
+    <value>Browse existing ground detail textures, or create yours, to pick the best ones for your assets configuration.</value>
+  </data>
+  <data name="CreateATexture" xml:space="preserve">
+    <value>Create a texture...</value>
+  </data>
+  <data name="ImportTextures" xml:space="preserve">
+    <value>Import Textures</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
+  <data name="Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="CopyConfigurationFrom" xml:space="preserve">
+    <value>Copy configuration from</value>
+  </data>
+  <data name="GdtNameHint" xml:space="preserve">
+    <value>Choose name wisely: it must be globally unique and it cannot be changed.</value>
+  </data>
+  <data name="GdtCopyConfigurationHint" xml:space="preserve">
+    <value>Pick the most approching existing surface.</value>
+  </data>
+  <data name="CreateAGroundDetailTexture" xml:space="preserve">
+    <value>Create a ground detail texture</value>
+  </data>
+  <data name="ImportAnExistingTextureFromProjectDrive" xml:space="preserve">
+    <value>Import an existing texture from Project Drive</value>
+  </data>
+  <data name="ImportFromAnImage" xml:space="preserve">
+    <value>Import from an image</value>
+  </data>
+  <data name="ImportImage" xml:space="preserve">
+    <value>Import image</value>
+  </data>
+  <data name="ImportExistingFile" xml:space="preserve">
+    <value>Import existing file</value>
+  </data>
+  <data name="GdtNonEditableReason" xml:space="preserve">
+    <value>This ground texture is from base game or a mod. Configuration cannot be edited.</value>
+  </data>
+  <data name="ConvertColors" xml:space="preserve">
+    <value>Convert colors</value>
+  </data>
+  <data name="InGameColorsShouldBeCurrentColors" xml:space="preserve">
+    <value>In game colors should be current colors</value>
+  </data>
 </root>

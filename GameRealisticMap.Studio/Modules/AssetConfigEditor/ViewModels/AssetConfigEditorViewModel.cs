@@ -16,6 +16,7 @@ using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual;
@@ -164,7 +165,14 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public override string DisplayName { get => base.DisplayName; set { base.DisplayName = value; NotifyOfPropertyChange(nameof(TreeName)); } }
 
-        protected override async Task DoLoad(string filePath)
+        protected override Task DoLoad(string filePath)
+        {
+            Task.Run(() => DoLoadBackground(filePath));
+
+            return Task.CompletedTask;
+        }
+
+        private async Task DoLoadBackground(string filePath)
         {
             IsLoading = true;
             NotifyOfPropertyChange(nameof(IsLoading));
@@ -178,7 +186,8 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             {
                 json = await AutoEnableMods(filePath);
             }
-            FromJson(json);
+            await FromJson(json);
+
             await _arma3Data.SaveLibraryCache();
 
             IsLoading = false;
@@ -208,7 +217,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             return DoLoad(filePath);
         }
 
-        private void FromJson(Arma3Assets arma3Assets)
+        private async Task FromJson(Arma3Assets arma3Assets)
         {
             Filling.Clear();
             Fences.Clear();
@@ -233,7 +242,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             }
             foreach (var id in Enum.GetValues<TerrainMaterialUsage>().OrderByDescending(i => i))
             {
-                Materials.Add(new MaterialViewModel(id, arma3Assets.Materials.GetMaterialByUsage(id), this));
+                Materials.Add(await MaterialViewModel.Create(id, arma3Assets, this));
             }
             TextureSizeInMeters = arma3Assets.Materials.TextureSizeInMeters;
             foreach (var id in Enum.GetValues<RoadTypeId>().OrderByDescending(i => i))
@@ -341,11 +350,17 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             json.Buildings = Buildings.Where(c => !c.IsEmpty).OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
             json.Objects = Objects.Where(c => !c.IsEmpty).OrderBy(k => k.FillId).ToDictionary(k => k.FillId, k => k.ToDefinition());
             json.NaturalRows = NaturalRows.Where(c => !c.IsEmpty).GroupBy(c => c.FillId).OrderBy(k => k.Key).ToDictionary(k => k.Key, k => k.Select(o => o.ToDefinition()).ToList());
+
             var materialDefintions = Materials
-                .Where(m => m.SameAs == null)
-                .Select(m => new TerrainMaterialDefinition(m.ToDefinition(), Materials.Where(o => o == m || o.SameAs == m).Select(o => o.FillId).OrderBy(m => m).ToArray()))
+                .GroupBy(m => new { m.ActualColorId, m.ColorTexture, m.NormalTexture })
+                .Select(m => new TerrainMaterialDefinition(
+                    m.First().ToDefinition(),
+                    m.Select(o => o.FillId).OrderBy(m => m).ToArray(),
+                    m.First().GetSurfaceConfig(),
+                    m.First().GetData()))
                 .OrderBy(m => m.Usages.Min())
                 .ToList();
+
             json.Materials = new TerrainMaterialLibrary(materialDefintions, TextureSizeInMeters);
             json.Roads = Roads.OrderBy(k => k.FillId).Select(r => r.ToDefinition()).ToList();
             json.Bridges = Roads.Select(r => new { Key = r.FillId, Bridge = r.ToBridgeDefinition() })
@@ -355,7 +370,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             json.Ponds = Ponds.ToDictionary(p => p.Id, k => k.ToDefinition());
             json.Railways = new RailwaysDefinition(
                 Railways.OfType<RailwaysStraightViewModel>().FirstOrDefault()?.ToDefinition() ?? new List<StraightSegmentDefinition>(),
-                Railways.OfType<RailwaysCrossingViewModel>().FirstOrDefault()?.ToDefinition() ?? new List<RailwayCrossingDefinition>()            
+                Railways.OfType<RailwaysCrossingViewModel>().FirstOrDefault()?.ToDefinition() ?? new List<RailwayCrossingDefinition>()
                 );
             json.BaseDependency = baseDependency;
             json.BaseWorldName = baseWorldName;
@@ -389,11 +404,10 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             }
         }
 
-        protected override Task DoNew()
+        protected override async Task DoNew()
         {
-            FromJson(new Arma3Assets());
+            await FromJson(new Arma3Assets());
             CanCopyFrom = true;
-            return Task.CompletedTask;
         }
 
         protected override async Task DoSave(string filePath)
@@ -433,23 +447,27 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public List<MissingMod> MissingMods { get; private set; } = new List<MissingMod>();
 
-        public IEnumerable<string> ListReferencedModels()
+        public IEnumerable<string> ListReferencedFiles()
         {
             return Filling.SelectMany(f => f.GetModels())
                 .Concat(Fences.SelectMany(f => f.GetModels()))
                 .Concat(Buildings.SelectMany(f => f.GetModels()))
                 .Concat(Objects.SelectMany(f => f.GetModels()))
                 .Concat(Roads.SelectMany(f => f.GetModels()))
+                .Concat(Roads.SelectMany(f => f.GetTextures()))
                 .Concat(Ponds.Where(p => !string.IsNullOrEmpty(p.Model)).Select(p => p.Model!))
                 .Concat(Railways.SelectMany(f => f.GetModels()))
                 .Concat(NaturalRows.SelectMany(f => f.GetModels()))
                 .Concat(Sidewalks.SelectMany(f => f.GetModels()))
+                .Concat(Materials.SelectMany(f => f.GetModels()))
+                .Concat(Materials.SelectMany(f => f.GetTextures()))
+                .Where(f => !string.IsNullOrEmpty(f))
                 .Distinct(StringComparer.OrdinalIgnoreCase);
         }
 
         public List<ModDependencyDefinition> ComputeModDependencies()
         {
-            return IoC.Get<IArma3Dependencies>().ComputeModDependencies(ListReferencedModels()).ToList();
+            return IoC.Get<IArma3Dependencies>().ComputeModDependencies(ListReferencedFiles()).ToList();
         }
 
         public async Task Reload()
@@ -486,7 +504,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             var name = Path.GetFileNameWithoutExtension(FileName);
             var assets = ToJson();
-            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
+            var generator = new Arma3DemoMapGenerator(assets, _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
             var config = await generator.GenerateMod(task);
             if (config != null)
             {
@@ -501,7 +519,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             var name = Path.GetFileNameWithoutExtension(FileName);
             var assets = ToJson();
-            var generator = new Arma3DemoMapGenerator(ToJson(), _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
+            var generator = new Arma3DemoMapGenerator(assets, _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
             var config = await generator.GenerateWrp(task);
             if (config != null)
             {

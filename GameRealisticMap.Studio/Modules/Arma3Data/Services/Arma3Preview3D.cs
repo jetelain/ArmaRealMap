@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Numerics;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using BIS.P3D.ODOL;
+using NetTopologySuite.Mathematics;
 
 namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
 {
@@ -37,12 +39,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
                 return null;
             }
 
-            return ToModel3D(visualLod);
+            return ToModel3D(p3d.ModelInfo.BoundingCenter.Vector3, visualLod);
         }
 
-        private Model3DGroup ToModel3D(LOD visualLod)
+        private Model3DGroup ToModel3D(Vector3 boundingCenter, LOD visualLod)
         {
-            var positions = GetPositions(visualLod);
+            var positions = GetPositions(boundingCenter, visualLod);
             var textureCoordinates = GetTextureCoordinates(visualLod);
             var group = new Model3DGroup();
             //var normals = new Vector3DCollection(visualLod.Normals != null ? visualLod.Normals.Select(n => new Vector3D(n.X, n.Y, n.Z)) : visualLod.NormalsCompressed.Select(n => new Vector3D(n.X, n.Y, n.Z)));
@@ -74,10 +76,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
             return f.VertexIndices.Take(3).Concat(f.VertexIndices.Skip(2).Concat(f.VertexIndices.Take(1)));
         }
 
-        private static Point3DCollection GetPositions(LOD visualLod)
+        private static Point3DCollection GetPositions(Vector3 boundingCenter, LOD visualLod)
         {
             return new Point3DCollection(
-                visualLod.Vertices.Select(v => v.Vector3).Select(v => new Point3D(v.X, v.Y, v.Z)).Concat(
+                visualLod.Vertices.Select(v => v.Vector3 + boundingCenter).Select(v => new Point3D(v.X, v.Y, v.Z)).Concat(
                     new[] { new Point3D(0, 0, 0), new Point3D(0, 0, 0) }
                     ));
         }
@@ -105,7 +107,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
             var file = _arma3Previews.GetTexturePreview(texture);
             if (file != null)
             {
-                return new DiffuseMaterial(new ImageBrush(new BitmapImage(file)));
+                return new DiffuseMaterial(new ImageBrush(ColorFix.ToArma3(new BitmapImage(file))));
             }
             return new DiffuseMaterial(new SolidColorBrush(Colors.DarkRed));
         }

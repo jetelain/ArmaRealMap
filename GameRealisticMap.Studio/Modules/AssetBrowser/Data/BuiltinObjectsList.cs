@@ -27,5 +27,22 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Data
 
             return paths;
         }
+
+        internal static List<string[]> ReadCsv(string obj)
+        {
+            var paths = new List<string[]>();
+            using (var reader = new StreamReader(typeof(AssetBrowserViewModel).Assembly.GetManifestResourceStream("GameRealisticMap.Studio.Modules.AssetBrowser.Data." + obj + ".csv")!))
+            {
+                string? line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        paths.Add(line.Split(';'));
+                    }
+                }
+            }
+            return paths;
+        }
     }
 }

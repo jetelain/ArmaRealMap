@@ -137,7 +137,7 @@ namespace GameRealisticMap.Arma3
             // Imagery
             var imageryCompiler = new ImageryCompiler(assets.Materials, progress, projectDrive);
 
-            var tiles = imageryCompiler.Compile(config, new ImagerySource(assets.Materials, progress, projectDrive, config, context));
+            var tiles = imageryCompiler.Compile(config, CreateImagerySource(progress, config, context));
             progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
@@ -157,9 +157,14 @@ namespace GameRealisticMap.Arma3
             wrpBuilder.Write(config, grid, tiles, objects);
             progress.ReportOneDone();
 
-            new DependencyUnpacker(assets, projectDrive).Unpack(progress, wrpBuilder);
+            new DependencyUnpacker(assets, projectDrive).Unpack(progress, config, wrpBuilder);
 
             return new WrpAndContextResults(config, context, wrpBuilder.UsedModels, wrpBuilder.UsedRvmat);
+        }
+
+        protected virtual IImagerySource CreateImagerySource(IProgressTask progress, Arma3MapConfig config, IContext context)
+        {
+            return new ImagerySource(assets.Materials, progress, projectDrive, config, context);
         }
 
         protected virtual IEnumerable<EditableWrpObject> GetObjects(IProgressTask progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
