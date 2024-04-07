@@ -35,4 +35,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Linux Command Line
-        path: Output\grma3
+        path: Output/grma3
