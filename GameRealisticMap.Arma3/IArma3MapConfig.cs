@@ -13,5 +13,7 @@
         float FakeSatBlend { get; }
 
         string WorldName { get; }
+
+        bool UseColorCorrection { get; }
     }
 }

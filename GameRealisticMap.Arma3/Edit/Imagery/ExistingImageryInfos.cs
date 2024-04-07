@@ -33,6 +33,8 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
 
         string IArma3MapConfig.WorldName => throw new NotImplementedException();
 
+        public bool UseColorCorrection => throw new NotImplementedException();
+
         public static ExistingImageryInfos? TryCreate(ProjectDrive projectDrive, string pboPrefix, float sizeInMeters)
         {
             var png = projectDrive.GetFullPath($"{pboPrefix}\\data\\layers\\M_{0:000}_{0:000}_lca.png");

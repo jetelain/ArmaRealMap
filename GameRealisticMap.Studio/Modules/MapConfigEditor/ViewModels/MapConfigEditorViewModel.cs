@@ -44,7 +44,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         public List<string> BuiltinAssetConfigFiles { get; } = Arma3Assets.GetBuiltinList();
 
-        public Arma3MapConfigJson Config { get; set; } = new Arma3MapConfigJson();
+        public Arma3MapConfigJson Config { get; set; } = new Arma3MapConfigJson() { UseColorCorrection = true };
 
         public int[] GridSizes { get; } = new int[] { 256, 512, 1024, 2048, 4096, 8192 };
         
@@ -277,6 +277,8 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(GridCellSize));
             NotifyOfPropertyChange(nameof(BoundingBox));
             NotifyOfPropertyChange(nameof(AssetConfigFile));
+            NotifyOfPropertyChange(nameof(UseColorCorrection));
+            NotifyOfPropertyChange(nameof(UseRawColors));
             NotifyCoordinatesRelated();
             await CheckDependencies();
         }
@@ -630,6 +632,25 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 freindlyName + ", GameRealisticMap",
                 a3config.TargetModDirectory,
                 IsNew ? null : FilePath);
+        }
+
+        public bool UseColorCorrection
+        {
+            get { return Config.UseColorCorrection; }
+            set
+            {
+                if (Config.UseColorCorrection != value)
+                {
+                    Config.UseColorCorrection = value;
+                    NotifyOfPropertyChange();
+                    NotifyOfPropertyChange(nameof(UseRawColors));
+                }
+            }
+        }
+        public bool UseRawColors
+        {
+            get { return !UseColorCorrection; }
+            set { UseColorCorrection = !value; }
         }
     }
 }

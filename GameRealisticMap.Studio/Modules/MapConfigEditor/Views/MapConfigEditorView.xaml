@@ -151,6 +151,13 @@
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">
+                            <Run Text="Satellite color"/>
+                        </Label>
+                        <RadioButton GroupName="SatMapColor" IsChecked="{Binding UseColorCorrection}">Use color correction</RadioButton>
+                        <RadioButton GroupName="SatMapColor" IsChecked="{Binding UseRawColors}">Use raw colors (will appear brighter in-game, pre-beta 10 behavior)</RadioButton>
+                    </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200">
                             <Run Text="{x:Static r:Labels.FakeSatBlend}"/>
                         </Label>
                         <TextBox Width="50" Margin="0 0 10 0" Text="{Binding Config.FakeSatBlend,Mode=TwoWay, ValidatesOnExceptions=True}" />
