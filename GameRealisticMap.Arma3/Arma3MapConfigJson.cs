@@ -23,6 +23,8 @@
 
         public string? TargetModDirectory { get; set; }
 
+        public bool UseColorCorrection { get; set; }
+
         public Arma3MapConfig ToArma3MapConfig()
         {
             return new Arma3MapConfig(this);

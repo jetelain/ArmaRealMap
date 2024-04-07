@@ -1,5 +1,7 @@
 ﻿using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3
 {
@@ -51,6 +53,8 @@ namespace GameRealisticMap.Arma3
                 TargetModDirectory = arma3MapConfigJson.TargetModDirectory;
             }
 
+            UseColorCorrection = arma3MapConfigJson.UseColorCorrection;
+
             Arma3ConfigHelper.ValidatePboPrefix(PboPrefix);
             Arma3ConfigHelper.ValidateWorldName(WorldName);
         }
@@ -98,5 +102,7 @@ namespace GameRealisticMap.Arma3
         public string AssetConfigFile { get; }
 
         public string TargetModDirectory { get; }
+
+        public bool UseColorCorrection { get; }
     }
 }

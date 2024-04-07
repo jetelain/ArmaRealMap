@@ -63,5 +63,6 @@ namespace GameRealisticMap.Arma3.Test
 
         public Vector2 CellSize { get; set; }
 
+        public bool UseColorCorrection { get; set; }
     }
 }
