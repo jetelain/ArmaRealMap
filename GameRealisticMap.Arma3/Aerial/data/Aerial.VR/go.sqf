@@ -41,7 +41,7 @@ private _data = call (compile preprocessFileLineNumbers "data.sqf");
 	setAperture _aperture;
 	"grma3aerial" callExtension ["TakeImage",[_a # 0 - 300, _a # 1 - 300, _b # 0 - 300, _b # 1 - 300, _model]];
 	sleep 0.5;
-	diag_log text format ["GRM::ONE"];
+	diag_log text format ["GRM::ONE %1;%2;%3;%4;%5", _a # 0 - 300, _a # 1 - 300, _b # 0 - 300, _b # 1 - 300, _model];
 
 	deleteVehicle _obj;
 	

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using GameRealisticMap.Arma3.Assets;
+﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Reporting;

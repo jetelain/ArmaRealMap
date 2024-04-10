@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Runtime.Versioning;
 using System.Text;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.Aerial
 {
-    internal class AerialPhotoWorker
+    [SupportedOSPlatform("windows")]
+    public sealed class AerialPhotoWorker
     {
         private readonly IProgressSystem progress;
         private readonly List<AerialModelRefence> models;
@@ -13,7 +15,7 @@ namespace GameRealisticMap.Arma3.Aerial
         private IProgressInteger? initial;
         private IProgressInteger? images;
 
-        internal AerialPhotoWorker(IProgressSystem progress, List<AerialModelRefence> models, string targetDirectory)
+        public AerialPhotoWorker(IProgressSystem progress, List<AerialModelRefence> models, string targetDirectory)
         {
             this.progress = progress;
             this.models = models;
@@ -21,13 +23,14 @@ namespace GameRealisticMap.Arma3.Aerial
             this.workspace = Path.Combine(Path.GetTempPath(), "grm-a3");
         }
 
-        private void Interpret(string line, Process process)
+        private void ProcessRptLine(string line)
         {
             progress.WriteLine(line);
 
             if (line.Contains("GRM::HELLO"))
             {
                 initial?.Dispose();
+                initial = null;
                 images = progress.CreateStep("Photos", models.Count);
             }
 
@@ -40,11 +43,52 @@ namespace GameRealisticMap.Arma3.Aerial
 
         public async Task TakePhotos()
         {
-            initial = progress.CreateStep("Init",1);
-
             UnpackFiles();
 
+            initial = progress.CreateStep("Init", 1);
+
+            var process = StartArma3();
+
+            await Task.Delay(5000); // Wait for Arma to create the .rpt file
+
+            var rptFilePath = SearchRptFile();
+
+            var cts = new CancellationTokenSource();
+
+            _ = Task.Run(() => FileContentWatcher.Watch(rptFilePath, cts.Token, ProcessRptLine));
+
+            await process.WaitForExitAsync();
+
+            cts.Cancel();
+
+            initial?.Dispose();
+            images?.Dispose();
+
+            var resultPath = Path.Combine(workspace, "result");
+            var resultImages = Directory.GetFiles(Path.Combine(workspace, "result"), "*.png", SearchOption.AllDirectories);
+            foreach(var pngFilePath in resultImages.ProgressStep(progress, "Copy"))
+            {
+                var relPath = pngFilePath.Substring(resultPath.Length + 1);
+                var targetPath = Path.Combine(targetDirectory, relPath);
+                Directory.CreateDirectory(Path.GetDirectoryName(targetPath)!);
+                File.Copy(pngFilePath, targetPath, true);
+            }
+        }
+
+        private string SearchRptFile()
+        {
+            var file = Directory.GetFiles(workspace, "*.rpt").OrderByDescending(f => File.GetLastWriteTimeUtc(f)).FirstOrDefault();
+            if (file == null)
+            {
+                throw new ApplicationException("No log file found");
+            }
+            return file;
+        }
+
+        private Process StartArma3()
+        {
             // TODO: Mods support
+            // TODO: Pack extension in mod
 
             var process = Process.Start(new ProcessStartInfo()
             {
@@ -52,39 +96,11 @@ namespace GameRealisticMap.Arma3.Aerial
                 Arguments = @$"-window -noSplash -noPause -profiles=""{workspace}"" -cfg=""{workspace}\arma3.cfg"" -name=grm -autotest={workspace}\autotest.cfg -mod=C:\temp\arma3\@aerial",
                 FileName = Path.Combine(Arma3ToolsHelper.GetArma3Path(), "Arma3_x64.exe")
             });
-
             if (process == null)
             {
                 throw new ApplicationException("Unable to launch Arma 3");
             }
-
-            Thread.Sleep(5000);
-
-            var file = Directory.GetFiles(workspace, "*.rpt").OrderByDescending(f => File.GetLastWriteTimeUtc(f)).FirstOrDefault();
-
-            if (file == null)
-            {
-                throw new ApplicationException("No log file found");
-            }
-
-            var cts = new CancellationTokenSource();
-
-            var task = Task.Run(() => FileContentWatcher.Watch(file, cts.Token, line => Interpret(line, process)));
-
-            process.WaitForExit();
-
-            cts.Cancel();
-
-            try
-            {
-                await task;
-            }
-            catch (TaskCanceledException)
-            {
-
-            }
-
-            images?.Dispose();
+            return process;
         }
 
         private void UnpackFiles()
@@ -144,7 +160,7 @@ namespace GameRealisticMap.Arma3.Aerial
 
         private static string? GetEmbedded(string v)
         {
-            using var stream = typeof(Program).Assembly.GetManifestResourceStream(v);
+            using var stream = typeof(AerialPhotoWorker).Assembly.GetManifestResourceStream(v);
             return new StreamReader(stream!).ReadToEnd();
         }
     }
