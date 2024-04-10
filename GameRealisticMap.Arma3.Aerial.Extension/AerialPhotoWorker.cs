@@ -72,7 +72,7 @@ namespace GameRealisticMap.Arma3.Aerial
                 {
                     Directory.CreateDirectory(targetDir);
                 }
-                imgSource.Mutate(m => m.Rotate(RotateMode.Rotate180).Flip(FlipMode.Vertical));
+                imgSource.Mutate(m => m.Flip(FlipMode.Horizontal));
                 imgSource.SaveAsPng(targetFile);
             }
             catch (Exception ex)
