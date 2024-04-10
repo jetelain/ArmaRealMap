@@ -13,4 +13,8 @@
 	  <EmbeddedResource Include="data\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
+  </ItemGroup>
+
 </Project>

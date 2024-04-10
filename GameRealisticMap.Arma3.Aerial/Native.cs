@@ -17,7 +17,7 @@ namespace GameRealisticMap.Arma3.Aerial
         [DllImport("user32.dll")]
         internal static extern bool SetProcessDPIAware();
 
-        [DllImport("user32.dll")]
-        public static extern bool SetForegroundWindow(nint hWnd);
+        //[DllImport("user32.dll")]
+        //public static extern bool SetForegroundWindow(nint hWnd);
     }
 }

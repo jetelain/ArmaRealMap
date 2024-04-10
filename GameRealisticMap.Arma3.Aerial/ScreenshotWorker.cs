@@ -6,7 +6,8 @@ namespace GameRealisticMap.Arma3.Aerial
 {
     internal sealed class ScreenshotWorker : IDisposable
     {
-        private const int DefaultDpi = 96;
+        //private const int DefaultDpi = 96;
+
         private readonly Bitmap bitmap;
         private readonly Graphics graphics;
         private readonly nint hwnd;
@@ -14,14 +15,17 @@ namespace GameRealisticMap.Arma3.Aerial
         public ScreenshotWorker(nint hwnd, int pxWidth = 1024, int pxHeight = 768)
         {
             this.hwnd = hwnd;
-            float dpiX;
-            float dpiY;
-            using (var source = Graphics.FromHwnd(hwnd))
-            {
-                dpiX = source.DpiX;
-                dpiY = source.DpiY;
-            }
-            bitmap = new Bitmap((int)(pxWidth * dpiX / DefaultDpi), (int)(pxHeight * dpiY / DefaultDpi), PixelFormat.Format32bppArgb);
+
+            //float dpiX;
+            //float dpiY;
+            //using (var source = Graphics.FromHwnd(hwnd))
+            //{
+            //    dpiX = source.DpiX;
+            //    dpiY = source.DpiY;
+            //}
+            //bitmap = new Bitmap((int)(pxWidth * dpiX / DefaultDpi), (int)(pxHeight * dpiY / DefaultDpi), PixelFormat.Format32bppArgb);
+
+            bitmap = new Bitmap(pxWidth, pxHeight, PixelFormat.Format32bppArgb);
             graphics = Graphics.FromImage(bitmap);
         }
 
@@ -34,7 +38,7 @@ namespace GameRealisticMap.Arma3.Aerial
         public void CaptureTo(string fileName)
         {
             var point = new Native.Point();
-            Native.SetForegroundWindow(hwnd);
+            //Native.SetForegroundWindow(hwnd);
             Native.ClientToScreen(hwnd, ref point);
             graphics.CopyFromScreen(point.x, point.y, 0, 0, bitmap.Size, CopyPixelOperation.SourceCopy);
             bitmap.Save(fileName);

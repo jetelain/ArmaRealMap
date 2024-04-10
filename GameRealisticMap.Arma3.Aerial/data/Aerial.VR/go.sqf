@@ -15,7 +15,7 @@ sleep 2;
 private _data = call (compile preprocessFileLineNumbers "data.sqf");
 
 {
-	_x params ['_model', '_altitude', '_halfWidth'];
+	_x params ['_model', '_altitude', '_halfWidth', '_zPos'];
 
 	private _fov = tan(asin(_halfWidth / sqrt(( _altitude*_altitude )+(_halfWidth*_halfWidth))));
 
@@ -32,13 +32,16 @@ private _data = call (compile preprocessFileLineNumbers "data.sqf");
 
 	setAperture _aperture;
 	diag_log text format ["GRM::CLR"];
-	sleep 0.5;
+	sleep 0.25;
 	
-	private _obj = createSimpleObject [_model, [ 300, 300, 0 ], true];
+	private _obj = createSimpleObject [_model, [ 300, 300, _zPos + 5 ], true];
 	setAperture _aperture;
-	sleep 1;
+	sleep 1.5;
+	
+	setAperture _aperture;
 	diag_log text format ["GRM::CAP;x1=%1;y1=%2;x2=%3;y2=%4;model=%5", _a # 0 - 300, _a # 1 - 300, _b # 0 - 300, _b # 1 - 300, _model ];
-	sleep 0.5;
+	sleep 0.25;
+
 	deleteVehicle _obj;
 	
 } foreach _data;
