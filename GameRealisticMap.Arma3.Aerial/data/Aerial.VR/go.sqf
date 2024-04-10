@@ -31,16 +31,17 @@ private _data = call (compile preprocessFileLineNumbers "data.sqf");
 	private _b = screenToWorld [safeZoneX+safeZoneW, safeZoneY+safeZoneH];
 
 	setAperture _aperture;
-	diag_log text format ["GRM::CLR"];
-	sleep 0.25;
+	"grma3aerial" callExtension "TakeClear";
+	sleep 0.5;
 	
 	private _obj = createSimpleObject [_model, [ 300, 300, _zPos + 5 ], true];
 	setAperture _aperture;
-	sleep 1.5;
+	sleep 2;
 	
 	setAperture _aperture;
-	diag_log text format ["GRM::CAP;x1=%1;y1=%2;x2=%3;y2=%4;model=%5", _a # 0 - 300, _a # 1 - 300, _b # 0 - 300, _b # 1 - 300, _model ];
-	sleep 0.25;
+	"grma3aerial" callExtension ["TakeImage",[_a # 0 - 300, _a # 1 - 300, _b # 0 - 300, _b # 1 - 300, _model]];
+	sleep 0.5;
+	diag_log text format ["GRM::ONE"];
 
 	deleteVehicle _obj;
 	

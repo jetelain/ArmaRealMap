@@ -10,8 +10,6 @@ namespace GameRealisticMap.Arma3.Aerial
     {
         static async Task Main(string[] args)
         {
-            Native.SetProcessDPIAware(); // We have to be DPI Aware to have correct coordinates of ClientToScreen
-
             var settings = await WorkspaceSettings.Load();
             var pdrive = settings.CreateProjectDrive();
             var library = new ModelInfoLibrary(pdrive);
@@ -29,9 +27,9 @@ namespace GameRealisticMap.Arma3.Aerial
 
             var progress = new ConsoleProgressSystem();
 
-            var worker = new AerialPhotoWorker(progress);
+            var worker = new AerialPhotoWorker(progress, references, string.Empty);
 
-            await worker.TakePhotos(references);
+            await worker.TakePhotos();
 
             progress.DisplayReport();
         }
