@@ -75,14 +75,11 @@ jobs:
     - name: Generate executable ZIP
       run: Compress-Archive -Path Output\* -DestinationPath GameRealisticMap.Studio.zip
 
-    - name: Upload build artifacts (TEST)
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: MSIX Test Package
-        path: |
-          GameRealisticMap.Studio.zip
-          GameRealisticMap.Studio.Package_Test.zip
-          ${{ env.Wap_Project_Directory }}\AppPackages\*.appxupload
+        name: APPX Upload File
+        path: ${{ env.Wap_Project_Directory }}\AppPackages\*.appxupload
           
     - uses: Shopify/upload-to-release@master
       with:

@@ -31,12 +31,6 @@ jobs:
     - name: Generate tar.gz
       run: tar -czvf grma3.tar.gz -C Output grma3
         
-    - name: Upload build artifacts (TEST)
-      uses: actions/upload-artifact@v3
-      with:
-        name: Linux Command Line
-        path: grma3.tar.gz
-        
     - uses: Shopify/upload-to-release@master
       with:
         name: grma3-${{ steps.nbgv.outputs.SimpleVersion }}.tar.gz
