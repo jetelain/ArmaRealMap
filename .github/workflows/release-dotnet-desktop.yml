@@ -38,6 +38,7 @@ jobs:
         [xml]$manifest = get-content ".\$env:Wap_Project_Directory\Package.appxmanifest"
         $manifest.Package.Identity.Version = "${{ steps.nbgv.outputs.SimpleVersion }}.0"
         $manifest.Package.Identity.Publisher = "CN=ArmaRealMap GitHub Actions"
+        $manifest.Package.Identity.Name = "63155JulienEtelain.GameRealisticMapStudio.GHA"
         $manifest.save(".\$env:Wap_Project_Directory\Package.appxmanifest")
         
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
@@ -72,12 +73,6 @@ jobs:
     
     - name: Generate executable ZIP
       run: Compress-Archive -Path Output\* -DestinationPath GameRealisticMap.Studio.zip
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: APPX Upload File
-        path: ${{ env.Wap_Project_Directory }}\AppPackages\*.appxupload
           
     - uses: Shopify/upload-to-release@master
       with:
