@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.Versioning;
 using System.Text;
+using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.Aerial
@@ -12,15 +13,17 @@ namespace GameRealisticMap.Arma3.Aerial
         private readonly List<AerialModelRefence> models;
         private readonly string targetDirectory;
         private readonly string workspace;
+        private readonly List<ModDependencyDefinition> dependencies;
         private IProgressInteger? initial;
         private IProgressInteger? images;
 
-        public AerialPhotoWorker(IProgressSystem progress, List<AerialModelRefence> models, string targetDirectory)
+        public AerialPhotoWorker(IProgressSystem progress, List<AerialModelRefence> models, string targetDirectory, IEnumerable<ModDependencyDefinition> dependencies)
         {
             this.progress = progress;
             this.models = models;
             this.targetDirectory = targetDirectory;
             this.workspace = Path.Combine(Path.GetTempPath(), "grm-a3");
+            this.dependencies = dependencies.ToList();
         }
 
         private void ProcessRptLine(string line)
@@ -87,13 +90,15 @@ namespace GameRealisticMap.Arma3.Aerial
 
         private Process StartArma3()
         {
-            // TODO: Mods support
             // TODO: Pack extension in mod
+
+            var workshop = Arma3ToolsHelper.GetArma3WorkshopPath();
+            var mods = string.Join(";", dependencies.Select(d => Path.Combine(workshop, d.SteamId)).Concat(new[] { "C:\\temp\\arma3\\@aerial" }));
 
             var process = Process.Start(new ProcessStartInfo()
             {
                 UseShellExecute = false,
-                Arguments = @$"-window -noSplash -noPause -profiles=""{workspace}"" -cfg=""{workspace}\arma3.cfg"" -name=grm -autotest={workspace}\autotest.cfg -mod=C:\temp\arma3\@aerial",
+                Arguments = @$"-window -noSplash -noPause -profiles=""{workspace}"" -cfg=""{workspace}\arma3.cfg"" -name=grm -autotest={workspace}\autotest.cfg ""-mod={mods}""",
                 FileName = Path.Combine(Arma3ToolsHelper.GetArma3Path(), "Arma3_x64.exe")
             });
             if (process == null)

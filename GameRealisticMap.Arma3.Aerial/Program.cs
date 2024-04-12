@@ -26,7 +26,7 @@ namespace GameRealisticMap.Arma3.Aerial
 
             var progress = new ConsoleProgressSystem();
 
-            var worker = new AerialPhotoWorker(progress, references, string.Empty);
+            var worker = new AerialPhotoWorker(progress, references, string.Empty, assets.Dependencies);
 
             await worker.TakePhotos();
 

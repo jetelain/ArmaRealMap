@@ -63,6 +63,9 @@
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
+                    <Button Margin="10 0" Padding="10" cal:Message.Attach="TakeAerialImages">
+                        Prepare Aerial Images
+                    </Button>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Margin="10 0" Visibility="{Binding CanCopyFrom, Converter={StaticResource BooleanToVisibilityConverter}}">
