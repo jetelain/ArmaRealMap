@@ -1,8 +1,6 @@
 name: Release for .NET Windows
 
 on:
-  push:
-    branches: [ "*" ] # for testing purposes
   release:
     types: [published]
   
