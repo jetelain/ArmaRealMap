@@ -16,6 +16,7 @@ using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.Arma3Data.ViewModels;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
@@ -465,7 +466,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .Distinct(StringComparer.OrdinalIgnoreCase);
         }
 
-        public IEnumerable<string> ListReferencedModels()
+        public IEnumerable<string> ListReferencedModelsButNotClutter()
         {
             return Filling.SelectMany(f => f.GetModels())
                 .Concat(Fences.SelectMany(f => f.GetModels()))
@@ -476,7 +477,6 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .Concat(Railways.SelectMany(f => f.GetModels()))
                 .Concat(NaturalRows.SelectMany(f => f.GetModels()))
                 .Concat(Sidewalks.SelectMany(f => f.GetModels()))
-                .Concat(Materials.SelectMany(f => f.GetModels()))
                 .Where(f => !string.IsNullOrEmpty(f))
                 .Distinct(StringComparer.OrdinalIgnoreCase);
         }
@@ -549,14 +549,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public Task TakeAerialImages()
         {
-            IoC.Get<IProgressTool>()
-                .RunTask(Labels.GenerateDemoWrpFile, progress => 
-                    IoC.Get<IArma3AerialImageService>().TakeImages(
-                        ListReferencedModels(),
-                        ComputeModDependencies(),
-                        progress));
-
-            return Task.CompletedTask;
+            return IoC.Get<IWindowManager>().ShowDialogAsync(new Arma3AerialImageViewModel(ListReferencedModelsButNotClutter().ToList(), ComputeModDependencies()));
         }
 
     }

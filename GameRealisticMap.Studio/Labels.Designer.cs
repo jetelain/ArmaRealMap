@@ -242,6 +242,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Arma 3 will start. It must remain at foreground..
+        /// </summary>
+        public static string Arma3WillStartItMustRemainAtForeground {
+            get {
+                return ResourceManager.GetString("Arma3WillStartItMustRemainAtForeground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à CfgPatches defining base world.
         /// </summary>
         public static string ArmaBaseWorldDependency {
@@ -3124,6 +3133,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0} images will be taken; it will take up to {1} minutes..
+        /// </summary>
+        public static string NImagesWillBeTakenItWillTakeUpToNMinutes {
+            get {
+                return ResourceManager.GetString("NImagesWillBeTakenItWillTakeUpToNMinutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Frequency.
         /// </summary>
         public static string NoiseFrequency {
@@ -3971,6 +3989,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Take Aerial Images.
+        /// </summary>
+        public static string TakeAerialImages {
+            get {
+                return ResourceManager.GetString("TakeAerialImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Replacement model.
         /// </summary>
         public static string TargetModel {
@@ -4057,6 +4084,15 @@ namespace GameRealisticMap.Studio {
         public static string TileSize {
             get {
                 return ResourceManager.GetString("TileSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à To interrupt process, press Escape key, and then close Arma 3 window..
+        /// </summary>
+        public static string ToInterruptProcessPressEscapeKeyAndThenCloseArma3Window {
+            get {
+                return ResourceManager.GetString("ToInterruptProcessPressEscapeKeyAndThenCloseArma3Window", resourceCulture);
             }
         }
         

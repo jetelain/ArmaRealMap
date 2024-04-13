@@ -1537,4 +1537,16 @@ Dernière génération le {1}</value>
   <data name="InGameColorsShouldBeCurrentColors" xml:space="preserve">
     <value>Les couleurs en jeu devraient être les couleurs actuelles</value>
   </data>
+  <data name="TakeAerialImages" xml:space="preserve">
+    <value>Prendre les images aériennes</value>
+  </data>
+  <data name="Arma3WillStartItMustRemainAtForeground" xml:space="preserve">
+    <value>Arma 3 va démarrer, il doit rester au premier plan.</value>
+  </data>
+  <data name="ToInterruptProcessPressEscapeKeyAndThenCloseArma3Window" xml:space="preserve">
+    <value>Pour interrompre le processus, appuyer sur la touche Echap, puis fermer la fenêtre de Arma 3.</value>
+  </data>
+  <data name="NImagesWillBeTakenItWillTakeUpToNMinutes" xml:space="preserve">
+    <value>{0} images vont être prises; cela prendre jusqu'à {1} minutes.</value>
+  </data>
 </root>

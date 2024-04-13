@@ -11,5 +11,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
         Uri? GetImageUri(string model);
 
         Task TakeImages(IEnumerable<string> models, IEnumerable<ModDependencyDefinition> mods, IProgressSystem progressSystem, bool onlyMissing = true);
+
+        int CountMissing(IEnumerable<string> models);
     }
 }

@@ -52,6 +52,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
             }
         }
 
+        public int CountMissing(IEnumerable<string> models)
+        {
+            return models.Count(m => !Exists(m));
+        }
+
         private bool Exists(string model)
         {
             return File.Exists(Path.Combine(AerialImagesPath, Path.ChangeExtension(model, ".png")));
