@@ -136,21 +136,21 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             }
         }
 
-        public ImageSource? AerialImage => aerial.Value;
+        public BitmapFrame? AerialImage => aerial.Value;
 
         public Matrix AerialMatrix
         {
             get
             {
-                var matrix = new Matrix(1, 0, 0, 1, -(AerialImage?.Width ?? 0) / 8, -(AerialImage?.Height ?? 0) / 8);
+                var matrix = new Matrix(1, 0, 0, 1, -(AerialImage?.PixelWidth ?? 0) / 8, -(AerialImage?.PixelHeight ?? 0) / 8);
                 matrix.Append(ToTerrainBuilderObject().ToWrpTransform().ToAerialWpfMatrix());
                 return matrix;
             }
         }
 
-        public double AerialWidth => aerial.Value?.Width / 4 ?? 0;
+        public double AerialWidth => aerial.Value?.PixelWidth / 4 ?? 0;
 
-        public double AerialHeight => aerial.Value?.Height / 4 ?? 0;
+        public double AerialHeight => aerial.Value?.PixelHeight / 4 ?? 0;
 
         private static string ToPath(IEnumerable<TerrainPolygon> polygons)
         {

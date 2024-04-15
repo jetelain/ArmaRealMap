@@ -76,7 +76,7 @@ namespace GameRealisticMap.Studio.Controls
                             if (aerial != null)
                             {
                                 var img = BitmapFrame.Create(aerial); // TODO: Create a cache
-                                dc.DrawImage(img, new Rect(-img.Width / 8, -img.Width / 8, img.Width / 4, img.Width / 4));
+                                dc.DrawImage(img, new Rect(-img.PixelWidth / 8, -img.PixelHeight / 8, img.PixelWidth / 4, img.PixelHeight / 4));
                                 switch (obj.Category)
                                 {
                                     case AssetCatalogCategory.Tree:
