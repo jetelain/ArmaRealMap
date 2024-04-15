@@ -8,6 +8,8 @@
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views"
              xmlns:vm="clr-namespace:GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels"
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             xmlns:cal="http://caliburnmicro.com"
              Foreground="{DynamicResource EnvironmentWindowText}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -75,6 +77,9 @@
                 </RadioButton.ContextMenu>
             </RadioButton>
 
+            <Button Margin="20 0" Padding="5 0" cal:Message.Attach="TakeAerialImages">
+                <Run Text="{x:Static r:Labels.TakeAerialImages}"/>
+            </Button>
         </StackPanel>
 
         <grm:GrmMap Grid.Row="1" SizeInMeters="{Binding SizeInMeters}" >

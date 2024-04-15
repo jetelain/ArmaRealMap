@@ -20,6 +20,7 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.Arma3Data.ViewModels;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit;
@@ -668,6 +669,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 }
             }
             return Task.CompletedTask;
+        }
+
+        public Task TakeAerialImages()
+        {
+            return IoC.Get<IWindowManager>().ShowDialogAsync(new Arma3AerialImageViewModel(
+                ObjectStatsItems.Select(o => o.Model).ToList(),
+                Dependencies));
         }
     }
 }

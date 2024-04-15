@@ -198,6 +198,65 @@
                     </local:ZoomBorder>
                 </Border>
             </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Run Text="Aerial View" />
+                </TabItem.Header>
+                <Border ClipToBounds="True">
+                    <local:ZoomBorder Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center" Background="LightGray">
+                        <Grid Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" ClipToBounds="False"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <local:CanvasWithGrid Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Background="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            </local:CanvasWithGrid>
+
+
+                            <ItemsControl ItemsSource="{Binding Composition.Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <Canvas.RenderTransform>
+                                                <TransformGroup>
+                                                    <MatrixTransform Matrix="20,0,0,-20,600,600" />
+                                                </TransformGroup>
+                                            </Canvas.RenderTransform>
+                                        </Canvas>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding AerialImage}" Width="{Binding AerialWidth}" Height="{Binding AerialHeight}">
+                                            <Image.RenderTransform>
+                                                <MatrixTransform Matrix="{Binding AerialMatrix}" />
+                                            </Image.RenderTransform>
+                                        </Image>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+
+
+                            <Canvas Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Line X1="0" X2="{x:Static local:CanvasGrid.Size}" Y1="{x:Static local:CanvasGrid.HalfSize}" Y2="{x:Static local:CanvasGrid.HalfSize}"  Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Stroke="Red" StrokeThickness="1" />
+                                <Line X1="{x:Static local:CanvasGrid.HalfSize}" X2="{x:Static local:CanvasGrid.HalfSize}" Y1="0" Y2="{x:Static local:CanvasGrid.Size}"  Width="{x:Static local:CanvasGrid.Size}" Height="{x:Static local:CanvasGrid.Size}" Stroke="Red" StrokeThickness="1" />
+                            </Canvas>
+                            <Ellipse 
+            Width="{Binding Radius.FitRadius, Converter={StaticResource MetersToPixelsConverterX2}}" 
+            Height="{Binding Radius.FitRadius, Converter={StaticResource MetersToPixelsConverterX2}}"
+            Visibility="{Binding HasRadius, Converter={StaticResource BoolToVisibilityConverter}}" 
+            StrokeThickness="2" Stroke="Green" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <Ellipse 
+            Width="{Binding Radius.Radius, Converter={StaticResource MetersToPixelsConverterX2}}" 
+            Height="{Binding Radius.Radius, Converter={StaticResource MetersToPixelsConverterX2}}"
+            Visibility="{Binding HasRadius, Converter={StaticResource BoolToVisibilityConverter}}"
+            StrokeThickness="2" Stroke="Blue" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="#100000FF" />
+                            <Rectangle 
+            Width="{Binding Rectangle.Width, Converter={StaticResource MetersToPixelsConverter}}" 
+            Height="{Binding Rectangle.Depth, Converter={StaticResource MetersToPixelsConverter}}"
+            Visibility="{Binding HasRectangle, Converter={StaticResource BoolToVisibilityConverter}}" 
+            StrokeThickness="2" Stroke="Blue" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="#100000FF" ClipToBounds="False" />
+                        </Grid>
+                    </local:ZoomBorder>
+                </Border>
+            </TabItem>
             
         </TabControl>
 

@@ -4,10 +4,14 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Caliburn.Micro;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.Toolkit;
 
 namespace GameRealisticMap.Studio.Controls
 {
@@ -66,22 +70,46 @@ namespace GameRealisticMap.Studio.Controls
                     {
                         if (scale * obj.Radius > 15)
                         {
-                            dc.PushTransform(new MatrixTransform(obj.Matrix.M11, obj.Matrix.M13, obj.Matrix.M31, obj.Matrix.M33, obj.Matrix.M41, obj.Matrix.M43));
+                            dc.PushTransform(obj.Matrix.ToAerialWpfMatrixTransform());
 
-                            switch (obj.Category)
+                            var aerial = IoC.Get<IArma3AerialImageService>().GetImageUri(obj.Model); // TODO: Create an option to opt-in/opt-out
+                            if (aerial != null)
                             {
-                                case AssetCatalogCategory.Tree:
-                                    dc.DrawEllipse(tree, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
-                                    break;
-                                case AssetCatalogCategory.Bush:
-                                    dc.DrawEllipse(bush, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
-                                    break;
-                                case AssetCatalogCategory.WaterSurface:
-                                    dc.DrawRectangle(water, null, obj.Rectangle);
-                                    break;
-                                default:
-                                    dc.DrawRectangle(fill, null, obj.Rectangle);
-                                    break;
+                                var img = BitmapFrame.Create(aerial); // TODO: Create a cache
+                                dc.DrawImage(img, new Rect(-img.Width / 8, -img.Width / 8, img.Width / 4, img.Width / 4));
+                                switch (obj.Category)
+                                {
+                                    case AssetCatalogCategory.Tree:
+                                        dc.DrawEllipse(null, new Pen(tree, 0.1), new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                                        break;
+                                    case AssetCatalogCategory.Bush:
+                                        dc.DrawEllipse(null, new Pen(bush, 0.1), new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                                        break;
+                                    case AssetCatalogCategory.WaterSurface:
+                                        dc.DrawRectangle(null, new Pen(water, 0.1), obj.Rectangle);
+                                        break;
+                                    default:
+                                        dc.DrawRectangle(null, new Pen(fill, 0.1), obj.Rectangle);
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                switch (obj.Category)
+                                {
+                                    case AssetCatalogCategory.Tree:
+                                        dc.DrawEllipse(tree, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                                        break;
+                                    case AssetCatalogCategory.Bush:
+                                        dc.DrawEllipse(bush, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                                        break;
+                                    case AssetCatalogCategory.WaterSurface:
+                                        dc.DrawRectangle(water, null, obj.Rectangle);
+                                        break;
+                                    default:
+                                        dc.DrawRectangle(fill, null, obj.Rectangle);
+                                        break;
+                                }
                             }
                             dc.Pop();
                         }
