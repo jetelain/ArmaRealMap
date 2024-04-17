@@ -20,9 +20,13 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="5">
             <RadioButton GroupName="View" IsChecked="{Binding BackgroundMode, Converter={grm:EnumToBoolean {x:Static vm:BackgroundMode.Satellite}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0">
@@ -38,7 +42,30 @@
                 </StackPanel> 
             </RadioButton>
 
-            <RadioButton GroupName="Tool" IsChecked="{Binding EditTool, Converter={grm:EnumToBoolean {x:Static vm:EditTool.Cursor}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0" Margin="10 0 0 0">
+            <Rectangle Width="2" Margin="7 0" Fill="{x:Static SystemColors.ActiveBorderBrush}" />
+
+            <RadioButton GroupName="Aerial" IsChecked="{Binding AerialViewMode, Source={x:Reference A3Layer}, Converter={grm:EnumToBoolean {x:Static grm:AerialViewMode.Shape}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/shape.png" Height="16" />
+                    <TextBlock VerticalAlignment="Center" Margin="5" >Shape</TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton GroupName="Aerial" IsChecked="{Binding AerialViewMode, Source={x:Reference A3Layer}, Converter={grm:EnumToBoolean {x:Static grm:AerialViewMode.ShapeAndImage}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/aerialAndShape.png" Height="16" />
+                    <TextBlock VerticalAlignment="Center" Margin="5" >Both</TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton GroupName="Aerial" IsChecked="{Binding AerialViewMode, Source={x:Reference A3Layer}, Converter={grm:EnumToBoolean {x:Static grm:AerialViewMode.Image}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/aerial.png" Height="16" />
+                    <TextBlock VerticalAlignment="Center" Margin="5" >Image</TextBlock>
+                </StackPanel>
+            </RadioButton>
+
+            <Rectangle Width="2" Margin="7 0" Fill="{x:Static SystemColors.ActiveBorderBrush}" />
+
+            <RadioButton GroupName="Tool" IsChecked="{Binding EditTool, Converter={grm:EnumToBoolean {x:Static vm:EditTool.Cursor}}}" Style="{StaticResource ToolBarToggleButtonStyleBase}" Padding="5 0">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/cursor.png" Height="16" />
                 </StackPanel>
@@ -77,18 +104,20 @@
                 </RadioButton.ContextMenu>
             </RadioButton>
 
-            <Button Margin="20 0" Padding="5 0" cal:Message.Attach="TakeAerialImages">
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5"  Grid.Column="1">
+            <Button Padding="5 0" cal:Message.Attach="TakeAerialImages">
                 <Run Text="{x:Static r:Labels.TakeAerialImages}"/>
             </Button>
         </StackPanel>
-
-        <grm:GrmMap Grid.Row="1" SizeInMeters="{Binding SizeInMeters}" >
+        <grm:GrmMap Grid.Row="1" SizeInMeters="{Binding SizeInMeters}"  Grid.ColumnSpan="2">
 
             <grm:GrmMapEditLayer EditPoints="{Binding EditPoints}" ClearSelection="{Binding SelectItemCommand}" InsertPointCommand="{Binding InsertPointCommand}"  EditMode="{Binding GrmMapEditMode, Mode=TwoWay}" Outline="{Binding SelectedItems}">
                 
                 <grm:GrmMapHugeImageLayer Image="{Binding BackgroundImage}"  Resolution="{Binding BackgroundResolution}" Opacity="0.8" IsHitTestVisible="False" />
 
-                <grm:GrmMapArma3 Roads="{Binding Roads}" Objects="{Binding Objects}" SelectItem="{Binding SelectItemCommand}" AddToSelectionCommand="{Binding AddToSelectionCommand}" />
+                <grm:GrmMapArma3 x:Name="A3Layer" Roads="{Binding Roads}" Objects="{Binding Objects}" SelectItem="{Binding SelectItemCommand}" AddToSelectionCommand="{Binding AddToSelectionCommand}" />
 
                 <grm:GrmMapEditLayer.SelectionContextMenu>
                     <ContextMenu>

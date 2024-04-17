@@ -19,7 +19,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
     internal class CompositionItem : PropertyChangedBase
     {
         private readonly TerrainBuilderObject terrainBuilderObject;
-        private readonly Lazy<BitmapFrame> aerial;
+        private readonly Lazy<BitmapSource?> aerial;
 
         public CompositionItem(CompositionObject source, CompositionViewModel parent)
         {
@@ -32,7 +32,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             _yaw = terrainBuilderObject.Yaw;
             _roll = terrainBuilderObject.Roll;
             _scale = terrainBuilderObject.Scale;
-            aerial = new Lazy<BitmapFrame>(() => BitmapFrame.Create(IoC.Get<IArma3AerialImageService>().GetImageUri(Model.Path)));
+            aerial = new Lazy<BitmapSource?>(() => IoC.Get<IArma3AerialImageService>().GetImage(Model.Path));
         }
 
         public bool WasEdited => _x != terrainBuilderObject.Point.X
@@ -136,7 +136,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             }
         }
 
-        public BitmapFrame? AerialImage => aerial.Value;
+        public BitmapSource? AerialImage => aerial.Value;
 
         public Matrix AerialMatrix
         {
