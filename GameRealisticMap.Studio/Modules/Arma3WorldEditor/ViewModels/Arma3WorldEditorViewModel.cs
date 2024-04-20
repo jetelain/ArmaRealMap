@@ -24,6 +24,7 @@ using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
+using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
@@ -105,6 +106,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             NotifyOfPropertyChange(nameof(HistoryEntry));
             NotifyOfPropertyChange(nameof(TreeName));
+
+            await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
         }
 
         private void UpdateBackupsList(string filePath)
@@ -317,6 +320,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     await JsonSerializer.SerializeAsync(stream, Dependencies);
                 }
             }
+            await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
         }
 
         internal void LoadRoads()

@@ -25,5 +25,27 @@ namespace GameRealisticMap.Studio.Toolkit
                 await provider.Open(editor, filePath);
             }
         }
+
+        public static async Task OpenDefaultEditor(string filePath)
+        {
+            var shell = IoC.Get<IShell>();
+
+            var opened = shell.Documents.OfType<IPersistedDocument>().FirstOrDefault(d => string.Equals(d.FilePath, filePath));
+            if (opened != null)
+            {
+                await shell.OpenDocumentAsync(opened);
+            }
+            else
+            {
+                var provider = IoC.GetAll<IEditorProvider>().FirstOrDefault(e => e.Handles(filePath));
+                if (provider == null)
+                {
+                    return;
+                }
+                var editor = provider.Create();
+                await shell.OpenDocumentAsync(editor);
+                await provider.Open(editor, filePath);
+            }
+        }
     }
 }

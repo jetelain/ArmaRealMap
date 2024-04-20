@@ -21,6 +21,7 @@ using GameRealisticMap.Studio.Modules.AssetConfigEditor;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Main;
+using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
@@ -280,7 +281,8 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(UseColorCorrection));
             NotifyOfPropertyChange(nameof(UseRawColors));
             NotifyCoordinatesRelated();
-            await CheckDependencies();
+            await CheckDependencies(); 
+            await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
         }
 
         protected override async Task DoNew()
@@ -297,6 +299,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         {
             using var stream = File.Create(filePath);
             await SaveTo(stream);
+            await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
         }
 
         public Task GeneratePreview(bool ignoreElevation = false)
