@@ -15,6 +15,14 @@
   <ItemGroup>
     <EmbeddedResource Include="Builtin\*.grma3a" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <EmbeddedResource Include="Aerial\data\Aerial.VR\go.sqf" />
+    <EmbeddedResource Include="Aerial\data\Aerial.VR\init.sqf" />
+    <EmbeddedResource Include="Aerial\data\Aerial.VR\mission.sqm" />
+    <EmbeddedResource Include="Aerial\data\arma3.cfg" />
+    <EmbeddedResource Include="Aerial\data\grm.Arma3Profile" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\bis-file-formats\BIS.P3D\BIS.P3D.csproj" />

@@ -227,6 +227,9 @@
                         <Button Margin="5" Padding="10" cal:Message.Attach="OpenReduce">
                             <Run Text="{x:Static r:Labels.Reduce}" />
                         </Button>
+                        <Button Margin="5" Padding="10" cal:Message.Attach="TakeAerialImages">
+                            <Run Text="{x:Static r:Labels.TakeAerialImages}"/>
+                        </Button>
                     </StackPanel>
 
                     <TextBlock Text="{Binding ObjectStatsText}" Margin="0 0 0 10" />

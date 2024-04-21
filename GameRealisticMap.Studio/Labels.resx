@@ -1537,4 +1537,16 @@ Last generated on {1}</value>
   <data name="InGameColorsShouldBeCurrentColors" xml:space="preserve">
     <value>In game colors should be current colors</value>
   </data>
+  <data name="TakeAerialImages" xml:space="preserve">
+    <value>Take Aerial Images</value>
+  </data>
+  <data name="Arma3WillStartItMustRemainAtForeground" xml:space="preserve">
+    <value>Arma 3 will start. It must remain at foreground.</value>
+  </data>
+  <data name="ToInterruptProcessPressEscapeKeyAndThenCloseArma3Window" xml:space="preserve">
+    <value>To interrupt process, press Escape key, and then close Arma 3 window.</value>
+  </data>
+  <data name="NImagesWillBeTakenItWillTakeUpToNMinutes" xml:space="preserve">
+    <value>{0} images will be taken; it will take up to {1} minutes.</value>
+  </data>
 </root>

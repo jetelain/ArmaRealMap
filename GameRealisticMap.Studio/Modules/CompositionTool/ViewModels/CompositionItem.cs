@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Numerics;
 using System.Text;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.CompositionTool.Views;
+using GameRealisticMap.Studio.Toolkit;
 
 namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
 {
     internal class CompositionItem : PropertyChangedBase
     {
         private readonly TerrainBuilderObject terrainBuilderObject;
+        private readonly Lazy<BitmapSource?> aerial;
 
         public CompositionItem(CompositionObject source, CompositionViewModel parent)
         {
@@ -28,6 +32,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             _yaw = terrainBuilderObject.Yaw;
             _roll = terrainBuilderObject.Roll;
             _scale = terrainBuilderObject.Scale;
+            aerial = new Lazy<BitmapSource?>(() => IoC.Get<IArma3AerialImageService>().GetImage(Model.Path));
         }
 
         public bool WasEdited => _x != terrainBuilderObject.Point.X
@@ -79,6 +84,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             NotifyOfPropertyChange(nameof(PreviewVisualAxisZ));
             NotifyOfPropertyChange(nameof(PreviewGeoAxisX));
             NotifyOfPropertyChange(nameof(PreviewVisualAxisX));
+            NotifyOfPropertyChange(nameof(AerialMatrix));
         }
 
         public string PreviewGeoAxisY
@@ -129,6 +135,23 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
                 return ToPath(IoC.Get<IArma3DataModule>().ModelPreviewHelper.ToVisualAxisX(ToTerrainBuilderObject()));
             }
         }
+
+        public BitmapSource? AerialImage => aerial.Value;
+
+        public Matrix AerialMatrix
+        {
+            get
+            {
+                var matrix = new Matrix(1, 0, 0, 1, -(AerialImage?.PixelWidth ?? 0) / 8, -(AerialImage?.PixelHeight ?? 0) / 8);
+                matrix.Append(ToTerrainBuilderObject().ToWrpTransform().ToAerialWpfMatrix());
+                return matrix;
+            }
+        }
+
+        public double AerialWidth => aerial.Value?.PixelWidth / 4 ?? 0;
+
+        public double AerialHeight => aerial.Value?.PixelHeight / 4 ?? 0;
+
         private static string ToPath(IEnumerable<TerrainPolygon> polygons)
         {
             var sb = new StringBuilder();

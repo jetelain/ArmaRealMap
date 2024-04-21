@@ -39,5 +39,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public AssetCatalogCategory Category => modelInfo.Category;
 
         public Rect Rectangle { get; }
+
+        public string Model => obj.Model;
     }
 }

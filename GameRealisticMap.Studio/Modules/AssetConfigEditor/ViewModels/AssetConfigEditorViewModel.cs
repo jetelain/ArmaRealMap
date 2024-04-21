@@ -16,6 +16,7 @@ using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using GameRealisticMap.Studio.Modules.Arma3Data.ViewModels;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
@@ -467,6 +468,21 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 .Distinct(StringComparer.OrdinalIgnoreCase);
         }
 
+        public IEnumerable<string> ListReferencedModelsButNotClutter()
+        {
+            return Filling.SelectMany(f => f.GetModels())
+                .Concat(Fences.SelectMany(f => f.GetModels()))
+                .Concat(Buildings.SelectMany(f => f.GetModels()))
+                .Concat(Objects.SelectMany(f => f.GetModels()))
+                .Concat(Roads.SelectMany(f => f.GetModels()))
+                .Concat(Ponds.Where(p => !string.IsNullOrEmpty(p.Model)).Select(p => p.Model!))
+                .Concat(Railways.SelectMany(f => f.GetModels()))
+                .Concat(NaturalRows.SelectMany(f => f.GetModels()))
+                .Concat(Sidewalks.SelectMany(f => f.GetModels()))
+                .Where(f => !string.IsNullOrEmpty(f))
+                .Distinct(StringComparer.OrdinalIgnoreCase);
+        }
+
         public List<ModDependencyDefinition> ComputeModDependencies()
         {
             return IoC.Get<IArma3Dependencies>().ComputeModDependencies(ListReferencedFiles()).ToList();
@@ -532,5 +548,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             await JsonSerializer.SerializeAsync(stream, ToJson(), Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library)).ConfigureAwait(false);
         }
+
+        public Task TakeAerialImages()
+        {
+            return IoC.Get<IWindowManager>().ShowDialogAsync(new Arma3AerialImageViewModel(ListReferencedModelsButNotClutter().ToList(), ComputeModDependencies()));
+        }
+
     }
 }
