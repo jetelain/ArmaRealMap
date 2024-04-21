@@ -28,6 +28,7 @@ using GameRealisticMap.Studio.Modules.CompositionTool.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Main;
+using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using GameRealisticMap.Studio.UndoRedo;
@@ -165,11 +166,11 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public override string DisplayName { get => base.DisplayName; set { base.DisplayName = value; NotifyOfPropertyChange(nameof(TreeName)); } }
 
-        protected override Task DoLoad(string filePath)
+        protected override async Task DoLoad(string filePath)
         {
-            Task.Run(() => DoLoadBackground(filePath));
+            _ = Task.Run(() => DoLoadBackground(filePath));
 
-            return Task.CompletedTask;
+            await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
         }
 
         private async Task DoLoadBackground(string filePath)
@@ -414,6 +415,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         {
             using var stream = File.Create(filePath);
             await SaveTo(stream);
+            await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
             CanCopyFrom = false;
         }
 

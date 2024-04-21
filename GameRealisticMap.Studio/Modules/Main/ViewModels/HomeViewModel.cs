@@ -10,6 +10,7 @@ using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor;
 using GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor;
+using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.MapConfigEditor;
 using Gemini.Framework;
 using Gemini.Framework.Services;
@@ -24,13 +25,18 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
         private bool isArma3ToolsAccepted;
         private readonly IShell _shell;
         private readonly IArma3RecentHistory _history;
+        private readonly IRecentFilesService _recentFilesService;
 
         [ImportingConstructor]
-        public HomeViewModel(IShell shell, IArma3RecentHistory history)
+        public HomeViewModel(IShell shell, IArma3RecentHistory history, IRecentFilesService recentFilesService)
         {
             _shell = shell;
             _history = history;
             _history.Changed += (_, _) => UpdateRecent();
+
+            _recentFilesService = recentFilesService;
+            _recentFilesService.Changed += (_, _) => UpdateRecent();
+
             DisplayName = Labels.Home;
             SetupArma3WorkDriveCommand = new RelayCommand(_ => Arma3ToolsHelper.EnsureProjectDrive(false));
         }
@@ -45,27 +51,33 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 
         public RelayCommand SetupArma3WorkDriveCommand { get; }
         public List<WorldEntry> EditMaps { get; private set; } = new List<WorldEntry>();
+        public List<RecentEntry> RecentFiles { get; private set; } = new List<RecentEntry>();
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
             await RefreshArma3ToolChain();
-
-            if (IsProjectDriveCreated)
-            {
-                UpdateRecent();
-            }
+            UpdateRecent();
         }
 
         private void UpdateRecent()
         {
             _ = Task.Run(async () =>
             {
-                var result = await _history.GetEntries();
+                if (IsProjectDriveCreated)
+                {
+                    var a3maps = await _history.GetEntries();
+                    if (a3maps.Count > 0)
+                    {
+                        var drive = IoC.Get<IArma3DataModule>().ProjectDrive;
+                        EditMaps = a3maps.Select(r => new WorldEntry(r, drive)).Where(r => r.Exists).OrderByDescending(r => r.TimeStamp).Take(10).ToList();
+                        NotifyOfPropertyChange(nameof(EditMaps));
+                    }
+                }
+                var result = await _recentFilesService.GetEntries();
                 if (result.Count > 0)
                 {
-                    var drive = IoC.Get<IArma3DataModule>().ProjectDrive;
-                    EditMaps = result.Select(r => new WorldEntry(r, drive)).Where(r => r.Exists).OrderByDescending(r => r.TimeStamp).Take(10).ToList();
-                    NotifyOfPropertyChange(nameof(EditMaps));
+                    RecentFiles = result.Select(r => new RecentEntry(r)).Where(r => r.Exists && !EditMaps.Any(m => r.IsSame(m.FilePath))).OrderByDescending(r => r.IsPinned).ThenByDescending(r => r.TimeStamp).Take(10).ToList();
+                    NotifyOfPropertyChange(nameof(RecentFiles));
                 }
             });
         }
