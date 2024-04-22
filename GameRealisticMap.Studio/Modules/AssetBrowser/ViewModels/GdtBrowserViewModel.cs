@@ -223,6 +223,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return libraryItem;
         }
 
+        internal async Task<GdtDetailViewModel?> Resolve(string colorTexture)
+        {
+            return (await awaitableItems).FirstOrDefault(i => string.Equals(i.ColorTexture, colorTexture, StringComparison.OrdinalIgnoreCase));
+        }
+
         internal void ComputeColorUniqueness()
         {
             foreach(var grp in AllItems.GroupBy(i => i.ColorId))

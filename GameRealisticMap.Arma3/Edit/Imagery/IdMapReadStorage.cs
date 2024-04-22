@@ -15,8 +15,6 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
         private readonly string path;
         private readonly List<TerrainMaterial> materials;
 
-        private static readonly Regex TextureMatch = new Regex(@"texture=""([^""]*)"";\r?\n\ttexGen=2;", RegexOptions.CultureInvariant);
-
         public IdMapReadStorage(ImageryTilerHugeImagePartitioner partitioner, IGameFileSystem fileSystem, string path, TerrainMaterialLibrary library)
         {
             this.partitioner = partitioner;
@@ -66,7 +64,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
                 throw new FileNotFoundException($"File '{rvmatFileName}' was not found.");
             }
             var rvmatContent = await new StreamReader(streamRvmat).ReadToEndAsync();
-            var matches = TextureMatch.Matches(rvmatContent);
+            var matches = IdMapHelper.TextureMatch.Matches(rvmatContent);
             var textures = matches.Select(m => m.Groups[1].Value)
                 .Select(tex => materials.FirstOrDefault(d => string.Equals(d.ColorTexture, tex, StringComparison.OrdinalIgnoreCase)) ?? throw new ApplicationException($"Texture '{0}' is not declared in asset configuration."))
                 .ToList();

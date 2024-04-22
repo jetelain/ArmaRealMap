@@ -166,7 +166,7 @@
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            
+
                             <Label Grid.Row="0" Grid.Column="0">
                                 <Run Text="{x:Static r:Labels.TileSize}" />
                             </Label>
@@ -186,12 +186,49 @@
 
 
                     </StackPanel>
-                    
+
                 </StackPanel>
-                
-                
             </Expander>
-            
+
+            <Expander IsExpanded="True" Margin="10">
+                <Expander.Header>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.GroundMaterials}"/></TextBlock>
+                </Expander.Header>
+                <StackPanel Margin="10">
+                    <StackPanel Orientation="Horizontal" >
+                        <Button Margin="5" Padding="10" cal:Message.Attach="RegenerateMaterialsFromLibrary" IsEnabled="{Binding AreAllMaterialsFromLibrary}">
+                            <Run Text="Re-generate from library" />
+                        </Button>
+                        <TextBlock VerticalAlignment="Center">
+                                <Run Text="{x:Static r:Labels.CannotBeReversedWarning}" />
+                        </TextBlock>
+                    </StackPanel>
+                    <DataGrid ItemsSource="{Binding Materials}" AutoGenerateColumns="false" MaxHeight="500" grm:ScrollBehaviors.WheelBubble="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{x:Static r:Labels.ColorTexture}" Binding="{Binding ColorTexture}" IsReadOnly="True" Width="500" />
+                            <DataGridTemplateColumn Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Padding="10 2" cal:Message.Attach="OpenMaterial" IsEnabled="{Binding IsFromLibrary, Mode=OneWay}">
+                                            <Run Text="{x:Static r:Labels.Open}"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Padding="10 2" cal:Message.Attach="ReplaceTexture" IsEnabled="{Binding IsFromLibrary, Mode=OneWay}">
+                                            <Run Text="{x:Static r:Labels.Replace}"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Expander>
+
             <Expander IsExpanded="True" Margin="10">
                 <Expander.Header>
                     <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.ElevationGrid}"/></TextBlock>

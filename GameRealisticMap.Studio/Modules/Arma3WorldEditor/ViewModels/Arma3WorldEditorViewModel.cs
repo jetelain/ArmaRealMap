@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BIS.Core.Config;
 using BIS.Core.Streams;
@@ -24,6 +26,7 @@ using GameRealisticMap.Studio.Modules.Arma3Data.ViewModels;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit;
+using GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
@@ -32,6 +35,7 @@ using Gemini.Framework;
 using Gemini.Framework.Services;
 using HugeImages;
 using HugeImages.Storage;
+using MapControl;
 using Microsoft.Win32;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -53,6 +57,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private Arma3WorldMapViewModel? mapEditor;
         private EditableArma3Roads? roads;
         private List<ObjectStatsItem> objectStatsItems = new List<ObjectStatsItem>();
+        private List<MaterialItem> _materials = new List<MaterialItem>();
 
         public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history, IArma3BackupService worldBackup) 
         {
@@ -96,6 +101,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             if (ConfigFile != null && WrpCompiler.SeemsGeneratedByUs(World, ConfigFile.PboPrefix))
             {
                 Imagery = ExistingImageryInfos.TryCreate(arma3Data.ProjectDrive, ConfigFile.PboPrefix, SizeInMeters!.Value);
+
+                Materials = await MaterialItem.Create(World, arma3Data.ProjectDrive, ConfigFile.PboPrefix);
             }
 
             if (Roads != null)
@@ -110,6 +117,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
         }
+
+        private static readonly Regex TextureMatch = new Regex(@"texture=""([^""]*)"";\r?\n\ttexGen=2;", RegexOptions.CultureInvariant);
 
         private void UpdateBackupsList(string filePath)
         {
@@ -287,6 +296,18 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapFile.png";
 
         public IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
+
+        public List<MaterialItem> Materials
+        { 
+            get { return _materials; }
+            set 
+            { 
+                if (Set(ref _materials, value)) 
+                {
+                    NotifyOfPropertyChange(nameof(AreAllMaterialsFromLibrary));
+                } 
+            } 
+        }
 
         protected override Task DoNew()
         {
@@ -680,6 +701,17 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             return IoC.Get<IWindowManager>().ShowDialogAsync(new Arma3AerialImageViewModel(
                 ObjectStatsItems.Select(o => o.Model).ToList(),
                 Dependencies));
+        }
+
+        public bool AreAllMaterialsFromLibrary => Materials.Count > 0 && Materials.All(m => m.IsFromLibrary);
+
+        public Task RegenerateMaterialsFromLibrary()
+        {
+            if (ConfigFile != null)
+            {
+                ProgressToolHelper.Start(new RegenerateMaterialsFromLibraryTask(arma3Data.ProjectDrive, Imagery ?? new ExistingImageryInfos(0, 0, 0, ConfigFile.PboPrefix), Materials));
+            }
+            return Task.CompletedTask;
         }
     }
 }
