@@ -102,7 +102,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 Imagery = ExistingImageryInfos.TryCreate(arma3Data.ProjectDrive, ConfigFile.PboPrefix, SizeInMeters!.Value);
 
-                Materials = await MaterialItem.Create(World, arma3Data.ProjectDrive, ConfigFile.PboPrefix);
+                Materials = await MaterialItem.Create(this, World, arma3Data.ProjectDrive, ConfigFile.PboPrefix);
             }
 
             if (Roads != null)
@@ -257,7 +257,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public string Size => $"{_world?.TerrainRangeX} × {CellSize} m ➜ {SizeInMeters} m";
 
-        public IGameFileSystem GameFileSystem => arma3Data.ProjectDrive;
+        public ProjectDrive ProjectDrive => arma3Data.ProjectDrive;
 
         public ModelInfoLibrary Library => arma3Data.Library;
 
@@ -709,9 +709,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (ConfigFile != null)
             {
-                ProgressToolHelper.Start(new RegenerateMaterialsFromLibraryTask(arma3Data.ProjectDrive, Imagery ?? new ExistingImageryInfos(0, 0, 0, ConfigFile.PboPrefix), Materials));
+                ProgressToolHelper.Start(new RegenerateMaterialsFromLibraryTask(ProjectDrive, GetConfig(), Materials));
             }
             return Task.CompletedTask;
+        }
+
+        public ExistingImageryInfos GetConfig()
+        {
+            return Imagery ?? new ExistingImageryInfos(0, 0, 0, ConfigFile?.PboPrefix ?? string.Empty);
         }
     }
 }

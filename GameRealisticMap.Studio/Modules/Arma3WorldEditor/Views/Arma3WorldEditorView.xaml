@@ -197,7 +197,7 @@
                 <StackPanel Margin="10">
                     <StackPanel Orientation="Horizontal" >
                         <Button Margin="5" Padding="10" cal:Message.Attach="RegenerateMaterialsFromLibrary" IsEnabled="{Binding AreAllMaterialsFromLibrary}">
-                            <Run Text="Re-generate from library" />
+                            <Run Text="{x:Static r:Labels.ReGenerateFromLibrary}" />
                         </Button>
                         <TextBlock VerticalAlignment="Center">
                                 <Run Text="{x:Static r:Labels.CannotBeReversedWarning}" />
@@ -218,7 +218,7 @@
                             <DataGridTemplateColumn Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Padding="10 2" cal:Message.Attach="ReplaceTexture" IsEnabled="{Binding IsFromLibrary, Mode=OneWay}">
+                                        <Button Padding="10 2" cal:Message.Attach="ReplaceMaterial">
                                             <Run Text="{x:Static r:Labels.Replace}"/>
                                         </Button>
                                     </DataTemplate>

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text;
 using GameRealisticMap.Arma3.IO;
 using SixLabors.ImageSharp;
 
@@ -45,7 +46,11 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
 
         public Stream? OpenFileIfExists(string path)
         {
-            throw new NotImplementedException();
+            if (TextFiles.TryGetValue(path, out var result))
+            {
+                return new MemoryStream(Encoding.UTF8.GetBytes(result));
+            }
+            return null;
         }
 
         public void WritePngImage(string path, Image image)

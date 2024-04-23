@@ -3,25 +3,30 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BIS.WRP;
 using Caliburn.Micro;
+using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit.Imagery;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit;
 using GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels;
+using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
     internal class MaterialItem : PropertyChangedBase
     {
+        private readonly Arma3WorldEditorViewModel parent;
         private string texture;
         private GdtDetailViewModel? libTexture;
 
-        public MaterialItem(string texture, GdtDetailViewModel? libTexture)
+        public MaterialItem(Arma3WorldEditorViewModel parent, string texture, GdtDetailViewModel? libTexture)
         {
+            this.parent = parent;
             this.texture = texture;
             this.libTexture = libTexture;
         }
 
-        public static async Task<List<MaterialItem>> Create(EditableWrp wrp, ProjectDrive projectDrive, string pboPrefix)
+        public static async Task<List<MaterialItem>> Create(Arma3WorldEditorViewModel parent, EditableWrp wrp, ProjectDrive projectDrive, string pboPrefix)
         {
             var items = new List<MaterialItem>();
             var textures = await IdMapHelper.GetUsedTextureList(wrp, projectDrive);
@@ -34,7 +39,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     {
                         libTexture = await IoC.Get<GdtBrowserViewModel>().Resolve("{PboPrefix}" + texture.Substring(pboPrefix.Length));
                     }
-                    items.Add(new MaterialItem(texture, libTexture));
+                    items.Add(new MaterialItem(parent, texture, libTexture));
                 }
             }
             return items;
@@ -43,7 +48,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public string ColorTexture 
         { 
             get { return texture; } 
-            private set { Set(ref texture, value); } 
+            set { Set(ref texture, value); } 
+        }
+
+        public GdtDetailViewModel? LibraryItem
+        {
+            get { return libTexture; }
+            set 
+            { 
+                if (Set(ref libTexture, value))
+                { 
+                    NotifyOfPropertyChange(nameof(IsFromLibrary));
+                } 
+            }
         }
 
         public bool IsFromLibrary => libTexture != null; 
@@ -51,6 +68,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public Task OpenMaterial()
         {
             return libTexture?.OpenMaterial() ?? Task.CompletedTask;
+        }
+
+        public Task ReplaceMaterial()
+        {
+            return IoC.Get<IWindowManager>().ShowDialogAsync(new ReplaceMaterialViewModel(this, parent));
         }
 
         internal TerrainMaterialDefinition? ToDefinition()
