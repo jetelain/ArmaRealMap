@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using GameRealisticMap.Arma3.GameEngine.Materials;
 using SixLabors.ImageSharp.PixelFormats;
@@ -45,7 +46,12 @@ namespace GameRealisticMap.Arma3.Assets
 
         public TerrainMaterial GetMaterialById(Rgb24 id)
         {
-            return indexByColor[id];
+            if (indexByColor.TryGetValue(id, out var material))
+            {
+                return material;
+            }
+            var vector = id.ToScaledVector4();
+            return definitions.OrderByDescending(d => Vector4.DistanceSquared(vector, d.Material.Id.ToScaledVector4())).First().Material;
         }
 
         public TerrainMaterial GetMaterialByUsage(TerrainMaterialUsage usage)
