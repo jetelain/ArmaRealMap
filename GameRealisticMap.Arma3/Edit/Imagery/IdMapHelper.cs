@@ -11,7 +11,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
 
         internal static readonly Regex TextureMatch = new Regex(@"texture=""([^""]*)"";\r?\n\ttexGen=2;", RegexOptions.CultureInvariant);
 
-        public static Task<List<GroundDetailTexture>> GetUsedTextureList(EditableWrp wrp, ProjectDrive projectDrive)
+        public static Task<List<GroundDetailTexture>> GetUsedTextureList(EditableWrp wrp, IGameFileSystem projectDrive)
         {
             return GetUsedTextureList(GetRvMatList(wrp), projectDrive);
         }
@@ -24,7 +24,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
                             .ToList();
         }
 
-        public async static Task<List<GroundDetailTexture>> GetUsedTextureList(List<string> rvmat, ProjectDrive projectDrive)
+        public async static Task<List<GroundDetailTexture>> GetUsedTextureList(List<string> rvmat, IGameFileSystem projectDrive)
         {
             var textures = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             await Parallel.ForEachAsync(rvmat, async (rv, ct) =>

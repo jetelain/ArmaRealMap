@@ -51,7 +51,7 @@ namespace GameRealisticMap.Arma3.Assets
                 return material;
             }
             var vector = id.ToScaledVector4();
-            return definitions.OrderByDescending(d => Vector4.DistanceSquared(vector, d.Material.Id.ToScaledVector4())).First().Material;
+            return definitions.OrderBy(d => Vector4.DistanceSquared(vector, d.Material.Id.ToScaledVector4())).First().Material;
         }
 
         public TerrainMaterial GetMaterialByUsage(TerrainMaterialUsage usage)
