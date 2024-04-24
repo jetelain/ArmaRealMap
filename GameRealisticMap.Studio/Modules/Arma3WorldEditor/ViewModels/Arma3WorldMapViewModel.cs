@@ -311,11 +311,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 SatMap = parentEditor.Imagery.GetSatMap(arma3Data.ProjectDrive);
 
-                var assets = await parentEditor.GetAssetsFromHistory();
-                if (assets != null)
-                {
-                    IdMap = parentEditor.Imagery.GetIdMap(arma3Data.ProjectDrive, assets.Materials);
-                }
+                IdMap = parentEditor.Imagery.GetIdMap(arma3Data.ProjectDrive, await parentEditor.GetExportMaterialLibrary());
             }
 
             _ = Task.Run(DoLoadWorld);

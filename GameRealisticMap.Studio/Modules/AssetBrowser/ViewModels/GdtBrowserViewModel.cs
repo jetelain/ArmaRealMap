@@ -313,5 +313,18 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             await gdtDetailViewModel.TryCloseAsync();
             AllItems.RemoveUndoable(UndoRedoManager, gdtDetailViewModel);
         }
+
+
+        internal async Task<TerrainMaterialLibrary> ToTerrainMaterialLibrary()
+        {
+            var allItems = (await awaitableItems);
+            return new TerrainMaterialLibrary(allItems.Select(i => new TerrainMaterialDefinition(i.ToMaterial(), new TerrainMaterialUsage[0], i.ToSurfaceConfig(), i.ToData())).ToList());
+        }
+
+        internal async Task<TerrainMaterialLibrary> ToTerrainMaterialLibraryIdOnly()
+        {
+            var allItems = (await awaitableItems);
+            return new TerrainMaterialLibrary(allItems.Select(i => new TerrainMaterialDefinition(i.ToMaterial(), new TerrainMaterialUsage[0])).ToList());
+        }
     }
 }

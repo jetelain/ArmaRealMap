@@ -33,6 +33,7 @@ using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 using Gemini.Framework.Services;
+using HelixToolkit.Wpf;
 using HugeImages;
 using HugeImages.Storage;
 using MapControl;
@@ -540,14 +541,26 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 if (dialog.ShowDialog() == true)
                 {
                     var filename = dialog.FileName;
-                    var assets = await GetAssetsFromHistory() ?? await AskUserForAssets();
-                    if (assets != null)
-                    {
-                        _ = IoC.Get<IProgressTool>()
-                            .RunTask(GameRealisticMap.Studio.Labels.ExportTextureMaskImage, ui => DoExport(ui, filename, _imagery.GetIdMap(arma3Data.ProjectDrive, assets.Materials)));
-                    }
+                    var materials = await GetExportMaterialLibrary();
+                    _ = IoC.Get<IProgressTool>()
+                        .RunTask(GameRealisticMap.Studio.Labels.ExportTextureMaskImage, ui => DoExport(ui, filename, _imagery.GetIdMap(arma3Data.ProjectDrive, materials)));
+
                 }
             }
+        }
+
+        internal async Task<TerrainMaterialLibrary> GetExportMaterialLibrary()
+        {
+            var lib = IoC.Get<GdtBrowserViewModel>();
+            var assets = await GetAssetsFromHistory();
+            if (assets != null)
+            {
+                foreach(var definition in assets.Materials.Definitions)
+                {
+                    await lib.Resolve(definition.Material, definition.Surface, definition.Title);
+                }
+            }
+            return await lib.ToTerrainMaterialLibraryIdOnly();
         }
 
         private async Task<Arma3Assets?> AskUserForAssets()
@@ -638,6 +651,22 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                         _ = IoC.Get<IProgressTool>()
                             .RunTask(GameRealisticMap.Studio.Labels.ImportTextureMaskImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, assets.Materials, ui).UpdateIdMap(_imagery, filename)));
                     }
+                }
+            }
+        }
+        public async Task ImportIdMapWithLibrary()
+        {
+            if (_imagery != null)
+            {
+                var dialog = new OpenFileDialog();
+                dialog.Filter = "PNG|*.png";
+                if (dialog.ShowDialog() == true)
+                {
+                    var filename = dialog.FileName;
+                    var materials = await IoC.Get<GdtBrowserViewModel>().ToTerrainMaterialLibrary();
+
+                    _ = IoC.Get<IProgressTool>()
+                            .RunTask(GameRealisticMap.Studio.Labels.ImportTextureMaskImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, materials, ui).UpdateIdMap(_imagery, filename)));
                 }
             }
         }

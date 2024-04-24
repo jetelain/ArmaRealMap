@@ -148,8 +148,14 @@
                             <Button Margin="5" Padding="10" cal:Message.Attach="ImportSatMap">
                                 <Run Text="{x:Static r:Labels.ImportSatelliteImage}" />
                             </Button>
-                            <Button Margin="5" Padding="10" cal:Message.Attach="ImportIdMap">
+                            <Button Margin="5" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
                                 <Run Text="{x:Static r:Labels.ImportTextureMaskImage}" />
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Import texture mask image exported with Beta 9 or earlier (Asset configuration based)" cal:Message.Attach="ImportIdMap" />
+                                        <MenuItem Header="Import texture mask image exported with Beta 10 or more recent (Library based)" cal:Message.Attach="ImportIdMapWithLibrary" />
+                                    </ContextMenu>
+                                </Button.ContextMenu>
                             </Button>
                             <TextBlock VerticalAlignment="Center">
                                 <Run Text="{x:Static r:Labels.CannotBeReversedWarning}" />

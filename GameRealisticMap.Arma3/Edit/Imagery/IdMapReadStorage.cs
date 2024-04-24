@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
@@ -13,14 +14,14 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
         private readonly ImageryTilerHugeImagePartitioner partitioner;
         private readonly IGameFileSystem fileSystem;
         private readonly string path;
-        private readonly List<TerrainMaterial> materials;
+        private readonly Dictionary<string, TerrainMaterial> materials;
 
-        public IdMapReadStorage(ImageryTilerHugeImagePartitioner partitioner, IGameFileSystem fileSystem, string path, TerrainMaterialLibrary library)
+        public IdMapReadStorage(ImageryTilerHugeImagePartitioner partitioner, IGameFileSystem fileSystem, string path, TerrainMaterialLibrary library, IArma3MapConfig config)
         {
             this.partitioner = partitioner;
             this.fileSystem = fileSystem;
             this.path = path;
-            materials = library.Definitions.Select(d => d.Material).ToList();
+            materials = library.Definitions.Select(d => d.Material).ToDictionary(m => m.GetColorTexturePath(config), m => m, StringComparer.OrdinalIgnoreCase);
         }
 
         public void Dispose()
@@ -66,7 +67,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
             var rvmatContent = await new StreamReader(streamRvmat).ReadToEndAsync();
             var matches = IdMapHelper.TextureMatch.Matches(rvmatContent);
             var textures = matches.Select(m => m.Groups[1].Value)
-                .Select(tex => materials.FirstOrDefault(d => string.Equals(d.ColorTexture, tex, StringComparison.OrdinalIgnoreCase)) ?? throw new ApplicationException($"Texture '{0}' is not declared in asset configuration."))
+                .Select(tex => materials[tex])
                 .ToList();
             if (textures.Count == 0)
             {
