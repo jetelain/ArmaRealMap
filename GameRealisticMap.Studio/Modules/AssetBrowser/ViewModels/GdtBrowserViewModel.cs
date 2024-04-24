@@ -212,6 +212,21 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return vm;
         }
 
+        internal async Task<GdtDetailViewModel?> ImportExternal(string colorTexture, string normalTexture)
+        {
+            using var fakeSat = GdtHelper.GenerateFakeSatPngImage(_arma3Previews, colorTexture);
+            if (fakeSat != null)
+            {
+                var allItems = (await awaitableItems);
+                var color = GdtHelper.AllocateUniqueColor(fakeSat, allItems.Select(i => i.ColorId));
+                var config = new GdtCatalogItem(new TerrainMaterial(normalTexture, colorTexture, color.ToRgb24(), fakeSat?.ToPngByteArray()), null, GdtCatalogItemType.GameData, null);
+                var vm = new GdtDetailViewModel(this, config);
+                allItems.Add(vm);
+                return vm;
+            }
+            return null;
+        }
+
         internal async Task<GdtDetailViewModel> Resolve(TerrainMaterial mat, SurfaceConfig? surf, string? title = null)
         {
             var items = await awaitableItems;

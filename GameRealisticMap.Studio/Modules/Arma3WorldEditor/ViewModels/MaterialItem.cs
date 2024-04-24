@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BIS.WRP;
 using Caliburn.Micro;
-using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit.Imagery;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit;
 using GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels;
-using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
@@ -32,14 +30,22 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             var textures = await IdMapHelper.GetUsedTextureList(wrp, projectDrive);
             if (textures.Count > 0)
             {
+                var lib = IoC.Get<GdtBrowserViewModel>();
                 foreach (var texture in textures)
                 {
-                    var libTexture = await IoC.Get<GdtBrowserViewModel>().Resolve(texture);
-                    if (libTexture == null && texture.StartsWith(pboPrefix, StringComparison.OrdinalIgnoreCase))
+                    var libTexture = await lib.Resolve(texture.ColorTexture);
+                    if (libTexture == null)
                     {
-                        libTexture = await IoC.Get<GdtBrowserViewModel>().Resolve("{PboPrefix}" + texture.Substring(pboPrefix.Length));
+                        if (texture.ColorTexture.StartsWith(pboPrefix, StringComparison.OrdinalIgnoreCase))
+                        {
+                            libTexture = await lib.Resolve("{PboPrefix}" + texture.ColorTexture.Substring(pboPrefix.Length));
+                        }
+                        else
+                        {
+                            libTexture = await lib.ImportExternal(texture.ColorTexture, texture.NormalTexture);
+                        }
                     }
-                    items.Add(new MaterialItem(parent, texture, libTexture));
+                    items.Add(new MaterialItem(parent, texture.ColorTexture, libTexture));
                 }
             }
             return items;

@@ -11,7 +11,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
 
         internal static readonly Regex TextureMatch = new Regex(@"texture=""([^""]*)"";\r?\n\ttexGen=2;", RegexOptions.CultureInvariant);
 
-        public static Task<List<string>> GetUsedTextureList(EditableWrp wrp, ProjectDrive projectDrive)
+        public static Task<List<GroundDetailTexture>> GetUsedTextureList(EditableWrp wrp, ProjectDrive projectDrive)
         {
             return GetUsedTextureList(GetRvMatList(wrp), projectDrive);
         }
@@ -24,22 +24,27 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
                             .ToList();
         }
 
-        public async static Task<List<string>> GetUsedTextureList(List<string> rvmat, ProjectDrive projectDrive)
+        public async static Task<List<GroundDetailTexture>> GetUsedTextureList(List<string> rvmat, ProjectDrive projectDrive)
         {
-            var textures = new ConcurrentQueue<string>();
+            var textures = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             await Parallel.ForEachAsync(rvmat, async (rv, ct) =>
             {
                 using var file  = projectDrive.OpenFileIfExists(rv);
                 if (file != null)
                 {
                     var content = await new StreamReader(file).ReadToEndAsync();
-                    foreach (var texture in TextureMatch.Matches(content).Select(m => m.Groups[1].Value))
+                    var colors = TextureMatch.Matches(content).Select(m => m.Groups[1].Value).ToList();
+                    var normals = NormalMatch.Matches(content).Select(m => m.Groups[1].Value).ToList();
+                    if (colors.Count == normals.Count)
                     {
-                        textures.Enqueue(texture);
+                        for( var i = 0; i < colors.Count; i++ )
+                        {
+                            textures.TryAdd(colors[i], normals[i]);
+                        }
                     }
                 }
             });
-            return textures.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            return textures.Select(p => new GroundDetailTexture(p.Key, p.Value)).ToList();
         }
     }
 }
