@@ -1,16 +1,12 @@
 using System;
 using System.IO;
 using System.Linq;
-using ArmaRealMapWebSite.Entities;
-using ArmaRealMapWebSite.Entities.Assets;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,9 +31,6 @@ namespace ArmaRealMapWebSite
             });
 
             services.AddControllersWithViews();
-
-            services.AddDbContext<ArmaRealMapContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString(nameof(ArmaRealMapContext)) ?? Configuration.GetConnectionString("AssetsContext")));
 
             services.AddAuthentication(options =>
                 {
