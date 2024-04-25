@@ -65,7 +65,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
         public HugeImage<Rgb24> GetIdMap(IGameFileSystem fileSystem, TerrainMaterialLibrary materials)
         {
             var parts = new ImageryTilerHugeImagePartitioner(CreateTiler());
-            return new HugeImage<Rgb24>(new IdMapReadStorage(parts, fileSystem, PboPrefix, materials), new Size(TotalSize), new HugeImageSettingsBase(), parts, new Rgb24());
+            return new HugeImage<Rgb24>(new IdMapReadStorage(parts, fileSystem, PboPrefix, materials, this), new Size(TotalSize), new HugeImageSettingsBase(), parts, new Rgb24());
         }
 
         internal ImageryTiler CreateTiler()

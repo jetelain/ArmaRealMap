@@ -13,5 +13,17 @@
             }
             throw new FileNotFoundException(null, path);
         }
+
+        public static async Task<string> ReadAllTextAsync(this IGameFileSystem gameFileSystem, string path)
+        {
+            using (var stream = gameFileSystem.OpenFileIfExists(path))
+            {
+                if (stream != null)
+                {
+                    return await new StreamReader(stream).ReadToEndAsync();
+                }
+            }
+            throw new FileNotFoundException(null, path);
+        }
     }
 }

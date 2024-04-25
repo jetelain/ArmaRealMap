@@ -3548,6 +3548,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Re-generate from library.
+        /// </summary>
+        public static string ReGenerateFromLibrary {
+            get {
+                return ResourceManager.GetString("ReGenerateFromLibrary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Relative elevation (to ground).
         /// </summary>
         public static string RelativeElevation {
@@ -3602,11 +3611,29 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Replacement texture.
+        /// </summary>
+        public static string ReplacementTexture {
+            get {
+                return ResourceManager.GetString("ReplacementTexture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Replace objects.
         /// </summary>
         public static string ReplaceObjects {
             get {
                 return ResourceManager.GetString("ReplaceObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Replace texture.
+        /// </summary>
+        public static string ReplaceTexture {
+            get {
+                return ResourceManager.GetString("ReplaceTexture", resourceCulture);
             }
         }
         
@@ -3913,6 +3940,15 @@ namespace GameRealisticMap.Studio {
         public static string SourceModel {
             get {
                 return ResourceManager.GetString("SourceModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Source texture.
+        /// </summary>
+        public static string SourceTexture {
+            get {
+                return ResourceManager.GetString("SourceTexture", resourceCulture);
             }
         }
         

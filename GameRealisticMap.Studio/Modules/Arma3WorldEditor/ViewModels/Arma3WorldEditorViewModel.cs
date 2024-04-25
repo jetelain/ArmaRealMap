@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BIS.Core.Config;
 using BIS.Core.Streams;
@@ -24,14 +26,17 @@ using GameRealisticMap.Studio.Modules.Arma3Data.ViewModels;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit;
+using GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 using Gemini.Framework.Services;
+using HelixToolkit.Wpf;
 using HugeImages;
 using HugeImages.Storage;
+using MapControl;
 using Microsoft.Win32;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -53,6 +58,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private Arma3WorldMapViewModel? mapEditor;
         private EditableArma3Roads? roads;
         private List<ObjectStatsItem> objectStatsItems = new List<ObjectStatsItem>();
+        private List<MaterialItem> _materials = new List<MaterialItem>();
 
         public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history, IArma3BackupService worldBackup) 
         {
@@ -96,6 +102,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             if (ConfigFile != null && WrpCompiler.SeemsGeneratedByUs(World, ConfigFile.PboPrefix))
             {
                 Imagery = ExistingImageryInfos.TryCreate(arma3Data.ProjectDrive, ConfigFile.PboPrefix, SizeInMeters!.Value);
+
+                Materials = await MaterialItem.Create(this, World, arma3Data.ProjectDrive, ConfigFile.PboPrefix);
             }
 
             if (Roads != null)
@@ -110,6 +118,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
         }
+
+        private static readonly Regex TextureMatch = new Regex(@"texture=""([^""]*)"";\r?\n\ttexGen=2;", RegexOptions.CultureInvariant);
 
         private void UpdateBackupsList(string filePath)
         {
@@ -248,7 +258,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public string Size => $"{_world?.TerrainRangeX} × {CellSize} m ➜ {SizeInMeters} m";
 
-        public IGameFileSystem GameFileSystem => arma3Data.ProjectDrive;
+        public ProjectDrive ProjectDrive => arma3Data.ProjectDrive;
 
         public ModelInfoLibrary Library => arma3Data.Library;
 
@@ -287,6 +297,18 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public string Icon => $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapFile.png";
 
         public IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
+
+        public List<MaterialItem> Materials
+        { 
+            get { return _materials; }
+            set 
+            { 
+                if (Set(ref _materials, value)) 
+                {
+                    NotifyOfPropertyChange(nameof(AreAllMaterialsFromLibrary));
+                } 
+            } 
+        }
 
         protected override Task DoNew()
         {
@@ -519,14 +541,26 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 if (dialog.ShowDialog() == true)
                 {
                     var filename = dialog.FileName;
-                    var assets = await GetAssetsFromHistory() ?? await AskUserForAssets();
-                    if (assets != null)
-                    {
-                        _ = IoC.Get<IProgressTool>()
-                            .RunTask(GameRealisticMap.Studio.Labels.ExportTextureMaskImage, ui => DoExport(ui, filename, _imagery.GetIdMap(arma3Data.ProjectDrive, assets.Materials)));
-                    }
+                    var materials = await GetExportMaterialLibrary();
+                    _ = IoC.Get<IProgressTool>()
+                        .RunTask(GameRealisticMap.Studio.Labels.ExportTextureMaskImage, ui => DoExport(ui, filename, _imagery.GetIdMap(arma3Data.ProjectDrive, materials)));
+
                 }
             }
+        }
+
+        internal async Task<TerrainMaterialLibrary> GetExportMaterialLibrary()
+        {
+            var lib = IoC.Get<GdtBrowserViewModel>();
+            var assets = await GetAssetsFromHistory();
+            if (assets != null)
+            {
+                foreach(var definition in assets.Materials.Definitions)
+                {
+                    await lib.Resolve(definition.Material, definition.Surface, definition.Title);
+                }
+            }
+            return await lib.ToTerrainMaterialLibraryIdOnly();
         }
 
         private async Task<Arma3Assets?> AskUserForAssets()
@@ -620,6 +654,22 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 }
             }
         }
+        public async Task ImportIdMapWithLibrary()
+        {
+            if (_imagery != null)
+            {
+                var dialog = new OpenFileDialog();
+                dialog.Filter = "PNG|*.png";
+                if (dialog.ShowDialog() == true)
+                {
+                    var filename = dialog.FileName;
+                    var materials = await IoC.Get<GdtBrowserViewModel>().ToTerrainMaterialLibrary();
+
+                    _ = IoC.Get<IProgressTool>()
+                            .RunTask(GameRealisticMap.Studio.Labels.ImportTextureMaskImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, materials, ui).UpdateIdMap(_imagery, filename)));
+                }
+            }
+        }
 
         public Task EditAdvanced()
         {
@@ -680,6 +730,22 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             return IoC.Get<IWindowManager>().ShowDialogAsync(new Arma3AerialImageViewModel(
                 ObjectStatsItems.Select(o => o.Model).ToList(),
                 Dependencies));
+        }
+
+        public bool AreAllMaterialsFromLibrary => Materials.Count > 0 && Materials.All(m => m.IsFromLibrary);
+
+        public Task RegenerateMaterialsFromLibrary()
+        {
+            if (ConfigFile != null)
+            {
+                ProgressToolHelper.Start(new RegenerateMaterialsFromLibraryTask(ProjectDrive, GetConfig(), Materials));
+            }
+            return Task.CompletedTask;
+        }
+
+        public ExistingImageryInfos GetConfig()
+        {
+            return Imagery ?? new ExistingImageryInfos(0, 0, 0, ConfigFile?.PboPrefix ?? string.Empty);
         }
     }
 }

@@ -1549,4 +1549,16 @@ Last generated on {1}</value>
   <data name="NImagesWillBeTakenItWillTakeUpToNMinutes" xml:space="preserve">
     <value>{0} images will be taken; it will take up to {1} minutes.</value>
   </data>
+  <data name="ReplaceTexture" xml:space="preserve">
+    <value>Replace texture</value>
+  </data>
+  <data name="SourceTexture" xml:space="preserve">
+    <value>Source texture</value>
+  </data>
+  <data name="ReplacementTexture" xml:space="preserve">
+    <value>Replacement texture</value>
+  </data>
+  <data name="ReGenerateFromLibrary" xml:space="preserve">
+    <value>Re-generate from library</value>
+  </data>
 </root>

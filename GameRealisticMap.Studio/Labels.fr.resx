@@ -1549,4 +1549,16 @@ Dernière génération le {1}</value>
   <data name="NImagesWillBeTakenItWillTakeUpToNMinutes" xml:space="preserve">
     <value>{0} images vont être prises; cela prendre jusqu'à {1} minutes.</value>
   </data>
+  <data name="ReplaceTexture" xml:space="preserve">
+    <value>Remplacer une texture</value>
+  </data>
+  <data name="SourceTexture" xml:space="preserve">
+    <value>Texture source</value>
+  </data>
+  <data name="ReplacementTexture" xml:space="preserve">
+    <value>Texture de remplacement</value>
+  </data>
+  <data name="ReGenerateFromLibrary" xml:space="preserve">
+    <value>Re-générer depuis la bibliothèque</value>
+  </data>
 </root>

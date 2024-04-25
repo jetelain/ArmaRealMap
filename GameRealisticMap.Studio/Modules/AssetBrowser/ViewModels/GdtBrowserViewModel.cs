@@ -212,6 +212,21 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             return vm;
         }
 
+        internal async Task<GdtDetailViewModel?> ImportExternal(string colorTexture, string normalTexture)
+        {
+            using var fakeSat = GdtHelper.GenerateFakeSatPngImage(_arma3Previews, colorTexture);
+            if (fakeSat != null)
+            {
+                var allItems = (await awaitableItems);
+                var color = GdtHelper.AllocateUniqueColor(fakeSat, allItems.Select(i => i.ColorId));
+                var config = new GdtCatalogItem(new TerrainMaterial(normalTexture, colorTexture, color.ToRgb24(), fakeSat?.ToPngByteArray()), null, GdtCatalogItemType.GameData, null);
+                var vm = new GdtDetailViewModel(this, config);
+                allItems.Add(vm);
+                return vm;
+            }
+            return null;
+        }
+
         internal async Task<GdtDetailViewModel> Resolve(TerrainMaterial mat, SurfaceConfig? surf, string? title = null)
         {
             var items = await awaitableItems;
@@ -221,6 +236,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 libraryItem = await ImportExternal(mat, surf, title);
             }
             return libraryItem;
+        }
+
+        internal async Task<GdtDetailViewModel?> Resolve(string colorTexture)
+        {
+            return (await awaitableItems).FirstOrDefault(i => string.Equals(i.ColorTexture, colorTexture, StringComparison.OrdinalIgnoreCase));
         }
 
         internal void ComputeColorUniqueness()
@@ -307,6 +327,19 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         {
             await gdtDetailViewModel.TryCloseAsync();
             AllItems.RemoveUndoable(UndoRedoManager, gdtDetailViewModel);
+        }
+
+
+        internal async Task<TerrainMaterialLibrary> ToTerrainMaterialLibrary()
+        {
+            var allItems = (await awaitableItems);
+            return new TerrainMaterialLibrary(allItems.Select(i => new TerrainMaterialDefinition(i.ToMaterial(), new TerrainMaterialUsage[0], i.ToSurfaceConfig(), i.ToData())).ToList());
+        }
+
+        internal async Task<TerrainMaterialLibrary> ToTerrainMaterialLibraryIdOnly()
+        {
+            var allItems = (await awaitableItems);
+            return new TerrainMaterialLibrary(allItems.Select(i => new TerrainMaterialDefinition(i.ToMaterial(), new TerrainMaterialUsage[0])).ToList());
         }
     }
 }

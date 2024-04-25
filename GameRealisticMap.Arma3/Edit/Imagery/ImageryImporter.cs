@@ -35,7 +35,13 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
 
             var compiled = new ImageryCompiler(materials, progress, projectDrive);
 
-            compiled.GenerateIdMapTilesAndRvMat(infos, himage, infos.CreateTiler());
+            var usedMaterials = compiled.GenerateIdMapTilesAndRvMat(infos, himage, infos.CreateTiler());
+
+            var subsetMaterials = new TerrainMaterialLibrary(materials.Definitions.Where(d => usedMaterials.Contains(d.Material)).ToList(), materials.TextureSizeInMeters);
+
+            MaterialConfigGenerator.GenerateConfigFiles(projectDrive, infos, subsetMaterials);
+
+            TerrainMaterialHelper.UnpackEmbeddedFiles(subsetMaterials, progress, projectDrive, infos);
 
             await projectDrive.ProcessImageToPaa(progress);
         }
