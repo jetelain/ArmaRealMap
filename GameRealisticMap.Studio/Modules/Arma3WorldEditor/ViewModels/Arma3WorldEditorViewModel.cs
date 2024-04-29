@@ -728,7 +728,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public Task TakeAerialImages()
         {
             return IoC.Get<IWindowManager>().ShowDialogAsync(new Arma3AerialImageViewModel(
-                ObjectStatsItems.Select(o => o.Model).ToList(),
+                ObjectStatsItems.Select(o => o.Model).Where(m => !string.IsNullOrEmpty(m)).ToList(),
                 Dependencies));
         }
 
