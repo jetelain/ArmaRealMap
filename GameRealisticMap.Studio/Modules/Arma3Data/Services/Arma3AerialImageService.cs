@@ -48,7 +48,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
         {
             var references = models
                 .Where(m => !onlyMissing || !Exists(m))
-                .Select(m => AerialModelRefence.FromODOL(m, module.Library.ReadModelInfoOnly(m) ?? throw new ApplicationException($"File '{m}' not found.")))
+                .Select(m => GetModelReference(m))
                 .ToList();
 
             if (references.Count > 0)
@@ -57,6 +57,24 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
 
                 await worker.TakePhotos();
             }
+        }
+
+        private AerialModelRefence GetModelReference(string path)
+        {
+            BIS.P3D.ODOL.ModelInfo? model;
+            try
+            {
+                model = module.Library.ReadModelInfoOnly(path);
+            }
+            catch(Exception ex)
+            {
+                throw new ApplicationException($"ODOL file for model '{path}' is corrupted: {ex.Message}", ex);
+            }
+            if (model == null)
+            {
+                throw new ApplicationException($"ODOL file for model '{path}' was not found.");
+            }
+            return AerialModelRefence.FromODOL(path, model);
         }
 
         public int CountMissing(IEnumerable<string> models)
