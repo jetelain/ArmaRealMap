@@ -90,8 +90,6 @@ namespace GameRealisticMap.Arma3.Aerial
 
         private Process StartArma3()
         {
-            // TODO: Pack extension in mod
-
             var workshop = Arma3ToolsHelper.GetArma3WorkshopPath();
             var mods = string.Join(";", dependencies.Select(d => Path.Combine(workshop, d.SteamId)).Concat(new[] { Path.Combine(workshop, "3016661145") }));
 
