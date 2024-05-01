@@ -1,12 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using BIS.PAA;
-using PdfSharpCore.Drawing;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.ColorSpaces;
 using SixLabors.ImageSharp.ColorSpaces.Conversion;
