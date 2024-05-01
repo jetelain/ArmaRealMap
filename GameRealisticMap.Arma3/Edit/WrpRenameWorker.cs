@@ -70,7 +70,7 @@ namespace GameRealisticMap.Arma3.Edit
         {
             foreach (Match entry in IncludeRegex.Matches(content))
             {
-                var includePath = Path.Combine(location, entry.Groups[1].Value);
+                var includePath = location + "\\" + entry.Groups[1].Value;
                 if (includes.Add(includePath) && 
                     includePath.StartsWith(oldPboPrefix, StringComparison.OrdinalIgnoreCase) && 
                     writer.FileExists(includePath))
