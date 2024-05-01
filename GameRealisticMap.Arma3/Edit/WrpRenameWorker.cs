@@ -28,6 +28,8 @@ namespace GameRealisticMap.Arma3.Edit
             this.filesToCopy = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
+        public IEnumerable<KeyValuePair<string, string>> ReferencedFiles => filesToCopy;
+
         public async Task RenameAndCopyMaterials(EditableWrp world)
         {
             using var step = progress.CreateStep("RvMat", world.MatNames.Length);
@@ -51,6 +53,7 @@ namespace GameRealisticMap.Arma3.Edit
                 progress.WriteLine($"Copy '{file.Key}' to '{file.Value}'");
                 await writer.CopyAsync(file.Key, file.Value);
             }
+            filesToCopy.Clear();
         }
 
         public string UpdateConfigContent(string content)
