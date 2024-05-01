@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
-using System.Net.Cache;
-using System.Security.Policy;
 using System.Windows.Data;
-using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
-using PdfSharpCore.Drawing;
 
 namespace GameRealisticMap.Studio.Modules.Arma3Data.Controls
 {
