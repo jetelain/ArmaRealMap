@@ -110,6 +110,8 @@ class CfgWorlds
             Assert.Equal("oldprefix", oldConfig.PboPrefix);
             Assert.Equal("oldprefix\\data\\roads", oldConfig.Roads);
 
+            fs.CreateDirectory("newprefix");
+
             var newConfig = await worker.UpdateConfig(oldConfig, "newworldname");
 
             Assert.Equal("newworldname", newConfig.WorldName);

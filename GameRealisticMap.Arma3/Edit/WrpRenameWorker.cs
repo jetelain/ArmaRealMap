@@ -104,7 +104,7 @@ namespace GameRealisticMap.Arma3.Edit
             newContent = UpdateConfigContent(newContent); 
             await CopyIncludes(newContent, oldPboPrefix);
             var newConfig = new GameConfigTextData(newContent, newPboPrefix, newWorldName, oldConfig.Description, @$"{newPboPrefix}\data\roads", oldConfig.Revision);
-            writer.WriteTextFile(Path.Combine(newPboPrefix, GameConfigTextData.FileName), newConfig.ToUpdatedContent());
+            writer.WriteTextFile(newPboPrefix + "\\" + GameConfigTextData.FileName, newConfig.ToUpdatedContent());
             return newConfig;
         }
     }
