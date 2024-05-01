@@ -15,20 +15,17 @@ using GameRealisticMap.Studio.Modules.AssetBrowser.Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
-using Gemini.Framework.Services;
 using NLog;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
     [Export(typeof(AssetBrowserViewModel))]
-    internal class AssetBrowserViewModel : Document
+    internal class AssetBrowserViewModel : BrowserViewModelBase
     {
         private static readonly Logger logger = NLog.LogManager.GetLogger("AssetBrowser");
 
-        private readonly IArma3DataModule _arma3DataModule;
         private readonly IArma3Previews _arma3Previews;
         private readonly IAssetsCatalogService _catalogService;
-        private readonly IArma3ModsService _modsService;
 
         public BindableCollection<AssetViewModel>? AllAssets { get; set; }
 
@@ -39,8 +36,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public List<CategoryOption> Categories { get; } = new List<CategoryOption>();
 
         public List<CategoryOption> SetCategories { get; } = new List<CategoryOption>();
-
-        public List<ModInfo> ActiveMods { get; set; } = new List<ModInfo>();
 
         public List<ModInfo> UsualMods { get; set; } = new List<ModInfo>() {
             new ModInfo("CUP", string.Empty, "583496184"),
@@ -53,11 +48,10 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         [ImportingConstructor]
         public AssetBrowserViewModel(IArma3DataModule arma3DataModule, IArma3Previews arma3Previews, IAssetsCatalogService catalogService, IArma3ModsService arma3ModsService)
+            : base(arma3DataModule, arma3ModsService)
         {
-            _arma3DataModule = arma3DataModule;
             _arma3Previews = arma3Previews;
             _catalogService = catalogService;
-            _modsService = arma3ModsService;
 
             DisplayName = Labels.AssetsBrowser + " - Arma 3";
             Mods.Add(new ModOption(Labels.All, ""));
@@ -69,21 +63,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             ImportUsualMod = new RelayCommand(DoImportUsualMod);
             ImportActiveMod = new RelayCommand(DoImportActiveMod);
 
-            _arma3DataModule.Reloaded += Arma3DataModuleWasReloaded;
-        }
-
-        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
-        {
-            if (close)
-            {
-                _arma3DataModule.Reloaded -= Arma3DataModuleWasReloaded;
-            }
-            return base.OnDeactivateAsync(close, cancellationToken);
-        }
-
-        private void Arma3DataModuleWasReloaded(object? sender, EventArgs e)
-        {
-            _ = Task.Run(() => LoadMods());
         }
 
         private void DoImportUsualMod(object obj)
@@ -151,7 +130,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             }
 
             IsImporting = true;
-            NotifyOfPropertyChange(nameof(IsImporting));
 
             try
             {
@@ -171,7 +149,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             }
 
             IsImporting = false;
-            NotifyOfPropertyChange(nameof(IsImporting));
         }
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
@@ -189,7 +166,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
             var assets = AllAssets.Where(a => !a.Preview.IsFile).ToList();
             _ = Task.Run(() => LoadPreviews(assets));
-            _ = Task.Run(() => LoadMods());
+            _ = Task.Run(() => UpdateActiveMods());
 
             if (items.Count == 0)
             {
@@ -216,13 +193,6 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             {
                 asset.Preview = await _arma3Previews.GetPreview(asset.Path);
             }
-        }
-        private void LoadMods()
-        {
-            var allMods = _modsService.GetModsList();
-            var active = _arma3DataModule.ActiveMods.ToHashSet(StringComparer.OrdinalIgnoreCase);
-            ActiveMods = allMods.Where(m => active.Contains(m.Path)).ToList();
-            NotifyOfPropertyChange(nameof(ActiveMods));
         }
 
         private bool Filter(AssetViewModel item)
@@ -268,19 +238,9 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             }
         }
 
-        private string filterText = string.Empty;
-        public string FilterText
+        protected override void RefreshFilter()
         {
-            get { return filterText; }
-            set
-            {
-                if (filterText != value)
-                {
-                    filterText = value;
-                    Assets?.Refresh();
-                }
-                NotifyOfPropertyChange();
-            }
+            Assets?.Refresh();
         }
 
         private string filterModId = string.Empty;
@@ -320,6 +280,5 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public ICommand ImportActiveMod { get; }
 
-        public bool IsImporting { get; set; }
     }
 }

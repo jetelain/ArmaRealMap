@@ -33,7 +33,7 @@ namespace GameRealisticMap.Reporting
 
         public void ReportOneDone()
         {
-            ++lastDone;
+            Interlocked.Increment(ref lastDone);
             DrawDone(lastDone);
         }
 

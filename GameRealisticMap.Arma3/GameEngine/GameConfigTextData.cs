@@ -11,10 +11,10 @@ namespace GameRealisticMap.Arma3.GameEngine
         public const string FileName = "config.cpp";
         public const string FileNameRecover = "config-initial.hpp";
 
-        private static readonly Regex WorldNameRegex = new Regex(@"worldName\s*=\s*""([^""]+)\.wrp""", RegexOptions.CultureInvariant|RegexOptions.IgnoreCase);
-        private static readonly Regex DescriptionRegex = new Regex(@"description\s*=\s*""([^""]+)""", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-        private static readonly Regex RevisionRegex = new Regex(@"grma3_revision\s*=\s*([0-9]+)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-        private static readonly Regex RoadsRegex = new Regex(@"newRoadsShape\s*=\s*""([^""]+)\\roads.shp""", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        internal static readonly Regex WorldNameRegex = new Regex(@"worldName\s*=\s*""([^""]+)\.wrp""", RegexOptions.CultureInvariant|RegexOptions.IgnoreCase);
+        internal static readonly Regex DescriptionRegex = new Regex(@"description\s*=\s*""([^""]+)""", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        internal static readonly Regex RevisionRegex = new Regex(@"grma3_revision\s*=\s*([0-9]+)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        internal static readonly Regex RoadsRegex = new Regex(@"newRoadsShape\s*=\s*""([^""]+)\\roads.shp""", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
         public GameConfigTextData(string initialContent, string pboPrefix, string worldName, string description, string roads, int revision)
         {

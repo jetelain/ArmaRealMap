@@ -9,6 +9,7 @@ using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Modules.Arma3Data;
+using GameRealisticMap.Studio.Modules.Arma3Data.ViewModels;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using Gemini.Framework;
 using Gemini.Framework.Commands;
@@ -310,11 +311,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 SatMap = parentEditor.Imagery.GetSatMap(arma3Data.ProjectDrive);
 
-                var assets = await parentEditor.GetAssetsFromHistory();
-                if (assets != null)
-                {
-                    IdMap = parentEditor.Imagery.GetIdMap(arma3Data.ProjectDrive, assets.Materials);
-                }
+                IdMap = parentEditor.Imagery.GetIdMap(arma3Data.ProjectDrive, await parentEditor.GetExportMaterialLibrary());
             }
 
             _ = Task.Run(DoLoadWorld);
@@ -397,6 +394,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         Task ICommandHandler<SaveFileAsCommandDefinition>.Run(Command command)
         {
             return ((ICommandHandler<SaveFileAsCommandDefinition>)parentEditor).Run(command);
+        }
+
+        public Task TakeAerialImages()
+        {
+            return parentEditor.TakeAerialImages();
         }
     }
 }

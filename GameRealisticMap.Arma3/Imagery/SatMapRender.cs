@@ -5,8 +5,10 @@ using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Satellite;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using HugeImages;
 using HugeImages.Processing;
+using HugeImages.Storage;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -43,7 +45,7 @@ namespace GameRealisticMap.Arma3.Imagery
 
             if (config.FakeSatBlend == 1)
             {
-                satMap = RenderBaseImageAsync(config, context).GetAwaiter().GetResult();
+                satMap = fakeSatRender.Render(config, context);
             }
             else
             {
@@ -90,7 +92,22 @@ namespace GameRealisticMap.Arma3.Imagery
             {
                 return fakeSatRender.Render(config, context);
             }
+
             var satMap = context.GetData<RawSatelliteImageData>().Image;
+
+            if (config.UseColorCorrection)
+            {
+                using var report = progress.CreateStep("SatColorCorrection", 1);
+                satMap = await satMap.CloneAsync(context.HugeImageStorage, "SatColorCorrection");
+                await Parallel.ForEachAsync(satMap.PartsLoadedFirst, async (part, _) =>
+                {
+                    using (var token = await part.AcquireAsync().ConfigureAwait(false))
+                    {
+                        Arma3ColorRender.Mutate(token.GetImageReadWrite(), Arma3ColorRender.FromArma3);
+                    }
+                });
+            }
+
             if (config.FakeSatBlend != 0)
             {
                 using (var fakeSat = fakeSatRender.Render(config, context))
@@ -105,7 +122,7 @@ namespace GameRealisticMap.Arma3.Imagery
             return satMap;
         }
 
-        private IBrush GetBrush(Arma3RoadTypeInfos roadTypeInfos)
+        private Brush GetBrush(Arma3RoadTypeInfos roadTypeInfos)
         {
             return new SolidBrush(roadTypeInfos.SatelliteColor);
         }

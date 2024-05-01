@@ -1,14 +1,5 @@
-﻿using System.Numerics;
-using GameRealisticMap.ElevationModel;
-using GameRealisticMap.ManMade.Roads.Libraries;
-using GameRealisticMap.Osm;
-using GameRealisticMap.Preview;
+﻿using GameRealisticMap.Preview;
 using GameRealisticMap.Reporting;
-using PdfSharpCore.Pdf.Filters;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp;
-using MapToolkit.DataCells;
-using GameRealisticMap.Nature.Ocean;
 
 namespace GameRealisticMap.CommandLine
 {

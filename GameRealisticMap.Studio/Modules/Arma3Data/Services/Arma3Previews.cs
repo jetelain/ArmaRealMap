@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -8,25 +9,41 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BIS.PAA;
+using GameRealisticMap.Arma3;
+using GameRealisticMap.Reporting;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using Color = System.Windows.Media.Color;
 
 namespace GameRealisticMap.Studio.Modules.Arma3Data
 {
     [Export(typeof(IArma3Previews))]
-    internal class Arma3Previews : IArma3Previews, IDisposable
+    [Export(typeof(IArma3ImageStorage))]
+    internal class Arma3Previews : IArma3Previews, IArma3ImageStorage, IDisposable
     {
         private readonly IArma3DataModule _dataModule;
 
         public static Uri NoPreview = new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/noimage.png");
 
         private List<string>? previewsInProject;
-
+        private Task? lastProcessPngToPaaTask;
         private readonly HttpClient client = new HttpClient();
+
+        private readonly HashSet<string> pendingPaaConvertion = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         private static string PreviewCachePath { get; } = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "GameRealisticMap",
             "Arma3",
             "Previews");
+        private static string ImageStoragePath { get; } = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "GameRealisticMap",
+            "Arma3",
+            "Images");
+
+        public bool HasToProcessPngToPaa => pendingPaaConvertion.Count > 0;
 
         [ImportingConstructor]
         public Arma3Previews(IArma3DataModule dataModule)
@@ -129,6 +146,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
         public Uri? GetTexturePreview(string texture)
         {
             var cachePng = Path.Combine(PreviewCachePath, Path.ChangeExtension(texture, ".png"));
+            if (texture.StartsWith("{"))
+            {
+                var storagePng = Path.Combine(ImageStoragePath, Path.ChangeExtension(texture, ".png"));
+                if (File.Exists(storagePng))
+                {
+                    if (!File.Exists(cachePng) || File.GetLastWriteTimeUtc(storagePng) > File.GetLastWriteTimeUtc(cachePng))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(cachePng)!);
+                        File.Copy(storagePng, cachePng, true);
+                    }
+                    return new Uri(cachePng);
+                }
+            }
             if (File.Exists(cachePng))
             {
                 var dt = _dataModule.ProjectDrive.GetLastWriteTimeUtc(texture);
@@ -155,6 +185,24 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             return null;
         }
 
+        public Uri? GetTexturePreviewSmall(string texture, int size = 512)
+        {
+            var fullImage = GetTexturePreview(texture);
+            if (fullImage == null)
+            {
+                return null;
+            }
+            var cachePng = fullImage.LocalPath;
+            var smallPng = Path.ChangeExtension(cachePng, $".{size}.png");
+            if (!File.Exists(smallPng) || File.GetLastWriteTimeUtc(cachePng) > File.GetLastWriteTimeUtc(smallPng))
+            {
+                using var image = Image.Load(cachePng);
+                image.Mutate(i => i.Resize(size, size));
+                image.SaveAsPng(smallPng);
+            }
+            return new Uri(smallPng);
+        }
+
         private static BitmapSource ReadPaaAsBitmapSource(Stream? paaStream)
         {
             var paa = new PAA(paaStream, false);
@@ -167,6 +215,54 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
         public void Dispose()
         {
             _dataModule.Reloaded -= DataModuleWasReloaded;
+        }
+
+        public Stream CreatePng(string path)
+        {
+            var file = Path.Combine(ImageStoragePath, Path.ChangeExtension(path, ".png"));
+            lock (pendingPaaConvertion)
+            {
+                pendingPaaConvertion.Add(file);
+            }
+            Directory.CreateDirectory(Path.GetDirectoryName(file)!);
+            return File.Create(file);
+        }
+
+        public byte[] ReadPngBytes(string path)
+        {
+            return File.ReadAllBytes(Path.Combine(ImageStoragePath, Path.ChangeExtension(path, ".png")));
+        }
+
+        public byte[] ReadPaaBytes(string path)
+        {
+            var paa = Path.Combine(ImageStoragePath, path);
+            var png = Path.Combine(ImageStoragePath, Path.ChangeExtension(path, ".png"));
+            if (!File.Exists(paa) || File.GetLastWriteTimeUtc(png) > File.GetLastWriteTimeUtc(paa))
+            {
+                LastProcessPngToPaaTask().Wait();
+                Arma3ToolsHelper.ImageToPAA(new NoProgressSystem(), png).Wait();
+            }
+            return File.ReadAllBytes(paa);
+        }
+
+        public async Task ProcessPngToPaa(IProgressSystem? progress = null)
+        {
+            List<string> toProcess;
+            lock (pendingPaaConvertion)
+            {
+                toProcess = pendingPaaConvertion.ToList();
+                pendingPaaConvertion.Clear();
+            }
+            await LastProcessPngToPaaTask();
+            await (lastProcessPngToPaaTask = Arma3ToolsHelper.ImageToPAA(progress ?? new NoProgressSystem(), toProcess));
+        }
+
+        private async Task LastProcessPngToPaaTask()
+        {
+            if (lastProcessPngToPaaTask != null && !lastProcessPngToPaaTask.IsCompleted)
+            {
+                await lastProcessPngToPaaTask;
+            }
         }
     }
 }

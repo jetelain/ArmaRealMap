@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using System.Windows.Media.Imaging;
 using Caliburn.Micro;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 
 namespace GameRealisticMap.Studio.Modules.Arma3Data.Controls
 {
     public sealed class TexturePreviewConverter : IValueConverter
     {
+        public int? Size { get; set; }
+
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var texture = value as string;
             if (!string.IsNullOrEmpty(texture))
             {
-                var uri = IoC.Get<IArma3Previews>().GetTexturePreview(texture); // GetTexturePreview can be really slow, find a way to make this lazy
-                if (uri != null)
-                {
-                    return new BitmapImage(uri) { CreateOptions = BitmapCreateOptions.DelayCreation };
-                }
+                var previews = IoC.Get<IArma3Previews>();
+
+                var uri = Size == null ? previews.GetTexturePreview(texture)
+                    : previews.GetTexturePreviewSmall(texture, Size.Value);
+
+                return Arma3PreviewsHelper.GetBitmapSource(uri);
             }
             return null;
         }

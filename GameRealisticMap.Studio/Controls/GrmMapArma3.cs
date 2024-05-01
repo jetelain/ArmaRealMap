@@ -4,10 +4,14 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Caliburn.Micro;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.Toolkit;
 
 namespace GameRealisticMap.Studio.Controls
 {
@@ -51,6 +55,21 @@ namespace GameRealisticMap.Studio.Controls
         public static readonly DependencyProperty ObjectsProperty =
             DependencyProperty.Register("Objects", typeof(TerrainSpacialIndex<TerrainObjectVM>), typeof(GrmMapArma3), new PropertyMetadata(null, SomePropertyChanged));
 
+
+        public AerialViewMode AerialViewMode
+        {
+            get { return (AerialViewMode)GetValue(AerialViewModeProperty); }
+            set { SetValue(AerialViewModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty AerialViewModeProperty =
+            DependencyProperty.Register(nameof(AerialViewMode), typeof(AerialViewMode), typeof(GrmMapArma3), new PropertyMetadata(AerialViewMode.Shape, SomePropertyChanged));
+
+        private SolidColorBrush fill = new SolidColorBrush(Color.FromArgb(192, 32, 32, 32));
+        private SolidColorBrush water = new SolidColorBrush(Color.FromArgb(192, 65, 105, 225));
+        private SolidColorBrush tree = new SolidColorBrush(Color.FromArgb(192, 34, 139, 34));
+        private SolidColorBrush bush = new SolidColorBrush(Color.FromArgb(192, 244, 164, 96));
+
         protected override void DrawMap(DrawingContext dc, Envelope enveloppe, double scale)
         {
             var objs = Objects;
@@ -58,31 +77,15 @@ namespace GameRealisticMap.Studio.Controls
             {
                 if (scale > 3)
                 {
-                    var fill = new SolidColorBrush(Color.FromArgb(192, 32, 32, 32));
-                    var water = new SolidColorBrush(Color.FromArgb(192, 65, 105, 225));
-                    var tree = new SolidColorBrush(Color.FromArgb(192, 34, 139, 34));
-                    var bush = new SolidColorBrush(Color.FromArgb(192, 244, 164, 96));
+                    var mode = AerialViewMode;
                     foreach (var obj in objs.Search(enveloppe))
                     {
                         if (scale * obj.Radius > 15)
                         {
-                            dc.PushTransform(new MatrixTransform(obj.Matrix.M11, obj.Matrix.M13, obj.Matrix.M31, obj.Matrix.M33, obj.Matrix.M41, obj.Matrix.M43));
+                            dc.PushTransform(obj.Matrix.ToAerialWpfMatrixTransform());
 
-                            switch (obj.Category)
-                            {
-                                case AssetCatalogCategory.Tree:
-                                    dc.DrawEllipse(tree, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
-                                    break;
-                                case AssetCatalogCategory.Bush:
-                                    dc.DrawEllipse(bush, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
-                                    break;
-                                case AssetCatalogCategory.WaterSurface:
-                                    dc.DrawRectangle(water, null, obj.Rectangle);
-                                    break;
-                                default:
-                                    dc.DrawRectangle(fill, null, obj.Rectangle);
-                                    break;
-                            }
+                            RenderObject(dc, mode, obj);
+
                             dc.Pop();
                         }
                     }
@@ -104,6 +107,68 @@ namespace GameRealisticMap.Studio.Controls
                         dc.DrawGeometry(null, pen, CreatePath(road.Path));
                     }
                 }
+            }
+        }
+
+        private void RenderObject(DrawingContext dc, AerialViewMode mode, TerrainObjectVM obj)
+        {
+            if (mode == Controls.AerialViewMode.Shape)
+            {
+                FillShape(dc, obj);
+            }
+            else
+            {
+                var img = IoC.Get<IArma3AerialImageService>().GetImage(obj.Model); // TODO: Create an option to opt-in/opt-out
+                if (img != null)
+                {
+                    dc.DrawImage(img, new Rect(-img.PixelWidth / 8, -img.PixelHeight / 8, img.PixelWidth / 4, img.PixelHeight / 4));
+                    if (mode == Controls.AerialViewMode.ShapeAndImage)
+                    {
+                        OutlineShape(dc, obj);
+                    }
+                }
+                else
+                {
+                    FillShape(dc, obj);
+                }
+            }
+        }
+
+        private void OutlineShape(DrawingContext dc, TerrainObjectVM obj)
+        {
+            switch (obj.Category)
+            {
+                case AssetCatalogCategory.Tree:
+                    dc.DrawEllipse(null, new Pen(tree, 0.2), new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                    break;
+                case AssetCatalogCategory.Bush:
+                    dc.DrawEllipse(null, new Pen(bush, 0.2), new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                    break;
+                case AssetCatalogCategory.WaterSurface:
+                    dc.DrawRectangle(null, new Pen(water, 0.2), obj.Rectangle);
+                    break;
+                default:
+                    dc.DrawRectangle(null, new Pen(fill, 0.2), obj.Rectangle);
+                    break;
+            }
+        }
+
+        private void FillShape(DrawingContext dc, TerrainObjectVM obj)
+        {
+            switch (obj.Category)
+            {
+                case AssetCatalogCategory.Tree:
+                    dc.DrawEllipse(tree, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                    break;
+                case AssetCatalogCategory.Bush:
+                    dc.DrawEllipse(bush, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                    break;
+                case AssetCatalogCategory.WaterSurface:
+                    dc.DrawRectangle(water, null, obj.Rectangle);
+                    break;
+                default:
+                    dc.DrawRectangle(fill, null, obj.Rectangle);
+                    break;
             }
         }
 

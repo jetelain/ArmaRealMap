@@ -142,7 +142,7 @@ namespace GameRealisticMap.Arma3
                 progress.ReportOneDone();
             }
 
-            new DependencyUnpacker(assets, projectDrive).Unpack(progress, usedModels.Select(m => m.Path));
+            new DependencyUnpacker(assets, projectDrive).Unpack(progress, config, usedModels.Select(m => m.Path));
             progress.ReportOneDone();
 
             new TmlGenerator().WriteLibrariesTo(usedModels, Path.Combine(targetDirectory, "Library"));
@@ -163,7 +163,7 @@ namespace GameRealisticMap.Arma3
         {
             using (var report = progress.CreateStepPercent("LayersCfg"))
             {
-                new LayersCfgGenerator(assets.Materials, projectDrive).WriteLayersCfg(config);
+                new LayersCfgGenerator(assets.Materials, progress, projectDrive).WriteLayersCfg(config);
                 progress.ReportOneDone();
             }
 

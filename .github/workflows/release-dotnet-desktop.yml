@@ -1,0 +1,95 @@
+name: Release for .NET Windows
+
+on:
+  release:
+    types: [published]
+  
+jobs:
+
+  build:
+
+    runs-on: windows-latest
+
+    env:
+      Solution_Name: ArmaRealMap.sln
+      Test_Project_Path: GameRealisticMap.Studio.Test\GameRealisticMap.Studio.Test.csproj
+      Wap_Project_Directory: GameRealisticMap.Studio.Package
+      Wap_Project_Path: GameRealisticMap.Studio.Package\GameRealisticMap.Studio.Package.wapproj
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+
+    - name: Use Nerdbank.GitVersioning to set version variables
+      uses: dotnet/nbgv@master
+      id: nbgv
+      
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Update manifest version
+      run: |
+        [xml]$manifest = get-content ".\$env:Wap_Project_Directory\Package.appxmanifest"
+        $manifest.Package.Identity.Version = "${{ steps.nbgv.outputs.SimpleVersion }}.0"
+        $manifest.Package.Identity.Publisher = "CN=ArmaRealMap GitHub Actions"
+        $manifest.Package.Identity.Name = "63155JulienEtelain.GameRealisticMapStudio.GHA"
+        $manifest.save(".\$env:Wap_Project_Directory\Package.appxmanifest")
+        
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v2
+
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore the application
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=Release /p:Platform=x64 /p:RuntimeIdentifiers=win-x64
+
+    # Decode the base 64 encoded pfx and save the Signing_Certificate
+    - name: Decode the pfx
+      run: |
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Base64_Encoded_Pfx }}")
+        $certificatePath = Join-Path -Path $env:Wap_Project_Directory -ChildPath GitHubActionsWorkflow.pfx
+        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+
+    # Create the app package by building and packaging the Windows Application Packaging project
+    - name: Create the app package
+      run: msbuild $env:Wap_Project_Path /p:Configuration=Release /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundle=Always /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }} /p:Platform=x64 /p:FileVersion=${{ steps.nbgv.outputs.SimpleVersion }}
+
+    # Remove the pfx
+    - name: Remove the pfx
+      run: Remove-Item -path $env:Wap_Project_Directory\GitHubActionsWorkflow.pfx
+      
+    - name: Generate Test Package ZIP
+      run: Compress-Archive -Path ${{ env.Wap_Project_Directory }}\AppPackages\*_Test\* -DestinationPath GameRealisticMap.Studio.Package_Test.zip
+      
+    # Generate Executable
+    - name: Build simple executable
+      run: dotnet publish  -f net6.0-windows -r win-x64 -c Release GameRealisticMap.Studio/GameRealisticMap.Studio.csproj -o Output -p:FileVersion=${{ steps.nbgv.outputs.SimpleVersion }}
+    
+    - name: Generate executable ZIP
+      run: Compress-Archive -Path Output\* -DestinationPath GameRealisticMap.Studio.zip
+          
+    - uses: Shopify/upload-to-release@master
+      with:
+        name: GameRealisticMap.Studio-${{ steps.nbgv.outputs.SimpleVersion }}.zip
+        path: GameRealisticMap.Studio.zip
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        content-type: application/zip
+        
+    - uses: Shopify/upload-to-release@master
+      with:
+        name: GameRealisticMap.Studio.Package_Test-${{ steps.nbgv.outputs.SimpleVersion }}.zip
+        path: GameRealisticMap.Studio.Package_Test.zip
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        content-type: application/zip
+        
+        
+        
+        
+        
+        

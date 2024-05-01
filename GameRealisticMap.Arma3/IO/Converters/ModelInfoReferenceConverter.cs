@@ -5,7 +5,7 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 
 namespace GameRealisticMap.Arma3.IO.Converters
 {
-    internal class ModelInfoReferenceConverter : JsonConverter<ModelInfo>
+    public sealed class ModelInfoReferenceConverter : JsonConverter<ModelInfo>
     {
         private readonly IModelInfoLibrary library;
         private readonly bool allowUnresolvedModel;

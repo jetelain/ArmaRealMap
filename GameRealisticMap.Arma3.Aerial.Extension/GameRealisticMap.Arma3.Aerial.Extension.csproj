@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PublishAot>true</PublishAot>
+		<AssemblyName>grma3aerial_x64</AssemblyName>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.3" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.3" />
+	</ItemGroup>
+</Project>

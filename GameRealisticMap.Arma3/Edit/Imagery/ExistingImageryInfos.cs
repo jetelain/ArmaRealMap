@@ -33,6 +33,8 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
 
         string IArma3MapConfig.WorldName => throw new NotImplementedException();
 
+        public bool UseColorCorrection => throw new NotImplementedException();
+
         public static ExistingImageryInfos? TryCreate(ProjectDrive projectDrive, string pboPrefix, float sizeInMeters)
         {
             var png = projectDrive.GetFullPath($"{pboPrefix}\\data\\layers\\M_{0:000}_{0:000}_lca.png");
@@ -63,7 +65,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
         public HugeImage<Rgb24> GetIdMap(IGameFileSystem fileSystem, TerrainMaterialLibrary materials)
         {
             var parts = new ImageryTilerHugeImagePartitioner(CreateTiler());
-            return new HugeImage<Rgb24>(new IdMapReadStorage(parts, fileSystem, PboPrefix, materials), new Size(TotalSize), new HugeImageSettingsBase(), parts, new Rgb24());
+            return new HugeImage<Rgb24>(new IdMapReadStorage(parts, fileSystem, PboPrefix, materials, this), new Size(TotalSize), new HugeImageSettingsBase(), parts, new Rgb24());
         }
 
         internal ImageryTiler CreateTiler()

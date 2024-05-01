@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Arma3.Assets;
+﻿using System.Collections.Concurrent;
+using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Reporting;
 using HugeImages;
@@ -50,6 +51,8 @@ namespace GameRealisticMap.Arma3.GameEngine
         {
             gameFileSystemWriter.CreateDirectory($"{config.PboPrefix}\\data\\layers");
 
+            TerrainMaterialHelper.UnpackEmbeddedFiles(materialLibrary, progress, gameFileSystemWriter, config);
+
             var tiler = new ImageryTiler(config);
 
             using (var idMap = source.CreateIdMap())
@@ -66,7 +69,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                 GenerateSatMapTiles(config, satMap, tiler);
             }
 
-             return tiler;
+            return tiler;
         }
 
         public static void CreateConfigCppImages(IGameFileSystemWriter gameFileSystemWriter, IArma3MapConfig config, IImagerySource source)
@@ -109,12 +112,14 @@ namespace GameRealisticMap.Arma3.GameEngine
             });
         }
 
-        internal void GenerateIdMapTilesAndRvMat(IArma3MapConfig config, HugeImage<Rgba32> idmap, ImageryTiler tiler)
+        internal HashSet<TerrainMaterial> GenerateIdMapTilesAndRvMat(IArma3MapConfig config, HugeImage<Rgba32> idmap, ImageryTiler tiler)
         {
             using var report = progress.CreateStep("IdMapTiling", tiler.Segments.Length);
             var textureScale = GetTextureScale(config, materialLibrary);
+            var allUsed = new ConcurrentQueue<HashSet<TerrainMaterial>>();
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
             {
+                var usedMaterials = new HashSet<TerrainMaterial>();
                 using (var sourceTile = new Image<Rgb24>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgb24>()))
                 {
                     using (var targetTile = new Image<Rgba32>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgba32>()))
@@ -130,10 +135,13 @@ namespace GameRealisticMap.Arma3.GameEngine
                             gameFileSystemWriter.WritePngImage($"{config.PboPrefix}\\data\\layers\\M_{x:000}_{y:000}_lca.png", targetTile);
                             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\data\\layers\\P_{x:000}-{y:000}.rvmat", rvmat);
                             report.ReportOneDone();
+                            usedMaterials.UnionWith(tex.Select(t => t.Material));
                         }
                     }
                 }
+                allUsed.Enqueue(usedMaterials);
             });
+            return new HashSet<TerrainMaterial>(allUsed.SelectMany(o => o));
         }
 
         public static double GetTextureScale(IArma3MapConfig config, TerrainMaterialLibrary materialLibrary)
@@ -321,12 +329,12 @@ class Stage2
             {
                 sw.WriteLine(FormattableString.Invariant($@"class Stage{stage}
 {{
-	texture=""{texture.NormalTexture}"";
+	texture=""{texture.GetNormalTexturePath(config)}"";
 	texGen=1;
 }};
 class Stage{stage+1}
 {{
-	texture=""{texture.ColorTexture}"";
+	texture=""{texture.GetColorTexturePath(config)}"";
 	texGen=2;
 }};"));
                 stage += 2;

@@ -99,11 +99,11 @@ namespace GameRealisticMap.Arma3.Imagery
             DrawPolygonsCrown(config, d, GetEdgeBrush(materialLibrary.GetMaterialByUsage(material)), polygons, crownSize);
         }
 
-        protected abstract IBrush GetBrush(TerrainMaterial material);
+        protected abstract Brush GetBrush(TerrainMaterial material);
 
-        protected abstract IBrush GetEdgeBrush(TerrainMaterial material);
+        protected abstract Brush GetEdgeBrush(TerrainMaterial material);
 
-        private void DrawPolygons(IArma3MapConfig config, IImageProcessingContext d, IBrush brush, IEnumerable<TerrainPolygon> polygons)
+        private void DrawPolygons(IArma3MapConfig config, IImageProcessingContext d, Brush brush, IEnumerable<TerrainPolygon> polygons)
         {
             foreach (var polygon in polygons.ProgressStep(progress, "DrawPolygons"))
             {
@@ -111,7 +111,7 @@ namespace GameRealisticMap.Arma3.Imagery
             }
         }
 
-        private void DrawPolygonsCrown(IArma3MapConfig config, IImageProcessingContext d, IBrush crownBrush, IEnumerable<TerrainPolygon> polygons, float crownSize)
+        private void DrawPolygonsCrown(IArma3MapConfig config, IImageProcessingContext d, Brush crownBrush, IEnumerable<TerrainPolygon> polygons, float crownSize)
         {
             foreach (var polygon in polygons.ProgressStep(progress, "DrawPolygonsCrown"))
             {
@@ -122,7 +122,7 @@ namespace GameRealisticMap.Arma3.Imagery
             }
         }
 
-        private void DrawPolygon(IArma3MapConfig config, IBrush brush, IImageProcessingContext d, TerrainPolygon polygon)
+        private void DrawPolygon(IArma3MapConfig config, Brush brush, IImageProcessingContext d, TerrainPolygon polygon)
         {
             PolygonDrawHelper.DrawPolygon(d, polygon, brush, drawingOptions, points => TerrainToPixel(config, points));
         }

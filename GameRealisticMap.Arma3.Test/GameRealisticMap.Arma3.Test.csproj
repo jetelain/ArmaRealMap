@@ -10,6 +10,13 @@
 
   <ItemGroup>
     <EmbeddedResource Include="GameEngine\*.txt" />
+	<EmbeddedResource Include="GameEngine\GameConfigGeneratorTest\**\*" />
+	<EmbeddedResource Include="TerrainBuilder\LayersCfgGeneratorTest\**\*" />
+	<None Remove="TerrainBuilder\LayersCfgGeneratorTest\Generate\index.txt" />
+	<None Remove="TerrainBuilder\LayersCfgGeneratorTest\Generate\z.arm.addons.arm_testworld.data.gdt.arm_default.rvmat" />
+	<None Remove="TerrainBuilder\LayersCfgGeneratorTest\Generate\z.arm.addons.arm_testworld.data.gdt.arm_grass.rvmat" />
+	<None Remove="TerrainBuilder\LayersCfgGeneratorTest\Generate\z.arm.addons.arm_testworld.data.gdt.arm_meadow.rvmat" />
+	<None Remove="TerrainBuilder\LayersCfgGeneratorTest\Generate\z.arm.addons.arm_testworld.data.gdt.layers.cfg" />
     <EmbeddedResource Include="TerrainBuilder\world01.txt" />
     <EmbeddedResource Include="TerrainBuilder\world01.wrp" />
     <EmbeddedResource Include="TerrainBuilder\world02.wrp" />

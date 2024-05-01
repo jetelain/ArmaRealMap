@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using Gemini.Framework;
@@ -23,9 +24,23 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         public void SetP3d(string path)
         {
             Model3DGroup = _arma3Preview3D.GetModel(path);
-            NotifyOfPropertyChange(nameof(Model3DGroup));
         }
 
-        public Model3DGroup? Model3DGroup {  get; set; }
+        private Model3DGroup? _model3DGroup;
+        public Model3DGroup? Model3DGroup { get => _model3DGroup; set { Set(ref _model3DGroup, value); } }
+
+        private double _contrast = 0;
+        public double Contrast { get => _contrast; set { Set(ref _contrast, value); } }
+
+        private double _brightness = 0;
+        public double Brightness { get => _brightness; set { Set(ref _brightness, value); } }
+
+        public Task Reset()
+        {
+            Brightness = 0;
+            Contrast = 0;
+            return Task.CompletedTask;
+        }
+
     }
 }

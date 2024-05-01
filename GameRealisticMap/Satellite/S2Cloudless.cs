@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using GameRealisticMap.Reporting;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -137,7 +138,7 @@ namespace GameRealisticMap.Satellite
             progress.WriteLine($"Load '{cacheFile}'");
             try
             {
-                var image = await Image.LoadAsync<Rgba32>(cacheFile, new JpegDecoder()).ConfigureAwait(false);
+                var image = await Image.LoadAsync<Rgba32>(cacheFile).ConfigureAwait(false);
                 Interlocked.Increment(ref estimatedCachePressure);
                 return image;
             }

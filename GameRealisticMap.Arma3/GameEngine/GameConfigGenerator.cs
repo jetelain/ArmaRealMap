@@ -2,6 +2,7 @@
 using System.Text.Json;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Extensions;
+using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
@@ -38,6 +39,8 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\ace-weather.hpp", AceWeather.GenerateWeather(context.GetData<WeatherData>()));
 
+            MaterialConfigGenerator.GenerateConfigFiles(gameFileSystemWriter, config, assets.Materials);
+
             gameFileSystemWriter.WriteTextFile($"{config.PboPrefix}\\grma3-dependencies.json", JsonSerializer.Serialize(assets.Dependencies));
         }
 
@@ -72,8 +75,8 @@ class OutsideTerrain
     {{
 		class Layer0
         {{
-			nopx    = ""{material.NormalTexture}"";
-			texture = ""{material.ColorTexture}""; 
+			nopx    = ""{material.GetNormalTexturePath(config)}"";
+			texture = ""{material.GetColorTexturePath(config)}""; 
 		}};
     }};
 }};
@@ -175,8 +178,12 @@ class CfgWorlds
 		minTreesInForestSquare = 5;
 		minRocksInRockSquare = 10;
 		class Subdivision{{}};
-		class Names{{
+		class Names {{
 			#include ""names.hpp""
+		}};
+        class DefaultClutter;
+		class clutter {{
+			#include ""clutter.hpp""
 		}};
 		#include""mapinfos.hpp""
 		#include""ace-weather.hpp""
@@ -185,7 +192,9 @@ class CfgWorlds
 		}};
 		pictureMap = ""{config.PboPrefix}\data\picturemap_ca.paa"";
 	}};
-}};";
+}};
+#include ""surfaces.hpp""
+";
         }
 
         internal static string GetFreindlyName(IArma3MapConfig config, CitiesData cities)

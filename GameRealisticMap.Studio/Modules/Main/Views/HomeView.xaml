@@ -21,6 +21,28 @@
             <TextBlock FontStyle="Italic" Text="{x:Static r:Labels.HomeIntroLimit}" />
         </TextBlock>
 
+        <ScrollViewer IsTabStop="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+            <ItemsControl ItemsSource="{Binding RecentFiles}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Margin="0 5 5 0" Padding="5" cal:Message.Attach="OpenFile">
+                            <StackPanel>
+                                <Image Source="{Binding IconUri}" Width="24" Height="24" Margin="0 0 0 5"/>
+                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Width="128" TextAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+
+
             <Expander IsExpanded="True" Margin="0 20 30 0">
                 <Expander.Header>
                     <TextBlock FontSize="25">Arma 3</TextBlock>
@@ -85,6 +107,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <StackPanel HorizontalAlignment="Center">
                             <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewArma3AssetConfig">
@@ -108,15 +131,26 @@
                             <Run Text="{x:Static r:Labels.BrowseAssetsDescription}"/>
                             </TextBlock>
                         </StackPanel>
-                        <StackPanel Grid.Column="2"  HorizontalAlignment="Center">
-                            <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewArma3MapConfig">
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                            <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="BrowseArma3Gdt">
                                 <StackPanel>
-                                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
-                                    <TextBlock TextWrapping="Wrap"><Run Text="{x:Static r:Labels.CreateAMapConfiguration}" /></TextBlock>
+                                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/Materials.png" Width="24" Height="24" Margin="0 0 0 5"/>
+                                    <TextBlock TextWrapping="Wrap" TextAlignment="Center"><Run Text="{x:Static r:Labels.BrowseGdt}"/></TextBlock>
                                 </StackPanel>
                             </Button>
                             <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
-                            <Run Text="{x:Static r:Labels.CreateAMapConfigurationDescription}"/>
+                                <Run Text="{x:Static r:Labels.BrowseGdtDescription}"/>
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3"  HorizontalAlignment="Center">
+                            <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewArma3MapConfig">
+                                <StackPanel>
+                                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
+                                    <TextBlock TextWrapping="Wrap" TextAlignment="Center"><Run Text="{x:Static r:Labels.CreateAMapConfiguration}" /></TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
+                                <Run Text="{x:Static r:Labels.CreateAMapConfigurationDescription}"/>
                             </TextBlock>
                         </StackPanel>
                     </Grid>

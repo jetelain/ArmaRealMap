@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Numerics;
+using System.Text.Json.Serialization;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.ManMade.Places
@@ -27,5 +28,16 @@ namespace GameRealisticMap.ManMade.Places
         public float Radius { get; }
 
         public float Population { get; }
+
+        public static City Square(TerrainPoint center, float size, string name, CityTypeId type = CityTypeId.Village, float population = 0)
+        {
+            return new City(center, 
+                new List<TerrainPolygon>() { TerrainPolygon.FromRectangle(center - new Vector2(size), center + new Vector2(size)) }, 
+                name, 
+                type, 
+                size,
+                population);
+        }
+
     }
 }

@@ -19,5 +19,7 @@
         public float FakeSatBlend => 0.5f;
 
         public string WorldName => "arm_testworld";
+
+        public bool UseColorCorrection => false;
     }
 }

@@ -71,7 +71,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
             using var task = new BasicProgressSystem(this, logger);
             try
             {
-                var parser = new WrpEditBatchParser(task, parent.GameFileSystem);
+                var parser = new WrpEditBatchParser(task, parent.ProjectDrive);
 
                 var batch = parser.ParseFromText(value);
                 if (!string.IsNullOrEmpty(batch.WorldName))
