@@ -1561,4 +1561,19 @@ Last generated on {1}</value>
   <data name="ReGenerateFromLibrary" xml:space="preserve">
     <value>Re-generate from library</value>
   </data>
+  <data name="SaveToANewLocation" xml:space="preserve">
+    <value>Save to a new location</value>
+  </data>
+  <data name="SaveFullMap" xml:space="preserve">
+    <value>Save full map</value>
+  </data>
+  <data name="SaveFullMapDescription" xml:space="preserve">
+    <value>Use this option to have a full copy of the map, including roads, satellite image, and texture mask.</value>
+  </data>
+  <data name="SaveWrpOnly" xml:space="preserve">
+    <value>Save WRP file only</value>
+  </data>
+  <data name="SaveWrpOnlyDescription" xml:space="preserve">
+    <value>Use this option to create a backup of objects positions.</value>
+  </data>
 </root>

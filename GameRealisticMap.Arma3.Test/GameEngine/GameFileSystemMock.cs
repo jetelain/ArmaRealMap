@@ -8,6 +8,7 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
     internal class GameFileSystemMock : IGameFileSystemWriter
     {
         public Dictionary<string, string> TextFiles { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, MemoryStream> BinaryFiles { get; } = new Dictionary<string, MemoryStream>(StringComparer.OrdinalIgnoreCase);
 
         public HashSet<string> Directories = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -16,7 +17,10 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
         public Stream Create(string path)
         {
             CheckDirectoy(path);
-            throw new NotImplementedException();
+            var stream = new MemoryStream();
+            BinaryFiles[path] = stream;
+            TextFiles.Remove(path);
+            return stream;
         }
 
         public void CreateDirectory(string path)
@@ -31,7 +35,7 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
 
         public bool FileExists(string path)
         {
-            return TextFiles.ContainsKey(path);
+            return TextFiles.ContainsKey(path) || BinaryFiles.ContainsKey(path);
         }
 
         public IEnumerable<string> FindAll(string pattern)
@@ -50,19 +54,24 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
             {
                 return new MemoryStream(Encoding.UTF8.GetBytes(result));
             }
+            if (BinaryFiles.TryGetValue(path, out var stream))
+            {
+                return new MemoryStream(stream.ToArray());
+            }
             return null;
         }
 
         public void WritePngImage(string path, Image image)
         {
             CheckDirectoy(path);
-            throw new NotImplementedException();
+            image.SaveAsPng(Create(path));
         }
 
         public void WriteTextFile(string path, string text)
         {
             CheckDirectoy(path);
             TextFiles[path] = text;
+            BinaryFiles.Remove(path);
         }
 
         private void CheckDirectoy(string path)

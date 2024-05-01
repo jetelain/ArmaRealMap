@@ -55,16 +55,20 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 
         public string Tooltip => string.Format(CultureInfo.InstalledUICulture, Labels.Arma3RecentWorldTooltip, WorldName, TimeStamp.ToLocalTime());
 
-        public ImageSource ImageSource
+        public ImageSource? ImageSource
         {
             get
             {
-                var imgTemp = new BitmapImage();
-                imgTemp.BeginInit();
-                imgTemp.CacheOption = BitmapCacheOption.OnLoad;
-                imgTemp.UriSource = new Uri(PreviewPath);
-                imgTemp.EndInit();
-                return imgTemp;
+                if (!string.IsNullOrEmpty(PreviewPath) && File.Exists(PreviewPath))
+                {
+                    var imgTemp = new BitmapImage();
+                    imgTemp.BeginInit();
+                    imgTemp.CacheOption = BitmapCacheOption.OnLoad;
+                    imgTemp.UriSource = new Uri(PreviewPath);
+                    imgTemp.EndInit();
+                    return imgTemp;
+                }
+                return null;
             }
         }
     }

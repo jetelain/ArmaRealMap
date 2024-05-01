@@ -30,6 +30,7 @@ using GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
+using GameRealisticMap.Studio.Shared;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
 using Gemini.Framework.Services;
@@ -42,7 +43,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
-    internal class Arma3WorldEditorViewModel : PersistedDocument, IExplorerRootTreeItem
+    internal class Arma3WorldEditorViewModel : PersistedDocumentOverridable, IExplorerRootTreeItem
     {
         private EditableWrp? _world;
         private GameConfigTextData? _configFile;
@@ -59,6 +60,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private EditableArma3Roads? roads;
         private List<ObjectStatsItem> objectStatsItems = new List<ObjectStatsItem>();
         private List<MaterialItem> _materials = new List<MaterialItem>();
+        private string? initialFilePath;
 
         public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history, IArma3BackupService worldBackup) 
         {
@@ -85,6 +87,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         protected override async Task DoLoad(string filePath)
         {
+            initialFilePath = filePath;
+
             var worldName = Path.GetFileNameWithoutExtension(filePath);
 
             World = StreamHelper.Read<AnyWrp>(filePath).GetEditableWrp();
@@ -119,9 +123,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
         }
 
-        private static readonly Regex TextureMatch = new Regex(@"texture=""([^""]*)"";\r?\n\ttexGen=2;", RegexOptions.CultureInvariant);
-
-        private void UpdateBackupsList(string filePath)
+        internal void UpdateBackupsList(string filePath)
         {
             Backups = new[] { new RevisionHistoryEntry(this) }.Concat(worldBackup.GetBackups(filePath).Select(b => new RevisionHistoryEntry(this, b))).ToList();
         }
@@ -315,35 +317,60 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             throw new NotSupportedException("You cannot create an empty world file.");
         }
 
-        protected override async Task DoSave(string filePath)
+        public override async Task Save(string filePath)
         {
             if (World != null)
             {
-                if (IsRoadsDirty && Roads != null && ConfigFile != null && !string.IsNullOrEmpty(ConfigFile.Roads))
+                if (!string.Equals(initialFilePath, filePath, StringComparison.OrdinalIgnoreCase) && ConfigFile != null && initialFilePath != null)
                 {
-                    new RoadsSerializer(arma3Data.ProjectDrive).Serialize(
-                        ConfigFile.Roads, Roads.Roads.Where(r => !r.IsRemoved), Roads.RoadTypeInfos);
-                    ConfigFile.Revision++;
-                    IsRoadsDirty = false;
+                    if ((await IoC.Get<IWindowManager>().ShowDialogAsync(new NewPboPrefixViewModel(this, initialFilePath, filePath)) ?? false))
+                    {
+                        AssumeSavedAs(filePath);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                if (IsDirty)
+                else
                 {
-                    worldBackup.CreateBackup(filePath, savedRevision, GetBackupFiles(filePath));
-                    StreamHelper.Write(World, filePath);
-                    UpdateBackupsList(filePath);
+                    await base.Save(filePath);
                 }
-                if (ConfigFile != null)
-                {
-                    ConfigFile.SaveIncrementalToFile(ConfigFilePath(filePath));
-                    savedRevision = ConfigFile.Revision;
-                }
-                if (Dependencies != null)
-                {
-                    using var stream = File.Create(DependenciesFilePath(filePath));
-                    await JsonSerializer.SerializeAsync(stream, Dependencies);
-                }
+                await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
+                initialFilePath = filePath;
             }
-            await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
+        }
+
+        protected override async Task DoSave(string filePath)
+        {
+            if (IsRoadsDirty && Roads != null && ConfigFile != null && !string.IsNullOrEmpty(ConfigFile.Roads))
+            {
+                new RoadsSerializer(arma3Data.ProjectDrive).Serialize(
+                    ConfigFile.Roads, Roads.Roads.Where(r => !r.IsRemoved), Roads.RoadTypeInfos);
+                ConfigFile.Revision++;
+                IsRoadsDirty = false;
+            }
+            if (IsDirty)
+            {
+                worldBackup.CreateBackup(filePath, savedRevision, GetBackupFiles(filePath));
+                StreamHelper.Write(World, filePath);
+                UpdateBackupsList(filePath);
+            }
+            if (ConfigFile != null)
+            {
+                ConfigFile.SaveIncrementalToFile(ConfigFilePath(filePath));
+                savedRevision = ConfigFile.Revision;
+            }
+            await SaveDependencies(filePath);
+        }
+
+        internal async Task SaveDependencies(string filePath)
+        {
+            if (Dependencies != null)
+            {
+                var stream = File.Create(DependenciesFilePath(filePath));
+                await JsonSerializer.SerializeAsync(stream, Dependencies);
+            }
         }
 
         internal void LoadRoads()

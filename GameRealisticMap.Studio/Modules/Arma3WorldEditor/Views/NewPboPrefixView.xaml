@@ -1,0 +1,136 @@
+﻿<Window x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.NewPboPrefixView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cal="http://www.caliburnproject.org"
+    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:geminibehaviors="clr-namespace:Gemini.Framework.Behaviors;assembly=Gemini"
+    xmlns:r="clr-namespace:GameRealisticMap.Studio"
+    xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+    Background="{DynamicResource EnvironmentWindowBackground}"
+    Foreground="{DynamicResource EnvironmentWindowText}"
+    Width="550" Height="500" MinWidth="550" MinHeight="300" 
+    WindowStartupLocation="CenterOwner"
+    ShowInTaskbar="False"
+    Title="{x:Static r:Labels.SaveToANewLocation}">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    <behaviors:Interaction.Behaviors>
+        <geminibehaviors:WindowOptionsBehavior ShowIcon="False"
+                                               ShowMinimizeBox="False"
+                                               ShowMaximizeBox="False" />
+    </behaviors:Interaction.Behaviors>
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="230" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="10" />
+            </Grid.RowDefinitions>
+
+            <ScrollViewer IsTabStop="False" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+                <StackPanel>
+
+                    <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.SaveToANewLocation}"/></TextBlock>
+
+                    <StackPanel Margin="10 0 0 0">
+                        <TextBlock Text="{Binding InitialFilePath}" Foreground="{DynamicResource EnvironmentToolWindowDisabledText}" />
+                    </StackPanel>
+                    <StackPanel Margin="10 0 0 0" Orientation="Horizontal">
+                        <TextBlock>🠞</TextBlock>
+                        <TextBlock Text="{Binding FilePath}" Margin="10 0"/>
+                    </StackPanel>
+                    
+                    <Button Padding="10" Margin="10" cal:Message.Attach="SaveFullCopy" IsEnabled="{Binding HasValidPboPrefix, Mode=OneWay}">
+                        <StackPanel Width="450">
+                            <TextBlock FontSize="15" FontWeight="Bold"><Run Text="{x:Static r:Labels.SaveFullMap}"/></TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.SaveFullMapDescription}"/></TextBlock>
+
+
+                            <Grid Margin="0 10 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static r:Labels.PboPrefix}" />
+                                <TextBlock Grid.Column="1" Grid.Row="0" Margin="10 0" Text="{Binding OldPboPrefix}" Foreground="{DynamicResource EnvironmentToolWindowDisabledText}" />
+                                <TextBlock Grid.Column="2" Grid.Row="0" >🠞</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="0" Margin="10 0" Text="{Binding NewPboPrefix}" />
+
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="WorldName" />
+                                <TextBlock Grid.Column="1" Grid.Row="1" Margin="10 0" Text="{Binding OldWorldName}" Foreground="{DynamicResource EnvironmentToolWindowDisabledText}" />
+                                <TextBlock Grid.Column="2" Grid.Row="1" >🠞</TextBlock>
+                                <TextBlock Grid.Column="3" Grid.Row="1" Margin="10 0" Text="{Binding NewWorldName}" />
+                            </Grid>
+                            
+
+                        </StackPanel>
+                    </Button>
+                    <Button Padding="10" Margin="10 0 10 10" cal:Message.Attach="SaveWrpOnly">
+                        <StackPanel Width="450">
+                            <TextBlock FontSize="15" FontWeight="Bold"><Run Text="{x:Static r:Labels.SaveWrpOnly}" /></TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.SaveWrpOnlyDescription}" /></TextBlock>
+                            <Grid Margin="0 10 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static r:Labels.PboPrefix}" />
+                                <TextBlock Grid.Column="1" Grid.Row="0" Margin="10 0" Text="{Binding OldPboPrefix}" />
+
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="WorldName" />
+                                <TextBlock Grid.Column="1" Grid.Row="1" Margin="10 0" Text="{Binding OldWorldName}" />
+                            </Grid>
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+
+            </ScrollViewer>
+
+            <Rectangle Grid.Row="1" Height="1" Fill="{x:Static SystemColors.ActiveBorderBrush}"
+                       VerticalAlignment="Bottom"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 12 0 0" HorizontalAlignment="Right"
+              IsSharedSizeScope="True">
+            <Grid.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Margin" Value="12 0 0 0" />
+                    <Setter Property="Padding" Value="4" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="WindowButtons" />
+                <ColumnDefinition SharedSizeGroup="WindowButtons" />
+            </Grid.ColumnDefinitions>
+
+            <!--<Button Grid.Column="0" IsDefault="True" cal:Message.Attach="SaveChanges">OK</Button>-->
+            <Button Grid.Column="1" IsCancel="True" MinWidth="80" cal:Message.Attach="Cancel">
+                <Run Text="{x:Static r:Labels.Cancel}"/>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>
