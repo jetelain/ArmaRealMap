@@ -354,6 +354,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 worldBackup.CreateBackup(filePath, savedRevision, GetBackupFiles(filePath));
                 StreamHelper.Write(World, filePath);
+                UpdateBackupsList(filePath);
             }
             if (ConfigFile != null)
             {
