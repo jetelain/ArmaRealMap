@@ -1561,4 +1561,19 @@ Dernière génération le {1}</value>
   <data name="ReGenerateFromLibrary" xml:space="preserve">
     <value>Re-générer depuis la bibliothèque</value>
   </data>
+  <data name="SaveToANewLocation" xml:space="preserve">
+    <value>Enregistrer à un nouvel emplacement</value>
+  </data>
+  <data name="SaveFullMap" xml:space="preserve">
+    <value>Enregistrer la carte complète</value>
+  </data>
+  <data name="SaveWrpOnly" xml:space="preserve">
+    <value>Enregistrer seulement le fichier WRP</value>
+  </data>
+  <data name="SaveFullMapDescription" xml:space="preserve">
+    <value>Utiliser cette option pour avoir une copie complète de la carte, ce qui inclus les routes, l'image satellite, et le masque de texture.</value>
+  </data>
+  <data name="SaveWrpOnlyDescription" xml:space="preserve">
+    <value>Utiliser cette option pour effectuer une sauvegarde de la position des objets.</value>
+  </data>
 </root>

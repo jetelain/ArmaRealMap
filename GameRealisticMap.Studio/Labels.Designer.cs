@@ -3800,6 +3800,51 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Save full map.
+        /// </summary>
+        public static string SaveFullMap {
+            get {
+                return ResourceManager.GetString("SaveFullMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use this option to have a full copy of the map, including roads, satellite image, and texture mask..
+        /// </summary>
+        public static string SaveFullMapDescription {
+            get {
+                return ResourceManager.GetString("SaveFullMapDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Save to a new location.
+        /// </summary>
+        public static string SaveToANewLocation {
+            get {
+                return ResourceManager.GetString("SaveToANewLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Save WRP file only.
+        /// </summary>
+        public static string SaveWrpOnly {
+            get {
+                return ResourceManager.GetString("SaveWrpOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use this option to create a backup of objects positions..
+        /// </summary>
+        public static string SaveWrpOnlyDescription {
+            get {
+                return ResourceManager.GetString("SaveWrpOnlyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Scale.
         /// </summary>
         public static string Scale {

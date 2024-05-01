@@ -11,7 +11,7 @@
     Width="550" Height="500" MinWidth="550" MinHeight="300" 
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="False"
-    Title="Save to a new location">
+    Title="{x:Static r:Labels.SaveToANewLocation}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -40,7 +40,7 @@
 
                 <StackPanel>
 
-                    <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="Save to a new location"/></TextBlock>
+                    <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.SaveToANewLocation}"/></TextBlock>
 
                     <StackPanel Margin="10 0 0 0">
                         <TextBlock Text="{Binding InitialFilePath}" Foreground="{DynamicResource EnvironmentToolWindowDisabledText}" />
@@ -52,8 +52,8 @@
                     
                     <Button Padding="10" Margin="10" cal:Message.Attach="SaveFullCopy" IsEnabled="{Binding HasValidPboPrefix, Mode=OneWay}">
                         <StackPanel Width="450">
-                            <TextBlock FontSize="15" FontWeight="Bold">Save full map</TextBlock>
-                            <TextBlock TextWrapping="Wrap" Margin="0 10 0 0">Use this option to have a full copy of the map, including roads, satellite image, and texture mask.</TextBlock>
+                            <TextBlock FontSize="15" FontWeight="Bold"><Run Text="{x:Static r:Labels.SaveFullMap}"/></TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.SaveFullMapDescription}"/></TextBlock>
 
 
                             <Grid Margin="0 10 0 0">
@@ -84,8 +84,8 @@
                     </Button>
                     <Button Padding="10" Margin="10 0 10 10" cal:Message.Attach="SaveWrpOnly">
                         <StackPanel Width="450">
-                            <TextBlock FontSize="15" FontWeight="Bold">Save only WRP file</TextBlock>
-                            <TextBlock TextWrapping="Wrap" Margin="0 10 0 0">Use this option to create a backup of objects positions.</TextBlock>
+                            <TextBlock FontSize="15" FontWeight="Bold"><Run Text="{x:Static r:Labels.SaveWrpOnly}" /></TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.SaveWrpOnlyDescription}" /></TextBlock>
                             <Grid Margin="0 10 0 0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
