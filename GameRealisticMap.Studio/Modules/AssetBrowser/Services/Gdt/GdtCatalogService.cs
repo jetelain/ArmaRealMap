@@ -13,6 +13,8 @@ using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Data;
 using GameRealisticMap.Studio.Toolkit;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
 {
@@ -70,7 +72,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                     ?? new List<GdtCatalogItem>();
             }
             var list = new List<GdtCatalogItem>();
-            var titles = BuiltinObjectsList.ReadCsv("GdtTitles");
+            var titles = BuiltinObjectsList.ReadCsv("Gdt");
             var pboFS = (_arma3DataModule.ProjectDrive.SecondarySource as PboFileSystem);
             if (pboFS != null)
             {
@@ -85,8 +87,9 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
             return list;
         }
 
-        private void Import(List<GdtCatalogItem> list, List<GdtImporterItem> gdtImporterItems, List<string[]> titles)
+        private void Import(List<GdtCatalogItem> list, List<GdtImporterItem> gdtImporterItems, List<string[]> entries)
         {
+
             foreach (var item in gdtImporterItems)
             {
                 var existing = list.FirstOrDefault(i => string.Equals(i.Material.ColorTexture, item.ColorTexture));
@@ -97,9 +100,11 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
 
                 using var fakeSat = GdtHelper.GenerateFakeSatPngImage(_arma3Previews, item.ColorTexture);
 
-                var color = GdtHelper.AllocateUniqueColor(fakeSat, list.Select(i => i.Material.Id.ToWpfColor()));
+                var entry = entries.FirstOrDefault(e => e.Length == 3 && string.Equals(e[0], item.ColorTexture, StringComparison.OrdinalIgnoreCase));
+                var title = entry?[1];
+                var defaultColor = entry?[2];
 
-                var title = titles.FirstOrDefault(e => e.Length == 2 && string.Equals(e[0], item.ColorTexture, StringComparison.OrdinalIgnoreCase))?[1];
+                var color = GetUniqueColor(list.Select(i => i.Material.Id.ToWpfColor()), defaultColor, item, fakeSat);
 
                 list.Add(new GdtCatalogItem(
                     new Arma3.Assets.TerrainMaterial(item.NormalTexture, item.ColorTexture, color.ToRgb24(), fakeSat?.ToPngByteArray()),
@@ -108,7 +113,20 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                     title));
             }
         }
-    
+
+        private static System.Windows.Media.Color GetUniqueColor(IEnumerable<System.Windows.Media.Color> usedColors, string? defaultColorEntry, GdtImporterItem item, Image<Rgb24>? fakeSat)
+        {
+            if (!string.IsNullOrEmpty(defaultColorEntry))
+            {
+                var defaultColor = Color.ParseHex(defaultColorEntry).ToPixel<Rgb24>().ToWpfColor();
+                if (!usedColors.Contains(defaultColor))
+                {
+                    return defaultColor;
+                }
+            }
+            return GdtHelper.AllocateUniqueColor(fakeSat, usedColors);
+        }
+
         private JsonSerializerOptions CreateJsonOptions()
         {
             return new JsonSerializerOptions()
@@ -165,7 +183,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
                 {
                     cachedList = await Load().ConfigureAwait(false);
                 }
-                Import(cachedList, gdtImporterItems, BuiltinObjectsList.ReadCsv("GdtTitles"));
+                Import(cachedList, gdtImporterItems, BuiltinObjectsList.ReadCsv("Gdt"));
             }
             finally
             {
