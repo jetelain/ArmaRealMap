@@ -1,0 +1,70 @@
+﻿a3\map_data\gdt_beach_co.paa;Altis Beach;#CF6D00
+a3\map_data\gdt_concrete_co.paa;Altis Concrete;#907F93
+a3\map_data\gdt_dead_co.paa;Altis Dead;#F5F5F5
+a3\map_data\gdt_desert_co.paa;Altis Desert;#E9D700
+a3\map_data\gdt_dirt_co.paa;Altis Dirt;#874100
+a3\map_data\gdt_dry_grass_co.paa;Altis Dry Grass;#9ACD32
+a3\map_data\gdt_forest_pine_co.paa;Altis Forest Pine;#803900
+a3\map_data\gdt_grass_green_co.paa;Altis Grass Green;#32CD32
+a3\map_data\gdt_marsh_co.paa;Altis Marsh;#804D00
+a3\map_data\gdt_mud_co.paa;Altis Mud;#804000
+a3\map_data\gdt_rock_co.paa;Altis Rock;#8B5300
+a3\map_data\gdt_rubble_co.paa;Altis Rubble;#9B4800
+a3\map_data\gdt_seabed_co.paa;Altis Seabed;#0026FF
+a3\map_data\gdt_soil_co.paa;Altis Soil;#925600
+a3\map_data\gdt_stony_co.paa;Altis Stony;#894800
+a3\map_data\gdt_strbeach_co.paa;Stratis Beach;#B56500
+a3\map_data\gdt_strconcrete_co.paa;Stratis Concrete;#AA6300
+a3\map_data\gdt_strdeepsea_co.paa;Stratis Deep Sea;#847900
+a3\map_data\gdt_strdirt_co.paa;Stratis Dirt;#804A00
+a3\map_data\gdt_strdrygrass_co.paa;Stratis Dry Grass;#FF00D5
+a3\map_data\gdt_strforest_pine_co.paa;Stratis Forest Pine;#803C00
+a3\map_data\gdt_strgreengrass_co.paa;Stratis Green Grass;#FF2B00
+a3\map_data\gdt_strrocky_co.paa;Stratis Rocky;#805100
+a3\map_data\gdt_strseabed_co.paa;Stratis Sea Bed;#808000
+a3\map_data\gdt_strthistles_co.paa;Stratis Thistles;#804600
+a3\map_data\gdt_thistle_stony_co.paa;Altis Thistle Stony;#813D00
+a3\map_data\gdt_thorn_co.paa;Altis Thorn;#8B4900
+a3\map_data\gdt_weed_co.paa;Altis Weed;#804700
+a3\map_data\gdt_wild_grass_co.paa;Altis Wild Grass;#768000
+a3\map_data\gdt_wildfield_co.paa;Altis Wildfield;#834500
+a3\map_malden\data\gdt_forest_malden_co.paa;Malden Forest;#00FFBF
+a3\map_enoch\data\gdt_dirt_co.paa;Livonia Dirt;#A55318
+a3\map_enoch\data\gdt_encobblestone_co.paa;Livonia Cobble Stone;#708090
+a3\map_enoch\data\gdt_enfield_co.paa;Livonia Field;#805C00
+a3\map_enoch\data\gdt_enforestcon_co.paa;Livonia Forest Conifer;#228B22
+a3\map_enoch\data\gdt_enforestdec_co.paa;Livonia Forest Deciduous;#804E00
+a3\map_enoch\data\gdt_engrass1_co.paa;Livonia Grass 1;#388000
+a3\map_enoch\data\gdt_engrass2_co.paa;Livonia Grass 2;#3D8000
+a3\map_enoch\data\gdt_ensoil_co.paa;Livonia Soil;#806600
+a3\map_enoch\data\gdt_enstubble_co.paa;Livonia Stubble;#A6AF54
+a3\map_enoch\data\gdt_entarmac_co.paa;Livonia Tarmac;#A9A9A9
+a3\map_enoch\data\gdt_entarmacold_co.paa;Livonia Tarmac Old;#8F7A7A
+a3\map_enoch\data\gdt_enweatheredtarmac_co.paa;Livonia Weathered Tarmac;#859985
+a3\map_data_exp\gdt_asphalt_co.paa;Tanoa Asphalt;#000000
+a3\map_data_exp\gdt_beach_co.paa;Tanoa Beach;#FFFF00
+a3\map_data_exp\gdt_forest_co.paa;Tanoa Forest;#008000
+a3\map_data_exp\gdt_grass_short_co.paa;Tanoa Grass Short;#6B8000
+a3\map_data_exp\gdt_grass_tall_co.paa;Tanoa Grass Tall;#558000
+a3\map_data_exp\gdt_reddirt_co.paa;Tanoa Red Dirt;#804800
+a3\map_data_exp\gdt_rock_co.paa;Tanoa Rock;#708000
+a3\map_data_exp\gdt_seabedexp_co.paa;Tanoa Sea Bed;#806F00
+a3\map_data_exp\gdt_vbeach_co.paa;Tanoa Volcanic Beach;#685D00
+a3\map_data_exp\gdt_volcano_co.paa;Tanoa Volcanic Ground;#803700
+z\arm\addons\centraleurope\data\gdt\arm_dirt_centraleurope_co.paa;CentralEurope Dirt;#A52A2A
+z\arm\addons\centraleurope\data\gdt\arm_forest_centraleurope_co.paa;CentralEurope Forest;#664A00
+z\arm\addons\centraleurope\data\gdt\arm_grassshort_centraleurope_co.paa;CentralEurope Grass Short;#569600
+z\arm\addons\centraleurope\data\gdt\arm_meadows_centraleurope_co.paa;CentralEurope Meadows;#6B8E23
+z\arm\addons\centraleurope\data\gdt\arm_rock_centraleurope_co.paa;CentralEurope Rock;#808080
+z\arm\addons\centraleurope\data\gdt\arm_sand_centraleurope_co.paa;CentralEurope Sand;#F4A460
+z\arm\addons\centraleurope\data\gdt\arm_wetland_centraleurope_co.paa;CentralEurope Wetland;#ADD8E6
+z\arm\addons\common_v2\data\gdt\arm_concrete_co.paa;Generic Concrete;#FFBA57
+z\arm\addons\common_v2\data\gdt\arm_farmland_co.paa;Generic Farmland;#E67300
+z\arm\addons\common_v2\data\gdt\arm_grassshort_co.paa;Generic Grass Short;#7CFC00
+z\arm\addons\common_v2\data\gdt\arm_ice_co.paa;Generic Ice;#C3E6FF
+z\arm\addons\sahel\data\gdt\arm_dirt_sahel_co.paa;Sahel Dirt;#FF0015
+z\arm\addons\sahel\data\gdt\arm_forest_sahel_co.paa;Sahel Forest;#8B0000
+z\arm\addons\sahel\data\gdt\arm_grassshort_sahel_co.paa;Sahel Grass Short;#FF7A41
+z\arm\addons\sahel\data\gdt\arm_rock_sahel_co.paa;Sahel Rock;#803A00
+z\arm\addons\sahel\data\gdt\arm_sand_sahel_co.paa;Sahel Sand;#FFFACD
+z\arm\addons\sahel\data\gdt\arm_wetland_sahel_co.paa;Sahel Wetland;#E77800

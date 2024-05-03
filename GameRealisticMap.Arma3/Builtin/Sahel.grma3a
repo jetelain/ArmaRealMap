@@ -2727,94 +2727,590 @@
         "Material": {
           "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_dirt_sahel_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_dirt_sahel_co.paa",
-          "Id": "A52A2AFF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAaUlEQVR4nF2PgQ3AIAgEX6TTdIdO0f0XacTyCqb1EwwInK/e19lrqWi9wboBRTwq4DWlPNjkEGX4yO90bO2yZ5J8UcUTDjFk4W09Mwly/PGsSRkeuEWFKYSXXNKBS/eZR5MU3b+V5hDmX7OBNtHPTy7zAAAAAElFTkSuQmCC"
+          "Id": "FF0015FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjCbTR/s+AB7AwEADDQwEA0xkB2NMX9wgAAAAASUVORK5CYII="
         },
         "Usages": [
           "Default",
           "DefaultUrban",
           "DefaultIndustrial"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_dirt_sahel",
+          "AceCanDig": false,
+          "Files": "arm_dirt_sahel_*",
+          "SoundEnviron": "dirt",
+          "SoundHit": "hard_ground",
+          "Rough": 0.3799999952316284,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.75,
+          "Lucidity": 2,
+          "GrassCover": 0.10000000149011612,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.75,
+          "Character": [
+            {
+              "Name": "arm_StrThornKhaki",
+              "Probability": 0.004999999888241291,
+              "Model": "A3\\plants_f\\Clutter\\c_StrThornKhaki.p3d",
+              "AffectedByWind": 0.05000000074505806,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1.399999976158142
+            },
+            {
+              "Name": "arm_Thistle_Thorn_Desert",
+              "Probability": 0.004999999888241291,
+              "Model": "A3\\plants_f\\clutter\\c_Thistle_Thorn_Desert.p3d",
+              "AffectedByWind": 0.30000001192092896,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1.399999976158142
+            },
+            {
+              "Name": "arm_StrGrassDry",
+              "Probability": 0.004999999888241291,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry.p3d",
+              "AffectedByWind": 0.5,
+              "IsSwLighting": false,
+              "ScaleMin": 0.800000011920929,
+              "ScaleMax": 1.2000000476837158
+            },
+            {
+              "Name": "arm_StrGrassDry_group",
+              "Probability": 0.004999999888241291,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry_group.p3d",
+              "AffectedByWind": 0.6499999761581421,
+              "IsSwLighting": false,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.5
+            },
+            {
+              "Name": "arm_grass_desert",
+              "Probability": 0.014999999664723873,
+              "Model": "Jbad_Veg\\plants\\clutter\\jbad_grass_desert.p3d",
+              "AffectedByWind": 0.3499999940395355,
+              "IsSwLighting": false,
+              "ScaleMin": 0.3499999940395355,
+              "ScaleMax": 0.699999988079071
+            },
+            {
+              "Name": "arm_Crack_Clutter1",
+              "Probability": 0.004999999888241291,
+              "Model": "a3\\plants_f\\clutter\\c_Crack_Clutter1.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.5,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "arm_Crack_Clutter2",
+              "Probability": 0.004999999888241291,
+              "Model": "a3\\plants_f\\clutter\\c_Crack_Clutter2.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.5,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "arm_Crack_Clutter3",
+              "Probability": 0.004999999888241291,
+              "Model": "a3\\plants_f\\clutter\\c_Crack_Clutter3.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.5,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "arm_Crack_Clutter4",
+              "Probability": 0.004999999888241291,
+              "Model": "a3\\plants_f\\clutter\\c_Crack_Clutter4.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.5,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "arm_brush_soft",
+              "Probability": 0.004999999888241291,
+              "Model": "Jbad_Veg\\plants\\clutter\\jbad_brush_soft.p3d",
+              "AffectedByWind": 0.05000000074505806,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1.399999976158142
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        }
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_ice_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_ice_co.paa",
+          "Id": "C3E6FFFF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjWbD9+H8GPICFgQAYHgoAQU4DPhU1QugAAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "IceSurface"
+        ],
+        "Surface": {
+          "Name": "arm_ice",
+          "AceCanDig": false,
+          "Files": "arm_ice_*",
+          "SoundEnviron": "normal",
+          "SoundHit": "hard_ground",
+          "Rough": 0.05000000074505806,
+          "MaxSpeedCoef": 1,
+          "Dust": 0.10000000149011612,
+          "Lucidity": 0.30000001192092896,
+          "GrassCover": 0,
+          "Impact": "hitGroundHard",
+          "SurfaceFriction": 3,
+          "Character": [],
+          "MaxClutterColoringCoef": 1
+        }
+      },
+      {
+        "Material": {
+          "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_rock_sahel_nopx.paa",
+          "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_rock_sahel_co.paa",
+          "Id": "803A00FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjCbZW/8+AB7AwEADDQwEA0A0B1ZWeYkYAAAAASUVORK5CYII="
+        },
+        "Usages": [
+          "ScreeSurface",
+          "RockGround"
+        ],
+        "Surface": {
+          "Name": "arm_rock",
+          "AceCanDig": false,
+          "Files": "arm_rock_*",
+          "SoundEnviron": "gravel",
+          "SoundHit": "soft_ground",
+          "Rough": 0.07999999821186066,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.75,
+          "Lucidity": 2,
+          "GrassCover": 0.10000000149011612,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.75,
+          "Character": [
+            {
+              "Name": "arm_sharpStones_erosion",
+              "Probability": 0.47999998927116394,
+              "Model": "z\\arm\\addons\\common_v2\\data\\clutter\\c_sharpStones_erosion_f.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 0.800000011920929
+            },
+            {
+              "Name": "arm_sharpStones_erosion_v2",
+              "Probability": 0.47999998927116394,
+              "Model": "z\\arm\\addons\\common_v2\\data\\clutter\\c_sharpStones_erosion_v2_f.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 0.800000011920929
+            },
+            {
+              "Name": "arm_StrGrassDry",
+              "Probability": 0.019999999552965164,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry.p3d",
+              "AffectedByWind": 0.5,
+              "IsSwLighting": false,
+              "ScaleMin": 0.800000011920929,
+              "ScaleMax": 1.2000000476837158
+            },
+            {
+              "Name": "arm_StrGrassDry_group",
+              "Probability": 0.019999999552965164,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry_group.p3d",
+              "AffectedByWind": 0.6499999761581421,
+              "IsSwLighting": false,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.5
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
           "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_sand_sahel_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_sand_sahel_co.paa",
-          "Id": "F4A460FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAFklEQVR4nGOpSHX/z4AHsDAQAMNDAQBBuwJEQhYxTgAAAABJRU5ErkJggg=="
+          "Id": "FFFACDFF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjKU/1+M+AB7AwEADDQwEAQbkCRH3YBIkAAAAASUVORK5CYII="
         },
         "Usages": [
           "Coastline",
           "Sand"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_sand_sahel",
+          "AceCanDig": false,
+          "Files": "arm_sand_sahel_*",
+          "SoundEnviron": "sand",
+          "SoundHit": "hard_ground",
+          "Rough": 0.8799999952316284,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.75,
+          "Lucidity": 2,
+          "GrassCover": 0.10000000149011612,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.75,
+          "Character": [
+            {
+              "Name": "arm_StrThornKhaki",
+              "Probability": 0.0010000000474974513,
+              "Model": "A3\\plants_f\\Clutter\\c_StrThornKhaki.p3d",
+              "AffectedByWind": 0.05000000074505806,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1.399999976158142
+            },
+            {
+              "Name": "arm_Thistle_Thorn_Desert",
+              "Probability": 0.0010000000474974513,
+              "Model": "A3\\plants_f\\clutter\\c_Thistle_Thorn_Desert.p3d",
+              "AffectedByWind": 0.30000001192092896,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1.399999976158142
+            },
+            {
+              "Name": "arm_StrGrassDry",
+              "Probability": 0.0010000000474974513,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry.p3d",
+              "AffectedByWind": 0.5,
+              "IsSwLighting": false,
+              "ScaleMin": 0.800000011920929,
+              "ScaleMax": 1.2000000476837158
+            },
+            {
+              "Name": "arm_StrGrassDry_group",
+              "Probability": 0.0010000000474974513,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry_group.p3d",
+              "AffectedByWind": 0.6499999761581421,
+              "IsSwLighting": false,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.5
+            },
+            {
+              "Name": "arm_grass_desert",
+              "Probability": 0.0010000000474974513,
+              "Model": "Jbad_Veg\\plants\\clutter\\jbad_grass_desert.p3d",
+              "AffectedByWind": 0.3499999940395355,
+              "IsSwLighting": false,
+              "ScaleMin": 0.3499999940395355,
+              "ScaleMax": 0.699999988079071
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
           "NormalTexture": "a3\\map_data\\gdt_seabed_nopx.paa",
           "ColorTexture": "a3\\map_data\\gdt_seabed_co.paa",
           "Id": "0026FFFF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAMlJREFUeJwdjt1Og0AYRM/Cx58CLdVgou/iQ+j73xlqTCBtpbjdLrt+7d1czJk58vH5HrvHHcP4RVtviTHSVDXjcWKaR6QuK34Oe/7cL2aJ5FmBMS1912PdjGTyQJE7iIaiKLk4y7wcsVdHVdZILhlpKrRNR4gBv1pC8Cx2Ytv0yDAN91/nHQa4AS/dmw6mJEaQyEqSaEghrKsKbtTpWz0ih/MJ8VevVIokhVI3yZrARa+8Lp5VMhMtCKdl5Gnzei/P1iF6tWuf+QcZ7VctNm5rngAAAABJRU5ErkJggg=="
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjCQmx/8+AB7AwEADDQwEAAzECBw30zpIAAAAASUVORK5CYII="
         },
         "Usages": [
           "OceanGround"
-        ]
+        ],
+        "Surface": {
+          "Name": "GdtSeabed",
+          "AceCanDig": false,
+          "Files": "gdt_seabed_*",
+          "SoundEnviron": "gravel",
+          "SoundHit": "hard_ground",
+          "Rough": 0.15000000596046448,
+          "MaxSpeedCoef": 0.800000011920929,
+          "Dust": 0.75,
+          "Lucidity": 200,
+          "GrassCover": 0,
+          "Impact": null,
+          "SurfaceFriction": 1,
+          "Character": [
+            {
+              "Name": "SeaWeed1",
+              "Probability": 0.4000000059604645,
+              "Model": "A3\\Plants_F\\Clutter\\c_SeaWeed1.p3d",
+              "AffectedByWind": 0.20000000298023224,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "SeaWeed2",
+              "Probability": 0.20000000298023224,
+              "Model": "A3\\Plants_F\\Clutter\\c_SeaWeed2.p3d",
+              "AffectedByWind": 0.20000000298023224,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "Coral4",
+              "Probability": 0.10000000149011612,
+              "Model": "A3\\Plants_F\\Clutter\\c_Coral4.p3d",
+              "AffectedByWind": 0.10000000149011612,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "Coral1",
+              "Probability": 0.009999999776482582,
+              "Model": "A3\\Plants_F\\Clutter\\c_Coral1.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "Coral5",
+              "Probability": 0.10000000149011612,
+              "Model": "A3\\Plants_F\\Clutter\\c_Coral5.p3d",
+              "AffectedByWind": 0.05000000074505806,
+              "IsSwLighting": false,
+              "ScaleMin": 0.20000000298023224,
+              "ScaleMax": 0.6000000238418579
+            },
+            {
+              "Name": "Coral3",
+              "Probability": 0.09000000357627869,
+              "Model": "A3\\Plants_F\\Clutter\\c_Coral3.p3d",
+              "AffectedByWind": 0.10000000149011612,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 0.5
+            },
+            {
+              "Name": "Coral2",
+              "Probability": 0.10000000149011612,
+              "Model": "A3\\Plants_F\\Clutter\\c_Coral2.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 1
+            }
+          ],
+          "MaxClutterColoringCoef": 1.350000023841858
+        }
       },
       {
         "Material": {
           "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_forest_sahel_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_forest_sahel_co.paa",
-          "Id": "008000FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAaUlEQVR4nF2PgQ3AIAgEX6TTdIdO0f0XacTyCqb1EwwInK/e19lrqWi9wboBRTwq4DWlPNjkEGX4yO90bO2yZ5J8UcUTDjFk4W09Mwly/PGsSRkeuEWFKYSXXNKBS/eZR5MU3b+V5hDmX7OBNtHPTy7zAAAAAElFTkSuQmCC"
+          "Id": "8B0000FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjCbTR/s+AB7AwEADDQwEA0xkB2NMX9wgAAAAASUVORK5CYII="
         },
         "Usages": [
           "ForestGround"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_forest_sahel",
+          "AceCanDig": false,
+          "Files": "arm_forest_sahel_*",
+          "SoundEnviron": "grass",
+          "SoundHit": "soft_ground",
+          "Rough": 0.07999999821186066,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.75,
+          "Lucidity": 4,
+          "GrassCover": 0.10000000149011612,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.7000000476837158,
+          "Character": [
+            {
+              "Name": "arm_StrThornKhaki",
+              "Probability": 0.05000000074505806,
+              "Model": "A3\\plants_f\\Clutter\\c_StrThornKhaki.p3d",
+              "AffectedByWind": 0.05000000074505806,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1.399999976158142
+            },
+            {
+              "Name": "arm_Thistle_Thorn_Desert",
+              "Probability": 0.05000000074505806,
+              "Model": "A3\\plants_f\\clutter\\c_Thistle_Thorn_Desert.p3d",
+              "AffectedByWind": 0.30000001192092896,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1.399999976158142
+            },
+            {
+              "Name": "arm_StrGrassDry",
+              "Probability": 0.05000000074505806,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry.p3d",
+              "AffectedByWind": 0.5,
+              "IsSwLighting": false,
+              "ScaleMin": 0.800000011920929,
+              "ScaleMax": 1.2000000476837158
+            },
+            {
+              "Name": "arm_StrGrassDry_group",
+              "Probability": 0.05000000074505806,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry_group.p3d",
+              "AffectedByWind": 0.6499999761581421,
+              "IsSwLighting": false,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.5
+            },
+            {
+              "Name": "arm_grass_desert",
+              "Probability": 0.10000000149011612,
+              "Model": "Jbad_Veg\\plants\\clutter\\jbad_grass_desert.p3d",
+              "AffectedByWind": 0.3499999940395355,
+              "IsSwLighting": false,
+              "ScaleMin": 0.3499999940395355,
+              "ScaleMax": 0.699999988079071
+            },
+            {
+              "Name": "arm_brush_soft",
+              "Probability": 0.014999999664723873,
+              "Model": "Jbad_Veg\\plants\\clutter\\jbad_brush_soft.p3d",
+              "AffectedByWind": 0.05000000074505806,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1.399999976158142
+            },
+            {
+              "Name": "arm_branches_deciduous",
+              "Probability": 0.03500000014901161,
+              "Model": "A3\\Vegetation_F_Enoch\\Clutter\\c_branches_deciduous.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.800000011920929,
+              "ScaleMax": 1.25
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
           "NormalTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_grassshort_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_grassshort_co.paa",
-          "Id": "9ACD32FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAbElEQVR4nFWOgQnAIAwEnyQG5+oCHaD77yBCYjWirQ+i4e5VuZ+rMSFSDVDBlz7LgiPecIa7EK1+MAcSne0QjsJf8LlktA/YnyEiuHiM+wYzAzMHHAnJfQoDrn2BlNIUSinIOW9BVVFr3V95AYNxLB7ChShIAAAAAElFTkSuQmCC"
+          "Id": "7CFC00FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxj8Y20/c+AB7AwEADDQwEA/wUCA9j4clMAAAAASUVORK5CYII="
         },
         "Usages": [
           "Grass",
           "Meadow"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_grassshort",
+          "AceCanDig": false,
+          "Files": "arm_grassshort_*",
+          "SoundEnviron": "grass",
+          "SoundHit": "soft_ground",
+          "Rough": 0.07999999821186066,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.550000011920929,
+          "Lucidity": 4,
+          "GrassCover": 0.8999999761581421,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.7000000476837158,
+          "Character": [
+            {
+              "Name": "arm_GrassGreenGroup",
+              "Probability": 1,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassGreen_group.p3d",
+              "AffectedByWind": 0.6000000238418579,
+              "IsSwLighting": true,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.2999999523162842
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
           "NormalTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_farmland_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_farmland_co.paa",
-          "Id": "FFFF00FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAeElEQVR4nFWOAQ7DMAgDXUKi/nV/2BP23qoRZCa02YoUkDjjWD/v12iKWeZsA6vMAPVrcfScVfAolS0vawG6/UA/AeFOizxB2LolbI2CgHvd6WLzFfEpLBScdNF1SejDUbaE4RSTGYQBj/XFP5yCG4QwM/jKYRR8Aa5xN2waz7JaAAAAAElFTkSuQmCC"
+          "Id": "E67300FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjaS1O/M+AB7AwEADDQwEAd+wCeddVdLcAAAAASUVORK5CYII="
         },
         "Usages": [
           "FarmLand"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_farmland",
+          "AceCanDig": false,
+          "Files": "arm_farmland_*",
+          "SoundEnviron": "sand",
+          "SoundHit": "soft_ground",
+          "Rough": 0.07999999821186066,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.05000000074505806,
+          "Lucidity": 4,
+          "GrassCover": 0.20000000298023224,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.7000000476837158,
+          "Character": [
+            {
+              "Name": "arm_GrassTall",
+              "Probability": 0.5,
+              "Model": "A3\\plants_f\\Clutter\\c_GrassTall.p3d",
+              "AffectedByWind": 0.800000011920929,
+              "IsSwLighting": false,
+              "ScaleMin": 0.75,
+              "ScaleMax": 1.149999976158142
+            },
+            {
+              "Name": "arm_GrassTall2",
+              "Probability": 0.30000001192092896,
+              "Model": "A3\\Vegetation_F_Enoch\\Clutter\\c_GrassTall2.p3d",
+              "AffectedByWind": 0.30000001192092896,
+              "IsSwLighting": false,
+              "ScaleMin": 1,
+              "ScaleMax": 1.5
+            },
+            {
+              "Name": "arm_GrassTall3",
+              "Probability": 0.20000000298023224,
+              "Model": "A3\\Vegetation_F_Enoch\\Clutter\\c_GrassTall3.p3d",
+              "AffectedByWind": 0.30000001192092896,
+              "IsSwLighting": false,
+              "ScaleMin": 1,
+              "ScaleMax": 1.5
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
           "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_wetland_sahel_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_wetland_sahel_co.paa",
-          "Id": "ADD8E6FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAa0lEQVR4nHWOQQrAMAgEBW3ooQ/tC/qCPrmHIDGpmka8dCFscBZXuq9zQFIbGP9jByD4UVHy1BwQAUB0YOI2Q+RgSQMGsoi7zmn2SmUoG8a2zgK04PJ5QNEOdveANPEXt3x1XmEgKnLItqi/ucosivci4SIAAAAASUVORK5CYII="
+          "Id": "E77800FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjaSxJ+8+AB7AwEADDQwEAee8Ce+n77i4AAAAASUVORK5CYII="
         },
         "Usages": [
           "RiverGround",
           "LakeGround"
-        ]
-      },
-      {
-        "Material": {
-          "NormalTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_rock_sahel_nopx.paa",
-          "ColorTexture": "z\\arm\\addons\\sahel\\data\\gdt\\arm_rock_sahel_co.paa",
-          "Id": "A9A9A9FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAcUlEQVR4nF1PQQ6AIAxbZBASfY4v8BP+/wWejEQylILgdAmsod1aeF3mi3LFuNMwWEAyxpHIWTo3YO3YCV2MSz/+MWu1JrENtkXg3NQ9RQ6qmSRn8lUQwtYD1mlsezKkFAuJjkPkPyJuk/gFPGuWN9cNufU6sqAaqKwAAAAASUVORK5CYII="
-        },
-        "Usages": [
-          "RockGround"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_wetland_sahel",
+          "AceCanDig": false,
+          "Files": "arm_wetland_sahel_*",
+          "SoundEnviron": "grass",
+          "SoundHit": "soft_ground",
+          "Rough": 0.07999999821186066,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.550000011920929,
+          "Lucidity": 4,
+          "GrassCover": 0.8999999761581421,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.7000000476837158,
+          "Character": [],
+          "MaxClutterColoringCoef": 1
+        }
       }
     ]
   },
@@ -2830,6 +3326,7 @@
       "ClearWidth": 18,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -2843,6 +3340,7 @@
       "ClearWidth": 16,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -2856,6 +3354,7 @@
       "ClearWidth": 11.5,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -2869,6 +3368,7 @@
       "ClearWidth": 11.5,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -2882,6 +3382,7 @@
       "ClearWidth": 7.5,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -2895,6 +3396,7 @@
       "ClearWidth": 10,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -2908,6 +3410,7 @@
       "ClearWidth": 6.5,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -2921,6 +3424,7 @@
       "ClearWidth": 3,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     },
     {
@@ -2934,6 +3438,7 @@
       "ClearWidth": 3.5,
       "ProceduralStreetLamps": "None",
       "DistanceBetweenStreetLamps": null,
+      "DistanceBetweenStreetLampsMax": null,
       "HasSideWalks": false
     }
   ],
