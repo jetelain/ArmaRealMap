@@ -12,7 +12,7 @@
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="800"
-             
+             Foreground="{DynamicResource EnvironmentWindowText}"
              c:CompositionDragDrop.Importer="{Binding CompositionImporter}"
              >
     <UserControl.Resources>

@@ -2240,7 +2240,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Ground Detail Texture Library.
+        ///   Recherche une chaîne localisée semblable à Ground Detail Texture Library - Arma 3.
         /// </summary>
         public static string GdtBrowserTitle {
             get {
