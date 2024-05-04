@@ -432,7 +432,7 @@
     <value>Ajouter une composition</value>
   </data>
   <data name="AssetsBrowser" xml:space="preserve">
-    <value>Parcourir les objets</value>
+    <value>Bibliothèque des objets</value>
   </data>
   <data name="CompositionClipboardInvalid" xml:space="preserve">
     <value>Le presse papier ne contient pas de données reconnues</value>
@@ -1480,9 +1480,6 @@ Dernière génération le {1}</value>
   <data name="Open" xml:space="preserve">
     <value>Ouvrir</value>
   </data>
-  <data name="GdtBrowserTitle" xml:space="preserve">
-    <value>Bibliothèque des textures de sol - Arma 3</value>
-  </data>
   <data name="Browse" xml:space="preserve">
     <value>Parcourir...</value>
   </data>
@@ -1578,5 +1575,8 @@ Dernière génération le {1}</value>
   </data>
   <data name="RecentFiles" xml:space="preserve">
     <value>Fichiers récents</value>
+  </data>
+  <data name="GroundDetailTextureLibrary" xml:space="preserve">
+    <value>Bibliothèque des textures de sol</value>
   </data>
 </root>
