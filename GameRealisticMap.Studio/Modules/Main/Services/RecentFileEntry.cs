@@ -2,7 +2,7 @@
 
 namespace GameRealisticMap.Studio.Modules.Main.Services
 {
-    internal class RecentFileEntry
+    public sealed class RecentFileEntry
     {
         public RecentFileEntry(string fullpath, DateTime timeStamp, bool isPinned)
         {

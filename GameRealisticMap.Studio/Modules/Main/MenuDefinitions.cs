@@ -25,5 +25,21 @@ namespace GameRealisticMap.Studio.Main.Explorer
 
         [Export]
         public static readonly MenuItemDefinition AboutMenuItem = new CommandMenuItemDefinition<AboutCommandDefinition>(HelpMenuGroup, 2);
+
+        [Export]
+        public static readonly MenuItemGroupDefinition FileRecentMenuGroup = new MenuItemGroupDefinition(Gemini.Modules.MainMenu.MenuDefinitions.FileMenu, 9);
+
+        [Export]
+        public static readonly MenuItemDefinition FileRecentItem = new TextMenuItemDefinition(
+            FileRecentMenuGroup, 0, Labels.RecentFiles);
+
+        [Export]
+        public static readonly MenuItemGroupDefinition FileRecentCascadeGroup = new MenuItemGroupDefinition(
+            FileRecentItem, 0);
+
+        [Export]
+        public static readonly MenuItemDefinition FileRecentMenuItemList = new CommandMenuItemDefinition<RecentFilesCommandDefinition>(
+            FileRecentCascadeGroup, 0);
+
     }
 }

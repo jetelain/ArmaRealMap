@@ -1576,4 +1576,7 @@ Last generated on {1}</value>
   <data name="SaveWrpOnlyDescription" xml:space="preserve">
     <value>Use this option to create a backup of objects positions.</value>
   </data>
+  <data name="RecentFiles" xml:space="preserve">
+    <value>Recent Files</value>
+  </data>
 </root>

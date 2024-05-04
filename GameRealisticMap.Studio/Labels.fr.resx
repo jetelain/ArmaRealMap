@@ -1576,4 +1576,7 @@ Dernière génération le {1}</value>
   <data name="SaveWrpOnlyDescription" xml:space="preserve">
     <value>Utiliser cette option pour effectuer une sauvegarde de la position des objets.</value>
   </data>
+  <data name="RecentFiles" xml:space="preserve">
+    <value>Fichiers récents</value>
+  </data>
 </root>
