@@ -26,5 +26,7 @@ namespace GameRealisticMap.Studio.Modules.Main.Commands
         {
             get { return ""; }
         }
+
+        public override Uri IconSource => new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/Home.png");
     }
 }

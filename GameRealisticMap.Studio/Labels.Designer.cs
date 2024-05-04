@@ -827,7 +827,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Assets Browser.
+        ///   Recherche une chaîne localisée semblable à Assets Library.
         /// </summary>
         public static string AssetsBrowser {
             get {
@@ -2240,15 +2240,6 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Ground Detail Texture Library.
-        /// </summary>
-        public static string GdtBrowserTitle {
-            get {
-                return ResourceManager.GetString("GdtBrowserTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Pick the most approching existing surface..
         /// </summary>
         public static string GdtCopyConfigurationHint {
@@ -2470,6 +2461,15 @@ namespace GameRealisticMap.Studio {
         public static string GettingStartedDescription {
             get {
                 return ResourceManager.GetString("GettingStartedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ground Detail Texture Library.
+        /// </summary>
+        public static string GroundDetailTextureLibrary {
+            get {
+                return ResourceManager.GetString("GroundDetailTextureLibrary", resourceCulture);
             }
         }
         
@@ -3499,6 +3499,15 @@ namespace GameRealisticMap.Studio {
         public static string RangeObjectsPerM2 {
             get {
                 return ResourceManager.GetString("RangeObjectsPerM2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Recent Files.
+        /// </summary>
+        public static string RecentFiles {
+            get {
+                return ResourceManager.GetString("RecentFiles", resourceCulture);
             }
         }
         

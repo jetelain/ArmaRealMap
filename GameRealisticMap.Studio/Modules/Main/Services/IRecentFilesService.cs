@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace GameRealisticMap.Studio.Modules.Main.Services
 {
-    internal interface IRecentFilesService
+    public interface IRecentFilesService
     {
         Task AddRecentFile(string fullpath);
 
