@@ -120,16 +120,16 @@ namespace GameRealisticMap.Arma3.GameEngine
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
             {
                 var usedMaterials = new HashSet<TerrainMaterial>();
-                using (var sourceTile = new Image<Rgb24>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgb24>()))
+                using (var sourceTile = new Image<Rgb24>(tiler.IdMapTileSize, tiler.IdMapTileSize, Color.Black.ToPixel<Rgb24>()))
                 {
-                    using (var targetTile = new Image<Rgba32>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgba32>()))
+                    using (var targetTile = new Image<Rgba32>(tiler.IdMapTileSize, tiler.IdMapTileSize, Color.Black.ToPixel<Rgba32>()))
                     {
                         for (var y = 0; y < tiler.Segments.GetLength(1); ++y)
                         {
                             var seg = tiler.Segments[x, y];
-                            var pos = seg.ImageTopLeft;
+                            var pos = seg.ImageTopLeft * tiler.IdMapMultiplier;
                             sourceTile.Mutate(c => c.DrawHugeImage(idmap, pos, 1.0f));
-                            ImageryTileHelper.FillEdges(tiler.FullImageSize, x, tiler.Segments.GetLength(0), sourceTile, y, -pos);
+                            ImageryTileHelper.FillEdges(tiler.IdMapFullImageSize, x, tiler.Segments.GetLength(0), sourceTile, y, -pos);
                             var tex = ReduceColors(sourceTile, targetTile);
                             var rvmat = MakeRvMat(seg, config, tex.Select(t => t.Material), textureScale);
                             gameFileSystemWriter.WritePngImage($"{config.PboPrefix}\\data\\layers\\M_{x:000}_{y:000}_lca.png", targetTile);

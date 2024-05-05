@@ -11,7 +11,6 @@ using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Preview;
 using GameRealisticMap.Satellite;
 using GameRealisticMap.Studio.Modules.Arma3Data;
@@ -48,7 +47,9 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public Arma3MapConfigJson Config { get; set; } = new Arma3MapConfigJson() { UseColorCorrection = true };
 
         public int[] GridSizes { get; } = new int[] { 256, 512, 1024, 2048, 4096, 8192 };
-        
+
+        public int[] IdMapMultipliers => Arma3MapConfig.ValidIdMapMultipliers;
+
         public string Center
         {
             get { return Config.Center ?? string.Empty ; }

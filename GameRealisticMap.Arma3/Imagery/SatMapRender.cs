@@ -80,7 +80,7 @@ namespace GameRealisticMap.Arma3.Imagery
                 {
                     foreach (var polygon in road.Polygons)
                     {
-                        PolygonDrawHelper.DrawPolygon(d, polygon, GetBrush((Arma3RoadTypeInfos)road.RoadTypeInfos), config.TerrainToPixel);
+                        PolygonDrawHelper.DrawPolygon(d, polygon, GetBrush((Arma3RoadTypeInfos)road.RoadTypeInfos), config.TerrainToSatMapPixel);
                     }
                 }
             }).GetAwaiter().GetResult();

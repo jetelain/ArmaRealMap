@@ -33,7 +33,7 @@ namespace GameRealisticMap.Arma3.Demo
         {
             Rgba32 defaultColor = default;
             defaultMaterial.Id.ToRgba32(ref defaultColor);
-            var size = config.GetImagerySize();
+            var size = config.GetIdMapSize();
             var image = new HugeImage<Rgba32>(context.HugeImageStorage, GetType().Name, new Size(size.Width, size.Height), defaultColor);
             var x = 0;
             var y = 0;
@@ -63,7 +63,7 @@ namespace GameRealisticMap.Arma3.Demo
 
         public HugeImage<Rgba32> CreateSatMap()
         {
-            var size = config.GetImagerySize();
+            var size = config.GetSatMapSize();
             var image = new HugeImage<Rgba32>(context.HugeImageStorage, GetType().Name, new Size(size.Width, size.Height));
             var x = 0;
             var y = 0;
