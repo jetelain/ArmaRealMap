@@ -3850,17 +3850,33 @@
             }
           ],
           "MaxClutterColoringCoef": 1
-        },
-        {
+        }
+      },
+      {
         "Material": {
-            "NormalTexture": "a3\\map_data_exp\\gdt_asphalt_nopx.paa",
-            "ColorTexture": "a3\\map_data_exp\\gdt_asphalt_co.paa",
-            "Id": "000000FF",
-            "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjcXRy+M+AB7AwEADDQwEA3jYB41LKJgwAAAAASUVORK5CYII="
+          "NormalTexture": "a3\\map_data_exp\\gdt_asphalt_nopx.paa",
+          "ColorTexture": "a3\\map_data_exp\\gdt_asphalt_co.paa",
+          "Id": "000000FF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjcXRy+M+AB7AwEADDQwEA3jYB41LKJgwAAAAASUVORK5CYII="
         },
         "Usages": [
-            "Asphalt"
-        ]
+          "Asphalt"
+        ],
+        "Surface": {
+          "Name": "GdtAsphalt",
+          "AceCanDig": false,
+          "Files": "gdt_asphalt_*",
+          "SoundEnviron": "asphalt_exp",
+          "SoundHit": "concrete",
+          "Rough": 0.05000000074505806,
+          "MaxSpeedCoef": 1,
+          "Dust": 0.05000000074505806,
+          "Lucidity": 0.029999999329447746,
+          "GrassCover": 0,
+          "Impact": "hitConcrete",
+          "SurfaceFriction": 2,
+          "Character": [],
+          "MaxClutterColoringCoef": 1.5
         }
       }
     ]
