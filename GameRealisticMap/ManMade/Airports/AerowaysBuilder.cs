@@ -91,6 +91,7 @@ namespace GameRealisticMap.ManMade.Airports
                     return AerowayTypeId.Runway;
 
                 case "taxiway":
+                case "taxilane":
                     return AerowayTypeId.Taxiway;
             }
             return null;
