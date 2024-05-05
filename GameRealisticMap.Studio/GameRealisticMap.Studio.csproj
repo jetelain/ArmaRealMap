@@ -44,10 +44,6 @@
 	<Resource Include="Resources\**\*.png" />
     <EmbeddedResource Include="Modules\AssetBrowser\Data\*.txt" />
 	<EmbeddedResource Include="Modules\AssetBrowser\Data\*.csv" />
-    <None Remove="Modules\AssetBrowser\Data\GdtTitles.csv" />
-    <None Remove="Resources\hand_grab.cur" />
-    <None Remove="Resources\hand_grabbing.cur" />
-    <None Remove="Resources\Icons\WatercourseAdditional.png" />
     <Content Include="Resources\grms.ico" />
     <EmbeddedResource Include="Resources\hand_grab.cur" />
     <EmbeddedResource Include="Resources\hand_grabbing.cur" />

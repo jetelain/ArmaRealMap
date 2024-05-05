@@ -43,7 +43,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
             _arma3Previews = arma3Previews;
             _catalogService = catalogService;
             _catalogService.Updated += CatalogServiceUpdated;
-            DisplayName = Labels.GdtBrowserTitle;
+            UpdateDisplayName();
             awaitableItems = Task.Run(DoLoad);
             UndoRedoManager.PropertyChanged += (_, _) => { IsDirty = true; }; 
         }
@@ -63,7 +63,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         
         private void UpdateDisplayName()
         {
-            DisplayName = IsDirty ? Labels.GdtBrowserTitle + "*" : Labels.GdtBrowserTitle;
+            DisplayName = IsDirty ? Labels.GroundDetailTextureLibrary + " - Arma 3*" : Labels.GroundDetailTextureLibrary + " - Arma 3";
         }
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)

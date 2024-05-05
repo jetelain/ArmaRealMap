@@ -450,7 +450,7 @@
     <value>Add a composition</value>
   </data>
   <data name="AssetsBrowser" xml:space="preserve">
-    <value>Assets Browser</value>
+    <value>Assets Library</value>
   </data>
   <data name="All" xml:space="preserve">
     <value>All</value>
@@ -1483,9 +1483,6 @@ Last generated on {1}</value>
   <data name="Preview3DWithClutter" xml:space="preserve">
     <value>3D Preview with clutter</value>
   </data>
-  <data name="GdtBrowserTitle" xml:space="preserve">
-    <value>Ground Detail Texture Library</value>
-  </data>
   <data name="BrowseGdt" xml:space="preserve">
     <value>Browse ground detail textures</value>
   </data>
@@ -1575,5 +1572,11 @@ Last generated on {1}</value>
   </data>
   <data name="SaveWrpOnlyDescription" xml:space="preserve">
     <value>Use this option to create a backup of objects positions.</value>
+  </data>
+  <data name="RecentFiles" xml:space="preserve">
+    <value>Recent Files</value>
+  </data>
+  <data name="GroundDetailTextureLibrary" xml:space="preserve">
+    <value>Ground Detail Texture Library</value>
   </data>
 </root>

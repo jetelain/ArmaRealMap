@@ -3310,19 +3310,116 @@
         "Usages": [
           "Default",
           "Meadow"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_meadows_centraleurope",
+          "AceCanDig": false,
+          "Files": "arm_meadows_centraleurope_*",
+          "SoundEnviron": "grass",
+          "SoundHit": "soft_ground",
+          "Rough": 0.07999999821186066,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.550000011920929,
+          "Lucidity": 4,
+          "GrassCover": 0.8999999761581421,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.7000000476837158,
+          "Character": [
+            {
+              "Name": "arm_GrassGreenGroup",
+              "Probability": 0.22499999403953552,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassGreen_group.p3d",
+              "AffectedByWind": 0.6000000238418579,
+              "IsSwLighting": true,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.2999999523162842
+            },
+            {
+              "Name": "arm_GrassDesertGroupSoft",
+              "Probability": 0.22499999403953552,
+              "Model": "A3\\plants_f\\Clutter\\c_GrassGreen_GroupSoft.p3d",
+              "AffectedByWind": 1,
+              "IsSwLighting": false,
+              "ScaleMin": 1,
+              "ScaleMax": 1.5
+            },
+            {
+              "Name": "arm_GrassGreenGroupHard",
+              "Probability": 0.22499999403953552,
+              "Model": "a3\\plants_f\\clutter\\c_GrassGreen_GroupHard.p3d",
+              "AffectedByWind": 0.20000000298023224,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1.399999976158142
+            },
+            {
+              "Name": "arm_FlowerLowYellow2",
+              "Probability": 0.22499999403953552,
+              "Model": "A3\\plants_f\\Clutter\\c_Flower_Low_Yellow2.p3d",
+              "AffectedByWind": 0.4000000059604645,
+              "IsSwLighting": false,
+              "ScaleMin": 0.6000000238418579,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "arm_FlowerCakile",
+              "Probability": 0.05000000074505806,
+              "Model": "A3\\plants_f\\Clutter\\c_Flower_Cakile.p3d",
+              "AffectedByWind": 0.4000000059604645,
+              "IsSwLighting": false,
+              "ScaleMin": 0.6000000238418579,
+              "ScaleMax": 1.100000023841858
+            },
+            {
+              "Name": "arm_PlantGreenShrub",
+              "Probability": 0.05000000074505806,
+              "Model": "A3\\plants_f\\Clutter\\c_StrPlantGreenShrub.p3d",
+              "AffectedByWind": 0.5,
+              "IsSwLighting": false,
+              "ScaleMin": 0.6000000238418579,
+              "ScaleMax": 1.100000023841858
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
           "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_grassshort_centraleurope_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_grassshort_centraleurope_co.paa",
-          "Id": "9ACD32FF",
+          "Id": "569600FF",
           "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxj8Y20/c+AB7AwEADDQwEA/wUCA9j4clMAAAAASUVORK5CYII="
         },
         "Usages": [
           "DefaultUrban",
           "Grass"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_grassshort",
+          "AceCanDig": false,
+          "Files": "arm_grassshort_*",
+          "SoundEnviron": "grass",
+          "SoundHit": "soft_ground",
+          "Rough": 0.07999999821186066,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.550000011920929,
+          "Lucidity": 4,
+          "GrassCover": 0.8999999761581421,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.7000000476837158,
+          "Character": [
+            {
+              "Name": "arm_GrassGreenGroup",
+              "Probability": 1,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassGreen_group.p3d",
+              "AffectedByWind": 0.6000000238418579,
+              "IsSwLighting": true,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.2999999523162842
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
@@ -3333,30 +3430,115 @@
         },
         "Usages": [
           "DefaultIndustrial"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_dirt_centraleurope",
+          "AceCanDig": false,
+          "Files": "arm_dirt_centraleurope_*",
+          "SoundEnviron": "dirt",
+          "SoundHit": "hard_ground",
+          "Rough": 0.3799999952316284,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.75,
+          "Lucidity": 2,
+          "GrassCover": 0.10000000149011612,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.75,
+          "Character": [],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
           "NormalTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_ice_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\common_v2\\data\\gdt\\arm_ice_co.paa",
-          "Id": "F5F5F5FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAA1JREFUeJxjuXz9xn8ACJkDhk/AhP0AAAAASUVORK5CYII="
+          "Id": "C3E6FFFF",
+          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjWbD9+H8GPICFgQAYHgoAQU4DPhU1QugAAAAASUVORK5CYII="
         },
         "Usages": [
           "IceSurface"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_ice",
+          "AceCanDig": false,
+          "Files": "arm_ice_*",
+          "SoundEnviron": "normal",
+          "SoundHit": "hard_ground",
+          "Rough": 0.05000000074505806,
+          "MaxSpeedCoef": 1,
+          "Dust": 0.10000000149011612,
+          "Lucidity": 0.30000001192092896,
+          "GrassCover": 0,
+          "Impact": "hitGroundHard",
+          "SurfaceFriction": 3,
+          "Character": [],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
           "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_rock_centraleurope_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_rock_centraleurope_co.paa",
-          "Id": "A9A9A9FF",
+          "Id": "808080FF",
           "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjiYzw/8+AB7AwEADDQwEAHLwCIEMJRWIAAAAASUVORK5CYII="
         },
         "Usages": [
           "ScreeSurface",
           "RockGround"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_rock",
+          "AceCanDig": false,
+          "Files": "arm_rock_*",
+          "SoundEnviron": "gravel",
+          "SoundHit": "soft_ground",
+          "Rough": 0.07999999821186066,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.75,
+          "Lucidity": 2,
+          "GrassCover": 0.10000000149011612,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.75,
+          "Character": [
+            {
+              "Name": "arm_sharpStones_erosion",
+              "Probability": 0.47999998927116394,
+              "Model": "z\\arm\\addons\\common_v2\\data\\clutter\\c_sharpStones_erosion_f.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 0.800000011920929
+            },
+            {
+              "Name": "arm_sharpStones_erosion_v2",
+              "Probability": 0.47999998927116394,
+              "Model": "z\\arm\\addons\\common_v2\\data\\clutter\\c_sharpStones_erosion_v2_f.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 0.800000011920929
+            },
+            {
+              "Name": "arm_StrGrassDry",
+              "Probability": 0.019999999552965164,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry.p3d",
+              "AffectedByWind": 0.5,
+              "IsSwLighting": false,
+              "ScaleMin": 0.800000011920929,
+              "ScaleMax": 1.2000000476837158
+            },
+            {
+              "Name": "arm_StrGrassDry_group",
+              "Probability": 0.019999999552965164,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry_group.p3d",
+              "AffectedByWind": 0.6499999761581421,
+              "IsSwLighting": false,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.5
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
@@ -3368,7 +3550,23 @@
         "Usages": [
           "Coastline",
           "Sand"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_sand_centraleurope",
+          "AceCanDig": false,
+          "Files": "arm_sand_centraleurope_*",
+          "SoundEnviron": "sand",
+          "SoundHit": "hard_ground",
+          "Rough": 0.8799999952316284,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.75,
+          "Lucidity": 2,
+          "GrassCover": 0.10000000149011612,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.75,
+          "Character": [],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
@@ -3379,29 +3577,233 @@
         },
         "Usages": [
           "OceanGround"
-        ]
+        ],
+        "Surface": {
+          "Name": "GdtSeabed",
+          "AceCanDig": false,
+          "Files": "gdt_seabed_*",
+          "SoundEnviron": "gravel",
+          "SoundHit": "hard_ground",
+          "Rough": 0.15000000596046448,
+          "MaxSpeedCoef": 0.800000011920929,
+          "Dust": 0.75,
+          "Lucidity": 200,
+          "GrassCover": 0,
+          "Impact": null,
+          "SurfaceFriction": 1,
+          "Character": [
+            {
+              "Name": "SeaWeed1",
+              "Probability": 0.4000000059604645,
+              "Model": "A3\\Plants_F\\Clutter\\c_SeaWeed1.p3d",
+              "AffectedByWind": 0.20000000298023224,
+              "IsSwLighting": false,
+              "ScaleMin": 0.4000000059604645,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "SeaWeed2",
+              "Probability": 0.20000000298023224,
+              "Model": "A3\\Plants_F\\Clutter\\c_SeaWeed2.p3d",
+              "AffectedByWind": 0.20000000298023224,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "Coral4",
+              "Probability": 0.10000000149011612,
+              "Model": "A3\\Plants_F\\Clutter\\c_Coral4.p3d",
+              "AffectedByWind": 0.10000000149011612,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "Coral1",
+              "Probability": 0.009999999776482582,
+              "Model": "A3\\Plants_F\\Clutter\\c_Coral1.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 1
+            },
+            {
+              "Name": "Coral5",
+              "Probability": 0.10000000149011612,
+              "Model": "A3\\Plants_F\\Clutter\\c_Coral5.p3d",
+              "AffectedByWind": 0.05000000074505806,
+              "IsSwLighting": false,
+              "ScaleMin": 0.20000000298023224,
+              "ScaleMax": 0.6000000238418579
+            },
+            {
+              "Name": "Coral3",
+              "Probability": 0.09000000357627869,
+              "Model": "A3\\Plants_F\\Clutter\\c_Coral3.p3d",
+              "AffectedByWind": 0.10000000149011612,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 0.5
+            },
+            {
+              "Name": "Coral2",
+              "Probability": 0.10000000149011612,
+              "Model": "A3\\Plants_F\\Clutter\\c_Coral2.p3d",
+              "AffectedByWind": 0,
+              "IsSwLighting": false,
+              "ScaleMin": 0.30000001192092896,
+              "ScaleMax": 1
+            }
+          ],
+          "MaxClutterColoringCoef": 1.350000023841858
+        }
       },
       {
         "Material": {
           "NormalTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_forest_centraleurope_nopx.paa",
           "ColorTexture": "z\\arm\\addons\\centraleurope\\data\\gdt\\arm_forest_centraleurope_co.paa",
-          "Id": "008000FF",
+          "Id": "664A00FF",
           "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjsTFT+8+AB7AwEADDQwEAskkBuImNoRIAAAAASUVORK5CYII="
         },
         "Usages": [
           "ForestGround"
-        ]
+        ],
+        "Surface": {
+          "Name": "arm_forest_centraleurope",
+          "AceCanDig": false,
+          "Files": "arm_forest_centraleurope_*",
+          "SoundEnviron": "grass",
+          "SoundHit": "soft_ground",
+          "Rough": 0.07999999821186066,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.75,
+          "Lucidity": 4,
+          "GrassCover": 0.10000000149011612,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.7000000476837158,
+          "Character": [
+            {
+              "Name": "arm_WeedGreenTall",
+              "Probability": 0.20000000298023224,
+              "Model": "A3\\plants_f\\Clutter\\c_StrWeedGreenTall.p3d",
+              "AffectedByWind": 0.30000001192092896,
+              "IsSwLighting": false,
+              "ScaleMin": 1.2000000476837158,
+              "ScaleMax": 1.7999999523162842
+            },
+            {
+              "Name": "arm_GrassGreen",
+              "Probability": 0.3499999940395355,
+              "Model": "A3\\plants_f\\Clutter\\c_Grass_Green.p3d",
+              "AffectedByWind": 1,
+              "IsSwLighting": false,
+              "ScaleMin": 1.2000000476837158,
+              "ScaleMax": 1.5
+            },
+            {
+              "Name": "arm_WeedBrownTallGroup",
+              "Probability": 0.20000000298023224,
+              "Model": "A3\\plants_f\\Clutter\\c_StrWeedBrownTall_group.p3d",
+              "AffectedByWind": 0.30000001192092896,
+              "IsSwLighting": false,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.25
+            },
+            {
+              "Name": "arm_fern_boletus_group",
+              "Probability": 0.09000000357627869,
+              "Model": "A3\\Vegetation_F_Enoch\\Clutter\\c_fern_boletus_group.p3d",
+              "AffectedByWind": 0.10000000149011612,
+              "IsSwLighting": false,
+              "ScaleMin": 0.800000011920929,
+              "ScaleMax": 1.2000000476837158
+            },
+            {
+              "Name": "arm_fern_amanita_single",
+              "Probability": 0.019999999552965164,
+              "Model": "A3\\Vegetation_F_Enoch\\Clutter\\c_fern_amanita_single.p3d",
+              "AffectedByWind": 0.10000000149011612,
+              "IsSwLighting": false,
+              "ScaleMin": 0.800000011920929,
+              "ScaleMax": 1.2000000476837158
+            },
+            {
+              "Name": "arm_Grass_flower1",
+              "Probability": 0.029999999329447746,
+              "Model": "A3\\Vegetation_F_Enoch\\Clutter\\c_Grass_flower1.p3d",
+              "AffectedByWind": 0.20000000298023224,
+              "IsSwLighting": false,
+              "ScaleMin": 1,
+              "ScaleMax": 1.2999999523162842
+            },
+            {
+              "Name": "arm_Fern",
+              "Probability": 0.07000000029802322,
+              "Model": "A3\\Vegetation_F_Enoch\\Clutter\\c_fern.p3d",
+              "AffectedByWind": 0.10000000149011612,
+              "IsSwLighting": false,
+              "ScaleMin": 0.800000011920929,
+              "ScaleMax": 1.2000000476837158
+            },
+            {
+              "Name": "arm_FernTall",
+              "Probability": 0.03999999910593033,
+              "Model": "A3\\Vegetation_F_Enoch\\Clutter\\c_fernTall.p3d",
+              "AffectedByWind": 0.20000000298023224,
+              "IsSwLighting": false,
+              "ScaleMin": 0.699999988079071,
+              "ScaleMax": 1
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        }
       },
       {
         "Material": {
           "NormalTexture": "a3\\map_enoch\\data\\gdt_enfield_nopx.paa",
           "ColorTexture": "a3\\map_enoch\\data\\gdt_enfield_co.paa",
-          "Id": "FFFF00FF",
+          "Id": "805C00FF",
           "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxj8XA2+8+AB7AwEADDQwEA3DsB4Ygq5WcAAAAASUVORK5CYII="
         },
         "Usages": [
           "FarmLand"
-        ]
+        ],
+        "Surface": {
+          "Name": "GdtKlField",
+          "AceCanDig": false,
+          "Files": "gdt_enfield*",
+          "SoundEnviron": "grass",
+          "SoundHit": "soft_ground",
+          "Rough": 0.05000000074505806,
+          "MaxSpeedCoef": 1,
+          "Dust": 0.15000000596046448,
+          "Lucidity": 1.25,
+          "GrassCover": 0.6000000238418579,
+          "Impact": "hitGroundHard",
+          "SurfaceFriction": 0,
+          "Character": [
+            {
+              "Name": "Weat",
+              "Probability": 0.800000011920929,
+              "Model": "A3\\Vegetation_F_Enoch\\Clutter\\c_weat.p3d",
+              "AffectedByWind": 0.5,
+              "IsSwLighting": false,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.2999999523162842
+            },
+            {
+              "Name": "WeatTall",
+              "Probability": 0.20000000298023224,
+              "Model": "a3\\vegetation_f_enoch\\clutter\\c_weatTall.p3d",
+              "AffectedByWind": 0.5,
+              "IsSwLighting": false,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.2999999523162842
+            }
+          ],
+          "MaxClutterColoringCoef": 1.0800000429153442
+        }
       },
       {
         "Material": {
@@ -3413,18 +3815,53 @@
         "Usages": [
           "RiverGround",
           "LakeGround"
-        ]
-      },
-      {
+        ],
+        "Surface": {
+          "Name": "arm_wetland_centraleurope",
+          "AceCanDig": false,
+          "Files": "arm_wetland_centraleurope_*",
+          "SoundEnviron": "grass",
+          "SoundHit": "soft_ground",
+          "Rough": 0.07999999821186066,
+          "MaxSpeedCoef": 0.8999999761581421,
+          "Dust": 0.550000011920929,
+          "Lucidity": 4,
+          "GrassCover": 0.8999999761581421,
+          "Impact": "hitGroundSoft",
+          "SurfaceFriction": 1.7000000476837158,
+          "Character": [
+            {
+              "Name": "arm_GrassDryTall",
+              "Probability": 0.4000000059604645,
+              "Model": "A3\\Vegetation_F_Enoch\\Clutter\\c_GrassDryTall.p3d",
+              "AffectedByWind": 0.30000001192092896,
+              "IsSwLighting": false,
+              "ScaleMin": 1,
+              "ScaleMax": 1.5
+            },
+            {
+              "Name": "arm_GrassDryGroup",
+              "Probability": 0.10000000149011612,
+              "Model": "A3\\plants_f\\Clutter\\c_StrGrassDry_group.p3d",
+              "AffectedByWind": 0.6499999761581421,
+              "IsSwLighting": true,
+              "ScaleMin": 0.8999999761581421,
+              "ScaleMax": 1.5
+            }
+          ],
+          "MaxClutterColoringCoef": 1
+        },
+        {
         "Material": {
-          "NormalTexture": "a3\\map_data_exp\\gdt_asphalt_nopx.paa",
-          "ColorTexture": "a3\\map_data_exp\\gdt_asphalt_co.paa",
-          "Id": "000000FF",
-          "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjcXRy+M+AB7AwEADDQwEA3jYB41LKJgwAAAAASUVORK5CYII="
+            "NormalTexture": "a3\\map_data_exp\\gdt_asphalt_nopx.paa",
+            "ColorTexture": "a3\\map_data_exp\\gdt_asphalt_co.paa",
+            "Id": "000000FF",
+            "FakeSatPngImage": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZJREFUeJxjcXRy+M+AB7AwEADDQwEA3jYB41LKJgwAAAAASUVORK5CYII="
         },
         "Usages": [
-          "Asphalt"
+            "Asphalt"
         ]
+        }
       }
     ]
   },
