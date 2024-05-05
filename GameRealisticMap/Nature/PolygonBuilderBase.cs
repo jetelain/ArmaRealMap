@@ -1,5 +1,6 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
+using OsmSharp;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature

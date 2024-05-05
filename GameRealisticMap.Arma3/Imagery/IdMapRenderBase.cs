@@ -4,6 +4,7 @@ using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Farmlands;
+using GameRealisticMap.ManMade.Surfaces;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Ocean;
 using GameRealisticMap.Nature.RockAreas;
@@ -78,6 +79,9 @@ namespace GameRealisticMap.Arma3.Imagery
                 DrawPolygons(config, d, TerrainMaterialUsage.ScreeSurface, context.GetData<ScreeData>().Polygons);
 
                 DrawPolygons(config, d, TerrainMaterialUsage.RockGround, context.GetData<RocksData>().Polygons);
+
+                DrawPolygons(config, d, TerrainMaterialUsage.Asphalt, context.GetData<AsphaltData>().Polygons);
+
             }).GetAwaiter().GetResult();
 
             return image;

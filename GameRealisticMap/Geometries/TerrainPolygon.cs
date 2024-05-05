@@ -702,5 +702,14 @@ namespace GameRealisticMap.Geometries
         {
             return Intersection(other).Sum(o => o.Area);
         }
+
+        internal bool Contains(TerrainPath path)
+        {
+            if (GeometryHelper.EnveloppeIntersects(this, path))
+            {
+                return AsPolygon.Contains(path.AsLineString);
+            }
+            return false;
+        }
     }
 }

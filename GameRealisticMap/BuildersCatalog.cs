@@ -1,6 +1,7 @@
 ﻿using GameRealisticMap.Conditions;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade;
+using GameRealisticMap.ManMade.Airports;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.DefaultUrbanAreas;
 using GameRealisticMap.ManMade.Farmlands;
@@ -9,6 +10,7 @@ using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
+using GameRealisticMap.ManMade.Surfaces;
 using GameRealisticMap.Nature.DefaultAreas;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
@@ -75,6 +77,9 @@ namespace GameRealisticMap
             Register(new IceSurfaceBuilder(progress));
             Register(new ScreeBuilder(progress));
             Register(new ElevationOutOfBoundsBuilder());
+            Register(new AirportBuilder(progress));
+            Register(new AerowaysBuilder(progress));
+            Register(new AsphaltBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)
