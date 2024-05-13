@@ -23,7 +23,7 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
 
         public CompositionItem(CompositionObject source, CompositionViewModel parent)
         {
-            terrainBuilderObject = source.ToTerrainBuilderObject(System.Numerics.Matrix4x4.Identity, ElevationMode.Absolute);
+            terrainBuilderObject = source.ToTerrainBuilderObjectVerbatim();
             Model = terrainBuilderObject.Model;
             _x = terrainBuilderObject.Point.X;
             _y = terrainBuilderObject.Point.Y;
