@@ -1,4 +1,4 @@
-﻿namespace GameRealisticMap.Algorithms.Randomizations
+﻿namespace GameRealisticMap.IO.Converters
 {
     public enum RandomizationOperation
     {
@@ -9,6 +9,8 @@
         TranslateY,
         TranslateZ,
         ScaleUniform,
-        TranslateRadius
+        TranslateRadiusXY,
+        TranslateRadiusXZ,
+        TranslateRadiusYZ
     }
 }
