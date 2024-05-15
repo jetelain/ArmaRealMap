@@ -4,7 +4,7 @@ using GameRealisticMap.Algorithms.Randomizations;
 
 namespace GameRealisticMap.IO.Converters
 {
-    internal sealed class RandomizationOperationJson
+    public sealed class RandomizationOperationJson
     {
         public RandomizationOperationJson(RandomizationOperation type, float min, float max, Vector3? centerPoint = null)
         {

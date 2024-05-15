@@ -21,11 +21,8 @@ namespace GameRealisticMap.Algorithms.Randomizations
 
         public Matrix4x4 GetMatrix(Random random)
         {
-            return Matrix4x4.CreateScale(
-                RandomHelper.GetBetween(random, Min, Max),
-                RandomHelper.GetBetween(random, Min, Max),
-                RandomHelper.GetBetween(random, Min, Max),
-                CenterPoint);
+            var scale = RandomHelper.GetBetween(random, Min, Max);
+            return Matrix4x4.CreateScale(scale, scale, scale, CenterPoint);
         }
     }
 }

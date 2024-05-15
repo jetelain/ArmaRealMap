@@ -1579,4 +1579,28 @@ Dernière génération le {1}</value>
   <data name="GroundDetailTextureLibrary" xml:space="preserve">
     <value>Bibliothèque des textures de sol</value>
   </data>
+  <data name="RandomizationScaleUniform" xml:space="preserve">
+    <value>Faire varier la taille</value>
+  </data>
+  <data name="RandomizationRotateY" xml:space="preserve">
+    <value>Faire tourner</value>
+  </data>
+  <data name="RandomizationTranslateRadiusXZ" xml:space="preserve">
+    <value>Déplacer au sein d'un rayon</value>
+  </data>
+  <data name="RandomizationTranslateX" xml:space="preserve">
+    <value>Déplacer sur l'axe X</value>
+  </data>
+  <data name="RandomizationTranslateZ" xml:space="preserve">
+    <value>Déplacer sur l'axe Y</value>
+  </data>
+  <data name="RandomizationTranslateY" xml:space="preserve">
+    <value>Faire varier l'altitude</value>
+  </data>
+  <data name="AddRandomization" xml:space="preserve">
+    <value>Ajouter un aléa</value>
+  </data>
+  <data name="CenterOn" xml:space="preserve">
+    <value>centrée sur</value>
+  </data>
 </root>
