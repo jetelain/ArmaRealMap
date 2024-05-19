@@ -2,7 +2,6 @@
 using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
-using NetTopologySuite.Utilities;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.ManMade.Airports
