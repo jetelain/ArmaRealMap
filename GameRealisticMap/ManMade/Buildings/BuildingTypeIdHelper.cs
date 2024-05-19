@@ -51,7 +51,7 @@ namespace GameRealisticMap.ManMade.Buildings
 
                     case "farm_auxiliary":
                     case "barn":
-                    case "owshed":
+                    case "cowshed":
                         return BuildingTypeId.Agricultural;
 
                     case "water_tower":
@@ -64,6 +64,7 @@ namespace GameRealisticMap.ManMade.Buildings
                     case "detached":
                     case "semidetached_house":
                     case "farm":
+                    case "terrace":
                         return BuildingTypeId.Residential;
                 }
                 if (tags.GetValue("historic") == "fort")
