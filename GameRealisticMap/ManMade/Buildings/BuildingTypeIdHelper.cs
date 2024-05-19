@@ -64,6 +64,7 @@ namespace GameRealisticMap.ManMade.Buildings
                     case "detached":
                     case "semidetached_house":
                     case "farm":
+                    case "terrace":
                         return BuildingTypeId.Residential;
                 }
                 if (tags.GetValue("historic") == "fort")
