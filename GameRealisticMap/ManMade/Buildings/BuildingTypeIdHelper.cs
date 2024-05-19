@@ -51,7 +51,7 @@ namespace GameRealisticMap.ManMade.Buildings
 
                     case "farm_auxiliary":
                     case "barn":
-                    case "owshed":
+                    case "cowshed":
                         return BuildingTypeId.Agricultural;
 
                     case "water_tower":
