@@ -4741,10 +4741,20 @@
                   "Transform": [-0.8906791,0,-0.45463243,0,1,0,0.45463243,0,-0.8906791,-2.6210938,1.058703,-0.2529297],
                   "Randomizations": [
                     {
+                      "Type": "ScaleUniform",
+                      "Min": 0.9,
+                      "Max": 1.1
+                    },
+                    {
                       "Type": "RotateY",
                       "Min": 0,
                       "Max": 360,
                       "CenterPoint": [-2.5,0,0]
+                    },
+                    {
+                      "Type": "TranslateRadiusXZ",
+                      "Min": 0,
+                      "Max": 0.1
                     }
                   ]
                 },
@@ -4758,22 +4768,42 @@
                   "Transform": [0.30078125,1.058703,0.4934082],
                   "Randomizations": [
                     {
+                      "Type": "ScaleUniform",
+                      "Min": 0.9,
+                      "Max": 1.1
+                    },
+                    {
                       "Type": "RotateY",
                       "Min": 0,
                       "Max": 360,
                       "CenterPoint": [0,0,0]
+                    },
+                    {
+                      "Type": "TranslateRadiusXZ",
+                      "Min": 0,
+                      "Max": 0.1
                     }
                   ]
                 },
                 {
                   "Model": "a3\\vegetation_f_argo\\Bushes\\b_Vitis_vinifera_F.p3d",
-                  "Transform": [-0.76869667,0,0.6396135,0,1,0,-0.6396135,0,-0.76869667,2.3632812,1.058703,0.06591797],
+                  "Transform": [-0.7686968,0,0.63961333,0,1,0,-0.63961333,0,-0.7686968,2.3632812,1.058703,0.06591797],
                   "Randomizations": [
+                    {
+                      "Type": "ScaleUniform",
+                      "Min": 0.9,
+                      "Max": 1.1
+                    },
                     {
                       "Type": "RotateY",
                       "Min": 0,
                       "Max": 360,
                       "CenterPoint": [2.8,0,0]
+                    },
+                    {
+                      "Type": "TranslateRadiusXZ",
+                      "Min": 0,
+                      "Max": 0.1
                     }
                   ]
                 }

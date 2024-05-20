@@ -68,14 +68,11 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
 
         internal IRandomizationOperation ToDefinition()
         {
-            if (Type == RandomizationOperation.ScaleUniform)
+            if (HasCenterPoint)
             {
-                // Force scale on model center to avoid distorded results
-                X = parent.X;
-                Y = parent.Y;
-                Z = parent.Z;
+                return new RandomizationOperationJson(initial.Type, _min, _max, new System.Numerics.Vector3(_x, _z, _y)).ToRandomizationOperation();
             }
-            return new RandomizationOperationJson(initial.Type, _min, _max, new System.Numerics.Vector3(_x, _z, _y)).ToRandomizationOperation();
+            return new RandomizationOperationJson(initial.Type, _min, _max, null).ToRandomizationOperation();
         }
 
         public Task Remove()

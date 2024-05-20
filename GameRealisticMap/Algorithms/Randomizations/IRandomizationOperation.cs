@@ -7,6 +7,6 @@ namespace GameRealisticMap.Algorithms.Randomizations
     [JsonConverter(typeof(RandomizationOperationJsonConverter))]
     public interface IRandomizationOperation
     {
-        Matrix4x4 GetMatrix(Random random);
+        Matrix4x4 GetMatrix(Random random, Vector3 modelCenter);
     }
 }

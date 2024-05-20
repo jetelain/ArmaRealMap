@@ -34,7 +34,7 @@ namespace GameRealisticMap.IO.Converters
                 case RandomizationOperation.TranslateX: return new TranslateXRandomization(Min, Max);
                 case RandomizationOperation.TranslateY: return new TranslateYRandomization(Min, Max);
                 case RandomizationOperation.TranslateZ: return new TranslateZRandomization(Min, Max);
-                case RandomizationOperation.ScaleUniform: return new ScaleUniformRandomization(Min, Max, CenterPoint ?? throw new InvalidOperationException());
+                case RandomizationOperation.ScaleUniform: return new ScaleUniformRandomization(Min, Max, CenterPoint);
                 case RandomizationOperation.TranslateRadiusXY: return new TranslateRadiusXYRandomization(Min, Max);
                 case RandomizationOperation.TranslateRadiusXZ: return new TranslateRadiusXZRandomization(Min, Max);
                 case RandomizationOperation.TranslateRadiusYZ: return new TranslateRadiusYZRandomization(Min, Max);

@@ -1,12 +1,10 @@
 ﻿using System.Numerics;
-using GameRealisticMap.IO.Converters;
-using System.Text.Json.Serialization;
 
 namespace GameRealisticMap.Algorithms.Randomizations
 {
     public sealed class ScaleUniformRandomization : IRandomizationOperation
     {
-        public ScaleUniformRandomization(float min, float max, Vector3 centerPoint)
+        public ScaleUniformRandomization(float min, float max, Vector3? centerPoint)
         {
             Min = min;
             Max = max;
@@ -17,12 +15,12 @@ namespace GameRealisticMap.Algorithms.Randomizations
 
         public float Max { get; }
 
-        public Vector3 CenterPoint { get; }
+        public Vector3? CenterPoint { get; }
 
-        public Matrix4x4 GetMatrix(Random random)
+        public Matrix4x4 GetMatrix(Random random, Vector3 modelCenter)
         {
             var scale = RandomHelper.GetBetween(random, Min, Max);
-            return Matrix4x4.CreateScale(scale, scale, scale, CenterPoint);
+            return Matrix4x4.CreateScale(scale, scale, scale, CenterPoint ?? modelCenter);
         }
     }
 }

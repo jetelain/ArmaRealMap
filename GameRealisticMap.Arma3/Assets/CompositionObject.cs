@@ -31,11 +31,12 @@ namespace GameRealisticMap.Arma3.Assets
         {
             if (Randomizations != null && Randomizations.Count > 0)
             {
+                var modelCenter = new Vector3(Transform.M41, Transform.M42, Transform.M43);
                 var random = parentRandom ?? RandomHelper.CreateRandom(new Geometries.TerrainPoint(matrix.M41, matrix.M43));
-                var randomization = Randomizations[0].GetMatrix(random);
+                var randomization = Randomizations[0].GetMatrix(random, modelCenter);
                 foreach (var operation in Randomizations.Skip(1))
                 {
-                    randomization = randomization * operation.GetMatrix(random);
+                    randomization = randomization * operation.GetMatrix(random, modelCenter);
                 }
                 return new TerrainBuilderObject(Model, Transform * randomization * matrix, mode);
             }

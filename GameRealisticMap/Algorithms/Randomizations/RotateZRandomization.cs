@@ -17,7 +17,7 @@ namespace GameRealisticMap.Algorithms.Randomizations
 
         public Vector3 CenterPoint { get; }
 
-        public Matrix4x4 GetMatrix(Random random)
+        public Matrix4x4 GetMatrix(Random random, Vector3 modelCenter)
         {
             return Matrix4x4.CreateRotationZ(MathHelper.ToRadians(RandomHelper.GetBetween(random, Min, Max)), CenterPoint);
         }

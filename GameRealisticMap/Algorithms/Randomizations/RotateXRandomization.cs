@@ -1,6 +1,4 @@
 ﻿using System.Numerics;
-using GameRealisticMap.IO.Converters;
-using System.Text.Json.Serialization;
 
 namespace GameRealisticMap.Algorithms.Randomizations
 {
@@ -19,7 +17,7 @@ namespace GameRealisticMap.Algorithms.Randomizations
 
         public Vector3 CenterPoint { get; }
 
-        public Matrix4x4 GetMatrix(Random random)
+        public Matrix4x4 GetMatrix(Random random, Vector3 modelCenter)
         {
             return Matrix4x4.CreateRotationX(MathHelper.ToRadians(RandomHelper.GetBetween(random, Min, Max)), CenterPoint);
         }
