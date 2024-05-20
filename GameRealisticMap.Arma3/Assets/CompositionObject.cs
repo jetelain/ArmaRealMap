@@ -32,7 +32,7 @@ namespace GameRealisticMap.Arma3.Assets
             if (Randomizations != null && Randomizations.Count > 0)
             {
                 var modelCenter = new Vector3(Transform.M41, Transform.M42, Transform.M43);
-                var random = parentRandom ?? RandomHelper.CreateRandom(new Geometries.TerrainPoint(matrix.M41, matrix.M43));
+                var random = parentRandom ?? RandomHelper.CreateRandom(new Geometries.TerrainPoint(matrix.M41 + Transform.M41, matrix.M43 + Transform.M43));
                 var randomization = Randomizations[0].GetMatrix(random, modelCenter);
                 foreach (var operation in Randomizations.Skip(1))
                 {
