@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
@@ -31,7 +32,27 @@ namespace GameRealisticMap.ManMade.Airports
                         .SelectMany(g => TerrainPath.FromGeometry(g, context.Area.LatLngToTerrainPoint))
                         .SelectMany(p => p.ClippedKeepOrientation(context.Area.TerrainBounds)))
                     {
-                        var aeroway = new Aeroway(segment, type.Value, width: GetWidth(type.Value, way.Tags), surface: GetSurface(way.Tags));
+                        Aeroway aeroway;
+                        if (segment.IsClosed)
+                        {
+                            // Probably invalid mapping: it's a surface, use a bounding box
+                            var box = BoundingBox.Compute(segment.Points.ToArray());
+                            var matrix = Matrix3x2.CreateRotation((float)(Math.PI * box.Angle / 180));
+                            if (box.Width > box.Height)
+                            {
+                                var delta = Vector2.Transform(new Vector2(box.Width / 2, 0), matrix);
+                                aeroway = new Aeroway(new TerrainPath(box.Center + delta, box.Center - delta), type.Value, width: box.Height, surface: GetSurface(way.Tags));
+                            }
+                            else
+                            {
+                                var delta = Vector2.Transform(new Vector2(0, box.Height / 2), matrix);
+                                aeroway = new Aeroway(new TerrainPath(box.Center + delta, box.Center - delta), type.Value, width: box.Width, surface: GetSurface(way.Tags));
+                            }
+                        }
+                        else
+                        {
+                            aeroway = new Aeroway(segment, type.Value, width: GetWidth(type.Value, way.Tags), surface: GetSurface(way.Tags));
+                        }
                         var airport = airports.FirstOrDefault(a => a.Contains(segment));
                         if (airport != null)
                         {
