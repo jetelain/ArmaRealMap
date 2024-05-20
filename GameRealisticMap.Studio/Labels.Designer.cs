@@ -133,6 +133,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Add randomization.
+        /// </summary>
+        public static string AddRandomization {
+            get {
+                return ResourceManager.GetString("AddRandomization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Advanced parameters.
         /// </summary>
         public static string AdvancedParameters {
@@ -1246,6 +1255,15 @@ namespace GameRealisticMap.Studio {
         public static string CannotBeReversedWarning {
             get {
                 return ResourceManager.GetString("CannotBeReversedWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à centered on.
+        /// </summary>
+        public static string CenterOn {
+            get {
+                return ResourceManager.GetString("CenterOn", resourceCulture);
             }
         }
         
@@ -3481,6 +3499,60 @@ namespace GameRealisticMap.Studio {
         public static string Randomization {
             get {
                 return ResourceManager.GetString("Randomization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Rotate.
+        /// </summary>
+        public static string RandomizationRotateY {
+            get {
+                return ResourceManager.GetString("RandomizationRotateY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Scale variation.
+        /// </summary>
+        public static string RandomizationScaleUniform {
+            get {
+                return ResourceManager.GetString("RandomizationScaleUniform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Move within radius.
+        /// </summary>
+        public static string RandomizationTranslateRadiusXZ {
+            get {
+                return ResourceManager.GetString("RandomizationTranslateRadiusXZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Move on X Axis.
+        /// </summary>
+        public static string RandomizationTranslateX {
+            get {
+                return ResourceManager.GetString("RandomizationTranslateX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Elevation variation.
+        /// </summary>
+        public static string RandomizationTranslateY {
+            get {
+                return ResourceManager.GetString("RandomizationTranslateY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Move on Y Axis.
+        /// </summary>
+        public static string RandomizationTranslateZ {
+            get {
+                return ResourceManager.GetString("RandomizationTranslateZ", resourceCulture);
             }
         }
         

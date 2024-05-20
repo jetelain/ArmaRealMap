@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameRealisticMap.Arma3
+﻿namespace GameRealisticMap
 {
-    internal static class MathHelper
+    public static class MathHelper
     {
-        internal static float ToRadians(float angle)
+        public static float ToRadians(float angle)
         {
             if (angle == 0)
             {
@@ -17,7 +11,7 @@ namespace GameRealisticMap.Arma3
             return angle * MathF.PI / 180f;
         }
 
-        internal static float FromRadians(double angle)
+        public static float FromRadians(double angle)
         {
             if (angle == 0)
             {

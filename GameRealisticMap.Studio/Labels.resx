@@ -1579,4 +1579,28 @@ Last generated on {1}</value>
   <data name="GroundDetailTextureLibrary" xml:space="preserve">
     <value>Ground Detail Texture Library</value>
   </data>
+  <data name="RandomizationScaleUniform" xml:space="preserve">
+    <value>Scale variation</value>
+  </data>
+  <data name="RandomizationRotateY" xml:space="preserve">
+    <value>Rotate</value>
+  </data>
+  <data name="RandomizationTranslateRadiusXZ" xml:space="preserve">
+    <value>Move within radius</value>
+  </data>
+  <data name="RandomizationTranslateX" xml:space="preserve">
+    <value>Move on X Axis</value>
+  </data>
+  <data name="RandomizationTranslateZ" xml:space="preserve">
+    <value>Move on Y Axis</value>
+  </data>
+  <data name="RandomizationTranslateY" xml:space="preserve">
+    <value>Elevation variation</value>
+  </data>
+  <data name="AddRandomization" xml:space="preserve">
+    <value>Add randomization</value>
+  </data>
+  <data name="CenterOn" xml:space="preserve">
+    <value>centered on</value>
+  </data>
 </root>

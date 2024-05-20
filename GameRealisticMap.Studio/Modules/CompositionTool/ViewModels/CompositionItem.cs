@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Geometries;
+using GameRealisticMap.IO.Converters;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.CompositionTool.Views;
@@ -20,10 +25,12 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
     {
         private readonly TerrainBuilderObject terrainBuilderObject;
         private readonly Lazy<BitmapSource?> aerial;
+        private readonly Lazy<ObservableCollection<RandomizationOperationVM>> randomizations;
+        private readonly bool _hadRandomizations;
 
         public CompositionItem(CompositionObject source, CompositionViewModel parent)
         {
-            terrainBuilderObject = source.ToTerrainBuilderObject(System.Numerics.Matrix4x4.Identity, ElevationMode.Absolute);
+            terrainBuilderObject = source.ToTerrainBuilderObjectVerbatim();
             Model = terrainBuilderObject.Model;
             _x = terrainBuilderObject.Point.X;
             _y = terrainBuilderObject.Point.Y;
@@ -32,16 +39,27 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             _yaw = terrainBuilderObject.Yaw;
             _roll = terrainBuilderObject.Roll;
             _scale = terrainBuilderObject.Scale;
+            _hadRandomizations = source.Randomizations != null && source.Randomizations.Count > 0;
+            randomizations = new(() => CreateRandomizationList(source));
             aerial = new Lazy<BitmapSource?>(() => IoC.Get<IArma3AerialImageService>().GetImage(Model.Path));
         }
 
-        public bool WasEdited => _x != terrainBuilderObject.Point.X
+        private ObservableCollection<RandomizationOperationVM> CreateRandomizationList(CompositionObject source)
+        {
+            var list = new ObservableCollection<RandomizationOperationVM>(RandomizationOperationVM.Create(source.Randomizations, this));
+            list.CollectionChanged += (_, _) => { NotifyOfPropertyChange(nameof(HasRandomizations)); wasChanged = true; };
+            return list;
+        }
+
+        public bool WasEdited => wasChanged 
+            || _x != terrainBuilderObject.Point.X
             || _y != terrainBuilderObject.Point.Y
             || _z != terrainBuilderObject.Elevation
             || _picth != terrainBuilderObject.Pitch
             || _yaw != terrainBuilderObject.Yaw
             || _roll != terrainBuilderObject.Roll
-            || _scale != terrainBuilderObject.Scale;
+            || _scale != terrainBuilderObject.Scale
+            || (randomizations.IsValueCreated && randomizations.Value.Any(r => r.WasEdited));
 
         public ModelInfo Model { get; }
 
@@ -64,11 +82,13 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
         public float Roll { get { return _roll; } set { _roll = value; NotifyOfPropertyChange(); NotifyPreview(); } }
 
         private float _scale;
+        private bool wasChanged;
+
         public float Scale { get { return _scale; } set { _scale = value; NotifyOfPropertyChange(); NotifyPreview(); } }
 
         internal CompositionObject ToDefinition()
         {
-            return new CompositionObject(Model, ToTerrainBuilderObject().ToWrpTransform());
+            return new CompositionObject(Model, ToTerrainBuilderObject().ToWrpTransform(), randomizations.Value.Select(v => v.ToDefinition()).ToList());
         }
 
         internal TerrainBuilderObject ToTerrainBuilderObject()
@@ -86,6 +106,10 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             NotifyOfPropertyChange(nameof(PreviewVisualAxisX));
             NotifyOfPropertyChange(nameof(AerialMatrix));
         }
+
+        public ObservableCollection<RandomizationOperationVM> Randomizations => randomizations.Value;
+
+        public bool HasRandomizations => randomizations.IsValueCreated ? randomizations.Value.Count > 0 : _hadRandomizations;
 
         public string PreviewGeoAxisY
         {
@@ -200,6 +224,32 @@ namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
             NotifyOfPropertyChange(nameof(Yaw));
             NotifyOfPropertyChange(nameof(Roll));
             NotifyPreview();
+        }
+
+        public Task AddRandomization(string what)
+        {
+            switch(what)
+            {
+                case "ScaleUniform":
+                    Randomizations.Insert(0, new(new(RandomizationOperation.ScaleUniform, 0.8f, 1.2f, new (X, Z, Y)), this));
+                    break;
+                case "RotateY":
+                    Randomizations.Add(new(new(RandomizationOperation.RotateY, 0, 360, new (X, Z, Y)), this));
+                    break;
+                case "TranslateRadiusXZ":
+                    Randomizations.Add(new(new(RandomizationOperation.TranslateRadiusXZ, 0, 1, new(X, Z, Y)), this));
+                    break;
+                case "TranslateX":
+                    Randomizations.Add(new(new(RandomizationOperation.TranslateX, 0, 1, null), this)); 
+                    break;
+                case "TranslateZ":
+                    Randomizations.Add(new(new(RandomizationOperation.TranslateZ, 0, 1, null), this));
+                    break;
+                case "TranslateY":
+                    Randomizations.Add(new(new(RandomizationOperation.TranslateY, 0, 1, null), this));
+                    break;
+            }
+            return Task.CompletedTask;
         }
     }
 }
