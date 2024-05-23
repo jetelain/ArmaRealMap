@@ -21,10 +21,10 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
       
     - name: Build Linux Command Line
-      run: dotnet publish --no-self-contained -f net6.0 -r linux-x64 -c Release GameRealisticMap.Arma3.CommandLine/GameRealisticMap.Arma3.CommandLine.csproj -o Output -p:FileVersion=${{ steps.nbgv.outputs.SimpleVersion }}
+      run: dotnet publish --no-self-contained -f net8.0 -r linux-x64 -c Release GameRealisticMap.Arma3.CommandLine/GameRealisticMap.Arma3.CommandLine.csproj -o Output -p:FileVersion=${{ steps.nbgv.outputs.SimpleVersion }}
     
     - name: Generate tar.gz
       run: tar -czvf grma3.tar.gz -C Output grma3
