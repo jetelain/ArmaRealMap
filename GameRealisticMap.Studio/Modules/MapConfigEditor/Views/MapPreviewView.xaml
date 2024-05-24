@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="210" />
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal">

@@ -31,7 +31,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.0.x
+        dotnet-version:8.0.x
         
     - name: Update manifest version
       run: |
@@ -69,7 +69,7 @@ jobs:
       
     # Generate Executable
     - name: Build simple executable
-      run: dotnet publish  -f net6.0-windows -r win-x64 -c Release GameRealisticMap.Studio/GameRealisticMap.Studio.csproj -o Output -p:FileVersion=${{ steps.nbgv.outputs.SimpleVersion }}
+      run: dotnet publish  -f net8.0-windows -r win-x64 -c Release GameRealisticMap.Studio/GameRealisticMap.Studio.csproj -o Output -p:FileVersion=${{ steps.nbgv.outputs.SimpleVersion }}
     
     - name: Generate executable ZIP
       run: Compress-Archive -Path Output\* -DestinationPath GameRealisticMap.Studio.zip
