@@ -60,7 +60,18 @@ namespace GameRealisticMap.Arma3.Edit
         {
             foreach (Match entry in oldPboPrefixRegex.Matches(content))
             {
-                filesToCopy[entry.Groups[1].Value] = @$"{newPboPrefix}\{entry.Groups[2].Value}";
+                var oldName = entry.Groups[1].Value;
+                var newName = @$"{newPboPrefix}\{entry.Groups[2].Value}";
+                filesToCopy[oldName] = newName;
+                if (oldName.EndsWith(".paa", StringComparison.OrdinalIgnoreCase))
+                {
+                    var oldPng = Path.ChangeExtension(oldName, ".png");
+                    if (writer.FileExists(oldPng))
+                    {
+                        var newPng = Path.ChangeExtension(newName, ".png");
+                        filesToCopy[oldPng] = newPng;
+                    }
+                }
             }
             content = oldPboPrefixRegex.Replace(content, e => @$"""{newPboPrefix}\{e.Groups[2].Value}""");
             return content;
