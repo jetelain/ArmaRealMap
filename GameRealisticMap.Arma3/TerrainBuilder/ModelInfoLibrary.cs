@@ -85,13 +85,26 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             return name;
         }
 
+        private T Read<T>(Stream stream, string path) where T : IReadObject, new()
+        {
+            try
+            {
+                return StreamHelper.Read<T>(stream);
+            }
+            catch (Exception ex)
+            {
+                var physicalPath = fileSystem.GetLocationInfoForError(path) ?? path;
+                throw new ApplicationException($"Unable to read file '{physicalPath}': {ex.Message}", ex);
+            }
+        }
+
         public BIS.P3D.ODOL.ModelInfo? ReadModelInfoOnly(string path)
         {
             using (var stream = fileSystem.OpenFileIfExists(path))
             {
                 if (stream != null)
                 {
-                    var result = StreamHelper.Read<P3DInfosOnly>(stream).ModelInfo as BIS.P3D.ODOL.ModelInfo;
+                    var result = Read<P3DInfosOnly>(stream, path).ModelInfo as BIS.P3D.ODOL.ModelInfo;
                     if (result != null)
                     {
                         return result;
@@ -101,7 +114,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                     {
                         if (streamTemp != null)
                         {
-                            return StreamHelper.Read<P3DInfosOnly>(streamTemp).ModelInfo as BIS.P3D.ODOL.ModelInfo;
+                            return Read<P3DInfosOnly>(streamTemp, "temp\\" + path).ModelInfo as BIS.P3D.ODOL.ModelInfo;
                         }
                     }
                     // TODO: Binarize on the fly
@@ -118,14 +131,14 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 {
                     if (P3D.IsODOL(stream))
                     {
-                        return StreamHelper.Read<ODOL>(stream);
+                        return Read<ODOL>(stream, path);
                     }
                     // Mikero Tools binarize into project drive temp, binarized file might be there
                     using (var streamTemp = fileSystem.OpenFileIfExists("temp\\" + path))
                     {
                         if (streamTemp != null && P3D.IsODOL(streamTemp))
                         {
-                            return StreamHelper.Read<ODOL>(streamTemp);
+                            return Read<ODOL>(streamTemp, "temp\\" + path);
                         }
                     }
                     // TODO: Binarize on the fly

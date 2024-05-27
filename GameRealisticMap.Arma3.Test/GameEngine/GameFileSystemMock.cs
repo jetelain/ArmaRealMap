@@ -107,5 +107,10 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
                 return new StreamReader(stream).ReadToEnd();
             }
         }
+
+        public string? GetLocationInfoForError(string path)
+        {
+            return path;
+        }
     }
 }
