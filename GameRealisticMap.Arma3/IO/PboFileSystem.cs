@@ -212,5 +212,15 @@ namespace GameRealisticMap.Arma3.IO
             }
             return null;
         }
+
+        public string? GetLocationInfoForError(string path)
+        {
+            var pbo = GetPboFile(path);
+            if (pbo != null)
+            {
+                return pbo + "#" + path;
+            }
+            return null;
+        }
     }
 }

@@ -165,5 +165,15 @@ namespace GameRealisticMap.Arma3.IO
             }
             return secondarySource?.GetLastWriteTimeUtc(path);
         }
+
+        public string? GetLocationInfoForError(string path)
+        {
+            var fullPath = GetFullPath(path);
+            if (File.Exists(fullPath))
+            {
+                return fullPath;
+            }
+            return secondarySource?.GetLocationInfoForError(path);
+        }
     }
 }
