@@ -39,6 +39,7 @@ using HugeImages;
 using HugeImages.Storage;
 using MapControl;
 using Microsoft.Win32;
+using SixLabors.ImageSharp.Memory;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
@@ -626,6 +627,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public async Task DoExport(IProgressTaskUI ui, string filename, HugeImage<Rgb24> himage)
         {
+            OverrideImageSharpSizeLimit();
+
             using (var task = ui.CreateStep("Write", 1))
             {
                 using (himage)
@@ -635,6 +638,15 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
             ui.AddSuccessAction(() => ShellHelper.OpenUri(filename), GameRealisticMap.Studio.Labels.OpenImage);
             ui.AddSuccessAction(() => ShellHelper.OpenUri(Path.GetDirectoryName(filename)!), GameRealisticMap.Studio.Labels.OpenFolder);
+        }
+
+        private static void OverrideImageSharpSizeLimit()
+        {
+            var prop = typeof(MemoryAllocator).GetProperty("MemoryGroupAllocationLimitBytes", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (prop != null && prop.SetMethod != null)
+            {
+                prop.SetMethod.Invoke(MemoryAllocator.Default, new object[] { 1L << 34 }); // 16 GiB
+            }
         }
 
         public Task ImportSatMap()
@@ -655,6 +667,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         private async Task DoImport(IProgressTaskUI ui, Func<Task> action)
         {
+            OverrideImageSharpSizeLimit();
+
             await action();
 
             if (CanGenerateMod)
