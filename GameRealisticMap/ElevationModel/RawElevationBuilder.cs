@@ -53,12 +53,12 @@ namespace GameRealisticMap.ElevationModel
             }
 
             // Out of bounds
-            var outOfBounds = GetOutOfBounds(context, source);
+            var outOfBounds = GetOutOfBounds(context, source, grid);
 
             return new RawElevationData(grid, source.Credits, outOfBounds);
         }
 
-        private ElevationMinMax[] GetOutOfBounds(IBuildContext context, RawElevationSource source)
+        private ElevationMinMax[] GetOutOfBounds(IBuildContext context, RawElevationSource source, ElevationGrid grid)
         {
             var outOfBounds = new ElevationMinMax[512];
             using (var report = progress.CreateStep("OutOfBounds", 512))
@@ -71,7 +71,7 @@ namespace GameRealisticMap.ElevationModel
                     var boundary = GetBoundaryPoint(a, center);
                     var vector = Vector2.Normalize(boundary - center) * OutOfBoundsStep;
                     var pos = boundary;
-                    var min = source.GetElevationNoMask(context.Area.TerrainPointToLatLng(new TerrainPoint(pos))); ;
+                    var min = (double)grid.ElevationAt(new TerrainPoint(pos));
                     var max = min;
                     for (int i = 0; i < OutOfBoundsDistance; i += OutOfBoundsStep)
                     {
