@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 using GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels;
+using GameRealisticMap.Studio.Modules.Main.Services;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 
@@ -17,12 +18,14 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor
 
         internal static string IconSource = $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png";
 
-        private readonly IShell _shell;
+        private readonly IShell shell;
+        private readonly IGrmConfigService grmConfig;
 
         [ImportingConstructor]
-        public GenericMapConfigEditorProvider(IShell shell)
+        public GenericMapConfigEditorProvider(IShell shell, IGrmConfigService grmConfig)
         {
-            _shell = shell;
+            this.shell = shell;
+            this.grmConfig = grmConfig;
         }
 
         public IEnumerable<EditorFileType> FileTypes
@@ -40,7 +43,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor
             return string.Equals(Path.GetExtension(path), ".grmap", StringComparison.OrdinalIgnoreCase);
         }
 
-        public IDocument Create() => new GenericMapConfigEditorViewModel(_shell);
+        public IDocument Create() => new GenericMapConfigEditorViewModel(shell, grmConfig);
 
         public async Task New(IDocument document, string name) => await ((GenericMapConfigEditorViewModel)document).New(name);
 

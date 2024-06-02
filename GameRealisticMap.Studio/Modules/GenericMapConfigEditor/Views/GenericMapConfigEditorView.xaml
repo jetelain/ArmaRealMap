@@ -27,35 +27,11 @@
                 </TextBlock>
             </StackPanel>
 
-            <!--<StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
-                <Button Margin="5" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
-                    <Run Text="{x:Static r:Labels.GeneratePreview}" />
-                    <Button.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="{x:Static r:Labels.GeneratePreviewToBuiltInViewer}" cal:Message.Attach="GeneratePreviewNew"></MenuItem>
-                            <Separator />
-                            <MenuItem Header="{x:Static r:Labels.GenerateWithElevation}" cal:Message.Attach="GeneratePreviewNormal"></MenuItem>
-                            <MenuItem Header="{x:Static r:Labels.GenerateAreasOnly}" cal:Message.Attach="GeneratePreviewFast"></MenuItem>
-                            <Separator />
-                            <MenuItem Header="{x:Static r:Labels.GenerateRawSatelliteImage}" cal:Message.Attach="GenerateRawSatMap"></MenuItem>
-                            <MenuItem Header="{x:Static r:Labels.GenerateSatelliteImage}" cal:Message.Attach="GenerateSatMap"></MenuItem>
-                            <MenuItem Header="{x:Static r:Labels.GenerateIdMapImage}" cal:Message.Attach="GenerateIdMap"></MenuItem>
-                        </ContextMenu>
-                    </Button.ContextMenu>
+            <StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
+                <Button Margin="5" Padding="10" cal:Message.Attach="DoFullExport">
+                    <Run Text="Export data"/>
                 </Button>
-                <Button Margin="5" Padding="10" b:ButtonBehaviors.OpenContextOnClick="True">
-                    <Run Text="{x:Static r:Labels.GenerateMapForArma3}"/>
-                    <Button.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="{x:Static r:Labels.GenerateMapForArma3WRP}" cal:Message.Attach="GenerateMap"></MenuItem>
-                            <MenuItem Header="{x:Static r:Labels.GenerateMapForArma3TB}" cal:Message.Attach="GenerateTerrainBuilder"></MenuItem>
-                        </ContextMenu>
-                    </Button.ContextMenu>
-                </Button>
-                <Button Margin="5" Padding="10" cal:Message.Attach="GenerateMod">
-                    <Run Text="{x:Static r:Labels.GenerateModForArma3}"/>
-                </Button>
-            </StackPanel>-->
+            </StackPanel>
 
             <StackPanel Margin="5" Orientation="Horizontal" >
                 <Label Width="200">
@@ -81,7 +57,23 @@
                 <TextBox Width="75" Text="{Binding MapSize,Mode=TwoWay}" />
                 <TextBlock Margin="10 0"><Run Text="{x:Static r:Labels.MetersUnit}"/></TextBlock>
             </StackPanel>
-
+            
+            <StackPanel Margin="5" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="Export profile" />
+                </Label>
+                <ComboBox Width="400" 
+                          Text="{Binding ExportProfileFile,Mode=TwoWay}" 
+                          IsEditable="True"
+                          ItemsSource="{Binding BuiltinExportProfiles}" />
+            </StackPanel>
+            
+            <StackPanel Margin="5" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="Target directort" />
+                </Label>
+                <toolkit:WatermarkTextBox Width="400" Text="{Binding TargetModDirectory, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticTargetDirectory}"  />
+            </StackPanel>
 
             <grm:LocationSelectorMap MapSelection="{Binding MapSelection, Mode=TwoWay}" />
 

@@ -1,0 +1,14 @@
+﻿{
+  "Entries": [
+    {
+      "Exporter": "Elevation",
+      "FileName": "elevation.asc",
+      "Format": "EsriAscii"
+    },
+    {
+      "Exporter": "RawSatelliteImage",
+      "FileName": "satellite.png",
+      "Format": "Image"
+    }
+  ]
+}
