@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
 using GameRealisticMap.Reporting;
@@ -14,10 +15,12 @@ namespace GameRealisticMap.Satellite
     internal class RawSatelliteImageBuilder : IDataBuilder<RawSatelliteImageData>, IDataSerializer<RawSatelliteImageData>
     {
         private readonly IProgressSystem progress;
+        private readonly ISourceLocations sources;
 
-        public RawSatelliteImageBuilder(IProgressSystem progress)
+        public RawSatelliteImageBuilder(IProgressSystem progress, ISourceLocations sources)
         {
             this.progress = progress;
+            this.sources = sources;
         }
 
         public RawSatelliteImageData Build(IBuildContext context)
@@ -35,7 +38,7 @@ namespace GameRealisticMap.Satellite
             var himage = new HugeImage<Rgba32>(context.HugeImageStorage, nameof(RawSatelliteImageBuilder), new Size(totalSize));
             using (var report2 = progress.CreateStep("S2C", himage.Parts.Sum(t => t.RealRectangle.Height)))
             {
-                using var src = new S2Cloudless(progress);
+                using var src = new S2Cloudless(progress, sources);
                 foreach (var part in himage.Parts)
                 {
                     LoadPart(context, totalSize, part, report2, src).Wait();
@@ -97,7 +100,7 @@ namespace GameRealisticMap.Satellite
         private Image<Rgba32> LoadImage(IBuildContext context, int tileSize, IProgressInteger report, Vector2 start, int done)
         {
             var imageryResolution = context.Imagery.Resolution;
-            using var src = new S2Cloudless(progress);
+            using var src = new S2Cloudless(progress, sources);
             var img = new Image<Rgba32>(tileSize, tileSize);
             var parallel = 16;
             var dh = img.Height / parallel;

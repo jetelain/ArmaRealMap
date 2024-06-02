@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
+using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Main.ViewModels;
 using Gemini.Framework;
 using Gemini.Framework.Services;
@@ -15,11 +16,13 @@ namespace GameRealisticMap.Studio.Modules.Main
     public class MainModule : ModuleBase
     {
         private readonly IMainWindow _mainWindow;
+        private readonly IGrmConfigService _config;
 
         [ImportingConstructor]
-        public MainModule(IMainWindow mainWindow)
+        public MainModule(IMainWindow mainWindow, IGrmConfigService config)
         {
             _mainWindow = mainWindow;
+            _config = config;
         }
 
         public override void Initialize()
@@ -31,6 +34,8 @@ namespace GameRealisticMap.Studio.Modules.Main
 
         public override async Task PostInitializeAsync()
         {
+            await _config.Load();
+
             await _mainWindow.Shell.OpenDocumentAsync(IoC.Get<HomeViewModel>());
 
             var args = Environment.GetCommandLineArgs();

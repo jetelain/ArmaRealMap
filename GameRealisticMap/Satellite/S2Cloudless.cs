@@ -1,4 +1,6 @@
 ﻿using System.Collections.Concurrent;
+using System.Net;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.Reporting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
@@ -16,6 +18,7 @@ namespace GameRealisticMap.Satellite
         private readonly HttpClient httpClient;
         private readonly SemaphoreSlim downloadSemaphore = new SemaphoreSlim(1, 1);
         private readonly ConcurrentDictionary<(int,int), Task<Image<Rgba32>>> cache = new ConcurrentDictionary<(int, int), Task<Image<Rgba32>>>();
+        private readonly string endPoint;
 
         private int estimatedCachePressure = 0;
 
@@ -24,14 +27,14 @@ namespace GameRealisticMap.Satellite
         private static readonly int zoomLevel = 15; // best compromise, almost equal to zoomLevel 16 result, 20% faster to process
         private static readonly int halfTileCount = (int)Math.Pow(2, zoomLevel) / 2;
         private static readonly int tileSize = 256;
-        private static readonly string endPoint = "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/GoogleMapsCompatible/";
 
         private const double rMajor = 6378137; //Equatorial Radius, WGS84
         private const double shift = Math.PI * rMajor;
 
-        public S2Cloudless(IProgressSystem progress)
+        public S2Cloudless(IProgressSystem progress, ISourceLocations sources)
         {
             this.progress = progress;
+            endPoint = sources.S2CloudlessBasePath.AbsoluteUri;
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0");
         }

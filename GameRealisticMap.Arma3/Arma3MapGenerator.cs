@@ -4,6 +4,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.Imagery;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
@@ -19,12 +20,14 @@ namespace GameRealisticMap.Arma3
         protected readonly IArma3RegionAssets assets;
         private readonly ProjectDrive projectDrive;
         private readonly IPboCompilerFactory pboCompilerFactory;
+        protected readonly ISourceLocations sources;
 
-        public Arma3MapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive, IPboCompilerFactory pboCompilerFactory)
+        public Arma3MapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive, IPboCompilerFactory pboCompilerFactory, ISourceLocations sources)
         {
             this.assets = assets;
             this.projectDrive = projectDrive;
             this.pboCompilerFactory = pboCompilerFactory;
+            this.sources = sources;
         }
 
         public async Task<IImagerySource?> GetImagerySource(IProgressTask progress, Arma3MapConfig a3config, IHugeImageStorage hugeImageStorage)
@@ -49,7 +52,7 @@ namespace GameRealisticMap.Arma3
 
         protected virtual BuildContext CreateBuildContext(IProgressTask progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
         {
-            var builders = new BuildersCatalog(progress, assets);
+            var builders = new BuildersCatalog(progress, assets, sources);
             return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
         }
 
@@ -115,7 +118,7 @@ namespace GameRealisticMap.Arma3
 
         protected virtual async Task<IOsmDataSource> LoadOsmData(IProgressTask progress, Arma3MapConfig a3config)
         {
-            var loader = new OsmDataOverPassLoader(progress);
+            var loader = new OsmDataOverPassLoader(progress, sources);
             return await loader.Load(a3config.TerrainArea);
         }
 
