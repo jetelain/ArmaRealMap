@@ -4,6 +4,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
@@ -17,7 +18,7 @@ namespace GameRealisticMap.Arma3.Demo
     public sealed class Arma3GdtDemoMapGenerator : Arma3MapGenerator
     {
         public Arma3GdtDemoMapGenerator(IEnumerable<TerrainMaterialDefinition> definitions, ProjectDrive projectDrive, IPboCompilerFactory pboCompilerFactory)
-            : base(CreateAssets(definitions), projectDrive, pboCompilerFactory)
+            : base(CreateAssets(definitions), projectDrive, pboCompilerFactory, new DefaultSourceLocations())
         {
 
         }

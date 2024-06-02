@@ -28,7 +28,7 @@ namespace GameRealisticMap.Arma3.CommandLine
         private static async Task<int> GenerateTerrainBuilder(GenerateTerrainBuilderOptions opts)
         {
             using var workspace = await opts.CreateWorkspace();
-            var generator = new Arma3TerrainBuilderGenerator(workspace.Assets, workspace.ProjectDrive);
+            var generator = new Arma3TerrainBuilderGenerator(workspace.Assets, workspace.ProjectDrive, workspace.Sources);
             Directory.CreateDirectory(opts.TargetDirectory);
             await generator.GenerateTerrainBuilderFiles(workspace.Progress, workspace.MapConfig, opts.TargetDirectory);
             return 0;
@@ -37,7 +37,7 @@ namespace GameRealisticMap.Arma3.CommandLine
         private static async Task<int> GenerateObjectLayer(GenerateObjectLayerOptions opts)
         {
             using var workspace = await opts.CreateWorkspace();
-            var generator = new Arma3TerrainBuilderGenerator(workspace.Assets, workspace.ProjectDrive);
+            var generator = new Arma3TerrainBuilderGenerator(workspace.Assets, workspace.ProjectDrive, workspace.Sources);
             Directory.CreateDirectory(opts.TargetDirectory);
             await generator.GenerateOnlyOneLayer(workspace.Progress, workspace.MapConfig, opts.LayerName, opts.TargetDirectory);
             return 0;
@@ -46,7 +46,7 @@ namespace GameRealisticMap.Arma3.CommandLine
         private static async Task<int> GenerateWrp(GenerateWrpOptions opts)
         {
             using var workspace = await opts.CreateWorkspace();
-            var generator = new Arma3MapGenerator(workspace.Assets, workspace.ProjectDrive, new NonePboCompilerFactory());
+            var generator = new Arma3MapGenerator(workspace.Assets, workspace.ProjectDrive, new NonePboCompilerFactory(), workspace.Sources);
             await generator.GenerateWrp(workspace.Progress, workspace.MapConfig, !opts.SkipPaa);
             return 0;
         }
@@ -58,7 +58,7 @@ namespace GameRealisticMap.Arma3.CommandLine
                 throw new PlatformNotSupportedException("Mod generation works only on Windows");
             }
             using var workspace = await opts.CreateWorkspace();
-            var generator = new Arma3MapGenerator(workspace.Assets, workspace.ProjectDrive, new PboCompilerFactory(workspace.ProjectDrive));
+            var generator = new Arma3MapGenerator(workspace.Assets, workspace.ProjectDrive, new PboCompilerFactory(workspace.ProjectDrive), workspace.Sources);
             await generator.GenerateMod(workspace.Progress, workspace.MapConfig);
             return 0;
         }

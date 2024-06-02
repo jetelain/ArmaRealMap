@@ -15,6 +15,7 @@ using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.Trees;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
+using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Shared;
 using GameRealisticMap.Studio.Toolkit;
@@ -69,7 +70,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             };
 
-            var builders = new BuildersCatalog(new NoProgressSystem(), new DefaultBuildersConfig());
+            var builders = new BuildersCatalog(new NoProgressSystem(), new DefaultBuildersConfig(), IoC.Get<IGrmConfigService>().GetSources());
             Optionals.AddRange(builders.VisitAll(new Visitor(this)).Where(o => o != null).Cast<OptionalPreviewLayerVM>());
 
         }
@@ -107,8 +108,9 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             SizeInMeters = a3config.SizeInMeters;
             NotifyOfPropertyChange(nameof(SizeInMeters));
             var config = await map.GetBuildersConfigSafe(a3config);
-            var catalog = new BuildersCatalog(taskUI, config);
-            var loader = new OsmDataOverPassLoader(taskUI);
+            var sources = IoC.Get<IGrmConfigService>().GetSources();
+            var catalog = new BuildersCatalog(taskUI, config, sources);
+            var loader = new OsmDataOverPassLoader(taskUI, sources);
             var osmSource = await loader.Load(a3config.TerrainArea);
             var context = new BuildContext(catalog, taskUI, a3config.TerrainArea, osmSource, new ImageryOptions());
             PreviewMapData = new PreviewMapData(context);

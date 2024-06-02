@@ -317,7 +317,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         {
             var a3config = Config.ToArma3MapConfig();
             var config = await GetBuildersConfigSafe(a3config);
-            var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery, config);
+            var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery, config, IoC.Get<IGrmConfigService>().GetSources());
             var target = Path.Combine(Path.GetTempPath(), "grm-preview.html");
             await render.RenderHtml(task, target, ignoreElevation);
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewResultInWebBrowser);
@@ -446,7 +446,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var assets = await GetAssets(_arma3DataModule.Library, a3config);
 
-            var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory());
+            var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory(), IoC.Get<IGrmConfigService>().GetSources());
 
             var freindlyName = await generator.GenerateMod(task, a3config);
 
@@ -474,7 +474,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var assets = await GetAssets(_arma3DataModule.Library, a3config);
 
-            var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory());
+            var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory(), IoC.Get<IGrmConfigService>().GetSources());
 
             var results = await generator.GenerateWrp(task, a3config);
 
@@ -532,7 +532,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             Arma3Assets assets = await GetAssets(library, a3config);
 
-            var generator = new Arma3MapGenerator(assets, projectDrive, _arma3DataModule.CreatePboCompilerFactory());
+            var generator = new Arma3MapGenerator(assets, projectDrive, _arma3DataModule.CreatePboCompilerFactory(), IoC.Get<IGrmConfigService>().GetSources());
 
             var target = Path.Combine(Path.GetTempPath(), a3config.WorldName);
 
@@ -555,7 +555,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             Arma3Assets assets = await GetAssets(library, a3config);
 
-            var generator = new Arma3MapGenerator(assets, projectDrive, _arma3DataModule.CreatePboCompilerFactory());
+            var generator = new Arma3MapGenerator(assets, projectDrive, _arma3DataModule.CreatePboCompilerFactory(), IoC.Get<IGrmConfigService>().GetSources());
 
             var target = Path.Combine(Path.GetTempPath(), a3config.WorldName);
             Directory.CreateDirectory(target);
@@ -609,7 +609,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var assets = await GetAssets(_arma3DataModule.Library, a3config);
 
-            var generator = new Arma3TerrainBuilderGenerator(assets, _arma3DataModule.ProjectDrive);
+            var generator = new Arma3TerrainBuilderGenerator(assets, _arma3DataModule.ProjectDrive, IoC.Get<IGrmConfigService>().GetSources());
 
             var freindlyName = await generator.GenerateTerrainBuilderFiles(task, a3config, target);
 

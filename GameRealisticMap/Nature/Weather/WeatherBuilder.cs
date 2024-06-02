@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Reporting;
+﻿using GameRealisticMap.Configuration;
+using GameRealisticMap.Reporting;
 using WeatherStats.Databases;
 
 namespace GameRealisticMap.Nature.Weather
@@ -6,15 +7,17 @@ namespace GameRealisticMap.Nature.Weather
     internal class WeatherBuilder : IDataBuilder<WeatherData>
     {
         private readonly IProgressSystem progress;
+        private readonly ISourceLocations sources;
 
-        public WeatherBuilder(IProgressSystem progress)
+        public WeatherBuilder(IProgressSystem progress, ISourceLocations sources)
         {
             this.progress = progress;
+            this.sources = sources;
         }
 
         public WeatherData Build(IBuildContext context)
         {
-            var db = WeatherStatsDatabase.Create("https://weatherdata.pmad.net/ERA5AVG/");
+            var db = WeatherStatsDatabase.Create(sources.WeatherStats.AbsoluteUri);
 
             var center = context.Area.TerrainPointToLatLng(
                 new Geometries.TerrainPoint(

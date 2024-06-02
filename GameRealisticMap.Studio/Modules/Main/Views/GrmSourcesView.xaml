@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Modules.Main.Views.GrmSourcesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <Label Width="150">MapToolkit SRTM15Plus</Label>
+            <TextBox Text="{Binding MapToolkitSRTM15Plus}" Width="450" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Width="150">MapToolkit SRTM1</Label>
+            <TextBox Text="{Binding MapToolkitSRTM1}" Width="450" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Width="150">MapToolkit AW3D30</Label>
+            <TextBox Text="{Binding MapToolkitAW3D30}" Width="450" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Width="150">WeatherStats</Label>
+            <TextBox Text="{Binding WeatherStats}" Width="450" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Width="150">OverpassApi Interpreter</Label>
+            <TextBox Text="{Binding OverpassApiInterpreter}" Width="450" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Width="150">S2Cloudless Base Path</Label>
+            <TextBox Text="{Binding S2CloudlessBasePath}" Width="450" />
+        </StackPanel>
+
+
+
+    </StackPanel>
+</UserControl>
