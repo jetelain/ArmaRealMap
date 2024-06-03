@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.Studio.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gemini.Modules.Inspector", "gemini\src\Gemini.Modules.Inspector\Gemini.Modules.Inspector.csproj", "{81601715-E57D-40E8-9274-693F37EC9D2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameRealisticMap.Generic", "GameRealisticMap.Generic\GameRealisticMap.Generic.csproj", "{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -517,6 +519,26 @@ Global
 		{81601715-E57D-40E8-9274-693F37EC9D2F}.Release|x64.Build.0 = Release|Any CPU
 		{81601715-E57D-40E8-9274-693F37EC9D2F}.Release|x86.ActiveCfg = Release|Any CPU
 		{81601715-E57D-40E8-9274-693F37EC9D2F}.Release|x86.Build.0 = Release|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Debug|ARM.Build.0 = Debug|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Debug|x64.Build.0 = Debug|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Debug|x86.Build.0 = Debug|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|ARM.ActiveCfg = Release|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|ARM.Build.0 = Release|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|ARM64.Build.0 = Release|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|x64.ActiveCfg = Release|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|x64.Build.0 = Release|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|x86.ActiveCfg = Release|Any CPU
+		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -537,7 +559,7 @@ Global
 		{81601715-E57D-40E8-9274-693F37EC9D2F} = {AD947998-A388-4783-B9A6-2410E046C91D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {67E6979E-AD2E-4E18-82E9-C7B7D491C3E9}
 		RESX_MoveToResources = {"Items":[{"Extensions":".cs,.vb","Patterns":"$Namespace.$File.$Key|$File.$Key|StringResourceKey.$Key|$Namespace.StringResourceKey.$Key|nameof($File.$Key), ResourceType = typeof($File)|ErrorMessageResourceType = typeof($File), ErrorMessageResourceName = nameof($File.$Key)"},{"Extensions":".cshtml,.vbhtml","Patterns":"@$Namespace.$File.$Key|@$File.$Key|@StringResourceKey.$Key|@$Namespace.StringResourceKey.$Key"},{"Extensions":".cpp,.c,.hxx,.h","Patterns":"$File::$Key"},{"Extensions":".aspx,.ascx","Patterns":"<%$ Resources:$File,$Key %>|<%= $File.$Key %>|<%= $Namespace.$File.$Key %>"},{"Extensions":".xaml","Patterns":"\"{x:Static r:$File.$Key}\""},{"Extensions":".ts","Patterns":"resources.$Key"},{"Extensions":".html","Patterns":"{{ resources.$Key }}"}]}
+		SolutionGuid = {67E6979E-AD2E-4E18-82E9-C7B7D491C3E9}
 	EndGlobalSection
 EndGlobal
