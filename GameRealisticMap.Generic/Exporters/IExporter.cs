@@ -1,11 +1,10 @@
 ﻿namespace GameRealisticMap.Generic.Exporters
 {
-    internal interface IExporter
+    internal interface IExporter : IExporterInfo
     {
-        string Name { get; }
 
-        Task Export(string filename, ExportFormat format, IBuildContext context);
 
-        IEnumerable<ExportFormat> Formats { get; }
+        Task Export(string filename, ExportFormat format, IBuildContext context, IDictionary<string, object>? properties);
+
     }
 }

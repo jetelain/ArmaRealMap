@@ -11,7 +11,7 @@ namespace GameRealisticMap.Generic.Exporters
 
         public IEnumerable<ExportFormat> Formats => [ExportFormat.Image];
 
-        public Task Export(string filename, ExportFormat format, IBuildContext context)
+        public Task Export(string filename, ExportFormat format, IBuildContext context, IDictionary<string, object>? properties)
         {
             switch (format)
             {

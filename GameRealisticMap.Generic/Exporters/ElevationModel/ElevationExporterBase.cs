@@ -11,7 +11,7 @@ namespace GameRealisticMap.Generic.Exporters.ElevationModel
 
         public IEnumerable<ExportFormat> Formats => [ExportFormat.EsriAscii, ExportFormat.DemDataCell];
 
-        public Task Export(string filename, ExportFormat format, IBuildContext context)
+        public Task Export(string filename, ExportFormat format, IBuildContext context, IDictionary<string, object>? properties)
         {
             switch (format)
             {

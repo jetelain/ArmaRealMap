@@ -32,7 +32,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor
         {
             get
             {
-                yield return new EditorFileType("Generic Map Config", ".grmap", new Uri(IconSource));
+                yield return new EditorFileType("Generic Map Config", ".grmm", new Uri(IconSource));
             }
         }
 
@@ -40,7 +40,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor
 
         public bool Handles(string path)
         {
-            return string.Equals(Path.GetExtension(path), ".grmap", StringComparison.OrdinalIgnoreCase);
+            return string.Equals(Path.GetExtension(path), ".grmm", StringComparison.OrdinalIgnoreCase);
         }
 
         public IDocument Create() => new GenericMapConfigEditorViewModel(shell, grmConfig);

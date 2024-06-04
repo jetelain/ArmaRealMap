@@ -12,14 +12,9 @@ namespace GameRealisticMap.Generic.Exporters
             Name = name ?? typeof(T).Name.Replace("Data", "");
         }
 
-        protected override IEnumerable<TerrainPolygon> GetPolygons(IBuildContext context)
+        protected override IEnumerable<(TerrainPolygon, IDictionary<string, object>?)> GetPolygons(IBuildContext context, IDictionary<string, object>? properties)
         {
-            return context.GetData<T>().Polygons;
-        }
-
-        public override List<Feature> ToGeoJson(IBuildContext context)
-        {
-            return context.GetData<T>().ToGeoJson(p => p).ToList();
+            return context.GetData<T>().Polygons.Select(polygon => (polygon, properties));
         }
 
         public override string Name { get; }

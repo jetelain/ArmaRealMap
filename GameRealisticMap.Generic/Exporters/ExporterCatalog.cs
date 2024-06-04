@@ -13,7 +13,7 @@ using GameRealisticMap.Nature.Watercourses;
 
 namespace GameRealisticMap.Generic.Exporters
 {
-    internal class ExporterCatalog
+    public class ExporterCatalog
     {
         private readonly List<IExporter> exporters = new List<IExporter>();
 
@@ -46,7 +46,9 @@ namespace GameRealisticMap.Generic.Exporters
             exporters.Add(new LakesExporter());
         }
 
-        public IExporter Get(string name)
+        public IEnumerable<IExporterInfo> Exporters => exporters.Cast<IExporterInfo>();
+
+        internal IExporter Get(string name)
         {
             return exporters.FirstOrDefault(e => e.Name == name) ?? throw new ApplicationException($"Export '{name}' does not exists.");
         }

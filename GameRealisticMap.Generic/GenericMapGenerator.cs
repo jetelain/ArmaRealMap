@@ -69,7 +69,8 @@ namespace GameRealisticMap.Generic
             {
                 using (progress.CreateScope(entry.Exporter))
                 {
-                    await exporters.Get(entry.Exporter).Export(Path.Combine(config.TargetDirectory, entry.FileName), entry.Format, context);
+                    var exporter = exporters.Get(entry.Exporter);
+                    await exporter.Export(Path.Combine(config.TargetDirectory, entry.FileName), entry.Format ?? exporter.Formats.First(), context, entry.Properties);
                 }
                 if (progress.CancellationToken.IsCancellationRequested)
                 {
