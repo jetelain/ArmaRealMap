@@ -1,7 +1,5 @@
-﻿using System.Globalization;
-using GameRealisticMap.ElevationModel;
+﻿using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
-using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Generic.Exporters.Nature
 {
@@ -17,8 +15,8 @@ namespace GameRealisticMap.Generic.Exporters.Nature
         private IDictionary<string, object>? GetProperties(IDictionary<string, object>? properties, LakeWithElevation lake)
         {
             var dict = properties != null ? new Dictionary<string, object>(properties) : new Dictionary<string, object>();
-            dict["grm:water"] = lake.WaterElevation;
-            dict["grm:border"] = lake.BorderElevation;
+            dict["grm_water_elevation"] = lake.WaterElevation;
+            dict["grm_border_elevation"] = lake.BorderElevation;
             return dict;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Generic.Exporters.ElevationModel;
+using GameRealisticMap.Generic.Exporters.ManMade;
 using GameRealisticMap.Generic.Exporters.Nature;
 using GameRealisticMap.Generic.Exporters.Satellite;
 using GameRealisticMap.ManMade.Farmlands;
@@ -44,6 +45,8 @@ namespace GameRealisticMap.Generic.Exporters
             exporters.Add(new BasicTerrainExporter<WatercourseRadialData>());
             exporters.Add(new BasicTerrainExporter<WatercoursesData>());
             exporters.Add(new LakesExporter());
+            exporters.Add(new BuildingsRectangleExporter());
+            exporters.Add(new BuildingsRealShapeExporter());
         }
 
         public IEnumerable<IExporterInfo> Exporters => exporters.Cast<IExporterInfo>();

@@ -53,6 +53,7 @@ namespace GameRealisticMap.Generic.Exporters
             {
                 case ExportFormat.GeoJSON:
                     return ExportGeoJson(context, filname, properties);
+
                 case ExportFormat.ShapeFile:
                     return ExportShapeFile(context, filname, properties);
             }
