@@ -1,0 +1,139 @@
+﻿{
+  "Entries": [
+    {
+      "Exporter": "ElevationRaw",
+      "FileName": "ElevationRaw.asc",
+      "Format": "EsriAscii"
+    },
+    {
+      "Exporter": "ElevationStamped",
+      "FileName": "ElevationStamped.asc",
+      "Format": "EsriAscii"
+    },
+    {
+      "Exporter": "Elevation",
+      "FileName": "Elevation.asc",
+      "Format": "EsriAscii"
+    },
+    {
+      "Exporter": "RawSatelliteImage",
+      "FileName": "RawSatelliteImage.png",
+      "Format": "Image"
+    },
+    {
+      "Exporter": "Asphalt",
+      "FileName": "Asphalt.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Coastline",
+      "FileName": "Coastline.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Farmlands",
+      "FileName": "Farmlands.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Forest",
+      "FileName": "Forest.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "ForestEdge",
+      "FileName": "ForestEdge.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "ForestRadial",
+      "FileName": "ForestRadial.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Grass",
+      "FileName": "Grass.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Ice",
+      "FileName": "Ice.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "LakesRaw",
+      "FileName": "LakesRaw.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Meadows",
+      "FileName": "Meadows.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Ocean",
+      "FileName": "Ocean.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Orchard",
+      "FileName": "Orchard.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Rocks",
+      "FileName": "Rocks.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Sand",
+      "FileName": "Sand.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Scree",
+      "FileName": "Scree.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Scrub",
+      "FileName": "Scrub.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "ScrubRadial",
+      "FileName": "ScrubRadial.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Vineyard",
+      "FileName": "Vineyard.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "WatercourseRadial",
+      "FileName": "WatercourseRadial.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "WatercourseSurface",
+      "FileName": "WatercourseSurface.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Lakes",
+      "FileName": "Lakes.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "BuildingsRectangle",
+      "FileName": "BuildingsRectangle.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "BuildingsRealShape",
+      "FileName": "BuildingsRealShape.json",
+      "Format": "GeoJSON"
+    }
+  ]
+}

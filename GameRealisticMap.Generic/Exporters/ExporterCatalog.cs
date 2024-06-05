@@ -43,7 +43,7 @@ namespace GameRealisticMap.Generic.Exporters
             exporters.Add(new BasicTerrainExporter<ScrubRadialData>());
             exporters.Add(new BasicTerrainExporter<VineyardData>());
             exporters.Add(new BasicTerrainExporter<WatercourseRadialData>());
-            exporters.Add(new BasicTerrainExporter<WatercoursesData>());
+            exporters.Add(new BasicTerrainExporter<WatercoursesData>("WatercourseSurface"));
             exporters.Add(new LakesExporter());
             exporters.Add(new BuildingsRectangleExporter());
             exporters.Add(new BuildingsRealShapeExporter());
