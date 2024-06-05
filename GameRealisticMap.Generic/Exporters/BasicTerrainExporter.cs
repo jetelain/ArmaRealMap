@@ -4,7 +4,7 @@ using GeoJSON.Text.Feature;
 
 namespace GameRealisticMap.Generic.Exporters
 {
-    internal class BasicTerrainExporter<T> : ShapeExporterBase
+    internal class BasicTerrainExporter<T> : PolygonExporterBase
         where T : class, IBasicTerrainData
     {
         public BasicTerrainExporter(string? name = null)

@@ -15,4 +15,8 @@
 		<EmbeddedResource Include="Builtin\*.grmep" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="Builtin\All.ShapeFile.grmep" />
+	</ItemGroup>
+
 </Project>

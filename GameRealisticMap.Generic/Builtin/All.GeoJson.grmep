@@ -134,6 +134,21 @@
       "Exporter": "BuildingsRealShape",
       "FileName": "BuildingsRealShape.json",
       "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Fences",
+      "FileName": "Fences.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Railways",
+      "FileName": "Railways.json",
+      "Format": "GeoJSON"
+    },
+    {
+      "Exporter": "Roads",
+      "FileName": "Roads.json",
+      "Format": "GeoJSON"
     }
   ]
 }

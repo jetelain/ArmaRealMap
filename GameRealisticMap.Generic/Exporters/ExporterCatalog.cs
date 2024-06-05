@@ -47,6 +47,9 @@ namespace GameRealisticMap.Generic.Exporters
             exporters.Add(new LakesExporter());
             exporters.Add(new BuildingsRectangleExporter());
             exporters.Add(new BuildingsRealShapeExporter());
+            exporters.Add(new FencesExporter());
+            exporters.Add(new RailwaysExporter());
+            exporters.Add(new RoadsExporter());
         }
 
         public IEnumerable<IExporterInfo> Exporters => exporters.Cast<IExporterInfo>();

@@ -3,7 +3,7 @@ using GameRealisticMap.ManMade.Buildings;
 
 namespace GameRealisticMap.Generic.Exporters.ManMade
 {
-    internal class BuildingsRealShapeExporter : ShapeExporterBase
+    internal class BuildingsRealShapeExporter : PolygonExporterBase
     {
         public override string Name => "BuildingsRealShape";
 

@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Text.Json;
-using GameRealisticMap.Geometries;
 using GeoJSON.Text.Feature;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -13,23 +12,42 @@ namespace GameRealisticMap.Generic.Exporters
 
         public IEnumerable<ExportFormat> Formats => [ExportFormat.GeoJSON, ExportFormat.ShapeFile];
 
-        protected abstract IEnumerable<(TerrainPolygon, IDictionary<string, object>?)> GetPolygons(IBuildContext context, IDictionary<string, object>? properties);
+        public abstract FeatureCollection GetGeoJsonFeatureCollection(IBuildContext context, IDictionary<string, object>? properties);
+
+        public abstract List<NetTopologySuite.Features.Feature> GetShapeFeatures(IBuildContext context, IDictionary<string, object>? properties);
+
+        protected static NetTopologySuite.Features.AttributesTable ToAttributesTable(IDictionary<string, object>? data)
+        {
+            if (data == null)
+            {
+                return new NetTopologySuite.Features.AttributesTable();
+            }
+            return new NetTopologySuite.Features.AttributesTable(data.Select(p => new KeyValuePair<string, object>(Truncate(p.Key), p.Value)));
+        }
+
+        private static string Truncate(string key)
+        {
+            if (key.StartsWith("grm_"))
+            {
+                key = key.Substring(4);
+            }
+            if (key.Length > 11)
+            {
+                key = key.Substring(0, 11);
+            }
+            return key;
+        }
 
         public async Task ExportGeoJson(IBuildContext context, string targetFile, IDictionary<string, object>? properties)
         {
-            var collection = new FeatureCollection(GetPolygons(context, properties).Select(pair => new Feature(pair.Item1.ToGeoJson(p => p), pair.Item2)).ToList());
+            var collection = GetGeoJsonFeatureCollection(context, properties);
             using var stream = File.Create(targetFile);
             await JsonSerializer.SerializeAsync(stream, collection);
         }
 
         public Task ExportShapeFile(IBuildContext context, string targetFile, IDictionary<string, object>? properties)
         {
-            var features = new List<NetTopologySuite.Features.Feature>();
-            foreach (var feature in GetPolygons(context, properties))
-            {
-                var attributesTable = new NetTopologySuite.Features.AttributesTable(feature.Item2 ?? Enumerable.Empty<KeyValuePair<string, object>>());
-                features.Add(new NetTopologySuite.Features.Feature(feature.Item1.AsPolygon, attributesTable));
-            }
+            var features = GetShapeFeatures(context, properties);
             var shapeWriter = new ShapefileDataWriter(targetFile, new GeometryFactory(), Encoding.ASCII)
             {
                 Header = GetHeader(features)

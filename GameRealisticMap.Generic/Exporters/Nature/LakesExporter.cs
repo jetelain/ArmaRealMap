@@ -3,7 +3,7 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Generic.Exporters.Nature
 {
-    internal class LakesExporter : ShapeExporterBase
+    internal class LakesExporter : PolygonExporterBase
     {
         public override string Name => "Lakes";
 
