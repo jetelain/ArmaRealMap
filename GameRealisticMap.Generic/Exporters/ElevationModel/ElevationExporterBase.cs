@@ -51,7 +51,8 @@ namespace GameRealisticMap.Generic.Exporters.ElevationModel
 
             var vertices = new int[cell.Size, cell.Size];
             var index = 1; // Obj indexes starts at 1
-            var textureSpace = new Vector2(cell.Size, cell.Size);
+            var textureSpace = new Vector2(cell.Size, -cell.Size);
+            var textureOffset = new Vector2(0, 1);
             for (int x = 0; x < cell.Size; x++)
             {
                 for (int y = 0; y < cell.Size; y++)
@@ -59,7 +60,7 @@ namespace GameRealisticMap.Generic.Exporters.ElevationModel
                     var gridPoint = new Vector2(x, y);
                     var vertice = (gridPoint * cell.CellSize.X) + offsetXY;
                     var normal = cell.NormalAtGrid(gridPoint);
-                    var texture = gridPoint / textureSpace;
+                    var texture = textureOffset + (gridPoint / textureSpace);
                     var z = cell[x, y] + offsetZ;
                     await writer.WriteLineAsync(FormattableString.Invariant($"v {vertice.X:F2} {vertice.Y:F2} {z:F3}"));
                     await writer.WriteLineAsync(FormattableString.Invariant($"vt {texture.X:F7} {texture.Y:F7}"));
