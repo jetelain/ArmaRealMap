@@ -2,10 +2,11 @@
 {
     public enum ExportFormat
     {
-        GeoJSON,
+        GeoJson,
         ShapeFile,
         Image,
         EsriAscii,
-        DemDataCell
+        DemDataCell,
+        HugeImage
     }
 }

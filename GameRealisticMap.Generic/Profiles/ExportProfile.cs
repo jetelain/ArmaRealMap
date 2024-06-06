@@ -5,7 +5,7 @@ namespace GameRealisticMap.Generic.Profiles
 {
     public class ExportProfile
     {
-        public const string Default = BuiltinPrefix + "Baseline.grmep";
+        public const string Default = BuiltinPrefix + "All.GeoJson.grmep";
         public const string BuiltinPrefix = "builtin:";
         private const string BuiltinNamespace = "GameRealisticMap.Generic.Builtin.";
 

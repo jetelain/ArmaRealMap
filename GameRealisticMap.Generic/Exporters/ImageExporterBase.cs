@@ -1,4 +1,5 @@
 ﻿using HugeImages;
+using HugeImages.IO;
 using HugeImages.Storage;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -9,24 +10,34 @@ namespace GameRealisticMap.Generic.Exporters
     {
         public abstract string Name { get; }
 
-        public IEnumerable<ExportFormat> Formats => [ExportFormat.Image];
+        public IEnumerable<ExportFormat> Formats => [ExportFormat.Image, ExportFormat.HugeImage];
 
         public Task Export(string filename, ExportFormat format, IBuildContext context, IDictionary<string, object>? properties)
         {
             switch (format)
             {
                 case ExportFormat.Image:
-                    return Export(context, filename);
+                    return ExportSingleImage(context, filename);
+
+                case ExportFormat.HugeImage:
+                    return ExportHugeImage(context, filename);
             }
             return Task.FromException(new ApplicationException($"Format '{format}' is not supported by '{Name}'"));
         }
 
         protected abstract HugeImage<TPixel> GetImage(IBuildContext context);
 
-        private async Task Export(IBuildContext context, string filename)
+        private async Task ExportSingleImage(IBuildContext context, string filename)
         {
             var himg = GetImage(context);
             await himg.SaveUniqueAsync(filename);
+        }
+
+
+        private async Task ExportHugeImage(IBuildContext context, string filename)
+        {
+            var himg = GetImage(context);
+            await himg.SaveAsync(filename);
         }
     }
 }

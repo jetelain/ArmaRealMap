@@ -10,7 +10,7 @@ namespace GameRealisticMap.Generic.Exporters
     {
         public abstract string Name { get; }
 
-        public IEnumerable<ExportFormat> Formats => [ExportFormat.GeoJSON, ExportFormat.ShapeFile];
+        public IEnumerable<ExportFormat> Formats => [ExportFormat.GeoJson, ExportFormat.ShapeFile];
 
         public abstract FeatureCollection GetGeoJsonFeatureCollection(IBuildContext context, IDictionary<string, object>? properties);
 
@@ -69,7 +69,7 @@ namespace GameRealisticMap.Generic.Exporters
         {
             switch (format)
             {
-                case ExportFormat.GeoJSON:
+                case ExportFormat.GeoJson:
                     return ExportGeoJson(context, filname, properties);
 
                 case ExportFormat.ShapeFile:
