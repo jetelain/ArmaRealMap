@@ -239,21 +239,25 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 
         public SurfaceConfig? ToSurfaceConfig()
         {
-            return new SurfaceConfig(
-                            Name,
-                            AceCanDig,
-                            Files,
-                            SoundEnviron,
-                            SoundHit,
-                            Rough,
-                            MaxSpeedCoef,
-                            Dust,
-                            Lucidity,
-                            GrassCover,
-                            Impact,
-                            SurfaceFriction,
-                            MaxClutterColoringCoef,
-                            ClutterList.Select(c => c.ToDefinition()).ToList());
+            if (!string.IsNullOrEmpty(Files) && !string.IsNullOrEmpty(Name))
+            {
+                return new SurfaceConfig(
+                                Name,
+                                AceCanDig,
+                                Files,
+                                SoundEnviron,
+                                SoundHit,
+                                Rough,
+                                MaxSpeedCoef,
+                                Dust,
+                                Lucidity,
+                                GrassCover,
+                                Impact,
+                                SurfaceFriction,
+                                MaxClutterColoringCoef,
+                                ClutterList.Select(c => c.ToDefinition()).ToList());
+            }
+            return null;
         }
 
         public TerrainMaterial ToMaterial()
