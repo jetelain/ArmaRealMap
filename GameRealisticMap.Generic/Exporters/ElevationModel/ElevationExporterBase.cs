@@ -86,8 +86,8 @@ namespace GameRealisticMap.Generic.Exporters.ElevationModel
                     var c = vertices[x + 1, y + 1];
                     var d = vertices[x + 1, y];
 
-                    await writer.WriteLineAsync(FormattableString.Invariant($"f {a}/{a}/{a} {b}/{b}/{b} {d}/{d}/{d}"));
-                    await writer.WriteLineAsync(FormattableString.Invariant($"f {d}/{d}/{d} {b}/{b}/{b} {c}/{c}/{c}"));
+                    await writer.WriteLineAsync(FormattableString.Invariant($"f {a}/{a}/{a} {d}/{d}/{d} {b}/{b}/{b}"));
+                    await writer.WriteLineAsync(FormattableString.Invariant($"f {d}/{d}/{d} {c}/{c}/{c} {b}/{b}/{b}"));
                 }
             }
         }
@@ -98,12 +98,8 @@ namespace GameRealisticMap.Generic.Exporters.ElevationModel
             await writer.WriteLineAsync("newmtl satellitetexture");
             await writer.WriteLineAsync("  Ka 1.000 1.000 1.000");
             await writer.WriteLineAsync("  Kd 1.000 1.000 1.000");
-            await writer.WriteLineAsync("  Ks 0.000 0.000 0.000");
-            await writer.WriteLineAsync("  d 1.0");
-            await writer.WriteLineAsync("  illum 2");
             await writer.WriteLineAsync("  map_Ka satellite.png");
             await writer.WriteLineAsync("  map_Kd satellite.png");
-            await writer.WriteLineAsync("  map_Ks satellite.png");
         }
 
         private Task ExportDdc(IBuildContext context, string filename)
