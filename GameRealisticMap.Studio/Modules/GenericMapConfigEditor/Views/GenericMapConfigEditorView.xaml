@@ -28,6 +28,9 @@
             </StackPanel>
 
             <StackPanel Margin="10 5 0 10" Orientation="Horizontal" >
+                <Button Margin="5" Padding="10" cal:Message.Attach="GeneratePreviewNew">
+                    <Run Text="{x:Static r:Labels.GeneratePreview}" />
+                </Button>
                 <Button Margin="5" Padding="10" cal:Message.Attach="DoFullExport">
                     <Run Text="Export data"/>
                 </Button>
@@ -70,9 +73,9 @@
             
             <StackPanel Margin="5" Orientation="Horizontal" >
                 <Label Width="200">
-                    <Run Text="Target directort" />
+                    <Run Text="Target directory" />
                 </Label>
-                <toolkit:WatermarkTextBox Width="400" Text="{Binding TargetModDirectory, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticTargetDirectory}"  />
+                <toolkit:WatermarkTextBox Width="400" Text="{Binding TargetDirectory, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticTargetDirectory}"  />
             </StackPanel>
 
             <grm:LocationSelectorMap MapSelection="{Binding MapSelection, Mode=TwoWay}" />

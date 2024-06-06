@@ -109,6 +109,12 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
             await _shell.OpenDocumentAsync(IoC.Get<GdtBrowserViewModel>());
         }
 
+        public async Task NewGenericMapConfig()
+        {
+            await Create(IoC.Get<GenericMapConfigEditorProvider>());
+        }
+
+
         public async Task RefreshArma3ToolChain()
         {
             IsArma3Installed = !string.IsNullOrEmpty(Arma3ToolsHelper.GetArma3Path());

@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using GameRealisticMap.Generic;
 using GameRealisticMap.Generic.Profiles;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
+using GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels.Tasks;
 using GameRealisticMap.Studio.Modules.Main;
 using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.MapConfigEditor;
@@ -18,7 +19,6 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
 {
     internal class GenericMapConfigEditorViewModel : MapConfigEditorBase, IExplorerRootTreeItem, IMainDocument
     {
-        private readonly IShell shell;
         private readonly IGrmConfigService grmConfig;
         private string _center = string.Empty;
         private string _southWest = string.Empty;
@@ -28,8 +28,8 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
         private string _targetDirectory = string.Empty;
 
         public GenericMapConfigEditorViewModel(IShell shell, IGrmConfigService grmConfig)
+            : base(shell)
         {
-            this.shell = shell;
             this.grmConfig = grmConfig;
         }
 
@@ -210,5 +210,9 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
             return Task.CompletedTask;
         }
 
+        internal override Task<(IBuildersConfig, ITerrainArea)> GetPreviewConfig()
+        {
+            return Task.FromResult<(IBuildersConfig, ITerrainArea)>((new DefaultBuildersConfig(), MapSelection!.TerrainArea));
+        }
     }
 }

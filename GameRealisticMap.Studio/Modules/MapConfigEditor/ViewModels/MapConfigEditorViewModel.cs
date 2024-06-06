@@ -33,12 +33,11 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 {
     internal class MapConfigEditorViewModel : MapConfigEditorBase, IExplorerRootTreeItem, IMainDocument
     {
-        private readonly IShell _shell;
         private readonly IArma3DataModule _arma3DataModule;
 
         public MapConfigEditorViewModel(IShell shell, IArma3DataModule arma3DataModule)
+            : base(shell)
         {
-            _shell = shell;
             _arma3DataModule = arma3DataModule;
         }
 
@@ -293,10 +292,6 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewResultInWebBrowser);
         }
 
-        public Task GeneratePreviewNew()
-        {
-            return _shell.OpenDocumentAsync(new MapPreviewViewModel(this));
-        }
 
         internal async Task<IBuildersConfig> GetBuildersConfigSafe(Arma3MapConfig a3config)
         {
@@ -605,6 +600,13 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 freindlyName + ", GameRealisticMap",
                 a3config.TargetModDirectory,
                 IsNew ? null : FilePath);
+        }
+
+        internal override async Task<(IBuildersConfig, ITerrainArea)> GetPreviewConfig()
+        {
+            var a3config = Config.ToArma3MapConfig();
+            var config = await GetBuildersConfigSafe(a3config);
+            return (config, a3config.TerrainArea);
         }
 
         public bool UseColorCorrection

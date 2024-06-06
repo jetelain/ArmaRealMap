@@ -16,7 +16,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor
     internal class GenericMapConfigEditorProvider : IEditorProvider
     {
 
-        internal static string IconSource = $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapConfig.png";
+        internal static string IconSource = $"pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapExportConfig.png";
 
         private readonly IShell shell;
         private readonly IGrmConfigService grmConfig;
@@ -32,7 +32,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor
         {
             get
             {
-                yield return new EditorFileType("Generic Map Config", ".grmm", new Uri(IconSource));
+                yield return new EditorFileType("Generic Map Configuration", ".grmm", new Uri(IconSource));
             }
         }
 

@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 using GameRealisticMap.Studio.Shared;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
+using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
 {
     internal abstract class MapConfigEditorBase : PersistedDocument
     {
+        protected readonly IShell _shell;
+
+        protected MapConfigEditorBase(IShell shell)
+        {
+            _shell = shell;
+        }
+
         public abstract int[] GridSizes { get; }
         public abstract string Center { get; set; }
         public abstract string SouthWest { get; set; }
@@ -48,6 +56,13 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
                     }
                 }
             }
+        }
+
+        internal abstract Task<(IBuildersConfig, ITerrainArea)> GetPreviewConfig();
+
+        public Task GeneratePreviewNew()
+        {
+            return _shell.OpenDocumentAsync(new MapPreviewViewModel(this));
         }
     }
 }

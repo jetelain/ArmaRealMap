@@ -4,7 +4,7 @@ using GameRealisticMap.Generic;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 
-namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
+namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels.Tasks
 {
     internal class GenericExportTask : IProcessTask
     {
