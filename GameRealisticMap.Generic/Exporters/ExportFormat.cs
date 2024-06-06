@@ -7,6 +7,7 @@
         Image,
         EsriAscii,
         DemDataCell,
-        HugeImage
+        HugeImage,
+        WavefrontObj
     }
 }

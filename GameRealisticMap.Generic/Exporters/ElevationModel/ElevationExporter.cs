@@ -7,9 +7,9 @@ namespace GameRealisticMap.Generic.Exporters.ElevationModel
     {
         public override string Name => "Elevation";
 
-        protected override DemDataCellPixelIsPoint<float> GetDataCell(IBuildContext context)
+        protected override ElevationGrid GetDataCell(IBuildContext context)
         {
-            return context.GetData<ElevationData>().Elevation.ToDataCell();
+            return context.GetData<ElevationData>().Elevation;
         }
     }
 }

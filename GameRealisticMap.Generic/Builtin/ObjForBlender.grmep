@@ -2,18 +2,18 @@
   "Entries": [
     {
       "Exporter": "ElevationRaw",
-      "FileName": "ElevationRaw.asc",
-      "Format": "EsriAscii"
+      "FileName": "ElevationRaw.obj",
+      "Format": "WavefrontObj"
     },
     {
       "Exporter": "ElevationStamped",
-      "FileName": "ElevationStamped.asc",
-      "Format": "EsriAscii"
+      "FileName": "ElevationStamped.obj",
+      "Format": "WavefrontObj"
     },
     {
       "Exporter": "Elevation",
-      "FileName": "Elevation.asc",
-      "Format": "EsriAscii"
+      "FileName": "Elevation.obj",
+      "Format": "WavefrontObj"
     },
     {
       "Exporter": "RawSatelliteImage",

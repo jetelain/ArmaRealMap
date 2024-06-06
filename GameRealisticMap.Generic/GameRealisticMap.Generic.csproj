@@ -17,6 +17,7 @@
 
 	<ItemGroup>
 	  <None Remove="Builtin\All.ShapeFile.grmep" />
+	  <None Remove="Builtin\ObjForBlender.grmep" />
 	</ItemGroup>
 
 </Project>
