@@ -17,7 +17,6 @@ using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Modules.Arma3Data.ViewModels;
-using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Fences;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Individual;
@@ -35,11 +34,14 @@ using GameRealisticMap.Studio.Toolkit;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 using Gemini.Framework.Services;
+using NLog;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 {
     internal class AssetConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem, IMainDocument
     {
+        private static readonly Logger logger = NLog.LogManager.GetLogger("Arma3AssetConfigEditor");
+
         private readonly IArma3DataModule _arma3Data;
         private readonly IShell _shell;
         private readonly ICompositionTool _compositionTool;
@@ -179,21 +181,29 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             IsLoading = true;
             NotifyOfPropertyChange(nameof(IsLoading));
 
-            Arma3Assets json;
             try
             {
-                json = await Arma3Assets.LoadFromFile(_arma3Data.Library, filePath);
+                Arma3Assets json;
+                try
+                {
+                    json = await Arma3Assets.LoadFromFile(_arma3Data.Library, filePath);
+                }
+                catch (ApplicationException)
+                {
+                    json = await AutoEnableMods(filePath);
+                }
+                await FromJson(json);
+
+                await _arma3Data.SaveLibraryCache();
+
+                IsLoading = false;
+                NotifyOfPropertyChange(nameof(IsLoading));
             }
-            catch (ApplicationException)
+            catch (Exception ex)
             {
-                json = await AutoEnableMods(filePath);
+                logger.Error(ex, "Failed to read '{0}'", filePath);
+                OnUIThread(() => App.ShowException(ex));
             }
-            await FromJson(json);
-
-            await _arma3Data.SaveLibraryCache();
-
-            IsLoading = false;
-            NotifyOfPropertyChange(nameof(IsLoading));
         }
 
         private async Task<Arma3Assets> AutoEnableMods(string filePath)
@@ -414,10 +424,19 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         protected override async Task DoSave(string filePath)
         {
-            using var stream = File.Create(filePath);
-            await SaveTo(stream);
-            await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
-            CanCopyFrom = false;
+            try
+            {
+                var json = ToJson();
+                using var stream = File.Create(filePath);
+                await SaveTo(stream, json).ConfigureAwait(false);
+                await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
+                CanCopyFrom = false;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Failed to write '{0}'", filePath);
+                App.ShowException(ex);
+            }
         }
 
         internal Task EditAssetCategory(IDocument document)
@@ -544,7 +563,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 task.AddSuccessAction(() => ShellHelper.OpenUri(_arma3Data.ProjectDrive.GetFullPath(config.PboPrefix)), Labels.ViewInFileExplorer);;
             }
         }
+
         public async Task SaveTo(Stream stream)
+        {
+            await SaveTo(stream, ToJson()).ConfigureAwait(false);
+        }
+
+        public async Task SaveTo(Stream stream, Arma3Assets json)
         {
             await JsonSerializer.SerializeAsync(stream, ToJson(), Arma3Assets.CreateJsonSerializerOptions(_arma3Data.Library)).ConfigureAwait(false);
         }

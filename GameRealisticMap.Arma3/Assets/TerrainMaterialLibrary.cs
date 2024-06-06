@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using GameRealisticMap.Arma3.GameEngine.Materials;
 using SixLabors.ImageSharp.PixelFormats;
@@ -31,7 +30,7 @@ namespace GameRealisticMap.Arma3.Assets
 
             foreach (var definition in definitions)
             {
-                indexByColor.Add(definition.Material.Id, definition.Material);
+                indexByColor[definition.Material.Id] = definition.Material;
 
                 foreach (var usage in definition.Usages)
                 {
