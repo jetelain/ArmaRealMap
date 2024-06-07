@@ -231,5 +231,21 @@ namespace GameRealisticMap.Test.Geometries
             Assert.Equal(new TerrainPoint[] { new(0, 0) },
                 TerrainPath.Simplify(new TerrainPoint[] { new(0, 0) }));
         }
+
+        [Fact]
+        public void TerrainPath_ClippedKeepOrientation_ClosedPath()
+        {
+            var path = new TerrainPath(new(0, 0), new(0, 5), new(5, 5), new(5, 0), new(0, 0));
+
+            var clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(-1f, -1f), new(6f, 2.5f))).ToList();
+            Assert.Equal(2, clip.Count);
+            Assert.Equal(new TerrainPoint[] { new(0, 0f), new(0, 2.5f) }, clip[0].Points);
+            Assert.Equal(new TerrainPoint[] { new(5, 2.5f), new(5, 0), new(0, 0)}, clip[1].Points);
+            // Note: It would be also acceptable to have a single path with new TerrainPoint[] { new(5, 2.5f), new(5, 0), new(0, 0), new(0, 2.5f)}
+
+            clip = path.ClippedKeepOrientation(TerrainPolygon.FromRectangle(new(-1f, 2.5f), new(6f, 6f))).ToList();
+            var clipPath = Assert.Single(clip);
+            Assert.Equal(new TerrainPoint[] { new(0, 2.5f), new(0, 5), new(5, 5), new(5, 2.5f) }, clipPath.Points);
+        }
     }
 }

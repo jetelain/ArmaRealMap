@@ -309,6 +309,18 @@ namespace GameRealisticMap.Geometries
         private List<TerrainPath> KeepOrientation(List<TerrainPath> clipped)
         {
             var initialPoints = Points.Select(p => p.ToIntPointPrecision()).ToList();
+            if (IsClosed)
+            {
+                var noMoreExists = initialPoints.Where(p => !clipped.Any(c => c.Points.Any(np => TerrainPoint.Equals(np, p)))).ToList();
+                if (noMoreExists.Count > 0)
+                {
+                    var newStart = initialPoints.IndexOf(noMoreExists[0]);
+                    if (newStart != -1)
+                    {
+                        initialPoints = initialPoints.Skip(newStart).Concat(initialPoints.Skip(1).Take(newStart)).ToList();
+                    }
+                }
+            }
             foreach (var result in clipped)
             {
                 if (result.Points.Count < 2)
@@ -366,7 +378,7 @@ namespace GameRealisticMap.Geometries
         {
             var initialVect = Vector2.Normalize(initialComparePoint.Vector - sharedReferencePoint.Vector);
             var resultVect = Vector2.Normalize(resultComparePoint.Vector - sharedReferencePoint.Vector);
-            if (Vector2.Dot(initialVect, resultVect) < 0)
+            if (Vector2.Dot(initialVect, resultVect) <= 0)
             {
                 result.Points.Reverse();
             }
