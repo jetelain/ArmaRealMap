@@ -320,6 +320,16 @@ namespace GameRealisticMap.Geometries
                         initialPoints = initialPoints.Skip(newStart).Concat(initialPoints.Skip(1).Take(newStart)).ToList();
                     }
                 }
+                else if (clipped.Count == 1 && clipped[0].Points.Count == Points.Count) // all points are still here, same length, it's all the same
+                {
+                    return new List<TerrainPath>() { this };
+                }
+#if DEBUG
+                else
+                {
+                    throw new InvalidOperationException("Unsupported edge case");
+                }
+#endif
             }
             foreach (var result in clipped)
             {
