@@ -322,7 +322,7 @@ namespace GameRealisticMap.Geometries
                 }
                 else if (clipped.Count == 1 && clipped[0].Points.Count == Points.Count) // all points are still here, same length, it's all the same
                 {
-                    return new List<TerrainPath>() { this };
+                    return new List<TerrainPath>() { new TerrainPath(initialPoints) };
                 }
 #if DEBUG
                 else
