@@ -12,10 +12,11 @@
              xmlns:cal="http://caliburnmicro.com"
              Foreground="{DynamicResource EnvironmentWindowText}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="1000">
     <UserControl.Resources>
         <a3:TexturePreviewConverter x:Key="TexturePreviewConverter" />
         <grm:MultipleConverter Scale="10" x:Key="X10" />
+        <grm:TerrainPointStringConverter x:Key="TerrainPointStringConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
@@ -104,6 +105,9 @@
                 </RadioButton.ContextMenu>
             </RadioButton>
 
+            <Rectangle Width="2" Margin="7 0" Fill="{x:Static SystemColors.ActiveBorderBrush}" />
+            <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/center.png" Height="20" />
+            <TextBox Text="{Binding ViewCenter, Source={x:Reference GrmMap}, Converter={StaticResource TerrainPointStringConverter}, Mode=TwoWay}" Width="100" Margin="4" Keyboard.KeyDown="TextBox_KeyDown" TextAlignment="Center" />
 
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5"  Grid.Column="1">
@@ -111,10 +115,10 @@
                 <Run Text="{x:Static r:Labels.TakeAerialImages}"/>
             </Button>
         </StackPanel>
-        <grm:GrmMap Grid.Row="1" SizeInMeters="{Binding SizeInMeters}"  Grid.ColumnSpan="2">
+        <grm:GrmMap Grid.Row="1" SizeInMeters="{Binding SizeInMeters}"  Grid.ColumnSpan="2" x:Name="GrmMap">
 
             <grm:GrmMapEditLayer EditPoints="{Binding EditPoints}" ClearSelection="{Binding SelectItemCommand}" InsertPointCommand="{Binding InsertPointCommand}"  EditMode="{Binding GrmMapEditMode, Mode=TwoWay}" Outline="{Binding SelectedItems}">
-                
+
                 <grm:GrmMapHugeImageLayer Image="{Binding BackgroundImage}"  Resolution="{Binding BackgroundResolution}" Opacity="0.8" IsHitTestVisible="False" />
 
                 <grm:GrmMapArma3 x:Name="A3Layer" Roads="{Binding Roads}" Objects="{Binding Objects}" SelectItem="{Binding SelectItemCommand}" AddToSelectionCommand="{Binding AddToSelectionCommand}" />
@@ -133,11 +137,9 @@
                         </MenuItem>
                     </ContextMenu>
                 </grm:GrmMapEditLayer.SelectionContextMenu>
-                
+
             </grm:GrmMapEditLayer>
 
         </grm:GrmMap>
-        
-
     </Grid>
 </UserControl>

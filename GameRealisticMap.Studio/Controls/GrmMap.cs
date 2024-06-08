@@ -11,6 +11,7 @@ namespace GameRealisticMap.Studio.Controls
     {
         private Point start;
         private Point origin;
+        private bool isChangeFromMap;
 
         private static readonly double[] ZoomLevelToScale = new double[] { 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8, 12, 16, 20, 28, 36, 42, 50, 75, 100 };
         private int zoomLevel = 3;
@@ -37,6 +38,40 @@ namespace GameRealisticMap.Studio.Controls
         public Envelope RenderEnvelope { get; private set; } = new Envelope(new TerrainPoint(0, 0), new TerrainPoint(0, 0));
 
         public MatrixTransform BaseDrawTransform { get; } = new MatrixTransform(1, 0, 0, -1, 0, 2500);
+
+        public TerrainPoint? ViewCenter
+        {
+            get { return (TerrainPoint)GetValue(ViewCenterProperty); }
+            set { SetValue(ViewCenterProperty, value); }
+        }
+
+        public static readonly DependencyProperty ViewCenterProperty =
+            DependencyProperty.Register("ViewCenter", typeof(TerrainPoint), typeof(GrmMap), new PropertyMetadata(new TerrainPoint(0, 0), ViewCenterChanged));
+
+        private static void ViewCenterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is TerrainPoint tp)
+            {
+                ((GrmMap)d).ViewCenterChanged(tp);
+            }
+        }
+
+        private void ViewCenterChanged(TerrainPoint newValue)
+        {
+            if (!isChangeFromMap)
+            {
+                SetViewCenter(newValue);
+            }
+        }
+
+        public void SetViewCenter(TerrainPoint point)
+        {
+            var size = BaseDrawTransform.Matrix.OffsetY;
+            var actualSize = RenderSize;
+            Translate.X = - point.X * Scale + (actualSize.Width/2);
+            Translate.Y = (point.Y - size) * Scale + (actualSize.Height / 2);
+            ViewportChanged(false);
+        }
 
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
@@ -71,6 +106,10 @@ namespace GameRealisticMap.Studio.Controls
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
+            if (IsMouseCaptured)
+            {
+                return;
+            }
             if ( e.Delta > 0 )
             {
                 if (zoomLevel < ZoomLevelToScale.Length - 1)
@@ -132,11 +171,6 @@ namespace GameRealisticMap.Studio.Controls
 
         public ITerrainEnvelope GetViewportEnveloppe() => GetViewportEnveloppe(RenderSize, SizeInMetersInternal);
 
-        public static Point ProjectToPoint(TerrainPoint point, float size)
-        {
-            return new Point(point.X, size - point.Y);
-        }
-
         protected override void OnRender(DrawingContext dc)
         {
             var renderSize = RenderSize;
@@ -164,10 +198,16 @@ namespace GameRealisticMap.Studio.Controls
             base.OnRenderSizeChanged(sizeInfo);
         }
 
-        private void ViewportChanged()
+        private void ViewportChanged(bool updateCenter = true)
         {
             InvalidateVisual();
             RenderEnvelope = GetViewportEnveloppe(RenderSize, BaseDrawTransform.Matrix.OffsetY);
+            if (updateCenter)
+            {
+                isChangeFromMap = true;
+                ViewCenter = new TerrainPoint((RenderEnvelope.MaxPoint.Vector + RenderEnvelope.MinPoint.Vector) / 2);
+                isChangeFromMap = false;
+            }
             OnViewportChanged();
         }
 
@@ -185,6 +225,13 @@ namespace GameRealisticMap.Studio.Controls
         public Point ProjectViewport(TerrainPoint point)
         {
             return Translate.Transform(ScaleTr.Transform(BaseDrawTransform.Transform(new Point(point.X, point.Y))));
+        }
+
+        public TerrainPoint UnprojectViewport(Point point)
+        {
+            return new TerrainPoint(
+                    (float)((DeltaX + point.X) / Scale),
+                    (float)(SizeInMetersInternal - ((DeltaY + point.Y) / Scale)));
         }
     }
 }
