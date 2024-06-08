@@ -187,10 +187,10 @@
 
             <Expander IsExpanded="True" Margin="0 20 30 0">
                 <Expander.Header>
-                    <TextBlock FontSize="25">Generic</TextBlock>
+                    <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.GenericMapTitle}" /></TextBlock>
                 </Expander.Header>
                 <StackPanel>
-                    <TextBlock><Run Text="Generate a height map, a satellite texture and shapes to use with any other game engine or 3d software."/></TextBlock>
+                    <TextBlock><Run Text="{x:Static r:Labels.GenericMapDescription}"/></TextBlock>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -199,11 +199,11 @@
                             <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewGenericMapConfig">
                                 <StackPanel>
                                     <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapExportConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
-                                    <TextBlock TextWrapping="Wrap"><Run Text="Create a Generic Map Configuration" /></TextBlock>
+                                    <TextBlock TextWrapping="Wrap"><Run Text="{x:Static r:Labels.CreateAMapConfiguration}" /></TextBlock>
                                 </StackPanel>
                             </Button>
                             <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
-                                <Run Text="Define coordinates for export" />
+                                <Run Text="{x:Static r:Labels.CreateGenericMapConfigurationDescription}" />
                             </TextBlock>
                         </StackPanel>
                     </Grid>

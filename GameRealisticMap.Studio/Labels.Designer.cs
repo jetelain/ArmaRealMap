@@ -1556,6 +1556,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Define coordinates for data generation.
+        /// </summary>
+        public static string CreateGenericMapConfigurationDescription {
+            get {
+                return ResourceManager.GetString("CreateGenericMapConfigurationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à distance to the ocean (in meters).
         /// </summary>
         public static string CriteriaDistanceToOcean {
@@ -2461,6 +2470,51 @@ namespace GameRealisticMap.Studio {
         public static string GeneratingPreview {
             get {
                 return ResourceManager.GetString("GeneratingPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generic Map Configuration.
+        /// </summary>
+        public static string GenericMapConfiguration {
+            get {
+                return ResourceManager.GetString("GenericMapConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate a height map, a satellite texture and shapes to use with any other game engine or 3d software..
+        /// </summary>
+        public static string GenericMapDescription {
+            get {
+                return ResourceManager.GetString("GenericMapDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Export profile.
+        /// </summary>
+        public static string GenericMapExportProfile {
+            get {
+                return ResourceManager.GetString("GenericMapExportProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate data.
+        /// </summary>
+        public static string GenericMapGenerate {
+            get {
+                return ResourceManager.GetString("GenericMapGenerate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generic.
+        /// </summary>
+        public static string GenericMapTitle {
+            get {
+                return ResourceManager.GetString("GenericMapTitle", resourceCulture);
             }
         }
         
@@ -4156,6 +4210,15 @@ namespace GameRealisticMap.Studio {
         public static string TakeAerialImages {
             get {
                 return ResourceManager.GetString("TakeAerialImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Target directory.
+        /// </summary>
+        public static string TargetDirectory {
+            get {
+                return ResourceManager.GetString("TargetDirectory", resourceCulture);
             }
         }
         

@@ -17,7 +17,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels.Task
             this.sources = sources;
         }
 
-        public string Title => "Export";
+        public string Title => Labels.GenericMapGenerate;
 
         public bool Prompt => true;
 
