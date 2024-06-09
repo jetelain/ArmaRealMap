@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>$(AssemblyName).Test</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+
+	<ItemGroup>
+    <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
+	  <PackageReference Include="NetTopologySuite.IO.ShapeFile" Version="1.15.3" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Builtin\*.grmep" />
+	</ItemGroup>
+</Project>

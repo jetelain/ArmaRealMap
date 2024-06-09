@@ -1603,4 +1603,25 @@ Last generated on {1}</value>
   <data name="CenterOn" xml:space="preserve">
     <value>centered on</value>
   </data>
+  <data name="GenericMapGenerate" xml:space="preserve">
+    <value>Generate data</value>
+  </data>
+  <data name="GenericMapExportProfile" xml:space="preserve">
+    <value>Export profile</value>
+  </data>
+  <data name="TargetDirectory" xml:space="preserve">
+    <value>Target directory</value>
+  </data>
+  <data name="GenericMapConfiguration" xml:space="preserve">
+    <value>Generic Map Configuration</value>
+  </data>
+  <data name="GenericMapTitle" xml:space="preserve">
+    <value>Generic</value>
+  </data>
+  <data name="GenericMapDescription" xml:space="preserve">
+    <value>Generate a height map, a satellite texture and shapes to use with any other game engine or 3d software.</value>
+  </data>
+  <data name="CreateGenericMapConfigurationDescription" xml:space="preserve">
+    <value>Define coordinates for data generation</value>
+  </data>
 </root>
