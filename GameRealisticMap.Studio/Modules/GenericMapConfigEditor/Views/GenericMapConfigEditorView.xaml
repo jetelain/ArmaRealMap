@@ -77,6 +77,16 @@
                 </Label>
                 <toolkit:WatermarkTextBox Width="400" Text="{Binding TargetDirectory, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticTargetDirectory}"  />
             </StackPanel>
+            
+            <StackPanel Margin="5" Orientation="Horizontal" >
+                <Label Width="200">
+                    <Run Text="{x:Static r:Labels.Resolution}"/>
+                </Label>
+                <TextBox Width="50" Text="{Binding Resolution,Mode=TwoWay, ValidatesOnExceptions=True}" />
+                <TextBlock Margin="10 0">
+                    <Run Text="{x:Static r:Labels.ResolutionUnit}" />
+                </TextBlock>
+            </StackPanel>
 
             <grm:LocationSelectorMap MapSelection="{Binding MapSelection, Mode=TwoWay}" />
 

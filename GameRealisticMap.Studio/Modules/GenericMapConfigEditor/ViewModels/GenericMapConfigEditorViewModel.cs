@@ -26,6 +26,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
         private int _gridSize = 512;
         private string _exportProfileFile = ExportProfile.Default;
         private string _targetDirectory = string.Empty;
+        private double _resolution = 1;
 
         public GenericMapConfigEditorViewModel(IShell shell, IGrmConfigService grmConfig)
             : base(shell)
@@ -55,7 +56,8 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
                 GridCellSize = _gridCellSize,
                 GridSize = _gridSize,
                 ExportProfileFile = _exportProfileFile,
-                TargetDirectory = _targetDirectory
+                TargetDirectory = _targetDirectory,
+                Resolution = _resolution
             };
         }
 
@@ -71,6 +73,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
                 _gridSize = config.GridSize;
                 _exportProfileFile = config.ExportProfileFile ?? ExportProfile.Default;
                 _targetDirectory = config.TargetDirectory ?? string.Empty;
+                _resolution = config.Resolution;
 
                 NotifyOfPropertyChange(nameof(Center));
                 NotifyOfPropertyChange(nameof(SouthWest));
@@ -80,8 +83,9 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
                 NotifyOfPropertyChange(nameof(TargetDirectory));
                 NotifyOfPropertyChange(nameof(MapSize));
                 NotifyOfPropertyChange(nameof(MapSelection));
-                NotifyOfPropertyChange(nameof(AutomaticTargetDirectory)); 
-                
+                NotifyOfPropertyChange(nameof(AutomaticTargetDirectory));
+                NotifyOfPropertyChange(nameof(Resolution));
+
                 await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
             }
         }
@@ -202,6 +206,12 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
                 }
                 return string.Empty;
             }
+        }
+
+        public double Resolution
+        {
+            get { return _resolution; }
+            set { Set(ref _resolution, value); }
         }
 
         public Task DoFullExport()
