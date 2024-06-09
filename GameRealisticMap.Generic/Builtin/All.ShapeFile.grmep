@@ -189,6 +189,21 @@
       "Exporter": "Airport",
       "FileName": "Airport.shp",
       "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "TreeRows",
+      "FileName": "TreeRows.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Trees",
+      "FileName": "Trees.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "OrientedObjects",
+      "FileName": "OrientedObjects.shp",
+      "Format": "ShapeFile"
     }
   ]
 }

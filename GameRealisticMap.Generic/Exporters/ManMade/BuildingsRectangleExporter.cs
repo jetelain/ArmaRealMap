@@ -9,13 +9,13 @@ namespace GameRealisticMap.Generic.Exporters.ManMade
 
         protected override IEnumerable<(TerrainPolygon, IDictionary<string, object>?)> GetPolygons(IBuildContext context, IDictionary<string, object>? properties)
         {
-            return context.GetData<BuildingsData>().Buildings.Select(l => (l.Box.Polygon, GetProperties(l.TypeId, properties)));
+            return context.GetData<BuildingsData>().Buildings.Select(l => (l.Box.Polygon, GetProperties(l, properties)));
         }
 
-        internal static IDictionary<string, object>? GetProperties(BuildingTypeId typeId, IDictionary<string, object>? properties)
+        internal static IDictionary<string, object>? GetProperties(Building building, IDictionary<string, object>? properties)
         {
             var dict = properties != null ? new Dictionary<string, object>(properties) : new Dictionary<string, object>();
-            dict["grm_building"] = typeId.ToString();
+            dict["grm_building"] = building.TypeId.ToString();
             return dict;
         }
     }

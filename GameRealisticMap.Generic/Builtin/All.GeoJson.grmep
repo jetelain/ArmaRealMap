@@ -189,6 +189,21 @@
       "Exporter": "Airport",
       "FileName": "Airport.json",
       "Format": "GeoJson"
+    },
+    {
+      "Exporter": "TreeRows",
+      "FileName": "TreeRows.json",
+      "Format": "GeoJson"
+    },
+    {
+      "Exporter": "Trees",
+      "FileName": "Trees.json",
+      "Format": "GeoJson"
+    },
+    {
+      "Exporter": "OrientedObjects",
+      "FileName": "OrientedObjects.json",
+      "Format": "GeoJson"
     }
   ]
 }

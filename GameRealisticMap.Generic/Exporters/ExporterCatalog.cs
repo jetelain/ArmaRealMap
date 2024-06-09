@@ -61,6 +61,9 @@ namespace GameRealisticMap.Generic.Exporters
             exporters.Add(new FencesExporter());
             exporters.Add(new RailwaysExporter());
             exporters.Add(new RoadsExporter());
+            exporters.Add(new TreeRowsExporter());
+            exporters.Add(new TreesExporter());
+            exporters.Add(new OrientedObjectsExporter());
         }
 
         public IEnumerable<IExporterInfo> Exporters => exporters.Cast<IExporterInfo>();
