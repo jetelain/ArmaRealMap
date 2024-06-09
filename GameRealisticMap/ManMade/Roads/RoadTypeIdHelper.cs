@@ -59,16 +59,6 @@ namespace GameRealisticMap.ManMade.Roads
                     return RoadTypeId.SingleLaneDirtPath;
 
                 case "service":
-                    if (tags.GetValue("access") == "private")
-                    {
-                        // Ignored for optimisation purpose
-                        return null;
-                    }
-                    if (tags.GetValue("service") == "driveway" && tags.GetValue("motor_vehicle") != "permissive" && tags.GetValue("access") != "permit")
-                    {
-                        // Ignored for optimisation purpose
-                        return null;
-                    }
                     return RoadTypeId.SingleLaneConcreteRoad;
 
             }
