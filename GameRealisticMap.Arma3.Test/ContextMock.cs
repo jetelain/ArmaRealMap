@@ -4,7 +4,7 @@ namespace GameRealisticMap.Arma3.Test
 {
     internal class ContextMock : Dictionary<Type, object>, IContext, IDisposable
     {
-        public HugeImageStorageMock HugeImageStorage { get; } = new HugeImageStorageMock();
+        public MemoryHugeImageStorage HugeImageStorage { get; } = new MemoryHugeImageStorage();
 
         IHugeImageStorage IContext.HugeImageStorage => HugeImageStorage;
 
