@@ -75,5 +75,21 @@ namespace GameRealisticMap.ManMade.Roads
             return null;
         }
 
+        internal static WaySpecialSegment GetSpecialSegment(RoadTypeId value, TagsCollectionBase tags)
+        {
+            var segment = WaySpecialSegmentHelper.FromOSM(tags);
+            if (segment == WaySpecialSegment.Normal && value == RoadTypeId.SingleLaneConcreteRoad)
+            {
+                if (tags.GetValue("access") == "private")
+                {
+                    return WaySpecialSegment.PrivateService;
+                }
+                if (tags.GetValue("service") == "driveway" && tags.GetValue("motor_vehicle") != "permissive" && tags.GetValue("access") != "permit")
+                {
+                    return WaySpecialSegment.PrivateService;
+                }
+            }
+            return segment;
+        }
     }
 }

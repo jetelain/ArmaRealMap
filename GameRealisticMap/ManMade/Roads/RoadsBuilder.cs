@@ -13,11 +13,13 @@ namespace GameRealisticMap.ManMade.Roads
         private readonly IProgressSystem progress;
         private readonly IRoadTypeLibrary<IRoadTypeInfos> library;
         private readonly JsonSerializerOptions options;
+        private readonly float privateServiceThreshold;
 
-        public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library)
+        public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library, float privateServiceThreshold = 10)
         {
             this.progress = progress;
             this.library = library;
+            this.privateServiceThreshold = privateServiceThreshold;
 
             this.options = new JsonSerializerOptions();
             options.Converters.Add(new RoadTypeInfosConverter(library));
@@ -105,7 +107,7 @@ namespace GameRealisticMap.ManMade.Roads
                 var kind = RoadTypeIdHelper.FromOSM(road.Tags);
                 if (kind != null)
                 {
-                    var special = WaySpecialSegmentHelper.FromOSM(road.Tags);
+                    var special = RoadTypeIdHelper.GetSpecialSegment(kind.Value, road.Tags);
                     var type = library.GetInfo(kind.Value);
                     foreach (var geometry in osm.Interpret(road))
                     {
@@ -150,8 +152,15 @@ namespace GameRealisticMap.ManMade.Roads
         private List<Road> IgnoreSmallIsolated(List<Road> roads)
         {
             var kept = roads
-                .ProgressStep(progress, "IgnoreSmall")
+                .ProgressStep(progress, "Filter")
+
+                // Ignore small isolated roads
                 .Where(road => AnyConnected(road, roads) || road.Path.Length > road.Width * 10)
+
+                // Ignore small private roads for optimisation purproses
+                // Filtered at the end to ensure all segments are merged
+                .Where(road => road.SpecialSegment != WaySpecialSegment.PrivateService || road.Path.Length > privateServiceThreshold)
+                
                 .ToList();
 
             //var rejected = roads
