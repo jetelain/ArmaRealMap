@@ -21,27 +21,25 @@
             <TextBlock FontStyle="Italic" Text="{x:Static r:Labels.HomeIntroLimit}" />
         </TextBlock>
 
-        <ScrollViewer IsTabStop="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
-            <ItemsControl ItemsSource="{Binding RecentFiles}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Margin="0 5 5 0" Padding="5" cal:Message.Attach="OpenFile">
-                            <StackPanel>
-                                <Image Source="{Binding IconUri}" Width="24" Height="24" Margin="0 0 0 5"/>
-                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Width="128" TextAlignment="Center" />
-                            </StackPanel>
-                        </Button>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-
-
+            <ScrollViewer IsTabStop="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+                <ItemsControl ItemsSource="{Binding RecentFiles}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Margin="0 5 5 0" Padding="5" cal:Message.Attach="OpenFile">
+                                <StackPanel>
+                                    <Image Source="{Binding IconUri}" Width="24" Height="24" Margin="0 0 0 5"/>
+                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Width="128" TextAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
 
             <Expander IsExpanded="True" Margin="0 20 30 0">
                 <Expander.Header>
@@ -160,11 +158,11 @@
 
                     <ScrollViewer IsTabStop="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
                         <ItemsControl ItemsSource="{Binding EditMaps}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Button Margin="5" cal:Message.Attach="OpenFile">
@@ -181,10 +179,36 @@
                         </ItemsControl>
                     </ScrollViewer>
 
+                    <TextBlock FontSize="10" Margin="0 20 0 0">Arma 3 (including screenshots), Arma 3 Tools : Copyright © Bohemia Interactive. Icons made by Freepik and Mihimihi from www.flaticon.com.</TextBlock>
+
                 </StackPanel>
             </Expander>
 
-            <TextBlock FontSize="10" Margin="0 20 0 0">Arma 3 (including screenshots), Arma 3 Tools : Copyright © Bohemia Interactive. Icons made by Freepik and Mihimihi from www.flaticon.com.</TextBlock>
+
+            <Expander IsExpanded="True" Margin="0 20 30 0">
+                <Expander.Header>
+                    <TextBlock FontSize="25"><Run Text="{x:Static r:Labels.GenericMapTitle}" /></TextBlock>
+                </Expander.Header>
+                <StackPanel>
+                    <TextBlock><Run Text="{x:Static r:Labels.GenericMapDescription}"/></TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Button Margin="10" Padding="10" MaxWidth="220" cal:Message.Attach="NewGenericMapConfig">
+                                <StackPanel>
+                                    <Image Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Icons/MapExportConfig.png" Width="24" Height="24" Margin="0 0 0 5"/>
+                                    <TextBlock TextWrapping="Wrap"><Run Text="{x:Static r:Labels.CreateAMapConfiguration}" /></TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <TextBlock Margin="15 0" TextWrapping="Wrap" TextAlignment="Center">
+                                <Run Text="{x:Static r:Labels.CreateGenericMapConfigurationDescription}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Expander>
 
         </StackPanel>
     </ScrollViewer>

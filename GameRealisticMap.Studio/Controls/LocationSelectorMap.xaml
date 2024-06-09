@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="GameRealisticMap.Studio.Controls.LocationSelectorMap"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GameRealisticMap.Studio.Controls"
+             xmlns:map="clr-namespace:MapControl;assembly=MapControl.WPF"
+             xmlns:r="clr-namespace:GameRealisticMap.Studio"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="1" Margin="7">
+            <TextBlock Margin="0 0 0 20" TextWrapping="Wrap" Text="{x:Static r:Labels.MapUsageHint}" />
+            <TextBlock>
+                        <Hyperlink NavigateUri="https://www.openstreetmap.org/" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static r:Labels.ViewOnOpenStreetMapOrg}" /></Hyperlink>
+            </TextBlock>
+            <TextBlock Margin="0 20" TextWrapping="Wrap">
+© OpenStreetMap contributors. See https://openstreetmap.org/
+            </TextBlock>
+        </StackPanel>
+
+        <map:Map x:Name="MapControl"
+                 Height="600"
+                 MinZoomLevel="2" MaxZoomLevel="21" ZoomLevel="2"
+                 Center="53.5,8.2" ManipulationMode="All"
+                 MouseDown="Map_MouseDown"
+                 MouseUp="Map_MouseUp"
+                 MouseMove="Map_MouseMove"
+                 MouseWheel="MapControl_MouseWheel">
+            <map:MapTileLayer
+                TileSource="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                SourceName="OpenStreetMap"
+                Description="© [OpenStreetMap contributors](https://www.openstreetmap.org/copyright)"/>
+            <map:MapPolyline Stroke="Red" StrokeThickness="2" x:Name="RectangleSelected" />
+            <map:MapPolyline Stroke="Blue" StrokeThickness="2" Visibility="Collapsed" x:Name="RectanglePreview" />
+        </map:Map>
+    </Grid>
+
+</UserControl>
