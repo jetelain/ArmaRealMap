@@ -149,6 +149,46 @@
       "Exporter": "Roads",
       "FileName": "Roads.json",
       "Format": "GeoJson"
+    },
+    {
+      "Exporter": "DefaultAgriculturalArea",
+      "FileName": "DefaultAgriculturalArea.json",
+      "Format": "GeoJson"
+    },
+    {
+      "Exporter": "DefaultCommercialArea",
+      "FileName": "DefaultCommercialArea.json",
+      "Format": "GeoJson"
+    },
+    {
+      "Exporter": "DefaultIndustrialArea",
+      "FileName": "DefaultIndustrialArea.json",
+      "Format": "GeoJson"
+    },
+    {
+      "Exporter": "DefaultMilitaryArea",
+      "FileName": "DefaultMilitaryArea.json",
+      "Format": "GeoJson"
+    },
+    {
+      "Exporter": "DefaultResidentialArea",
+      "FileName": "DefaultResidentialArea.json",
+      "Format": "GeoJson"
+    },
+    {
+      "Exporter": "DefaultRetailArea",
+      "FileName": "DefaultRetailArea.json",
+      "Format": "GeoJson"
+    },
+    {
+      "Exporter": "DefaultAreas",
+      "FileName": "DefaultAreas.json",
+      "Format": "GeoJson"
+    },
+    {
+      "Exporter": "Airport",
+      "FileName": "Airport.json",
+      "Format": "GeoJson"
     }
   ]
 }

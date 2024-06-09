@@ -10,7 +10,7 @@ namespace GameRealisticMap.Generic.Exporters.ElevationModel
 
         protected abstract ElevationGrid GetDataCell(IBuildContext context);
 
-        public IEnumerable<ExportFormat> Formats => [ExportFormat.EsriAscii, ExportFormat.DemDataCell];
+        public IEnumerable<ExportFormat> Formats => [ExportFormat.EsriAscii, ExportFormat.DemDataCell, ExportFormat.WavefrontObj];
 
         public Task Export(string filename, ExportFormat format, IBuildContext context, IDictionary<string, object>? properties)
         {

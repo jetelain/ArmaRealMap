@@ -2,8 +2,11 @@
 using GameRealisticMap.Generic.Exporters.ManMade;
 using GameRealisticMap.Generic.Exporters.Nature;
 using GameRealisticMap.Generic.Exporters.Satellite;
+using GameRealisticMap.ManMade.Airports;
+using GameRealisticMap.ManMade.DefaultUrbanAreas;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.ManMade.Surfaces;
+using GameRealisticMap.Nature.DefaultAreas;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
 using GameRealisticMap.Nature.Ocean;
@@ -44,6 +47,14 @@ namespace GameRealisticMap.Generic.Exporters
             exporters.Add(new BasicTerrainExporter<VineyardData>());
             exporters.Add(new BasicTerrainExporter<WatercourseRadialData>());
             exporters.Add(new BasicTerrainExporter<WatercoursesData>("WatercourseSurface"));
+            exporters.Add(new BasicTerrainExporter<DefaultAgriculturalAreaData>());
+            exporters.Add(new BasicTerrainExporter<DefaultCommercialAreaData>());
+            exporters.Add(new BasicTerrainExporter<DefaultIndustrialAreaData>());
+            exporters.Add(new BasicTerrainExporter<DefaultMilitaryAreaData>());
+            exporters.Add(new BasicTerrainExporter<DefaultResidentialAreaData>());
+            exporters.Add(new BasicTerrainExporter<DefaultRetailAreaData>());
+            exporters.Add(new BasicTerrainExporter<DefaultAreasData>());
+            exporters.Add(new BasicTerrainExporter<AirportData>());
             exporters.Add(new LakesExporter());
             exporters.Add(new BuildingsRectangleExporter());
             exporters.Add(new BuildingsRealShapeExporter());

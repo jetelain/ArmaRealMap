@@ -55,6 +55,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gemini.Modules.Inspector", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameRealisticMap.Generic", "GameRealisticMap.Generic\GameRealisticMap.Generic.csproj", "{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameRealisticMap.Generic.Test", "GameRealisticMap.Generic.Test\GameRealisticMap.Generic.Test.csproj", "{F0EE2154-32E1-4F53-831D-09A9A2B5336A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5FCFA982-ED2F-441E-A9D9-1CFD30FF6543}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -539,6 +543,26 @@ Global
 		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|x64.Build.0 = Release|Any CPU
 		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|x86.ActiveCfg = Release|Any CPU
 		{93B8E44B-55E7-4B6E-8F59-637CAC0C279C}.Release|x86.Build.0 = Release|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Debug|ARM.Build.0 = Debug|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Debug|x64.Build.0 = Debug|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Debug|x86.Build.0 = Debug|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Release|ARM.Build.0 = Release|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Release|ARM64.Build.0 = Release|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Release|x64.ActiveCfg = Release|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Release|x64.Build.0 = Release|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Release|x86.ActiveCfg = Release|Any CPU
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -552,14 +576,18 @@ Global
 		{6E82EE4B-A3ED-4D11-A66D-3A1559920A31} = {2BC1C49B-84B5-4AAA-89B6-72004913364E}
 		{CBCFD74B-21DA-4F39-A18E-391E449927CD} = {2BC1C49B-84B5-4AAA-89B6-72004913364E}
 		{CB4CE7D4-5048-4D6A-9005-05C75D9D4898} = {2BC1C49B-84B5-4AAA-89B6-72004913364E}
+		{96536D55-42E1-4B69-8FED-43ACB72DA175} = {5FCFA982-ED2F-441E-A9D9-1CFD30FF6543}
+		{6CD0D25B-6600-4FDD-B1BB-99DDBD909B5D} = {5FCFA982-ED2F-441E-A9D9-1CFD30FF6543}
 		{7B97A19B-A294-4C14-82A2-0355E9FD0FBB} = {2BC1C49B-84B5-4AAA-89B6-72004913364E}
 		{043F9084-71C4-4493-BFA7-B6129618A293} = {AD947998-A388-4783-B9A6-2410E046C91D}
 		{20ECA174-C5EC-4357-AA5D-8104222147AC} = {AD947998-A388-4783-B9A6-2410E046C91D}
 		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36} = {2BC1C49B-84B5-4AAA-89B6-72004913364E}
+		{21ED2BEA-8F91-437D-8C8B-E71AB91D8B78} = {5FCFA982-ED2F-441E-A9D9-1CFD30FF6543}
 		{81601715-E57D-40E8-9274-693F37EC9D2F} = {AD947998-A388-4783-B9A6-2410E046C91D}
+		{F0EE2154-32E1-4F53-831D-09A9A2B5336A} = {5FCFA982-ED2F-441E-A9D9-1CFD30FF6543}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_MoveToResources = {"Items":[{"Extensions":".cs,.vb","Patterns":"$Namespace.$File.$Key|$File.$Key|StringResourceKey.$Key|$Namespace.StringResourceKey.$Key|nameof($File.$Key), ResourceType = typeof($File)|ErrorMessageResourceType = typeof($File), ErrorMessageResourceName = nameof($File.$Key)"},{"Extensions":".cshtml,.vbhtml","Patterns":"@$Namespace.$File.$Key|@$File.$Key|@StringResourceKey.$Key|@$Namespace.StringResourceKey.$Key"},{"Extensions":".cpp,.c,.hxx,.h","Patterns":"$File::$Key"},{"Extensions":".aspx,.ascx","Patterns":"<%$ Resources:$File,$Key %>|<%= $File.$Key %>|<%= $Namespace.$File.$Key %>"},{"Extensions":".xaml","Patterns":"\"{x:Static r:$File.$Key}\""},{"Extensions":".ts","Patterns":"resources.$Key"},{"Extensions":".html","Patterns":"{{ resources.$Key }}"}]}
 		SolutionGuid = {67E6979E-AD2E-4E18-82E9-C7B7D491C3E9}
+		RESX_MoveToResources = {"Items":[{"Extensions":".cs,.vb","Patterns":"$Namespace.$File.$Key|$File.$Key|StringResourceKey.$Key|$Namespace.StringResourceKey.$Key|nameof($File.$Key), ResourceType = typeof($File)|ErrorMessageResourceType = typeof($File), ErrorMessageResourceName = nameof($File.$Key)"},{"Extensions":".cshtml,.vbhtml","Patterns":"@$Namespace.$File.$Key|@$File.$Key|@StringResourceKey.$Key|@$Namespace.StringResourceKey.$Key"},{"Extensions":".cpp,.c,.hxx,.h","Patterns":"$File::$Key"},{"Extensions":".aspx,.ascx","Patterns":"<%$ Resources:$File,$Key %>|<%= $File.$Key %>|<%= $Namespace.$File.$Key %>"},{"Extensions":".xaml","Patterns":"\"{x:Static r:$File.$Key}\""},{"Extensions":".ts","Patterns":"resources.$Key"},{"Extensions":".html","Patterns":"{{ resources.$Key }}"}]}
 	EndGlobalSection
 EndGlobal

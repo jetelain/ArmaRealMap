@@ -149,6 +149,46 @@
       "Exporter": "Roads",
       "FileName": "Roads.shp",
       "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultAgriculturalArea",
+      "FileName": "DefaultAgriculturalArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultCommercialArea",
+      "FileName": "DefaultCommercialArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultIndustrialArea",
+      "FileName": "DefaultIndustrialArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultMilitaryArea",
+      "FileName": "DefaultMilitaryArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultResidentialArea",
+      "FileName": "DefaultResidentialArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultRetailArea",
+      "FileName": "DefaultRetailArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultAreas",
+      "FileName": "DefaultAreas.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Airport",
+      "FileName": "Airport.shp",
+      "Format": "ShapeFile"
     }
   ]
 }
