@@ -15,7 +15,7 @@ namespace GameRealisticMap.ManMade.Roads
         private readonly JsonSerializerOptions options;
         private readonly float privateServiceThreshold;
 
-        public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library, float privateServiceThreshold = 10)
+        public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library, float privateServiceThreshold = 25)
         {
             this.progress = progress;
             this.library = library;
@@ -162,11 +162,6 @@ namespace GameRealisticMap.ManMade.Roads
                 .Where(road => road.SpecialSegment != WaySpecialSegment.PrivateService || road.Path.Length > privateServiceThreshold)
                 
                 .ToList();
-
-            //var rejected = roads
-            //    .ProgressStep(progress, "IgnoreSmall")
-            //    .Where(road => !(AnyConnected(road, roads) || road.Path.Length > road.Width * 10))
-            //    .ToList();
 
             return kept;
         }
