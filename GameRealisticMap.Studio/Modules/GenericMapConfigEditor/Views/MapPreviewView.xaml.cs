@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
-using GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels;
+using GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels;
 
-namespace GameRealisticMap.Studio.Modules.MapConfigEditor.Views
+namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.Views
 {
     /// <summary>
     /// Logique d'interaction pour MapPreviewView.xaml

@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade.Cutlines;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Nature.Forests
@@ -12,7 +13,10 @@ namespace GameRealisticMap.Nature.Forests
 
         protected override IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
         {
-            return base.GetPriority(context);
+            var cutlines = context.GetData<CutlinesData>();
+
+            return base.GetPriority(context)
+                .Concat(cutlines.Polygons);
         }
 
         protected override ForestRadialData CreateWrapper(List<TerrainPolygon> polygons)
