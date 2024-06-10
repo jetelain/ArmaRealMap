@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Geometries;
+using GameRealisticMap.ManMade.Cutlines;
 using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
@@ -24,7 +25,10 @@ namespace GameRealisticMap.Nature.Forests
 
         protected override IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
         {
-            return base.GetPriority(context);
+            var cutlines = context.GetData<CutlinesData>();
+
+            return base.GetPriority(context)
+                .Concat(cutlines.Polygons);
         }
     }
 }
