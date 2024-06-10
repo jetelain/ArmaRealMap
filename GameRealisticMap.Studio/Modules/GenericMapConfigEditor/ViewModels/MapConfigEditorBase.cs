@@ -36,7 +36,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
                 }
                 if (!string.IsNullOrEmpty(SouthWest))
                 {
-                    return new LocationSelection(SouthWest, false, TerrainAreaUTM.CreateFromCenter(SouthWest, GridCellSize, GridSize));
+                    return new LocationSelection(SouthWest, false, TerrainAreaUTM.CreateFromSouthWest(SouthWest, GridCellSize, GridSize));
                 }
                 return null;
             }
