@@ -92,7 +92,7 @@
                     <Run Text="{x:Static r:Labels.ResolutionUnit}" />
                         </TextBlock>
                     </StackPanel>
-                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                    <StackPanel Margin="5" Orientation="Horizontal" >
                         <Label Width="200">
                             <Run Text="{x:Static r:Labels.PrivateServiceRoadThreshold}"/>
                         </Label>
