@@ -17,6 +17,7 @@
         public int GridSize { get; set; } = 1024;
 
         public string? SouthWest { get; set; }
+
         public string? Center { get; set; }
 
         public string? AssetConfigFile { get; set; }
@@ -24,6 +25,8 @@
         public string? TargetModDirectory { get; set; }
 
         public bool UseColorCorrection { get; set; }
+
+        public float? PrivateServiceRoadThreshold { get; set; }
 
         public Arma3MapConfig ToArma3MapConfig()
         {

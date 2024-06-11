@@ -43,7 +43,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         public List<string> BuiltinAssetConfigFiles { get; } = Arma3Assets.GetBuiltinList();
 
-        public Arma3MapConfigJson Config { get; set; } = new Arma3MapConfigJson() { UseColorCorrection = true };
+        public Arma3MapConfigJson Config { get; set; } = new Arma3MapConfigJson() { UseColorCorrection = true, PrivateServiceRoadThreshold = MapProcessingOptions.Default.PrivateServiceRoadThreshold };
 
         public override int[] GridSizes => GridHelper.Arma3GridSizes;
 
@@ -239,6 +239,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         {
             using var stream = File.OpenRead(filePath);
             Config = await JsonSerializer.DeserializeAsync<Arma3MapConfigJson>(stream) ?? new Arma3MapConfigJson();
+            Config.PrivateServiceRoadThreshold = Config.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
             NotifyOfPropertyChange(nameof(Config));
             NotifyOfPropertyChange(nameof(SouthWest));
             NotifyOfPropertyChange(nameof(Center));
@@ -602,11 +603,11 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 IsNew ? null : FilePath);
         }
 
-        internal override async Task<(IBuildersConfig, ITerrainArea)> GetPreviewConfig()
+        internal override async Task<(IBuildersConfig, IMapProcessingOptions, ITerrainArea)> GetPreviewConfig()
         {
             var a3config = Config.ToArma3MapConfig();
             var config = await GetBuildersConfigSafe(a3config);
-            return (config, a3config.TerrainArea);
+            return (config, a3config, a3config.TerrainArea);
         }
 
         public bool UseColorCorrection

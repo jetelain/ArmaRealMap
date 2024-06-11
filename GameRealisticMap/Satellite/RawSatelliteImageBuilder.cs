@@ -27,7 +27,7 @@ namespace GameRealisticMap.Satellite
         {
             //Image<Rgb24> image;
 
-            var totalSize = (int)Math.Ceiling(context.Area.SizeInMeters / context.Imagery.Resolution);
+            var totalSize = (int)Math.Ceiling(context.Area.SizeInMeters / context.Options.Resolution);
 
             //using (var report = progress.CreateStep("S2C OLD", totalSize /*tileSize * tileCount * tileCount*/))
             //{
@@ -51,7 +51,7 @@ namespace GameRealisticMap.Satellite
 
         private async Task LoadPart(IBuildContext context, int totalSize, HugeImagePart<Rgba32> part, IProgressInteger report, S2Cloudless src)
         {
-            var imageryResolution = context.Imagery.Resolution;
+            var imageryResolution = context.Options.Resolution;
 
             using var token = await part.AcquireAsync().ConfigureAwait(false);
 
@@ -99,7 +99,7 @@ namespace GameRealisticMap.Satellite
 
         private Image<Rgba32> LoadImage(IBuildContext context, int tileSize, IProgressInteger report, Vector2 start, int done)
         {
-            var imageryResolution = context.Imagery.Resolution;
+            var imageryResolution = context.Options.Resolution;
             using var src = new S2Cloudless(progress, sources);
             var img = new Image<Rgba32>(tileSize, tileSize);
             var parallel = 16;

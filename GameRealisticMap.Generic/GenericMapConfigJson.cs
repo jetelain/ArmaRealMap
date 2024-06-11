@@ -16,6 +16,8 @@
 
         public string? TargetDirectory { get; set; }
 
+        public float? PrivateServiceRoadThreshold { get; set; }
+
         public GenericMapConfig ToMapConfig()
         {
             return new GenericMapConfig(this);

@@ -1624,4 +1624,7 @@ Dernière génération le {1}</value>
   <data name="CreateGenericMapConfigurationDescription" xml:space="preserve">
     <value>Définir les coordonnées pour la génération de données</value>
   </data>
+  <data name="PrivateServiceRoadThreshold" xml:space="preserve">
+    <value>Seuil des routes privées</value>
+  </data>
 </root>

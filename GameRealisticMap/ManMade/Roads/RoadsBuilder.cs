@@ -105,7 +105,7 @@ namespace GameRealisticMap.ManMade.Roads
                 var kind = RoadTypeIdHelper.FromOSM(road.Tags);
                 if (kind != null)
                 {
-                    var special = WaySpecialSegmentHelper.FromOSM(road.Tags);
+                    var special = RoadTypeIdHelper.GetSpecialSegment(kind.Value, road.Tags);
                     var type = library.GetInfo(kind.Value);
                     foreach (var geometry in osm.Interpret(road))
                     {
@@ -136,7 +136,8 @@ namespace GameRealisticMap.ManMade.Roads
             return new RoadsData(
                 IgnoreSmallIsolated(
                     MergeRoads(
-                        PrepareRoads(context.OsmSource, context.Area)))
+                        PrepareRoads(context.OsmSource, context.Area)), 
+                    context.Options)
                 );
         }
 
@@ -147,17 +148,19 @@ namespace GameRealisticMap.ManMade.Roads
                 .Any(o => o.Path.Points.Any(p => self.Path.Points.Contains(p)));
         }
 
-        private List<Road> IgnoreSmallIsolated(List<Road> roads)
+        private List<Road> IgnoreSmallIsolated(List<Road> roads, IMapProcessingOptions options)
         {
             var kept = roads
-                .ProgressStep(progress, "IgnoreSmall")
-                .Where(road => AnyConnected(road, roads) || road.Path.Length > road.Width * 10)
-                .ToList();
+                .ProgressStep(progress, "Filter")
 
-            //var rejected = roads
-            //    .ProgressStep(progress, "IgnoreSmall")
-            //    .Where(road => !(AnyConnected(road, roads) || road.Path.Length > road.Width * 10))
-            //    .ToList();
+                // Ignore small isolated roads
+                .Where(road => AnyConnected(road, roads) || road.Path.Length > road.Width * 10)
+
+                // Ignore small private roads for optimisation purproses
+                // Filtered at the end to ensure all segments are merged
+                .Where(road => road.SpecialSegment != WaySpecialSegment.PrivateService || road.Path.Length > options.PrivateServiceRoadThreshold)
+                
+                .ToList();
 
             return kept;
         }

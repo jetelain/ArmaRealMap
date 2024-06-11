@@ -179,6 +179,15 @@
                         </Label>
                         <toolkit:WatermarkTextBox Width="500" Text="{Binding Config.TargetModDirectory, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticTargetModDirectory}"  />
                     </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200">
+                            <Run Text="{x:Static r:Labels.PrivateServiceRoadThreshold}"/>
+                        </Label>
+                        <TextBox Width="200" Text="{Binding Config.PrivateServiceRoadThreshold, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock Margin="10 0">
+                            <Run Text="{x:Static r:Labels.MetersUnit}" />
+                        </TextBlock>
+                    </StackPanel>
                 </StackPanel>
             </Expander>
 

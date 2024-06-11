@@ -12,7 +12,7 @@ namespace GameRealisticMap.ManMade.Roads
         [JsonConstructor]
         public Road(WaySpecialSegment specialSegment, TerrainPath path, IRoadTypeInfos roadTypeInfos)
         {
-            if (specialSegment >= WaySpecialSegment.Crossing)
+            if (specialSegment == WaySpecialSegment.Crossing)
             {
                 throw new ArgumentOutOfRangeException(nameof(specialSegment)); // Invalid value for a road
             }

@@ -3,7 +3,7 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Generic
 {
-    public sealed class GenericMapConfig : IImageryOptions
+    public sealed class GenericMapConfig : IMapProcessingOptions
     {
         public GenericMapConfig(GenericMapConfigJson genericMapConfigJson)
         {
@@ -28,6 +28,8 @@ namespace GameRealisticMap.Generic
             {
                 TargetDirectory = genericMapConfigJson.TargetDirectory;
             }
+
+            PrivateServiceRoadThreshold = genericMapConfigJson.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
         }
 
         public TerrainAreaUTM TerrainArea { get; }
@@ -37,6 +39,8 @@ namespace GameRealisticMap.Generic
         public string ExportProfileFile { get; }
 
         public string TargetDirectory { get; }
+
+        public float PrivateServiceRoadThreshold { get; }
 
         public static string GetAutomaticName(ITerrainArea area)
         {

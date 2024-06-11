@@ -7,17 +7,18 @@ namespace GameRealisticMap.Test
     {
         private readonly Dictionary<Type, object> datas = new Dictionary<Type, object>();
 
-        public BuildContextMock(ITerrainArea area, IOsmDataSource osmSource)
+        public BuildContextMock(ITerrainArea area, IOsmDataSource osmSource, IMapProcessingOptions? options = null)
         {
             Area = area;
             OsmSource = osmSource;
+            Options = options ?? new MapProcessingOptions();
         }
 
         public ITerrainArea Area { get; }
 
         public IOsmDataSource OsmSource { get; }
 
-        public IImageryOptions Imagery => throw new NotImplementedException();
+        public IMapProcessingOptions Options { get; }
 
         public IHugeImageStorage HugeImageStorage => throw new NotImplementedException();
 

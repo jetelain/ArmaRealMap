@@ -3494,6 +3494,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Private Service Road Threshold.
+        /// </summary>
+        public static string PrivateServiceRoadThreshold {
+            get {
+                return ResourceManager.GetString("PrivateServiceRoadThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Probability.
         /// </summary>
         public static string Probability {
