@@ -29,7 +29,7 @@ namespace GameRealisticMap.Generic
                 TargetDirectory = genericMapConfigJson.TargetDirectory;
             }
 
-            PrivateServiceRoadThreshold = genericMapConfigJson.PrivateServiceRoadThreshold ?? 25;
+            PrivateServiceRoadThreshold = genericMapConfigJson.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
         }
 
         public TerrainAreaUTM TerrainArea { get; }

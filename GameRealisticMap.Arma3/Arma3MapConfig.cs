@@ -55,7 +55,7 @@ namespace GameRealisticMap.Arma3
 
             UseColorCorrection = arma3MapConfigJson.UseColorCorrection;
 
-            PrivateServiceRoadThreshold = arma3MapConfigJson.PrivateServiceRoadThreshold ?? 25;
+            PrivateServiceRoadThreshold = arma3MapConfigJson.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
 
             Arma3ConfigHelper.ValidatePboPrefix(PboPrefix);
             Arma3ConfigHelper.ValidateWorldName(WorldName);

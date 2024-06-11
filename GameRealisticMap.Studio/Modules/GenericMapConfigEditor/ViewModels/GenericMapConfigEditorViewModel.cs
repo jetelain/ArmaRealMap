@@ -27,6 +27,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
         private string _exportProfileFile = ExportProfile.Default;
         private string _targetDirectory = string.Empty;
         private double _resolution = 1;
+        private float _privateServiceRoadThreshold = MapProcessingOptions.Default.PrivateServiceRoadThreshold;
 
         public GenericMapConfigEditorViewModel(IShell shell, IGrmConfigService grmConfig)
             : base(shell)
@@ -57,7 +58,8 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
                 GridSize = _gridSize,
                 ExportProfileFile = _exportProfileFile,
                 TargetDirectory = _targetDirectory,
-                Resolution = _resolution
+                Resolution = _resolution,
+                PrivateServiceRoadThreshold = _privateServiceRoadThreshold
             };
         }
 
@@ -74,6 +76,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
                 _exportProfileFile = config.ExportProfileFile ?? ExportProfile.Default;
                 _targetDirectory = config.TargetDirectory ?? string.Empty;
                 _resolution = config.Resolution;
+                _privateServiceRoadThreshold = config.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
 
                 NotifyOfPropertyChange(nameof(Center));
                 NotifyOfPropertyChange(nameof(SouthWest));
@@ -214,15 +217,21 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
             set { Set(ref _resolution, value); }
         }
 
+        public float PrivateServiceRoadThreshold
+        {
+            get { return _privateServiceRoadThreshold; }
+            set { Set(ref _privateServiceRoadThreshold, value); }
+        }
+
         public Task DoFullExport()
         {
             ProgressToolHelper.Start(new GenericExportTask(ToConfig().ToMapConfig(), grmConfig.GetSources()));
             return Task.CompletedTask;
         }
 
-        internal override Task<(IBuildersConfig, ITerrainArea)> GetPreviewConfig()
+        internal override Task<(IBuildersConfig, IMapProcessingOptions, ITerrainArea)> GetPreviewConfig()
         {
-            return Task.FromResult<(IBuildersConfig, ITerrainArea)>((new DefaultBuildersConfig(), MapSelection!.TerrainArea));
+            return Task.FromResult<(IBuildersConfig, IMapProcessingOptions, ITerrainArea)>((new DefaultBuildersConfig(), new MapProcessingOptions(Resolution, PrivateServiceRoadThreshold), MapSelection!.TerrainArea));
         }
     }
 }

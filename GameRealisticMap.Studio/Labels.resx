@@ -1624,4 +1624,7 @@ Last generated on {1}</value>
   <data name="CreateGenericMapConfigurationDescription" xml:space="preserve">
     <value>Define coordinates for data generation</value>
   </data>
+  <data name="PrivateServiceRoadThreshold" xml:space="preserve">
+    <value>Private Service Road Threshold</value>
+  </data>
 </root>

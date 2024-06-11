@@ -103,7 +103,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
 
         private async Task DoGenerateData(IProgressTaskUI taskUI)
         {
-            var (config, area) = await map.GetPreviewConfig();
+            var(config, options, area) = await map.GetPreviewConfig();
 
             SizeInMeters = area.SizeInMeters;
             NotifyOfPropertyChange(nameof(SizeInMeters));
@@ -111,7 +111,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
             var catalog = new BuildersCatalog(taskUI, config, sources);
             var loader = new OsmDataOverPassLoader(taskUI, sources);
             var osmSource = await loader.Load(area);
-            var context = new BuildContext(catalog, taskUI, area, osmSource, new MapProcessingOptions());
+            var context = new BuildContext(catalog, taskUI, area, osmSource, options);
             PreviewMapData = new PreviewMapData(context);
             mapData = context;
             NotifyOfPropertyChange(nameof(PreviewMapData));

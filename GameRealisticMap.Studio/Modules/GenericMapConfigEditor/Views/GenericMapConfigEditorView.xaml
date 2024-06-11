@@ -60,7 +60,7 @@
                 <TextBox Width="75" Text="{Binding MapSize,Mode=TwoWay}" />
                 <TextBlock Margin="10 0"><Run Text="{x:Static r:Labels.MetersUnit}"/></TextBlock>
             </StackPanel>
-            
+
             <StackPanel Margin="5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.GenericMapExportProfile}" />
@@ -70,23 +70,39 @@
                           IsEditable="True"
                           ItemsSource="{Binding BuiltinExportProfiles}" />
             </StackPanel>
-            
+
             <StackPanel Margin="5" Orientation="Horizontal" >
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.TargetDirectory}" />
                 </Label>
                 <toolkit:WatermarkTextBox Width="400" Text="{Binding TargetDirectory, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticTargetDirectory}"  />
             </StackPanel>
-            
-            <StackPanel Margin="5" Orientation="Horizontal" >
-                <Label Width="200">
-                    <Run Text="{x:Static r:Labels.Resolution}"/>
-                </Label>
-                <TextBox Width="50" Text="{Binding Resolution,Mode=TwoWay, ValidatesOnExceptions=True}" />
-                <TextBlock Margin="10 0">
+
+            <Expander Margin="10">
+                <Expander.Header>
+                    <TextBlock Text="{x:Static r:Labels.AdvancedParameters}" />
+                </Expander.Header>
+                <StackPanel  Orientation="Vertical">
+                    <StackPanel Margin="5" Orientation="Horizontal" >
+                        <Label Width="200">
+                            <Run Text="{x:Static r:Labels.Resolution}"/>
+                        </Label>
+                        <TextBox Width="50" Text="{Binding Resolution,Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock Margin="10 0">
                     <Run Text="{x:Static r:Labels.ResolutionUnit}" />
-                </TextBlock>
-            </StackPanel>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200">
+                            <Run Text="{x:Static r:Labels.PrivateServiceRoadThreshold}"/>
+                        </Label>
+                        <TextBox Width="200" Text="{Binding PrivateServiceRoadThreshold, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock Margin="10 0">
+                            <Run Text="{x:Static r:Labels.MetersUnit}" />
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
 
             <grm:LocationSelectorMap MapSelection="{Binding MapSelection, Mode=TwoWay}" />
 

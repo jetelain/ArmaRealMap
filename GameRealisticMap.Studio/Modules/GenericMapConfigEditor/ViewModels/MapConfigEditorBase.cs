@@ -58,7 +58,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
             }
         }
 
-        internal abstract Task<(IBuildersConfig, ITerrainArea)> GetPreviewConfig();
+        internal abstract Task<(IBuildersConfig, IMapProcessingOptions, ITerrainArea)> GetPreviewConfig();
 
         public Task GeneratePreviewNew()
         {
