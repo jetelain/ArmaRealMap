@@ -24,6 +24,7 @@
         public string? TargetModDirectory { get; set; }
 
         public bool UseColorCorrection { get; set; }
+        public float? PrivateServiceRoadThreshold { get; set; }
 
         public Arma3MapConfig ToArma3MapConfig()
         {

@@ -13,13 +13,11 @@ namespace GameRealisticMap.ManMade.Roads
         private readonly IProgressSystem progress;
         private readonly IRoadTypeLibrary<IRoadTypeInfos> library;
         private readonly JsonSerializerOptions options;
-        private readonly float privateServiceThreshold;
 
-        public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library, float privateServiceThreshold = 25)
+        public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library)
         {
             this.progress = progress;
             this.library = library;
-            this.privateServiceThreshold = privateServiceThreshold;
 
             this.options = new JsonSerializerOptions();
             options.Converters.Add(new RoadTypeInfosConverter(library));
@@ -138,7 +136,8 @@ namespace GameRealisticMap.ManMade.Roads
             return new RoadsData(
                 IgnoreSmallIsolated(
                     MergeRoads(
-                        PrepareRoads(context.OsmSource, context.Area)))
+                        PrepareRoads(context.OsmSource, context.Area)), 
+                    context.Options)
                 );
         }
 
@@ -149,7 +148,7 @@ namespace GameRealisticMap.ManMade.Roads
                 .Any(o => o.Path.Points.Any(p => self.Path.Points.Contains(p)));
         }
 
-        private List<Road> IgnoreSmallIsolated(List<Road> roads)
+        private List<Road> IgnoreSmallIsolated(List<Road> roads, IMapProcessingOptions options)
         {
             var kept = roads
                 .ProgressStep(progress, "Filter")
@@ -159,7 +158,7 @@ namespace GameRealisticMap.ManMade.Roads
 
                 // Ignore small private roads for optimisation purproses
                 // Filtered at the end to ensure all segments are merged
-                .Where(road => road.SpecialSegment != WaySpecialSegment.PrivateService || road.Path.Length > privateServiceThreshold)
+                .Where(road => road.SpecialSegment != WaySpecialSegment.PrivateService || road.Path.Length > options.PrivateServiceRoadThreshold)
                 
                 .ToList();
 

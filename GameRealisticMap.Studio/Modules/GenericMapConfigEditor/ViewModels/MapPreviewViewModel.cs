@@ -111,7 +111,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
             var catalog = new BuildersCatalog(taskUI, config, sources);
             var loader = new OsmDataOverPassLoader(taskUI, sources);
             var osmSource = await loader.Load(area);
-            var context = new BuildContext(catalog, taskUI, area, osmSource, new ImageryOptions());
+            var context = new BuildContext(catalog, taskUI, area, osmSource, new MapProcessingOptions());
             PreviewMapData = new PreviewMapData(context);
             mapData = context;
             NotifyOfPropertyChange(nameof(PreviewMapData));
