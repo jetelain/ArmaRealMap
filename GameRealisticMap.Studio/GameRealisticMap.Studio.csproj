@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\grms.ico</ApplicationIcon>
@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
+    <ProjectReference Include="..\GameRealisticMap.Generic\GameRealisticMap.Generic.csproj" />
     <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
     <ProjectReference Include="..\gemini\src\Gemini.Modules.Inspector\Gemini.Modules.Inspector.csproj" />
     <ProjectReference Include="..\gemini\src\Gemini.Modules.Output\Gemini.Modules.Output.csproj" />

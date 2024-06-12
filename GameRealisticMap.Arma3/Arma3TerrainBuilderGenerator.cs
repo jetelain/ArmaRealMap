@@ -5,6 +5,7 @@ using GameRealisticMap.Arma3.Imagery;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Arma3.TerrainBuilder.TmlFiles;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
@@ -25,20 +26,22 @@ namespace GameRealisticMap.Arma3
     {
         private readonly IArma3RegionAssets assets;
         private readonly ProjectDrive projectDrive;
+        protected readonly ISourceLocations sources;
 
         private const int MaxTerrainBuilderImageSize = 25000; // ~1.8 GB at 24 bpp
 
         private record ImageryPart(int X, int Y, int E, int N, int Size, string Name);
 
-        public Arma3TerrainBuilderGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive)
+        public Arma3TerrainBuilderGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive, ISourceLocations sources)
         {
             this.assets = assets;
             this.projectDrive = projectDrive;
+            this.sources = sources;
         }
 
         private BuildContext CreateBuildContext(IProgressTask progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
         {
-            var builders = new BuildersCatalog(progress, assets);
+            var builders = new BuildersCatalog(progress, assets, sources);
             return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
         }
 
@@ -76,7 +79,7 @@ namespace GameRealisticMap.Arma3
 
         private async Task<IOsmDataSource> LoadOsmData(IProgressTask progress, Arma3MapConfig a3config)
         {
-            var loader = new OsmDataOverPassLoader(progress);
+            var loader = new OsmDataOverPassLoader(progress, sources);
             return await loader.Load(a3config.TerrainArea);
         }
 

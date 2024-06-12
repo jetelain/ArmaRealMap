@@ -8,6 +8,6 @@ namespace GameRealisticMap
 
         IOsmDataSource OsmSource { get; }
 
-        IImageryOptions Imagery { get; }
+        IMapProcessingOptions Options { get; }
     }
 }

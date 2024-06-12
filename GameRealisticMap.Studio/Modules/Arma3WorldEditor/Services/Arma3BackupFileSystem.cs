@@ -36,6 +36,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.Services
             return null;
         }
 
+        public string? GetLocationInfoForError(string path)
+        {
+            return path;
+        }
+
         public Stream? OpenFileIfExists(string path)
         {
             if (files.Contains(path))

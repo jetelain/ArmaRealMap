@@ -14,7 +14,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
             using (var stream = storage.CreatePng(path))
             {
                 using var imgs = img.ToImageSharp();
-                imgs.SaveAsPng(stream, new PngEncoder() { ColorType = PngColorType.Rgb, BitDepth = PngBitDepth.Bit8 });
+                imgs.SaveAsPng(stream, new PngEncoder() { ColorType = PngColorType.RgbWithAlpha, BitDepth = PngBitDepth.Bit8 });
             }
         }
 

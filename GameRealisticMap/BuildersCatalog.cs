@@ -1,8 +1,10 @@
 ﻿using GameRealisticMap.Conditions;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Airports;
 using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.ManMade.Cutlines;
 using GameRealisticMap.ManMade.DefaultUrbanAreas;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.ManMade.Fences;
@@ -30,12 +32,12 @@ namespace GameRealisticMap
     {
         private readonly Dictionary<Type, IBuilderAdapter> builders = new Dictionary<Type, IBuilderAdapter>();
 
-        public BuildersCatalog(IProgressSystem progress, IBuildersConfig config)
+        public BuildersCatalog(IProgressSystem progress, IBuildersConfig config, ISourceLocations sources)
         {
             Register(new OceanBuilder(progress));
             Register(new CoastlineBuilder(progress));
-            Register(new RawSatelliteImageBuilder(progress));
-            Register(new RawElevationBuilder(progress));
+            Register(new RawSatelliteImageBuilder(progress, sources));
+            Register(new RawElevationBuilder(progress, sources));
             Register(new CategoryAreaBuilder(progress));
             Register(new RoadsBuilder(progress, config.Roads));
             Register(new BuildingsBuilder(progress, config.Buildings));
@@ -73,13 +75,14 @@ namespace GameRealisticMap
             Register(new DefaultAgriculturalAreasBuilder(progress));
             Register(new ConditionEvaluatorBuilder());
             Register(new ElevationContourBuilder(progress));
-            Register(new WeatherBuilder(progress));
+            Register(new WeatherBuilder(progress, sources));
             Register(new IceSurfaceBuilder(progress));
             Register(new ScreeBuilder(progress));
             Register(new ElevationOutOfBoundsBuilder());
             Register(new AirportBuilder(progress));
             Register(new AerowaysBuilder(progress));
             Register(new AsphaltBuilder(progress));
+            Register(new CutlinesBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)

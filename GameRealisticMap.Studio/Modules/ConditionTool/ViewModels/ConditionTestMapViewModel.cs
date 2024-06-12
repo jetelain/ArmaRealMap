@@ -6,6 +6,7 @@ using Caliburn.Micro;
 using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Osm;
+using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Shared;
@@ -63,10 +64,11 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 
             var config = await map.GetBuildersConfigSafe(a3config);
 
-            var catalog = new BuildersCatalog(taskUI, config);
-            var loader = new OsmDataOverPassLoader(taskUI);
+            var sources = IoC.Get<IGrmConfigService>().GetSources();
+            var catalog = new BuildersCatalog(taskUI, config, sources);
+            var loader = new OsmDataOverPassLoader(taskUI, sources);
             var osmSource = await loader.Load(a3config.TerrainArea);
-            var context = new BuildContext(catalog, taskUI, a3config.TerrainArea, osmSource, new ImageryOptions());
+            var context = new BuildContext(catalog, taskUI, a3config.TerrainArea, osmSource, new MapProcessingOptions());
             conditionEvaluator = context.GetData<ConditionEvaluator>();
             PreviewMapData = new PreviewMapData(context);
             mapData = context;

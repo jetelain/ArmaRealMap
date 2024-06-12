@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
 using GameRealisticMap.Nature.Ocean;
@@ -16,10 +17,12 @@ namespace GameRealisticMap.ElevationModel
     internal class RawElevationBuilder : IDataBuilder<RawElevationData>, IDataSerializer<RawElevationData>
     {
         private readonly IProgressSystem progress;
+        private readonly ISourceLocations sources;
 
-        public RawElevationBuilder(IProgressSystem progress)
+        public RawElevationBuilder(IProgressSystem progress, ISourceLocations sources)
         {
             this.progress = progress;
+            this.sources = sources;
         }
 
         private const float InvSinCos45 = 1.4142135623730949f;
@@ -53,12 +56,12 @@ namespace GameRealisticMap.ElevationModel
             }
 
             // Out of bounds
-            var outOfBounds = GetOutOfBounds(context, source);
+            var outOfBounds = GetOutOfBounds(context, source, grid);
 
             return new RawElevationData(grid, source.Credits, outOfBounds);
         }
 
-        private ElevationMinMax[] GetOutOfBounds(IBuildContext context, RawElevationSource source)
+        private ElevationMinMax[] GetOutOfBounds(IBuildContext context, RawElevationSource source, ElevationGrid grid)
         {
             var outOfBounds = new ElevationMinMax[512];
             using (var report = progress.CreateStep("OutOfBounds", 512))
@@ -71,7 +74,7 @@ namespace GameRealisticMap.ElevationModel
                     var boundary = GetBoundaryPoint(a, center);
                     var vector = Vector2.Normalize(boundary - center) * OutOfBoundsStep;
                     var pos = boundary;
-                    var min = source.GetElevationNoMask(context.Area.TerrainPointToLatLng(new TerrainPoint(pos))); ;
+                    var min = (double)grid.ElevationAt(new TerrainPoint(pos));
                     var max = min;
                     for (int i = 0; i < OutOfBoundsDistance; i += OutOfBoundsStep)
                     {
@@ -151,17 +154,17 @@ namespace GameRealisticMap.ElevationModel
             var dbCredits = new List<string>() { "SRTM1", "STRM15+" };
 
             // Elevation of ground, but really low resolution (460m at equator)
-            var fulldb = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/SRTM15Plus/")));
+            var fulldb = new DemDatabase(new DemHttpStorage(sources.MapToolkitSRTM15Plus));
             var viewFull = fulldb.CreateView<float>(startView, endView).GetAwaiter().GetResult().ToDataCell();
             var detaildb = fulldb;
 
             // Elevation of surface, Partial world covergae, but better resolution (30m at equator)
-            var srtm = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/SRTM1/")));
+            var srtm = new DemDatabase(new DemHttpStorage(sources.MapToolkitSRTM1));
             IDemDataCell view;
             if (!srtm.HasFullData(start, end).GetAwaiter().GetResult())
             {
                 // Alternative Elevation of surface, but requires JAXA credits
-                var aw3d30 = new DemDatabase(new DemHttpStorage(new Uri("https://dem.pmad.net/AW3D30/")));
+                var aw3d30 = new DemDatabase(new DemHttpStorage(sources.MapToolkitAW3D30));
                 if (!aw3d30.HasFullData(start, end).GetAwaiter().GetResult())
                 {
                     view = viewFull;

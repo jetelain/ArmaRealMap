@@ -126,7 +126,7 @@ class Grid {{
 
         private string Serialize(ElevationMinMax[] outOfBounds)
         {
-            return string.Join(",", outOfBounds.Select(p => FormattableString.Invariant($"{{{p.Min},{p.Max}}}")));
+            return string.Join(",", outOfBounds.Select(p => FormattableString.Invariant($"{{{Math.Round(p.Min,2)},{Math.Round(p.Max,2)}}}")));
         }
 
         private string GenerateConfigCpp(IArma3MapConfig config, CitiesData cities)

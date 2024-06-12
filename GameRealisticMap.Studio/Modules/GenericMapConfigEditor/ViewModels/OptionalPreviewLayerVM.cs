@@ -5,7 +5,7 @@ using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Shared;
 
-namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
+namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
 {
     internal class OptionalPreviewLayerVM : PropertyChangedBase
     {
@@ -37,8 +37,8 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             this.generate = generate;
             this.name = name;
             this.preview = preview;
-            Label = Labels.ResourceManager.GetString("Asset" + name) ?? 
-                Labels.ResourceManager.GetString("Asset" + name.TrimEnd('s')) ?? 
+            Label = Labels.ResourceManager.GetString("Asset" + name) ??
+                Labels.ResourceManager.GetString("Asset" + name.TrimEnd('s')) ??
                 Labels.ResourceManager.GetString("Layer" + name) ?? name;
         }
 
@@ -48,15 +48,15 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         public LegendItemType Type { get; }
 
-        public bool IsEnabled 
-        { 
+        public bool IsEnabled
+        {
             get { return isEnabled; }
             set
             {
                 if (isEnabled != value)
                 {
                     isEnabled = value;
-                    if ( value)
+                    if (value)
                     {
                         preview.AddOptionalLayer(name, generate);
                     }

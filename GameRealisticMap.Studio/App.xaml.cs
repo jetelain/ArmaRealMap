@@ -72,7 +72,7 @@ namespace GameRealisticMap.Studio
             ShowException((e.ExceptionObject as Exception));
         }
 
-        private static void ShowException(Exception? e)
+        public static void ShowException(Exception? e)
         {
             MessageBox.Show(GetExceptionMessage(e), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }

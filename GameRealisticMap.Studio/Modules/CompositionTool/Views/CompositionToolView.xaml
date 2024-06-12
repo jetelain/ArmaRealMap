@@ -8,6 +8,7 @@
              xmlns:c="clr-namespace:GameRealisticMap.Studio.Modules.CompositionTool.Behaviors"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:cal="http://www.caliburnproject.org"
+              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="485">
     <UserControl.Resources>
@@ -280,7 +281,60 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Padding="5 3" b:ButtonBehaviors.OpenContextOnClick="True">
+                                <Run Text="{x:Static r:Labels.AddRandomization}" />
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem cal:Message.Attach="AddRandomization('ScaleUniform')"  Header="{x:Static r:Labels.RandomizationScaleUniform}" />
+                                        <MenuItem cal:Message.Attach="AddRandomization('RotateY')" Header="{x:Static r:Labels.RandomizationRotateY}" />
+                                        <MenuItem cal:Message.Attach="AddRandomization('TranslateRadiusXZ')" Header="{x:Static r:Labels.RandomizationTranslateRadiusXZ}" />
+                                        <MenuItem cal:Message.Attach="AddRandomization('TranslateX')" Header="{x:Static r:Labels.RandomizationTranslateX}" />
+                                        <MenuItem cal:Message.Attach="AddRandomization('TranslateZ')" Header="{x:Static r:Labels.RandomizationTranslateZ}" />
+                                        <MenuItem cal:Message.Attach="AddRandomization('TranslateY')" Header="{x:Static r:Labels.RandomizationTranslateY}" />
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                        </StackPanel>
+                        
+                        <ItemsControl ItemsSource="{Binding Randomizations}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="0 5">
+                                        <TextBlock Width="150">
+                                            <Run Text="{Binding TypeLabel, Mode=OneTime}" />
+                                        </TextBlock>
+                                        <TextBlock>
+                                            <Run Text="{x:Static r:Labels.RandomFrom}" />
+                                        </TextBlock>
+                                        <TextBox Width="40" Text="{Binding Min}" Margin="5 0" />
+                                        <TextBlock>
+                                            <Run Text="{x:Static r:Labels.RandomTo}" />
+                                        </TextBlock>
+                                        <TextBox Width="40" Text="{Binding Max}" Margin="5 0"  />
+
+                                        <TextBlock Visibility="{Binding HasCenterPoint, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <Run Text="{x:Static r:Labels.CenterOn}" />
+                                        </TextBlock>
+                                        <TextBox Margin="5 0" Width="60" Text="{Binding X}" Visibility="{Binding HasCenterPoint, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <TextBox Margin="5 0" Width="60" Text="{Binding Y}" Visibility="{Binding HasCenterPoint, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <TextBox Margin="5 0" Width="60" Text="{Binding Z}" Visibility="{Binding HasCenterPoint, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                        <Button cal:Message.Attach="Remove">❌</Button>
+                                        
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
         </DataGrid>
+        
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button Command="{Binding Importer.AddSingle}" Padding="5 0">
                 <Run Text="{x:Static r:Labels.AddAnObject}" />

@@ -1,6 +1,6 @@
-﻿using GeoAPI.Geometries;
+﻿using System.Text;
+using GeoAPI.Geometries;
 using OsmSharp;
-using OsmSharp.Complete;
 using OsmSharp.Db;
 using OsmSharp.Db.Impl;
 using OsmSharp.Geo;
@@ -22,6 +22,14 @@ namespace GameRealisticMap.Osm
         internal static OsmDataSource CreateFromXml(string osmFile)
         {
             using (var fileStream = File.OpenRead(osmFile))
+            {
+                return new OsmDataSource(new MemorySnapshotDb(new XmlOsmStreamSource(fileStream)));
+            }
+        }
+
+        internal static OsmDataSource CreateFromInlineXml(string xml)
+        {
+            using (var fileStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
             {
                 return new OsmDataSource(new MemorySnapshotDb(new XmlOsmStreamSource(fileStream)));
             }

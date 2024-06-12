@@ -192,7 +192,7 @@ namespace GameRealisticMap.Geometries
                 other.MaxPoint.Y >= MinPoint.Y;
         }
 
-        internal GeoJSON.Text.Geometry.LineString ToGeoJson(Func<TerrainPoint, GeoJSON.Text.Geometry.IPosition> project)
+        public GeoJSON.Text.Geometry.LineString ToGeoJson(Func<TerrainPoint, GeoJSON.Text.Geometry.IPosition> project)
         {
             return new GeoJSON.Text.Geometry.LineString(Points.Select(project).ToList());
         }
@@ -309,6 +309,28 @@ namespace GameRealisticMap.Geometries
         private List<TerrainPath> KeepOrientation(List<TerrainPath> clipped)
         {
             var initialPoints = Points.Select(p => p.ToIntPointPrecision()).ToList();
+            if (IsClosed)
+            {
+                var noMoreExists = initialPoints.Where(p => !clipped.Any(c => c.Points.Any(np => TerrainPoint.Equals(np, p)))).ToList();
+                if (noMoreExists.Count > 0)
+                {
+                    var newStart = initialPoints.IndexOf(noMoreExists[0]);
+                    if (newStart != -1)
+                    {
+                        initialPoints = initialPoints.Skip(newStart).Concat(initialPoints.Skip(1).Take(newStart)).ToList();
+                    }
+                }
+                else if (clipped.Count == 1 && clipped[0].Points.Count == Points.Count) // all points are still here, same length, it's all the same
+                {
+                    return new List<TerrainPath>() { new TerrainPath(initialPoints) };
+                }
+#if DEBUG
+                else
+                {
+                    throw new InvalidOperationException("Unsupported edge case");
+                }
+#endif
+            }
             foreach (var result in clipped)
             {
                 if (result.Points.Count < 2)
@@ -366,7 +388,7 @@ namespace GameRealisticMap.Geometries
         {
             var initialVect = Vector2.Normalize(initialComparePoint.Vector - sharedReferencePoint.Vector);
             var resultVect = Vector2.Normalize(resultComparePoint.Vector - sharedReferencePoint.Vector);
-            if (Vector2.Dot(initialVect, resultVect) < 0)
+            if (Vector2.Dot(initialVect, resultVect) <= 0)
             {
                 result.Points.Reverse();
             }

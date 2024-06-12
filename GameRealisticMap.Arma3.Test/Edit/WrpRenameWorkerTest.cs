@@ -147,5 +147,29 @@ class CfgWorlds
             Assert.Equal(@"FILE01", fs.ReadAllText("newprefix\\file01.paa"));
             Assert.Equal(@"FILE03", fs.ReadAllText("newprefix\\file03.paa"));
         }
+
+        [Fact]
+        public async Task CopyReferencedFiles_WithPng()
+        {
+            var fs = new GameFileSystemMock();
+            fs.CreateDirectory("oldprefix");
+            fs.WriteTextFile("oldprefix\\file01.paa", "FILE01");
+            fs.WriteTextFile("oldprefix\\file03.paa", "FILE03");
+            fs.WriteTextFile("oldprefix\\file03.png", "FILE03-PNG");
+            var worker = new WrpRenameWorker(new NoProgressSystem(), fs, "oldprefix", "newprefix");
+
+            worker.UpdateConfigContent(@" ""oldprefix\file01.paa"" ""other\file02.paa"" ""oldprefix\file03.paa"" "); // Only to add values into ReferencedFiles
+
+            Assert.Equal(3, worker.ReferencedFiles.Count());
+
+            await worker.CopyReferencedFiles();
+
+            Assert.Empty(worker.ReferencedFiles);
+
+            Assert.Equal(@"FILE01", fs.ReadAllText("newprefix\\file01.paa"));
+            Assert.Equal(@"FILE03", fs.ReadAllText("newprefix\\file03.paa"));
+            Assert.Equal(@"FILE03-PNG", fs.ReadAllText("newprefix\\file03.png"));
+        }
+
     }
 }

@@ -1,30 +1,30 @@
 ﻿using System.Text.Json;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.ElevationModel;
-using GameRealisticMap.Geometries;
-using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using GeoJSON.Text.Feature;
-using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Preview
 {
     public class PreviewRender
     {
         private readonly ITerrainArea terrainArea;
-        private readonly IImageryOptions imagery;
+        private readonly IMapProcessingOptions imagery;
         private readonly IBuildersConfig config;
+        private readonly ISourceLocations sources;
 
-        public PreviewRender(ITerrainArea terrainArea, IImageryOptions imagery)
-            : this(terrainArea, imagery, new DefaultBuildersConfig())
+        public PreviewRender(ITerrainArea terrainArea, IMapProcessingOptions imagery)
+            : this(terrainArea, imagery, new DefaultBuildersConfig(), new DefaultSourceLocations())
         {
         }
 
-        public PreviewRender(ITerrainArea terrainArea, IImageryOptions imagery, IBuildersConfig config)
+        public PreviewRender(ITerrainArea terrainArea, IMapProcessingOptions imagery, IBuildersConfig config, ISourceLocations sources)
         {
             this.terrainArea = terrainArea;
             this.imagery = imagery;
             this.config = config;
+            this.sources = sources;
         }
 
         public async Task RenderHtml(IProgressTask progress, string targetFile, bool ignoreElevation = false)
@@ -37,11 +37,11 @@ namespace GameRealisticMap.Preview
                     filter = (t) => t != typeof(ElevationContourData);
                 }
 
-                var catalog = new BuildersCatalog(progress, config);
+                var catalog = new BuildersCatalog(progress, config, sources);
                 var count = catalog.CountOfType<IGeoJsonData>(filter);
                 progress.Total = count + 2;
 
-                var loader = new OsmDataOverPassLoader(progress);
+                var loader = new OsmDataOverPassLoader(progress, sources);
                 var osmSource = await loader.Load(terrainArea);
                 progress.ReportOneDone();
                 if (progress.CancellationToken.IsCancellationRequested)
@@ -82,10 +82,10 @@ namespace GameRealisticMap.Preview
         {
             try
             {
-                var catalog = new BuildersCatalog(progress, config);
+                var catalog = new BuildersCatalog(progress, config, sources);
                 progress.Total = 3;
 
-                var loader = new OsmDataOverPassLoader(progress);
+                var loader = new OsmDataOverPassLoader(progress, sources);
                 var osmSource = await loader.Load(terrainArea);
                 progress.ReportOneDone();
                 if (progress.CancellationToken.IsCancellationRequested)

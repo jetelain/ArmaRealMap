@@ -1,16 +1,19 @@
-﻿using GameRealisticMap.Reporting;
+﻿using GameRealisticMap.Configuration;
+using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Osm
 {
     public class OsmDataOverPassLoader : IOsmDataLoader
     {
         private readonly IProgressSystem progress;
+        private readonly ISourceLocations sources;
         private readonly string cacheDirectory = Path.Combine(Path.GetTempPath(), "GameRealisticMap", "OverPass");
         private readonly int cacheDays = 1;
 
-        public OsmDataOverPassLoader(IProgressSystem progress)
+        public OsmDataOverPassLoader(IProgressSystem progress, ISourceLocations sources)
         {
             this.progress = progress;
+            this.sources = sources;
         }
 
         public async Task<IOsmDataSource> Load(ITerrainArea area)
@@ -32,21 +35,6 @@ namespace GameRealisticMap.Osm
             {
                 using var report = progress.CreateStep("Download from OSM", 1);
                 Directory.CreateDirectory(cacheDirectory);
-                //double margin = 0.03;
-                //var uri = FormattableString.Invariant($"https://overpass-api.de/api/map?bbox={box.Left - margin},{box.Bottom - margin},{box.Right + margin},{box.Top + margin}");
-                //progress.WriteLine($"GET {uri}");
-                //using (var client = new HttpClient())
-                //{
-                //    using (var target = File.Create(cacheFileName))
-                //    {
-                //        using (var download = await client.GetStreamAsync(uri))
-                //        {
-                //            await download.CopyToAsync(target);
-                //        }
-                //    }
-                //}
-
-                // https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_API_by_Example#Example:_Simplest_possible_map_call
 
                 var qlbb = FormattableString.Invariant($"{box.Bottom},{box.Left},{box.Top},{box.Right}");
                 var query = FormattableString.Invariant(@$"[timeout:300];
@@ -73,8 +61,8 @@ namespace GameRealisticMap.Osm
   rel(br);
 );
 out;"); ;
-                var uri = "https://overpass-api.de/api/interpreter";
-                progress.WriteLine($"POST {uri}");
+                var uri = sources.OverpassApiInterpreter;
+                progress.WriteLine($"POST {uri.AbsoluteUri}");
                 progress.WriteLine($"{query}");
                 using (var client = new HttpClient())
                 {

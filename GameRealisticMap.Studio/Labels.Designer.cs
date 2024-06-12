@@ -133,6 +133,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Add randomization.
+        /// </summary>
+        public static string AddRandomization {
+            get {
+                return ResourceManager.GetString("AddRandomization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Advanced parameters.
         /// </summary>
         public static string AdvancedParameters {
@@ -1250,6 +1259,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à centered on.
+        /// </summary>
+        public static string CenterOn {
+            get {
+                return ResourceManager.GetString("CenterOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Change.
         /// </summary>
         public static string Change {
@@ -1534,6 +1552,15 @@ namespace GameRealisticMap.Studio {
         public static string CreateATexture {
             get {
                 return ResourceManager.GetString("CreateATexture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Define coordinates for data generation.
+        /// </summary>
+        public static string CreateGenericMapConfigurationDescription {
+            get {
+                return ResourceManager.GetString("CreateGenericMapConfigurationDescription", resourceCulture);
             }
         }
         
@@ -2443,6 +2470,51 @@ namespace GameRealisticMap.Studio {
         public static string GeneratingPreview {
             get {
                 return ResourceManager.GetString("GeneratingPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generic Map Configuration.
+        /// </summary>
+        public static string GenericMapConfiguration {
+            get {
+                return ResourceManager.GetString("GenericMapConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate a height map, a satellite texture and shapes to use with any other game engine or 3d software..
+        /// </summary>
+        public static string GenericMapDescription {
+            get {
+                return ResourceManager.GetString("GenericMapDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Export profile.
+        /// </summary>
+        public static string GenericMapExportProfile {
+            get {
+                return ResourceManager.GetString("GenericMapExportProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generate data.
+        /// </summary>
+        public static string GenericMapGenerate {
+            get {
+                return ResourceManager.GetString("GenericMapGenerate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Generic.
+        /// </summary>
+        public static string GenericMapTitle {
+            get {
+                return ResourceManager.GetString("GenericMapTitle", resourceCulture);
             }
         }
         
@@ -3422,6 +3494,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Private Service Road Threshold.
+        /// </summary>
+        public static string PrivateServiceRoadThreshold {
+            get {
+                return ResourceManager.GetString("PrivateServiceRoadThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Probability.
         /// </summary>
         public static string Probability {
@@ -3481,6 +3562,60 @@ namespace GameRealisticMap.Studio {
         public static string Randomization {
             get {
                 return ResourceManager.GetString("Randomization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Rotate.
+        /// </summary>
+        public static string RandomizationRotateY {
+            get {
+                return ResourceManager.GetString("RandomizationRotateY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Scale variation.
+        /// </summary>
+        public static string RandomizationScaleUniform {
+            get {
+                return ResourceManager.GetString("RandomizationScaleUniform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Move within radius.
+        /// </summary>
+        public static string RandomizationTranslateRadiusXZ {
+            get {
+                return ResourceManager.GetString("RandomizationTranslateRadiusXZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Move on X Axis.
+        /// </summary>
+        public static string RandomizationTranslateX {
+            get {
+                return ResourceManager.GetString("RandomizationTranslateX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Elevation variation.
+        /// </summary>
+        public static string RandomizationTranslateY {
+            get {
+                return ResourceManager.GetString("RandomizationTranslateY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Move on Y Axis.
+        /// </summary>
+        public static string RandomizationTranslateZ {
+            get {
+                return ResourceManager.GetString("RandomizationTranslateZ", resourceCulture);
             }
         }
         
@@ -4084,6 +4219,15 @@ namespace GameRealisticMap.Studio {
         public static string TakeAerialImages {
             get {
                 return ResourceManager.GetString("TakeAerialImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Target directory.
+        /// </summary>
+        public static string TargetDirectory {
+            get {
+                return ResourceManager.GetString("TargetDirectory", resourceCulture);
             }
         }
         
