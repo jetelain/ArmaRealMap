@@ -4,6 +4,7 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Airports;
 using GameRealisticMap.ManMade.Buildings;
+using GameRealisticMap.ManMade.Cutlines;
 using GameRealisticMap.ManMade.DefaultUrbanAreas;
 using GameRealisticMap.ManMade.Farmlands;
 using GameRealisticMap.ManMade.Fences;
@@ -81,6 +82,7 @@ namespace GameRealisticMap
             Register(new AirportBuilder(progress));
             Register(new AerowaysBuilder(progress));
             Register(new AsphaltBuilder(progress));
+            Register(new CutlinesBuilder(progress));
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)

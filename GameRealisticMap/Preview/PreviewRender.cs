@@ -10,16 +10,16 @@ namespace GameRealisticMap.Preview
     public class PreviewRender
     {
         private readonly ITerrainArea terrainArea;
-        private readonly IImageryOptions imagery;
+        private readonly IMapProcessingOptions imagery;
         private readonly IBuildersConfig config;
         private readonly ISourceLocations sources;
 
-        public PreviewRender(ITerrainArea terrainArea, IImageryOptions imagery)
+        public PreviewRender(ITerrainArea terrainArea, IMapProcessingOptions imagery)
             : this(terrainArea, imagery, new DefaultBuildersConfig(), new DefaultSourceLocations())
         {
         }
 
-        public PreviewRender(ITerrainArea terrainArea, IImageryOptions imagery, IBuildersConfig config, ISourceLocations sources)
+        public PreviewRender(ITerrainArea terrainArea, IMapProcessingOptions imagery, IBuildersConfig config, ISourceLocations sources)
         {
             this.terrainArea = terrainArea;
             this.imagery = imagery;

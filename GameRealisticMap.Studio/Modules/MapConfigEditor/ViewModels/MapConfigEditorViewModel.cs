@@ -11,7 +11,6 @@ using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Preview;
 using GameRealisticMap.Satellite;
 using GameRealisticMap.Studio.Modules.Arma3Data;
@@ -20,11 +19,11 @@ using GameRealisticMap.Studio.Modules.Arma3WorldEditor;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
+using GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels;
 using GameRealisticMap.Studio.Modules.Main;
 using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
-using Gemini.Framework;
 using Gemini.Framework.Services;
 using HugeImages.Storage;
 using MapControl;
@@ -32,24 +31,23 @@ using Microsoft.Win32;
 
 namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 {
-    internal class MapConfigEditorViewModel : PersistedDocument, IExplorerRootTreeItem, IMainDocument
+    internal class MapConfigEditorViewModel : MapConfigEditorBase, IExplorerRootTreeItem, IMainDocument
     {
-        private readonly IShell _shell;
         private readonly IArma3DataModule _arma3DataModule;
 
         public MapConfigEditorViewModel(IShell shell, IArma3DataModule arma3DataModule)
+            : base(shell)
         {
-            _shell = shell;
             _arma3DataModule = arma3DataModule;
         }
 
         public List<string> BuiltinAssetConfigFiles { get; } = Arma3Assets.GetBuiltinList();
 
-        public Arma3MapConfigJson Config { get; set; } = new Arma3MapConfigJson() { UseColorCorrection = true };
+        public Arma3MapConfigJson Config { get; set; } = new Arma3MapConfigJson() { UseColorCorrection = true, PrivateServiceRoadThreshold = MapProcessingOptions.Default.PrivateServiceRoadThreshold };
 
-        public int[] GridSizes { get; } = new int[] { 256, 512, 1024, 2048, 4096, 8192 };
-        
-        public string Center
+        public override int[] GridSizes => GridHelper.Arma3GridSizes;
+
+        public override string Center
         {
             get { return Config.Center ?? string.Empty ; }
             set
@@ -68,7 +66,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         private void NotifyCoordinatesRelated()
         {
-            NotifyOfPropertyChange(nameof(Locations));
+            NotifyOfPropertyChange(nameof(MapSelection));
 
             UpdateAutomaticValues();
         }
@@ -97,7 +95,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(AutomaticTileSize));
         }
 
-        public string SouthWest
+        public override string SouthWest
         {
             get { return Config.SouthWest ?? string.Empty; }
             set
@@ -114,12 +112,12 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             }
         }
 
-        public float GridCellSize
+        public override float GridCellSize
         {
             get { return Config.GridCellSize; }
             set
             {
-                Config.GridCellSize = NormalizeCellSize(value);
+                Config.GridCellSize = GridHelper.NormalizeCellSize(value);
                 NotifyOfPropertyChange(nameof(MapSize));
                 NotifyOfPropertyChange(nameof(GridCellSize));
                 NotifyCoordinatesRelated();
@@ -127,7 +125,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             }
         }
 
-        public int GridSize 
+        public override int GridSize 
         { 
             get { return Config.GridSize; }
             set 
@@ -140,22 +138,13 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             }
         }
 
-        public float MapSize 
+        public override float MapSize 
         { 
             get { return Config.GridSize * Config.GridCellSize; }
             set
             {
-                Config.GridSize = GridSizes.Max();
-                foreach (var candidate in GridSizes)
-                {
-                    var cellsize = value / candidate;
-                    if (cellsize > 2 && cellsize < 8)
-                    {
-                        Config.GridSize = candidate;
-                        break;
-                    }
-                }
-                Config.GridCellSize = NormalizeCellSize(value / Config.GridSize);
+                Config.GridSize = GridHelper.GetGridSize(GridSizes, value);
+                Config.GridCellSize = GridHelper.NormalizeCellSize(value / Config.GridSize);
                 NotifyOfPropertyChange(nameof(MapSize));
                 NotifyOfPropertyChange(nameof(GridSize));
                 NotifyOfPropertyChange(nameof(GridCellSize));
@@ -192,26 +181,6 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 Config.PboPrefix = value;
                 NotifyOfPropertyChange(nameof(PboPrefix));
                 IsDirty = true;
-            }
-        }
-
-        private float NormalizeCellSize(float v)
-        {
-            return MathF.Round(v * 8) / 8;
-            // 0.125 precision
-            // Map size is enforced as multiple of 32 meters
-        }
-
-        public IEnumerable<Location> Locations
-        {
-            get 
-            { 
-                if (!string.IsNullOrEmpty(Config.SouthWest) || !string.IsNullOrEmpty(Config.Center))
-                {
-                    var area = Config.ToArma3MapConfig().TerrainArea;
-                    return area.TerrainBounds.Shell.Select(area.TerrainPointToLatLng).Select(l => new Location(l.Y, l.X));
-                }
-                return new List<Location>(); 
             }
         }
 
@@ -270,6 +239,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         {
             using var stream = File.OpenRead(filePath);
             Config = await JsonSerializer.DeserializeAsync<Arma3MapConfigJson>(stream) ?? new Arma3MapConfigJson();
+            Config.PrivateServiceRoadThreshold = Config.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
             NotifyOfPropertyChange(nameof(Config));
             NotifyOfPropertyChange(nameof(SouthWest));
             NotifyOfPropertyChange(nameof(Center));
@@ -323,10 +293,6 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewResultInWebBrowser);
         }
 
-        public Task GeneratePreviewNew()
-        {
-            return _shell.OpenDocumentAsync(new MapPreviewViewModel(this));
-        }
 
         internal async Task<IBuildersConfig> GetBuildersConfigSafe(Arma3MapConfig a3config)
         {
@@ -635,6 +601,13 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                 freindlyName + ", GameRealisticMap",
                 a3config.TargetModDirectory,
                 IsNew ? null : FilePath);
+        }
+
+        internal override async Task<(IBuildersConfig, IMapProcessingOptions, ITerrainArea)> GetPreviewConfig()
+        {
+            var a3config = Config.ToArma3MapConfig();
+            var config = await GetBuildersConfigSafe(a3config);
+            return (config, a3config, a3config.TerrainArea);
         }
 
         public bool UseColorCorrection

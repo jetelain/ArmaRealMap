@@ -5,7 +5,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3
 {
-    public class Arma3MapConfig : IArma3MapConfig, IImageryOptions, IPboConfig
+    public class Arma3MapConfig : IArma3MapConfig, IMapProcessingOptions, IPboConfig
     {
         public Arma3MapConfig(Arma3MapConfigJson arma3MapConfigJson)
         {
@@ -55,6 +55,8 @@ namespace GameRealisticMap.Arma3
 
             UseColorCorrection = arma3MapConfigJson.UseColorCorrection;
 
+            PrivateServiceRoadThreshold = arma3MapConfigJson.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
+
             Arma3ConfigHelper.ValidatePboPrefix(PboPrefix);
             Arma3ConfigHelper.ValidateWorldName(WorldName);
         }
@@ -82,7 +84,7 @@ namespace GameRealisticMap.Arma3
 
         public ITerrainArea TerrainArea { get; }
 
-        public IImageryOptions Imagery => this;
+        public IMapProcessingOptions Imagery => this;
 
         public float SizeInMeters => TerrainArea.SizeInMeters;
 
@@ -104,5 +106,7 @@ namespace GameRealisticMap.Arma3
         public string TargetModDirectory { get; }
 
         public bool UseColorCorrection { get; }
+
+        public float PrivateServiceRoadThreshold { get; }
     }
 }

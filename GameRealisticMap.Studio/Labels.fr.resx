@@ -1603,4 +1603,28 @@ Dernière génération le {1}</value>
   <data name="CenterOn" xml:space="preserve">
     <value>centrée sur</value>
   </data>
+  <data name="GenericMapConfiguration" xml:space="preserve">
+    <value>Configuration de Carte Générique</value>
+  </data>
+  <data name="GenericMapExportProfile" xml:space="preserve">
+    <value>Profil d'exportation</value>
+  </data>
+  <data name="GenericMapGenerate" xml:space="preserve">
+    <value>Générer les données</value>
+  </data>
+  <data name="GenericMapTitle" xml:space="preserve">
+    <value>Générique</value>
+  </data>
+  <data name="GenericMapDescription" xml:space="preserve">
+    <value>Générer une carte de dénivelé, une image satellite et des formes pour utilisation avec n'importe quel autre moteur de jeu ou logiciel 3d.</value>
+  </data>
+  <data name="TargetDirectory" xml:space="preserve">
+    <value>Répertoire cible</value>
+  </data>
+  <data name="CreateGenericMapConfigurationDescription" xml:space="preserve">
+    <value>Définir les coordonnées pour la génération de données</value>
+  </data>
+  <data name="PrivateServiceRoadThreshold" xml:space="preserve">
+    <value>Seuil des routes privées</value>
+  </data>
 </root>

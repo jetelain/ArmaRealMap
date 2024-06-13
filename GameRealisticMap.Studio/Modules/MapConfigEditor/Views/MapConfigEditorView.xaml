@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:map="clr-namespace:MapControl;assembly=MapControl.WPF"
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+             xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.MapConfigEditor.Views"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
@@ -179,43 +179,19 @@
                         </Label>
                         <toolkit:WatermarkTextBox Width="500" Text="{Binding Config.TargetModDirectory, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticTargetModDirectory}"  />
                     </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200">
+                            <Run Text="{x:Static r:Labels.PrivateServiceRoadThreshold}"/>
+                        </Label>
+                        <TextBox Width="200" Text="{Binding Config.PrivateServiceRoadThreshold, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock Margin="10 0">
+                            <Run Text="{x:Static r:Labels.MetersUnit}" />
+                        </TextBlock>
+                    </StackPanel>
                 </StackPanel>
             </Expander>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="200" />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Column="1" Margin="7">
-                    <TextBlock Margin="0 0 0 20" TextWrapping="Wrap" Text="{x:Static r:Labels.MapUsageHint}" />
-                    <TextBlock>
-                        <Hyperlink NavigateUri="https://www.openstreetmap.org/" RequestNavigate="Hyperlink_RequestNavigate"><Run Text="{x:Static r:Labels.ViewOnOpenStreetMapOrg}" /></Hyperlink>
-                    </TextBlock>
-                    <TextBlock Margin="0 20" TextWrapping="Wrap">
-© OpenStreetMap contributors. See https://openstreetmap.org/
-                    </TextBlock>
-                </StackPanel>
-
-                <map:Map x:Name="MapControl"
-                 Height="600"
-                 MinZoomLevel="2" MaxZoomLevel="21" ZoomLevel="2"
-                 Center="53.5,8.2" ManipulationMode="All"
-                 MouseDown="Map_MouseDown"
-                 MouseUp="Map_MouseUp"
-                 MouseMove="Map_MouseMove"
-                 MouseWheel="MapControl_MouseWheel">
-                    <map:MapTileLayer
-                TileSource="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-                SourceName="OpenStreetMap"
-                Description="© [OpenStreetMap contributors](https://www.openstreetmap.org/copyright)"/>
-                    <map:MapPolyline Stroke="Red" StrokeThickness="2" Locations="{Binding Locations}" />
-                    <map:MapPolyline Stroke="Blue" StrokeThickness="2" Visibility="Collapsed" x:Name="RectanglePreview" />
-                </map:Map>
-            </Grid>
-
-            <!--https://www.openstreetmap.org/edit#map=14/47.5534/6.9822-->
+            <grm:LocationSelectorMap MapSelection="{Binding MapSelection, Mode=TwoWay}" />
 
         </StackPanel>
     </ScrollViewer>

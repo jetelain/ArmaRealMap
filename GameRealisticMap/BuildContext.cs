@@ -11,13 +11,13 @@ namespace GameRealisticMap
         private readonly IProgressSystem progress;
         private readonly IBuidersCatalog catalog;
 
-        public BuildContext(IBuidersCatalog catalog, IProgressSystem progress, ITerrainArea area, IOsmDataSource source, IImageryOptions imagery, IHugeImageStorage? his = null)
+        public BuildContext(IBuidersCatalog catalog, IProgressSystem progress, ITerrainArea area, IOsmDataSource source, IMapProcessingOptions imagery, IHugeImageStorage? his = null)
         {
             this.progress = progress;
             this.catalog = catalog;
             Area = area;
             OsmSource = source;
-            Imagery = imagery;
+            Options = imagery;
             HugeImageStorage = his ?? new TemporaryHugeImageStorage();
         }
 
@@ -27,7 +27,7 @@ namespace GameRealisticMap
 
         public IOsmDataSource OsmSource { get; }
 
-        public IImageryOptions Imagery { get; }
+        public IMapProcessingOptions Options { get; }
 
         public IHugeImageStorage HugeImageStorage { get; }
 

@@ -68,7 +68,7 @@ namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
             var catalog = new BuildersCatalog(taskUI, config, sources);
             var loader = new OsmDataOverPassLoader(taskUI, sources);
             var osmSource = await loader.Load(a3config.TerrainArea);
-            var context = new BuildContext(catalog, taskUI, a3config.TerrainArea, osmSource, new ImageryOptions());
+            var context = new BuildContext(catalog, taskUI, a3config.TerrainArea, osmSource, new MapProcessingOptions());
             conditionEvaluator = context.GetData<ConditionEvaluator>();
             PreviewMapData = new PreviewMapData(context);
             mapData = context;

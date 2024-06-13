@@ -1,0 +1,209 @@
+﻿{
+  "Entries": [
+    {
+      "Exporter": "ElevationRaw",
+      "FileName": "ElevationRaw.asc",
+      "Format": "EsriAscii"
+    },
+    {
+      "Exporter": "ElevationStamped",
+      "FileName": "ElevationStamped.asc",
+      "Format": "EsriAscii"
+    },
+    {
+      "Exporter": "Elevation",
+      "FileName": "Elevation.asc",
+      "Format": "EsriAscii"
+    },
+    {
+      "Exporter": "RawSatelliteImage",
+      "FileName": "RawSatelliteImage.png",
+      "Format": "Image"
+    },
+    {
+      "Exporter": "Asphalt",
+      "FileName": "Asphalt.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Coastline",
+      "FileName": "Coastline.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Farmlands",
+      "FileName": "Farmlands.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Forest",
+      "FileName": "Forest.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "ForestEdge",
+      "FileName": "ForestEdge.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "ForestRadial",
+      "FileName": "ForestRadial.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Grass",
+      "FileName": "Grass.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Ice",
+      "FileName": "Ice.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "LakesRaw",
+      "FileName": "LakesRaw.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Meadows",
+      "FileName": "Meadows.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Ocean",
+      "FileName": "Ocean.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Orchard",
+      "FileName": "Orchard.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Rocks",
+      "FileName": "Rocks.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Sand",
+      "FileName": "Sand.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Scree",
+      "FileName": "Scree.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Scrub",
+      "FileName": "Scrub.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "ScrubRadial",
+      "FileName": "ScrubRadial.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Vineyard",
+      "FileName": "Vineyard.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "WatercourseRadial",
+      "FileName": "WatercourseRadial.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "WatercourseSurface",
+      "FileName": "WatercourseSurface.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Lakes",
+      "FileName": "Lakes.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "BuildingsRectangle",
+      "FileName": "BuildingsRectangle.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "BuildingsRealShape",
+      "FileName": "BuildingsRealShape.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Fences",
+      "FileName": "Fences.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Railways",
+      "FileName": "Railways.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Roads",
+      "FileName": "Roads.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultAgriculturalArea",
+      "FileName": "DefaultAgriculturalArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultCommercialArea",
+      "FileName": "DefaultCommercialArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultIndustrialArea",
+      "FileName": "DefaultIndustrialArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultMilitaryArea",
+      "FileName": "DefaultMilitaryArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultResidentialArea",
+      "FileName": "DefaultResidentialArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultRetailArea",
+      "FileName": "DefaultRetailArea.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "DefaultAreas",
+      "FileName": "DefaultAreas.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Airport",
+      "FileName": "Airport.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "TreeRows",
+      "FileName": "TreeRows.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "Trees",
+      "FileName": "Trees.shp",
+      "Format": "ShapeFile"
+    },
+    {
+      "Exporter": "OrientedObjects",
+      "FileName": "OrientedObjects.shp",
+      "Format": "ShapeFile"
+    }
+  ]
+}

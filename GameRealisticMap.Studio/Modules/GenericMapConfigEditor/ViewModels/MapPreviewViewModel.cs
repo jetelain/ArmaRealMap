@@ -20,13 +20,12 @@ using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Shared;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework;
-using GeoAPI.Geometries;
 
-namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
+namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
 {
     internal class MapPreviewViewModel : Document
     {
-        private readonly MapConfigEditorViewModel map;
+        private readonly MapConfigEditorBase map;
 
         public PreviewMapData? PreviewMapData { get; set; }
 
@@ -38,14 +37,14 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         public bool IsNotWorking => !IsWorking;
 
-        public MapConfigEditorViewModel Map => map;
+        public MapConfigEditorBase Map => map;
 
         public List<OptionalPreviewLayerVM> Optionals { get; }
 
-        public MapPreviewViewModel(MapConfigEditorViewModel map)
+        public MapPreviewViewModel(MapConfigEditorBase map)
         {
             this.map = map;
-            DisplayName = string.Format(GameRealisticMap.Studio.Labels.PreviewTitle, map.FileName);
+            DisplayName = string.Format(Labels.PreviewTitle, map.FileName);
 
             Optionals = new List<OptionalPreviewLayerVM>()
             {
@@ -53,14 +52,14 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
                 new OptionalPreviewLayerVM(this, "Fences", ctx => ctx.GetData<FencesData>().Fences.Select(f => f.Path).ToList()),
 
-                new OptionalPreviewLayerVM(this, "StreetLamps", 
+                new OptionalPreviewLayerVM(this, "StreetLamps",
                     ctx => ctx.GetData<ProceduralStreetLampsData>().Objects.Cast<IOrientedObject>()
                                 .Concat(ctx.GetData<OrientedObjectData>().Objects.Where(o => o.TypeId == ObjectTypeId.StreetLamp)).Select(p => p.Point).ToList()),
 
                 new OptionalPreviewLayerVM(this, "Trees", ctx => ctx.GetData<TreesData>().Points),
 
                 new OptionalPreviewLayerVM(this, "TreeRows", ctx => ctx.GetData<TreeRowsData>().Rows),
-                
+
                 new OptionalPreviewLayerVM(this, "Objects",
                     ctx => ctx.GetData<OrientedObjectData>().Objects.Where(o => o.TypeId != ObjectTypeId.StreetLamp).Select(p => p.Point).ToList()),
 
@@ -90,7 +89,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             {
                 if (typeof(IPolygonTerrainData).IsAssignableFrom(typeof(TData)) && !Ignore.Contains(typeof(TData)))
                 {
-                    return new OptionalPreviewLayerVM(preview, builder.GetType().Name.Replace("Builder",""), ctx => ((IPolygonTerrainData)ctx.GetData<TData>()).Polygons);
+                    return new OptionalPreviewLayerVM(preview, builder.GetType().Name.Replace("Builder", ""), ctx => ((IPolygonTerrainData)ctx.GetData<TData>()).Polygons);
                 }
                 return null;
             }
@@ -98,21 +97,21 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         protected override Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            IoC.Get<IProgressTool>().RunTask(GameRealisticMap.Studio.Labels.GeneratePreview, DoGenerateData, false);
+            IoC.Get<IProgressTool>().RunTask(Labels.GeneratePreview, DoGenerateData, false);
             return base.OnInitializeAsync(cancellationToken);
         }
 
         private async Task DoGenerateData(IProgressTaskUI taskUI)
         {
-            var a3config = map.Config.ToArma3MapConfig();
-            SizeInMeters = a3config.SizeInMeters;
+            var(config, options, area) = await map.GetPreviewConfig();
+
+            SizeInMeters = area.SizeInMeters;
             NotifyOfPropertyChange(nameof(SizeInMeters));
-            var config = await map.GetBuildersConfigSafe(a3config);
             var sources = IoC.Get<IGrmConfigService>().GetSources();
             var catalog = new BuildersCatalog(taskUI, config, sources);
             var loader = new OsmDataOverPassLoader(taskUI, sources);
-            var osmSource = await loader.Load(a3config.TerrainArea);
-            var context = new BuildContext(catalog, taskUI, a3config.TerrainArea, osmSource, new ImageryOptions());
+            var osmSource = await loader.Load(area);
+            var context = new BuildContext(catalog, taskUI, area, osmSource, options);
             PreviewMapData = new PreviewMapData(context);
             mapData = context;
             NotifyOfPropertyChange(nameof(PreviewMapData));
@@ -140,7 +139,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(IsNotWorking));
 
             PreviewMapData = new PreviewMapData(context, data.Additional.Concat(new[] { generate(context) }));
-            NotifyOfPropertyChange(nameof(PreviewMapData)); 
+            NotifyOfPropertyChange(nameof(PreviewMapData));
 
             IsWorking = false;
             NotifyOfPropertyChange(nameof(IsWorking));
@@ -167,7 +166,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         {
             if (mapData != null)
             {
-                ShellHelper.OpenUri("https://www.openstreetmap.org/#map="+ GetPosition(mapData.Area, terrainEnvelope));
+                ShellHelper.OpenUri("https://www.openstreetmap.org/#map=" + GetPosition(mapData.Area, terrainEnvelope));
             }
         }
 
@@ -192,7 +191,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             NotifyOfPropertyChange(nameof(IsWorking));
             NotifyOfPropertyChange(nameof(IsNotWorking));
 
-            foreach(var opt in Optionals)
+            foreach (var opt in Optionals)
             {
                 opt.SetActualEnabled(true);
             }
