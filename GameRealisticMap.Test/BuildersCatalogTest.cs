@@ -28,7 +28,7 @@ namespace GameRealisticMap.Test
         {
             var progress = new TestProgressSystem(output);
             var builders = new BuildersCatalog(progress, new DefaultBuildersConfig(), new DefaultSourceLocations());
-            var context = new BuildContext(builders, progress, TerrainAreaUTM.CreateFromCenter("0, 0", 1f, 256), new NoneOsmDataSource(), new ImageryOptions(), new MemoryHugeImageStorage());
+            var context = new BuildContext(builders, progress, TerrainAreaUTM.CreateFromCenter("0, 0", 1f, 256), new NoneOsmDataSource(), new MapProcessingOptions(), new MemoryHugeImageStorage());
             
             // Mock external sources
             context.SetData(new RawElevationData(new ElevationGrid(context.Area.GridSize, context.Area.GridCellSize)));
