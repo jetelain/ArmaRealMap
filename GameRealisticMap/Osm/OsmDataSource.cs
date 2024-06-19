@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using GeoAPI.Geometries;
+using MapToolkit;
 using OsmSharp;
 using OsmSharp.Db;
 using OsmSharp.Db.Impl;
@@ -8,7 +9,7 @@ using OsmSharp.Streams;
 
 namespace GameRealisticMap.Osm
 {
-    internal class OsmDataSource : IOsmDataSource
+    public sealed class OsmDataSource : IOsmDataSource
     {
         private readonly FeatureInterpreter interpret = new DefaultFeatureInterpreter2();
 
@@ -27,7 +28,7 @@ namespace GameRealisticMap.Osm
             }
         }
 
-        internal static OsmDataSource CreateFromInlineXml(string xml)
+        public static OsmDataSource CreateFromInlineXml(string xml)
         {
             using (var fileStream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
             {
@@ -43,6 +44,14 @@ namespace GameRealisticMap.Osm
             }
         }
 
+        public static IOsmDataSource CreateFromFile(string osmFile)
+        {
+            if (string.Equals(CompressionHelper.GetExtension(osmFile), ".xml", StringComparison.OrdinalIgnoreCase))
+            {
+                return CompressionHelper.Read(osmFile, stream => new OsmDataSource(new MemorySnapshotDb(new XmlOsmStreamSource(stream))));
+            }
+            return CompressionHelper.Read(osmFile, stream => new OsmDataSource(new MemorySnapshotDb(new PBFOsmStreamSource(stream))));
+        }
 
         public IEnumerable<OsmGeo> All => snapshot.Get();
 
