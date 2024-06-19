@@ -151,6 +151,12 @@
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">
+                            <Run Text="Texture mask multiplier"/>
+                        </Label>
+                        <ComboBox SelectedValue="{Binding Config.IdMapMultiplier,Mode=TwoWay}" ItemsSource="{Binding IdMapMultipliers}" />
+                    </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200">
                             <Run Text="Satellite color"/>
                         </Label>
                         <RadioButton GroupName="SatMapColor" IsChecked="{Binding UseColorCorrection}">Use color correction</RadioButton>

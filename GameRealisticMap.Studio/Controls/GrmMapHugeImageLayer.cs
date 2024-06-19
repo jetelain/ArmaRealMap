@@ -49,12 +49,12 @@ namespace GameRealisticMap.Studio.Controls
                 var scale = parentMap.Scale;
                 var resolution = Resolution;
                 var renderSize = RenderSize;
-                var actualClip = new Rect(deltaX / scale * resolution, deltaY / scale * resolution, renderSize.Width / scale * resolution, renderSize.Height / scale * resolution);
+                var actualClip = new Rect(deltaX / scale / resolution, deltaY / scale / resolution, renderSize.Width / scale / resolution, renderSize.Height / scale / resolution);
                 dc.PushTransform(parentMap.Translate);
                 dc.PushTransform(parentMap.ScaleTr);
                 if (resolution != 1)
                 {
-                    dc.PushTransform(new ScaleTransform(1 / resolution, 1 / resolution));
+                    dc.PushTransform(new ScaleTransform(resolution, resolution));
                 }
                 source.DrawTo(dc, actualClip);
                 if (resolution != 1)

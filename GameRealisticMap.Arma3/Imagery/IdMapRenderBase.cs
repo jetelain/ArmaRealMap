@@ -36,7 +36,7 @@ namespace GameRealisticMap.Arma3.Imagery
 
         public virtual HugeImage<TPixel> Render(IArma3MapConfig config, IContext context)
         {
-            var size = config.GetImagerySize();
+            var size = GetImageSize(config);
 
             var image = new HugeImage<TPixel>(context.HugeImageStorage, GetType().Name, new Size(size.Width, size.Height));
 
@@ -75,7 +75,7 @@ namespace GameRealisticMap.Arma3.Imagery
                 DrawPolygons(config, d, TerrainMaterialUsage.RiverGround, context.GetData<WatercoursesData>().Polygons);
 
                 DrawPolygons(config, d, TerrainMaterialUsage.LakeGround, context.GetData<ElevationWithLakesData>().Lakes.Select(l => l.TerrainPolygon));
-                
+
                 DrawPolygons(config, d, TerrainMaterialUsage.ScreeSurface, context.GetData<ScreeData>().Polygons);
 
                 DrawPolygons(config, d, TerrainMaterialUsage.RockGround, context.GetData<RocksData>().Polygons);
@@ -86,6 +86,8 @@ namespace GameRealisticMap.Arma3.Imagery
 
             return image;
         }
+
+        protected abstract Size GetImageSize(IArma3MapConfig config);
 
         private void DrawPolygons(IArma3MapConfig config, IImageProcessingContext d, TerrainMaterialUsage material, IEnumerable<TerrainPolygon> polygons)
         {

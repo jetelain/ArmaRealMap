@@ -26,6 +26,8 @@
 
         public bool UseColorCorrection { get; set; }
 
+        public int IdMapMultiplier { get; set; } = 1;
+
         public float? PrivateServiceRoadThreshold { get; set; }
 
         public Arma3MapConfig ToArma3MapConfig()

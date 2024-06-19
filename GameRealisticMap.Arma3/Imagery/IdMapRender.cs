@@ -1,5 +1,4 @@
 ﻿using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 using SixLabors.ImageSharp;
@@ -28,7 +27,12 @@ namespace GameRealisticMap.Arma3.Imagery
 
         protected override IEnumerable<PointF> TerrainToPixel(IArma3MapConfig config, IEnumerable<TerrainPoint> points)
         {
-            return config.TerrainToPixel(points);
+            return config.TerrainToIdMapPixel(points);
+        }
+
+        protected override Size GetImageSize(IArma3MapConfig config)
+        {
+            return config.GetIdMapSize();
         }
     }
 }

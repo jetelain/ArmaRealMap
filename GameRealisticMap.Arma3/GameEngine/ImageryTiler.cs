@@ -25,17 +25,29 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         public int TileOverlap { get; }
 
+        public int IdMapMultiplier { get; }
+
+        public int IdMapTileSize => TileSize * IdMapMultiplier;
+
+        public Size IdMapFullImageSize => FullImageSize * IdMapMultiplier;
+
         public ImageryTiler(IArma3MapConfig config)
-            : this(config.TileSize, config.Resolution, config.SizeInMeters)
+            : this(config.TileSize, config.Resolution, config.SizeInMeters, config.IdMapMultiplier)
         {
 
         }
 
-        public ImageryTiler(int tileSize, double resolution, float sizeInMeters)
+        public ImageryTiler(int tileSize, double resolution, float sizeInMeters, int idMapMultiplier = 1)
         {
             TileSize = tileSize;
             FullImageSize = new Size((int)Math.Ceiling(sizeInMeters / resolution));
             Resolution = resolution;
+            IdMapMultiplier = idMapMultiplier;
+
+            if (idMapMultiplier * tileSize >  4096)
+            {
+                throw new ArgumentException($"Id map tile would be too big: {idMapMultiplier} * {tileSize} => {idMapMultiplier * tileSize}");
+            }
 
             // https://github.com/pennyworth12345/A3_MMSI/wiki/Mapframe-Information
 

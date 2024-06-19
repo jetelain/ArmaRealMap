@@ -213,8 +213,11 @@ namespace GameRealisticMap.Arma3
         private static List<ImageryPart> GenerateParts(Arma3MapConfig config)
         {
             var parts = new List<ImageryPart>();
-
-            var hsize = config.GetImagerySize().Width;
+            if (config.IdMapMultiplier != 1)
+            {
+                throw new ApplicationException($"Satellite image and texture mask resolution must be the same for Terrain Builder export. IdMapMultiplier = {config.IdMapMultiplier}.");
+            }
+            var hsize = config.GetSatMapSize().Width;
             if (hsize < MaxTerrainBuilderImageSize)
             {
                 parts.Add(new ImageryPart(0, 0, TerrainBuilderObject.XShift, 0, hsize, string.Empty));
