@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.Generic.Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{28CB0CF8-3DAC-4E5A-852B-EAC186614514}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatasetsLoader", "tests\DatasetsLoader\DatasetsLoader.csproj", "{B5AA08B8-787D-4691-B795-DCE5DAA0D381}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -417,6 +419,26 @@ Global
 		{F1480749-7A37-40C3-8966-4734B3A173CE}.Release|x64.Build.0 = Release|Any CPU
 		{F1480749-7A37-40C3-8966-4734B3A173CE}.Release|x86.ActiveCfg = Release|Any CPU
 		{F1480749-7A37-40C3-8966-4734B3A173CE}.Release|x86.Build.0 = Release|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Debug|x64.Build.0 = Debug|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Debug|x86.Build.0 = Debug|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Release|ARM.Build.0 = Release|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Release|ARM64.Build.0 = Release|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Release|x64.ActiveCfg = Release|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Release|x64.Build.0 = Release|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Release|x86.ActiveCfg = Release|Any CPU
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -435,9 +457,10 @@ Global
 		{BE618D2C-5826-4B49-B887-8434999A4B1B} = {2BC1C49B-84B5-4AAA-89B6-72004913364E}
 		{6B8B93B7-19B9-4E22-8B85-172BC9D3FFB0} = {2BC1C49B-84B5-4AAA-89B6-72004913364E}
 		{F1480749-7A37-40C3-8966-4734B3A173CE} = {28CB0CF8-3DAC-4E5A-852B-EAC186614514}
+		{B5AA08B8-787D-4691-B795-DCE5DAA0D381} = {28CB0CF8-3DAC-4E5A-852B-EAC186614514}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {67E6979E-AD2E-4E18-82E9-C7B7D491C3E9}
 		RESX_MoveToResources = {"Items":[{"Extensions":".cs,.vb","Patterns":"$Namespace.$File.$Key|$File.$Key|StringResourceKey.$Key|$Namespace.StringResourceKey.$Key|nameof($File.$Key), ResourceType = typeof($File)|ErrorMessageResourceType = typeof($File), ErrorMessageResourceName = nameof($File.$Key)"},{"Extensions":".cshtml,.vbhtml","Patterns":"@$Namespace.$File.$Key|@$File.$Key|@StringResourceKey.$Key|@$Namespace.StringResourceKey.$Key"},{"Extensions":".cpp,.c,.hxx,.h","Patterns":"$File::$Key"},{"Extensions":".aspx,.ascx","Patterns":"<%$ Resources:$File,$Key %>|<%= $File.$Key %>|<%= $Namespace.$File.$Key %>"},{"Extensions":".xaml","Patterns":"\"{x:Static r:$File.$Key}\""},{"Extensions":".ts","Patterns":"resources.$Key"},{"Extensions":".html","Patterns":"{{ resources.$Key }}"}]}
+		SolutionGuid = {67E6979E-AD2E-4E18-82E9-C7B7D491C3E9}
 	EndGlobalSection
 EndGlobal
