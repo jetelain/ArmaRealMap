@@ -1,9 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Reporting;
 using HugeImages;
 using HugeImages.Processing;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -13,7 +13,7 @@ namespace GameRealisticMap.Arma3.GameEngine
     public class ImageryCompiler
     {
         private readonly TerrainMaterialLibrary materialLibrary;
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope progress;
         private readonly IGameFileSystemWriter gameFileSystemWriter;
 
         private class TextureStats
@@ -40,7 +40,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             new Rgba32(0, 0, 255, 0) // Stage13
         };
 
-        public ImageryCompiler(TerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystemWriter gameFileSystemWriter)
+        public ImageryCompiler(TerrainMaterialLibrary materialLibrary, IProgressScope progress, IGameFileSystemWriter gameFileSystemWriter)
         {
             this.materialLibrary = materialLibrary;
             this.progress = progress;
@@ -95,7 +95,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         internal void GenerateSatMapTiles(IArma3MapConfig config, HugeImage<Rgba32> satMap, ImageryTiler tiler)
         {
-            using var report = progress.CreateStep("SatMapTiling", tiler.Segments.Length);
+            using var report = progress.CreateInteger("SatMapTiling", tiler.Segments.Length);
             Parallel.For(0, tiler.Segments.GetLength(0), x =>
             {
                 using (var tile = new Image<Rgb24>(tiler.TileSize, tiler.TileSize, Color.Black.ToPixel<Rgb24>()))
@@ -114,7 +114,7 @@ namespace GameRealisticMap.Arma3.GameEngine
 
         internal HashSet<TerrainMaterial> GenerateIdMapTilesAndRvMat(IArma3MapConfig config, HugeImage<Rgba32> idmap, ImageryTiler tiler)
         {
-            using var report = progress.CreateStep("IdMapTiling", tiler.Segments.Length);
+            using var report = progress.CreateInteger("IdMapTiling", tiler.Segments.Length);
             var textureScale = GetTextureScale(config, materialLibrary);
             var allUsed = new ConcurrentQueue<HashSet<TerrainMaterial>>();
             Parallel.For(0, tiler.Segments.GetLength(0), x =>

@@ -1,23 +1,16 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade
 {
     internal class CategoryAreaBuilder : IDataBuilder<CategoryAreaData>
     {
-        private readonly IProgressSystem progress;
-
-        public CategoryAreaBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public CategoryAreaData Build(IBuildContext context)
+        public CategoryAreaData Build(IBuildContext context, IProgressScope scope)
         {
             var osmAreas = context.OsmSource.All.Where(o => o.Tags != null && o.Tags.ContainsKey("landuse")).ToList();
             var areas = new List<CategoryArea>();
-            using var report = progress.CreateStep("CategoryArea", osmAreas.Count);
+            using var report = scope.CreateInteger("CategoryArea", osmAreas.Count);
             foreach (var area in osmAreas)
             {
                 var buildingType = GetBuildingType(area.Tags.GetValue("landuse"));

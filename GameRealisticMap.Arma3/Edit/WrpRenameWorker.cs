@@ -3,12 +3,13 @@ using BIS.WRP;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Edit
 {
     public sealed class WrpRenameWorker
     {
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope progress;
         private readonly IGameFileSystemWriter writer;
         private readonly Regex oldPboPrefixRegex;
         private readonly string oldPboPrefix;
@@ -18,7 +19,7 @@ namespace GameRealisticMap.Arma3.Edit
 
         internal static readonly Regex IncludeRegex = new Regex(@"#include\s*""([^""]+)""", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
-        public WrpRenameWorker(IProgressSystem progress, IGameFileSystemWriter writer, string oldPboPrefix, string newPboPrefix)
+        public WrpRenameWorker(IProgressScope progress, IGameFileSystemWriter writer, string oldPboPrefix, string newPboPrefix)
         {
             this.progress = progress;
             this.writer = writer;
@@ -32,7 +33,7 @@ namespace GameRealisticMap.Arma3.Edit
 
         public async Task RenameAndCopyMaterials(EditableWrp world)
         {
-            using var step = progress.CreateStep("RvMat", world.MatNames.Length);
+            using var step = progress.CreateInteger("RvMat", world.MatNames.Length);
             for (int i = 0; i < world.MatNames.Length; i++)
             {
                 var oldName = world.MatNames[i];
@@ -48,7 +49,7 @@ namespace GameRealisticMap.Arma3.Edit
 
         public async Task CopyReferencedFiles()
         {
-            foreach (var file in filesToCopy.ProgressStep(progress, "ReferencedFiles"))
+            foreach (var file in filesToCopy.WithProgress(progress, "ReferencedFiles"))
             {
                 progress.WriteLine($"Copy '{file.Key}' to '{file.Value}'");
                 await writer.CopyAsync(file.Key, file.Value);
@@ -106,7 +107,7 @@ namespace GameRealisticMap.Arma3.Edit
 
         public async Task<GameConfigTextData> UpdateConfig(GameConfigTextData oldConfig, string newWorldName)
         {
-            using var report = progress.CreateStep("UpdateConfig", 1);
+            using var report = progress.CreateSingle("UpdateConfig");
             var newContent = oldConfig.InitialContent;
             newContent = new Regex("class\\s+" + Regex.Escape(oldConfig.WorldName) + "([^a-zA-Z0-9_])", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
                 .Replace(newContent, e => @$"class {newWorldName}{e.Groups[1].Value}");

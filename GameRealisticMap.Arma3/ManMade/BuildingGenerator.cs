@@ -6,18 +6,16 @@ using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Weather;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.ManMade
 {
     internal class BuildingGenerator : ITerrainBuilderLayerGenerator
     {
-        private readonly IProgressSystem progress;
         private readonly IArma3RegionAssets assets;
 
-        public BuildingGenerator(IProgressSystem progress, IArma3RegionAssets assets)
+        public BuildingGenerator(IArma3RegionAssets assets)
         {
-            this.progress = progress;
             this.assets = assets;
         }
 
@@ -47,7 +45,7 @@ namespace GameRealisticMap.Arma3.ManMade
             }
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
+        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var result = new List<Placed>();
             var buildings = context.GetData<BuildingsData>().Buildings;
@@ -60,7 +58,7 @@ namespace GameRealisticMap.Arma3.ManMade
             }
 
             var nonefits = 0;
-            using var report = progress.CreateStep("PlaceBuildings", buildings.Count);
+            using var report = scope.CreateInteger("PlaceBuildings", buildings.Count);
             foreach (var building in buildings)
             {
                 if (!TryPlaceBuilding(result, roads, building, 0.5f, 1.25f, prevailingWind)
@@ -70,7 +68,7 @@ namespace GameRealisticMap.Arma3.ManMade
                 }
                 report.ReportOneDone();
             }
-            progress.WriteLine($"{nonefits} buildings has no matching assets ({nonefits * 100.0 / buildings.Count:0.00} %).");
+            report.WriteLine($"{nonefits} buildings has no matching assets ({nonefits * 100.0 / buildings.Count:0.00} %).");
             return result.SelectMany(p => p.ToObjects());
         }
 

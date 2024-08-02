@@ -1,19 +1,12 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Scrubs;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature.RockAreas
 {
     internal class RocksBuilder : BasicBuilderBase<RocksData>
     {
-        public RocksBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override RocksData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new RocksData(polygons);

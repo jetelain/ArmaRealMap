@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Studio.Modules.Reporting
 {
-    internal interface IProgressTaskUI : IProgressTask
+    internal interface IProgressTaskUI : IDisposable
     {
+        IProgressScope Scope { get; }
+
         void AddSuccessAction(Action action, string label, string description = "");
     }
 }

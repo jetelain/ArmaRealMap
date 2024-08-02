@@ -2,19 +2,19 @@
 using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
     public abstract class FillAreaBase<TModelInfo>
     {
-        protected readonly IProgressSystem progress;
+        protected readonly IProgressScope progress;
         protected readonly CancellationToken cancellationToken;
 
-        protected FillAreaBase(IProgressSystem progress)
+        protected FillAreaBase(IProgressScope progress)
         {
             this.progress = progress;
-            this.cancellationToken = (progress as IProgressTask)?.CancellationToken ?? CancellationToken.None;
+            this.cancellationToken = progress.CancellationToken;
         }
 
         internal abstract AreaFillingBase<TModelInfo>? GenerateAreaSelectData(AreaDefinition fillarea, IConditionEvaluator conditionEvaluator);
@@ -26,8 +26,8 @@ namespace GameRealisticMap.Algorithms.Filling
 
         public virtual int FillPolygons(RadiusPlacedLayer<TModelInfo> objects, List<TerrainPolygon> polygons, IConditionEvaluator conditionEvaluator)
         {
-            var areas = GetFillAreas(polygons.ProgressStep(progress,"Areas"), conditionEvaluator);
-            using (var report = progress.CreateStep("Models", areas.Sum(a => a.ItemsToAdd)))
+            var areas = GetFillAreas(polygons.WithProgress(progress,"Areas"), conditionEvaluator);
+            using (var report = progress.CreateInteger("Models", areas.Sum(a => a.ItemsToAdd)))
             {
                 var generatedItems = 0;
                 var toprocess = areas.OrderByDescending(r => r.ItemsToAdd).ToList();

@@ -1,8 +1,7 @@
 ﻿using System.Numerics;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
-using SixLabors.ImageSharp;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
 
@@ -10,18 +9,11 @@ namespace GameRealisticMap.ManMade.Airports
 {
     internal sealed class AerowaysElevationProcessor : IElevationProcessorStage1
     {
-        private readonly IProgressSystem progress;
-
-        public AerowaysElevationProcessor(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public void ProcessStage1(ElevationGrid grid, IContext context)
+        public void ProcessStage1(ElevationGrid grid, IContext context, IProgressScope scope)
         {
             var aeroways = context.GetData<AerowaysData>();
 
-            foreach (var airport in aeroways.InsideAirports.ProgressStep(progress, "Aeroways"))
+            foreach (var airport in aeroways.InsideAirports.WithProgress(scope, "Aeroways"))
             {
                 SmoothAerowaysWithinAirport(airport, grid);
             }

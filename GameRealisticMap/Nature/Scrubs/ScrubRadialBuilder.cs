@@ -1,12 +1,11 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Forests;
-using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Nature.Scrubs
 {
     internal class ScrubRadialBuilder : BasicRadialBuilder<ScrubRadialData, ScrubData>
     {
-        public ScrubRadialBuilder(IProgressSystem progress) : base(progress, ScrubRadialData.Width)
+        public ScrubRadialBuilder() : base(ScrubRadialData.Width)
         {
 
         }

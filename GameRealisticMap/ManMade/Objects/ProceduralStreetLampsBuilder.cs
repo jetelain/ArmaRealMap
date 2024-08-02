@@ -4,7 +4,7 @@ using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.ManMade.Roads.Libraries;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Objects
 {
@@ -19,14 +19,7 @@ namespace GameRealisticMap.ManMade.Objects
             RoadTypeId.SingleLaneConcreteRoad,
         };
 
-        private readonly IProgressSystem progress;
-
-        public ProceduralStreetLampsBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public ProceduralStreetLampsData Build(IBuildContext context)
+        public ProceduralStreetLampsData Build(IBuildContext context, IProgressScope scope)
         {
             // Build Index of non-procedural elements
             var index = new SimpleSpacialIndex<IOrientedObject>(Vector2.Zero, new Vector2(context.Area.SizeInMeters));
@@ -45,11 +38,11 @@ namespace GameRealisticMap.ManMade.Objects
 
             var urban = context.GetData<CategoryAreaData>().Areas.SelectMany(a => a.PolyList);
 
-            var urbanMask = CreateUrbanMask(context, roadsWithLamps, everywhereMask, urban);
+            var urbanMask = CreateUrbanMask(context, roadsWithLamps, everywhereMask, urban, scope);
 
-            var nearUrbanMask = CreateNearUrbanMask(context, roadsWithLamps, everywhereMask, urban, urbanMask);
+            var nearUrbanMask = CreateNearUrbanMask(context, roadsWithLamps, everywhereMask, urban, urbanMask, scope);
 
-            foreach (var road in roadsWithLamps.ProgressStep(progress, "Roads"))
+            foreach (var road in roadsWithLamps.WithProgress(scope, "Roads"))
             {
                 var spacingMin = road.RoadTypeInfos.DistanceBetweenStreetLamps;
                 var spacingMax = road.RoadTypeInfos.DistanceBetweenStreetLampsMax;
@@ -93,23 +86,23 @@ namespace GameRealisticMap.ManMade.Objects
             return new ProceduralStreetLampsData(lamps);
         }
 
-        private List<TerrainPolygon> CreateNearUrbanMask(IBuildContext context, List<Road> roadsWithLamps, List<TerrainPolygon> everywhereMask, IEnumerable<TerrainPolygon> urban, List<TerrainPolygon> urbanMask)
+        private List<TerrainPolygon> CreateNearUrbanMask(IBuildContext context, List<Road> roadsWithLamps, List<TerrainPolygon> everywhereMask, IEnumerable<TerrainPolygon> urban, List<TerrainPolygon> urbanMask, IProgressScope scope)
         {
             if (!roadsWithLamps.Any(e => e.RoadTypeInfos.ProceduralStreetLamps == StreetLampsCondition.NearUrbanAreas))
             {
                 return everywhereMask;
             }
-            using var report = progress.CreateStep("CreateNearUrbanMask", 1);
+            using var report = scope.CreateSingle("CreateNearUrbanMask");
             return everywhereMask.Concat(context.Area.TerrainBounds.SubstractAllSplitted(urban.SelectMany(u => u.Offset(NearUrbanMargin)))).ToList();
         }
 
-        private List<TerrainPolygon> CreateUrbanMask(IBuildContext context, List<Road> roadsWithLamps, List<TerrainPolygon> everywhereMask, IEnumerable<TerrainPolygon> urban)
+        private List<TerrainPolygon> CreateUrbanMask(IBuildContext context, List<Road> roadsWithLamps, List<TerrainPolygon> everywhereMask, IEnumerable<TerrainPolygon> urban, IProgressScope scope)
         {
             if (!roadsWithLamps.Any(e => e.RoadTypeInfos.ProceduralStreetLamps == StreetLampsCondition.UrbanAreas))
             {
                 return everywhereMask;
             }
-            using var report = progress.CreateStep("CreateUrbanMask", 1);
+            using var report = scope.CreateSingle("CreateUrbanMask");
             return everywhereMask.Concat(context.Area.TerrainBounds.SubstractAllSplitted(urban)).ToList();
         }
 

@@ -1,21 +1,19 @@
 ﻿using GameRealisticMap.Configuration;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 using WeatherStats.Databases;
 
 namespace GameRealisticMap.Nature.Weather
 {
     internal class WeatherBuilder : IDataBuilder<WeatherData>
     {
-        private readonly IProgressSystem progress;
         private readonly ISourceLocations sources;
 
-        public WeatherBuilder(IProgressSystem progress, ISourceLocations sources)
+        public WeatherBuilder(ISourceLocations sources)
         {
-            this.progress = progress;
             this.sources = sources;
         }
 
-        public WeatherData Build(IBuildContext context)
+        public WeatherData Build(IBuildContext context, IProgressScope scope)
         {
             var db = WeatherStatsDatabase.Create(sources.WeatherStats.AbsoluteUri);
 
@@ -24,7 +22,7 @@ namespace GameRealisticMap.Nature.Weather
                     context.Area.SizeInMeters / 2,
                     context.Area.SizeInMeters / 2));
 
-            using var report = progress.CreateStep("WeatherStats", 1);
+            using var report = scope.CreateSingle("WeatherStats");
 
             var data = db.GetStats(center.Y, center.X).Result;
 

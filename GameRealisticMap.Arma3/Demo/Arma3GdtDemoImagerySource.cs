@@ -1,8 +1,8 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
-using GameRealisticMap.Reporting;
 using HugeImages;
 using HugeImages.Processing;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -12,7 +12,7 @@ namespace GameRealisticMap.Arma3.Demo
 {
     internal class Arma3GdtDemoImagerySource : IImagerySource
     {
-        private readonly IProgressTask progress;
+        private readonly IProgressScope progress;
         private readonly Arma3MapConfig config;
         private readonly IContext context;
         private readonly TerrainMaterialLibrary materials;
@@ -20,7 +20,7 @@ namespace GameRealisticMap.Arma3.Demo
 
         internal const int SquareSizeInPixels = 480;
 
-        public Arma3GdtDemoImagerySource(IProgressTask progress, Arma3MapConfig config, IContext context, TerrainMaterialLibrary materials)
+        public Arma3GdtDemoImagerySource(IProgressScope progress, Arma3MapConfig config, IContext context, TerrainMaterialLibrary materials)
         {
             this.progress = progress;
             this.config = config;

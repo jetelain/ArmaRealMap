@@ -7,12 +7,6 @@ namespace GameRealisticMap.Nature.Surfaces
 {
     internal class MeadowsBuilder : BasicBuilderBase<MeadowsData>
     {
-        public MeadowsBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override MeadowsData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new MeadowsData(polygons);

@@ -1,19 +1,12 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Scrubs;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature.RockAreas
 {
     internal class ScreeBuilder : BasicBuilderBase<ScreeData>
     {
-        public ScreeBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override ScreeData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new ScreeData(polygons);

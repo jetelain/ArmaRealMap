@@ -2,19 +2,12 @@
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature.Lakes
 {
     internal class LakesBuilder : BasicBuilderBase<LakesData>
     {
-        public LakesBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override LakesData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new LakesData(polygons);

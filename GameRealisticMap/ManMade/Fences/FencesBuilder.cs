@@ -1,18 +1,11 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Fences
 {
     internal class FencesBuilder : IDataBuilder<FencesData>
     {
-        private readonly IProgressSystem progress;
-
-        public FencesBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
         private static FenceTypeId? GetFenceTypeId(TagsCollectionBase tags)
         {
             if (tags.TryGetValue("barrier", out var barrier))
@@ -30,7 +23,7 @@ namespace GameRealisticMap.ManMade.Fences
             return null;
         }
 
-        public FencesData Build(IBuildContext context)
+        public FencesData Build(IBuildContext context, IProgressScope scope)
         {
             var nodes = context.OsmSource.All
                 .Where(s => s.Tags != null && s.Tags.ContainsKey("barrier"))
@@ -38,7 +31,7 @@ namespace GameRealisticMap.ManMade.Fences
 
             var fences = new List<Fence>();
 
-            foreach (var way in nodes.ProgressStep(progress, "Paths"))
+            foreach (var way in nodes.WithProgress(scope, "Paths"))
             {
                 var kind = GetFenceTypeId(way.Tags);
                 if (kind != null)

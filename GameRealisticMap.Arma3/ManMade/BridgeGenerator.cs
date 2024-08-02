@@ -5,25 +5,23 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.ManMade
 {
     internal class BridgeGenerator : ITerrainBuilderLayerGenerator
     {
-        private readonly IProgressSystem progress;
         private readonly IArma3RegionAssets assets;
 
-        public BridgeGenerator(IProgressSystem progress, IArma3RegionAssets assets)
+        public BridgeGenerator(IArma3RegionAssets assets)
         {
-            this.progress = progress;
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
+        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var grid = context.GetData<ElevationData>().Elevation;
-            var roads = context.GetData<RoadsData>().Roads.Where(r => r.SpecialSegment == WaySpecialSegment.Bridge).ProgressStep(progress, "Bridges");
+            var roads = context.GetData<RoadsData>().Roads.Where(r => r.SpecialSegment == WaySpecialSegment.Bridge).WithProgress(scope, "Bridges");
             var result = new List<TerrainBuilderObject>();
             foreach(var bridge in  roads)
             {

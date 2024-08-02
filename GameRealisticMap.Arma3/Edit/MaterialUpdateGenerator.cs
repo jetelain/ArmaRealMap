@@ -3,15 +3,16 @@ using GameRealisticMap.Arma3.Edit.Imagery;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Edit
 {
     public sealed class MaterialUpdateGenerator
     {
-        private readonly IProgressSystem progess;
+        private readonly IProgressScope progess;
         private readonly IGameFileSystemWriter gameFileSystemWriter;
 
-        public MaterialUpdateGenerator(IProgressSystem progress, IGameFileSystemWriter gameFileSystemWriter)
+        public MaterialUpdateGenerator(IProgressScope progress, IGameFileSystemWriter gameFileSystemWriter)
         {
             this.progess = progress;
             this.gameFileSystemWriter = gameFileSystemWriter;
@@ -26,7 +27,7 @@ namespace GameRealisticMap.Arma3.Edit
 
         public async Task Replace(List<string> rvmat, string sourceColorTexture, TerrainMaterial replacement, IArma3MapConfig context)
         {
-            using var task = progess.CreateStep("ReplaceRvMat", rvmat.Count);
+            using var task = progess.CreateInteger("ReplaceRvMat", rvmat.Count);
             await Parallel.ForEachAsync(rvmat, async (file, token) => 
             {
                 await Replace(file, sourceColorTexture, replacement, context);

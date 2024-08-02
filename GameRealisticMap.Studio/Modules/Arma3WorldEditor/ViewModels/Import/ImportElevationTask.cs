@@ -30,7 +30,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
             {
                 return Task.CompletedTask;
             }
-            var worker = new WrpEditProcessor(ui);
+            var worker = new WrpEditProcessor(ui.Scope);
             if (isUpdateElevation)
             {
                 worker.UpdateElevationGrid(world, grid);

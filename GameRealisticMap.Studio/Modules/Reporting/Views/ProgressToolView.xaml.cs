@@ -27,7 +27,7 @@ namespace GameRealisticMap.Studio.Modules.Reporting.Views
 
         private void Grid_Initialized(object sender, EventArgs e)
         {
-            ScrollView.ScrollToEnd();
+            //ScrollView.ScrollToEnd();
         }
     }
 }

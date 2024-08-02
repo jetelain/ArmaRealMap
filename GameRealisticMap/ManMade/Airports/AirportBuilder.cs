@@ -1,28 +1,22 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Airports
 {
     internal class AirportBuilder : IDataBuilder<AirportData>
     {
-        private readonly IProgressSystem progress;
 
-        public AirportBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public AirportData Build(IBuildContext context)
+        public AirportData Build(IBuildContext context, IProgressScope scope)
         {
             var clip = context.Area.TerrainBounds;
 
             var polygons = context.OsmSource.All
                 .Where(s => s.Tags != null && s.Type != OsmSharp.OsmGeoType.Node && IsTargeted(s.Tags))
-                .ProgressStep(progress, "Interpret")
+                .WithProgress(scope, "Interpret")
                 .SelectMany(s => context.OsmSource.Interpret(s))
                 .SelectMany(s => TerrainPolygon.FromGeometry(s, context.Area.LatLngToTerrainPoint))
-                .ProgressStep(progress, "Crop")
+                .WithProgress(scope, "Crop")
                 .SelectMany(poly => poly.ClippedBy(clip))
                 .ToList();
 

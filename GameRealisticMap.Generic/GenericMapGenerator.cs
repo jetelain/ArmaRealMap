@@ -4,6 +4,7 @@ using GameRealisticMap.Generic.Profiles;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using HugeImages.Storage;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Generic
 {
@@ -16,13 +17,13 @@ namespace GameRealisticMap.Generic
             this.sources = sources;
         }
 
-        protected virtual async Task<IOsmDataSource> LoadOsmData(IProgressTask progress, GenericMapConfig config)
+        protected virtual async Task<IOsmDataSource> LoadOsmData(IProgressScope progress, GenericMapConfig config)
         {
             var loader = new OsmDataOverPassLoader(progress, sources);
             return await loader.Load(config.TerrainArea);
         }
 
-        public async Task<IBuildContext?> GetBuildContext(IProgressTask progress, GenericMapConfig config, IHugeImageStorage hugeImageStorage)
+        public async Task<IBuildContext?> GetBuildContext(IProgressScope progress, GenericMapConfig config, IHugeImageStorage hugeImageStorage)
         {
             var osmSource = await LoadOsmData(progress, config);
             if (progress.CancellationToken.IsCancellationRequested)
@@ -32,19 +33,18 @@ namespace GameRealisticMap.Generic
             return CreateBuildContext(progress, config, osmSource, hugeImageStorage);
         }
 
-        protected virtual BuildContext CreateBuildContext(IProgressTask progress, GenericMapConfig config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
+        protected virtual BuildContext CreateBuildContext(IProgressScope progress, GenericMapConfig config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
         {
-            var builders = new BuildersCatalog(progress, new DefaultBuildersConfig(), sources);
+            var builders = new BuildersCatalog(new DefaultBuildersConfig(), sources);
             return new BuildContext(builders, progress, config.TerrainArea, osmSource, config, hugeImageStorage);
         }
 
-        public async Task Generate(IProgressTask progress, GenericMapConfig config)
+        public async Task Generate(IProgressScope progress, GenericMapConfig config)
         {
             Directory.CreateDirectory(config.TargetDirectory);
 
             var profile = await ExportProfile.LoadFromFile(config.ExportProfileFile);
 
-            progress.Total = profile.Entries.Count + 1;
 
             // Download from OSM
             var osmSource = await LoadOsmData(progress, config);
@@ -52,7 +52,6 @@ namespace GameRealisticMap.Generic
             {
                 return;
             }
-            progress.ReportOneDone();
 
             // Generate content
             var context = CreateBuildContext(progress, config, osmSource);
@@ -62,7 +61,7 @@ namespace GameRealisticMap.Generic
             context.DisposeHugeImages();
         }
 
-        private static async Task Process(IProgressTask progress, GenericMapConfig config, ExportProfile profile, BuildContext context)
+        private static async Task Process(IProgressScope progress, GenericMapConfig config, ExportProfile profile, BuildContext context)
         {
             var exporters = new ExporterCatalog();
             foreach (var entry in profile.Entries)
@@ -76,7 +75,6 @@ namespace GameRealisticMap.Generic
                 {
                     return;
                 }
-                progress.ReportOneDone();
             }
         }
     }

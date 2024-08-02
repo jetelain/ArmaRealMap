@@ -1,25 +1,18 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
 using OsmSharp;
 using OsmSharp.Geo;
 using OsmSharp.Tags;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Places
 {
     internal class CitiesBuilder : IDataBuilder<CitiesData>
     {
-        private readonly IProgressSystem progress;
-
-        public CitiesBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public CitiesData Build(IBuildContext context)
+        public CitiesData Build(IBuildContext context, IProgressScope scope)
         {
             var result = new List<City>();
             var boundaries = context.OsmSource.Relations.Where(r => r.Tags != null && r.Tags.GetValue("boundary") == "administrative").ToList();
-            foreach (var node in context.OsmSource.Nodes.Where(n => n.Tags != null && n.Tags.ContainsKey("place")).ProgressStep(progress, "Cities"))
+            foreach (var node in context.OsmSource.Nodes.Where(n => n.Tags != null && n.Tags.ContainsKey("place")).WithProgress(scope, "Cities"))
             {
                 var typeId = GetCityTypeId(node.Tags.GetValue("place"));
                 if (typeId != null)

@@ -3,7 +3,7 @@ using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.Test.GameEngine;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Test.Edit
 {
@@ -64,7 +64,7 @@ class CfgWorlds
         public void UpdateConfigContent()
         {
             var fs = new GameFileSystemMock();
-            var worker = new WrpRenameWorker(new NoProgressSystem(), fs, "oldprefix", "newprefix");
+            var worker = new WrpRenameWorker(new NoProgress(), fs, "oldprefix", "newprefix");
 
             var updated = worker.UpdateConfigContent(@" ""oldprefix\file01.paa"" ""other\file02.paa"" ""oldprefix\file03.paa"" ");
 
@@ -81,7 +81,7 @@ class CfgWorlds
             fs.CreateDirectory("oldprefix\\data");
             fs.WriteTextFile("oldprefix\\data\\layer01.rvmat", @" ""oldprefix\file01.paa"" ""other\file02.paa"" ""oldprefix\file03.paa"" ");
             fs.WriteTextFile("oldprefix\\data\\layer02.rvmat", @" ""oldprefix\file04.paa"" ""other\file05.paa"" ""oldprefix\file06.paa"" ");
-            var worker = new WrpRenameWorker(new NoProgressSystem(), fs, "oldprefix", "newprefix");
+            var worker = new WrpRenameWorker(new NoProgress(), fs, "oldprefix", "newprefix");
             var wrp = new EditableWrp();
             wrp.MatNames = new[] { null, "oldprefix\\data\\layer01.rvmat", "oldprefix\\data\\layer02.rvmat" };
 
@@ -104,7 +104,7 @@ class CfgWorlds
             fs.CreateDirectory("oldprefix");
             fs.WriteTextFile("oldprefix\\inc01.hpp", @" ""oldprefix\file01.paa"" ");
             fs.WriteTextFile("oldprefix\\inc02.hpp", @" ""other\file02.paa"" ");
-            var worker = new WrpRenameWorker(new NoProgressSystem(), fs, "oldprefix", "newprefix");
+            var worker = new WrpRenameWorker(new NoProgress(), fs, "oldprefix", "newprefix");
             var oldConfig = GameConfigTextData.ReadFromContent(OldConfig, "oldworldname");
             Assert.Equal("oldworldname", oldConfig.WorldName);
             Assert.Equal("oldprefix", oldConfig.PboPrefix);
@@ -134,7 +134,7 @@ class CfgWorlds
             fs.CreateDirectory("oldprefix");
             fs.WriteTextFile("oldprefix\\file01.paa", "FILE01");
             fs.WriteTextFile("oldprefix\\file03.paa", "FILE03");
-            var worker = new WrpRenameWorker(new NoProgressSystem(), fs, "oldprefix", "newprefix");
+            var worker = new WrpRenameWorker(new NoProgress(), fs, "oldprefix", "newprefix");
 
             worker.UpdateConfigContent(@" ""oldprefix\file01.paa"" ""other\file02.paa"" ""oldprefix\file03.paa"" "); // Only to add values into ReferencedFiles
 
@@ -156,7 +156,7 @@ class CfgWorlds
             fs.WriteTextFile("oldprefix\\file01.paa", "FILE01");
             fs.WriteTextFile("oldprefix\\file03.paa", "FILE03");
             fs.WriteTextFile("oldprefix\\file03.png", "FILE03-PNG");
-            var worker = new WrpRenameWorker(new NoProgressSystem(), fs, "oldprefix", "newprefix");
+            var worker = new WrpRenameWorker(new NoProgress(), fs, "oldprefix", "newprefix");
 
             worker.UpdateConfigContent(@" ""oldprefix\file01.paa"" ""other\file02.paa"" ""oldprefix\file03.paa"" "); // Only to add values into ReferencedFiles
 

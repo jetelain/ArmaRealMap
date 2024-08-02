@@ -9,16 +9,17 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
     public class RoadsCompiler
     {
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope progress;
         private readonly IGameFileSystemWriter fileSystemWriter;
         private readonly IRoadTypeLibrary<Arma3RoadTypeInfos> roadTypeLibrary;
 
-        public RoadsCompiler(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter, IRoadTypeLibrary<Arma3RoadTypeInfos> roadTypeLibrary)
+        public RoadsCompiler(IProgressScope progress, IGameFileSystemWriter fileSystemWriter, IRoadTypeLibrary<Arma3RoadTypeInfos> roadTypeLibrary)
         {
             this.progress = progress;
             this.fileSystemWriter = fileSystemWriter;

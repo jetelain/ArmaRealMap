@@ -4,21 +4,15 @@ using GameRealisticMap.ManMade.Fences;
 using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.Nature;
 using GameRealisticMap.Nature.Trees;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.DefaultUrbanAreas
 {
     internal abstract class DefaultUrbanAreasBuilderBase<TData> : IDataBuilder<TData>
         where TData : class
     {
-        private readonly IProgressSystem progress;
 
-        public DefaultUrbanAreasBuilderBase(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public TData Build(IBuildContext context)
+        public TData Build(IBuildContext context, IProgressScope scope)
         {
             var categories = context.GetData<CategoryAreaData>();
 
@@ -32,18 +26,18 @@ namespace GameRealisticMap.ManMade.DefaultUrbanAreas
                 return Create(new List<TerrainPolygon>());
             }
 
-            var polygonsToSubstract = CreateMask(context, categories, areaPolygons);
+            var polygonsToSubstract = CreateMask(context, categories, areaPolygons, scope);
 
-            var area = Merge(areaPolygons);
+            var area = Merge(areaPolygons, scope);
 
-            var polygons = area.SubstractAll(progress, "SubstractAll", polygonsToSubstract);
+            var polygons = area.SubstractAll(scope, "SubstractAll", polygonsToSubstract);
 
             return Create(polygons.ToList());
         }
 
-        private List<TerrainPolygon> CreateMask(IBuildContext context, CategoryAreaData categories, List<TerrainPolygon> areaPolygons)
+        private List<TerrainPolygon> CreateMask(IBuildContext context, CategoryAreaData categories, List<TerrainPolygon> areaPolygons, IProgressScope scope)
         {
-            using var report = progress.CreateStep("CreateMask", 1);
+            using var report = scope.CreateSingle("CreateMask");
 
             var allData = context.GetOfType<INonDefaultArea>().Where(c => c != categories).ToList();
 
@@ -66,9 +60,9 @@ namespace GameRealisticMap.ManMade.DefaultUrbanAreas
 
         protected abstract TData Create(List<TerrainPolygon> polygons);
 
-        private List<TerrainPolygon> Merge(List<TerrainPolygon> areaPolygons)
+        private List<TerrainPolygon> Merge(List<TerrainPolygon> areaPolygons, IProgressScope scope)
         {
-            using var report = progress.CreateStep("MergeAll", areaPolygons.Count);
+            using var report = scope.CreateInteger("MergeAll", areaPolygons.Count);
             return TerrainPolygon.MergeAllParallel(areaPolygons, report);
         }
     }

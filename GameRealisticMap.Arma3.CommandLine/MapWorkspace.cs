@@ -2,13 +2,13 @@
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Configuration;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.CommandLine
 {
     internal class MapWorkspace : IDisposable
     {
-        public MapWorkspace(ProjectDrive projectDrive, Arma3Assets assets, Arma3MapConfig a3config, ConsoleProgressSystem progress, ISourceLocations sources)
+        public MapWorkspace(ProjectDrive projectDrive, Arma3Assets assets, Arma3MapConfig a3config, ConsoleProgessRender progress, ISourceLocations sources)
         {
             ProjectDrive = projectDrive;
             Assets = assets;
@@ -20,14 +20,14 @@ namespace GameRealisticMap.Arma3.CommandLine
         public ProjectDrive ProjectDrive { get; }
         public Arma3Assets Assets { get; }
         public Arma3MapConfig MapConfig { get; }
-        public ConsoleProgressSystem Progress { get; }
+        public ConsoleProgessRender Progress { get; }
         public ISourceLocations Sources { get; }
 
         public static async Task<MapWorkspace> Create(Arma3MapConfig a3config, string searchPath)
         {
-            var progress = new ConsoleProgressSystem();
+            var progress = new ConsoleProgessRender();
 
-            using var init = progress.CreateStep("Initilization",1);
+            using var init = progress.CreateSingle("Initilization");
 
             var workspaceSettings = await WorkspaceSettings.Load();
             var projectDrive = workspaceSettings.CreateProjectDriveAutomatic();
@@ -52,7 +52,7 @@ namespace GameRealisticMap.Arma3.CommandLine
 
         public void Dispose()
         {
-            Progress.DisplayReport();
+            Progress.Dispose();
         }
     }
 }

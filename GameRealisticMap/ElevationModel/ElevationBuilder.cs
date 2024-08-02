@@ -5,37 +5,30 @@ using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Watercourses;
-using GameRealisticMap.Reporting;
 using MapToolkit.DataCells;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.ElevationModel
 {
     internal class ElevationBuilder : IDataBuilder<ElevationData>, IDataSerializer<ElevationData>
     {
-        private readonly IProgressSystem progress;
-
-        public ElevationBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public ElevationData Build(IBuildContext context)
+        public ElevationData Build(IBuildContext context, IProgressScope scope)
         {
             var raw = context.GetData<ElevationWithLakesData>();
             var roadsData = context.GetData<RoadsData>();
             var railways = context.GetData<RailwaysData>();
             var waterData = context.GetData<WatercoursesData>();
 
-            var constraintGrid = new ElevationConstraintGrid(context.Area, raw.Elevation, progress);
+            var constraintGrid = new ElevationConstraintGrid(context.Area, raw.Elevation, scope);
 
-            ProcessWays(constraintGrid, roadsData.Roads.Where(r => r.RoadType < RoadTypeId.Trail).ProgressStep(progress, "Roads"));
+            ProcessWays(constraintGrid, roadsData.Roads.Where(r => r.RoadType < RoadTypeId.Trail).WithProgress(scope, "Roads"));
 
-            ProcessWays(constraintGrid, railways.Railways.ProgressStep(progress, "Railways"));
+            ProcessWays(constraintGrid, railways.Railways.WithProgress(scope, "Railways"));
 
-            ProcessWatercourses(constraintGrid, waterData);
+            ProcessWatercourses(constraintGrid, waterData, scope);
 
-            ProtectLakes(constraintGrid, raw.Lakes, context.Area);
+            ProtectLakes(constraintGrid, raw.Lakes, context.Area, scope);
 
             constraintGrid.SolveAndApplyOnGrid();
 
@@ -61,11 +54,11 @@ namespace GameRealisticMap.ElevationModel
             }
         }
 
-        private void ProcessWatercourses(ElevationConstraintGrid constraintGrid, WatercoursesData waterData)
+        private void ProcessWatercourses(ElevationConstraintGrid constraintGrid, WatercoursesData waterData, IProgressScope scope)
         {
             var stepSize = GetStepSize(constraintGrid);
             var waterWaysPaths = waterData.Paths.Where(w => !w.IsTunnel).Where(w => w.Path.Length > 10f).ToList();
-            using var report = progress.CreateStep("Waterways", waterWaysPaths.Count);
+            using var report = scope.CreateInteger("Waterways", waterWaysPaths.Count);
             foreach (var waterWay in waterWaysPaths)
             {
                 var points = GeometryHelper.PointsOnPath(waterWay.Path.Points, stepSize).Select(constraintGrid.NodeSoft).ToList();
@@ -90,9 +83,9 @@ namespace GameRealisticMap.ElevationModel
             }
         }
 
-        private void ProtectLakes(ElevationConstraintGrid constraintGrid, List<LakeWithElevation> lakes, ITerrainArea area)
+        private void ProtectLakes(ElevationConstraintGrid constraintGrid, List<LakeWithElevation> lakes, ITerrainArea area, IProgressScope scope)
         {
-            using var report = progress.CreateStep("LakeLimit", lakes.Count);
+            using var report = scope.CreateInteger("LakeLimit", lakes.Count);
             foreach (var lake in lakes)
             {
                 foreach (var extended in lake.TerrainPolygon.Offset(2 * area.GridCellSize))

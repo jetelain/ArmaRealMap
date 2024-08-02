@@ -2,20 +2,20 @@
 using BIS.WRP;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ElevationModel;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
     public class WrpCompiler
     {
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope progress;
         private readonly IGameFileSystemWriter fileSystemWriter;
 
         private readonly HashSet<string> models = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private readonly List<string> rvmats = new List<string>();
 
-        public WrpCompiler(IProgressSystem progress, IGameFileSystemWriter fileSystemWriter)
+        public WrpCompiler(IProgressScope progress, IGameFileSystemWriter fileSystemWriter)
         {
             this.progress = progress;
             this.fileSystemWriter = fileSystemWriter;
@@ -104,7 +104,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             var w = terrainTiler.Segments.GetLength(0);
             var h = terrainTiler.Segments.GetLength(1);
             wrp.MatNames[0] = string.Empty;
-            using var report = progress.CreateStep("MaterialNames", w);
+            using var report = progress.CreateInteger("MaterialNames", w);
             for (int x = 0; x < w; x++)
             {
                 for (int y = 0; y < h; y++)
@@ -121,7 +121,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             var h = terrainTiler.Segments.GetLength(1);
             int cellPixelSize = (int)(wrp.CellSize / terrainTiler.Resolution);
             wrp.MaterialIndex = new ushort[landRange * landRange];
-            using var report = progress.CreateStep("MaterialIndex", landRange);
+            using var report = progress.CreateInteger("MaterialIndex", landRange);
             for (int x = 0; x < landRange; x++)
             {
                 for (int y = 0; y < landRange; y++)

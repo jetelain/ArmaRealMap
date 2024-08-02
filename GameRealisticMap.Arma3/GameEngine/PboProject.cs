@@ -1,14 +1,15 @@
 ﻿using System.Runtime.Versioning;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
     [SupportedOSPlatform("windows")]
     internal class PboProject : IPboCompiler
     {
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope progress;
 
-        public PboProject(IProgressSystem progress)
+        public PboProject(IProgressScope progress)
         {
             this.progress = progress;
         }

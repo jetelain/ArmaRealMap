@@ -1,19 +1,13 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature;
 using GameRealisticMap.Nature.Forests;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Farmlands
 {
     internal class FarmlandsBuilder : BasicBuilderBase<FarmlandsData>
     {
-        public FarmlandsBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override FarmlandsData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new FarmlandsData(polygons);
@@ -33,7 +27,7 @@ namespace GameRealisticMap.ManMade.Farmlands
                 .Concat(context.GetData<ForestData>().Polygons);
         }
 
-        protected override List<TerrainPolygon> MergeIfRequired(List<TerrainPolygon> polygons)
+        protected override List<TerrainPolygon> MergeIfRequired(List<TerrainPolygon> polygons, IProgressScope scope)
         {
             return polygons; // Do not merge, to be able to place objects at edges and to be able to post-process satellite image
         }

@@ -1,18 +1,12 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Nature.Ocean
 {
     internal class CoastlineBuilder : IDataBuilder<CoastlineData>
     {
-        private readonly IProgressSystem progress;
-
-        public CoastlineBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public CoastlineData Build(IBuildContext context)
+        public CoastlineData Build(IBuildContext context, IProgressScope scope)
         {
             var coastlines = context.OsmSource.Ways
                 .Where(w => w.Tags != null && w.Tags.GetValue("natural") == "coastline")
@@ -24,7 +18,7 @@ namespace GameRealisticMap.Nature.Ocean
                 .SelectMany(p => p.ClippedBy(context.Area.TerrainBounds))
                 .ToList();
 
-            using var report = progress.CreateStep("Merge", coastlines.Count);
+            using var report = scope.CreateInteger("Merge", coastlines.Count);
             var result = TerrainPolygon.MergeAll(coastlines, report);
             return new CoastlineData(result);
         }

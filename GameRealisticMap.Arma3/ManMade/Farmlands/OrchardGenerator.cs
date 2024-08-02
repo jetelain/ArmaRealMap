@@ -8,22 +8,20 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Farmlands;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.ManMade.Farmlands
 {
     internal class OrchardGenerator : ITerrainBuilderLayerGenerator
     {
-        private readonly IProgressSystem progress;
         private readonly IArma3RegionAssets assets;
 
-        public OrchardGenerator(IProgressSystem progress, IArma3RegionAssets assets)
+        public OrchardGenerator(IArma3RegionAssets assets)
         {
-            this.progress = progress;
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
+        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var layer1 = new List<PlacedModel<Composition>>();
             var layer2 = new RadiusPlacedLayer<Composition>(new Vector2(config.SizeInMeters));
@@ -33,7 +31,7 @@ namespace GameRealisticMap.Arma3.ManMade.Farmlands
             {
                 var small = new List<TerrainPolygon>();
                 var orchards = context.GetData<OrchardData>().Polygons;
-                foreach (var orchard in orchards.ProgressStep(progress, "Orchards"))
+                foreach (var orchard in orchards.WithProgress(scope, "Orchards"))
                 {
                     if (orchard.Area > 4000)
                     {
@@ -46,9 +44,9 @@ namespace GameRealisticMap.Arma3.ManMade.Farmlands
                     }
                 }
 
-                using (progress.CreateScope("SmallOrchards"))
+                using (var subscope = scope.CreateScope("SmallOrchards"))
                 {
-                    new FillAreaBasic<Composition>(progress, lib2).FillPolygons(layer2, small, context.GetData<ConditionEvaluator>());
+                    new FillAreaBasic<Composition>(subscope, lib2).FillPolygons(layer2, small, context.GetData<ConditionEvaluator>());
                 }
             }
             return layer1.SelectMany(o => o.Model.ToTerrainBuilderObjects(o))

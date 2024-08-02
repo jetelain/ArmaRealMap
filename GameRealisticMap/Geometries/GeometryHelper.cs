@@ -1,8 +1,7 @@
 ﻿using System.Numerics;
-using ClipperLib;
-using GameRealisticMap.Reporting;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Geometries
 {

@@ -10,9 +10,9 @@ using GameRealisticMap.Nature.Ocean;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Surfaces;
 using GameRealisticMap.Nature.Watercourses;
-using GameRealisticMap.Reporting;
 using HugeImages;
 using HugeImages.Processing;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -24,10 +24,10 @@ namespace GameRealisticMap.Arma3.Imagery
         where TPixel : unmanaged, IPixel<TPixel>
     {
         protected readonly TerrainMaterialLibrary materialLibrary;
-        protected readonly IProgressSystem progress;
+        protected readonly IProgressScope progress;
         protected readonly DrawingOptions drawingOptions;
 
-        public IdMapRenderBase(TerrainMaterialLibrary materialLibrary, IProgressSystem progress)
+        public IdMapRenderBase(TerrainMaterialLibrary materialLibrary, IProgressScope progress)
         {
             this.materialLibrary = materialLibrary;
             this.progress = progress;
@@ -107,7 +107,7 @@ namespace GameRealisticMap.Arma3.Imagery
 
         private void DrawPolygons(IArma3MapConfig config, IImageProcessingContext d, Brush brush, IEnumerable<TerrainPolygon> polygons)
         {
-            foreach (var polygon in polygons.ProgressStep(progress, "DrawPolygons"))
+            foreach (var polygon in polygons.WithProgress(progress, "DrawPolygons"))
             {
                 DrawPolygon(config, brush, d, polygon);
             }
@@ -115,7 +115,7 @@ namespace GameRealisticMap.Arma3.Imagery
 
         private void DrawPolygonsCrown(IArma3MapConfig config, IImageProcessingContext d, Brush crownBrush, IEnumerable<TerrainPolygon> polygons, float crownSize)
         {
-            foreach (var polygon in polygons.ProgressStep(progress, "DrawPolygonsCrown"))
+            foreach (var polygon in polygons.WithProgress(progress, "DrawPolygonsCrown"))
             {
                 foreach (var x in polygon.OuterCrown(crownSize))
                 {

@@ -1,20 +1,20 @@
 ﻿using System.Collections.Concurrent;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Geometries
 {
     internal static class TerrainPolygonsHelper
     {
-        internal static IReadOnlyCollection<TerrainPolygon> SubstractAll(this IEnumerable<TerrainPolygon> input, IProgressSystem progress, string stepName, IReadOnlyCollection<TerrainPolygon> others)
+        internal static IReadOnlyCollection<TerrainPolygon> SubstractAll(this IEnumerable<TerrainPolygon> input, IProgressScope progress, string stepName, IReadOnlyCollection<TerrainPolygon> others)
         {
             return SubstractAll(input.ToList(), progress, stepName, others);
         }
 
-        internal static IReadOnlyCollection<TerrainPolygon> SubstractAll(this List<TerrainPolygon> list, IProgressSystem progress, string stepName, IReadOnlyCollection<TerrainPolygon> others)
+        internal static IReadOnlyCollection<TerrainPolygon> SubstractAll(this List<TerrainPolygon> list, IProgressScope progress, string stepName, IReadOnlyCollection<TerrainPolygon> others)
         {
 #if PARALLEL
             var result = new ConcurrentQueue<TerrainPolygon>();
-            using (var report = progress.CreateStep(stepName+ " (Parallel)", list.Count))
+            using (var report = progress.CreateInteger(stepName+ " (Parallel)", list.Count))
             {
                 Parallel.ForEach(list, polygon =>
                 {
@@ -55,10 +55,10 @@ namespace GameRealisticMap.Geometries
 
 
 
-        internal static List<TerrainPolygon> RemoveOverlaps(this IEnumerable<TerrainPolygon> input, IProgressSystem progress, string stepName)
+        internal static List<TerrainPolygon> RemoveOverlaps(this IEnumerable<TerrainPolygon> input, IProgressScope progress, string stepName)
         {
             var list = input.ToList();
-            using (var report = progress.CreateStep(stepName, list.Count))
+            using (var report = progress.CreateInteger(stepName, list.Count))
             {
                 return RemoveOverlaps(report, list);
             }

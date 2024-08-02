@@ -2,6 +2,7 @@
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.TerrainBuilder
 {
@@ -9,9 +10,9 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
     {
         private readonly TerrainMaterialLibrary materials;
         private readonly IGameFileSystemWriter fileSystemWriter;
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope progress;
 
-        public LayersCfgGenerator(TerrainMaterialLibrary materials, IProgressSystem progress, IGameFileSystemWriter fileSystemWriter)
+        public LayersCfgGenerator(TerrainMaterialLibrary materials, IProgressScope progress, IGameFileSystemWriter fileSystemWriter)
         {
             this.materials = materials;
             this.fileSystemWriter = fileSystemWriter;

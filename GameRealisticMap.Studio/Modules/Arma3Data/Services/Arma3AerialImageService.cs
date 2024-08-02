@@ -10,6 +10,7 @@ using GameRealisticMap.Arma3.Aerial;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Toolkit;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -44,7 +45,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
             return null;
         }
 
-        public async Task TakeImages(IEnumerable<string> models, IEnumerable<ModDependencyDefinition> mods, IProgressSystem progressSystem, bool onlyMissing = true)
+        public async Task TakeImages(IEnumerable<string> models, IEnumerable<ModDependencyDefinition> mods, IProgressScope progressSystem, bool onlyMissing = true)
         {
             var references = models
                 .Where(m => !onlyMissing || !Exists(m))

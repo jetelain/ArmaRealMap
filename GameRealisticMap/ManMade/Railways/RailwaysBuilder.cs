@@ -1,22 +1,20 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Railways
 {
     internal class RailwaysBuilder : IDataBuilder<RailwaysData>
     {
-        private readonly IProgressSystem progress;
         private readonly IRailwayCrossingResolver crossingResolver;
 
-        public RailwaysBuilder(IProgressSystem progress, IRailwayCrossingResolver? crossingResolver = null)
+        public RailwaysBuilder(IRailwayCrossingResolver? crossingResolver = null)
         {
-            this.progress = progress;
             this.crossingResolver = crossingResolver ?? new DefaultRailwayCrossingResolver();
         }
 
-        public RailwaysData Build(IBuildContext context)
+        public RailwaysData Build(IBuildContext context, IProgressScope scope)
         {
             var nodes = context.OsmSource.All
                 .Where(s => s.Tags != null && IsRail(s.Tags.GetValue("railway")))
@@ -32,7 +30,7 @@ namespace GameRealisticMap.ManMade.Railways
             roadsIndex.AddRange(context.GetData<RoadsData>().Roads);
 
             var railways = new List<Railway>();
-            foreach (var way in nodes.ProgressStep(progress, "Paths"))
+            foreach (var way in nodes.WithProgress(scope, "Paths"))
             {
                 foreach (var segment in context.OsmSource.Interpret(way)
                                                 .SelectMany(geometry => TerrainPath.FromGeometry(geometry, context.Area.LatLngToTerrainPoint))

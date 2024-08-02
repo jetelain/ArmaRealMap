@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -10,8 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using BIS.PAA;
 using GameRealisticMap.Arma3;
-using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using Color = System.Windows.Media.Color;
@@ -240,12 +239,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             if (!File.Exists(paa) || File.GetLastWriteTimeUtc(png) > File.GetLastWriteTimeUtc(paa))
             {
                 LastProcessPngToPaaTask().Wait();
-                Arma3ToolsHelper.ImageToPAA(new NoProgressSystem(), png).Wait();
+                Arma3ToolsHelper.ImageToPAA(new NoProgress(), png).Wait();
             }
             return File.ReadAllBytes(paa);
         }
 
-        public async Task ProcessPngToPaa(IProgressSystem? progress = null)
+        public async Task ProcessPngToPaa(IProgressScope? progress = null)
         {
             List<string> toProcess;
             lock (pendingPaaConvertion)
@@ -254,7 +253,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
                 pendingPaaConvertion.Clear();
             }
             await LastProcessPngToPaaTask();
-            await (lastProcessPngToPaaTask = Arma3ToolsHelper.ImageToPAA(progress ?? new NoProgressSystem(), toProcess));
+            await (lastProcessPngToPaaTask = Arma3ToolsHelper.ImageToPAA(progress ?? new NoProgress(), toProcess));
         }
 
         private async Task LastProcessPngToPaaTask()

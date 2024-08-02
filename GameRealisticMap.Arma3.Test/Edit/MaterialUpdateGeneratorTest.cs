@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Arma3.Edit;
+﻿using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.Test.GameEngine;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Test.Edit
 {
@@ -16,7 +11,7 @@ namespace GameRealisticMap.Arma3.Test.Edit
         public async Task Replace()
         {
             var fs = new GameFileSystemMock();
-            var gen = new MaterialUpdateGenerator(new NoProgressSystem(), fs);
+            var gen = new MaterialUpdateGenerator(new NoProgress(), fs);
             fs.WriteTextFile("test.rvmat", 
 @"class Stage3
 {

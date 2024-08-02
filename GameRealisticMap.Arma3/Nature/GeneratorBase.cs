@@ -5,25 +5,23 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Nature
 {
     public abstract class GeneratorBase<TData> : ITerrainBuilderLayerGenerator 
         where TData : class, IPolygonTerrainData
     {
-        protected readonly IProgressSystem progress;
         protected readonly IArma3RegionAssets assets;
 
-        public GeneratorBase(IProgressSystem progress, IArma3RegionAssets assets)
+        public GeneratorBase(IArma3RegionAssets assets)
         {
-            this.progress = progress;
             this.assets = assets;
         }
 
         protected virtual bool ShouldGenerate => true;
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
+        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope progress)
         {
             if (!ShouldGenerate)
             {
@@ -37,11 +35,11 @@ namespace GameRealisticMap.Arma3.Nature
 
             var layer = new RadiusPlacedLayer<Composition>(new Vector2(config.SizeInMeters));
 
-            Generate(layer, polygons, evaluator);
+            Generate(layer, polygons, evaluator, scope);
 
             return layer.SelectMany(item => item.Model.ToTerrainBuilderObjects(item));
         }
 
-        protected abstract void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons, IConditionEvaluator evaluator);
+        protected abstract void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons, IConditionEvaluator evaluator, IProgressScope scope);
     }
 }

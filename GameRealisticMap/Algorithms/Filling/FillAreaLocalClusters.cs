@@ -1,7 +1,7 @@
 ﻿using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
@@ -13,7 +13,7 @@ namespace GameRealisticMap.Algorithms.Filling
     {
         private readonly IReadOnlyCollection<IClusterCollectionDefinition<TModelInfo>> clustersDefinitions;
 
-        public FillAreaLocalClusters(IProgressSystem progress, IReadOnlyCollection<IClusterCollectionDefinition<TModelInfo>> clustersDefinitions)
+        public FillAreaLocalClusters(IProgressScope progress, IReadOnlyCollection<IClusterCollectionDefinition<TModelInfo>> clustersDefinitions)
             : base(progress)
         {
             this.clustersDefinitions = clustersDefinitions;

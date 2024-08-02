@@ -24,7 +24,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit
             var world = vm.World;
             if (world != null)
             {
-                var processor = new WrpMassEditProcessor(ui, vm.Library);
+                var processor = new WrpMassEditProcessor(ui.Scope, vm.Library);
 
                 processor.Process(world, batch);
 

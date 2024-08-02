@@ -1,8 +1,8 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Reporting;
 using HugeImages;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -15,7 +15,7 @@ namespace GameRealisticMap.Arma3.Imagery
         private readonly IArma3MapConfig config;
         private readonly IContext context;
 
-        public ImagerySource(TerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystem gameFileSystem, IArma3MapConfig config, IContext context)
+        public ImagerySource(TerrainMaterialLibrary materialLibrary, IProgressScope progress, IGameFileSystem gameFileSystem, IArma3MapConfig config, IContext context)
         {
             idMapRender = new IdMapRender(materialLibrary, progress);
             satMapRender = new SatMapRender(materialLibrary, progress, gameFileSystem);

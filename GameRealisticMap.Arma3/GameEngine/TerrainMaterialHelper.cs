@@ -1,15 +1,15 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
     internal static class TerrainMaterialHelper
     {
-        public static void UnpackEmbeddedFiles(TerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystemWriter gameFileSystemWriter, IArma3MapConfig context)
+        public static void UnpackEmbeddedFiles(TerrainMaterialLibrary materialLibrary, IProgressScope progress, IGameFileSystemWriter gameFileSystemWriter, IArma3MapConfig context)
         {
-            foreach(var definition in materialLibrary.Definitions.Where(d => d.Data != null).ProgressStep(progress, "Embedded Textures"))
+            foreach(var definition in materialLibrary.Definitions.Where(d => d.Data != null).WithProgress(progress, "Embedded Textures"))
             {
                 var data = definition.Data!;
 

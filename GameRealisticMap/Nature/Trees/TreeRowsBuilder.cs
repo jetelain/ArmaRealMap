@@ -1,18 +1,11 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Nature.Trees
 {
     public class TreeRowsBuilder : IDataBuilder<TreeRowsData>
     {
-        private readonly IProgressSystem progress;
-
-        public TreeRowsBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public TreeRowsData Build(IBuildContext context)
+        public TreeRowsData Build(IBuildContext context, IProgressScope scope)
         {
             var nodes = context.OsmSource.All
                 .Where(s => s.Tags != null && s.Tags.GetValue("natural") == "tree_row")
@@ -20,7 +13,7 @@ namespace GameRealisticMap.Nature.Trees
 
             var rows = new List<TerrainPath>();
 
-            foreach (var way in nodes.ProgressStep(progress, "Paths"))
+            foreach (var way in nodes.WithProgress(scope, "Paths"))
             {
                 foreach (var segment in context.OsmSource.Interpret(way)
                                                 .SelectMany(geometry => TerrainPath.FromGeometry(geometry, context.Area.LatLngToTerrainPoint))

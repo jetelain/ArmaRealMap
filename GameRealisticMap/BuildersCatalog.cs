@@ -23,7 +23,6 @@ using GameRealisticMap.Nature.Surfaces;
 using GameRealisticMap.Nature.Trees;
 using GameRealisticMap.Nature.Watercourses;
 using GameRealisticMap.Nature.Weather;
-using GameRealisticMap.Reporting;
 using GameRealisticMap.Satellite;
 
 namespace GameRealisticMap
@@ -32,57 +31,57 @@ namespace GameRealisticMap
     {
         private readonly Dictionary<Type, IBuilderAdapter> builders = new Dictionary<Type, IBuilderAdapter>();
 
-        public BuildersCatalog(IProgressSystem progress, IBuildersConfig config, ISourceLocations sources)
+        public BuildersCatalog(IBuildersConfig config, ISourceLocations sources)
         {
-            Register(new OceanBuilder(progress));
-            Register(new CoastlineBuilder(progress));
-            Register(new RawSatelliteImageBuilder(progress, sources));
-            Register(new RawElevationBuilder(progress, sources));
-            Register(new CategoryAreaBuilder(progress));
-            Register(new RoadsBuilder(progress, config.Roads));
-            Register(new BuildingsBuilder(progress, config.Buildings));
-            Register(new WatercoursesBuilder(progress));
-            Register(new WatercourseRadialBuilder(progress));
-            Register(new ForestBuilder(progress));
-            Register(new ScrubBuilder(progress));
-            Register(new RocksBuilder(progress));
-            Register(new ForestRadialBuilder(progress));
-            Register(new ScrubRadialBuilder(progress));
-            Register(new LakesBuilder(progress));
-            Register(new ForestEdgeBuilder(progress));
-            Register(new SandSurfacesBuilder(progress));
-            Register(new ElevationWithLakesBuilder(progress));
-            Register(new MeadowsBuilder(progress));
-            Register(new GrassBuilder(progress));
-            Register(new FencesBuilder(progress));
-            Register(new FarmlandsBuilder(progress));
-            Register(new TreesBuilder(progress));
-            Register(new OrientedObjectBuilder(progress));
-            Register(new RailwaysBuilder(progress, config.RailwayCrossings));
-            Register(new CitiesBuilder(progress));
-            Register(new ElevationBuilder(progress));
-            Register(new VineyardBuilder(progress));
-            Register(new OrchardBuilder(progress));
-            Register(new TreeRowsBuilder(progress));
-            Register(new DefaultAreasBuilder(progress));
-            Register(new ProceduralStreetLampsBuilder(progress));
-            Register(new SidewalksBuilder(progress));
-            Register(new DefaultResidentialAreasBuilder(progress));
-            Register(new DefaultCommercialAreasBuilder(progress));
-            Register(new DefaultIndustrialAreasBuilder(progress));
-            Register(new DefaultMilitaryAreasBuilder(progress));
-            Register(new DefaultRetailAreasBuilder(progress));
-            Register(new DefaultAgriculturalAreasBuilder(progress));
+            Register(new OceanBuilder());
+            Register(new CoastlineBuilder());
+            Register(new RawSatelliteImageBuilder(sources));
+            Register(new RawElevationBuilder(sources));
+            Register(new CategoryAreaBuilder());
+            Register(new RoadsBuilder(config.Roads));
+            Register(new BuildingsBuilder(config.Buildings));
+            Register(new WatercoursesBuilder());
+            Register(new WatercourseRadialBuilder());
+            Register(new ForestBuilder());
+            Register(new ScrubBuilder());
+            Register(new RocksBuilder());
+            Register(new ForestRadialBuilder());
+            Register(new ScrubRadialBuilder());
+            Register(new LakesBuilder());
+            Register(new ForestEdgeBuilder());
+            Register(new SandSurfacesBuilder());
+            Register(new ElevationWithLakesBuilder());
+            Register(new MeadowsBuilder());
+            Register(new GrassBuilder());
+            Register(new FencesBuilder());
+            Register(new FarmlandsBuilder());
+            Register(new TreesBuilder());
+            Register(new OrientedObjectBuilder());
+            Register(new RailwaysBuilder(config.RailwayCrossings));
+            Register(new CitiesBuilder());
+            Register(new ElevationBuilder());
+            Register(new VineyardBuilder());
+            Register(new OrchardBuilder());
+            Register(new TreeRowsBuilder());
+            Register(new DefaultAreasBuilder());
+            Register(new ProceduralStreetLampsBuilder());
+            Register(new SidewalksBuilder());
+            Register(new DefaultResidentialAreasBuilder());
+            Register(new DefaultCommercialAreasBuilder());
+            Register(new DefaultIndustrialAreasBuilder());
+            Register(new DefaultMilitaryAreasBuilder());
+            Register(new DefaultRetailAreasBuilder());
+            Register(new DefaultAgriculturalAreasBuilder());
             Register(new ConditionEvaluatorBuilder());
-            Register(new ElevationContourBuilder(progress));
-            Register(new WeatherBuilder(progress, sources));
-            Register(new IceSurfaceBuilder(progress));
-            Register(new ScreeBuilder(progress));
+            Register(new ElevationContourBuilder());
+            Register(new WeatherBuilder(sources));
+            Register(new IceSurfaceBuilder());
+            Register(new ScreeBuilder());
             Register(new ElevationOutOfBoundsBuilder());
-            Register(new AirportBuilder(progress));
-            Register(new AerowaysBuilder(progress));
-            Register(new AsphaltBuilder(progress));
-            Register(new CutlinesBuilder(progress));
+            Register(new AirportBuilder());
+            Register(new AerowaysBuilder());
+            Register(new AsphaltBuilder());
+            Register(new CutlinesBuilder());
         }
 
         public void Register<TData>(IDataBuilder<TData> builder)

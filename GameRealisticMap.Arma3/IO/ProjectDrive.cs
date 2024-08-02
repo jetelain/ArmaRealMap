@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Arma3.IO
@@ -103,7 +104,7 @@ namespace GameRealisticMap.Arma3.IO
             return File.Create(GetFullPath(path));
         }
 
-        public async Task ProcessImageToPaa(IProgressSystem progress, int? maxDegreeOfParallelism = null)
+        public async Task ProcessImageToPaa(IProgressScope progress, int? maxDegreeOfParallelism = null)
         {
             await Arma3ToolsHelper.ImageToPAA(progress, imageToPaaPending, maxDegreeOfParallelism);
             imageToPaaPending.Clear();

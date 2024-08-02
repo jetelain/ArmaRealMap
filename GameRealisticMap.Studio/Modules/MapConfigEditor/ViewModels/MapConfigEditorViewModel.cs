@@ -291,7 +291,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             var config = await GetBuildersConfigSafe(a3config);
             var render = new PreviewRender(a3config.TerrainArea, a3config.Imagery, config, IoC.Get<IGrmConfigService>().GetSources());
             var target = Path.Combine(Path.GetTempPath(), "grm-preview.html");
-            await render.RenderHtml(task, target, ignoreElevation);
+            await render.RenderHtml(task.Scope, target, ignoreElevation);
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewResultInWebBrowser);
         }
 
@@ -416,7 +416,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory(), IoC.Get<IGrmConfigService>().GetSources());
 
-            var freindlyName = await generator.GenerateMod(task, a3config);
+            var freindlyName = await generator.GenerateMod(task.Scope, a3config);
 
             if (!string.IsNullOrEmpty(freindlyName))
             {
@@ -444,7 +444,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var generator = new Arma3MapGenerator(assets, _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory(), IoC.Get<IGrmConfigService>().GetSources());
 
-            var results = await generator.GenerateWrp(task, a3config);
+            var results = await generator.GenerateWrp(task.Scope, a3config);
 
             task.AddSuccessAction(() => ShellHelper.OpenUri(_arma3DataModule.ProjectDrive.GetFullPath(a3config.PboPrefix)), Labels.ViewInFileExplorer);
 
@@ -506,7 +506,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             Directory.CreateDirectory(target);
 
-            var source = await generator.GetImagerySource(task, a3config, new PersistentHugeImageStorage(target));
+            var source = await generator.GetImagerySource(task.Scope, a3config, new PersistentHugeImageStorage(target));
             if (source != null)
             {
                 await action(source);
@@ -528,7 +528,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             var target = Path.Combine(Path.GetTempPath(), a3config.WorldName);
             Directory.CreateDirectory(target);
 
-            var source = await generator.GetBuildContext(task, a3config, new PersistentHugeImageStorage(target));
+            var source = await generator.GetBuildContext(task.Scope, a3config, new PersistentHugeImageStorage(target));
 
             if (source != null)
             {
@@ -539,16 +539,16 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         private void ReportConfig(IProgressTaskUI task, ProjectDrive projectDrive, Arma3MapConfig a3config)
         {
-            task.WriteLine($"MountPath='{projectDrive.MountPath}'");
+            task.Scope.WriteLine($"MountPath='{projectDrive.MountPath}'");
             if (projectDrive.SecondarySource is PboFileSystem pbo)
             {
                 foreach(var path in pbo.GamePaths)
                 {
-                    task.WriteLine($"GamePaths+='{path}'");
+                    task.Scope.WriteLine($"GamePaths+='{path}'");
                 }
                 foreach (var path in pbo.ModsPaths)
                 {
-                    task.WriteLine($"ModsPaths+='{path}'");
+                    task.Scope.WriteLine($"ModsPaths+='{path}'");
                 }
             }
         }
@@ -579,7 +579,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             var generator = new Arma3TerrainBuilderGenerator(assets, _arma3DataModule.ProjectDrive, IoC.Get<IGrmConfigService>().GetSources());
 
-            var freindlyName = await generator.GenerateTerrainBuilderFiles(task, a3config, target);
+            var freindlyName = await generator.GenerateTerrainBuilderFiles(task.Scope, a3config, target);
 
             task.AddSuccessAction(() => ShellHelper.OpenUri(Path.Combine(target, "README.txt")), GameRealisticMap.Studio.Labels.ViewImportInstructions);
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);

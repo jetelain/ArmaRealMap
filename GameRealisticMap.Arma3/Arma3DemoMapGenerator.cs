@@ -15,6 +15,7 @@ using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
 using HugeImages.Storage;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3
 {
@@ -33,12 +34,12 @@ namespace GameRealisticMap.Arma3
             this.demoNaming = demoNaming ?? new DefaultDemoNaming();
         }
 
-        protected override Task<IOsmDataSource> LoadOsmData(IProgressTask progress, Arma3MapConfig a3config)
+        protected override Task<IOsmDataSource> LoadOsmData(IProgressScope progress, Arma3MapConfig a3config)
         {
             return Task.FromResult<IOsmDataSource>(new NoneOsmDataSource());
         }
 
-        protected override BuildContext CreateBuildContext(IProgressTask progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
+        protected override BuildContext CreateBuildContext(IProgressScope progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
         {
             var context = base.CreateBuildContext(progress, a3config, osmSource, hugeImageStorage);
 
@@ -128,7 +129,7 @@ namespace GameRealisticMap.Arma3
         }
 
 
-        protected override IEnumerable<EditableWrpObject> GetObjects(IProgressTask progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
+        protected override IEnumerable<EditableWrpObject> GetObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
         {
             return base.GetObjects(progress, config, context, generators, grid)
                 .Concat(context.GetData<List<EditableWrpObject>>());
@@ -191,7 +192,7 @@ namespace GameRealisticMap.Arma3
             });
         }
 
-        public async Task<Arma3MapConfig> GenerateWrp(IProgressTask progress)
+        public async Task<Arma3MapConfig> GenerateWrp(IProgressScope progress)
         {
             var config = CreateConfig();
             await GenerateWrp(progress, config);
@@ -199,7 +200,7 @@ namespace GameRealisticMap.Arma3
         }
 
         [SupportedOSPlatform("windows")]
-        public async Task<Arma3MapConfig> GenerateMod(IProgressTask progress)
+        public async Task<Arma3MapConfig> GenerateMod(IProgressScope progress)
         {
             var config = CreateConfig();
             await GenerateMod(progress, config);

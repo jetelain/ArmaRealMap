@@ -44,7 +44,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.ViewModels
                     service.TakeImages(
                         models,
                         modDependencies,
-                        progress));
+                        progress.Scope));
 
             return TryCloseAsync();
         }

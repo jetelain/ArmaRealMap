@@ -5,24 +5,24 @@ using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Scrubs;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Nature.Scrubs
 {
     internal class ScrubGenerator : ClusteredGeneratorBase<ScrubData>
     {
-        public ScrubGenerator(IProgressSystem progress, IArma3RegionAssets assets)
-            : base(progress, assets)
+        public ScrubGenerator(IArma3RegionAssets assets)
+            : base(assets)
         {
         }
 
         protected override ClusterCollectionId Id => ClusterCollectionId.Scrub;
 
-        protected override void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons, IConditionEvaluator evaluator)
+        protected override void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons, IConditionEvaluator evaluator, IProgressScope scope)
         {
-            base.Generate(layer, polygons, evaluator);
+            base.Generate(layer, polygons, evaluator, scope);
             
-            var additional = new FillAreaBasic<Composition>(progress, assets.GetBasicCollections(BasicCollectionId.ScrubAdditional));
+            var additional = new FillAreaBasic<Composition>(scope, assets.GetBasicCollections(BasicCollectionId.ScrubAdditional));
             additional.FillPolygons(layer, polygons, evaluator);
         }
     }

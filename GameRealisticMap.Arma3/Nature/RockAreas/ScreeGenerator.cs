@@ -7,8 +7,8 @@ namespace GameRealisticMap.Arma3.Nature.RockAreas
 {
     internal class ScreeGenerator : BasicGeneratorBase<ScreeData>
     {
-        public ScreeGenerator(IProgressSystem progress, IArma3RegionAssets assets)
-            : base(progress, assets)
+        public ScreeGenerator(IArma3RegionAssets assets)
+            : base(assets)
         {
         }
 

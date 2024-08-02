@@ -1,19 +1,13 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Airports;
 using GameRealisticMap.Nature.Forests;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Nature.Surfaces
 {
     internal class GrassBuilder : BasicBuilderBase<GrassData>
     {
-        public GrassBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override GrassData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new GrassData(polygons);
@@ -57,11 +51,11 @@ namespace GameRealisticMap.Nature.Surfaces
             return base.GetPriority(context)
                 .Concat(context.GetData<ForestData>().Polygons);
         }
-        public override GrassData Build(IBuildContext context)
+        public override GrassData Build(IBuildContext context, IProgressScope scope)
         {
             return CreateWrapper(GetPolygons(context, 
                     context.GetData<AerowaysData>().Aeroways.Where(a => a.Surface == AerowaySurface.Grass).SelectMany(a => a.ToPolygons())
-                ));
+                , scope));
         }
     }
 }

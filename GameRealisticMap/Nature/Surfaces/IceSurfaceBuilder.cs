@@ -2,19 +2,12 @@
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature.Surfaces
 {
     internal class IceSurfaceBuilder : BasicBuilderBase<IceSurfaceData>
     {
-        public IceSurfaceBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override IceSurfaceData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new IceSurfaceData(polygons);

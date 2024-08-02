@@ -28,9 +28,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public async Task Run(IProgressTaskUI ui)
         {
-            var gen = new MaterialUpdateGenerator(ui, projectDrive);
+            var gen = new MaterialUpdateGenerator(ui.Scope, projectDrive);
             gen.Generate(new TerrainMaterialLibrary(materials.Select(m => m.ToDefinition()).Where(d => d != null).ToList()!), config);
-            await projectDrive.ProcessImageToPaa(ui);
+            await projectDrive.ProcessImageToPaa(ui.Scope);
         }
     }
 }

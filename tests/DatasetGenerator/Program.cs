@@ -5,11 +5,11 @@ using GameRealisticMap.Configuration;
 using GameRealisticMap.Generic;
 using GameRealisticMap.Generic.Profiles;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Reporting;
 using MapToolkit;
 using OsmSharp;
 using OsmSharp.IO.PBF;
 using OsmSharp.Streams;
+using Pmad.ProgressTracking;
 using ProtoBuf;
 using ProtoBuf.Meta;
 
@@ -25,7 +25,9 @@ namespace DatasetGenerator
 
         static async Task Main(string[] args)
         {
-            var osmLoader = new OsmDataOverPassLoader(new ConsoleProgressSystem(), new DefaultSourceLocations());
+            using var console = new ConsoleProgessRender();
+
+            var osmLoader = new OsmDataOverPassLoader(console.Root, new DefaultSourceLocations());
 
             var path = GetBasePath();
 

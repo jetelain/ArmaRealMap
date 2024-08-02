@@ -1,12 +1,11 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Nature.Watercourses
 {
     internal class WatercourseRadialBuilder : BasicRadialBuilder<WatercourseRadialData, WatercoursesData>
     {
-        public WatercourseRadialBuilder(IProgressSystem progress)
-            : base(progress, WatercourseRadialData.Width)
+        public WatercourseRadialBuilder()
+            : base(WatercourseRadialData.Width)
         {
 
         }

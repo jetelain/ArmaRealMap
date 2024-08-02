@@ -1,6 +1,7 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -9,7 +10,7 @@ namespace GameRealisticMap.Arma3.Imagery
 {
     internal class IdMapRender : IdMapRenderBase<Rgba32>
     {
-        public IdMapRender(TerrainMaterialLibrary materialLibrary, IProgressSystem progress)
+        public IdMapRender(TerrainMaterialLibrary materialLibrary, IProgressScope progress)
             : base(materialLibrary, progress)
         {
             drawingOptions.GraphicsOptions.Antialias = false;

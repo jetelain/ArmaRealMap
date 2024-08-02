@@ -5,14 +5,15 @@ using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Edit
 {
     public class WrpEditProcessor
     {
-        private readonly IProgressSystem _progressSystem;
+        private readonly IProgressScope _progressSystem;
 
-        public WrpEditProcessor(IProgressSystem progressSystem)
+        public WrpEditProcessor(IProgressScope progressSystem)
         {
             _progressSystem = progressSystem;
         }
@@ -20,7 +21,7 @@ namespace GameRealisticMap.Arma3.Edit
         public void ProcessAndSave(string sourceFile, string targetFile, WrpEditBatch batch)
         {
             EditableWrp source;
-            using (var report = _progressSystem.CreateStep("Load", 1))
+            using (var report = _progressSystem.CreateSingle("Load"))
             {
                 source = StreamHelper.Read<AnyWrp>(sourceFile).GetEditableWrp();
             }
@@ -32,7 +33,7 @@ namespace GameRealisticMap.Arma3.Edit
         {
             Process(world, batch);
 
-            using (var report = _progressSystem.CreateStep("Save", 1))
+            using (var report = _progressSystem.CreateSingle("Save"))
             {
                 StreamHelper.Write(world, targetFile);
             }
@@ -43,7 +44,7 @@ namespace GameRealisticMap.Arma3.Edit
             if (batch.Elevation.Count > 0)
             {
                 var delta = new ElevationGrid(world.TerrainRangeX, world.CellSize * world.LandRangeX / world.TerrainRangeX);
-                using (var report = _progressSystem.CreateStep("Elevation", batch.Elevation.Count))
+                using (var report = _progressSystem.CreateInteger("Elevation", batch.Elevation.Count))
                 {
                     foreach (var entry in batch.Elevation)
                     {
@@ -61,7 +62,7 @@ namespace GameRealisticMap.Arma3.Edit
             
             var objects = FilterObjects(world, batch.Remove, world.CellSize * world.LandRangeX);
 
-            using (var report = _progressSystem.CreateStep("Objects", 1))
+            using (var report = _progressSystem.CreateSingle("Objects"))
             {
                 objects = objects.Where(m => m != null)
                     .Concat(batch.Add.Select(o => o.ToWrp()))
@@ -102,7 +103,7 @@ namespace GameRealisticMap.Arma3.Edit
 
         public void UpdateElevationGridAbsolute(EditableWrp world, ElevationGrid newGrid)
         {
-            using (_progressSystem.CreateStep("Elevation", 1))
+            using (_progressSystem.CreateSingle("Elevation"))
             {
                 world.FillFromElevationGrid(newGrid);
             }
@@ -110,7 +111,7 @@ namespace GameRealisticMap.Arma3.Edit
 
         private void AdjustObjectsElevation(EditableWrp world, ElevationGrid delta)
         {
-            using (var report = _progressSystem.CreateStep("Adjust", world.Objects.Count))
+            using (var report = _progressSystem.CreateInteger("Adjust", world.Objects.Count))
             {
                 var changes = 0;
 
@@ -146,7 +147,7 @@ namespace GameRealisticMap.Arma3.Edit
             var toRemoveIndex = BuildIndex(toRemove, worldSize);
             var removed = 0;
 
-            using (var report = _progressSystem.CreateStep("Remove", objects.Count))
+            using (var report = _progressSystem.CreateInteger("Remove", objects.Count))
             {
                 for (int i = 0; i < objects.Count; ++i)
                 {
@@ -174,7 +175,7 @@ namespace GameRealisticMap.Arma3.Edit
             {
                 _progressSystem.WriteLine($"{nomatch.Count} did not match on first pass, use relaxed matching.");
 
-                using (var report = _progressSystem.CreateStep("RemoveRelaxed", objects.Count))
+                using (var report = _progressSystem.CreateInteger("RemoveRelaxed", objects.Count))
                 {
                     for (int i = 0; i < objects.Count; ++i)
                     {
@@ -205,7 +206,7 @@ namespace GameRealisticMap.Arma3.Edit
         private SimpleSpacialIndex<WrpRemoveObject> BuildIndex(List<WrpRemoveObject> toRemove, float worldSize)
         {
             var toRemoveIndex = new SimpleSpacialIndex<WrpRemoveObject>(Vector2.Zero, new Vector2(worldSize));
-            foreach (var hideObject in toRemove.ProgressStep(_progressSystem, "BuildIndex"))
+            foreach (var hideObject in toRemove.WithProgress(_progressSystem, "BuildIndex"))
             {
                 toRemoveIndex.Insert(hideObject.Pos2D, hideObject);
             }

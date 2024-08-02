@@ -22,6 +22,9 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         private readonly IOutput output;
         private readonly IShell shell;
         private readonly IWindowManager windowManager;
+
+        public GrmProgressRender ProgressRender { get; }
+
         private readonly PerformanceCounter? cpuCounter;
         private readonly DispatcherTimer timer;
         private double memoryPeak;
@@ -30,8 +33,6 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
 
-        public BindableCollection<ProgressStep> Items { get; set; } = new BindableCollection<ProgressStep>();
-
         [ImportingConstructor]
         public ProgressToolViewModel(IOutput output, IShell shell, IWindowManager windowManager)
         {
@@ -39,6 +40,9 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             this.output = output;
             this.shell = shell;
             this.windowManager = windowManager;
+
+            ProgressRender = new GrmProgressRender(output);
+
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
@@ -123,7 +127,6 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         public IProgressTaskUI StartTask(string name)
         {
             output.Clear();
-            Items.Clear();
 
             Percent = 0;
             NotifyOfPropertyChange(nameof(Percent));
@@ -191,11 +194,11 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             }
             catch (Exception ex)
             {
-                task.Failed(ex);
+                // FIXME: task.Failed(ex);
             }
-            task.WriteLine(FormattableString.Invariant($"Memory: Peak: {memoryPeak:0.000} G, System: {totalMemGb:0.000} G"));
+            task.Scope.WriteLine(FormattableString.Invariant($"Memory: Peak: {memoryPeak:0.000} G, System: {totalMemGb:0.000} G"));
             task.Dispose();
-            if (prompt && task.Error == null && !task.CancellationToken.IsCancellationRequested)
+            if (prompt /*FIXME: && task.Error == null*/ && !task.Scope.CancellationToken.IsCancellationRequested)
             {
                 new System.Action(() => windowManager.ShowDialogAsync(lastSuccess = new SuccessViewModel(task))).BeginOnUIThread();
             }

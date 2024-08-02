@@ -2,6 +2,7 @@
 using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Reporting;
 using GameRealisticMap.Conditions;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
@@ -15,7 +16,7 @@ namespace GameRealisticMap.Algorithms.Filling
         private readonly IDensityDefinition densityDefinition;
         private readonly IReadOnlyList<IClusterDefinition<TModelInfo>> defaultClusters;
 
-        public FillAreaGlobalClusters(IProgressSystem progress, SimpleSpacialIndex<IClusterDefinition<TModelInfo>> map, IDensityDefinition densityDefinition, IReadOnlyList<IClusterDefinition<TModelInfo>> defaultClusters)
+        public FillAreaGlobalClusters(IProgressScope progress, SimpleSpacialIndex<IClusterDefinition<TModelInfo>> map, IDensityDefinition densityDefinition, IReadOnlyList<IClusterDefinition<TModelInfo>> defaultClusters)
             : base(progress)
         {
             this.map = map;

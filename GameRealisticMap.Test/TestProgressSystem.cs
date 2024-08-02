@@ -1,10 +1,12 @@
-﻿using GameRealisticMap.Reporting;
+﻿using Pmad.ProgressTracking;
 using Xunit.Abstractions;
 
 namespace GameRealisticMap.Test
 {
-    internal class TestProgressSystem : NoProgressSystem
+    public sealed class TestProgressSystem : IProgressBase, IProgressInteger, IProgressLong, IProgressPercent, IProgressScope
     {
+        public CancellationToken CancellationToken => CancellationToken.None;
+
         private ITestOutputHelper output;
 
         public TestProgressSystem(ITestOutputHelper output)
@@ -12,19 +14,67 @@ namespace GameRealisticMap.Test
             this.output = output;
         }
 
-        public override IProgressInteger CreateStep(string name, int total)
+        public IProgressInteger CreateInteger(string name, int total)
         {
-            output.WriteLine($"{Prefix}{name} ({total})");
-            return base.CreateStep(name, total);
+            output.WriteLine($"{name} ({total})");
+            return this;
         }
 
-        public override IProgressPercent CreateStepPercent(string name)
+        public IProgressLong CreateLong(string name, long total)
         {
-            output.WriteLine($"{Prefix}{name}");
-            return base.CreateStepPercent(name);
+            output.WriteLine($"{name} ({total})");
+            return this;
         }
 
-        public override void WriteLine(string message)
+        public IProgressPercent CreatePercent(string name)
+        {
+            output.WriteLine($"{name}");
+            return this;
+        }
+
+        public IProgressScope CreateScope(string name, int estimatedChildrenCount = 0)
+        {
+            output.WriteLine($"{name}");
+            return this;
+        }
+
+        public IProgressBase CreateSingle(string name)
+        {
+            output.WriteLine($"{name}");
+            return this;
+        }
+
+        public void Dispose()
+        {
+
+        }
+
+        public void Report(string value)
+        {
+
+        }
+
+        public void Report(int value)
+        {
+
+        }
+
+        public void Report(long value)
+        {
+
+        }
+
+        public void Report(double value)
+        {
+
+        }
+
+        public void ReportOneDone()
+        {
+
+        }
+
+        public void WriteLine(string message)
         {
             output.WriteLine("  " + message);
         }

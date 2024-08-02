@@ -10,11 +10,11 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Watercourses;
-using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.AssetConfigEditor.Controls;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
@@ -95,9 +95,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             if (IsEmpty)
             {
-                return new FillAreaLocalClusters<Composition>(new NoProgressSystem(), new List<ClusterCollectionDefinition>());
+                return new FillAreaLocalClusters<Composition>(new NoProgress(), new List<ClusterCollectionDefinition>());
             }
-            return new FillAreaLocalClusters<Composition>(new NoProgressSystem(), new[] { ToDefinition() });
+            return new FillAreaLocalClusters<Composition>(new NoProgress(), new[] { ToDefinition() });
         }
 
         public override double GetPreviewWidth()

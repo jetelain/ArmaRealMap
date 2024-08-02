@@ -6,10 +6,6 @@ namespace GameRealisticMap.ManMade.DefaultUrbanAreas
 {
     internal class DefaultResidentialAreasBuilder : DefaultUrbanAreasBuilderBase<DefaultResidentialAreaData>
     {
-        public DefaultResidentialAreasBuilder(IProgressSystem progress) : base(progress)
-        {
-        }
-
         protected override BuildingTypeId TragetedType => BuildingTypeId.Residential;
 
         protected override DefaultResidentialAreaData Create(List<TerrainPolygon> polygons)

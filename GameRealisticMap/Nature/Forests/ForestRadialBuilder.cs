@@ -1,12 +1,12 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Cutlines;
-using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Nature.Forests
 {
     internal class ForestRadialBuilder : BasicRadialBuilder<ForestRadialData, ForestData>
     {
-        public ForestRadialBuilder(IProgressSystem progress) : base(progress, ForestRadialData.Width)
+        public ForestRadialBuilder()
+            : base(ForestRadialData.Width)
         {
 
         }

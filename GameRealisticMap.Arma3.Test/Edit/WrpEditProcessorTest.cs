@@ -3,8 +3,8 @@ using BIS.Core.Math;
 using BIS.WRP;
 using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.ElevationModel;
-using GameRealisticMap.Reporting;
 using MapToolkit.DataCells;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Test.Edit
 {
@@ -39,7 +39,7 @@ namespace GameRealisticMap.Arma3.Test.Edit
                 {5, 5, 5, 5},
                 {5, 5, 5, 5} }));
 
-            new WrpEditProcessor(new NoProgressSystem()).UpdateElevationGrid(world, grid);
+            new WrpEditProcessor(new NoProgress()).UpdateElevationGrid(world, grid);
 
             Assert.Equal(new float[] {
                 5, 5, 5, 5,
@@ -62,7 +62,7 @@ namespace GameRealisticMap.Arma3.Test.Edit
                 {5, 5, 5, 5},
                 {5, 5, 5, 5} }));
 
-            new WrpEditProcessor(new NoProgressSystem()).UpdateElevationGridAbsolute(world, grid);
+            new WrpEditProcessor(new NoProgress()).UpdateElevationGridAbsolute(world, grid);
 
             Assert.Equal(new float[] {
                 5, 5, 5, 5,
@@ -86,7 +86,7 @@ namespace GameRealisticMap.Arma3.Test.Edit
             batch.Elevation.Add(new WrpSetElevationGrid(1, 0, 5));
             batch.Elevation.Add(new WrpSetElevationGrid(1, 1, 5));
 
-            new WrpEditProcessor(new NoProgressSystem()).Process(world, batch);
+            new WrpEditProcessor(new NoProgress()).Process(world, batch);
 
             Assert.Equal(new float[] {
                 5, 5, 4, 4,
@@ -109,7 +109,7 @@ namespace GameRealisticMap.Arma3.Test.Edit
             batch.Elevation.Add(new WrpSetElevationGrid(1, 0, 5));
             batch.Elevation.Add(new WrpSetElevationGrid(1, 1, 5));
 
-            new WrpEditProcessor(new NoProgressSystem()).Process(world, batch);
+            new WrpEditProcessor(new NoProgress()).Process(world, batch);
 
             Assert.Equal(new float[] {
                 5, 5, 4, 4,
