@@ -36,7 +36,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
 
         public bool UseColorCorrection => throw new NotImplementedException();
 
-        public int IdMapMultiplier { get; }
+        public int IdMapMultiplier { get; set; }
 
         public static ExistingImageryInfos? TryCreate(ProjectDrive projectDrive, string pboPrefix, float sizeInMeters)
         {
