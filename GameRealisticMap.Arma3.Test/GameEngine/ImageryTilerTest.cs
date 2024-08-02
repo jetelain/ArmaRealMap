@@ -1,9 +1,29 @@
-﻿using GameRealisticMap.Arma3.GameEngine;
+﻿using System.Numerics;
+using GameRealisticMap.Arma3.GameEngine;
+using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Arma3.Test.GameEngine
 {
     public class ImageryTilerTest
     {
+        [Fact]
+        public void ImageryTiler_Multipler()
+        {
+            var tiler = new ImageryTiler(new Arma3MapConfigMock() { CellSize = new Vector2(2), Resolution = 1, Size = 2048, TileSize = 512, IdMapMultiplier = 1 });
+            Assert.Equal(512, tiler.TileSize);
+            Assert.Equal(new Size(4096), tiler.FullImageSize);
+            Assert.Equal(512, tiler.IdMapTileSize);
+            Assert.Equal(new Size(4096), tiler.IdMapFullImageSize);
+
+            tiler = new ImageryTiler(new Arma3MapConfigMock() { CellSize = new Vector2(2), Resolution = 1, Size = 2048, TileSize = 512, IdMapMultiplier = 2 });
+            Assert.Equal(512, tiler.TileSize);
+            Assert.Equal(new Size(4096), tiler.FullImageSize);
+            Assert.Equal(1024, tiler.IdMapTileSize);
+            Assert.Equal(new Size(8192), tiler.IdMapFullImageSize);
+
+            Assert.Throws<ArgumentException>(() => new ImageryTiler(new Arma3MapConfigMock() { CellSize = new Vector2(2), Resolution = 1, Size = 2048, TileSize = 4096, IdMapMultiplier = 2 }));
+        }
+
         [Fact]
         public void ImageryTiler_UVB()
         {
