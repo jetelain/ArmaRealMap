@@ -1,21 +1,14 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Airports;
-using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature;
 using GameRealisticMap.Nature.Forests;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Surfaces
 {
     internal class AsphaltBuilder : BasicBuilderBase<AsphaltData>
     {
-        public AsphaltBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override AsphaltData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new AsphaltData(polygons);
@@ -41,11 +34,11 @@ namespace GameRealisticMap.ManMade.Surfaces
             return context.GetData<ForestData>().Polygons;
         }
 
-        public override AsphaltData Build(IBuildContext context)
+        public override AsphaltData Build(IBuildContext context, IProgressScope scope)
         {
             return CreateWrapper(GetPolygons(context,
                     context.GetData<AerowaysData>().Aeroways.Where(a => a.Surface == AerowaySurface.Asphalt).SelectMany(a => a.ToPolygons()).ToList()
-                ));
+                , scope));
         }
     }
 }

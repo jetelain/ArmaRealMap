@@ -25,7 +25,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export
         {
             using (var writer = File.CreateText(targetFile))
             {
-                using var report = ui.CreateStepPercent("Elevation.AscFile");
+                using var report = ui.Scope.CreatePercent("Elevation.AscFile");
                 EsriAsciiHelper.SaveDataCell(writer, world.ToElevationGrid().ToDataCell(new Coordinates(0, TerrainBuilderObject.XShift)), "-9999", report);
             }
             return Task.FromResult(true);

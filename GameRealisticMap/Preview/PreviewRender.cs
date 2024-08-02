@@ -2,8 +2,8 @@
 using GameRealisticMap.Configuration;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Reporting;
 using GeoJSON.Text.Feature;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Preview
 {
@@ -27,7 +27,7 @@ namespace GameRealisticMap.Preview
             this.sources = sources;
         }
 
-        public async Task RenderHtml(IProgressTask progress, string targetFile, bool ignoreElevation = false)
+        public async Task RenderHtml(IProgressScope scope, string targetFile, bool ignoreElevation = false)
         {
             try
             {
@@ -37,25 +37,22 @@ namespace GameRealisticMap.Preview
                     filter = (t) => t != typeof(ElevationContourData);
                 }
 
-                var catalog = new BuildersCatalog(progress, config, sources);
+                var catalog = new BuildersCatalog(config, sources);
                 var count = catalog.CountOfType<IGeoJsonData>(filter);
-                progress.Total = count + 2;
 
-                var loader = new OsmDataOverPassLoader(progress, sources);
+                var loader = new OsmDataOverPassLoader(scope, sources);
                 var osmSource = await loader.Load(terrainArea);
-                progress.ReportOneDone();
-                if (progress.CancellationToken.IsCancellationRequested)
+                if (scope.CancellationToken.IsCancellationRequested)
                 {
                     return;
                 }
 
-                var context = new BuildContext(catalog, progress, terrainArea, osmSource, imagery);
+                var context = new BuildContext(catalog, scope, terrainArea, osmSource, imagery);
                 var list = new List<Feature>();
                 foreach (var data in catalog.GetOfType<IGeoJsonData>(context, filter))
                 {
                     list.AddRange(data.ToGeoJson(p => p));
-                    progress.ReportOneDone();
-                    if (progress.CancellationToken.IsCancellationRequested)
+                    if (scope.CancellationToken.IsCancellationRequested)
                     {
                         return;
                     }
@@ -64,60 +61,52 @@ namespace GameRealisticMap.Preview
                 var collection = new FeatureCollection(list);
 
                 await RenderHtml(collection, targetFile);
-
-                progress.ReportOneDone();
             }
             catch (Exception ex)
             {
-                progress.Failed(ex);
+                //FIXME: scope.Failed(ex);
             }
             finally
             {
-                progress.Dispose();
+                scope.Dispose();
             }
         }
 
-        public async Task RenderHtml<TData>(IProgressTask progress, string targetFile) 
+        public async Task RenderHtml<TData>(IProgressScope scope, string targetFile) 
             where TData: class, IGeoJsonData
         {
             try
             {
-                var catalog = new BuildersCatalog(progress, config, sources);
-                progress.Total = 3;
+                var catalog = new BuildersCatalog(config, sources);
 
-                var loader = new OsmDataOverPassLoader(progress, sources);
+                var loader = new OsmDataOverPassLoader(scope, sources);
                 var osmSource = await loader.Load(terrainArea);
-                progress.ReportOneDone();
-                if (progress.CancellationToken.IsCancellationRequested)
+                if (scope.CancellationToken.IsCancellationRequested)
                 {
                     return;
                 }
 
-                var context = new BuildContext(catalog, progress, terrainArea, osmSource, imagery);
+                var context = new BuildContext(catalog, scope, terrainArea, osmSource, imagery);
                 var list = new List<Feature>();
                 var data = context.GetData<TData>();
                 
                 list.AddRange(data.ToGeoJson(p => p));
-                progress.ReportOneDone();
-                if (progress.CancellationToken.IsCancellationRequested)
+                if (scope.CancellationToken.IsCancellationRequested)
                 {
                     return;
                 }
                 
-
                 var collection = new FeatureCollection(list);
-
                 await RenderHtml(collection, targetFile);
 
-                progress.ReportOneDone();
             }
             catch (Exception ex)
             {
-                progress.Failed(ex);
+                //FIXME: scope.Failed(ex);
             }
             finally
             {
-                progress.Dispose();
+                scope.Dispose();
             }
         }
 

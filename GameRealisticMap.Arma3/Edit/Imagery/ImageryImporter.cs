@@ -4,6 +4,7 @@ using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Reporting;
 using HugeImages;
 using HugeImages.Storage;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.Edit.Imagery
@@ -12,15 +13,15 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
     {
         private readonly ProjectDrive projectDrive;
         private readonly TerrainMaterialLibrary materials;
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope progress;
 
-        public ImageryImporter(ProjectDrive projectDrive, IProgressSystem progress)
+        public ImageryImporter(ProjectDrive projectDrive, IProgressScope progress)
             : this(projectDrive, new TerrainMaterialLibrary(), progress)
         {
 
         }
 
-        public ImageryImporter(ProjectDrive projectDrive, TerrainMaterialLibrary materials, IProgressSystem progress)
+        public ImageryImporter(ProjectDrive projectDrive, TerrainMaterialLibrary materials, IProgressScope progress)
         {
             this.projectDrive = projectDrive;
             this.materials = materials;
@@ -83,7 +84,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
 
         private async Task<HugeImage<Rgba32>> LoadImage(string sourceFile)
         {
-            using (var report = progress.CreateStep("LoadImage",1))
+            using (var report = progress.CreateSingle("LoadImage"))
             {
                 return await StorageExtensions.LoadUniqueAsync<Rgba32>(sourceFile);
             }

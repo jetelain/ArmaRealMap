@@ -1,17 +1,10 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature.Surfaces
 {
     internal class SandSurfacesBuilder : BasicBuilderBase<SandSurfacesData>
     {
-        public SandSurfacesBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override SandSurfacesData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new SandSurfacesData(polygons);

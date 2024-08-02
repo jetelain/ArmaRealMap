@@ -4,19 +4,17 @@ using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
 using GameRealisticMap.ManMade.Roads.Libraries;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Roads
 {
     public class RoadsBuilder : IDataBuilder<RoadsData>, IDataSerializer<RoadsData>
     {
-        private readonly IProgressSystem progress;
         private readonly IRoadTypeLibrary<IRoadTypeInfos> library;
         private readonly JsonSerializerOptions options;
 
-        public RoadsBuilder(IProgressSystem progress, IRoadTypeLibrary<IRoadTypeInfos> library)
+        public RoadsBuilder(IRoadTypeLibrary<IRoadTypeInfos> library)
         {
-            this.progress = progress;
             this.library = library;
 
             this.options = new JsonSerializerOptions();
@@ -24,9 +22,9 @@ namespace GameRealisticMap.ManMade.Roads
             options.Converters.Add(new JsonStringEnumConverter());
         }
 
-        internal List<Road> MergeRoads(List<Road> roads)
+        internal List<Road> MergeRoads(List<Road> roads, IProgressScope scope)
         {
-            using var report = progress.CreateStep("Merge", roads.Count);
+            using var report = scope.CreateInteger("Merge", roads.Count);
             var todo = new HashSet<Road>(roads);
             var roadsPass2 = new List<Road>();
             foreach (var road in todo.ToList())
@@ -92,14 +90,14 @@ namespace GameRealisticMap.ManMade.Roads
             return roads.Where(r => r != self && r.RoadType == self.RoadType && r.SpecialSegment == self.SpecialSegment && (TerrainPoint.Equals(r.Path.FirstPoint,point) || TerrainPoint.Equals(r.Path.LastPoint,point))).ToList();
         }
 
-        internal List<Road> PrepareRoads(IOsmDataSource osm, ITerrainArea area)
+        internal List<Road> PrepareRoads(IOsmDataSource osm, ITerrainArea area, IProgressScope scope)
         {
             // Do not process bridges that length is not significantly larger than grid cell size, because they wont be noticiable
             var strictBridgeMinimalLength = area.GridCellSize * 1.25f;
 
             var osmRoads = osm.Ways.Where(o => o.Tags != null && o.Tags.ContainsKey("highway")).ToList();
             var roads = new List<Road>();
-            using var report = progress.CreateStep("Interpret", osmRoads.Count);
+            using var report = scope.CreateInteger("Interpret", osmRoads.Count);
             foreach (var road in osmRoads)
             {
                 var kind = RoadTypeIdHelper.FromOSM(road.Tags);
@@ -131,13 +129,13 @@ namespace GameRealisticMap.ManMade.Roads
             return roads;
         }
 
-        public RoadsData Build(IBuildContext context)
+        public RoadsData Build(IBuildContext context, IProgressScope scope)
         {
             return new RoadsData(
                 IgnoreSmallIsolated(
                     MergeRoads(
-                        PrepareRoads(context.OsmSource, context.Area)), 
-                    context.Options)
+                        PrepareRoads(context.OsmSource, context.Area, scope), scope), 
+                    context.Options, scope)
                 );
         }
 
@@ -148,10 +146,10 @@ namespace GameRealisticMap.ManMade.Roads
                 .Any(o => o.Path.Points.Any(p => self.Path.Points.Contains(p)));
         }
 
-        private List<Road> IgnoreSmallIsolated(List<Road> roads, IMapProcessingOptions options)
+        private List<Road> IgnoreSmallIsolated(List<Road> roads, IMapProcessingOptions options, IProgressScope scope)
         {
             var kept = roads
-                .ProgressStep(progress, "Filter")
+                .WithProgress(scope, "Filter")
 
                 // Ignore small isolated roads
                 .Where(road => AnyConnected(road, roads) || road.Path.Length > road.Width * 10)

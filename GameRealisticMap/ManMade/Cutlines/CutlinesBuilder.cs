@@ -1,27 +1,19 @@
 ﻿using System.Globalization;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.ManMade.Roads.Libraries;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Cutlines
 {
     internal class CutlinesBuilder : IDataBuilder<CutlinesData>
     {
-        private readonly IProgressSystem progress;
-
-        public CutlinesBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public CutlinesData Build(IBuildContext context)
+        public CutlinesData Build(IBuildContext context, IProgressScope scope)
         {
             var polygons = new List<TerrainPolygon>();
 
             foreach(var way in context.OsmSource.Ways
                 .Where(w => w.Tags != null && w.Tags.GetValue("man_made") == "cutline")
-                .ProgressStep(progress, "Interpret"))
+                .WithProgress(scope, "Interpret"))
             {
                 polygons.AddRange(
                     context.OsmSource.Interpret(way)

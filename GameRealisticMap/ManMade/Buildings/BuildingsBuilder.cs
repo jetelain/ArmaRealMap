@@ -4,63 +4,61 @@ using GameRealisticMap.Algorithms;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Reporting;
 using OsmSharp.Geo;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Buildings
 {
     internal class BuildingsBuilder : IDataBuilder<BuildingsData>
     {
-        private readonly IProgressSystem progress;
         private readonly IBuildingSizeLibrary library;
 
-        public BuildingsBuilder(IProgressSystem progress, IBuildingSizeLibrary library)
+        public BuildingsBuilder(IBuildingSizeLibrary library)
         {
-            this.progress = progress;
             this.library = library;
         }
 
-        public BuildingsData Build(IBuildContext context)
+        public BuildingsData Build(IBuildContext context, IProgressScope scope)
         {
             var roads = context.GetData<RoadsData>();
             var categorizers = context.GetData<CategoryAreaData>();
 
-            var pass1 = DetectBuildingsBoundingRects(context.OsmSource, context.Area);
+            var pass1 = DetectBuildingsBoundingRects(context.OsmSource, context.Area, scope);
             //Preview(data, removed, pass1, "buildings-pass1.png");
 
-            var pass2 = MergeSmallBuildings(pass1, context.Area);
+            var pass2 = MergeSmallBuildings(pass1, context.Area, scope);
             //Preview(data, removed, pass2, "buildings-pass2.png");
 
             var roadsIndex = new TerrainSpacialIndex<Road>(context.Area);
             roadsIndex.AddRange(roads.Roads);
 
-            AddNodeBuildings(pass2, context.OsmSource, context.Area, roadsIndex) ;
+            AddNodeBuildings(pass2, context.OsmSource, context.Area, roadsIndex, scope) ;
 
 #if PARALLEL
-            var pass3 = RemoveCollidingBuildingsParallel(pass2, context.Area);
+            var pass3 = RemoveCollidingBuildingsParallel(pass2, context.Area, scope);
 #else
             var pass3 = RemoveCollidingBuildingsWithSI(pass2, context.Area);
 #endif
             //Preview(data, removed, pass3, "buildings-pass3.png");
 
-            var pass4 = RoadCrop(pass3, roadsIndex);
+            var pass4 = RoadCrop(pass3, roadsIndex, scope);
             //Preview(data, removed, pass4, "buildings-pass4.png");
 
-            DetectEntranceSide(pass4, roadsIndex, context.Area);
+            DetectEntranceSide(pass4, roadsIndex, context.Area, scope);
 
-            var pass5 = DetectBuildingCategory(categorizers.Areas, pass4);
+            var pass5 = DetectBuildingCategory(categorizers.Areas, pass4, scope);
             //Preview(data, removed, pass5, "buildings-pass5.png");
 
             return new BuildingsData(pass5);
         }
 
-        private void AddNodeBuildings(List<BuildingCandidate> candidates, IOsmDataSource osmSource, ITerrainArea area, TerrainSpacialIndex<Road> roadsIndex)
+        private void AddNodeBuildings(List<BuildingCandidate> candidates, IOsmDataSource osmSource, ITerrainArea area, TerrainSpacialIndex<Road> roadsIndex, IProgressScope scope)
         {
             var cache = new ConcurrentDictionary<BuildingTypeId, List<Vector2>>();
 
             foreach(var node in osmSource.Nodes
                 .Where(n => n.Tags != null && (n.Tags.ContainsKey("man_made") || n.Tags.GetValue("generator:source") == "wind"))
-                .ProgressStep(progress, "Nodes"))
+                .WithProgress(scope, "Nodes"))
             {
                 var type = BuildingTypeIdHelper.FromOSM(node.Tags);
                 if (type != null)
@@ -89,9 +87,9 @@ namespace GameRealisticMap.ManMade.Buildings
             }
         }
 
-        private void DetectEntranceSide(IReadOnlyList<BuildingCandidate> buildings, TerrainSpacialIndex<Road> roadsIndex, ITerrainArea area)
+        private void DetectEntranceSide(IReadOnlyList<BuildingCandidate> buildings, TerrainSpacialIndex<Road> roadsIndex, ITerrainArea area, IProgressScope scope)
         {
-            using var report = progress.CreateStep("EntranceSide", buildings.Count);
+            using var report = scope.CreateInteger("EntranceSide", buildings.Count);
             var buildingsIndex = new TerrainSpacialIndex<BuildingCandidate>(area);
             buildingsIndex.AddRange(buildings);
             Parallel.ForEach(buildings, building =>
@@ -113,7 +111,7 @@ namespace GameRealisticMap.ManMade.Buildings
             });
         }
 
-        private List<BuildingCandidate> MergeSmallBuildings(IReadOnlyList<BuildingCandidate> pass1Builidings, ITerrainArea area)
+        private List<BuildingCandidate> MergeSmallBuildings(IReadOnlyList<BuildingCandidate> pass1Builidings, ITerrainArea area, IProgressScope scope)
         {
 
             var size = 6.5f;
@@ -128,7 +126,7 @@ namespace GameRealisticMap.ManMade.Buildings
 
             var heavy = pass1Builidings.Where(b => b.Box.Width >= mergeLimit || b.Box.Height >= mergeLimit).ToList();
 
-            using (var report2 = progress.CreateStep("Heavy", heavy.Count))
+            using (var report2 = scope.CreateInteger("Heavy", heavy.Count))
             {
                 foreach (var building in heavy)
                 {
@@ -138,7 +136,7 @@ namespace GameRealisticMap.ManMade.Buildings
                 }
             }
 
-            using (var report2 = progress.CreateStep("Small", large.Count))
+            using (var report2 = scope.CreateInteger("Small", large.Count))
             {
                 foreach (var building in large)
                 {
@@ -167,7 +165,7 @@ namespace GameRealisticMap.ManMade.Buildings
             return pass2;
         }
 
-        private List<BuildingCandidate> RemoveCollidingBuildingsWithSI(List<TerrainPolygon> removed, List<BuildingCandidate> pass2, ITerrainArea area)
+        private List<BuildingCandidate> RemoveCollidingBuildingsWithSI(List<TerrainPolygon> removed, List<BuildingCandidate> pass2, ITerrainArea area, IProgressScope scope)
         {
             var pass3 = pass2.OrderByDescending(l => l.Box.Width * l.Box.Height).ToList();
 
@@ -176,7 +174,7 @@ namespace GameRealisticMap.ManMade.Buildings
             todo.AddRange(pass3);
             //var todo = pass3.ToList();
             var total = todo.Count;
-            using var report = progress.CreateStep("Collide", total);
+            using var report = scope.CreateInteger("Collide", total);
             while (todo.Count > 0)
             {
                 var building = todo.First();
@@ -214,9 +212,9 @@ namespace GameRealisticMap.ManMade.Buildings
             return pass3;
         }
 
-        private List<BuildingCandidate> RemoveCollidingBuildingsParallel(List<BuildingCandidate> pass2, ITerrainArea area)
+        private List<BuildingCandidate> RemoveCollidingBuildingsParallel(List<BuildingCandidate> pass2, ITerrainArea area, IProgressScope scope)
         {
-            using var report = progress.CreateStep("Collide (Parallel)", pass2.Count);
+            using var report = scope.CreateInteger("Collide (Parallel)", pass2.Count);
             return GeometryHelper.ParallelMerge(new Envelope(TerrainPoint.Empty, new TerrainPoint(area.SizeInMeters, area.SizeInMeters)), pass2, 100, l => RemoveCollidingBuildings(l.ToList()), report).Result.ToList();
         }
 
@@ -262,9 +260,9 @@ namespace GameRealisticMap.ManMade.Buildings
         }
 
 
-        private List<BuildingCandidate> RoadCrop( IReadOnlyCollection<BuildingCandidate> pass3, TerrainSpacialIndex<Road> roadsIndex)
+        private List<BuildingCandidate> RoadCrop( IReadOnlyCollection<BuildingCandidate> pass3, TerrainSpacialIndex<Road> roadsIndex, IProgressScope scope)
         {
-            using var report = progress.CreateStep("Roads", pass3.Count);
+            using var report = scope.CreateInteger("Roads", pass3.Count);
             var pass4 = new ConcurrentQueue<BuildingCandidate>();
 
             Parallel.ForEach(pass3, building =>
@@ -294,14 +292,14 @@ namespace GameRealisticMap.ManMade.Buildings
             return pass4.ToList();
         }
 
-        private List<Building> DetectBuildingCategory(IEnumerable<IBuildingCategoryArea> categorizers, IReadOnlyCollection<BuildingCandidate> pass3)
+        private List<Building> DetectBuildingCategory(IEnumerable<IBuildingCategoryArea> categorizers, IReadOnlyCollection<BuildingCandidate> pass3, IProgressScope scope)
         {
             var pass4 = new ConcurrentQueue<Building>();
             var metas = categorizers
                 .Where(b => b.BuildingType != BuildingTypeId.Residential)
                 .ToList();
 
-            using var report4 = progress.CreateStep("Category", pass3.Count);
+            using var report4 = scope.CreateInteger("Category", pass3.Count);
             Parallel.ForEach(pass3, building =>
             {
                 if (building.Category == null)
@@ -322,7 +320,7 @@ namespace GameRealisticMap.ManMade.Buildings
             return pass4.ToList();
         }
 
-        private List<BuildingCandidate> DetectBuildingsBoundingRects(IOsmDataSource osm, ITerrainArea area)
+        private List<BuildingCandidate> DetectBuildingsBoundingRects(IOsmDataSource osm, ITerrainArea area, IProgressScope scope)
         {
             var buildings = osm.All.Where(o => o.Tags != null && o.Tags.ContainsKey("building")).ToList();
             var manMadeAreas = osm.Ways.Where(o => o.Tags != null && o.Tags.ContainsKey("man_made") && !o.Tags.ContainsKey("building")).ToList();
@@ -331,7 +329,7 @@ namespace GameRealisticMap.ManMade.Buildings
 
             var candidateSurfaces = new List<BuildingCandidate>();
 
-            using var report = progress.CreateStep("Interpret", buildings.Count + manMadeAreas.Count);
+            using var report = scope.CreateInteger("Interpret", buildings.Count + manMadeAreas.Count);
             foreach (var building in buildings)
             {
                 foreach (var geometry in osm.Interpret(building))

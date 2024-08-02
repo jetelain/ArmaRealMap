@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Versioning;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
@@ -22,7 +22,7 @@ namespace GameRealisticMap.Arma3.GameEngine
         }
 
         [SupportedOSPlatform("windows")]
-        public IPboCompiler Create(IProgressTask task)
+        public IPboCompiler Create(IProgressScope task)
         {
             return new PboCompiler(task, projectDrive, modelInfoLibrary);
         }

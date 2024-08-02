@@ -305,7 +305,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 a.ToData(),
                 a.Title)), _arma3DataModule.ProjectDrive, _arma3DataModule.CreatePboCompilerFactory());
 
-            var config = await generator.GenerateMod(task);
+            var config = await generator.GenerateMod(task.Scope);
             if (config != null)
             {
                 task.AddSuccessAction(() => ShellHelper.OpenUri(config.TargetModDirectory), Labels.ViewInFileExplorer);

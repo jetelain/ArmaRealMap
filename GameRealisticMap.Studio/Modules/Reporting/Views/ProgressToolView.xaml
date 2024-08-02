@@ -128,7 +128,7 @@
             </Button>
         </StackPanel>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="2" x:Name="ScrollView">
+        <!--<ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="2" x:Name="ScrollView">
             <ItemsControl ItemsSource="{Binding Items}" Margin="5" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -146,7 +146,30 @@
                 </ItemsControl.ItemTemplate>
 
             </ItemsControl>
-        </ScrollViewer>
+        </ScrollViewer>-->
 
+        <TreeView ItemsSource="{Binding ProgressRender.RootItem.Children}" Grid.Row="2">
+            <TreeView.Resources>
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="IsExpanded" Value="{Binding IsRunning, Mode=OneWay}" />
+                </Style>
+            </TreeView.Resources>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="100" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name, Mode=OneWay}" Grid.Column="0" />
+                        <ProgressBar Value="{Binding PercentDone, Mode=OneWay}" Minimum="0" Maximum="100" Margin="2" Grid.Column="1" IsIndeterminate="{Binding IsIndeterminate, Mode=OneWay}" />
+                        <TextBlock Text="{Binding Status, Mode=OneWay}" Grid.Column="2" />
+                    </Grid>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        
     </Grid>
 </UserControl>

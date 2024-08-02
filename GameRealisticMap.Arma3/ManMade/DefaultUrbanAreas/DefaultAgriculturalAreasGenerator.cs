@@ -1,14 +1,13 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.ManMade.DefaultUrbanAreas;
-using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.Nature.DefaultUrbanAreas
 {
     internal class DefaultAgriculturalAreasGenerator : BasicGeneratorBase<DefaultAgriculturalAreaData>
     {
-        public DefaultAgriculturalAreasGenerator(IProgressSystem progress, IArma3RegionAssets assets)
-            : base(progress, assets)
+        public DefaultAgriculturalAreasGenerator(IArma3RegionAssets assets)
+            : base(assets)
         {
         }
 

@@ -64,7 +64,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             using var task = IoC.Get<IProgressTool>().StartTask("Save");
             try
             {
-                var worker = new WrpRenameWorker(task, worldVM.ProjectDrive, OldPboPrefix, NewPboPrefix);
+                var worker = new WrpRenameWorker(task.Scope, worldVM.ProjectDrive, OldPboPrefix, NewPboPrefix);
                 worldVM.ConfigFile = await worker.UpdateConfig(worldVM.ConfigFile!, NewWorldName);
                 await worker.RenameAndCopyMaterials(worldVM.World!);
                 await worker.CopyReferencedFiles();
@@ -82,7 +82,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
             catch (Exception ex)
             {
-                task.Failed(ex);
+                // FIXME: task.Failed(ex);
                 await TryCloseAsync(false);
                 return;
             }

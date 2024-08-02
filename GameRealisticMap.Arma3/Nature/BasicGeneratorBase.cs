@@ -6,22 +6,23 @@ using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Nature
 {
     internal abstract class BasicGeneratorBase<TData> : GeneratorBase<TData> where TData : class, IPolygonTerrainData
     {
-        public BasicGeneratorBase(IProgressSystem progress, IArma3RegionAssets assets)
-            : base(progress, assets)
+        public BasicGeneratorBase(IArma3RegionAssets assets)
+            : base(assets)
         {
 
         }
 
         protected abstract BasicCollectionId Id { get; }
 
-        protected override void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons, IConditionEvaluator evaluator)
+        protected override void Generate(RadiusPlacedLayer<Composition> layer, List<TerrainPolygon> polygons, IConditionEvaluator evaluator, IProgressScope scope)
         {
-            var main = new FillAreaBasic<Composition>(progress, assets.GetBasicCollections(Id));
+            var main = new FillAreaBasic<Composition>(scope, assets.GetBasicCollections(Id));
             main.FillPolygons(layer, polygons, evaluator);
         }
     }

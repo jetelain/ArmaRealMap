@@ -1,25 +1,18 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Nature.Ocean
 {
     internal class OceanBuilder : IDataBuilder<OceanData>
     {
-        private readonly IProgressSystem progress;
-
-        public OceanBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public OceanData Build(IBuildContext context)
+        public OceanData Build(IBuildContext context, IProgressScope scope)
         {
             var coastlines = context.OsmSource.Ways
                 .Where(w => w.Tags != null && w.Tags.GetValue("natural") == "coastline")
                 .SelectMany(w => context.OsmSource.Interpret(w))
                 .SelectMany(w => TerrainPath.FromGeometry(w, context.Area.LatLngToTerrainPoint))
                 .ToList();
-            coastlines = MergeOriented(coastlines)
+            coastlines = MergeOriented(coastlines, scope)
                 .SelectMany(p => p.ClippedKeepOrientation(context.Area.TerrainBounds))
                 .ToList();
 
@@ -31,7 +24,7 @@ namespace GameRealisticMap.Nature.Ocean
 
             coastlines = CompleteCounterClockWiseOnEdges(coastlines, context.Area.TerrainBounds);
 
-            var mergedCoastlines = MergeOriented(coastlines)
+            var mergedCoastlines = MergeOriented(coastlines, scope)
                 .Where(r => r.IsClosed)
                 .ToList();
 
@@ -180,9 +173,9 @@ namespace GameRealisticMap.Nature.Ocean
             }
         }
 
-        internal List<TerrainPath> MergeOriented(List<TerrainPath> paths)
+        internal List<TerrainPath> MergeOriented(List<TerrainPath> paths, IProgressScope scope)
         {
-            using var report = progress.CreateStep("MergeOriented", paths.Count);
+            using var report = scope.CreateInteger("MergeOriented", paths.Count);
             var todo = new HashSet<TerrainPath>(paths);
             var result = new List<TerrainPath>();
             foreach (var wpath in todo.ToList())

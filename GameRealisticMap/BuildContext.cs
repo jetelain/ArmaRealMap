@@ -1,19 +1,18 @@
-﻿using System.Diagnostics;
-using GameRealisticMap.Osm;
-using GameRealisticMap.Reporting;
+﻿using GameRealisticMap.Osm;
 using HugeImages.Storage;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap
 {
     public class BuildContext : IBuildContext
     {
         private readonly Dictionary<Type, object> datas = new Dictionary<Type, object>();
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope rootScope;
         private readonly IBuidersCatalog catalog;
 
-        public BuildContext(IBuidersCatalog catalog, IProgressSystem progress, ITerrainArea area, IOsmDataSource source, IMapProcessingOptions imagery, IHugeImageStorage? his = null)
+        public BuildContext(IBuidersCatalog catalog, IProgressScope rootScope, ITerrainArea area, IOsmDataSource source, IMapProcessingOptions imagery, IHugeImageStorage? his = null)
         {
-            this.progress = progress;
+            this.rootScope = rootScope;
             this.catalog = catalog;
             Area = area;
             OsmSource = source;
@@ -45,9 +44,9 @@ namespace GameRealisticMap
             }
 
             var builder = catalog.Get<T>();
-            using (progress.CreateScope(builder.GetType().Name.Replace("Builder","")))
+            using (var scope = rootScope.CreateScope(builder.GetType().Name.Replace("Builder","")))
             {
-                var builtData = builder.Build(this);
+                var builtData = builder.Build(this, scope);
                 datas[typeof(T)] = builtData;
                 return builtData;
             }

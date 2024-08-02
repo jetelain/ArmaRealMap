@@ -39,6 +39,7 @@ using HugeImages;
 using HugeImages.Storage;
 using MapControl;
 using Microsoft.Win32;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp.Memory;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -437,7 +438,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             var generator = new SimpleWrpModGenerator(arma3Data.ProjectDrive, arma3Data.CreatePboCompilerFactory());
 
-            await generator.GenerateMod(task, wrpConfig, _world);
+            await generator.GenerateMod(task.Scope, wrpConfig, _world);
 
             task.AddSuccessAction(() => ShellHelper.OpenUri(wrpConfig.TargetModDirectory), Labels.ViewInFileExplorer);
             //task.AddSuccessAction(() => ShellHelper.OpenUri("steam://run/107410"), Labels.OpenArma3Launcher, string.Format(Labels.OpenArma3LauncherWithGeneratedModHint, name));
@@ -487,7 +488,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 var grid = World.ToElevationGrid();
                 var batch = new WrpEditBatch();
                 batch.Add.AddRange(list
-                    .ProgressStep(task, "ToWrpObject")
+                    .WithProgress(task.Scope, "ToWrpObject")
                     .Select(l => l.ToWrpObject(grid))
                     .Select(o => new WrpAddObject(o.Transform.Matrix, o.Model)));
                 Apply(batch, task);
@@ -500,7 +501,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 return;
             }
-            var processor = new WrpEditProcessor(task);
+            var processor = new WrpEditProcessor(task.Scope);
             processor.Process(World, batch);
             PostEdit();
         }
@@ -629,7 +630,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             OverrideImageSharpSizeLimit();
 
-            using (var task = ui.CreateStep("Write", 1))
+            using (var task = ui.Scope.CreateSingle("Write"))
             {
                 using (himage)
                 {
@@ -659,7 +660,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 {
                     var filename = dialog.FileName;
                     IoC.Get<IProgressTool>()
-                        .RunTask(GameRealisticMap.Studio.Labels.ImportSatelliteImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, ui).UpdateSatMap(_imagery, filename)));
+                        .RunTask(GameRealisticMap.Studio.Labels.ImportSatelliteImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, ui.Scope).UpdateSatMap(_imagery, filename)));
                 }
             }
             return Task.CompletedTask;
@@ -696,7 +697,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     if (assets != null)
                     {
                         _ = IoC.Get<IProgressTool>()
-                            .RunTask(GameRealisticMap.Studio.Labels.ImportTextureMaskImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, assets.Materials, ui).UpdateIdMap(_imagery, filename)));
+                            .RunTask(GameRealisticMap.Studio.Labels.ImportTextureMaskImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, assets.Materials, ui.Scope).UpdateIdMap(_imagery, filename)));
                     }
                 }
             }
@@ -713,7 +714,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     var materials = await IoC.Get<GdtBrowserViewModel>().ToTerrainMaterialLibrary();
 
                     _ = IoC.Get<IProgressTool>()
-                            .RunTask(GameRealisticMap.Studio.Labels.ImportTextureMaskImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, materials, ui).UpdateIdMap(_imagery, filename)));
+                            .RunTask(GameRealisticMap.Studio.Labels.ImportTextureMaskImage, ui => DoImport(ui, () => new ImageryImporter(arma3Data.ProjectDrive, materials, ui.Scope).UpdateIdMap(_imagery, filename)));
                 }
             }
         }

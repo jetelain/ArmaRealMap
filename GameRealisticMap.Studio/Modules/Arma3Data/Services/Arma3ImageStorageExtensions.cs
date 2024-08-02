@@ -27,7 +27,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
         {
             if (storage.HasToProcessPngToPaa)
             {
-                progress.RunTask("Png->PAA", p => storage.ProcessPngToPaa(p), false);
+                progress.RunTask("Png->PAA", p => storage.ProcessPngToPaa(p.Scope), false);
             }
         }
     }

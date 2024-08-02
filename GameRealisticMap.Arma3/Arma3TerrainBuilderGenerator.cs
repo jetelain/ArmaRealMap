@@ -17,6 +17,7 @@ using HugeImages.Processing;
 using HugeImages.Storage;
 using MapToolkit;
 using MapToolkit.DataCells.FileFormats;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -39,20 +40,18 @@ namespace GameRealisticMap.Arma3
             this.sources = sources;
         }
 
-        private BuildContext CreateBuildContext(IProgressTask progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
+        private BuildContext CreateBuildContext(IProgressScope progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
         {
-            var builders = new BuildersCatalog(progress, assets, sources);
+            var builders = new BuildersCatalog(assets, sources);
             return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
         }
 
-        public async Task<string?> GenerateTerrainBuilderFiles(IProgressTask progress, Arma3MapConfig a3config, string targetDirectory)
+        public async Task<string?> GenerateTerrainBuilderFiles(IProgressScope progress, Arma3MapConfig a3config, string targetDirectory)
         {
-            var generators = new Arma3LayerGeneratorCatalog(progress, assets);
-            progress.Total += 7 + generators.Generators.Count;
+            var generators = new Arma3LayerGeneratorCatalog(assets);
 
             // Download from OSM
             var osmSource = await LoadOsmData(progress, a3config);
-            progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return null;
@@ -72,18 +71,17 @@ namespace GameRealisticMap.Arma3
 
             // Convert PAA
             await projectDrive.ProcessImageToPaa(progress);
-            progress.ReportOneDone();
 
             return GameConfigGenerator.GetFreindlyName(a3config, context.GetData<CitiesData>());
         }
 
-        private async Task<IOsmDataSource> LoadOsmData(IProgressTask progress, Arma3MapConfig a3config)
+        private async Task<IOsmDataSource> LoadOsmData(IProgressScope progress, Arma3MapConfig a3config)
         {
             var loader = new OsmDataOverPassLoader(progress, sources);
             return await loader.Load(a3config.TerrainArea);
         }
 
-        private async Task GenerateFilesAsync(IProgressTask progress, Arma3MapConfig config, BuildContext context, ITerrainArea area, Arma3LayerGeneratorCatalog generators, string targetDirectory)
+        private async Task GenerateFilesAsync(IProgressScope progress, Arma3MapConfig config, BuildContext context, ITerrainArea area, Arma3LayerGeneratorCatalog generators, string targetDirectory)
         {
             // Game config
             new GameConfigGenerator(assets, projectDrive).Generate(config, context, area);
@@ -92,7 +90,6 @@ namespace GameRealisticMap.Arma3
             var roadsCompiler = new RoadsCompiler(progress, projectDrive, assets.RoadTypeLibrary);
 
             roadsCompiler.Write(config, context.GetData<RoadsData>().Roads);
-            progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return;
@@ -100,7 +97,6 @@ namespace GameRealisticMap.Arma3
 
             // layers.cfg
             CreateLayersCfg(progress, config);
-            progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return;
@@ -108,7 +104,6 @@ namespace GameRealisticMap.Arma3
 
             // Imagery
             var parts = await ExportImagery(progress, config, context, targetDirectory).ConfigureAwait(false);
-            progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return;
@@ -116,7 +111,6 @@ namespace GameRealisticMap.Arma3
 
             // Elevation
             ExportElevation(progress, context, targetDirectory);
-            progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return;
@@ -128,7 +122,7 @@ namespace GameRealisticMap.Arma3
             await File.WriteAllTextAsync(Path.Combine(targetDirectory, "README.txt"), CreateReadMe(config, targetDirectory, parts));
         }
 
-        private async Task ExportObjects(IProgressTask progress, Arma3MapConfig config, BuildContext context, Arma3LayerGeneratorCatalog generators, string targetDirectory)
+        private async Task ExportObjects(IProgressScope progress, Arma3MapConfig config, BuildContext context, Arma3LayerGeneratorCatalog generators, string targetDirectory)
         {
             var usedModels = new HashSet<ModelInfo>();
             var objectsTargetDirectory = Path.Combine(targetDirectory, "Objects");
@@ -136,17 +130,15 @@ namespace GameRealisticMap.Arma3
             foreach (var tb in generators.Generators)
             {
                 var name = GetLayerName(tb);
-                var entries = tb.Generate(config, context).ToList();
+                var entries = tb.Generate(config, context, progress).ToList();
                 foreach (var entry in entries)
                 {
                     usedModels.Add(entry.Model);
                 }
                 await WriteLayers(objectsTargetDirectory, name, entries);
-                progress.ReportOneDone();
             }
 
             new DependencyUnpacker(assets, projectDrive).Unpack(progress, config, usedModels.Select(m => m.Path));
-            progress.ReportOneDone();
 
             new TmlGenerator().WriteLibrariesTo(usedModels, Path.Combine(targetDirectory, "Library"));
         }
@@ -162,12 +154,11 @@ namespace GameRealisticMap.Arma3
             await WriteFileAsync(Path.Combine(objectsTargetDirectory, "relative_" + name + ".txt"), entries.Where(e => e.ElevationMode == ElevationMode.Relative).ToList());
         }
 
-        private void CreateLayersCfg(IProgressTask progress, Arma3MapConfig config)
+        private void CreateLayersCfg(IProgressScope progress, Arma3MapConfig config)
         {
-            using (var report = progress.CreateStepPercent("LayersCfg"))
+            using (var report = progress.CreateSingle("LayersCfg"))
             {
                 new LayersCfgGenerator(assets.Materials, progress, projectDrive).WriteLayersCfg(config);
-                progress.ReportOneDone();
             }
 
             if (OperatingSystem.IsWindows())
@@ -181,17 +172,17 @@ namespace GameRealisticMap.Arma3
             }
         }
 
-        private static void ExportElevation(IProgressTask progress, BuildContext context, string targetDirectory)
+        private static void ExportElevation(IProgressScope progress, BuildContext context, string targetDirectory)
         {
             var grid = context.GetData<ElevationData>().Elevation.ToDataCell(new Coordinates(0, TerrainBuilderObject.XShift));
             using (var writer = File.CreateText(Path.Combine(targetDirectory, "elevation.asc")))
             {
-                using var report = progress.CreateStepPercent("Elevation.AscFile");
+                using var report = progress.CreatePercent("Elevation.AscFile");
                 EsriAsciiHelper.SaveDataCell(writer, grid, "-9999", report);
             }
         }
 
-        private async Task<List<ImageryPart>> ExportImagery(IProgressTask progress, Arma3MapConfig config, BuildContext context, string targetDirectory)
+        private async Task<List<ImageryPart>> ExportImagery(IProgressScope progress, Arma3MapConfig config, BuildContext context, string targetDirectory)
         {
             var parts = GenerateParts(config);
 
@@ -376,9 +367,9 @@ For both import, use following Localisation Options :
 For large images this operation can take several minutes.");
         }
 
-        private static async Task WriteImage(IProgressTask task, HugeImage<Rgba32> himage, string filename, List<ImageryPart> parts)
+        private static async Task WriteImage(IProgressScope task, HugeImage<Rgba32> himage, string filename, List<ImageryPart> parts)
         {
-            using var report = task.CreateStep(Path.GetFileName(filename), parts.Count);
+            using var report = task.CreateInteger(Path.GetFileName(filename), parts.Count);
 
             foreach (var part in parts)
             {
@@ -404,10 +395,9 @@ For large images this operation can take several minutes.");
             }
         }
 
-        public async Task GenerateOnlyOneLayer(IProgressTask progress, Arma3MapConfig a3config, string layerName, string targetDirectory)
+        public async Task GenerateOnlyOneLayer(IProgressScope progress, Arma3MapConfig a3config, string layerName, string targetDirectory)
         {
             var osmSource = await LoadOsmData(progress, a3config);
-            progress.ReportOneDone();
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return;
@@ -416,14 +406,14 @@ For large images this operation can take several minutes.");
             // Generate content
             var context = CreateBuildContext(progress, a3config, osmSource);
 
-            var layers = new Arma3LayerGeneratorCatalog(progress, assets);
+            var layers = new Arma3LayerGeneratorCatalog(assets);
             var generator = layers.Generators.FirstOrDefault(g => string.Equals(GetLayerName(g), layerName, StringComparison.OrdinalIgnoreCase));
             if (generator == null)
             {
                 throw new ApplicationException($"Layer '{layerName}' does not exists.");
             }
 
-            var result = generator.Generate(a3config, context);
+            var result = generator.Generate(a3config, context, progress);
             await WriteLayers(targetDirectory, GetLayerName(generator), result.ToList());
         }
 

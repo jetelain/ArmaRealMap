@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using GameRealisticMap.Algorithms.Filling;
+﻿using System.Numerics;
 using GameRealisticMap.Algorithms;
+using GameRealisticMap.Algorithms.Filling;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 using Xunit.Abstractions;
 
 namespace GameRealisticMap.Test.Algorithms.Filling
@@ -22,7 +17,7 @@ namespace GameRealisticMap.Test.Algorithms.Filling
         [Fact]
         public void FillAreaLocalClusters_Large()
         {
-            var fill = new FillAreaLocalClusters<string>(new NoProgressSystem(), new[] { new ClusterCollectionDefinitionMock(0.01) {
+            var fill = new FillAreaLocalClusters<string>(new NoProgress(), new[] { new ClusterCollectionDefinitionMock(0.01) {
                 new ClusterDefinitionMock(0.25)
                 {
                     new ClusterItemDefinitionMock("A1", 0.5, 1),

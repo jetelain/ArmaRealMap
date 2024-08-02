@@ -3,20 +3,13 @@ using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.Nature.Lakes;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Nature
 {
     internal abstract class BasicBuilderBase<T> : PolygonBuilderBase, IDataBuilder<T>
         where T : class, IBasicTerrainData
     {
-        public BasicBuilderBase(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override IEnumerable<TerrainPolygon> GetPriority(IBuildContext context)
         {
             var roads = context.GetData<RoadsData>();
@@ -32,9 +25,9 @@ namespace GameRealisticMap.Nature
 
         protected abstract T CreateWrapper(List<TerrainPolygon> polygons);
 
-        public virtual T Build(IBuildContext context)
+        public virtual T Build(IBuildContext context, IProgressScope scope)
         {
-            return CreateWrapper(GetPolygons(context, Enumerable.Empty<TerrainPolygon>()));
+            return CreateWrapper(GetPolygons(context, Enumerable.Empty<TerrainPolygon>(), scope));
         }
     }
 }

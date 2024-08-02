@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 using GameRealisticMap.Algorithms;
-using GameRealisticMap.Algorithms.Definitions;
 using GameRealisticMap.Algorithms.Filling;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace GameRealisticMap.Test.Algorithms.Filling
 {
@@ -26,7 +18,7 @@ namespace GameRealisticMap.Test.Algorithms.Filling
         [Fact]
         public void FillAreaBasic_Large()
         {
-            var fill = new FillAreaBasic<string>(new NoProgressSystem(), new[] { new BasicDefinitionMock(0.01) { 
+            var fill = new FillAreaBasic<string>(new NoProgress(), new[] { new BasicDefinitionMock(0.01) { 
                 new ClusterItemDefinitionMock("A", 0.5, 1), 
                 new ClusterItemDefinitionMock("B", 0.5, 1) 
             } });

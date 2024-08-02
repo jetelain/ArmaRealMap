@@ -3,7 +3,7 @@ using BIS.P3D.ODOL;
 using BIS.PBO;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
@@ -11,11 +11,11 @@ namespace GameRealisticMap.Arma3.GameEngine
     [SupportedOSPlatform("windows")]
     public class PboCompiler : IPboCompiler
     {
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope progress;
         private readonly ProjectDrive projectDrive;
         private readonly ModelInfoLibrary modelInfoLibrary;
 
-        public PboCompiler(IProgressSystem progress, ProjectDrive projectDrive, ModelInfoLibrary modelInfoLibrary)
+        public PboCompiler(IProgressScope progress, ProjectDrive projectDrive, ModelInfoLibrary modelInfoLibrary)
         {
             this.progress = progress;
             this.projectDrive = projectDrive;
@@ -52,9 +52,9 @@ namespace GameRealisticMap.Arma3.GameEngine
 
                 await Arma3ToolsHelper.RunConfigConverter(progress, configSpecific, configSourceBin);
 
-                using (var task = progress.CreateStep("Binarize WRP", 1))
+                using (var task = progress.CreateSingle("Binarize WRP"))
                 {
-                    await Arma3ToolsHelper.RunBinarize(progress, $"-always -textures={tempRoot} -binPath={projectRoot} \"{sourcePboPath}\" \"{tempPboPath}\"");
+                    await Arma3ToolsHelper.RunBinarize(task, $"-always -textures={tempRoot} -binPath={projectRoot} \"{sourcePboPath}\" \"{tempPboPath}\"");
                 }
             }
             finally
@@ -66,7 +66,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             var configTargetBin = Path.Combine(tempPboPath, "config.bin");
             await Arma3ToolsHelper.RunConfigConverter(progress, configInitial, configTargetBin);
 
-            using (var task = progress.CreateStep("Create PBO", 1))
+            using (var task = progress.CreateSingle("Create PBO"))
             {
                 CreatePbo(config, sourcePboPath, tempPboPath, configTargetBin);
             }
@@ -121,7 +121,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             sw.WriteLine(@"#include ""config-initial.hpp""");
             sw.WriteLine("class cfgVehicles"); 
             sw.WriteLine("{");
-            foreach (var model in usedModels.ProgressStep(progress, "Prepare models"))
+            foreach (var model in usedModels.WithProgress(progress, "Prepare models"))
             {
                 using (var sourceStream = projectDrive.OpenFileIfExists(model))
                 {

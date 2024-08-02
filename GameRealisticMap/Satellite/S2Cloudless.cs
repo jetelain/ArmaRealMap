@@ -2,6 +2,7 @@
 using System.Net;
 using GameRealisticMap.Configuration;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
@@ -14,7 +15,7 @@ namespace GameRealisticMap.Satellite
         private const double Delta = 20_037_508.342_789;
 
         private readonly string cacheLocation = Path.Combine(Path.GetTempPath(), "GameRealisticMap", "S2Cloudless");
-        private readonly IProgressSystem progress;
+        private readonly IProgressBase progress;
         private readonly HttpClient httpClient;
         private readonly SemaphoreSlim downloadSemaphore = new SemaphoreSlim(1, 1);
         private readonly ConcurrentDictionary<(int,int), Task<Image<Rgba32>>> cache = new ConcurrentDictionary<(int, int), Task<Image<Rgba32>>>();
@@ -31,7 +32,7 @@ namespace GameRealisticMap.Satellite
         private const double rMajor = 6378137; //Equatorial Radius, WGS84
         private const double shift = Math.PI * rMajor;
 
-        public S2Cloudless(IProgressSystem progress, ISourceLocations sources)
+        public S2Cloudless(IProgressBase progress, ISourceLocations sources)
         {
             this.progress = progress;
             endPoint = sources.S2CloudlessBasePath.AbsoluteUri;

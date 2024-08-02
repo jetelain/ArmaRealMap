@@ -2,6 +2,7 @@
 using System.Runtime.Versioning;
 using GameRealisticMap.Reporting;
 using Microsoft.Win32;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3
 {
@@ -83,33 +84,33 @@ namespace GameRealisticMap.Arma3
             return string.Empty;
         }
 
-        public static async Task ImageToPAA(IProgressSystem system, IReadOnlyCollection<string> paths, int? maxDegreeOfParallelism = null)
+        public static async Task ImageToPAA(IProgressScope system, IReadOnlyCollection<string> paths, int? maxDegreeOfParallelism = null)
         {
             if (!OperatingSystem.IsWindows())
             {
                 return; // ImageToPAA.exe does not works with wine
             }
             string imageToPaaExe = Path.Combine(GetArma3ToolsPath(), "ImageToPAA", "ImageToPAA.exe");
-            using var report = system.CreateStep("Png->PAA", paths.Count);
+            using var report = system.CreateInteger("Png->PAA", paths.Count);
             var options = new ParallelOptions() { 
                 MaxDegreeOfParallelism = maxDegreeOfParallelism ?? (Environment.ProcessorCount * 5 / 8) // ImageToPAA is very CPU aggressive
             };
             await Parallel.ForEachAsync(paths, options, async (x, _) =>
             {
-                await Run(system, imageToPaaExe, "\"" + x + "\"").ConfigureAwait(false);
+                await Run(report, imageToPaaExe, "\"" + x + "\"").ConfigureAwait(false);
                 report.ReportOneDone();
             }).ConfigureAwait(false);
         }
 
         [SupportedOSPlatform("windows")]
-        public static async Task ImageToPAA(IProgressSystem system, string path)
+        public static async Task ImageToPAA(IProgressScope system, string path)
         {
             string imageToPaaExe = Path.Combine(GetArma3ToolsPath(), "ImageToPAA", "ImageToPAA.exe");
             await Run(system, imageToPaaExe, "\"" + path + "\"").ConfigureAwait(false);
         }
 
         [SupportedOSPlatform("windows")]
-        internal static async Task RunBinarize(IProgressSystem system, string arguments)
+        internal static async Task RunBinarize(IProgressBase system, string arguments)
         {
             var path = Path.Combine(GetArma3ToolsPath(), "Binarize", "binarize_x64.exe");
             system.WriteLine($"\"{path}\" {arguments}");
@@ -130,7 +131,7 @@ namespace GameRealisticMap.Arma3
         }
 
         [SupportedOSPlatform("windows")]
-        internal static async Task RunConfigConverter(IProgressSystem system, string source, string target)
+        internal static async Task RunConfigConverter(IProgressBase system, string source, string target)
         {
             var rc = await Run(system, Path.Combine(GetArma3ToolsPath(), "CfgConvert", "CfgConvert.exe"), $"-bin -dst \"{target}\" \"{source}\"");
             if (rc != 0)
@@ -140,23 +141,23 @@ namespace GameRealisticMap.Arma3
         }
 
         [SupportedOSPlatform("windows")]
-        internal static async Task OptimizeRvmat(IProgressSystem system, IReadOnlyCollection<string> paths, string targetDirectory, int? maxDegreeOfParallelism = null)
+        internal static async Task OptimizeRvmat(IProgressScope system, IReadOnlyCollection<string> paths, string targetDirectory, int? maxDegreeOfParallelism = null)
         {
             Directory.CreateDirectory(targetDirectory);
             string cfgConvert = Path.Combine(GetArma3ToolsPath(), "CfgConvert", "CfgConvert.exe");
-            using var report = system.CreateStep("Binarize RVMAT", paths.Count);
+            using var report = system.CreateInteger("Binarize RVMAT", paths.Count);
             var options = new ParallelOptions()
             {
                 MaxDegreeOfParallelism = maxDegreeOfParallelism ?? (Environment.ProcessorCount * 5 / 8) // ImageToPAA is very CPU aggressive
             };
             await Parallel.ForEachAsync(paths, options, async (path, _) =>
             {
-                await Run(system, Path.Combine(GetArma3ToolsPath(), "CfgConvert", "CfgConvert.exe"), $"-bin -dst \"{Path.Combine(targetDirectory, Path.GetFileName(path))}\" \"{path}\"").ConfigureAwait(false);
+                await Run(report, Path.Combine(GetArma3ToolsPath(), "CfgConvert", "CfgConvert.exe"), $"-bin -dst \"{Path.Combine(targetDirectory, Path.GetFileName(path))}\" \"{path}\"").ConfigureAwait(false);
                 report.ReportOneDone();
             }).ConfigureAwait(false);
         }
 
-        internal static async Task<int> Run(IProgressSystem system, string executable, string arguments, Func<string, bool>? outputFilter = null, string? workingDirectory = null)
+        internal static async Task<int> Run(IProgressBase system, string executable, string arguments, Func<string, bool>? outputFilter = null, string? workingDirectory = null)
         {
             var options = new ProcessStartInfo()
             {
@@ -182,9 +183,9 @@ namespace GameRealisticMap.Arma3
         }
 
         [SupportedOSPlatform("windows")]
-        public static async Task BuildWithMikeroPboProject(string pboPrefix, string targetMod, IProgressSystem progress)
+        public static async Task BuildWithMikeroPboProject(string pboPrefix, string targetMod, IProgressScope progress)
         {
-            using (progress.CreateStep("PboProject", 1))
+            using (progress.CreateSingle("PboProject"))
             {
                 EnsureProjectDrive();
                 var psi = new ProcessStartInfo()

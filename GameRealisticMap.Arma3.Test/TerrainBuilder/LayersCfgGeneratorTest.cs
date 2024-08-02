@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine.Materials;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Arma3.Test.GameEngine;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.Test.TerrainBuilder
@@ -33,7 +28,7 @@ namespace GameRealisticMap.Arma3.Test.TerrainBuilder
                         }))
                 });
             var writer = new GameFileSystemMock();
-            var generator = new LayersCfgGenerator(materials, new NoProgressSystem(), writer);
+            var generator = new LayersCfgGenerator(materials, new NoProgress(), writer);
 
             generator.WriteLayersCfg(new TestMapConfig());
             writer.AssertFiles<LayersCfgGeneratorTest>(nameof(Generate));

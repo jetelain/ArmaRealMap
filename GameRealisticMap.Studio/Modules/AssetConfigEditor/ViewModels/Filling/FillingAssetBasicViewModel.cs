@@ -7,10 +7,10 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Assets.Detection;
 using GameRealisticMap.Arma3.Assets.Filling;
 using GameRealisticMap.Arma3.TerrainBuilder;
-using GameRealisticMap.Reporting;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
 using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
 {
@@ -72,9 +72,9 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels.Filling
         {
             if (IsEmpty)
             {
-                return new FillAreaBasic<Composition>(new NoProgressSystem(), new List<BasicCollectionDefinition>());
+                return new FillAreaBasic<Composition>(new NoProgress(), new List<BasicCollectionDefinition>());
             }
-            return new FillAreaBasic<Composition>(new NoProgressSystem(), new[] { ToDefinition() });
+            return new FillAreaBasic<Composition>(new NoProgress(), new[] { ToDefinition() });
         }
 
         protected override List<TerrainBuilderObject> GenerateFullPreviewItems()

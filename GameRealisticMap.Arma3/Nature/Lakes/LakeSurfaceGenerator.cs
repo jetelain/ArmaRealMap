@@ -3,6 +3,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -21,7 +22,7 @@ namespace GameRealisticMap.Arma3.Nature.Lakes
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
+        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var lakes = context.GetData<ElevationWithLakesData>().Lakes;
             var result = new List<TerrainBuilderObject>();

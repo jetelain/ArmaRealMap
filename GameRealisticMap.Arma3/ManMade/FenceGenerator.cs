@@ -4,27 +4,25 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Conditions;
 using GameRealisticMap.ManMade.Fences;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.ManMade
 {
     internal class FenceGenerator : ITerrainBuilderLayerGenerator
     {
-        private readonly IProgressSystem progress;
         private readonly IArma3RegionAssets assets;
 
-        public FenceGenerator(IProgressSystem progress, IArma3RegionAssets assets)
+        public FenceGenerator(IArma3RegionAssets assets)
         {
-            this.progress = progress;
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
+        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var evaluator = context.GetData<ConditionEvaluator>();
             var fences = context.GetData<FencesData>().Fences;
             var layer = new List<PlacedModel<Composition>>();
-            foreach (var fence in fences.ProgressStep(progress, "Fences"))
+            foreach (var fence in fences.WithProgress(scope, "Fences"))
             {
                 var lib = assets.GetFences(fence.TypeId);
                 if (lib.Count != 0 && fence.Path.Points.Count > 1)

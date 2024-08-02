@@ -1,21 +1,14 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.Reporting;
 using OsmSharp.Geo;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Nature.Trees
 {
     internal class TreesBuilder : IDataBuilder<TreesData>
     {
-        private readonly IProgressSystem progress;
-
-        public TreesBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public TreesData Build(IBuildContext context)
+        public TreesData Build(IBuildContext context, IProgressScope scope)
         {
             var keepWay = new TerrainSpacialIndex<ITerrainGeo>(context.Area);
             keepWay.AddRange(context.GetData<RoadsData>().Roads.SelectMany(b => b.Polygons));
@@ -24,7 +17,7 @@ namespace GameRealisticMap.Nature.Trees
             var points = context.OsmSource.Nodes
                 .Where(n => n.Tags != null && n.Tags.GetValue("natural") == "tree")
                 .Select(t => context.Area.LatLngToTerrainPoint(t.GetCoordinate()))
-                .ProgressStep(progress, "Trees")
+                .WithProgress(scope, "Trees")
                 .Where(p => context.Area.IsInside(p))
                 .Select(p => GeometryHelper.KeepAway(p, keepWay, 2))
                 .ToList();

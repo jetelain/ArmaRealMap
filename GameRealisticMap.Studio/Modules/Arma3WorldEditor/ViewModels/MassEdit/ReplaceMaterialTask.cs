@@ -36,10 +36,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit
 
         public async Task Run(IProgressTaskUI ui)
         {
-            var gen = new MaterialUpdateGenerator(ui, projectDrive);
+            var gen = new MaterialUpdateGenerator(ui.Scope, projectDrive);
             await gen.Replace(IdMapHelper.GetRvMatList(wrp), source, replacement, config);
             gen.Generate(new TerrainMaterialLibrary(materials.Select(m => m.ToDefinition()).Where(d => d != null).ToList()!), config);
-            await projectDrive.ProcessImageToPaa(ui);
+            await projectDrive.ProcessImageToPaa(ui.Scope);
         }
     }
 }

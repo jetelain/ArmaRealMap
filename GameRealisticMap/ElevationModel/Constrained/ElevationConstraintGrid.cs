@@ -3,6 +3,7 @@ using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 using MathNet.Numerics.LinearRegression;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ElevationModel.Constrained
 {
@@ -10,7 +11,7 @@ namespace GameRealisticMap.ElevationModel.Constrained
     {
         private readonly ITerrainArea area;
         private readonly ElevationGrid initial;
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope progress;
         private readonly float planarInitialDela;
         private readonly float flatSegment;
         private readonly Vector2 MergeRadius = new Vector2(0.1f, 0.1f);
@@ -20,7 +21,7 @@ namespace GameRealisticMap.ElevationModel.Constrained
 
         private readonly List<ElevationSmoothSegment> smoothSegments = new List<ElevationSmoothSegment>();
 
-        public ElevationConstraintGrid(ITerrainArea area, ElevationGrid initial, IProgressSystem progress)
+        public ElevationConstraintGrid(ITerrainArea area, ElevationGrid initial, IProgressScope progress)
             : base(Vector2.Zero, new Vector2(area.SizeInMeters), area.GridSize / 4) // each index cell will contains 16 elevation cells
         {
             this.area = area;
@@ -121,7 +122,7 @@ namespace GameRealisticMap.ElevationModel.Constrained
 
         private void SolveLoop()
         {
-            using var report = progress.CreateStep("Solve", Count);
+            using var report = progress.CreateInteger("Solve", Count);
 
             bool changed = true;
             var remain = Values;
@@ -141,7 +142,7 @@ namespace GameRealisticMap.ElevationModel.Constrained
 
         private void Smooth()
         {
-            using var report = progress.CreateStep("Smooth", smoothSegments.Count);
+            using var report = progress.CreateInteger("Smooth", smoothSegments.Count);
             foreach (var smooth in smoothSegments)
             {
                 smooth.Apply();
@@ -162,7 +163,7 @@ namespace GameRealisticMap.ElevationModel.Constrained
         {
             var unit = new Vector2(area.GridCellSize);
             var two = new Vector2(area.GridCellSize * 2);
-            var report = progress.CreateStep("ScanGrid", area.GridSize);
+            var report = progress.CreateInteger("ScanGrid", area.GridSize);
             int done = 0;
             int changes = 0;
             var listHard = new ConcurrentQueue<(int, int, Vector2, List<ElevationConstraintNode>)>();
@@ -191,7 +192,7 @@ namespace GameRealisticMap.ElevationModel.Constrained
             });
             report.Dispose();
 
-            report = progress.CreateStep("ApplyGrid", (listHard.Count + listSoft.Count) * 20);
+            report = progress.CreateInteger("ApplyGrid", (listHard.Count + listSoft.Count) * 20);
             for (var i = 0; i < 20; ++i)
             {
                 changes = 0;
