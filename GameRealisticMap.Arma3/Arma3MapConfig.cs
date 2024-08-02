@@ -1,12 +1,12 @@
 ﻿using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.Studio.Modules.Arma3Data.Services;
-using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3
 {
     public class Arma3MapConfig : IArma3MapConfig, IMapProcessingOptions, IPboConfig
     {
+        public static int[] ValidIdMapMultipliers { get; } = new int[] { 1, 2, 4 };
+
         public Arma3MapConfig(Arma3MapConfigJson arma3MapConfigJson)
         {
             if (!string.IsNullOrEmpty(arma3MapConfigJson.Center))
@@ -56,6 +56,15 @@ namespace GameRealisticMap.Arma3
             UseColorCorrection = arma3MapConfigJson.UseColorCorrection;
 
             PrivateServiceRoadThreshold = arma3MapConfigJson.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
+
+            if(ValidIdMapMultipliers.Contains(arma3MapConfigJson.IdMapMultiplier))
+            {
+                IdMapMultiplier = arma3MapConfigJson.IdMapMultiplier;
+            }
+            else
+            {
+                IdMapMultiplier = 1;
+            }
 
             Arma3ConfigHelper.ValidatePboPrefix(PboPrefix);
             Arma3ConfigHelper.ValidateWorldName(WorldName);
@@ -108,5 +117,7 @@ namespace GameRealisticMap.Arma3
         public bool UseColorCorrection { get; }
 
         public float PrivateServiceRoadThreshold { get; }
+
+        public int IdMapMultiplier { get; }
     }
 }

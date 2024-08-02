@@ -669,6 +669,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             OverrideImageSharpSizeLimit();
 
+            if (mapEditor != null)
+            {
+                await mapEditor.TryCloseAsync();
+                mapEditor = null;
+            }
+
             await action();
 
             if (CanGenerateMod)

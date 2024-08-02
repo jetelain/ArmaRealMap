@@ -21,5 +21,7 @@
         public string WorldName => "arm_testworld";
 
         public bool UseColorCorrection => false;
+
+        public int IdMapMultiplier => 1;
     }
 }

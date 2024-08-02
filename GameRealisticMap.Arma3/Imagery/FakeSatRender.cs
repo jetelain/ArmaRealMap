@@ -109,7 +109,12 @@ namespace GameRealisticMap.Arma3.Imagery
 
         protected override IEnumerable<PointF> TerrainToPixel(IArma3MapConfig config, IEnumerable<TerrainPoint> points)
         {
-            return config.TerrainToPixel(points);
+            return config.TerrainToSatMapPixel(points);
+        }
+
+        protected override Size GetImageSize(IArma3MapConfig config)
+        {
+            return config.GetSatMapSize();
         }
     }
 }

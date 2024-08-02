@@ -9,7 +9,6 @@ using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Modules.Arma3Data;
-using GameRealisticMap.Studio.Modules.Arma3Data.ViewModels;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using Gemini.Framework;
 using Gemini.Framework.Commands;
@@ -29,8 +28,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private readonly IInspectorTool inspectorTool;
         private IEditablePointCollection? editPoints;
 
-        public double BackgroundResolution { get; }
-
         private BackgroundMode _backgroundMode;
         private EditTool _editTool;
         private GrmMapEditMode _editMode;
@@ -43,7 +40,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             this.parentEditor = parent;
             this.arma3Data = arma3Data;
             this.inspectorTool = IoC.Get<IInspectorTool>();
-            BackgroundResolution = parentEditor.Imagery?.Resolution ?? 1;
             DisplayName = parent.DisplayName + " - Editor";
         }
 
@@ -217,6 +213,22 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
         }
 
+        public double BackgroundResolution
+        {
+            get
+            {
+                if (parentEditor.Imagery != null)
+                {
+                    switch (BackgroundMode)
+                    {
+                        case BackgroundMode.Satellite: return parentEditor.Imagery.Resolution;
+                        case BackgroundMode.TextureMask: return parentEditor.Imagery.Resolution / parentEditor.Imagery.IdMapMultiplier;
+                    }
+                }
+                return 1;
+            }
+        }
+
         public BackgroundMode BackgroundMode
         {
             get { return _backgroundMode; }
@@ -227,6 +239,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     _backgroundMode = value;
                     NotifyOfPropertyChange();
                     NotifyOfPropertyChange(nameof(BackgroundImage));
+                    NotifyOfPropertyChange(nameof(BackgroundResolution));
                 }
             }
         }

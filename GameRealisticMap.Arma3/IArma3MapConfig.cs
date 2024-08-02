@@ -8,6 +8,8 @@
 
         double Resolution { get; } // Typical value: 1m/px
 
+        int IdMapMultiplier { get; } // 1, 2 or 4
+
         string PboPrefix { get; }
 
         float FakeSatBlend { get; }

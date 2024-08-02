@@ -47,6 +47,8 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
         public override int[] GridSizes => GridHelper.Arma3GridSizes;
 
+        public int[] IdMapMultipliers => Arma3MapConfig.ValidIdMapMultipliers;
+
         public override string Center
         {
             get { return Config.Center ?? string.Empty ; }
