@@ -24,13 +24,13 @@ namespace GameRealisticMap.Arma3.Imagery
         where TPixel : unmanaged, IPixel<TPixel>
     {
         protected readonly TerrainMaterialLibrary materialLibrary;
-        protected readonly IProgressScope progress;
+        protected readonly IProgressScope scope;
         protected readonly DrawingOptions drawingOptions;
 
         public IdMapRenderBase(TerrainMaterialLibrary materialLibrary, IProgressScope progress)
         {
             this.materialLibrary = materialLibrary;
-            this.progress = progress;
+            this.scope = progress;
             drawingOptions = new DrawingOptions();
         }
 
@@ -107,7 +107,7 @@ namespace GameRealisticMap.Arma3.Imagery
 
         private void DrawPolygons(IArma3MapConfig config, IImageProcessingContext d, Brush brush, IEnumerable<TerrainPolygon> polygons)
         {
-            foreach (var polygon in polygons.WithProgress(progress, "DrawPolygons"))
+            foreach (var polygon in polygons.WithProgress(scope, "DrawPolygons"))
             {
                 DrawPolygon(config, brush, d, polygon);
             }
@@ -115,7 +115,7 @@ namespace GameRealisticMap.Arma3.Imagery
 
         private void DrawPolygonsCrown(IArma3MapConfig config, IImageProcessingContext d, Brush crownBrush, IEnumerable<TerrainPolygon> polygons, float crownSize)
         {
-            foreach (var polygon in polygons.WithProgress(progress, "DrawPolygonsCrown"))
+            foreach (var polygon in polygons.WithProgress(scope, "DrawPolygonsCrown"))
             {
                 foreach (var x in polygon.OuterCrown(crownSize))
                 {

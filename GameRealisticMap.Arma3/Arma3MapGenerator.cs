@@ -4,6 +4,7 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.Imagery;
 using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Configuration;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
@@ -162,10 +163,25 @@ namespace GameRealisticMap.Arma3
 
         protected virtual IEnumerable<EditableWrpObject> GetObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
         {
-            return generators.Generators
-                            .WithProgress(progress, "Objects")
-                            .SelectMany(tb => tb.Generate(config, context, progress))
-                            .Select(o => o.ToWrpObject(grid));
+            return GenerateObjects(progress, config, context, generators).Select(o => o.ToWrpObject(grid));
+        }
+
+        private IEnumerable<TerrainBuilderObject> GenerateObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators)
+        {
+            using (var scope = progress.CreateScope("Objects", generators.Generators.Count))
+            {
+                foreach (var tb in generators.Generators)
+                {
+                    if (progress.CancellationToken.IsCancellationRequested)
+                    {
+                        break;
+                    }
+                    foreach (var obj in tb.Generate(config, context, scope))
+                    {
+                        yield return obj;
+                    }
+                }
+            }
         }
 
         private bool IsStrictlyInside(EditableWrpObject o, float size)

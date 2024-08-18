@@ -1,4 +1,5 @@
 ﻿using HugeImages.Storage;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Test
 {
@@ -13,7 +14,7 @@ namespace GameRealisticMap.Arma3.Test
             HugeImageStorage.Dispose();
         }
 
-        public T GetData<T>() where T : class
+        public T GetData<T>(IProgressScope? parentScope = null) where T : class
         {
             return (T)this[typeof(T)];
         }

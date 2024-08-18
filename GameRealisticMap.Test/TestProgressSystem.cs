@@ -1,4 +1,5 @@
-﻿using Pmad.ProgressTracking;
+﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+using Pmad.ProgressTracking;
 using Xunit.Abstractions;
 
 namespace GameRealisticMap.Test
@@ -77,6 +78,16 @@ namespace GameRealisticMap.Test
         public void WriteLine(string message)
         {
             output.WriteLine("  " + message);
+        }
+
+        public void Failed(Exception ex)
+        {
+            WriteLine(ex.ToString());
+        }
+
+        public IProgressScope CreateScope(string name, int estimatedChildrenCount, CancellationToken token)
+        {
+            return this;
         }
     }
 }

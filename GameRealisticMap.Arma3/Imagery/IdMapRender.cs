@@ -1,6 +1,5 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
 using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;

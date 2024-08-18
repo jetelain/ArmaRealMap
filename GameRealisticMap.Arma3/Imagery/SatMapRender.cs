@@ -3,7 +3,6 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.Reporting;
 using GameRealisticMap.Satellite;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using HugeImages;
@@ -13,31 +12,26 @@ using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.Arma3.Imagery
 {
     internal class SatMapRender
     {
-        private readonly FakeSatRender fakeSatRender;
+        private readonly TerrainMaterialLibrary materialLibrary;
         private readonly IProgressScope progress;
-
-        public SatMapRender(FakeSatRender fakeSatRender, IProgressScope progress)
-        {
-            this.fakeSatRender = fakeSatRender;
-            this.progress = progress;
-        }
+        private readonly IGameFileSystem gameFileSystem;
 
         public SatMapRender(TerrainMaterialLibrary materialLibrary, IProgressScope progress, IGameFileSystem gameFileSystem)
-            : this(new FakeSatRender(materialLibrary, progress, gameFileSystem), progress)
         {
-
+            this.materialLibrary = materialLibrary;
+            this.progress = progress;
+            this.gameFileSystem = gameFileSystem;
         }
 
         public Image RenderSatOut(IArma3MapConfig config, IContext context, int size)
         {
             using var step = progress.CreateSingle("SatOut");
-            return fakeSatRender.RenderSatOut(config, context, size);
+            return new FakeSatRender(materialLibrary, progress, gameFileSystem).RenderSatOut(config, context, size);
         }
 
         public Image RenderPictureMap(IArma3MapConfig config, IContext context, int size)
@@ -46,7 +40,8 @@ namespace GameRealisticMap.Arma3.Imagery
 
             if (config.FakeSatBlend == 1)
             {
-                satMap = fakeSatRender.Render(config, context);
+                using var step = progress.CreateScope("Draw PictureMap");
+                satMap = new FakeSatRender(materialLibrary, step, gameFileSystem).Render(config, context);
             }
             else
             {
@@ -91,7 +86,8 @@ namespace GameRealisticMap.Arma3.Imagery
         {
             if (config.FakeSatBlend == 1)
             {
-                return fakeSatRender.Render(config, context);
+                using var scope = progress.CreateScope("Draw FakeSat");
+                return new FakeSatRender(materialLibrary, scope, gameFileSystem).Render(config, context);
             }
 
             var satMap = context.GetData<RawSatelliteImageData>().Image;
@@ -111,9 +107,11 @@ namespace GameRealisticMap.Arma3.Imagery
 
             if (config.FakeSatBlend != 0)
             {
-                using (var fakeSat = fakeSatRender.Render(config, context))
+                using var scope = progress.CreateScope("Draw FakeSat");
+
+                using (var fakeSat = new FakeSatRender(materialLibrary, scope, gameFileSystem).Render(config, context))
                 {
-                    using var report = progress.CreateSingle("FakeSatBlend");
+                    using var report = scope.CreateSingle("FakeSatBlend");
                     await satMap.MutateAllAsync(async d =>
                     {
                          await d.DrawHugeImageAsync(fakeSat, Point.Empty, config.FakeSatBlend);

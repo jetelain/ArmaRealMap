@@ -61,7 +61,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 worldVM.LoadRoads();
             }
-            using var task = IoC.Get<IProgressTool>().StartTask("Save");
+            var task = IoC.Get<IProgressTool>().StartTask("Save");
             try
             {
                 var worker = new WrpRenameWorker(task.Scope, worldVM.ProjectDrive, OldPboPrefix, NewPboPrefix);
@@ -82,9 +82,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
             catch (Exception ex)
             {
-                // FIXME: task.Failed(ex);
+                task.Scope.Failed(ex);
                 await TryCloseAsync(false);
                 return;
+            }
+            finally
+            {
+                task.Done();
             }
             await TryCloseAsync(true);
         }

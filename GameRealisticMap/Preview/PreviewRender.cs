@@ -64,7 +64,7 @@ namespace GameRealisticMap.Preview
             }
             catch (Exception ex)
             {
-                //FIXME: scope.Failed(ex);
+                scope.Failed(ex);
             }
             finally
             {
@@ -102,7 +102,7 @@ namespace GameRealisticMap.Preview
             }
             catch (Exception ex)
             {
-                //FIXME: scope.Failed(ex);
+                scope.Failed(ex);
             }
             finally
             {

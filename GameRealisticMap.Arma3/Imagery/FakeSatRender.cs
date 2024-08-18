@@ -27,8 +27,7 @@ namespace GameRealisticMap.Arma3.Imagery
         public override HugeImage<Rgba32> Render(IArma3MapConfig config, IContext context)
         {
             var image = base.Render(config, context);
-
-            using var step = progress.CreateSingle("FakeSatBlur");
+            using var step = scope.CreateSingle("FakeSatBlur");
             image.MutateAllAsync(d => d.GaussianBlur(1.5f)).GetAwaiter().GetResult();
             return image;
         }

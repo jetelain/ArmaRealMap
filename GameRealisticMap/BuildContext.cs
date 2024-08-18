@@ -35,7 +35,7 @@ namespace GameRealisticMap
             (HugeImageStorage as IDisposable)?.Dispose();
         }
 
-        public T GetData<T>() 
+        public T GetData<T>(IProgressScope? parentScope = null) 
             where T : class
         {
             if (datas.TryGetValue(typeof(T), out var cachedData))
@@ -44,7 +44,7 @@ namespace GameRealisticMap
             }
 
             var builder = catalog.Get<T>();
-            using (var scope = rootScope.CreateScope(builder.GetType().Name.Replace("Builder","")))
+            using (var scope = (parentScope ?? rootScope).CreateScope(builder.GetType().Name.Replace("Builder", "")))
             {
                 var builtData = builder.Build(this, scope);
                 datas[typeof(T)] = builtData;

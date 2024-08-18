@@ -1,10 +1,12 @@
-﻿using Gemini.Modules.Output;
+﻿using System.Linq;
+using Gemini.Modules.Output;
 using NLog;
 using Pmad.ProgressTracking;
+using Pmad.ProgressTracking.Wpf;
 
 namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 {
-    public class GrmProgressRender : WpfProgressRender2
+    public class GrmProgressRender : WpfProgressRender
     {
         private static readonly Logger logger = LogManager.GetLogger("Task");
         private readonly IOutput output;
@@ -32,11 +34,10 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             base.WriteLine(progressBase, message);
         }
 
-        protected override void WriteLine(ProgressItemViewModel2 progressItemViewModel, string message)
+        protected override void WriteLine(ProgressItemViewModel progressItemViewModel, string message)
         {
             base.WriteLine(progressItemViewModel, message);
             output.AppendLine(message);
         }
-
     }
 }
