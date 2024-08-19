@@ -14,7 +14,7 @@ namespace GameRealisticMap.Arma3.Aerial
         private readonly string targetDirectory;
         private readonly string workspace;
         private readonly List<ModDependencyDefinition> dependencies;
-        private IProgressInteger? initial;
+        private IProgressBase? initial;
         private IProgressInteger? images;
 
         public AerialPhotoWorker(IProgressScope progress, List<AerialModelRefence> models, string targetDirectory, IEnumerable<ModDependencyDefinition> dependencies)
@@ -48,7 +48,7 @@ namespace GameRealisticMap.Arma3.Aerial
         {
             UnpackFiles();
 
-            initial = progress.CreateInteger("Init", 1);
+            initial = progress.CreateSingle("Init");
 
             var process = StartArma3();
 
