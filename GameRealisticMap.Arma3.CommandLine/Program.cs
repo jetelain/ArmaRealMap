@@ -1,4 +1,5 @@
-﻿using CommandLine;
+﻿using System.Text;
+using CommandLine;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Reporting;
 
@@ -8,6 +9,7 @@ namespace GameRealisticMap.Arma3.CommandLine
     {
         static async Task<int> Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
             try
             {
                 return await Parser.Default.ParseArguments<GenerateObjectLayerOptions, GenerateWrpOptions, GenerateModOptions, GenerateTerrainBuilderOptions>(args)

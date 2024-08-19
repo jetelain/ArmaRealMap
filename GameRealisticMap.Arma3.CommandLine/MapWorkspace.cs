@@ -8,7 +8,7 @@ namespace GameRealisticMap.Arma3.CommandLine
 {
     internal class MapWorkspace : IDisposable
     {
-        public MapWorkspace(ProjectDrive projectDrive, Arma3Assets assets, Arma3MapConfig a3config, ConsoleProgessRender progress, ISourceLocations sources)
+        public MapWorkspace(ProjectDrive projectDrive, Arma3Assets assets, Arma3MapConfig a3config, ProgressRenderBase progress, ISourceLocations sources)
         {
             ProjectDrive = projectDrive;
             Assets = assets;
@@ -20,12 +20,12 @@ namespace GameRealisticMap.Arma3.CommandLine
         public ProjectDrive ProjectDrive { get; }
         public Arma3Assets Assets { get; }
         public Arma3MapConfig MapConfig { get; }
-        public ConsoleProgessRender Progress { get; }
+        public ProgressRenderBase Progress { get; }
         public ISourceLocations Sources { get; }
 
         public static async Task<MapWorkspace> Create(Arma3MapConfig a3config, string searchPath)
         {
-            var progress = new ConsoleProgessRender();
+            var progress = ConsoleProgessHelper.Create();
 
             using var init = progress.CreateSingle("Initilization");
 
