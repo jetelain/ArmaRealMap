@@ -24,7 +24,7 @@
     <PackageReference Include="OsmSharp" Version="6.2.0" />
     <PackageReference Include="OsmSharp.Geo" Version="6.2.0" />
     <PackageReference Include="StringToExpression" Version="1.1.1" />
-	<PackageReference Include="Pmad.ProgressTracking" Version="0.1.22" />
+	<PackageReference Include="Pmad.ProgressTracking" Version="0.1.28" />
   </ItemGroup>
 
   <ItemGroup>
