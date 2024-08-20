@@ -123,7 +123,7 @@
                     </local:ProgressTemplateSelector.Root>
                     <local:ProgressTemplateSelector.Normal>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <Grid>
+                            <Grid Initialized="ItemInitialized">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="150" />
                                     <ColumnDefinition Width="75" />
