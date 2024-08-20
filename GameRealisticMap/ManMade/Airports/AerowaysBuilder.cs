@@ -3,19 +3,13 @@ using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Airports
 {
     internal class AerowaysBuilder : IDataBuilder<AerowaysData>
     {
-        private readonly IProgressSystem progress;
-
-        public AerowaysBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public AerowaysData Build(IBuildContext context)
+        public AerowaysData Build(IBuildContext context, IProgressScope scope)
         {
             var airports = context.GetData<AirportData>().Polygons;
             var outsideAirports = new List<Aeroway>();
@@ -23,7 +17,7 @@ namespace GameRealisticMap.ManMade.Airports
 
             foreach(var way in context.OsmSource.Ways
                 .Where(w => w.Tags != null && w.Tags.ContainsKey("aeroway"))
-                .ProgressStep(progress,"Aeroways"))
+                .WithProgress(scope, "Aeroways"))
             {
                 var type = GetAerowayType(way.Tags);
                 if (type != null)

@@ -25,9 +25,13 @@ namespace GameRealisticMap.Studio.Modules.Reporting.Views
             InitializeComponent();
         }
 
-        private void Grid_Initialized(object sender, EventArgs e)
+        private void ItemInitialized(object sender, EventArgs e)
         {
-            ScrollView.ScrollToEnd();
+            var ui = sender as FrameworkElement;
+            if (ui != null)
+            {
+                ui.BringIntoView();
+            }
         }
     }
 }

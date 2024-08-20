@@ -15,138 +15,130 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding TaskName, Mode=OneWay}" Grid.Column="0" />
-            <ProgressBar Value="{Binding Percent, Mode=OneWay}" Minimum="0" Maximum="100" Grid.Column="1">
-                <ProgressBar.Style>
-                    <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
-                        <Setter Property="Visibility" Value="Visible" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding State}" Value="Failed">
-                                <Setter Property="Foreground" Value="IndianRed" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding State}" Value="Canceled">
-                                <Setter Property="Foreground" Value="Gray" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding State}" Value="None">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ProgressBar.Style>
-            </ProgressBar>
-        </Grid>
-
-        <StackPanel Orientation="Horizontal" Margin="10 0 10 10" HorizontalAlignment="Right" Grid.Row="1">
-            
-            <Grid Width="60">
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding State}" Value="Running">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
+        <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" Grid.Row="0">
+            <Grid Width="60" Visibility="{Binding IsRunning, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <ProgressBar Value="{Binding MemPressure, Mode=OneWay}" Minimum="0" Maximum="66"  Foreground="CadetBlue" Margin="5 0" Orientation="Vertical">
                 </ProgressBar>
                 <TextBlock HorizontalAlignment="Center" Margin="5" Text="{Binding MemUsage}" />
             </Grid>
-            
-            <Grid Width="60">
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding State}" Value="Running">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
+
+            <Grid Width="60" Visibility="{Binding IsRunning, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <ProgressBar Value="{Binding CpuUsage, Mode=OneWay}" Minimum="0" Maximum="90"  Foreground="CadetBlue" Margin="5 0" Orientation="Vertical" Visibility="{Binding HasPerformanceCounter, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
                 </ProgressBar>
                 <TextBlock HorizontalAlignment="Center" Margin="5" Visibility="{Binding HasPerformanceCounter, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
                     CPU
                 </TextBlock>
             </Grid>
-
-            <Button Padding="5" cal:Message.Attach="CancelTask" Margin="5 0 0 0">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Setter Property="IsEnabled" Value="True" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding State}" Value="Running">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Setter Property="IsEnabled" Value="True" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding State}" Value="Canceling">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Setter Property="IsEnabled" Value="False" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Run Text="{x:Static r:Labels.Cancel}" />
-            </Button>
-            <Button Padding="5" cal:Message.Attach="ShowTaskResult">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding State}" Value="Done">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Run Text="{x:Static r:Labels.OpenResult}"/>
-            </Button>
-            <Button Padding="5" cal:Message.Attach="ShowTaskError">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding State}" Value="Failed">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Run Text="{x:Static r:Labels.ShowError}"/>
-            </Button>
         </StackPanel>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="2" x:Name="ScrollView">
-            <ItemsControl ItemsSource="{Binding Items}" Margin="5" >
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Initialized="Grid_Initialized">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding StepName, Mode=OneWay}" Grid.Column="0" />
-                            <ProgressBar Value="{Binding Percent, Mode=OneWay}" Minimum="0" Maximum="100" Margin="2" Grid.Column="1" IsIndeterminate="{Binding IsIndeterminate, Mode=OneWay}" />
-                            <TextBlock Text="{Binding Left, Mode=OneWay}" Grid.Column="2" />
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
+        <TreeView ItemsSource="{Binding Tasks}" Grid.Row="1">
+            <TreeView.Resources>
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="IsExpanded" Value="{Binding IsRunning, Mode=OneWay}" />
+                </Style>
+            </TreeView.Resources>
 
-            </ItemsControl>
-        </ScrollViewer>
+            <TreeView.ItemTemplateSelector>
+                <local:ProgressTemplateSelector>
+                    <local:ProgressTemplateSelector.Root>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="75" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="150" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding ScopeViewModel.Name, Mode=OneWay}" Grid.Column="0" VerticalAlignment="Center" />
+                                <ProgressBar Value="{Binding ScopeViewModel.PercentDone, Mode=OneWay}" Minimum="0" Maximum="100" Margin="2 5" Grid.Column="1" IsIndeterminate="{Binding ScopeViewModel.IsRunning, Mode=OneWay}">
+                                    <ProgressBar.Style>
+                                        <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding State}" Value="Failed">
+                                                    <Setter Property="Foreground" Value="IndianRed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding State}" Value="Canceled">
+                                                    <Setter Property="Foreground" Value="Gray" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ProgressBar.Style>
+                                </ProgressBar>
+                                <TextBlock Text="{Binding ScopeViewModel.Status, Mode=OneWay}" Grid.Column="2" VerticalAlignment="Center" />
 
+                                <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                    <Button Padding="5" cal:Message.Attach="CancelTask" Margin="5 0 0 0">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding State}" Value="Running">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Setter Property="IsEnabled" Value="True" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding State}" Value="Canceling">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Run Text="{x:Static r:Labels.Cancel}" />
+                                    </Button>
+                                    <Button Padding="5" cal:Message.Attach="ShowTaskResult">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding State}" Value="Done">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Run Text="{x:Static r:Labels.OpenResult}"/>
+                                    </Button>
+                                    <Button Padding="5" cal:Message.Attach="ShowTaskError">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding State}" Value="Failed">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Run Text="{x:Static r:Labels.ShowError}"/>
+                                    </Button>
+                                </StackPanel>
+
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                    </local:ProgressTemplateSelector.Root>
+                    <local:ProgressTemplateSelector.Normal>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <Grid Initialized="ItemInitialized">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="75" />
+                                    <ColumnDefinition Width="100" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Name, Mode=OneWay}" Grid.Column="0" />
+                                <ProgressBar Value="{Binding PercentDone, Mode=OneWay}" Minimum="0" Maximum="100" Margin="2" Grid.Column="1" IsIndeterminate="{Binding IsIndeterminate, Mode=OneWay}" />
+                                <TextBlock Text="{Binding Status, Mode=OneWay}" Grid.Column="2" />
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                    </local:ProgressTemplateSelector.Normal>
+                </local:ProgressTemplateSelector>
+            </TreeView.ItemTemplateSelector>
+        </TreeView>
+
+        
     </Grid>
 </UserControl>

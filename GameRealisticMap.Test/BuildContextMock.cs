@@ -1,5 +1,6 @@
 ﻿using GameRealisticMap.Osm;
 using HugeImages.Storage;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Test
 {
@@ -22,7 +23,7 @@ namespace GameRealisticMap.Test
 
         public IHugeImageStorage HugeImageStorage => throw new NotImplementedException();
 
-        public T GetData<T>()
+        public T GetData<T>(IProgressScope? parentScope = null)
             where T : class
         {
             return (T)datas[typeof(T)];

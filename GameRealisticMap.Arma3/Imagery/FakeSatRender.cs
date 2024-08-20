@@ -3,12 +3,11 @@ using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Ocean;
-using GameRealisticMap.Reporting;
 using HugeImages;
 using HugeImages.Processing;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
@@ -19,7 +18,7 @@ namespace GameRealisticMap.Arma3.Imagery
         private readonly Dictionary<string, Image<Rgba32>?> cache = new Dictionary<string, Image<Rgba32>?>(StringComparer.OrdinalIgnoreCase);
         private readonly IGameFileSystem gameFileSystem;
 
-        public FakeSatRender(TerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystem gameFileSystem)
+        public FakeSatRender(TerrainMaterialLibrary materialLibrary, IProgressScope progress, IGameFileSystem gameFileSystem)
             : base(materialLibrary, progress)
         {
             this.gameFileSystem = gameFileSystem;
@@ -28,8 +27,7 @@ namespace GameRealisticMap.Arma3.Imagery
         public override HugeImage<Rgba32> Render(IArma3MapConfig config, IContext context)
         {
             var image = base.Render(config, context);
-
-            using var step = progress.CreateStep("FakeSatBlur", 1);
+            using var step = scope.CreateSingle("FakeSatBlur");
             image.MutateAllAsync(d => d.GaussianBlur(1.5f)).GetAwaiter().GetResult();
             return image;
         }

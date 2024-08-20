@@ -4,23 +4,20 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Conditions;
 using GameRealisticMap.ManMade.Objects;
 using GameRealisticMap.Nature.Trees;
-using GameRealisticMap.Reporting;
-using MathNet.Numerics;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Nature.Trees
 {
     internal class TreesGenerator : ITerrainBuilderLayerGenerator
     {
-        private readonly IProgressSystem progress;
         private readonly IArma3RegionAssets assets;
 
-        public TreesGenerator(IProgressSystem progress, IArma3RegionAssets assets)
+        public TreesGenerator(IArma3RegionAssets assets)
         {
-            this.progress = progress;
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context)
+        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var evaluator = context.GetData<ConditionEvaluator>();
 
@@ -29,7 +26,7 @@ namespace GameRealisticMap.Arma3.Nature.Trees
             if (candidates.Count > 0)
             {
                 var points = context.GetData<TreesData>().Points;
-                foreach (var point in points.ProgressStep(progress, "Trees"))
+                foreach (var point in points.WithProgress(scope, "Trees"))
                 {
                     var random = RandomHelper.CreateRandom(point);
                     var definition = candidates.GetRandom(random, evaluator.GetPointContext(point));

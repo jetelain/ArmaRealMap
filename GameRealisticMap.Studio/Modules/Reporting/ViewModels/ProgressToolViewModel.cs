@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Gemini.Framework;
@@ -17,20 +20,23 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
     {
         private static readonly Logger logger = NLog.LogManager.GetLogger("ProgressTool");
 
-        private TaskState state =  TaskState.None;
-        private ProgressTask? current = null;
         private readonly IOutput output;
         private readonly IShell shell;
         private readonly IWindowManager windowManager;
+
+        public GrmProgressRender ProgressRender { get; }
+
+        private readonly Dispatcher dispatcher;
         private readonly PerformanceCounter? cpuCounter;
         private readonly DispatcherTimer timer;
         private double memoryPeak;
         private SuccessViewModel? lastSuccess;
+        private bool isRunning;
         private readonly double totalMemGb;
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
 
-        public BindableCollection<ProgressStep> Items { get; set; } = new BindableCollection<ProgressStep>();
+        public ObservableCollection<ProgressTask> Tasks { get; } = new ObservableCollection<ProgressTask>();
 
         [ImportingConstructor]
         public ProgressToolViewModel(IOutput output, IShell shell, IWindowManager windowManager)
@@ -39,6 +45,11 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             this.output = output;
             this.shell = shell;
             this.windowManager = windowManager;
+
+            ProgressRender = new GrmProgressRender(output);
+
+            dispatcher = Application.Current.Dispatcher;
+
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
@@ -84,35 +95,22 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
             catch { }
         }
 
-        public TaskState State
+        public bool IsRunning
         {
-            get { return state; }
+            get { return isRunning; }
             set
             {
-                if (value != state)
+                if (Set(ref isRunning, value))
                 {
-                    state = value;
-                    NotifyOfPropertyChange();
-                    if (state == TaskState.Running)
-                    {
-                        if (!timer.IsEnabled)
-                        {
-                            timer.Start();
-                        }
-                    }
-                    else if ( timer.IsEnabled )
-                    {
-                        timer.Stop();
-                    }
+                    timer.IsEnabled = value;
                 }
             }
         }
 
-        public double Percent { get; set; }
-
-        public string TaskName { get; set; } = string.Empty;
-
-        public bool IsRunning => state == TaskState.Running || state == TaskState.Canceling;
+        public void UpdateIsRunning()
+        {
+            IsRunning = ProgressRender.RootItem.Children.Any(c => c.IsRunning);
+        }
 
         public float CpuUsage { get; private set; }
 
@@ -123,43 +121,12 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
         public IProgressTaskUI StartTask(string name)
         {
             output.Clear();
-            Items.Clear();
-
-            Percent = 0;
-            NotifyOfPropertyChange(nameof(Percent));
-
-            TaskName = name;
-            NotifyOfPropertyChange(nameof(TaskName));
-
-            State = TaskState.Running;
-
             memoryPeak = 0;
 
-            return current = new ProgressTask(this, name);
-        }
-
-        public Task CancelTask()
-        {
-            if (current != null)
-            {
-                current.Cancel();
-            }
-            return Task.CompletedTask;
-        }
-
-        public Task ShowTaskResult()
-        {
-            if (current != null)
-            {
-                return windowManager.ShowDialogAsync(lastSuccess = new SuccessViewModel(current));
-            }
-            return Task.CompletedTask;
-        }
-
-        public Task ShowTaskError()
-        {
-            shell.ShowTool(output);
-            return Task.CompletedTask;
+            IsRunning = true;
+            var task = new ProgressTask(this, name);
+            dispatcher.BeginInvoke(() => Tasks.Add(task));
+            return task;
         }
 
         internal void WriteLine(string message)
@@ -184,22 +151,39 @@ namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
                 new System.Action(() => lastSuccess?.TryCloseAsync(false)).BeginOnUIThread();
             }
 
-            using var task = (ProgressTask)StartTask(name);
+            var task = (ProgressTask)StartTask(name);
             try
             {
                 await run(task);
             }
             catch (Exception ex)
             {
-                task.Failed(ex);
+                task.Scope.Failed(ex);
             }
-            task.WriteLine(FormattableString.Invariant($"Memory: Peak: {memoryPeak:0.000} G, System: {totalMemGb:0.000} G"));
-            task.Dispose();
-            if (prompt && task.Error == null && !task.CancellationToken.IsCancellationRequested)
+            finally
+            {
+                task.Scope.WriteLine(FormattableString.Invariant($"Memory: Peak: {memoryPeak:0.000} G, System: {totalMemGb:0.000} G"));
+                task.Done();
+            }
+            if (prompt && task.Error == null && !task.Scope.CancellationToken.IsCancellationRequested)
             {
                 new System.Action(() => windowManager.ShowDialogAsync(lastSuccess = new SuccessViewModel(task))).BeginOnUIThread();
             }
         }
 
+        internal async Task ShowTaskResult(ProgressTask progressTask)
+        {
+            if (lastSuccess != null)
+            {
+                await lastSuccess.TryCloseAsync(false);
+            }
+            await windowManager.ShowDialogAsync(lastSuccess = new SuccessViewModel(progressTask));
+        }
+
+        internal Task ShowTaskError(ProgressTask progressTask)
+        {
+            shell.ShowTool(output);
+            return Task.CompletedTask;
+        }
     }
 }

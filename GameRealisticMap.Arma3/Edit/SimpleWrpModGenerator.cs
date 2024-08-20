@@ -2,7 +2,7 @@
 using BIS.WRP;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Edit
 {
@@ -18,29 +18,25 @@ namespace GameRealisticMap.Arma3.Edit
             this.pboCompilerFactory = pboCompilerFactory;
         }
 
-        public async Task GenerateMod(IProgressTask progress, SimpleWrpModConfig config, EditableWrp wrpContent)
+        public async Task GenerateMod(IProgressScope progress, SimpleWrpModConfig config, EditableWrp wrpContent)
         {
-            progress.Total = 2;
-
             var usedModels = wrpContent.Objects.Select(o => o.Model).Where(m => !string.IsNullOrEmpty(m)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
             var usedRvmat = wrpContent.MatNames.Where(m => !string.IsNullOrEmpty(m)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
             UnpackModels(progress, usedModels);
-            progress.ReportOneDone();
 
             await CreatePbo(progress, config, usedModels, usedRvmat);
-            progress.ReportOneDone();
         }
 
-        private async Task CreatePbo(IProgressTask progress, SimpleWrpModConfig config, List<string> usedModels, List<string> usedRvmat)
+        private async Task CreatePbo(IProgressScope progress, SimpleWrpModConfig config, List<string> usedModels, List<string> usedRvmat)
         {
             Directory.CreateDirectory(config.TargetModDirectory);
             await pboCompilerFactory.Create(progress).BinarizeAndCreatePbo(config, usedModels, usedRvmat);
         }
 
-        private void UnpackModels(IProgressTask progress, List<string> usedModels)
+        private void UnpackModels(IProgressScope progress, List<string> usedModels)
         {
-            using (var report = progress.CreateStep("UnpackModels", usedModels.Count))
+            using (var report = progress.CreateInteger("UnpackModels", usedModels.Count))
             {
                 foreach (var model in usedModels)
                 {

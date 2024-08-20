@@ -1,24 +1,17 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Nature.DefaultAreas
 {
     internal class DefaultAreasBuilder : IDataBuilder<DefaultAreasData>
     {
-        private readonly IProgressSystem progress;
-
-        public DefaultAreasBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public DefaultAreasData Build(IBuildContext context)
+        public DefaultAreasData Build(IBuildContext context, IProgressScope scope)
         {
             var allData = context.GetOfType<INonDefaultArea>().ToList();
-            var allPolygons = allData.ProgressStep(progress, "Polygons")
+            var allPolygons = allData.WithProgress(scope, "Polygons")
                 .SelectMany(l => l.Polygons)
                 .ToList();
-            using var report = progress.CreateStep("SubstractAll", 1);
+            using var report = scope.CreateSingle("SubstractAll");
             var polygons = context.Area.TerrainBounds.SubstractAllSplitted(allPolygons).ToList();
             return new DefaultAreasData(polygons);
         }

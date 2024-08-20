@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Numerics;
-using System.Runtime.Intrinsics.X86;
+﻿using System.Numerics;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
 using GameRealisticMap.ManMade;
@@ -9,10 +7,10 @@ using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Lakes;
-using GameRealisticMap.Reporting;
 using GeoJSON.Text.Geometry;
 using MapToolkit;
 using MapToolkit.Contours;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -22,7 +20,6 @@ namespace GameRealisticMap.ElevationModel
 {
     internal class ElevationWithLakesBuilder : IDataBuilder<ElevationWithLakesData>, IDataSerializer<ElevationWithLakesData>
     {
-        private readonly IProgressSystem progress;
         private readonly IElevationProcessorStage1[] processors;
         private static readonly Vector2 FlatAreaMargin = new Vector2(FlatAreaOffset25 + 10f);
         private const float FlatAreaOffset25 = 15f;
@@ -37,13 +34,12 @@ namespace GameRealisticMap.ElevationModel
 
         private static readonly Vector2 LakeScanMargin = new Vector2(10);
 
-        public ElevationWithLakesBuilder(IProgressSystem progress)
+        public ElevationWithLakesBuilder()
         {
-            this.progress = progress;
-            this.processors = new IElevationProcessorStage1[] { new AerowaysElevationProcessor(progress) };
+            this.processors = new IElevationProcessorStage1[] { new AerowaysElevationProcessor() };
         }
 
-        public ElevationWithLakesData Build(IBuildContext context)
+        public ElevationWithLakesData Build(IBuildContext context, IProgressScope scope)
         {
             var raw = context.GetData<RawElevationData>();
             var lakesData = context.GetData<LakesData>();
@@ -53,9 +49,9 @@ namespace GameRealisticMap.ElevationModel
 
             var grid = raw.RawElevation;
 
-            MakeWayEmbankmentsSmooth(grid, roads.Roads.Cast<IWay>().Concat(railways.Railways).Where(r => r.SpecialSegment == WaySpecialSegment.Embankment));
+            MakeWayEmbankmentsSmooth(grid, roads.Roads.Cast<IWay>().Concat(railways.Railways).Where(r => r.SpecialSegment == WaySpecialSegment.Embankment), scope);
 
-            var lakes = DigLakes(grid, lakesData, context.Area);
+            var lakes = DigLakes(grid, lakesData, context.Area, scope);
 
             var withElevation = context.OsmSource.Ways.Where(w => w.Tags != null && (w.Tags.ContainsKey("ele") || w.Tags.ContainsKey("ele:wgs84"))).ToList();
 
@@ -65,23 +61,23 @@ namespace GameRealisticMap.ElevationModel
 
             foreach(var processor in processors)
             {
-                processor.ProcessStage1(grid, context);
+                processor.ProcessStage1(grid, context, scope);
             }
 
             FlatLargeAreasSmooth(
                 GetLargeBuildings(buildings)
-                .Concat(GetOutdoorPitch(context)), grid);
+                .Concat(GetOutdoorPitch(context)), grid, scope);
 
-            FlatSmallAreasHard(GetOtherBuildings(buildings), grid);
+            FlatSmallAreasHard(GetOtherBuildings(buildings), grid, scope);
 
             return new ElevationWithLakesData(grid, lakes);
         }
 
-        private void MakeWayEmbankmentsSmooth(ElevationGrid grid, IEnumerable<IWay> embankmentsSegments)
+        private void MakeWayEmbankmentsSmooth(ElevationGrid grid, IEnumerable<IWay> embankmentsSegments, IProgressScope scope)
         {
             var margin = grid.CellSize * 4;
 
-            foreach (var em in embankmentsSegments.ProgressStep(progress, "Embankments"))
+            foreach (var em in embankmentsSegments.WithProgress(scope, "Embankments"))
             {
                 var elevationA = grid.ElevationAround(em.Path.FirstPoint, em.Width);
                 var elevationB = grid.ElevationAround(em.Path.LastPoint, em.Width);
@@ -139,9 +135,9 @@ namespace GameRealisticMap.ElevationModel
                 .SelectMany(g => TerrainPolygon.FromGeometry(g, context.Area.LatLngToTerrainPoint));
         }
 
-        private void FlatLargeAreasSmooth(IEnumerable<TerrainPolygon> flatAreas, ElevationGrid grid)
+        private void FlatLargeAreasSmooth(IEnumerable<TerrainPolygon> flatAreas, ElevationGrid grid, IProgressScope scope)
         {
-            foreach (var flat in flatAreas.ProgressStep(progress, "FlatLarge"))
+            foreach (var flat in flatAreas.WithProgress(scope, "FlatLarge"))
             {
                 var avg = grid.GetAverageElevation(flat);
                 var mutate = grid.PrepareToMutate(flat.MinPoint - FlatAreaMargin, flat.MaxPoint + FlatAreaMargin, avg - 10, avg + 10);
@@ -165,9 +161,9 @@ namespace GameRealisticMap.ElevationModel
             }
         }
 
-        private void FlatSmallAreasHard(IEnumerable<TerrainPolygon> flatAreas, ElevationGrid grid)
+        private void FlatSmallAreasHard(IEnumerable<TerrainPolygon> flatAreas, ElevationGrid grid, IProgressScope scope)
         {
-            foreach (var flat in flatAreas.ProgressStep(progress, "FlatSmall"))
+            foreach (var flat in flatAreas.WithProgress(scope, "FlatSmall"))
             {
                 var avg = grid.GetAverageElevation(flat);
                 var mutate = grid.PrepareToMutate(flat.MinPoint - FlatAreaMargin, flat.MaxPoint + FlatAreaMargin, avg - 10, avg + 10);
@@ -182,13 +178,13 @@ namespace GameRealisticMap.ElevationModel
             }
         }
 
-        private List<LakeWithElevation> DigLakes(ElevationGrid elevationGrid, LakesData lakesData, ITerrainArea area)
+        private List<LakeWithElevation> DigLakes(ElevationGrid elevationGrid, LakesData lakesData, ITerrainArea area, IProgressScope scope)
         {
             var minimalArea = Math.Pow(LakeDepth50Offset * -2.5f, 2);
             var minimalOffsetArea = Math.Pow(LakeDepth50Offset * -1.25f, 2);
             var lakesToProcess = lakesData.Polygons.Where(p => p.Area >= minimalArea && p.Offset(-area.GridCellSize).Sum(a => a.Area) >= minimalOffsetArea).ToList();
 
-            using var report = progress.CreateStep("DigLakes", lakesToProcess.Count * 2);
+            using var report = scope.CreateInteger("DigLakes", lakesToProcess.Count * 2);
             var lakes = new List<LakeWithElevation>();
 
             var lakesWithBorder = lakesToProcess.Select(l => new { Polygon = l, BorderElevation = GeometryHelper.PointsOnPath(l.Shell, elevationGrid.CellSize.X / 10f).Min(p => elevationGrid.ElevationAt(p)) }).ToList();
@@ -204,7 +200,7 @@ namespace GameRealisticMap.ElevationModel
             {
                 if (!DetectRealLake(elevationGrid, lakes, lake.Polygon, lake.BorderElevation))
                 {
-                    progress.WriteLine($"Lake with initial area {lake.Polygon.Area} cannot be generated. It might be too small.");
+                    report.WriteLine($"Lake with initial area {lake.Polygon.Area} cannot be generated. It might be too small.");
                 }
                 report.ReportOneDone();
             }

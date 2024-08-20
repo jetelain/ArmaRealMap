@@ -3,15 +3,16 @@ using BIS.WRP;
 using GameRealisticMap.Algorithms;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Edit
 {
     public class WrpMassEditProcessor
     {
-        private readonly IProgressSystem _progressSystem;
+        private readonly IProgressScope _progressSystem;
         private readonly ModelInfoLibrary _library;
 
-        public WrpMassEditProcessor(IProgressSystem progressSystem, ModelInfoLibrary library)
+        public WrpMassEditProcessor(IProgressScope progressSystem, ModelInfoLibrary library)
         {
             _progressSystem = progressSystem;
             _library = library;
@@ -24,7 +25,7 @@ namespace GameRealisticMap.Arma3.Edit
 
             if (operations.Reduce.Count > 0)
             {
-                foreach(var reduce in operations.Reduce.ProgressStep(_progressSystem, "Reduce"))
+                foreach(var reduce in operations.Reduce.WithProgress(_progressSystem, "Reduce"))
                 {
                     totalChanges += Reduce(objects, reduce);
                 }
@@ -32,13 +33,13 @@ namespace GameRealisticMap.Arma3.Edit
 
             if (operations.Replace.Count > 0)
             {
-                foreach (var replace in operations.Replace.ProgressStep(_progressSystem, "Replace"))
+                foreach (var replace in operations.Replace.WithProgress(_progressSystem, "Replace"))
                 {
                     totalChanges += Replace(objects, replace);
                 }
             }
 
-            using (var report = _progressSystem.CreateStep("Objects", 1))
+            using (var report = _progressSystem.CreateSingle("Objects"))
             {
                 objects = objects.Where(m => m != null)
                     .Concat(new[] { EditableWrpObject.Dummy })

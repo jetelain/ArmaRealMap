@@ -2,9 +2,9 @@
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Reporting;
 using OsmSharp.Geo;
 using OsmSharp.Tags;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Objects
 {
@@ -12,20 +12,13 @@ namespace GameRealisticMap.ManMade.Objects
     {
         private readonly float maxDistance = 50f;
 
-        private readonly IProgressSystem progress;
-
-        public OrientedObjectBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public OrientedObjectData Build(IBuildContext context)
+        public OrientedObjectData Build(IBuildContext context, IProgressScope scope)
         {
             var roads = context.GetData<RoadsData>().Roads;
             var facing = roads.Select(s => s.Path);
 
             var objects = new List<OrientedObject>();
-            foreach (var node in context.OsmSource.Nodes.Where(s => s.Tags != null).ProgressStep(progress,"Objects"))
+            foreach (var node in context.OsmSource.Nodes.Where(s => s.Tags != null).WithProgress(scope, "Objects"))
             {
                 var type = GetTypeId(node.Tags);
                 if (type != null)

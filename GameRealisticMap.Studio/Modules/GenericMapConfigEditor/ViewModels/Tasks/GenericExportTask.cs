@@ -25,7 +25,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels.Task
         {
             var generator = new GenericMapGenerator(sources);
 
-            await generator.Generate(ui, config);
+            await generator.Generate(ui.Scope, config);
 
             ui.AddSuccessAction(() => ShellHelper.OpenUri(config.TargetDirectory), Labels.ViewInFileExplorer);
         }

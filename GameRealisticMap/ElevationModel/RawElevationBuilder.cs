@@ -3,10 +3,10 @@ using GameRealisticMap.Configuration;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
 using GameRealisticMap.Nature.Ocean;
-using GameRealisticMap.Reporting;
 using MapToolkit;
 using MapToolkit.Databases;
 using MapToolkit.DataCells;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -16,12 +16,10 @@ namespace GameRealisticMap.ElevationModel
 {
     internal class RawElevationBuilder : IDataBuilder<RawElevationData>, IDataSerializer<RawElevationData>
     {
-        private readonly IProgressSystem progress;
         private readonly ISourceLocations sources;
 
-        public RawElevationBuilder(IProgressSystem progress, ISourceLocations sources)
+        public RawElevationBuilder(ISourceLocations sources)
         {
-            this.progress = progress;
             this.sources = sources;
         }
 
@@ -29,10 +27,10 @@ namespace GameRealisticMap.ElevationModel
         private const int OutOfBoundsDistance = ElevationOutOfBoundsData.Distance;
         private const int OutOfBoundsStep = 20;
 
-        public RawElevationData Build(IBuildContext context)
+        public RawElevationData Build(IBuildContext context, IProgressScope scope)
         {
             // Prepare data source
-            var source = CreateSource(context);
+            var source = CreateSource(context, scope);
 
             // Prepare ocean mask
             var oceanMask = CreateOceanMask(context);
@@ -42,7 +40,7 @@ namespace GameRealisticMap.ElevationModel
             var cellSize = context.Area.GridCellSize;
             var done = 0;
             var grid = new ElevationGrid(size, cellSize);
-            using (var report = progress.CreateStep("Elevation", size))
+            using (var report = scope.CreateInteger("Elevation", size))
             {
                 Parallel.For(0, size, y =>
                 {
@@ -56,15 +54,15 @@ namespace GameRealisticMap.ElevationModel
             }
 
             // Out of bounds
-            var outOfBounds = GetOutOfBounds(context, source, grid);
+            var outOfBounds = GetOutOfBounds(context, source, grid, scope);
 
             return new RawElevationData(grid, source.Credits, outOfBounds);
         }
 
-        private ElevationMinMax[] GetOutOfBounds(IBuildContext context, RawElevationSource source, ElevationGrid grid)
+        private ElevationMinMax[] GetOutOfBounds(IBuildContext context, RawElevationSource source, ElevationGrid grid, IProgressScope scope)
         {
             var outOfBounds = new ElevationMinMax[512];
-            using (var report = progress.CreateStep("OutOfBounds", 512))
+            using (var report = scope.CreateInteger("OutOfBounds", 512))
             {
                 var done = 0;
                 var boxSize = new Vector2(context.Area.SizeInMeters);
@@ -139,9 +137,9 @@ namespace GameRealisticMap.ElevationModel
             return oceanMask;
         }
 
-        private RawElevationSource CreateSource(IBuildContext context)
+        private RawElevationSource CreateSource(IBuildContext context, IProgressScope scope)
         {
-            using var report = progress.CreateStep("CreateSource", 1);
+            using var report = scope.CreateSingle("CreateSource");
 
             var points = new LatLngBounds(context.Area);
             var start = new Coordinates(points.Bottom - 0.002, points.Left - 0.002);

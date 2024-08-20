@@ -1,18 +1,11 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.Nature.Forests;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature.Scrubs
 {
     internal class ScrubBuilder : BasicBuilderBase<ScrubData>
     {
-        public ScrubBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override ScrubData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new ScrubData(polygons);

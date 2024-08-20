@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using GameRealisticMap.ManMade.Airports;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Test.ManMade.Airports
 {
@@ -35,7 +35,7 @@ namespace GameRealisticMap.Test.ManMade.Airports
 
             context.SetData(new AirportData(new List<GameRealisticMap.Geometries.TerrainPolygon>()));
 
-            var result = new AerowaysBuilder(new NoProgressSystem()).Build(context);
+            var result = new AerowaysBuilder().Build(context, new NoProgress());
             Assert.Empty(result.InsideAirports);
 
             var aeroway = Assert.Single(result.OutsideAirports);

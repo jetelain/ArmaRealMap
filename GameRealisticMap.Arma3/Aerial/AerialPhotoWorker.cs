@@ -2,22 +2,22 @@
 using System.Runtime.Versioning;
 using System.Text;
 using GameRealisticMap.Arma3.Assets;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Aerial
 {
     [SupportedOSPlatform("windows")]
     public sealed class AerialPhotoWorker
     {
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope progress;
         private readonly List<AerialModelRefence> models;
         private readonly string targetDirectory;
         private readonly string workspace;
         private readonly List<ModDependencyDefinition> dependencies;
-        private IProgressInteger? initial;
+        private IProgressBase? initial;
         private IProgressInteger? images;
 
-        public AerialPhotoWorker(IProgressSystem progress, List<AerialModelRefence> models, string targetDirectory, IEnumerable<ModDependencyDefinition> dependencies)
+        public AerialPhotoWorker(IProgressScope progress, List<AerialModelRefence> models, string targetDirectory, IEnumerable<ModDependencyDefinition> dependencies)
         {
             this.progress = progress;
             this.models = models;
@@ -34,7 +34,7 @@ namespace GameRealisticMap.Arma3.Aerial
             {
                 initial?.Dispose();
                 initial = null;
-                images = progress.CreateStep("Photos", models.Count);
+                images = progress.CreateInteger("Photos", models.Count);
             }
 
             if (line.Contains("GRM::ONE"))
@@ -48,7 +48,7 @@ namespace GameRealisticMap.Arma3.Aerial
         {
             UnpackFiles();
 
-            initial = progress.CreateStep("Init", 1);
+            initial = progress.CreateSingle("Init");
 
             var process = StartArma3();
 
@@ -69,7 +69,7 @@ namespace GameRealisticMap.Arma3.Aerial
 
             var resultPath = Path.Combine(workspace, "result");
             var resultImages = Directory.GetFiles(Path.Combine(workspace, "result"), "*.png", SearchOption.AllDirectories);
-            foreach(var pngFilePath in resultImages.ProgressStep(progress, "Copy"))
+            foreach(var pngFilePath in resultImages.WithProgress(progress, "Copy"))
             {
                 var relPath = pngFilePath.Substring(resultPath.Length + 1);
                 var targetPath = Path.Combine(targetDirectory, relPath);

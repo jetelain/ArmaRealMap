@@ -1,18 +1,18 @@
 ﻿using GameRealisticMap.Configuration;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Osm
 {
     public class OsmDataOverPassLoader : IOsmDataLoader
     {
-        private readonly IProgressSystem progress;
+        private readonly IProgressScope scope;
         private readonly ISourceLocations sources;
         private readonly string cacheDirectory = Path.Combine(Path.GetTempPath(), "GameRealisticMap", "OverPass");
         private readonly int cacheDays = 1;
 
-        public OsmDataOverPassLoader(IProgressSystem progress, ISourceLocations sources)
+        public OsmDataOverPassLoader(IProgressScope scope, ISourceLocations sources)
         {
-            this.progress = progress;
+            this.scope = scope;
             this.sources = sources;
         }
 
@@ -24,8 +24,8 @@ namespace GameRealisticMap.Osm
 
             await DownloadFromOverPass(box, cacheFileName);
 
-            using var report = progress.CreateStep("Load OSM data", 1);
-            progress.WriteLine($"Load {cacheFileName}");
+            using var report = scope.CreateSingle("Load OSM data");
+            report.WriteLine($"Load {cacheFileName}");
             return OsmDataSource.CreateFromXml(cacheFileName);
         }
 
@@ -33,7 +33,7 @@ namespace GameRealisticMap.Osm
         {
             if (!File.Exists(cacheFileName) || (File.GetLastWriteTimeUtc(cacheFileName) < DateTime.UtcNow.AddDays(-cacheDays)))
             {
-                using var report = progress.CreateStep("Download from OSM", 1);
+                using var report = scope.CreateSingle("Download from OSM");
                 Directory.CreateDirectory(cacheDirectory);
 
                 var qlbb = FormattableString.Invariant($"{box.Bottom},{box.Left},{box.Top},{box.Right}");
@@ -62,8 +62,8 @@ namespace GameRealisticMap.Osm
 );
 out;"); ;
                 var uri = sources.OverpassApiInterpreter;
-                progress.WriteLine($"POST {uri.AbsoluteUri}");
-                progress.WriteLine($"{query}");
+                report.WriteLine($"POST {uri.AbsoluteUri}");
+                report.WriteLine($"{query}");
                 using (var client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(300);

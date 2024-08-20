@@ -10,7 +10,7 @@ using GameRealisticMap.Nature.Ocean;
 using GameRealisticMap.Nature.RockAreas;
 using GameRealisticMap.Nature.Scrubs;
 using GameRealisticMap.Nature.Surfaces;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Nature
 {
@@ -18,12 +18,10 @@ namespace GameRealisticMap.Nature
         where TEdge : class, IBasicTerrainData
         where TSource : class, IBasicTerrainData
     {
-        private readonly IProgressSystem progress;
         private readonly float width;
 
-        public BasicRadialBuilder(IProgressSystem progress, float width)
+        public BasicRadialBuilder(float width)
         {
-            this.progress = progress;
             this.width = width;
         }
         protected abstract TEdge CreateWrapper(List<TerrainPolygon> polygons);
@@ -45,25 +43,25 @@ namespace GameRealisticMap.Nature
                 .Concat(context.GetData<VineyardData>().Polygons);
         }
 
-        public TEdge Build(IBuildContext context)
+        public TEdge Build(IBuildContext context, IProgressScope scope)
         {
             var forest = context.GetData<TSource>();
 
             var priority = GetPriority(context).ToList();
 
             var radial = forest.Polygons
-                .ProgressStep(progress, "Crown")
+                .WithProgress(scope, "Crown")
                 .SelectMany(e => e.OuterCrown(width))
                 .SelectMany(poly => poly.ClippedBy(context.Area.TerrainBounds))
 
-                .SubstractAll(progress, "Priority", priority)
+                .SubstractAll(scope, "Priority", priority)
                 .ToList();
 
 #if PARALLEL
-            using var step = progress.CreateStep("Merge (Parallel)", radial.Count);
+            using var step = scope.CreateInteger("Merge (Parallel)", radial.Count);
             var final = TerrainPolygon.MergeAllParallel(radial, step);
 #else            
-            using var step = progress.CreateStep("Merge (Plain)", radial.Count);
+            using var step = scope.CreateInteger("Merge (Plain)", radial.Count);
             var final = TerrainPolygon.MergeAll(radial, step);
 #endif
             return CreateWrapper(final);

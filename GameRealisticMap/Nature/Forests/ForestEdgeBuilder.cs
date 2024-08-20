@@ -1,20 +1,13 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Nature.Forests
 {
     internal class ForestEdgeBuilder : IDataBuilder<ForestEdgeData>
     {
-        private readonly IProgressSystem progress;
-
-        public ForestEdgeBuilder(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
-        public ForestEdgeData Build(IBuildContext context)
+        public ForestEdgeData Build(IBuildContext context, IProgressScope scope)
         {
             var roads = context.GetData<RoadsData>().Roads;
             var forests = context.GetData<ForestData>().Polygons;
@@ -31,10 +24,10 @@ namespace GameRealisticMap.Nature.Forests
             forests = forests.Where(f => f.Area > 200).ToList();
 
             var edges = 
-                forests.ProgressStep(progress, "Edges")
+                forests.WithProgress(scope, "Edges")
                     .SelectMany(f => f.InnerCrown(ForestEdgeData.Width)) // 2m width offset
 
-                    .SubstractAll(progress, "Priority", priority)
+                    .SubstractAll(scope, "Priority", priority)
 
                     .ToList();
 

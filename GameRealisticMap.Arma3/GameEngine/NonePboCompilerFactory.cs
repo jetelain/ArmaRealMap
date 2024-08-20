@@ -1,10 +1,10 @@
-﻿using GameRealisticMap.Reporting;
+﻿using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
     public class NonePboCompilerFactory : IPboCompilerFactory
     {
-        public IPboCompiler Create(IProgressTask task)
+        public IPboCompiler Create(IProgressScope task)
         {
             throw new NotSupportedException();
         }

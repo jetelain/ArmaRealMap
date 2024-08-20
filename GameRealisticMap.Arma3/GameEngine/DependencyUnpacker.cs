@@ -1,7 +1,7 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.GameEngine
 {
@@ -16,12 +16,12 @@ namespace GameRealisticMap.Arma3.GameEngine
             this.projectDrive = projectDrive;
         }
 
-        public void Unpack(IProgressTask progress, IArma3MapConfig config, WrpCompiler wrpBuilder)
+        public void Unpack(IProgressScope progress, IArma3MapConfig config, WrpCompiler wrpBuilder)
         {
             UnpackFiles(progress, GetRequiredFiles(wrpBuilder.UsedModels, config));
         }
 
-        public void Unpack(IProgressTask progress, IArma3MapConfig config, IEnumerable<string> usedModels)
+        public void Unpack(IProgressScope progress, IArma3MapConfig config, IEnumerable<string> usedModels)
         {
             UnpackFiles(progress, GetRequiredFiles(usedModels, config));
         }
@@ -39,13 +39,13 @@ namespace GameRealisticMap.Arma3.GameEngine
                 .ToList();
         }
 
-        private void UnpackFiles(IProgressTask progress, IReadOnlyCollection<string> files)
+        private void UnpackFiles(IProgressScope progress, IReadOnlyCollection<string> files)
         {
             if (!OperatingSystem.IsWindows())
             {
                 return; // Unsupported on Linux
             }
-            using var report = progress.CreateStep("UnpackFiles", files.Count);
+            using var report = progress.CreateInteger("UnpackFiles", files.Count);
             foreach (var model in files)
             {
                 if (!projectDrive.EnsureLocalFileCopy(model))
@@ -54,7 +54,6 @@ namespace GameRealisticMap.Arma3.GameEngine
                 }
                 report.ReportOneDone();
             }
-            progress.ReportOneDone();
         }
     }
 }

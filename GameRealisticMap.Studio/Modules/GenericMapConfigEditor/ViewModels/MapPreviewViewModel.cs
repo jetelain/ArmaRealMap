@@ -69,7 +69,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
 
             };
 
-            var builders = new BuildersCatalog(new NoProgressSystem(), new DefaultBuildersConfig(), IoC.Get<IGrmConfigService>().GetSources());
+            var builders = new BuildersCatalog(new DefaultBuildersConfig(), IoC.Get<IGrmConfigService>().GetSources());
             Optionals.AddRange(builders.VisitAll(new Visitor(this)).Where(o => o != null).Cast<OptionalPreviewLayerVM>());
 
         }
@@ -108,10 +108,10 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
             SizeInMeters = area.SizeInMeters;
             NotifyOfPropertyChange(nameof(SizeInMeters));
             var sources = IoC.Get<IGrmConfigService>().GetSources();
-            var catalog = new BuildersCatalog(taskUI, config, sources);
-            var loader = new OsmDataOverPassLoader(taskUI, sources);
+            var catalog = new BuildersCatalog(config, sources);
+            var loader = new OsmDataOverPassLoader(taskUI.Scope, sources);
             var osmSource = await loader.Load(area);
-            var context = new BuildContext(catalog, taskUI, area, osmSource, options);
+            var context = new BuildContext(catalog, taskUI.Scope, area, osmSource, options);
             PreviewMapData = new PreviewMapData(context);
             mapData = context;
             NotifyOfPropertyChange(nameof(PreviewMapData));

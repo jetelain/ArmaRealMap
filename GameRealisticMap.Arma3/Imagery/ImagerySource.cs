@@ -1,8 +1,8 @@
 ﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
-using GameRealisticMap.Reporting;
 using HugeImages;
+using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -10,14 +10,16 @@ namespace GameRealisticMap.Arma3.Imagery
 {
     internal class ImagerySource : IImagerySource
     {
-        private readonly IdMapRender idMapRender;
+        private readonly TerrainMaterialLibrary materialLibrary;
+        private readonly IProgressScope progress;
         private readonly SatMapRender satMapRender;
         private readonly IArma3MapConfig config;
         private readonly IContext context;
 
-        public ImagerySource(TerrainMaterialLibrary materialLibrary, IProgressSystem progress, IGameFileSystem gameFileSystem, IArma3MapConfig config, IContext context)
+        public ImagerySource(TerrainMaterialLibrary materialLibrary, IProgressScope progress, IGameFileSystem gameFileSystem, IArma3MapConfig config, IContext context)
         {
-            idMapRender = new IdMapRender(materialLibrary, progress);
+            this.materialLibrary = materialLibrary;
+            this.progress = progress;
             satMapRender = new SatMapRender(materialLibrary, progress, gameFileSystem);
             this.config = config;
             this.context = context;
@@ -25,7 +27,8 @@ namespace GameRealisticMap.Arma3.Imagery
 
         public HugeImage<Rgba32> CreateIdMap()
         {
-            return idMapRender.Render(config, context);
+            using var step = progress.CreateScope("Draw IdMap");
+            return new IdMapRender(materialLibrary, step).Render(config, context);
         }
 
         public Image CreatePictureMap()

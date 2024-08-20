@@ -1,18 +1,11 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Cutlines;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature.Forests
 {
     internal class ForestBuilder : BasicBuilderBase<ForestData>
     {
-        public ForestBuilder(IProgressSystem progress)
-            : base(progress)
-        {
-
-        }
-
         protected override ForestData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new ForestData(polygons);

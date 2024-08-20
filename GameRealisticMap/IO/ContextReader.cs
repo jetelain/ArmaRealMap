@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using HugeImages.Storage;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.IO
 {
@@ -17,7 +18,7 @@ namespace GameRealisticMap.IO
             this.catalog = catalog;
         }
 
-        public T GetData<T>() where T : class
+        public T GetData<T>(IProgressScope? parentScope = null) where T : class
         {
             if (cache.TryGetValue(typeof(T), out var data))
             {

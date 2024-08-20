@@ -98,7 +98,7 @@ namespace GameRealisticMap.Test
         {
             var osm = await DatasetsLoader.Datasets.GetOsmDataSource(ds);
             var progress = new TestProgressSystem(output);
-            var builders = new BuildersCatalog(progress, new DefaultBuildersConfig(), new DefaultSourceLocations());
+            var builders = new BuildersCatalog(new DefaultBuildersConfig(), new DefaultSourceLocations());
             var context = new BuildContext(builders, progress, ds.TerrainArea, osm, new MapProcessingOptions(), new MemoryHugeImageStorage());
             context.SetData(new RawSatelliteImageData(new HugeImage<Rgba32>(context.HugeImageStorage, new Size(256, 256))));
             context.SetData(new WeatherData(null));

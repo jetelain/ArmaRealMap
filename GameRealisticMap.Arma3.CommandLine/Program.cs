@@ -1,4 +1,5 @@
-﻿using CommandLine;
+﻿using System.Text;
+using CommandLine;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Reporting;
 

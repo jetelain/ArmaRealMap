@@ -1,5 +1,4 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
 using OsmSharp.Tags;
 
 namespace GameRealisticMap.Nature
@@ -9,8 +8,7 @@ namespace GameRealisticMap.Nature
         private readonly Func<TagsCollectionBase, bool> isTargeted;
         private readonly IEnumerable<TerrainPolygon> priority;
 
-        public PolygonBuilder(IProgressSystem progress, Func<TagsCollectionBase, bool> isTargeted, IEnumerable<TerrainPolygon> priority)
-            : base(progress)
+        public PolygonBuilder(Func<TagsCollectionBase, bool> isTargeted, IEnumerable<TerrainPolygon> priority)
         {
             this.isTargeted = isTargeted;
             this.priority = priority;

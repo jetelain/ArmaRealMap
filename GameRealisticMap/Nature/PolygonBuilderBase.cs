@@ -1,24 +1,16 @@
 ﻿using GameRealisticMap.Geometries;
-using GameRealisticMap.Reporting;
-using OsmSharp;
 using OsmSharp.Tags;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Nature
 {
     internal abstract class PolygonBuilderBase
     {
-        protected readonly IProgressSystem progress;
-
-        public PolygonBuilderBase(IProgressSystem progress)
-        {
-            this.progress = progress;
-        }
-
         protected abstract bool IsTargeted(TagsCollectionBase tags);
 
         protected abstract IEnumerable<TerrainPolygon> GetPriority(IBuildContext context);
 
-        internal List<TerrainPolygon> GetPolygons(IBuildContext context, IEnumerable<TerrainPolygon> additionals)
+        internal List<TerrainPolygon> GetPolygons(IBuildContext context, IEnumerable<TerrainPolygon> additionals, IProgressScope scope)
         {
             var priority = GetPriority(context).ToList();
 
@@ -27,20 +19,20 @@ namespace GameRealisticMap.Nature
             var polygons = context.OsmSource.All
                 .Where(s => s.Tags != null && IsTargeted(s.Tags))
 
-                .ProgressStep(progress, "Interpret")
+                .WithProgress(scope, "Interpret")
                 .SelectMany(s => context.OsmSource.Interpret(s))
                 .SelectMany(s => TerrainPolygon.FromGeometry(s, context.Area.LatLngToTerrainPoint))
                 .Concat(additionals)
 
-                .ProgressStep(progress, "Crop")
+                .WithProgress(scope, "Crop")
                 .SelectMany(poly => poly.ClippedBy(clip))
 
-                .RemoveOverlaps(progress, "Overlaps")
+                .RemoveOverlaps(scope, "Overlaps")
 
-                .SubstractAll(progress, "Priority", priority)
+                .SubstractAll(scope, "Priority", priority)
                 .ToList();
 
-            return MergeIfRequired(polygons);
+            return MergeIfRequired(polygons, scope);
         }
 
         protected virtual TerrainPolygon GetClipArea(IBuildContext context)
@@ -48,15 +40,15 @@ namespace GameRealisticMap.Nature
             return context.Area.TerrainBounds;
         }
 
-        protected virtual List<TerrainPolygon> MergeIfRequired(List<TerrainPolygon> polygons)
+        protected virtual List<TerrainPolygon> MergeIfRequired(List<TerrainPolygon> polygons, IProgressScope scope)
         {
 #if PARALLEL
-            using (progress.CreateStep("Merge (Parallel)", polygons.Count))
+            using (scope.CreateInteger("Merge (Parallel)", polygons.Count))
             {
                 return TerrainPolygon.MergeAllParallel(polygons);
             }
 #else
-            using (var step = progress.CreateStep("Merge (Plain)", polygons.Count))
+            using (var step = scope.CreateInteger("Merge (Plain)", polygons.Count))
             {
                 return TerrainPolygon.MergeAll(polygons, step);
             }

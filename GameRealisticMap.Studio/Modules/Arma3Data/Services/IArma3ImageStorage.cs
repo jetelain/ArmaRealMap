@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
-using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
 {
@@ -18,6 +14,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
 
         bool HasToProcessPngToPaa { get; }
 
-        Task ProcessPngToPaa(IProgressSystem? progress = null);
+        Task ProcessPngToPaa(IProgressScope? progress = null);
     }
 }

@@ -542,7 +542,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             var name = Path.GetFileNameWithoutExtension(FileName);
             var assets = ToJson();
             var generator = new Arma3DemoMapGenerator(assets, _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
-            var config = await generator.GenerateMod(task);
+            var config = await generator.GenerateMod(task.Scope);
             if (config != null)
             {
                 task.AddSuccessAction(() => ShellHelper.OpenUri(config.TargetModDirectory), Labels.ViewInFileExplorer);
@@ -557,7 +557,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
             var name = Path.GetFileNameWithoutExtension(FileName);
             var assets = ToJson();
             var generator = new Arma3DemoMapGenerator(assets, _arma3Data.ProjectDrive, name, _arma3Data.CreatePboCompilerFactory(), new StudioDemoNaming());
-            var config = await generator.GenerateWrp(task);
+            var config = await generator.GenerateWrp(task.Scope);
             if (config != null)
             {
                 task.AddSuccessAction(() => ShellHelper.OpenUri(_arma3Data.ProjectDrive.GetFullPath(config.PboPrefix)), Labels.ViewInFileExplorer);;

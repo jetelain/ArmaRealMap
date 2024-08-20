@@ -2,6 +2,7 @@
 using GameRealisticMap.Conditions;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Reporting;
+using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Algorithms.Filling
 {
@@ -13,7 +14,7 @@ namespace GameRealisticMap.Algorithms.Filling
     {
         private readonly IReadOnlyCollection<IBasicDefinition<TModelInfo>> basicDefinitions;
 
-        public FillAreaBasic(IProgressSystem progress, IReadOnlyCollection<IBasicDefinition<TModelInfo>> basicDefinitions)
+        public FillAreaBasic(IProgressScope progress, IReadOnlyCollection<IBasicDefinition<TModelInfo>> basicDefinitions)
             : base(progress)
         {
             this.basicDefinitions = basicDefinitions;
