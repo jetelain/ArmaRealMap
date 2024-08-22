@@ -24,5 +24,12 @@ namespace GameRealisticMap.Nature.RockAreas
                 .Concat(context.GetData<RocksData>().Polygons)
                 .Concat(context.GetData<ScrubData>().Polygons);
         }
+
+        public override IEnumerable<IDataDependency> Dependencies => base.Dependencies.Concat([
+            new DataDependency<ForestData>(),
+            new DataDependency<RocksData>(),
+            new DataDependency<ScrubData>()
+        ]);
+
     }
 }

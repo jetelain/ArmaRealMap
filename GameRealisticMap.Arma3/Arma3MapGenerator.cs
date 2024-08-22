@@ -1,4 +1,5 @@
-﻿using System.Runtime.Versioning;
+﻿using System.Collections.Concurrent;
+using System.Runtime.Versioning;
 using BIS.WRP;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
@@ -133,6 +134,7 @@ namespace GameRealisticMap.Arma3
             // Imagery
             var imageryCompiler = new ImageryCompiler(assets.Materials, progress, projectDrive);
 
+            var gridTask = context.GetDataAsync<ElevationData>();
             var tiles = imageryCompiler.Compile(config, CreateImagerySource(progress, config, context));
             if (progress.CancellationToken.IsCancellationRequested)
             {
@@ -142,8 +144,7 @@ namespace GameRealisticMap.Arma3
             // Objects + WRP
             var wrpBuilder = new WrpCompiler(progress, projectDrive);
 
-            var grid = context.GetData<ElevationData>().Elevation;
-
+            var grid = gridTask.Result.Elevation;
             var size = area.SizeInMeters;
 
             var objects = GetObjects(progress, config, context, generators, grid)
@@ -168,20 +169,16 @@ namespace GameRealisticMap.Arma3
 
         private IEnumerable<TerrainBuilderObject> GenerateObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators)
         {
+            var result = new ConcurrentQueue<IEnumerable<TerrainBuilderObject>>();
+
             using (var scope = progress.CreateScope("Objects", generators.Generators.Count))
             {
-                foreach (var tb in generators.Generators)
+                Parallel.ForEachAsync(generators.Generators, new ParallelOptions() { CancellationToken = progress.CancellationToken, MaxDegreeOfParallelism = 4 }, async (tb, _) =>
                 {
-                    if (progress.CancellationToken.IsCancellationRequested)
-                    {
-                        break;
-                    }
-                    foreach (var obj in tb.Generate(config, context, scope))
-                    {
-                        yield return obj;
-                    }
-                }
+                    result.Enqueue(await tb.Generate(config, context, scope));
+                }).Wait();
             }
+            return result.SelectMany(o => o);
         }
 
         private bool IsStrictlyInside(EditableWrpObject o, float size)

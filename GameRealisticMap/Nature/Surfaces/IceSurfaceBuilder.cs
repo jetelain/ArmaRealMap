@@ -30,5 +30,12 @@ namespace GameRealisticMap.Nature.Surfaces
                 .Concat(context.GetData<ScrubData>().Polygons)
                 .Concat(context.GetData<ScreeData>().Polygons);
         }
+
+        public override IEnumerable<IDataDependency> Dependencies => base.Dependencies.Concat([
+            new DataDependency<ForestData>(),
+            new DataDependency<RocksData>(),
+            new DataDependency<ScrubData>(),
+            new DataDependency<ScreeData>()
+        ]);
     }
 }

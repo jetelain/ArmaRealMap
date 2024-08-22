@@ -7,6 +7,8 @@ namespace GameRealisticMap
     {
         T GetData<T>(IProgressScope? parentScope = null) where T : class;
 
+        Task<T> GetDataAsync<T>(IProgressScope? parentScope = null) where T : class;
+
         IEnumerable<T> GetOfType<T>() where T : class;
 
         IHugeImageStorage HugeImageStorage { get; }

@@ -130,7 +130,7 @@ namespace GameRealisticMap.Arma3
             foreach (var tb in generators.Generators)
             {
                 var name = GetLayerName(tb);
-                var entries = tb.Generate(config, context, progress).ToList();
+                var entries = (await tb.Generate(config, context, progress)).ToList();
                 foreach (var entry in entries)
                 {
                     usedModels.Add(entry.Model);
@@ -413,7 +413,7 @@ For large images this operation can take several minutes.");
                 throw new ApplicationException($"Layer '{layerName}' does not exists.");
             }
 
-            var result = generator.Generate(a3config, context, progress);
+            var result = await generator.Generate(a3config, context, progress);
             await WriteLayers(targetDirectory, GetLayerName(generator), result.ToList());
         }
 

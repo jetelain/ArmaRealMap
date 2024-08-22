@@ -41,5 +41,9 @@ namespace GameRealisticMap.Nature.Lakes
                 .SelectMany(s => s.Path.ToTerrainPolygon(s.Width + embankmentMargin))
                 .ToList();
         }
+
+        public override IEnumerable<IDataDependency> Dependencies => [
+            new DataDependency<RoadsData>()
+            ];
     }
 }

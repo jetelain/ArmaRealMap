@@ -45,11 +45,11 @@ namespace GameRealisticMap.Arma3.ManMade
             }
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var result = new List<Placed>();
-            var buildings = context.GetData<BuildingsData>().Buildings;
-            var roads = context.GetData<RoadsData>().Roads;
+            var buildings = (await context.GetDataAsync<BuildingsData>()).Buildings;
+            var roads = (await context.GetDataAsync<RoadsData>()).Roads;
 
             var prevailingWind = 0f;
             if (buildings.Any(b => b.TypeId == BuildingTypeId.WindTurbine))

@@ -17,13 +17,13 @@ namespace GameRealisticMap.Arma3.Nature.Trees
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var layer = new List<PlacedModel<Composition>>();
             var definitions = assets.GetNaturalRows(NaturalRowType.TreeRow);
             if (definitions.Count > 0)
             {
-                var rows = context.GetData<TreeRowsData>().Rows;
+                var rows = (await context.GetDataAsync<TreeRowsData>()).Rows;
                 foreach (var row in rows.WithProgress(scope, "TreeRows"))
                 {
                     var random = RandomHelper.CreateRandom(row.FirstPoint);

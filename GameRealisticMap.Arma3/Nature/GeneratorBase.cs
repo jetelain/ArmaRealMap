@@ -21,21 +21,21 @@ namespace GameRealisticMap.Arma3.Nature
 
         protected virtual bool ShouldGenerate => true;
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope progress)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope progress)
         {
             if (!ShouldGenerate)
             {
                 return new List<TerrainBuilderObject>(0);
             }
-            var evaluator = context.GetData<ConditionEvaluator>();
+            var evaluator = context.GetDataAsync<ConditionEvaluator>();
 
-            using var scope = progress.CreateScope(GetType().Name.Replace("Generator",""));
+            var polygons = context.GetDataAsync<TData>();
 
-            var polygons = context.GetData<TData>().Polygons;
+            using var scope = progress.CreateScope(GetType().Name.Replace("Generator", ""));
 
             var layer = new RadiusPlacedLayer<Composition>(new Vector2(config.SizeInMeters));
 
-            Generate(layer, polygons, evaluator, scope);
+            Generate(layer, (await polygons).Polygons, await evaluator, scope);
 
             return layer.SelectMany(item => item.Model.ToTerrainBuilderObjects(item));
         }

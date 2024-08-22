@@ -6,7 +6,8 @@ namespace GameRealisticMap
 {
     public class BuildContext : IBuildContext
     {
-        private readonly Dictionary<Type, object> datas = new Dictionary<Type, object>();
+        private readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
+        private readonly Dictionary<Type, Task> datas = new Dictionary<Type, Task>();
         private readonly IProgressScope rootScope;
         private readonly IBuidersCatalog catalog;
 
@@ -38,18 +39,52 @@ namespace GameRealisticMap
         public T GetData<T>(IProgressScope? parentScope = null) 
             where T : class
         {
-            if (datas.TryGetValue(typeof(T), out var cachedData))
-            {
-                return (T)cachedData;
-            }
+            return GetDataAsync<T>(parentScope).Result;
+        }
 
-            var builder = catalog.Get<T>();
-            using (var scope = (parentScope ?? rootScope).CreateScope(builder.GetType().Name.Replace("Builder", "")))
+        public Task<T> GetDataAsync<T>(IProgressScope? parentScope = null) where T : class
+        {
+            return GetDataTask<T>(parentScope).Unwrap();
+        }
+
+        public async Task<Task<T>> GetDataTask<T>(IProgressScope? parentScope = null) where T : class
+        {
+            await semaphoreSlim.WaitAsync().ConfigureAwait(false);
+            try
             {
-                var builtData = builder.Build(this, scope);
-                datas[typeof(T)] = builtData;
-                return builtData;
+                if (datas.TryGetValue(typeof(T), out var data))
+                {
+                    return (Task<T>)data;
+                }
+                var newTask = CreateDataTask<T>(parentScope);
+                datas.Add(typeof(T), newTask);
+                return newTask;
             }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+        }
+
+        private Task<T> CreateDataTask<T>(IProgressScope? parentScope) where T : class
+        {
+            var builder = catalog.Get<T>();
+            return Task.Run(async () =>
+            {
+                var tasks = builder.Dependencies.Select(d => d.PreAcquire(this, parentScope)).ToArray();
+                if (tasks.Length > 0)
+                {
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                }
+                using (var scope = (parentScope ?? rootScope).CreateScope(builder.GetType().Name.Replace("Builder", "")))
+                {
+                    if (builder is IDataBuilderAsync<T> asyncBuilder)
+                    {
+                        return await asyncBuilder.BuildAsync(this, scope).ConfigureAwait(false);
+                    }
+                    return builder.Build(this, scope);
+                }
+            });
         }
 
         public IEnumerable<T> GetOfType<T>() where T : class
@@ -60,7 +95,7 @@ namespace GameRealisticMap
         public void SetData<T>(T value)
             where T : class
         {
-            datas[typeof(T)] = value;
+            datas[typeof(T)] = Task.FromResult(value);
         }
     }
 }

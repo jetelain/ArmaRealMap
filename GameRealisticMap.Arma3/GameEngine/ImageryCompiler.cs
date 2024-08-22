@@ -55,19 +55,28 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             var tiler = new ImageryTiler(config);
 
-            using (var idMap = source.CreateIdMap())
+            var idTask = Task.Run(() =>
             {
-                // idMap.SaveAsPng("idmap.png");
-                GenerateIdMapTilesAndRvMat(config, idMap, tiler);
-            }
+                using (var idMap = source.CreateIdMap())
+                {
+                    // idMap.SaveAsPng("idmap.png");
+                    GenerateIdMapTilesAndRvMat(config, idMap, tiler);
+                }
+            });
 
             CreateConfigCppImages(gameFileSystemWriter, config, source);
 
-            using (var satMap = source.CreateSatMap())
+            var satTask = Task.Run(() =>
             {
-                // satMap.SaveAsPng("satmap.png");
-                GenerateSatMapTiles(config, satMap, tiler);
-            }
+                using (var satMap = source.CreateSatMap())
+                {
+                    // satMap.SaveAsPng("satmap.png");
+                    GenerateSatMapTiles(config, satMap, tiler);
+                }
+            });
+
+            idTask.Wait();
+            satTask.Wait();
 
             return tiler;
         }

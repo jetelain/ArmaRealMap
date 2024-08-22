@@ -34,5 +34,10 @@ namespace GameRealisticMap.Arma3.Test
         {
             Add(typeof(T), value);
         }
+
+        public Task<T> GetDataAsync<T>(IProgressScope? parentScope = null) where T : class
+        {
+            return Task.FromResult(GetData<T>(parentScope));
+        }
     }
 }

@@ -1,6 +1,4 @@
-﻿using GameRealisticMap.IO;
-
-namespace GameRealisticMap
+﻿namespace GameRealisticMap
 {
     internal interface IBuilderAdapter
     {
@@ -9,5 +7,7 @@ namespace GameRealisticMap
         TResult Accept<TResult>(IDataBuilderVisitor<TResult> visitor);
 
         object Get(IContext ctx);
+
+        Task<object> GetAsync(IContext ctx);
     }
 }

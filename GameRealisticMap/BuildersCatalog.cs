@@ -112,6 +112,16 @@ namespace GameRealisticMap
                 .Select(g => (T)g.Value.Get(ctx));
         }
 
+        public async Task<IEnumerable<T>> GetOfTypeAsync<T>(IContext ctx, Func<Type, bool>? filter = null) where T : class
+        {
+            var tasks = builders
+                .Where(p => typeof(T).IsAssignableFrom(p.Key) && (filter == null || filter(p.Key)))
+                .Select(g => g.Value.GetAsync(ctx))
+                .ToArray();
+            await Task.WhenAll(tasks);
+            return tasks.Select(t => (T)t.Result);
+        }
+
         public int CountOfType<T>(Func<Type, bool>? filter = null) where T : class
         {
             return builders

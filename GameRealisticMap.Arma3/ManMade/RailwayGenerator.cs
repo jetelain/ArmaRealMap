@@ -17,13 +17,13 @@ namespace GameRealisticMap.Arma3.ManMade
             this.assets = assets.Railways;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             if (assets == null || assets.Straights.Count == 0)
             {
                 return Enumerable.Empty<TerrainBuilderObject>();
             }
-            var railways = context.GetData<RailwaysData>().Railways;
+            var railways = (await context.GetDataAsync<RailwaysData>()).Railways;
             var layer = new List<PlacedModel<Composition>>();
             foreach (var segment in railways.WithProgress(scope, "Railways"))
             {

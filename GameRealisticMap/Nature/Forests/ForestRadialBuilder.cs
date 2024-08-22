@@ -18,6 +18,9 @@ namespace GameRealisticMap.Nature.Forests
             return base.GetPriority(context)
                 .Concat(cutlines.Polygons);
         }
+        public override IEnumerable<IDataDependency> Dependencies => base.Dependencies.Concat([
+            new DataDependency<CutlinesData>()
+        ]);
 
         protected override ForestRadialData CreateWrapper(List<TerrainPolygon> polygons)
         {

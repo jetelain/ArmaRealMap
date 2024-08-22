@@ -17,14 +17,14 @@ namespace GameRealisticMap.Arma3.ManMade
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var layer = new List<PlacedModel<Composition>>();
 
             if (assets.Sidewalks.Count != 0)
             {
-                var evaluator = context.GetData<ConditionEvaluator>();
-                var paths = context.GetData<SidewalksData>().Paths;
+                var evaluator = await context.GetDataAsync<ConditionEvaluator>();
+                var paths = (await context.GetDataAsync<SidewalksData>()).Paths;
                 foreach (var path in paths.WithProgress(scope, "Sidewalks"))
                 {
                     if (path.Points.Count > 1)

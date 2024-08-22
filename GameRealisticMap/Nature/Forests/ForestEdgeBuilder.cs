@@ -7,6 +7,12 @@ namespace GameRealisticMap.Nature.Forests
 {
     internal class ForestEdgeBuilder : IDataBuilder<ForestEdgeData>
     {
+        public IEnumerable<IDataDependency> Dependencies => [
+            new DataDependency<RoadsData>(), 
+            new DataDependency<ForestData>(), 
+            new DataDependency<BuildingsData>()
+        ];
+
         public ForestEdgeData Build(IBuildContext context, IProgressScope scope)
         {
             var roads = context.GetData<RoadsData>().Roads;

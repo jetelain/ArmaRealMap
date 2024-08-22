@@ -21,7 +21,7 @@ namespace GameRealisticMap.Arma3.ManMade.Farmlands
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var layer1 = new List<PlacedModel<Composition>>();
             var layer2 = new RadiusPlacedLayer<Composition>(new Vector2(config.SizeInMeters));
@@ -30,7 +30,7 @@ namespace GameRealisticMap.Arma3.ManMade.Farmlands
             if (lib1.Count > 0 || lib2.Count > 0)
             {
                 var small = new List<TerrainPolygon>();
-                var orchards = context.GetData<OrchardData>().Polygons;
+                var orchards = (await context.GetDataAsync<OrchardData>()).Polygons;
                 foreach (var orchard in orchards.WithProgress(scope, "Orchards"))
                 {
                     if (orchard.Area > 4000)
@@ -46,7 +46,7 @@ namespace GameRealisticMap.Arma3.ManMade.Farmlands
 
                 using (var subscope = scope.CreateScope("SmallOrchards"))
                 {
-                    new FillAreaBasic<Composition>(subscope, lib2).FillPolygons(layer2, small, context.GetData<ConditionEvaluator>());
+                    new FillAreaBasic<Composition>(subscope, lib2).FillPolygons(layer2, small, await context.GetDataAsync<ConditionEvaluator>());
                 }
             }
             return layer1.SelectMany(o => o.Model.ToTerrainBuilderObjects(o))

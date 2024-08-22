@@ -17,7 +17,7 @@ namespace GameRealisticMap.Arma3.Nature.Trees
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var evaluator = context.GetData<ConditionEvaluator>();
 
@@ -25,7 +25,7 @@ namespace GameRealisticMap.Arma3.Nature.Trees
             var candidates = assets.GetObjects(ObjectTypeId.Tree);
             if (candidates.Count > 0)
             {
-                var points = context.GetData<TreesData>().Points;
+                var points = (await context.GetDataAsync<TreesData>()).Points;
                 foreach (var point in points.WithProgress(scope, "Trees"))
                 {
                     var random = RandomHelper.CreateRandom(point);

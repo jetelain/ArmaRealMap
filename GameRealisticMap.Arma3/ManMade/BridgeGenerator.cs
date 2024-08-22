@@ -18,10 +18,10 @@ namespace GameRealisticMap.Arma3.ManMade
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
-            var grid = context.GetData<ElevationData>().Elevation;
-            var roads = context.GetData<RoadsData>().Roads.Where(r => r.SpecialSegment == WaySpecialSegment.Bridge).WithProgress(scope, "Bridges");
+            var grid = (await context.GetDataAsync<ElevationData>()).Elevation;
+            var roads = (await context.GetDataAsync<RoadsData>()).Roads.Where(r => r.SpecialSegment == WaySpecialSegment.Bridge).WithProgress(scope, "Bridges");
             var result = new List<TerrainBuilderObject>();
             foreach(var bridge in  roads)
             {

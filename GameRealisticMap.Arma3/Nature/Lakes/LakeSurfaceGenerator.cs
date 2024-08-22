@@ -22,9 +22,9 @@ namespace GameRealisticMap.Arma3.Nature.Lakes
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
-            var lakes = context.GetData<ElevationWithLakesData>().Lakes;
+            var lakes = (await context.GetDataAsync<ElevationWithLakesData>()).Lakes;
             var result = new List<TerrainBuilderObject>();
             var minimalPondSize = GetMinimalPondSize();
             if (minimalPondSize != null)

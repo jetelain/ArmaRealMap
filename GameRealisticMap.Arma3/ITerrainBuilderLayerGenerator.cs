@@ -5,6 +5,6 @@ namespace GameRealisticMap.Arma3
 {
     public interface ITerrainBuilderLayerGenerator
     {
-        IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope);
+        Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope);
     }
 }
