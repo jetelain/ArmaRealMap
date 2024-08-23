@@ -32,8 +32,5 @@ namespace GameRealisticMap.Nature.Surfaces
             return base.GetPriority(context)
                 .Concat(context.GetData<ForestData>().Polygons);
         }
-        public override IEnumerable<IDataDependency> Dependencies => base.Dependencies.Concat([
-            new DataDependency<ForestData>()
-        ]);
     }
 }

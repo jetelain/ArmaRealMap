@@ -71,11 +71,6 @@ namespace GameRealisticMap
             var builder = catalog.Get<T>();
             return Task.Run(async () =>
             {
-                var tasks = builder.Dependencies.Select(d => d.PreAcquire(this, parentScope)).ToArray();
-                if (tasks.Length > 0)
-                {
-                    await Task.WhenAll(tasks).ConfigureAwait(false);
-                }
                 using (var scope = (parentScope ?? rootScope).CreateScope(builder.GetType().Name.Replace("Builder", "")))
                 {
                     if (builder is IDataBuilderAsync<T> asyncBuilder)

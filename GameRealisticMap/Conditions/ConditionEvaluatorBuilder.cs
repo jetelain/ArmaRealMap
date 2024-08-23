@@ -9,14 +9,6 @@ namespace GameRealisticMap.Conditions
 {
     internal class ConditionEvaluatorBuilder : IDataBuilderAsync<ConditionEvaluator>
     {
-        public IEnumerable<IDataDependency> Dependencies => [
-            new DataDependency<CategoryAreaData>(),
-            new DataDependency<CitiesData>(),
-            new DataDependency<ElevationData>(),
-            new DataDependency<OceanData>(),
-            new DataDependency<RoadsData>()
-            ];
-
         public Task<ConditionEvaluator> BuildAsync(IBuildContext context, IProgressScope scope)
         {
             return ConditionEvaluator.CreateAsync(context);

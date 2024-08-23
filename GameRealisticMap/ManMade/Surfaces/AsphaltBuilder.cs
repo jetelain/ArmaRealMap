@@ -34,11 +34,6 @@ namespace GameRealisticMap.ManMade.Surfaces
             return context.GetData<ForestData>().Polygons;
         }
 
-        public override IEnumerable<IDataDependency> Dependencies => [
-            new DataDependency<ForestData>(), 
-            new DataDependency<AerowaysData>()
-            ];
-
         public override AsphaltData Build(IBuildContext context, IProgressScope scope)
         {
             return CreateWrapper(GetPolygons(context,

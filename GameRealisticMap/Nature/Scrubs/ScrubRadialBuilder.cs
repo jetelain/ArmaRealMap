@@ -18,10 +18,6 @@ namespace GameRealisticMap.Nature.Scrubs
                 .Concat(forestEdge.Polygons);
         }
 
-        public override IEnumerable<IDataDependency> Dependencies => base.Dependencies.Concat([
-            new DataDependency<ForestRadialData>()
-        ]);
-
         protected override ScrubRadialData CreateWrapper(List<TerrainPolygon> polygons)
         {
             return new ScrubRadialData(polygons);

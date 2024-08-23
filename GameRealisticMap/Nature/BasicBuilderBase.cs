@@ -23,13 +23,6 @@ namespace GameRealisticMap.Nature
                 .Concat(lakes.Lakes.Select(l => l.TerrainPolygon));
         }
 
-        public virtual IEnumerable<IDataDependency> Dependencies => [
-            new DataDependency<RoadsData>(),
-            new DataDependency<RailwaysData>(),
-            new DataDependency<ElevationWithLakesData>(),
-            new DataDependency<BuildingsData>()
-        ];
-
         protected abstract T CreateWrapper(List<TerrainPolygon> polygons);
 
         public virtual T Build(IBuildContext context, IProgressScope scope)

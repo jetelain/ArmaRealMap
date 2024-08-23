@@ -25,11 +25,6 @@ namespace GameRealisticMap.ManMade.Farmlands
                 .Concat(context.GetData<ForestData>().Polygons);
         }
 
-        public override IEnumerable<IDataDependency> Dependencies => base.Dependencies.Concat([
-            new DataDependency<VineyardData>(),
-            new DataDependency<ForestData>()
-        ]);
-
         protected override List<TerrainPolygon> MergeIfRequired(List<TerrainPolygon> polygons, IProgressScope scope)
         {
             return polygons; // Do not merge, to be able to place objects at edges and to be able to post-process satellite image

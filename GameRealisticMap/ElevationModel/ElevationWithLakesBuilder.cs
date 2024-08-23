@@ -39,14 +39,6 @@ namespace GameRealisticMap.ElevationModel
             this.processors = new IElevationProcessorStage1[] { new AerowaysElevationProcessor() };
         }
 
-        public IEnumerable<IDataDependency> Dependencies => [
-            new DataDependency<RawElevationData>(), 
-            new DataDependency<LakesData>(), 
-            new DataDependency<BuildingsData>(),
-            new DataDependency<RoadsData>(), 
-            new DataDependency<RailwaysData>(),
-            new DataDependency<AerowaysData>()];
-
         public ElevationWithLakesData Build(IBuildContext context, IProgressScope scope)
         {
             var raw = context.GetData<RawElevationData>();

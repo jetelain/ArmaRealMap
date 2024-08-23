@@ -25,8 +25,5 @@ namespace GameRealisticMap.Nature.Surfaces
         {
             return Enumerable.Empty<TerrainPolygon>();
         }
-
-        public override IEnumerable<IDataDependency> Dependencies => Enumerable.Empty<IDataDependency>();
-
     }
 }

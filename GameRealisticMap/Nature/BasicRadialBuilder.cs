@@ -43,23 +43,6 @@ namespace GameRealisticMap.Nature
                 .Concat(context.GetData<VineyardData>().Polygons);
         }
 
-        public virtual IEnumerable<IDataDependency> Dependencies => [
-            new DataDependency<BuildingsData>(),
-            new DataDependency<RoadsData>(),
-            new DataDependency<RailwaysData>(),
-            new DataDependency<ElevationWithLakesData>(),
-            new DataDependency<ForestData>(),
-            new DataDependency<ScrubData>(),
-            new DataDependency<RocksData>(),
-            new DataDependency<MeadowsData>(),
-            new DataDependency<FarmlandsData>(),
-            new DataDependency<CategoryAreaData>(),
-            new DataDependency<OceanData>(),
-            new DataDependency<OrchardData>(),
-            new DataDependency<VineyardData>(),
-            new DataDependency<TSource>()
-        ];
-
         public TEdge Build(IBuildContext context, IProgressScope scope)
         {
             var forest = context.GetData<TSource>();
