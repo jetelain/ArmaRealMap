@@ -13,7 +13,6 @@ using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Reporting;
 using HugeImages.Storage;
 using Pmad.ProgressTracking;
 
@@ -129,9 +128,9 @@ namespace GameRealisticMap.Arma3
         }
 
 
-        protected override IEnumerable<EditableWrpObject> GetObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
+        protected override async Task<IEnumerable<EditableWrpObject>> GetObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
         {
-            return base.GetObjects(progress, config, context, generators, grid)
+            return (await base.GetObjects(progress, config, context, generators, grid))
                 .Concat(context.GetData<List<EditableWrpObject>>());
         }
 

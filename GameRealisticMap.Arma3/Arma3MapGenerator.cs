@@ -144,10 +144,10 @@ namespace GameRealisticMap.Arma3
             // Objects + WRP
             var wrpBuilder = new WrpCompiler(progress, projectDrive);
 
-            var grid = gridTask.Result.Elevation;
+            var grid = (await gridTask).Elevation;
             var size = area.SizeInMeters;
 
-            var objects = GetObjects(progress, config, context, generators, grid)
+            var objects = (await GetObjects(progress, config, context, generators, grid))
                 .Where(o => IsStrictlyInside(o, size));
 
             wrpBuilder.Write(config, grid, tiles, objects);
@@ -162,23 +162,24 @@ namespace GameRealisticMap.Arma3
             return new ImagerySource(assets.Materials, progress, projectDrive, config, context);
         }
 
-        protected virtual IEnumerable<EditableWrpObject> GetObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
+        protected virtual async Task<IEnumerable<EditableWrpObject>> GetObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
         {
-            return GenerateObjects(progress, config, context, generators).Select(o => o.ToWrpObject(grid));
+            return (await GenerateObjects(progress, config, context, generators))
+                .SelectMany(o => o)
+                .Select(o => o.ToWrpObject(grid));
         }
 
-        private IEnumerable<TerrainBuilderObject> GenerateObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators)
+        private async ValueTask<IEnumerable<IEnumerable<TerrainBuilderObject>>> GenerateObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators)
         {
             var result = new ConcurrentQueue<IEnumerable<TerrainBuilderObject>>();
-
             using (var scope = progress.CreateScope("Objects", generators.Generators.Count))
             {
-                Parallel.ForEachAsync(generators.Generators, new ParallelOptions() { CancellationToken = progress.CancellationToken, MaxDegreeOfParallelism = 4 }, async (tb, _) =>
+                await Parallel.ForEachAsync(generators.Generators, new ParallelOptions() { CancellationToken = progress.CancellationToken, MaxDegreeOfParallelism = 4 }, async (tb, _) =>
                 {
                     result.Enqueue(await tb.Generate(config, context, scope));
-                }).Wait();
+                });
             }
-            return result.SelectMany(o => o);
+            return result;
         }
 
         private bool IsStrictlyInside(EditableWrpObject o, float size)

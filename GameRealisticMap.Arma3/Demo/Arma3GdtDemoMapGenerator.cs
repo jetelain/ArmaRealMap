@@ -9,7 +9,6 @@ using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Weather;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Reporting;
 using HugeImages.Storage;
 using Pmad.ProgressTracking;
 
@@ -68,9 +67,9 @@ namespace GameRealisticMap.Arma3.Demo
             return context;
         }
 
-        protected override IEnumerable<EditableWrpObject> GetObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
+        protected override Task<IEnumerable<EditableWrpObject>> GetObjects(IProgressScope progress, IArma3MapConfig config, IContext context, Arma3LayerGeneratorCatalog generators, ElevationGrid grid)
         {
-            return new List<EditableWrpObject>();
+            return Task.FromResult((IEnumerable<EditableWrpObject>) new List<EditableWrpObject>());
         }
 
         protected override IImagerySource CreateImagerySource(IProgressScope progress, Arma3MapConfig config, IContext context)

@@ -11,7 +11,6 @@ using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Preview;
-using GameRealisticMap.Reporting;
 using HugeImages;
 using HugeImages.Processing;
 using HugeImages.Storage;
@@ -66,7 +65,7 @@ namespace GameRealisticMap.Arma3
             }
 
 #if DEBUG
-            PreviewRender.RenderHtml(context, "debug.html").Wait();
+            await PreviewRender.RenderHtml(context, "debug.html");
 #endif
 
             // Convert PAA
@@ -191,7 +190,7 @@ namespace GameRealisticMap.Arma3
             {
                 await WriteImage(progress, idMap, Path.Combine(targetDirectory, "idmap.png"), parts).ConfigureAwait(false);
             }
-            ImageryCompiler.CreateConfigCppImages(projectDrive, config, source);
+            await ImageryCompiler.CreateConfigCppImages(projectDrive, config, source);
             using (var satMap = await source.CreateSatMap())
             {
                 await WriteImage(progress, satMap, Path.Combine(targetDirectory, "satmap.png"), parts).ConfigureAwait(false);
