@@ -25,18 +25,18 @@ namespace GameRealisticMap.Arma3.Imagery
             this.context = context;
         }
 
-        public HugeImage<Rgba32> CreateIdMap()
+        public async Task<HugeImage<Rgba32>> CreateIdMap()
         {
             using var step = progress.CreateScope("Draw IdMap");
-            return new IdMapRender(materialLibrary, step).Render(config, context);
+            return await new IdMapRender(materialLibrary, step).Render(config, context);
         }
 
-        public Image CreatePictureMap()
+        public Task<Image> CreatePictureMap()
         {
             return satMapRender.RenderPictureMap(config, context, 2048);
         }
 
-        public HugeImage<Rgba32> CreateSatMap()
+        public Task<HugeImage<Rgba32>> CreateSatMap()
         {
             return satMapRender.Render(config, context);
         }

@@ -187,12 +187,12 @@ namespace GameRealisticMap.Arma3
             var parts = GenerateParts(config);
 
             var source = new ImagerySource(assets.Materials, progress, projectDrive, config, context);
-            using (var idMap = source.CreateIdMap())
+            using (var idMap = await source.CreateIdMap())
             {
                 await WriteImage(progress, idMap, Path.Combine(targetDirectory, "idmap.png"), parts).ConfigureAwait(false);
             }
             ImageryCompiler.CreateConfigCppImages(projectDrive, config, source);
-            using (var satMap = source.CreateSatMap())
+            using (var satMap = await source.CreateSatMap())
             {
                 await WriteImage(progress, satMap, Path.Combine(targetDirectory, "satmap.png"), parts).ConfigureAwait(false);
             }

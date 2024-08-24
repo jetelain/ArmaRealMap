@@ -24,11 +24,11 @@ namespace GameRealisticMap.Arma3.Imagery
             this.gameFileSystem = gameFileSystem;
         }
 
-        public override HugeImage<Rgba32> Render(IArma3MapConfig config, IContext context)
+        public override async Task<HugeImage<Rgba32>> Render(IArma3MapConfig config, IContext context)
         {
-            var image = base.Render(config, context);
+            var image = await base.Render(config, context);
             using var step = scope.CreateSingle("FakeSatBlur");
-            image.MutateAllAsync(d => d.GaussianBlur(1.5f)).GetAwaiter().GetResult();
+            await image.MutateAllAsync(d => d.GaussianBlur(1.5f));
             return image;
         }
 

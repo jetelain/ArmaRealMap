@@ -95,7 +95,7 @@ namespace GameRealisticMap.Arma3
 
             // Generate content
             var context = CreateBuildContext(progress, a3config, osmSource);
-            var results = GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators);
+            var results = await GenerateWrp(progress, a3config, context, a3config.TerrainArea, generators);
             context.DisposeHugeImages();
             if (progress.CancellationToken.IsCancellationRequested)
             {
@@ -117,7 +117,7 @@ namespace GameRealisticMap.Arma3
             return await loader.Load(a3config.TerrainArea);
         }
 
-        public WrpAndContextResults? GenerateWrp(IProgressScope progress, Arma3MapConfig config, IContext context, ITerrainArea area, Arma3LayerGeneratorCatalog generators)
+        public async ValueTask<WrpAndContextResults?> GenerateWrp(IProgressScope progress, Arma3MapConfig config, IContext context, ITerrainArea area, Arma3LayerGeneratorCatalog generators)
         {
             // Game config
             new GameConfigGenerator(assets, projectDrive).Generate(config, context, area);
@@ -135,7 +135,7 @@ namespace GameRealisticMap.Arma3
             var imageryCompiler = new ImageryCompiler(assets.Materials, progress, projectDrive);
 
             var gridTask = context.GetDataAsync<ElevationData>();
-            var tiles = imageryCompiler.Compile(config, CreateImagerySource(progress, config, context));
+            var tiles = await imageryCompiler.Compile(config, CreateImagerySource(progress, config, context));
             if (progress.CancellationToken.IsCancellationRequested)
             {
                 return null;

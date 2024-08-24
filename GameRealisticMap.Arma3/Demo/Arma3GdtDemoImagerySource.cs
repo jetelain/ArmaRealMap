@@ -29,7 +29,7 @@ namespace GameRealisticMap.Arma3.Demo
             this.defaultMaterial = materials.GetMaterialByUsage(TerrainMaterialUsage.Default);
         }
 
-        public HugeImage<Rgba32> CreateIdMap()
+        public async Task<HugeImage<Rgba32>> CreateIdMap()
         {
             Rgba32 defaultColor = default;
             defaultMaterial.Id.ToRgba32(ref defaultColor);
@@ -38,7 +38,7 @@ namespace GameRealisticMap.Arma3.Demo
             var x = 0;
             var y = 0;
             var opt = new DrawingOptions() { GraphicsOptions = new GraphicsOptions() { Antialias = false } };
-            image.MutateAllAsync(p =>
+            await image.MutateAllAsync(p =>
             {
                 p.Fill(defaultColor);
                 foreach (var def in materials.Definitions)
@@ -51,24 +51,24 @@ namespace GameRealisticMap.Arma3.Demo
                         y += SquareSizeInPixels;
                     }
                 }
-            }).GetAwaiter().GetResult();
+            });
             return image;
         }
 
-        public Image CreatePictureMap()
+        public Task<Image> CreatePictureMap()
         {
             var img = new Image<Rgba32>(256, 256, new Rgba32(255,255,255,255));
-            return img;
+            return Task.FromResult((Image)img);
         }
 
-        public HugeImage<Rgba32> CreateSatMap()
+        public async Task<HugeImage<Rgba32>> CreateSatMap()
         {
             var size = config.GetSatMapSize();
             var image = new HugeImage<Rgba32>(context.HugeImageStorage, GetType().Name, new Size(size.Width, size.Height));
             var x = 0;
             var y = 0;
             var defaultBrush = new ImageBrush(Image.Load(defaultMaterial.FakeSatPngImage));
-            image.MutateAllAsync(p =>
+            await image.MutateAllAsync(p =>
             {
                 p.Fill(defaultBrush);
                 foreach (var def in materials.Definitions)
@@ -82,7 +82,7 @@ namespace GameRealisticMap.Arma3.Demo
                         y += SquareSizeInPixels;
                     }
                 }
-            }).GetAwaiter().GetResult();
+            });
             return image;
 
         }

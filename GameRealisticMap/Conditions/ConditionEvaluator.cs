@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Numerics;
+﻿using System.Numerics;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
@@ -23,34 +22,14 @@ namespace GameRealisticMap.Conditions
         internal const float MaxRoadBoxSearch = 75f;
         internal const float MaxRoadDistance = MaxRoadBoxSearch * 1.414f; // MaxRoadBoxSearch * sqrt(2)
 
-        //public ConditionEvaluator(IBuildContext context)
-        //{
-        //    this.areas = context.GetData<CategoryAreaData>();
-        //    this.cities = context.GetData<CitiesData>();
-        //    this.elevation = context.GetData<ElevationData>();
-        //    this.ocean = context.GetData<OceanData>();
-        //    this.roads = new TerrainSpacialIndex<Road>(context.Area);
-        //    roads.AddRange(context.GetData<RoadsData>().Roads);
-        //}
-
-        public ConditionEvaluator(ITerrainArea aera, CategoryAreaData areas, CitiesData cities, ElevationData elevation, OceanData ocean, RoadsData roads)
+        public ConditionEvaluator(IBuildContext context)
         {
-            this.areas = areas;
-            this.cities = cities;
-            this.elevation = elevation;
-            this.ocean = ocean;
-            this.roads = new TerrainSpacialIndex<Road>(aera);
-            this.roads.AddRange(roads.Roads);
-        }
-
-        public static async Task<ConditionEvaluator> CreateAsync(IBuildContext context)
-        {
-            var areas = context.GetDataAsync<CategoryAreaData>();
-            var cities = context.GetDataAsync<CitiesData>();
-            var elevation = context.GetDataAsync<ElevationData>();
-            var ocean = context.GetDataAsync<OceanData>();
-            var roads = context.GetDataAsync<RoadsData>();
-            return new ConditionEvaluator(context.Area, await areas, await cities, await elevation, await ocean, await roads);
+            this.areas = context.GetData<CategoryAreaData>();
+            this.cities = context.GetData<CitiesData>();
+            this.elevation = context.GetData<ElevationData>();
+            this.ocean = context.GetData<OceanData>();
+            this.roads = new TerrainSpacialIndex<Road>(context.Area);
+            roads.AddRange(context.GetData<RoadsData>().Roads);
         }
 
         public IPointConditionContext GetPointContext(TerrainPoint point, Road? road = null)

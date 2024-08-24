@@ -47,7 +47,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             this.gameFileSystemWriter = gameFileSystemWriter;
         }
 
-        public ImageryTiler Compile(IArma3MapConfig config, IImagerySource source)
+        public async ValueTask<ImageryTiler> Compile(IArma3MapConfig config, IImagerySource source)
         {
             gameFileSystemWriter.CreateDirectory($"{config.PboPrefix}\\data\\layers");
 
@@ -55,38 +55,38 @@ namespace GameRealisticMap.Arma3.GameEngine
 
             var tiler = new ImageryTiler(config);
 
-            var idTask = Task.Run(() =>
+            var idTask = Task.Run(async () =>
             {
-                using (var idMap = source.CreateIdMap())
+                using (var idMap = await source.CreateIdMap())
                 {
                     // idMap.SaveAsPng("idmap.png");
                     GenerateIdMapTilesAndRvMat(config, idMap, tiler);
                 }
             });
 
-            CreateConfigCppImages(gameFileSystemWriter, config, source);
+            await CreateConfigCppImages(gameFileSystemWriter, config, source);
 
-            var satTask = Task.Run(() =>
+            var satTask = Task.Run(async () =>
             {
-                using (var satMap = source.CreateSatMap())
+                using (var satMap = await source.CreateSatMap())
                 {
                     // satMap.SaveAsPng("satmap.png");
                     GenerateSatMapTiles(config, satMap, tiler);
                 }
             });
 
-            idTask.Wait();
-            satTask.Wait();
+            await idTask;
+            await satTask;
 
             return tiler;
         }
 
-        public static void CreateConfigCppImages(IGameFileSystemWriter gameFileSystemWriter, IArma3MapConfig config, IImagerySource source)
+        public static async ValueTask CreateConfigCppImages(IGameFileSystemWriter gameFileSystemWriter, IArma3MapConfig config, IImagerySource source)
         {
             var picturemapFile = $"{config.PboPrefix}\\data\\picturemap_ca.png";
             //if (!gameFileSystemWriter.FileExists(picturemapFile))
             {
-                using (var satMapOut = source.CreatePictureMap())
+                using (var satMapOut = await source.CreatePictureMap())
                 {
                     gameFileSystemWriter.WritePngImage(picturemapFile, satMapOut);
                 }

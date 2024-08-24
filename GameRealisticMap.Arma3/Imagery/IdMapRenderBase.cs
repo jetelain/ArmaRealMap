@@ -34,13 +34,13 @@ namespace GameRealisticMap.Arma3.Imagery
             drawingOptions = new DrawingOptions();
         }
 
-        public virtual HugeImage<TPixel> Render(IArma3MapConfig config, IContext context)
+        public virtual async Task<HugeImage<TPixel>> Render(IArma3MapConfig config, IContext context)
         {
             var size = GetImageSize(config);
 
             var image = new HugeImage<TPixel>(context.HugeImageStorage, GetType().Name, new Size(size.Width, size.Height));
 
-            image.MutateAllAsync(d =>
+            await image.MutateAllAsync(d =>
             {
                 d.Fill(GetBrush(materialLibrary.GetMaterialByUsage(TerrainMaterialUsage.Default)));
 
@@ -82,7 +82,7 @@ namespace GameRealisticMap.Arma3.Imagery
 
                 DrawPolygons(config, d, TerrainMaterialUsage.Asphalt, context.GetData<AsphaltData>().Polygons);
 
-            }).GetAwaiter().GetResult();
+            });
 
             return image;
         }

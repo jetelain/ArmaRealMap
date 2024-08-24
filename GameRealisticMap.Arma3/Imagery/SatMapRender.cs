@@ -34,14 +34,14 @@ namespace GameRealisticMap.Arma3.Imagery
             return new FakeSatRender(materialLibrary, progress, gameFileSystem).RenderSatOut(config, context, size);
         }
 
-        public Image RenderPictureMap(IArma3MapConfig config, IContext context, int size)
+        public async Task<Image> RenderPictureMap(IArma3MapConfig config, IContext context, int size)
         {
             HugeImage<Rgba32> satMap;
 
             if (config.FakeSatBlend == 1)
             {
                 using var step = progress.CreateScope("Draw PictureMap");
-                satMap = new FakeSatRender(materialLibrary, step, gameFileSystem).Render(config, context);
+                satMap = await new FakeSatRender(materialLibrary, step, gameFileSystem).Render(config, context);
             }
             else
             {
@@ -50,27 +50,27 @@ namespace GameRealisticMap.Arma3.Imagery
 
             // TODO: Add shadows based on elevation data
 
-            return satMap.ToScaledImageAsync(size, size).GetAwaiter().GetResult();
+            return await satMap.ToScaledImageAsync(size, size);
         }
 
-        public HugeImage<Rgba32> Render(IArma3MapConfig config, IContext context)
+        public async Task<HugeImage<Rgba32>> Render(IArma3MapConfig config, IContext context)
         {
-            var result = RenderBaseImageAsync(config, context).GetAwaiter().GetResult();
+            var result = await RenderBaseImageAsync(config, context);
 
             // TODO: Add perlin noise ? (in natural areas ?)
 
             // TODO: Maybe also add shadows based on elevation data ?
 
-            DrawRoads(config, context, result);
+            await DrawRoads(config, context, result);
 
             return result;
         }
 
-        private void DrawRoads(IArma3MapConfig config, IContext context, HugeImage<Rgba32> result)
+        private async Task DrawRoads(IArma3MapConfig config, IContext context, HugeImage<Rgba32> result)
         {
             var roads = context.GetData<RoadsData>().Roads;
             using var report = progress.CreateSingle("DrawRoads");
-            result.MutateAllAsync(d =>
+            await result.MutateAllAsync(d =>
             {
                 foreach (var road in roads.Where(r => r.SpecialSegment != WaySpecialSegment.Bridge))
                 {
@@ -79,7 +79,7 @@ namespace GameRealisticMap.Arma3.Imagery
                         PolygonDrawHelper.DrawPolygon(d, polygon, GetBrush((Arma3RoadTypeInfos)road.RoadTypeInfos), config.TerrainToSatMapPixel);
                     }
                 }
-            }).GetAwaiter().GetResult();
+            });
         }
 
         private async Task<HugeImage<Rgba32>> RenderBaseImageAsync(IArma3MapConfig config, IContext context)
@@ -87,7 +87,7 @@ namespace GameRealisticMap.Arma3.Imagery
             if (config.FakeSatBlend == 1)
             {
                 using var scope = progress.CreateScope("Draw FakeSat");
-                return new FakeSatRender(materialLibrary, scope, gameFileSystem).Render(config, context);
+                return await new FakeSatRender(materialLibrary, scope, gameFileSystem).Render(config, context);
             }
 
             var satMap = context.GetData<RawSatelliteImageData>().Image;
@@ -109,7 +109,7 @@ namespace GameRealisticMap.Arma3.Imagery
             {
                 using var scope = progress.CreateScope("Draw FakeSat");
 
-                using (var fakeSat = new FakeSatRender(materialLibrary, scope, gameFileSystem).Render(config, context))
+                using (var fakeSat = await new FakeSatRender(materialLibrary, scope, gameFileSystem).Render(config, context))
                 {
                     using var report = scope.CreateSingle("FakeSatBlend");
                     await satMap.MutateAllAsync(async d =>
