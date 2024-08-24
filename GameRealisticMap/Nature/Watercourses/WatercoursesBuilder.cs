@@ -1,7 +1,6 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade;
 using GameRealisticMap.ManMade.Roads;
-using GameRealisticMap.Nature.Forests;
 using GameRealisticMap.Nature.Lakes;
 using GeoAPI.Geometries;
 using OsmSharp;

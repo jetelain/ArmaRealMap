@@ -1,6 +1,5 @@
 ﻿using GameRealisticMap.Algorithms;
 using GameRealisticMap.Geometries;
-using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using OsmSharp.Geo;
