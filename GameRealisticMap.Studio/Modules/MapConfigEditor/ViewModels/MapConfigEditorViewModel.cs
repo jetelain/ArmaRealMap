@@ -532,7 +532,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             if (source != null)
             {
-                await source.GetData<RawSatelliteImageData>().Image.OffloadAsync();
+                await (await source.GetDataAsync<RawSatelliteImageData>()).Image.OffloadAsync();
             }
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);
         }

@@ -25,18 +25,18 @@ namespace GameRealisticMap.Generic.Exporters
             return Task.FromException(new ApplicationException($"Format '{format}' is not supported by '{Name}'"));
         }
 
-        protected abstract HugeImage<TPixel> GetImage(IBuildContext context);
+        protected abstract ValueTask<HugeImage<TPixel>> GetImage(IBuildContext context);
 
         private async Task ExportSingleImage(IBuildContext context, string filename)
         {
-            var himg = GetImage(context);
+            var himg = await GetImage(context);
             await himg.SaveUniqueAsync(filename);
         }
 
 
         private async Task ExportHugeImage(IBuildContext context, string filename)
         {
-            var himg = GetImage(context);
+            var himg = await GetImage(context);
             await himg.SaveAsync(filename);
         }
     }

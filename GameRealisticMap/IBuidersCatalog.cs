@@ -11,7 +11,5 @@
         IEnumerable<TResult> VisitAll<TResult>(IDataBuilderVisitor<TResult> visitor);
 
         IEnumerable<T> GetOfType<T>(IContext ctx, Func<Type, bool>? filter = null) where T : class;
-
-        Task<IEnumerable<T>> GetOfTypeAsync<T>(IContext ctx, Func<Type, bool>? filter = null) where T : class;
     }
 }

@@ -8,9 +8,9 @@ namespace GameRealisticMap.Generic.Exporters.Satellite
     {
         public override string Name => "RawSatelliteImage";
 
-        protected override HugeImage<Rgba32> GetImage(IBuildContext context)
+        protected override async ValueTask<HugeImage<Rgba32>> GetImage(IBuildContext context)
         {
-            return context.GetData<RawSatelliteImageData>().Image;
+            return (await context.GetDataAsync<RawSatelliteImageData>()).Image;
         }
     }
 }

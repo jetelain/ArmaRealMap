@@ -45,7 +45,7 @@ namespace GameRealisticMap.Arma3.Imagery
             }
             else
             {
-                satMap = context.GetData<RawSatelliteImageData>().Image;
+                satMap = (await context.GetDataAsync<RawSatelliteImageData>()).Image;
             }
 
             // TODO: Add shadows based on elevation data
@@ -90,7 +90,7 @@ namespace GameRealisticMap.Arma3.Imagery
                 return await new FakeSatRender(materialLibrary, scope, gameFileSystem).Render(config, context);
             }
 
-            var satMap = context.GetData<RawSatelliteImageData>().Image;
+            var satMap = (await context.GetDataAsync<RawSatelliteImageData>()).Image;
 
             if (config.UseColorCorrection)
             {
