@@ -33,6 +33,11 @@ namespace GameRealisticMap.IO
             return result;
         }
 
+        public Task<T> GetDataAsync<T>(IProgressScope? parentScope = null) where T : class
+        {
+            return Task.FromResult(GetData<T>(parentScope));
+        }
+
         public IEnumerable<T> GetOfType<T>() where T : class
         {
             return catalog.GetOfType<T>(this);

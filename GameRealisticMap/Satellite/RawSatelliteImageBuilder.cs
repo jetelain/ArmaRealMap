@@ -10,7 +10,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.Satellite
 {
-    internal class RawSatelliteImageBuilder : IDataBuilder<RawSatelliteImageData>, IDataSerializer<RawSatelliteImageData>
+    internal class RawSatelliteImageBuilder : IDataBuilderAsync<RawSatelliteImageData>, IDataSerializer<RawSatelliteImageData>
     {
         private readonly ISourceLocations sources;
 
@@ -19,7 +19,7 @@ namespace GameRealisticMap.Satellite
             this.sources = sources;
         }
 
-        public RawSatelliteImageData Build(IBuildContext context, IProgressScope scope)
+        public async Task<RawSatelliteImageData> BuildAsync(IBuildContext context, IProgressScope scope)
         {
             //Image<Rgb24> image;
 
@@ -37,8 +37,8 @@ namespace GameRealisticMap.Satellite
                 using var src = new S2Cloudless(report2, sources);
                 foreach (var part in himage.Parts)
                 {
-                    LoadPart(context, totalSize, part, report2, src).Wait();
-                    himage.OffloadAsync().Wait();
+                    await LoadPart(context, totalSize, part, report2, src).ConfigureAwait(false);
+                    await himage.OffloadAsync().ConfigureAwait(false);
                 }
             }
 

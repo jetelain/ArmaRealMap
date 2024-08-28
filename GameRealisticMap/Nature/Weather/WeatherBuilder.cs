@@ -4,7 +4,7 @@ using WeatherStats.Databases;
 
 namespace GameRealisticMap.Nature.Weather
 {
-    internal class WeatherBuilder : IDataBuilder<WeatherData>
+    internal class WeatherBuilder : IDataBuilderAsync<WeatherData>
     {
         private readonly ISourceLocations sources;
 
@@ -13,7 +13,7 @@ namespace GameRealisticMap.Nature.Weather
             this.sources = sources;
         }
 
-        public WeatherData Build(IBuildContext context, IProgressScope scope)
+        public async Task<WeatherData> BuildAsync(IBuildContext context, IProgressScope scope)
         {
             var db = WeatherStatsDatabase.Create(sources.WeatherStats.AbsoluteUri);
 
@@ -24,7 +24,7 @@ namespace GameRealisticMap.Nature.Weather
 
             using var report = scope.CreateSingle("WeatherStats");
 
-            var data = db.GetStats(center.Y, center.X).Result;
+            var data = await db.GetStats(center.Y, center.X);
 
             return new WeatherData(data);
         }

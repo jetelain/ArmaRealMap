@@ -17,10 +17,10 @@ namespace GameRealisticMap.Arma3.ManMade
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
-            var evaluator = context.GetData<ConditionEvaluator>();
-            var fences = context.GetData<FencesData>().Fences;
+            var evaluator = await context.GetDataAsync<ConditionEvaluator>();
+            var fences = (await context.GetDataAsync<FencesData>()).Fences;
             var layer = new List<PlacedModel<Composition>>();
             foreach (var fence in fences.WithProgress(scope, "Fences"))
             {

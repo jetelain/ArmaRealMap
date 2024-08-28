@@ -11,7 +11,6 @@ using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Preview;
-using GameRealisticMap.Reporting;
 using HugeImages;
 using HugeImages.Processing;
 using HugeImages.Storage;
@@ -66,7 +65,7 @@ namespace GameRealisticMap.Arma3
             }
 
 #if DEBUG
-            PreviewRender.RenderHtml(context, "debug.html").Wait();
+            await PreviewRender.RenderHtml(context, "debug.html");
 #endif
 
             // Convert PAA
@@ -130,7 +129,7 @@ namespace GameRealisticMap.Arma3
             foreach (var tb in generators.Generators)
             {
                 var name = GetLayerName(tb);
-                var entries = tb.Generate(config, context, progress).ToList();
+                var entries = (await tb.Generate(config, context, progress)).ToList();
                 foreach (var entry in entries)
                 {
                     usedModels.Add(entry.Model);
@@ -187,12 +186,12 @@ namespace GameRealisticMap.Arma3
             var parts = GenerateParts(config);
 
             var source = new ImagerySource(assets.Materials, progress, projectDrive, config, context);
-            using (var idMap = source.CreateIdMap())
+            using (var idMap = await source.CreateIdMap())
             {
                 await WriteImage(progress, idMap, Path.Combine(targetDirectory, "idmap.png"), parts).ConfigureAwait(false);
             }
-            ImageryCompiler.CreateConfigCppImages(projectDrive, config, source);
-            using (var satMap = source.CreateSatMap())
+            await ImageryCompiler.CreateConfigCppImages(projectDrive, config, source);
+            using (var satMap = await source.CreateSatMap())
             {
                 await WriteImage(progress, satMap, Path.Combine(targetDirectory, "satmap.png"), parts).ConfigureAwait(false);
             }
@@ -413,7 +412,7 @@ For large images this operation can take several minutes.");
                 throw new ApplicationException($"Layer '{layerName}' does not exists.");
             }
 
-            var result = generator.Generate(a3config, context, progress);
+            var result = await generator.Generate(a3config, context, progress);
             await WriteLayers(targetDirectory, GetLayerName(generator), result.ToList());
         }
 

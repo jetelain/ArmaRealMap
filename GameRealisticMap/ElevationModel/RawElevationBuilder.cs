@@ -14,7 +14,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.ElevationModel
 {
-    internal class RawElevationBuilder : IDataBuilder<RawElevationData>, IDataSerializer<RawElevationData>
+    internal class RawElevationBuilder : IDataBuilderAsync<RawElevationData>, IDataSerializer<RawElevationData>
     {
         private readonly ISourceLocations sources;
 
@@ -27,10 +27,10 @@ namespace GameRealisticMap.ElevationModel
         private const int OutOfBoundsDistance = ElevationOutOfBoundsData.Distance;
         private const int OutOfBoundsStep = 20;
 
-        public RawElevationData Build(IBuildContext context, IProgressScope scope)
+        public async Task<RawElevationData> BuildAsync(IBuildContext context, IProgressScope scope)
         {
             // Prepare data source
-            var source = CreateSource(context, scope);
+            var source = await CreateSource(context, scope);
 
             // Prepare ocean mask
             var oceanMask = CreateOceanMask(context);
@@ -137,7 +137,7 @@ namespace GameRealisticMap.ElevationModel
             return oceanMask;
         }
 
-        private RawElevationSource CreateSource(IBuildContext context, IProgressScope scope)
+        private async Task<RawElevationSource> CreateSource(IBuildContext context, IProgressScope scope)
         {
             using var report = scope.CreateSingle("CreateSource");
 
@@ -153,17 +153,17 @@ namespace GameRealisticMap.ElevationModel
 
             // Elevation of ground, but really low resolution (460m at equator)
             var fulldb = new DemDatabase(new DemHttpStorage(sources.MapToolkitSRTM15Plus));
-            var viewFull = fulldb.CreateView<float>(startView, endView).GetAwaiter().GetResult().ToDataCell();
+            var viewFull = (await fulldb.CreateView<float>(startView, endView)).ToDataCell();
             var detaildb = fulldb;
 
             // Elevation of surface, Partial world covergae, but better resolution (30m at equator)
             var srtm = new DemDatabase(new DemHttpStorage(sources.MapToolkitSRTM1));
             IDemDataCell view;
-            if (!srtm.HasFullData(start, end).GetAwaiter().GetResult())
+            if (!await srtm.HasFullData(start, end))
             {
                 // Alternative Elevation of surface, but requires JAXA credits
                 var aw3d30 = new DemDatabase(new DemHttpStorage(sources.MapToolkitAW3D30));
-                if (!aw3d30.HasFullData(start, end).GetAwaiter().GetResult())
+                if (!await aw3d30.HasFullData(start, end))
                 {
                     view = viewFull;
                 }
@@ -171,13 +171,13 @@ namespace GameRealisticMap.ElevationModel
                 {
                     dbCredits.Add("AW3D30");
                     detaildb = aw3d30;
-                    view = aw3d30.CreateView<short>(startView, endView).GetAwaiter().GetResult().ToDataCell(); // TODO: check AW3D30 internal format
+                    view = (await aw3d30.CreateView<short>(startView, endView)).ToDataCell(); // TODO: check AW3D30 internal format
                 }
             }
             else
             {
                 detaildb = srtm;
-                view = srtm.CreateView<ushort>(startView, endView).GetAwaiter().GetResult().ToDataCell();
+                view = (await srtm.CreateView<ushort>(startView, endView)).ToDataCell();
             }
 
             return new RawElevationSource(dbCredits, view, viewFull);

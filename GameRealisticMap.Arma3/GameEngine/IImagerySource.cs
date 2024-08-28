@@ -6,11 +6,11 @@ namespace GameRealisticMap.Arma3.GameEngine
 {
     public interface IImagerySource
     {
-        HugeImage<Rgba32> CreateIdMap();
+        Task<HugeImage<Rgba32>> CreateIdMap();
 
-        Image CreatePictureMap();
+        Task<Image> CreatePictureMap();
 
-        HugeImage<Rgba32> CreateSatMap();
+        Task<HugeImage<Rgba32>> CreateSatMap();
 
         Image CreateSatOut();
     }

@@ -474,7 +474,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public Task GenerateSatMap()
         {
             IoC.Get<IProgressTool>()
-                .RunTask(Labels.GenerateSatelliteImage, (t) => DoImagery(t, s => s.CreateSatMap().OffloadAsync()));
+                .RunTask(Labels.GenerateSatelliteImage, (t) => DoImagery(t, async s => await (await s.CreateSatMap()).OffloadAsync()));
             return Task.CompletedTask;
         }
         public Task GenerateRawSatMap()
@@ -487,7 +487,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         public Task GenerateIdMap()
         {
             IoC.Get<IProgressTool>()
-                .RunTask(Labels.GenerateIdMapImage, (t) => DoImagery(t, s => s.CreateIdMap().OffloadAsync()));
+                .RunTask(Labels.GenerateIdMapImage, (t) => DoImagery(t, async s => await (await s.CreateIdMap()).OffloadAsync()));
             return Task.CompletedTask;
         }
 
@@ -532,7 +532,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 
             if (source != null)
             {
-                await source.GetData<RawSatelliteImageData>().Image.OffloadAsync();
+                await (await source.GetDataAsync<RawSatelliteImageData>()).Image.OffloadAsync();
             }
             task.AddSuccessAction(() => ShellHelper.OpenUri(target), Labels.ViewInFileExplorer);
         }

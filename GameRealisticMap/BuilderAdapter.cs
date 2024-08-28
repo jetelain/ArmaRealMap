@@ -19,6 +19,11 @@
             return ctx.GetData<TData>();
         }
 
+        public async Task<object> GetAsync(IContext ctx)
+        {
+            return await ctx.GetDataAsync<TData>();
+        }
+
         public TResult Accept<TResult>(IDataBuilderVisitor<TResult> visitor)
         {
             return visitor.Visit<TData>(builder);

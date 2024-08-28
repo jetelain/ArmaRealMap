@@ -53,6 +53,7 @@ namespace GameRealisticMap.Arma3.CommandLine
         public void Dispose()
         {
             Progress.Dispose();
+            Console.WriteLine($"Done in {Progress.Root.ElapsedMilliseconds} msec");
         }
     }
 }

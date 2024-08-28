@@ -16,10 +16,10 @@ namespace GameRealisticMap.Arma3.ManMade
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
-            var evaluator = context.GetData<ConditionEvaluator>();
-            var objects = context.GetData<OrientedObjectData>().Objects;
+            var evaluator = await context.GetDataAsync<ConditionEvaluator>();
+            var objects = (await context.GetDataAsync<OrientedObjectData>()).Objects;
             var result = new List<TerrainBuilderObject>();
             foreach(var obj in objects.WithProgress(scope, "OrientedObjects"))
             {
@@ -37,7 +37,7 @@ namespace GameRealisticMap.Arma3.ManMade
             var lamps = assets.GetObjects(ObjectTypeId.StreetLamp);
             if (lamps.Count > 0)
             {
-                foreach (var obj in context.GetData<ProceduralStreetLampsData>().Objects.WithProgress(scope, "ProceduralStreetLamps"))
+                foreach (var obj in (await context.GetDataAsync<ProceduralStreetLampsData>()).Objects.WithProgress(scope, "ProceduralStreetLamps"))
                 {
                     var definition = lamps.GetRandom(obj.Point, evaluator.GetPointContext(obj.Point, obj.Road));
                     if (definition != null)

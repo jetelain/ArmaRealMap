@@ -51,6 +51,7 @@ namespace GameRealisticMap.Nature.Surfaces
             return base.GetPriority(context)
                 .Concat(context.GetData<ForestData>().Polygons);
         }
+
         public override GrassData Build(IBuildContext context, IProgressScope scope)
         {
             return CreateWrapper(GetPolygons(context, 

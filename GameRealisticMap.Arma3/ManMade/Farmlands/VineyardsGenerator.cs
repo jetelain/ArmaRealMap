@@ -17,13 +17,13 @@ namespace GameRealisticMap.Arma3.ManMade.Farmlands
             this.assets = assets;
         }
 
-        public IEnumerable<TerrainBuilderObject> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
+        public async Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope)
         {
             var layer = new List<PlacedModel<Composition>>();
             var lib = assets.GetNaturalRows(Assets.Rows.NaturalRowType.VineyardRow);
             if (lib.Count > 0)
             {
-                var vineyards = context.GetData<VineyardData>().Polygons;
+                var vineyards = (await context.GetDataAsync<VineyardData>()).Polygons;
                 foreach (var vineyard in vineyards.WithProgress(scope, "Vineyards"))
                 {
                     var rnd = RandomHelper.CreateRandom(vineyard.Centroid);
