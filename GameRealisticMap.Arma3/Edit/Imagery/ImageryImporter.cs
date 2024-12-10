@@ -2,8 +2,8 @@
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Reporting;
-using HugeImages;
-using HugeImages.Storage;
+using Pmad.HugeImages;
+using Pmad.HugeImages.Storage;
 using Pmad.ProgressTracking;
 using SixLabors.ImageSharp.PixelFormats;
 

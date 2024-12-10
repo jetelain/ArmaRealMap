@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using GeoJSON.Text.Feature;
-using HugeImages;
+using Pmad.HugeImages;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 

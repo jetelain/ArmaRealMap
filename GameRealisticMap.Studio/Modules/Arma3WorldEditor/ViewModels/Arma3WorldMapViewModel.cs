@@ -14,7 +14,7 @@ using Gemini.Framework;
 using Gemini.Framework.Commands;
 using Gemini.Modules.Inspector;
 using Gemini.Modules.Shell.Commands;
-using HugeImages;
+using Pmad.HugeImages;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels

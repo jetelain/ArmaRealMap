@@ -25,7 +25,7 @@ using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework.Services;
-using HugeImages.Storage;
+using Pmad.HugeImages.Storage;
 using MapControl;
 using Microsoft.Win32;
 

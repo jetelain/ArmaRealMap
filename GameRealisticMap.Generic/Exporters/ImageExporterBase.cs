@@ -1,6 +1,6 @@
-﻿using HugeImages;
-using HugeImages.IO;
-using HugeImages.Storage;
+﻿using Pmad.HugeImages;
+using Pmad.HugeImages.IO;
+using Pmad.HugeImages.Storage;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Generic.Exporters

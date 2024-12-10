@@ -1,5 +1,5 @@
 ﻿using GameRealisticMap.Arma3.IO;
-using HugeImages.Storage;
+using Pmad.HugeImages.Storage;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 

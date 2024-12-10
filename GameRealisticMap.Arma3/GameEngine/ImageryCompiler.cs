@@ -1,8 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.IO;
-using HugeImages;
-using HugeImages.Processing;
+using Pmad.HugeImages;
+using Pmad.HugeImages.Processing;
 using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;

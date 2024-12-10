@@ -11,7 +11,7 @@ using GameRealisticMap.ElevationModel;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
-using HugeImages.Storage;
+using Pmad.HugeImages.Storage;
 using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3

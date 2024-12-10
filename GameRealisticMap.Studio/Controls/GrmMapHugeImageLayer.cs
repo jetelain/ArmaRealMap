@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
-using HugeImages;
+using Pmad.HugeImages;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Studio.Controls

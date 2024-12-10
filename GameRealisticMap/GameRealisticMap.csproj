@@ -25,10 +25,10 @@
     <PackageReference Include="OsmSharp.Geo" Version="6.2.0" />
     <PackageReference Include="StringToExpression" Version="1.1.1" />
 	<PackageReference Include="Pmad.ProgressTracking" Version="0.1.28" />
+	<PackageReference Include="Pmad.HugeImages" Version="0.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HugeImages\HugeImages\HugeImages.csproj" />
     <ProjectReference Include="..\mapkit\MapToolkit\MapToolkit.csproj" />
     <ProjectReference Include="..\weatherstats\WeatherStats\WeatherStats.csproj" />
   </ItemGroup>

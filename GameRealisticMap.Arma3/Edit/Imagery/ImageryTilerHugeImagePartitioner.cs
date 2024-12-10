@@ -1,5 +1,5 @@
 ﻿using GameRealisticMap.Arma3.GameEngine;
-using HugeImages;
+using Pmad.HugeImages;
 using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Arma3.Edit.Imagery

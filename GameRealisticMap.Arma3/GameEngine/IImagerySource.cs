@@ -1,4 +1,4 @@
-﻿using HugeImages;
+﻿using Pmad.HugeImages;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
