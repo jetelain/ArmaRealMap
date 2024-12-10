@@ -1,5 +1,5 @@
 ﻿using GameRealisticMap.Satellite;
-using HugeImages;
+using Pmad.HugeImages;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Generic.Exporters.Satellite

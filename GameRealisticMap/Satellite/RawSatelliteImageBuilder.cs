@@ -2,7 +2,7 @@
 using GameRealisticMap.Configuration;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.IO;
-using HugeImages;
+using Pmad.HugeImages;
 using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;

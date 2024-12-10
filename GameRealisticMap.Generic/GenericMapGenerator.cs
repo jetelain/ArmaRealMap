@@ -3,7 +3,7 @@ using GameRealisticMap.Generic.Exporters;
 using GameRealisticMap.Generic.Profiles;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Reporting;
-using HugeImages.Storage;
+using Pmad.HugeImages.Storage;
 using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Generic

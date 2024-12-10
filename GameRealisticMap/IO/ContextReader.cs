@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using HugeImages.Storage;
+using Pmad.HugeImages.Storage;
 using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.IO

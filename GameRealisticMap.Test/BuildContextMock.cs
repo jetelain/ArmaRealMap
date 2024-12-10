@@ -1,5 +1,5 @@
 ﻿using GameRealisticMap.Osm;
-using HugeImages.Storage;
+using Pmad.HugeImages.Storage;
 using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Test

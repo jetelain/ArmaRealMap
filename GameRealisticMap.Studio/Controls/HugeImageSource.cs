@@ -8,8 +8,8 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using HugeImages;
-using HugeImages.Processing;
+using Pmad.HugeImages;
+using Pmad.HugeImages.Processing;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
