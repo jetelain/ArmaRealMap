@@ -1,9 +1,9 @@
 ﻿using System.Numerics;
 using GameRealisticMap.ElevationModel;
 using GameRealisticMap.Geometries;
-using MapToolkit;
-using MapToolkit.DataCells;
-using MapToolkit.DataCells.FileFormats;
+using Pmad.Cartography;
+using Pmad.Cartography.DataCells;
+using Pmad.Cartography.DataCells.FileFormats;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Processing;
 

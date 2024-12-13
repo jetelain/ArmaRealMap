@@ -1,7 +1,7 @@
 ﻿using GeoAPI.Geometries;
-using MapToolkit;
-using MapToolkit.Databases;
-using MapToolkit.DataCells;
+using Pmad.Cartography;
+using Pmad.Cartography.Databases;
+using Pmad.Cartography.DataCells;
 
 namespace GameRealisticMap.ElevationModel
 {

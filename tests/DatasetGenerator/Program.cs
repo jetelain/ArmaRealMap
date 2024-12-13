@@ -5,7 +5,7 @@ using GameRealisticMap.Configuration;
 using GameRealisticMap.Generic;
 using GameRealisticMap.Generic.Profiles;
 using GameRealisticMap.Osm;
-using MapToolkit;
+using Pmad.Cartography;
 using OsmSharp;
 using OsmSharp.IO.PBF;
 using OsmSharp.Streams;

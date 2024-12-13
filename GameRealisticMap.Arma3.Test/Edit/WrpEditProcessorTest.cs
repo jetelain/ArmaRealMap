@@ -3,7 +3,7 @@ using BIS.Core.Math;
 using BIS.WRP;
 using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.ElevationModel;
-using MapToolkit.DataCells;
+using Pmad.Cartography.DataCells;
 using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Test.Edit
@@ -33,7 +33,7 @@ namespace GameRealisticMap.Arma3.Test.Edit
         {
             var world = CreateSampleWorld();
 
-            var grid = new ElevationGrid(new DemDataCellPixelIsPoint<float>(new MapToolkit.Coordinates(0, 0), new MapToolkit.Coordinates(3, 3), new float[,] {
+            var grid = new ElevationGrid(new DemDataCellPixelIsPoint<float>(new Pmad.Cartography.Coordinates(0, 0), new Pmad.Cartography.Coordinates(3, 3), new float[,] {
                 {5, 5, 5, 5},
                 {5, 5, 5, 5},
                 {5, 5, 5, 5},
@@ -56,7 +56,7 @@ namespace GameRealisticMap.Arma3.Test.Edit
         {
             var world = CreateSampleWorld();
 
-            var grid = new ElevationGrid(new DemDataCellPixelIsPoint<float>(new MapToolkit.Coordinates(0, 0), new MapToolkit.Coordinates(3, 3), new float[,] {
+            var grid = new ElevationGrid(new DemDataCellPixelIsPoint<float>(new Pmad.Cartography.Coordinates(0, 0), new Pmad.Cartography.Coordinates(3, 3), new float[,] {
                 {5, 5, 5, 5},
                 {5, 5, 5, 5},
                 {5, 5, 5, 5},

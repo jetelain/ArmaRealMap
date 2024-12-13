@@ -1,5 +1,5 @@
 ﻿using GameRealisticMap.ElevationModel;
-using MapToolkit.DataCells;
+using Pmad.Cartography.DataCells;
 
 namespace GameRealisticMap.Generic.Exporters.ElevationModel
 {

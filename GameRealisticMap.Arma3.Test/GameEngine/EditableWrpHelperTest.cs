@@ -1,7 +1,7 @@
 ﻿using BIS.WRP;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.ElevationModel;
-using MapToolkit.DataCells;
+using Pmad.Cartography.DataCells;
 
 namespace GameRealisticMap.Arma3.Test.GameEngine
 {
@@ -35,7 +35,7 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
         [Fact]
         public void FillFromElevationGrid()
         {
-            var grid = new ElevationGrid(new DemDataCellPixelIsPoint<float>(new MapToolkit.Coordinates(0, 0), new MapToolkit.Coordinates(3, 3), new float[,] {
+            var grid = new ElevationGrid(new DemDataCellPixelIsPoint<float>(new Pmad.Cartography.Coordinates(0, 0), new Pmad.Cartography.Coordinates(3, 3), new float[,] {
                 {1, 2, 3, 4},
                 {5, 6, 7, 8},
                 {9, 0, 2, 3},

@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.ALB", "bis-file-formats
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIS.P3D", "bis-file-formats\BIS.P3D\BIS.P3D.csproj", "{CBCFD74B-21DA-4F39-A18E-391E449927CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapToolkit", "mapkit\MapToolkit\MapToolkit.csproj", "{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pmad.Cartography", "mapkit\MapToolkit\Pmad.Cartography.csproj", "{CB4CE7D4-5048-4D6A-9005-05C75D9D4898}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap", "GameRealisticMap\GameRealisticMap.csproj", "{67387AB0-99B8-45BD-8DFB-EC3F5C4C623F}"
 EndProject
@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.Arma3.Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{2BC1C49B-84B5-4AAA-89B6-72004913364E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapToolkit.Test", "mapkit\MapToolkit.Test\MapToolkit.Test.csproj", "{6B8B93B7-19B9-4E22-8B85-172BC9D3FFB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pmad.Cartography.Test", "mapkit\MapToolkit.Test\Pmad.Cartography.Test.csproj", "{6B8B93B7-19B9-4E22-8B85-172BC9D3FFB0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.Generic", "GameRealisticMap.Generic\GameRealisticMap.Generic.csproj", "{C9A5C93C-D3BD-4BFE-A502-EC2F506197B4}"
 EndProject

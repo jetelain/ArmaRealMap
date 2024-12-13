@@ -1,7 +1,8 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Geometries;
-using MapToolkit;
-using MapToolkit.DataCells;
+using Pmad.Cartography;
+using Pmad.Cartography.DataCells;
+using Pmad.Geometry;
 
 namespace GameRealisticMap.ElevationModel
 {
@@ -164,7 +165,7 @@ namespace GameRealisticMap.ElevationModel
 
         public DemDataCellPixelIsPoint<float> ToDataCell(Coordinates start)
         {
-            return new DemDataCellPixelIsPoint<float>(start, new MapToolkit.Vector(cellSize), elevationGrid);
+            return new DemDataCellPixelIsPoint<float>(start, new Vector2D(cellSize.X, cellSize.Y), elevationGrid);
         }
 
         public float GetAverageElevation(TerrainPolygon polygon)

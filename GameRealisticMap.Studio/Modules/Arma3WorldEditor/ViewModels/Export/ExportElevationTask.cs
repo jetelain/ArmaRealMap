@@ -4,8 +4,8 @@ using BIS.WRP;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Studio.Modules.Reporting;
-using MapToolkit;
-using MapToolkit.DataCells.FileFormats;
+using Pmad.Cartography;
+using Pmad.Cartography.DataCells.FileFormats;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Export
 {
