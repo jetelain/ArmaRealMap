@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System.Numerics;
 using GameRealisticMap.Geometries;
-using Xunit.Abstractions;
+using Pmad.Geometry;
+using Pmad.Geometry.Collections;
+using Pmad.Geometry.Shapes;
 
 namespace GameRealisticMap.Test.Geometries
 {
@@ -348,6 +350,56 @@ namespace GameRealisticMap.Test.Geometries
             Assert.False(Square100x100().Intersects(Square100x100Far()));
             Assert.False(TriangleA().Intersects(TriangleB()));
             Assert.True(TriangleA().Intersects(Square100x100()));
+        }
+        [Fact]
+        public void TerrainPolygon_FromPmadGeometry()
+        {
+            var shell = new ReadOnlyArray<Vector2D> ( new (0, 0), new (0, 100), new (100, 100), new (100, 0), new (0, 0) );
+            var holes = new ReadOnlyArray<ReadOnlyArray<Vector2D>> ( new ReadOnlyArray<Vector2D> ( new (25, 25), new (25, 75), new (75, 75), new (75, 25), new (25, 25) ));
+            var pmadPolygon = new Polygon<double, Vector2D>(shell, holes);
+
+            var terrainPolygon = TerrainPolygon.FromPmadGeometry(pmadPolygon);
+
+            Assert.Equal([new (0, 0), new (0, 100), new (100, 100), new (100, 0), new (0, 0)], terrainPolygon.Shell);
+            Assert.Equal([[new(25, 25), new(25, 75), new(75, 75), new(75, 25), new(25, 25)]], terrainPolygon.Holes);
+        }
+
+        [Fact]
+        public void TerrainPolygon_FromGeoJson()
+        {
+            var shell = new GeoJSON.Text.Geometry.LineString(new List<GeoJSON.Text.Geometry.Position> { new GeoJSON.Text.Geometry.Position(0, 0), new GeoJSON.Text.Geometry.Position(0, 100), new GeoJSON.Text.Geometry.Position(100, 100), new GeoJSON.Text.Geometry.Position(100, 0), new GeoJSON.Text.Geometry.Position(0, 0) });
+            var holes = new List<GeoJSON.Text.Geometry.LineString> { new GeoJSON.Text.Geometry.LineString(new List<GeoJSON.Text.Geometry.Position> { new GeoJSON.Text.Geometry.Position(25, 25), new GeoJSON.Text.Geometry.Position(25, 75), new GeoJSON.Text.Geometry.Position(75, 75), new GeoJSON.Text.Geometry.Position(75, 25), new GeoJSON.Text.Geometry.Position(25, 25) }) };
+            var geoJsonPolygon = new GeoJSON.Text.Geometry.Polygon(new List<GeoJSON.Text.Geometry.LineString> { shell }.Concat(holes).ToList());
+
+            var terrainPolygon = TerrainPolygon.FromGeoJson(geoJsonPolygon);
+
+            Assert.Equal([new(0, 0), new(100, 0), new(100, 100), new(0, 100), new(0, 0)], terrainPolygon.Shell);
+            Assert.Equal([[new(25, 25), new(75, 25), new(75, 75), new(25, 75), new(25, 25)]], terrainPolygon.Holes);
+        }
+
+        [Fact]
+        public void TerrainPolygon_FromRectangleCentered()
+        {
+            var center = new TerrainPoint(50, 50);
+            var size = new Vector2(100, 100);
+            var degrees = 0.0f;
+
+            var terrainPolygon = TerrainPolygon.FromRectangleCentered(center, size, degrees);
+
+            Assert.Equal([new (0, 0), new (100, 0), new (100, 100), new (0, 100), new (0, 0) ], terrainPolygon.Shell);
+            Assert.Empty(terrainPolygon.Holes);
+        }
+
+        [Fact]
+        public void TerrainPolygon_FromRectangle()
+        {
+            var start = new TerrainPoint(0, 0);
+            var end = new TerrainPoint(100, 100);
+
+            var terrainPolygon = TerrainPolygon.FromRectangle(start, end);
+
+            Assert.Equal(new List<TerrainPoint> { start, new TerrainPoint(100, 0), end, new TerrainPoint(0, 100), start }, terrainPolygon.Shell);
+            Assert.Empty(terrainPolygon.Holes);
         }
     }
 
