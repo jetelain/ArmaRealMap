@@ -8,8 +8,10 @@ using GameRealisticMap.ManMade.Railways;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Lakes;
 using GeoJSON.Text.Geometry;
-using MapToolkit;
-using MapToolkit.Contours;
+using Pmad.Cartography;
+using Pmad.Cartography.Contours;
+using Pmad.Geometry;
+using Pmad.Geometry.Shapes;
 using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -228,10 +230,10 @@ namespace GameRealisticMap.ElevationModel
             }
             foreach (var poly in polys)
             {
-                var tpoly = TerrainPolygon.FromGeoJson(poly);
+                var tpoly = TerrainPolygon.FromPmadGeometry(poly);
                 if (tpoly.Shell.Any(p => lakePolygon.ContainsRaw(p)))
                 {
-                    lakes.Add(new LakeWithElevation(TerrainPolygon.FromGeoJson(poly), borderElevation, waterElevation));
+                    lakes.Add(new LakeWithElevation(TerrainPolygon.FromPmadGeometry(poly), borderElevation, waterElevation));
                     ok = true;
                 }
             }
@@ -295,7 +297,7 @@ namespace GameRealisticMap.ElevationModel
             lakeElevation.ApplyAsMinimal();
         }
 
-        private static List<Polygon> GetElevationSurfaceBelow(ElevationGrid rawElevation, TerrainPoint min, TerrainPoint max, float waterElevation)
+        private static List<Polygon<double, Vector2D>> GetElevationSurfaceBelow(ElevationGrid rawElevation, TerrainPoint min, TerrainPoint max, float waterElevation)
         {
             var w = new ContourGraph();
             w.Add(rawElevation.ToDataCell().CreateView(

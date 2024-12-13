@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using ClipperLib;
 using GeoJSON.Text.Geometry;
+using Pmad.Geometry;
 
 namespace GameRealisticMap.Geometries
 {
@@ -79,6 +80,11 @@ namespace GameRealisticMap.Geometries
         internal static TerrainPoint FromGeoJson(IPosition point)
         {
             return new TerrainPoint((float)point.Longitude, (float)point.Latitude);
+        }
+
+        internal static TerrainPoint FromPmadGeometry(Vector2D point)
+        {
+            return new TerrainPoint((float)point.X, (float)point.Y);
         }
 
         public static TerrainPoint operator +(TerrainPoint left, Vector2 right)

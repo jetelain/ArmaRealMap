@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\mapkit\MapToolkit\MapToolkit.csproj" />
+    <ProjectReference Include="..\mapkit\MapToolkit\Pmad.Cartography.csproj" />
     <ProjectReference Include="..\weatherstats\WeatherStats\WeatherStats.csproj" />
   </ItemGroup>
 

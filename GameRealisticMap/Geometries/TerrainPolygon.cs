@@ -4,6 +4,8 @@ using ClipperLib;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Distance;
+using Pmad.Geometry;
+using Pmad.Geometry.Shapes;
 using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Geometries
@@ -120,6 +122,13 @@ namespace GameRealisticMap.Geometries
             return new TerrainPolygon(
                     shell.Coordinates.Select(TerrainPoint.FromGeoJson).ToList(),
                     holes.Select(r => r.Coordinates.Select(TerrainPoint.FromGeoJson).ToList()).ToList());
+        }
+
+        public static TerrainPolygon FromPmadGeometry(Polygon<double, Vector2D> polygon)
+        {
+            return new TerrainPolygon(
+                    polygon.Shell.Select(TerrainPoint.FromPmadGeometry).ToList(),
+                    polygon.Holes.Select(r => r.Select(TerrainPoint.FromPmadGeometry).ToList()).ToList());
         }
 
         public static TerrainPolygon FromRectangleCentered(TerrainPoint center, Vector2 size, float degrees = 0.0f)

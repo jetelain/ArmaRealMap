@@ -1,5 +1,5 @@
 ﻿using GameRealisticMap.Geometries;
-using MapToolkit.Contours;
+using Pmad.Cartography.Contours;
 using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ElevationModel
