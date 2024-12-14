@@ -275,5 +275,32 @@ namespace GameRealisticMap.Geometries
             progressInteger?.Report(finished.Count);
             return finished;
         }
+
+        public static bool IsCounterClockWise<T>(this List<T> points) where T : GeoJSON.Text.Geometry.IPosition
+        {
+            return GetSignedArea(points) > 0;
+        }
+
+        private static double GetSignedArea<T>(this IList<T> points) where T : GeoJSON.Text.Geometry.IPosition
+        {
+            if (points.Count < 3)
+                return 0;
+
+            int i;
+            double area = 0;
+
+            for (i = 0; i < points.Count; i++)
+            {
+                int j = (i + 1) % points.Count;
+
+                var vi = points[i];
+                var vj = points[j];
+
+                area += vi.Longitude * vj.Latitude;
+                area -= vi.Latitude * vj.Longitude;
+            }
+            area /= 2.0f;
+            return area;
+        }
     }
 }
