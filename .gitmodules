@@ -1,6 +1,3 @@
-[submodule "mapkit"]
-	path = mapkit
-	url = https://github.com/jetelain/mapkit.git
 [submodule "bis-file-formats"]
 	path = bis-file-formats
 	url = https://github.com/jetelain/bis-file-formats.git
