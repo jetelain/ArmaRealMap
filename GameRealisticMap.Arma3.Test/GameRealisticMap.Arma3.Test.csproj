@@ -40,7 +40,6 @@
     <ProjectReference Include="..\bis-file-formats\BIS.WRP\BIS.WRP.csproj" />
     <ProjectReference Include="..\GameRealisticMap.Arma3\GameRealisticMap.Arma3.csproj" />
     <ProjectReference Include="..\GameRealisticMap\GameRealisticMap.csproj" />
-    <ProjectReference Include="..\mapkit\MapToolkit\Pmad.Cartography.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,40 +1,40 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	<DefineConstants>PARALLEL</DefineConstants>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<DefineConstants>PARALLEL</DefineConstants>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-    <_Parameter1>$(AssemblyName).Test</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
-	
-  <ItemGroup>
-    <EmbeddedResource Include="Preview\grm-preview.html" />
-    <EmbeddedResource Include="Preview\grm-preview.js" />
-  </ItemGroup>
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>$(AssemblyName).Test</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CoordinateSharp" Version="2.18.1.1" />
-    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
-    <PackageReference Include="OsmSharp" Version="6.2.0" />
-    <PackageReference Include="OsmSharp.Geo" Version="6.2.0" />
-    <PackageReference Include="StringToExpression" Version="1.1.1" />
-	<PackageReference Include="Pmad.ProgressTracking" Version="0.1.28" />
-	<PackageReference Include="Pmad.HugeImages" Version="0.1.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Preview\grm-preview.html" />
+		<EmbeddedResource Include="Preview\grm-preview.js" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\mapkit\MapToolkit\Pmad.Cartography.csproj" />
-    <ProjectReference Include="..\weatherstats\WeatherStats\WeatherStats.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CoordinateSharp" Version="2.18.1.1" />
+		<PackageReference Include="MathNet.Numerics" Version="4.15.0" />
+		<PackageReference Include="OsmSharp" Version="6.2.0" />
+		<PackageReference Include="OsmSharp.Geo" Version="6.2.0" />
+		<PackageReference Include="StringToExpression" Version="1.1.1" />
+		<PackageReference Include="Pmad.ProgressTracking" Version="0.1.28" />
+		<PackageReference Include="Pmad.HugeImages" Version="0.1.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ManMade\Powerlines\" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Pmad.Cartography" Version="0.1.8" />
+		<ProjectReference Include="..\weatherstats\WeatherStats\WeatherStats.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="ManMade\Powerlines\" />
+	</ItemGroup>
 
 </Project>
