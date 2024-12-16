@@ -25,6 +25,10 @@ namespace DatasetsLoader
         public static readonly DatasetMap Vineyards = new DatasetMap("vineyards", TerrainAreaUTM.CreateFromCenter("48.052571462724465, 7.217234370654195", 2.5f, 2048));
         public static readonly DatasetMap WindTurbine = new DatasetMap("wind_turbine", TerrainAreaUTM.CreateFromCenter("48.62625229319036, 6.820685612478758", 2.5f, 1024));
 
+        public static readonly DatasetMap Coastline2 = new DatasetMap("coastline2", TerrainAreaUTM.CreateFromCenter("54.49013551150151, 19.69056756798376", 5f, 4096));
+        public static readonly DatasetMap Coastline3 = new DatasetMap("coastline3", TerrainAreaUTM.CreateFromCenter("-51.30249932987938, -59.61382181134751", 7.75f, 512));
+        public static readonly DatasetMap Island2 = new DatasetMap("island2", TerrainAreaUTM.CreateFromCenter("48.45906988319098, -5.083649441706315", 6.5f, 2048));
+
         public static readonly List<DatasetMap> Maps = new List<DatasetMap>()
         {
             Chaux,
@@ -33,7 +37,10 @@ namespace DatasetsLoader
             Island,
             Northern,
             Vineyards,
-            WindTurbine
+            WindTurbine,
+            Coastline2,
+            Coastline3,
+            Island2
         };
 
         public static Task<IOsmDataSource> GetOsmDataSource(DatasetMap ds)

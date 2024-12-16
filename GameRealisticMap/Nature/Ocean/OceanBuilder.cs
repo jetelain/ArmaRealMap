@@ -41,15 +41,12 @@ namespace GameRealisticMap.Nature.Ocean
             return new OceanData(oceanPolygons, landPolygons, IsIsland(oceanPolygons, context.Area));
         }
 
-        private bool IsIsland(List<TerrainPolygon> oceanPolygons, ITerrainArea area)
+        internal static bool IsIsland(List<TerrainPolygon> oceanPolygons, ITerrainArea area)
         {
             if (oceanPolygons.Count == 1)
             {
                 var outer = oceanPolygons[0].Shell;
-                if (outer.Count == 5)
-                {
-                    return new TerrainPolygon(outer).Area == area.TerrainBounds.Area;
-                }
+                return (new TerrainPolygon(outer).Area / area.TerrainBounds.Area) > 0.99;
             }
             return false;
         }

@@ -27,42 +27,49 @@ namespace DatasetGenerator
         {
             using var console = new ConsoleProgessRender();
 
-            var osmLoader = new OsmDataOverPassLoader(console.Root, new DefaultSourceLocations());
 
             var path = GetBasePath();
 
             var files = Directory.GetFiles(path, "*.grma3m");
             foreach (var file in files)
             {
-                Console.WriteLine(file);
-
-                var a3config = await ReadA3Config(file);
-
-                var gconfig = new GenericMapConfigJson()
+                var rawdata = Path.ChangeExtension(file, ".pbf.zst");
+                if (!File.Exists(rawdata))
                 {
-                    Center = a3config.Center,
-                    GridCellSize = a3config.GridCellSize,
-                    GridSize = a3config.GridSize,
-                    PrivateServiceRoadThreshold = a3config.PrivateServiceRoadThreshold,
-                    SouthWest = a3config.SouthWest,
-                    Resolution = a3config.Resolution,
-                    ExportProfileFile = ExportProfile.Default
-                };
+                    using var scope = console.Root.CreateScope("Process " + Path.GetFileName(file));
 
-                using (var output = File.Create(Path.ChangeExtension(file, ".grmm")))
-                {
-                    await JsonSerializer.SerializeAsync(output, gconfig);
+                    var osmLoader = new OsmDataOverPassLoader(scope, new DefaultSourceLocations());
+
+                    Console.WriteLine(file);
+
+                    var a3config = await ReadA3Config(file);
+
+                    var gconfig = new GenericMapConfigJson()
+                    {
+                        Center = a3config.Center,
+                        GridCellSize = a3config.GridCellSize,
+                        GridSize = a3config.GridSize,
+                        PrivateServiceRoadThreshold = a3config.PrivateServiceRoadThreshold,
+                        SouthWest = a3config.SouthWest,
+                        Resolution = a3config.Resolution,
+                        ExportProfileFile = ExportProfile.Default
+                    };
+
+                    using (var output = File.Create(Path.ChangeExtension(file, ".grmm")))
+                    {
+                        await JsonSerializer.SerializeAsync(output, gconfig);
+                    }
+
+                    var data = await osmLoader.Load(gconfig.ToMapConfig().TerrainArea);
+
+                    CompressionHelper.Write(rawdata,
+                        Compression.ZSTD,
+                        stream => WritePbfMonoBlock(data, stream));
+
+                    //CompressionHelper.Write(Path.ChangeExtension(file, ".xml.zst"),
+                    //    Compression.ZSTD,
+                    //    stream => Copy(data, new XmlOsmStreamTarget(stream)));
                 }
-
-                var data = await osmLoader.Load(gconfig.ToMapConfig().TerrainArea);
-
-                CompressionHelper.Write(Path.ChangeExtension(file, ".pbf.zst"),
-                    Compression.ZSTD,
-                    stream => WritePbfMonoBlock(data, stream));
-
-                //CompressionHelper.Write(Path.ChangeExtension(file, ".xml.zst"),
-                //    Compression.ZSTD,
-                //    stream => Copy(data, new XmlOsmStreamTarget(stream)));
             }
         }
 
