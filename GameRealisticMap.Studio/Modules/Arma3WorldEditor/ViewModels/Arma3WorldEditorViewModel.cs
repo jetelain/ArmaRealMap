@@ -42,6 +42,7 @@ using Microsoft.Win32;
 using Pmad.ProgressTracking;
 using SixLabors.ImageSharp.Memory;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
@@ -643,11 +644,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         private static void OverrideImageSharpSizeLimit()
         {
-            var prop = typeof(MemoryAllocator).GetProperty("MemoryGroupAllocationLimitBytes", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            if (prop != null && prop.SetMethod != null)
+            SixLabors.ImageSharp.Configuration.Default.MemoryAllocator = MemoryAllocator.Create(new MemoryAllocatorOptions()
             {
-                prop.SetMethod.Invoke(MemoryAllocator.Default, new object[] { 1L << 34 }); // 16 GiB
-            }
+                MaximumPoolSizeMegabytes = 32_768,
+                AllocationLimitMegabytes = 16_384
+            });
         }
 
         public Task ImportSatMap()
