@@ -49,7 +49,13 @@ namespace GameRealisticMap.Arma3.GameEngine.Roads
                 {
                     { "ID", road.TypeInfos.Id },
                     { "ORDER", road.Order }
-                };
+                }; 
+                if (road.Path.Points.Count < 2)
+                {
+                    // Skip roads with less than 2 points
+                    // This should not happen, but it is better to skip them than to crash
+                    continue;
+                }
                 features.Add(new Feature(road.Path.ToLineString(p => new Coordinate(p.X + XShift, p.Y)), attributesTable));
             }
             var shapeWriter = new ShapefileDataWriter(new ShapeFileWriter(fileSystemWriter, $"{basePath}\\roads"), new GeometryFactory(), Encoding.ASCII)

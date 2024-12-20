@@ -51,6 +51,12 @@ namespace GameRealisticMap.Arma3.GameEngine
                 {
                     path = road.Path.PreventSplines(road.Width * 1.5f);
                 }
+                if (road.Path.Points.Count < 2)
+                {
+                    // Skip roads with less than 2 points
+                    // This should not happen, but it is better to skip them than to crash
+                    continue; 
+                }
                 features.Add(new Feature(path.ToLineString(p => new Coordinate(p.X + 200000, p.Y)), attributesTable));
             }
             var shapeWriter = new ShapefileDataWriter(new ShapeFileWriter(fileSystemWriter, $"{config.PboPrefix}\\data\\roads\\roads"), new GeometryFactory(), Encoding.ASCII)
