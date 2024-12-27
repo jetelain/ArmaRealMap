@@ -40,7 +40,7 @@ namespace GameRealisticMap.Arma3.Edit
             {
                 foreach (var model in usedModels)
                 {
-                    if (!projectDrive.EnsureLocalFileCopy(model))
+                    if (!projectDrive.EnsureLocalFileCopy(model) && !string.IsNullOrWhiteSpace(model))
                     {
                         throw new ApplicationException($"File '{model}' is missing. Have you added all required mods in application configuration?");
                     }

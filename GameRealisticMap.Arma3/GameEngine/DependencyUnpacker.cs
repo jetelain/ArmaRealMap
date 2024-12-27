@@ -48,7 +48,7 @@ namespace GameRealisticMap.Arma3.GameEngine
             using var report = progress.CreateInteger("UnpackFiles", files.Count);
             foreach (var model in files)
             {
-                if (!projectDrive.EnsureLocalFileCopy(model))
+                if (!projectDrive.EnsureLocalFileCopy(model) && !string.IsNullOrWhiteSpace(model))
                 {
                     throw new ApplicationException($"File '{model}' is missing. Have you added all required mods in application configuration?");
                 }
