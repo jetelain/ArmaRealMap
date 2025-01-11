@@ -33,13 +33,9 @@ namespace GameRealisticMap.Arma3.GameEngine
             var tempPboPath = Path.Combine(tempRoot, config.PboPrefix);
             Directory.CreateDirectory(tempPboPath);
 
-            var rvmatDirectory = Path.Combine(sourcePboPath, "data", "layers");
-            if (Directory.Exists(rvmatDirectory))
-            {
-                var rvmat = Directory.GetFiles(rvmatDirectory, "*.rvmat");
-                var targetRvmat = Path.Combine(tempPboPath, "data", "layers");
-                await Arma3ToolsHelper.OptimizeRvmat(progress, rvmat, targetRvmat);
-            }
+            var rvmat = Directory.GetFiles(Path.Combine(sourcePboPath, "data", "layers"), "*.rvmat");
+            var targetRvmat = Path.Combine(tempPboPath, "data", "layers");
+            await Arma3ToolsHelper.OptimizeRvmat(progress, rvmat, targetRvmat);
 
             var configCpp = Path.Combine(sourcePboPath, "config.cpp");
             var configSourceBin = Path.Combine(sourcePboPath, "config.bin");
