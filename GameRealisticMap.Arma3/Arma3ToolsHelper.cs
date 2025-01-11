@@ -121,6 +121,7 @@ namespace GameRealisticMap.Arma3
                  && !output.Contains(":     ")
                  && !output.Contains("Info: Persistence detected on")
                  && !output.Contains("Creating process:")
+                 && !output.Contains("d:\\Bis\\Source\\Dev\\Futura\\lib\\landscape.cpp")
                  && output != "---------------------------------------------",
                  GetProjectDrivePath()
                  );
