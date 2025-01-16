@@ -359,7 +359,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                     new GdtClutterViewModel(new ClutterConfig(Name + CaseConverter.ToPascalCase(obj.Model.Name),
                     1.0 / (ClutterList.Count + 1), 
                     obj.Model, 
-                    0.5, 
+                    0, 
                     false,
                     0.8, 
                     1.2)));
