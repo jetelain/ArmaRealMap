@@ -109,8 +109,11 @@ private _results = [];
 
 toFixed 20; 
 
-for "_i" from 0 to (count _data) step 20000 do { 
-	_results pushBack (([_prelude] + (_data select [_i, 20000])) joinString endl);
+// 10 000 000 max bytes
+// 550 bytes max  per line
+// => 18 000 lines per page
+for "_i" from 0 to (count _data) step 18000 do { 
+	_results pushBack (([_prelude] + (_data select [_i, 18000])) joinString endl);
 };
 
 toFixed -1; 
