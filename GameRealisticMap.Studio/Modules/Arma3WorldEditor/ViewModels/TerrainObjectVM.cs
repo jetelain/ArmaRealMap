@@ -19,8 +19,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
     {
         private bool isRemoved;
         private IEnumerable<IInspector>? inspectors;
-        private readonly EditableWrpObject obj;
-        private readonly IAssetCatalogItem modelInfo;
+        private EditableWrpObject obj;
+        private IAssetCatalogItem modelInfo;
         private readonly Arma3WorldMapViewModel owner;
 
         private readonly List<TerrainPoint> corners = new List<TerrainPoint>();
@@ -63,11 +63,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public TerrainPoint Center => new TerrainPoint(obj.Transform.Matrix.M41, obj.Transform.Matrix.M43);
 
-        public float Radius { get; }
+        public float Radius { get; set; }
 
         public AssetCatalogCategory Category => modelInfo.Category;
 
-        public Rect Rectangle { get; }
+        public Rect Rectangle { get; set; }
 
         public string Model 
         { 
@@ -167,5 +167,20 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        internal void Update(IAssetCatalogItem modelInfo)
+        {
+            this.modelInfo = modelInfo;
+
+            Radius = Math.Max(new Vector2(modelInfo.BboxMin.X, modelInfo.BboxMin.Z).Length(), new Vector2(modelInfo.BboxMax.X, modelInfo.BboxMax.Z).Length());
+
+            Rectangle = new Rect(
+                modelInfo.BboxMin.X,
+                modelInfo.BboxMin.Z,
+                modelInfo.BboxMax.X - modelInfo.BboxMin.X,
+                modelInfo.BboxMax.Z - modelInfo.BboxMin.Z);
+
+            IsRemoved = false;
+        }
     }
 }

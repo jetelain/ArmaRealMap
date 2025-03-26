@@ -195,7 +195,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public EditableWrp? World
         {
             get { return _world; }
-            set { _world = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Size)); UpdateObjectStats(); }
+            set 
+            { 
+                _world = value; 
+                NotifyOfPropertyChange(); 
+                NotifyOfPropertyChange(nameof(Size));
+                UpdateObjectStats();
+                mapEditor?.InvalidateObjects();
+            }
         }
 
         private void UpdateObjectStats()
@@ -353,14 +360,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 ConfigFile.Revision++;
                 IsRoadsDirty = false;
             }
+            mapEditor?.FlushObjectEdits();
             if (IsDirty)
             {
                 worldBackup.CreateBackup(filePath, savedRevision, GetBackupFiles(filePath));
-
-                var world = World;
-                world!.Objects = GetActualObjects();
-                StreamHelper.Write(world, filePath);
-
+                StreamHelper.Write(World, filePath);
                 UpdateBackupsList(filePath);
             }
             if (ConfigFile != null)
@@ -375,7 +379,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (Dependencies != null)
             {
-                var stream = File.Create(DependenciesFilePath(filePath));
+                using var stream = File.Create(DependenciesFilePath(filePath));
                 await JsonSerializer.SerializeAsync(stream, Dependencies);
             }
         }
@@ -529,6 +533,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             ClearActive();
 
             UpdateObjectStats();
+            mapEditor?.InvalidateObjects();
         }
 
         public async Task OpenConfigFile()
@@ -799,19 +804,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public ExistingImageryInfos GetConfig()
         {
             return Imagery ?? new ExistingImageryInfos(0, 0, 0, ConfigFile?.PboPrefix ?? string.Empty);
-        }
-
-        public List<EditableWrpObject> GetActualObjects()
-        {
-            if (World != null)
-            {
-                if (mapEditor != null)
-                {
-                    return mapEditor.GetActualObjects();
-                }
-                return World.Objects;
-            }
-            return new List<EditableWrpObject>();
         }
     }
 }

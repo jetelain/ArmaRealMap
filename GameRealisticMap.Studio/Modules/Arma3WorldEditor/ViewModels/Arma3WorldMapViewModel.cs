@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using BIS.WRP;
 using Caliburn.Micro;
@@ -35,7 +36,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private EditableArma3RoadTypeInfos? selectectedRoadType;
         private IEnumerable<IEditablePointCollection>? selectedItems;
         private readonly Dictionary<EditableArma3Road, EditRoadEditablePointCollection> cache = new Dictionary<EditableArma3Road, EditRoadEditablePointCollection>();
-        private List<EditableWrpObject>? lastSnapShot = null;
+        private readonly Dictionary<EditableWrpObject, TerrainObjectVM> objCache = new Dictionary<EditableWrpObject, TerrainObjectVM>();
+        private List<EditableWrpObject>? initialList = null;
 
         public Arma3WorldMapViewModel(Arma3WorldEditorViewModel parent, IArma3DataModule arma3Data)
         {
@@ -358,6 +360,17 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             await base.OnInitializeAsync(cancellationToken);
         }
 
+        internal void InvalidateObjects()
+        {
+            // Primary list had a mass change, invalidate our copy
+            initialList = null;
+            Objects = null;
+            NotifyOfPropertyChange(nameof(Objects));
+
+            // Load again
+            _ = Task.Run(DoLoadWorld);
+        }
+
         private async Task DoLoadWorld()
         {
             var world = parentEditor.World;
@@ -367,17 +380,27 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
 
             var models = world.Objects.Select(o => o.Model).Where(m => !string.IsNullOrEmpty(m)).Distinct(StringComparer.OrdinalIgnoreCase);
-
             var itemsByPath = await IoC.Get<IAssetsCatalogService>().GetItems(models).ConfigureAwait(false);
-
             var index = new TerrainSpacialIndex<TerrainObjectVM>(SizeInMeters);
             foreach (var obj in world.Objects)
             {
                 if (itemsByPath.TryGetValue(obj.Model, out var modelinfo))
                 {
-                    index.Insert(new TerrainObjectVM(this, obj, modelinfo));
+                    if (objCache.TryGetValue(obj, out var vm))
+                    {
+                        vm.Update(modelinfo);
+                    }
+                    else
+                    {
+                        vm = new TerrainObjectVM(this, obj, modelinfo);
+                        objCache[obj] = vm;
+                    }
+                    index.Insert(vm);
                 }
             }
+            index.AddRange(objCache.Values.Where(o => o.IsRemoved));
+
+            initialList = world.Objects;
             Objects = index;
             NotifyOfPropertyChange(nameof(Objects));
         }
@@ -443,38 +466,36 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         internal void MakeObjectsDirty()
         {
             parentEditor.IsDirty = true;
-            lastSnapShot = null;
         }
 
-        internal List<EditableWrpObject> GetActualObjects()
+        internal void FlushObjectEdits()
         {
             var world = parentEditor.World;
-            if (world == null)
-            {
-                return new List<EditableWrpObject>();
-            }
-
             var objects = Objects;
-            if (objects == null)
+            if (world == null || initialList == null || objects == null)
             {
-                return world.Objects;
+                return;
+            }
+            if (world.Objects != initialList)
+            {
+                // Fail safe, primary list had a mass change without notifying us, invalidate our copy
+                InvalidateObjects();
+                return;
             }
 
-            var result = lastSnapShot;
-            if (result == null)
+            var wasAlive = world.Objects.ToHashSet();
+
+            var resurected = objects.Where(r => !r.IsRemoved && !wasAlive.Contains(r.WrpObject)).Select(r => r.WrpObject).ToList();
+            var removed = objects.Where(o => o.IsRemoved).ToList();
+
+            if (removed.Count > 0 || resurected.Count > 0)
             {
-                // Strip objects removed from our side
-                var removed = objects.Where(o => o.IsRemoved).Select(o => o.WrpObject).ToHashSet();
-                if (removed.Count == 0)
-                {
-                    lastSnapShot = result = world.Objects;
-                }
-                else
-                {
-                    lastSnapShot = result = world.Objects.Where(o => !removed.Contains(o)).ToList();
-                }
+                var removedWrp = removed.Select(o => o.WrpObject).ToHashSet();
+                world.Objects = world.GetNonDummyObjects().Where(o => !removedWrp.Contains(o)).ToList();
+                world.Objects.AddRange(resurected);
+                world.Objects.Add(EditableWrpObject.Dummy);
+                parentEditor.PostEdit();
             }
-            return result;
         }
     }
 }
