@@ -4,7 +4,6 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
@@ -178,18 +177,23 @@ namespace GameRealisticMap.Studio.Controls
             {
                 var objects = Objects;
                 var roads = Roads;
-                if (roads != null)
+                if (roads != null || objects != null)
                 {
                     var coordinates = ParentMap!.ViewportCoordinates(e.GetPosition(ParentMap));
                     var enveloppe = new Envelope(coordinates - new Vector2(5), coordinates + new Vector2(5));
 
-                    var selection = (object?)roads.Roads
-                        .Where(r => !r.IsRemoved && r.Path.EnveloppeIntersects(enveloppe))
-                        .Select(r => (road: r, distance: r.Path.Distance(coordinates)))
-                        .Where(r => r.distance < r.road.RoadTypeInfos.TextureWidth / 2)
-                        .OrderBy(r => r.distance)
-                        .Select(r => r.road)
-                        .FirstOrDefault();
+                    object? selection = null;
+
+                    if (roads != null)
+                    {
+                        selection = roads.Roads
+                            .Where(r => !r.IsRemoved && r.Path.EnveloppeIntersects(enveloppe))
+                            .Select(r => (road: r, distance: r.Path.Distance(coordinates)))
+                            .Where(r => r.distance < r.road.RoadTypeInfos.TextureWidth / 2)
+                            .OrderBy(r => r.distance)
+                            .Select(r => r.road)
+                            .FirstOrDefault();
+                    }
 
                     if (selection == null && objects != null)
                     {

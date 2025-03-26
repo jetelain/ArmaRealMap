@@ -201,7 +201,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 NotifyOfPropertyChange(); 
                 NotifyOfPropertyChange(nameof(Size));
                 UpdateObjectStats();
-                mapEditor?.InvalidateObjects();
+                mapEditor?.InvalidateObjects(true);
             }
         }
 

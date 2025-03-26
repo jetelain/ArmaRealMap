@@ -360,12 +360,20 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             await base.OnInitializeAsync(cancellationToken);
         }
 
-        internal void InvalidateObjects()
+        internal void InvalidateObjects(bool clearHistory = false)
         {
             // Primary list had a mass change, invalidate our copy
             initialList = null;
             Objects = null;
             NotifyOfPropertyChange(nameof(Objects));
+
+            if (clearHistory)
+            {  
+                // We loaded an old version of the world, clear undo/redo history
+                UndoRedoManager.UndoCountLimit = 0;
+                UndoRedoManager.UndoCountLimit = null;
+                objCache.Clear();
+            }
 
             // Load again
             _ = Task.Run(DoLoadWorld);
