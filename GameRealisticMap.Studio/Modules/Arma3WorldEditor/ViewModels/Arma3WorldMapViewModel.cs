@@ -12,6 +12,7 @@ using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 using Gemini.Framework.Commands;
 using Gemini.Modules.Inspector;
@@ -368,10 +369,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             NotifyOfPropertyChange(nameof(Objects));
 
             if (clearHistory)
-            {  
+            {
                 // We loaded an old version of the world, clear undo/redo history
-                UndoRedoManager.UndoCountLimit = 0;
-                UndoRedoManager.UndoCountLimit = null;
+                UndoRedoManager.Clear();
                 objCache.Clear();
             }
 
@@ -428,8 +428,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             cache.Clear();
 
             // Clear Undo/Redo history
-            UndoRedoManager.UndoCountLimit = 0;
-            UndoRedoManager.UndoCountLimit = null;
+            UndoRedoManager.Clear();
 
             var roads = Roads;
             if (roads != null)

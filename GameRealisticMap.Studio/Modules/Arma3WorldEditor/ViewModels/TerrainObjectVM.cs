@@ -180,6 +180,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 modelInfo.BboxMax.X - modelInfo.BboxMin.X,
                 modelInfo.BboxMax.Z - modelInfo.BboxMin.Z);
 
+            corners.Clear();
+
             IsRemoved = false;
         }
     }
