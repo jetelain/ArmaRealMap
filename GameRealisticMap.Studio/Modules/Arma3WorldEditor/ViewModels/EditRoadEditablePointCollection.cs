@@ -149,5 +149,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 }
             }
         }
+
+        public bool CanDeletePoint => true;
+
+        public bool IsObjectSquare => false;
     }
 }

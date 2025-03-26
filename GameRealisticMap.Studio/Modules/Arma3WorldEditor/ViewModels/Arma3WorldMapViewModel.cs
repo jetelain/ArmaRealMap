@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BIS.WRP;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
@@ -34,6 +35,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private EditableArma3RoadTypeInfos? selectectedRoadType;
         private IEnumerable<IEditablePointCollection>? selectedItems;
         private readonly Dictionary<EditableArma3Road, EditRoadEditablePointCollection> cache = new Dictionary<EditableArma3Road, EditRoadEditablePointCollection>();
+        private List<EditableWrpObject>? lastSnapShot = null;
 
         public Arma3WorldMapViewModel(Arma3WorldEditorViewModel parent, IArma3DataModule arma3Data)
         {
@@ -84,7 +86,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     {
                         EditPoints = null;
                     }
-
+                    if (selectedItems != null && selectedItems.Count() == 1)
+                    {
+                        inspectorTool.SelectedObject = selectedItems.First() as IInspectableObject;
+                    }
                     NotifyOfPropertyChange(nameof(CanMerge));
                 }
             }
@@ -156,34 +161,55 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public void SelectItem(object? item)
         {
-            SelectedItems = null;
+            Select(GetEditable(item));
+        }
 
+        private IEditablePointCollection? GetEditable(object? item)
+        {
             if (item is EditableArma3Road road)
             {
-                EditPoints = CreateEdit(road);
+                return CreateEdit(road);
             }
-            else
-            {
-                EditPoints = null;
-            }
+            return item as IEditablePointCollection;
         }
 
         public void AddToSelection(object? item)
         {
-            if (item is EditableArma3Road road)
+            var editable = GetEditable(item);
+            if (editable != null)
             {
                 if (selectedItems != null)
                 {
-                    SelectedItems = selectedItems.Concat(new[] { CreateEdit(road) }).ToList();
+                    SelectedItems = selectedItems.Concat(new[] { editable }).Distinct().ToList();
                 }
                 else if (editPoints != null)
                 {
-                    SelectedItems = new[] { editPoints, CreateEdit(road) }.ToList();
+                    SelectedItems = new[] { editPoints, editable }.Distinct().ToList();
                 }
                 else
                 {
-                    EditPoints = CreateEdit(road);
+                    Select(editable);
                 }
+            }
+        }
+
+        private void Select(IEditablePointCollection? editable)
+        {
+            if (editable is EditRoadEditablePointCollection)
+            {
+                SelectedItems = null;
+                EditPoints = editable;
+            }
+            else if (editable != null)
+            {
+                EditPoints = editable;
+                // In current version, we do not allow to move the object, so switch to outline mode
+                SelectedItems = new List<IEditablePointCollection> { editable };
+            }
+            else
+            {
+                SelectedItems = null;
+                EditPoints = null;
             }
         }
 
@@ -349,7 +375,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 if (itemsByPath.TryGetValue(obj.Model, out var modelinfo))
                 {
-                    index.Insert(new TerrainObjectVM(obj, modelinfo));
+                    index.Insert(new TerrainObjectVM(this, obj, modelinfo));
                 }
             }
             Objects = index;
@@ -412,6 +438,43 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public Task TakeAerialImages()
         {
             return parentEditor.TakeAerialImages();
+        }
+
+        internal void MakeObjectsDirty()
+        {
+            parentEditor.IsDirty = true;
+            lastSnapShot = null;
+        }
+
+        internal List<EditableWrpObject> GetActualObjects()
+        {
+            var world = parentEditor.World;
+            if (world == null)
+            {
+                return new List<EditableWrpObject>();
+            }
+
+            var objects = Objects;
+            if (objects == null)
+            {
+                return world.Objects;
+            }
+
+            var result = lastSnapShot;
+            if (result == null)
+            {
+                // Strip objects removed from our side
+                var removed = objects.Where(o => o.IsRemoved).Select(o => o.WrpObject).ToHashSet();
+                if (removed.Count == 0)
+                {
+                    lastSnapShot = result = world.Objects;
+                }
+                else
+                {
+                    lastSnapShot = result = world.Objects.Where(o => !removed.Contains(o)).ToList();
+                }
+            }
+            return result;
         }
     }
 }

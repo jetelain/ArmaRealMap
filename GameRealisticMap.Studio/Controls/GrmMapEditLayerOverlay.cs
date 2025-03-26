@@ -48,10 +48,26 @@ namespace GameRealisticMap.Studio.Controls
                 if (segment.Count > 0)
                 {
                     var points = segment.Select(p => parentMap.ProjectViewport(p)).ToList();
-                    
-                    dc.DrawGeometry(null, pen, CreateGeometry(points));
-                    dc.DrawRectangle(brush, null, new Rect(((Point)(points[0] - new Point(3, 3))), new Size(6, 6)));
-                    dc.DrawRectangle(brush, null, new Rect(((Point)(points[points.Count-1] - new Point(3, 3))), new Size(6, 6)));
+
+                    if (segment is IEditablePointCollection a && a.IsObjectSquare)
+                    {
+                        foreach (var point in points)
+                        {
+                            dc.DrawRectangle(brush, null, new Rect(((Point)(point - new Point(3, 3))), new Size(6, 6)));
+                        }
+                        if (points.Count == 5)
+                        {
+                            points.RemoveAt(4);
+                        }
+                        points.Add(points[0]);
+                        dc.DrawGeometry(null, pen, CreateGeometry(points));
+                      }
+                    else
+                    {
+                        dc.DrawGeometry(null, pen, CreateGeometry(points));
+                        dc.DrawRectangle(brush, null, new Rect(((Point)(points[0] - new Point(3, 3))), new Size(6, 6)));
+                        dc.DrawRectangle(brush, null, new Rect(((Point)(points[points.Count - 1] - new Point(3, 3))), new Size(6, 6)));
+                    }
                 }
             }
         }
@@ -70,6 +86,14 @@ namespace GameRealisticMap.Studio.Controls
                 {
                     points.Insert(0, previewInsertPoint);
                 }
+            }
+            if (source.IsObjectSquare)
+            {
+                if (points.Count == 5)
+                {
+                    points.RemoveAt(4);
+                }
+                points.Add(points[0]);
             }
             return CreateGeometry(points);
         }

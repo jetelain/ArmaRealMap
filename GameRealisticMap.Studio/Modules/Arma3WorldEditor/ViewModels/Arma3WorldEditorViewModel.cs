@@ -289,7 +289,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         { 
             get { return isRoadsDirty; } 
             set { isRoadsDirty = value; if (value) { IsDirty = true; } } 
-        } 
+        }
 
         public EditableArma3Roads? Roads 
         { 
@@ -356,7 +356,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             if (IsDirty)
             {
                 worldBackup.CreateBackup(filePath, savedRevision, GetBackupFiles(filePath));
-                StreamHelper.Write(World, filePath);
+
+                var world = World;
+                world!.Objects = GetActualObjects();
+                StreamHelper.Write(world, filePath);
+
                 UpdateBackupsList(filePath);
             }
             if (ConfigFile != null)
@@ -795,6 +799,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public ExistingImageryInfos GetConfig()
         {
             return Imagery ?? new ExistingImageryInfos(0, 0, 0, ConfigFile?.PboPrefix ?? string.Empty);
+        }
+
+        public List<EditableWrpObject> GetActualObjects()
+        {
+            if (World != null)
+            {
+                if (mapEditor != null)
+                {
+                    return mapEditor.GetActualObjects();
+                }
+                return World.Objects;
+            }
+            return new List<EditableWrpObject>();
         }
     }
 }
