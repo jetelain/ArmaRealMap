@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
+using BIS.WRP;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Controls;
 using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
+using GameRealisticMap.Studio.UndoRedo;
 using Gemini.Framework;
 using Gemini.Framework.Commands;
 using Gemini.Modules.Inspector;
@@ -34,6 +37,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private EditableArma3RoadTypeInfos? selectectedRoadType;
         private IEnumerable<IEditablePointCollection>? selectedItems;
         private readonly Dictionary<EditableArma3Road, EditRoadEditablePointCollection> cache = new Dictionary<EditableArma3Road, EditRoadEditablePointCollection>();
+        private readonly Dictionary<EditableWrpObject, TerrainObjectVM> objCache = new Dictionary<EditableWrpObject, TerrainObjectVM>();
+        private List<EditableWrpObject>? initialList = null;
 
         public Arma3WorldMapViewModel(Arma3WorldEditorViewModel parent, IArma3DataModule arma3Data)
         {
@@ -84,7 +89,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     {
                         EditPoints = null;
                     }
-
+                    if (selectedItems != null && selectedItems.Count() == 1)
+                    {
+                        inspectorTool.SelectedObject = selectedItems.First() as IInspectableObject;
+                    }
                     NotifyOfPropertyChange(nameof(CanMerge));
                 }
             }
@@ -156,34 +164,55 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public void SelectItem(object? item)
         {
-            SelectedItems = null;
+            Select(GetEditable(item));
+        }
 
+        private IEditablePointCollection? GetEditable(object? item)
+        {
             if (item is EditableArma3Road road)
             {
-                EditPoints = CreateEdit(road);
+                return CreateEdit(road);
             }
-            else
-            {
-                EditPoints = null;
-            }
+            return item as IEditablePointCollection;
         }
 
         public void AddToSelection(object? item)
         {
-            if (item is EditableArma3Road road)
+            var editable = GetEditable(item);
+            if (editable != null)
             {
                 if (selectedItems != null)
                 {
-                    SelectedItems = selectedItems.Concat(new[] { CreateEdit(road) }).ToList();
+                    SelectedItems = selectedItems.Concat(new[] { editable }).Distinct().ToList();
                 }
                 else if (editPoints != null)
                 {
-                    SelectedItems = new[] { editPoints, CreateEdit(road) }.ToList();
+                    SelectedItems = new[] { editPoints, editable }.Distinct().ToList();
                 }
                 else
                 {
-                    EditPoints = CreateEdit(road);
+                    Select(editable);
                 }
+            }
+        }
+
+        private void Select(IEditablePointCollection? editable)
+        {
+            if (editable is EditRoadEditablePointCollection)
+            {
+                SelectedItems = null;
+                EditPoints = editable;
+            }
+            else if (editable != null)
+            {
+                EditPoints = editable;
+                // In current version, we do not allow to move the object, so switch to outline mode
+                SelectedItems = new List<IEditablePointCollection> { editable };
+            }
+            else
+            {
+                SelectedItems = null;
+                EditPoints = null;
             }
         }
 
@@ -332,6 +361,24 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             await base.OnInitializeAsync(cancellationToken);
         }
 
+        internal void InvalidateObjects(bool clearHistory = false)
+        {
+            // Primary list had a mass change, invalidate our copy
+            initialList = null;
+            Objects = null;
+            NotifyOfPropertyChange(nameof(Objects));
+
+            if (clearHistory)
+            {
+                // We loaded an old version of the world, clear undo/redo history
+                UndoRedoManager.Clear();
+                objCache.Clear();
+            }
+
+            // Load again
+            _ = Task.Run(DoLoadWorld);
+        }
+
         private async Task DoLoadWorld()
         {
             var world = parentEditor.World;
@@ -341,17 +388,27 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             }
 
             var models = world.Objects.Select(o => o.Model).Where(m => !string.IsNullOrEmpty(m)).Distinct(StringComparer.OrdinalIgnoreCase);
-
             var itemsByPath = await IoC.Get<IAssetsCatalogService>().GetItems(models).ConfigureAwait(false);
-
             var index = new TerrainSpacialIndex<TerrainObjectVM>(SizeInMeters);
             foreach (var obj in world.Objects)
             {
                 if (itemsByPath.TryGetValue(obj.Model, out var modelinfo))
                 {
-                    index.Insert(new TerrainObjectVM(obj, modelinfo));
+                    if (objCache.TryGetValue(obj, out var vm))
+                    {
+                        vm.Update(modelinfo);
+                    }
+                    else
+                    {
+                        vm = new TerrainObjectVM(this, obj, modelinfo);
+                        objCache[obj] = vm;
+                    }
+                    index.Insert(vm);
                 }
             }
+            index.AddRange(objCache.Values.Where(o => o.IsRemoved));
+
+            initialList = world.Objects;
             Objects = index;
             NotifyOfPropertyChange(nameof(Objects));
         }
@@ -371,8 +428,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             cache.Clear();
 
             // Clear Undo/Redo history
-            UndoRedoManager.UndoCountLimit = 0;
-            UndoRedoManager.UndoCountLimit = null;
+            UndoRedoManager.Clear();
 
             var roads = Roads;
             if (roads != null)
@@ -412,6 +468,41 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public Task TakeAerialImages()
         {
             return parentEditor.TakeAerialImages();
+        }
+
+        internal void MakeObjectsDirty()
+        {
+            parentEditor.IsDirty = true;
+        }
+
+        internal void FlushObjectEdits()
+        {
+            var world = parentEditor.World;
+            var objects = Objects;
+            if (world == null || initialList == null || objects == null)
+            {
+                return;
+            }
+            if (world.Objects != initialList)
+            {
+                // Fail safe, primary list had a mass change without notifying us, invalidate our copy
+                InvalidateObjects();
+                return;
+            }
+
+            var wasAlive = world.Objects.ToHashSet();
+
+            var resurected = objects.Where(r => !r.IsRemoved && !wasAlive.Contains(r.WrpObject)).Select(r => r.WrpObject).ToList();
+            var removed = objects.Where(o => o.IsRemoved).ToList();
+
+            if (removed.Count > 0 || resurected.Count > 0)
+            {
+                var removedWrp = removed.Select(o => o.WrpObject).ToHashSet();
+                world.Objects = world.GetNonDummyObjects().Where(o => !removedWrp.Contains(o)).ToList();
+                world.Objects.AddRange(resurected);
+                world.Objects.Add(EditableWrpObject.Dummy);
+                parentEditor.PostEdit();
+            }
         }
     }
 }

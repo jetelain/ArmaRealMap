@@ -11,6 +11,8 @@ namespace GameRealisticMap.Studio.Controls
 
         bool CanInsertBetween { get; }
 
+        bool CanDeletePoint { get; }
+
         void Insert(int index, TerrainPoint terrainPoint);
 
         void RemoveAt(int index);
@@ -26,5 +28,7 @@ namespace GameRealisticMap.Studio.Controls
         void SplitAt(int index);
 
         void Remove();
+
+        bool IsObjectSquare { get; }
     }
 }

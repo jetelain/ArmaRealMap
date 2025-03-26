@@ -70,7 +70,7 @@ jobs:
 
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload MSIX Test Package
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: MSIX Test Package
         path: ${{ env.Wap_Project_Directory }}\AppPackages\*_Test

@@ -361,13 +361,19 @@ namespace GameRealisticMap.Studio.Controls
                         Command = new RelayCommand(_ => ContinuePathFrom(square))
                     });
                 }
-                menu.Items.Add(new MenuItem()
+                if (editPoints.CanDeletePoint)
                 {
-                    Header = "Delete point",
-                    Icon = new Image() { Source = new BitmapImage(new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/bin.png")) },
-                    Command = new RelayCommand(_ => PointPositionDelete(square))
-                });
-                ButtonBehaviors.ShowButtonContextMenu(square, menu);
+                    menu.Items.Add(new MenuItem()
+                    {
+                        Header = "Delete point",
+                        Icon = new Image() { Source = new BitmapImage(new Uri("pack://application:,,,/GameRealisticMap.Studio;component/Resources/Tools/bin.png")) },
+                        Command = new RelayCommand(_ => PointPositionDelete(square))
+                    });
+                }
+                if (menu.Items.Count > 0)
+                {
+                    ButtonBehaviors.ShowButtonContextMenu(square, menu);
+                }
             }
         }
 
@@ -474,6 +480,10 @@ namespace GameRealisticMap.Studio.Controls
             if (segment.Count == 0)
             {
                 return false;
+            }
+            if (segment is IEditablePointCollection a && a.IsObjectSquare)
+            {
+                return new TerrainPolygon(segment.Take(4).ToList()).Contains(point);
             }
             if (segment.Count == 1)
             {

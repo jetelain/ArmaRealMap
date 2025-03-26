@@ -33,7 +33,7 @@ jobs:
       run: dotnet publish --no-self-contained -f net8.0 -r linux-x64 -c Release GameRealisticMap.Arma3.CommandLine/GameRealisticMap.Arma3.CommandLine.csproj -o Output
       
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Linux Command Line
         path: Output/grma3

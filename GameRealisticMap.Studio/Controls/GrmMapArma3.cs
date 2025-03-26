@@ -4,7 +4,6 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Geometries;
@@ -80,7 +79,7 @@ namespace GameRealisticMap.Studio.Controls
                     var mode = AerialViewMode;
                     foreach (var obj in objs.Search(enveloppe))
                     {
-                        if (scale * obj.Radius > 15)
+                        if (scale * obj.Radius > 15 && !obj.IsRemoved)
                         {
                             dc.PushTransform(obj.Matrix.ToAerialWpfMatrixTransform());
 
@@ -139,10 +138,10 @@ namespace GameRealisticMap.Studio.Controls
             switch (obj.Category)
             {
                 case AssetCatalogCategory.Tree:
-                    dc.DrawEllipse(null, new Pen(tree, 0.2), new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                    dc.DrawEllipse(null, new Pen(tree, 0.2), new Point(), obj.Rectangle.Width / 2, obj.Rectangle.Height / 2);
                     break;
                 case AssetCatalogCategory.Bush:
-                    dc.DrawEllipse(null, new Pen(bush, 0.2), new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                    dc.DrawEllipse(null, new Pen(bush, 0.2), new Point(), obj.Rectangle.Width / 2, obj.Rectangle.Height / 2);
                     break;
                 case AssetCatalogCategory.WaterSurface:
                     dc.DrawRectangle(null, new Pen(water, 0.2), obj.Rectangle);
@@ -158,10 +157,10 @@ namespace GameRealisticMap.Studio.Controls
             switch (obj.Category)
             {
                 case AssetCatalogCategory.Tree:
-                    dc.DrawEllipse(tree, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                    dc.DrawEllipse(tree, null, new Point(), obj.Rectangle.Width / 2, obj.Rectangle.Height / 2);
                     break;
                 case AssetCatalogCategory.Bush:
-                    dc.DrawEllipse(bush, null, new Point(), obj.Rectangle.Width, obj.Rectangle.Height);
+                    dc.DrawEllipse(bush, null, new Point(), obj.Rectangle.Width/2, obj.Rectangle.Height / 2);
                     break;
                 case AssetCatalogCategory.WaterSurface:
                     dc.DrawRectangle(water, null, obj.Rectangle);
@@ -176,27 +175,44 @@ namespace GameRealisticMap.Studio.Controls
         {
             if (e.Source == this && e.ClickCount == 1)
             {
+                var objects = Objects;
                 var roads = Roads;
-                if (roads != null)
+                if (roads != null || objects != null)
                 {
                     var coordinates = ParentMap!.ViewportCoordinates(e.GetPosition(ParentMap));
                     var enveloppe = new Envelope(coordinates - new Vector2(5), coordinates + new Vector2(5));
 
-                    var editRoad = roads.Roads
-                        .Where(r => !r.IsRemoved && r.Path.EnveloppeIntersects(enveloppe))
-                        .Select(r => (road: r, distance: r.Path.Distance(coordinates)))
-                        .Where(r => r.distance < r.road.RoadTypeInfos.TextureWidth / 2)
-                        .OrderBy(r => r.distance)
-                        .Select(r => r.road)
-                        .FirstOrDefault();
+                    object? selection = null;
+
+                    if (roads != null)
+                    {
+                        selection = roads.Roads
+                            .Where(r => !r.IsRemoved && r.Path.EnveloppeIntersects(enveloppe))
+                            .Select(r => (road: r, distance: r.Path.Distance(coordinates)))
+                            .Where(r => r.distance < r.road.RoadTypeInfos.TextureWidth / 2)
+                            .OrderBy(r => r.distance)
+                            .Select(r => r.road)
+                            .FirstOrDefault();
+                    }
+
+                    if (selection == null && objects != null)
+                    {
+                        selection = objects.Search(enveloppe)
+                            .Where(o => !o.IsRemoved)
+                            .Select(r => (obj: r, distance: (r.Center.Vector - coordinates.Vector).Length()))
+                            .OrderBy(r => r.distance)
+                            .Where(r => r.distance < r.obj.Radius)
+                            .Select(r => r.obj)
+                            .FirstOrDefault();
+                    }
 
                     if (Keyboard.Modifiers == ModifierKeys.Control)
                     {
-                        AddToSelectionCommand?.Execute(editRoad);
+                        AddToSelectionCommand?.Execute(selection);
                     }
                     else
                     {
-                        SelectItem?.Execute(editRoad);
+                        SelectItem?.Execute(selection);
                     }
                     e.Handled = true;
                 }

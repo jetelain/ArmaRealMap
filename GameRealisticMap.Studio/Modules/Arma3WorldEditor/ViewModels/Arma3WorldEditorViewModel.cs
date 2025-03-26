@@ -195,7 +195,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public EditableWrp? World
         {
             get { return _world; }
-            set { _world = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(Size)); UpdateObjectStats(); }
+            set 
+            { 
+                _world = value; 
+                NotifyOfPropertyChange(); 
+                NotifyOfPropertyChange(nameof(Size));
+                UpdateObjectStats();
+                mapEditor?.InvalidateObjects(true);
+            }
         }
 
         private void UpdateObjectStats()
@@ -289,7 +296,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         { 
             get { return isRoadsDirty; } 
             set { isRoadsDirty = value; if (value) { IsDirty = true; } } 
-        } 
+        }
 
         public EditableArma3Roads? Roads 
         { 
@@ -353,6 +360,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 ConfigFile.Revision++;
                 IsRoadsDirty = false;
             }
+            mapEditor?.FlushObjectEdits();
             if (IsDirty)
             {
                 worldBackup.CreateBackup(filePath, savedRevision, GetBackupFiles(filePath));
@@ -371,7 +379,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         {
             if (Dependencies != null)
             {
-                var stream = File.Create(DependenciesFilePath(filePath));
+                using var stream = File.Create(DependenciesFilePath(filePath));
                 await JsonSerializer.SerializeAsync(stream, Dependencies);
             }
         }
@@ -525,6 +533,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             ClearActive();
 
             UpdateObjectStats();
+            mapEditor?.InvalidateObjects();
         }
 
         public async Task OpenConfigFile()
