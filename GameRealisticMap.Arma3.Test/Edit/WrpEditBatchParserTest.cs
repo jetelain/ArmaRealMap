@@ -8,10 +8,68 @@ namespace GameRealisticMap.Arma3.Test.Edit
     public class WrpEditBatchParserTest
     {
         private readonly WrpEditBatchParser _parser;
-
         public WrpEditBatchParserTest()
         {
             _parser = new WrpEditBatchParser(new NoProgressSystem(), new GameFileSystemMock());
+        }
+
+        [Fact]
+        public void ParseFromText_ShouldReturnWrpEditBatch()
+        {
+            var text = @"
+                ["".map"", ""WorldName"", 1024, 1]
+                ["".hide"", ""\path\to\model"", [], [ 0, 0, 0 ],[ 0, 1, 0 ],[ 0, 0, 1 ],[ 0, 1, 0 ], 1, 1]
+                ["".class"", ""modelName"", ""\path\to\model""]
+                ["".add"", ""modelName"", [], [ 0, 0, 0 ],[ 0, 1, 0 ],[ 0, 0, 1 ],[ 0, 1, 0 ], 1]
+                ["".dhmap"", [[0, 0, 1.0], [1, 1, 2.0]]]
+                ["".part"", 1, 10]
+            ";
+            var result = _parser.ParseFromText(text);
+
+            Assert.Equal("WorldName", result.WorldName);
+            Assert.Equal(1024, result.WorldSize);
+            Assert.Equal(1, result.Revision);
+            Assert.Single(result.Remove);
+            Assert.Equal("path\\to\\model.p3d", result.Remove[0].Model);
+            Assert.Equal(1, result.Remove[0].ObjectId);
+            Assert.Single(result.Add);
+            Assert.Equal("path\\to\\model.p3d", result.Add[0].Model);
+            Assert.True(result.ElevationAdjustObjects);
+            Assert.Equal(2, result.Elevation.Count);
+            Assert.Single(result.PartIndexes);
+            Assert.Equal(1, result.PartIndexes[0]);
+            Assert.Equal(10, result.PartCount);
+        }
+
+        [Fact]
+        public void ParseFromFile_ShouldReturnWrpEditBatch()
+        {
+            var filePath = "testFile.txt";
+            File.WriteAllText(filePath, @"
+["".map"", ""WorldName"", 1024, 1]
+["".hide"", ""\path\to\model"", [], [ 0, 0, 0 ],[ 0, 1, 0 ],[ 0, 0, 1 ],[ 0, 1, 0 ], 1, 1]
+["".class"", ""modelName"", ""\path\to\model""]
+["".add"", ""modelName"", [], [ 0, 0, 0 ],[ 0, 1, 0 ],[ 0, 0, 1 ],[ 0, 1, 0 ], 1]
+["".dhmap"", [[0, 0, 1.0], [1, 1, 2.0]]]
+["".part"", 1, 10]
+            ");
+            var result = _parser.ParseFromFile(filePath);
+
+            Assert.Equal("WorldName", result.WorldName);
+            Assert.Equal(1024, result.WorldSize);
+            Assert.Equal(1, result.Revision);
+            Assert.Single(result.Remove);
+            Assert.Equal("path\\to\\model.p3d", result.Remove[0].Model);
+            Assert.Equal(1, result.Remove[0].ObjectId);
+            Assert.Single(result.Add);
+            Assert.Equal("path\\to\\model.p3d", result.Add[0].Model);
+            Assert.True(result.ElevationAdjustObjects);
+            Assert.Equal(2, result.Elevation.Count);
+            Assert.Single(result.PartIndexes);
+            Assert.Equal(1, result.PartIndexes[0]);
+            Assert.Equal(10, result.PartCount);
+
+            File.Delete(filePath);
         }
 
         [Fact]
