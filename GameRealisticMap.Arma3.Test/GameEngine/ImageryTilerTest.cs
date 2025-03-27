@@ -116,5 +116,92 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
             var belfort = new ImageryTiler(Arma3MapConfigMock.Belfort);
             Assert.Equal(0.0009765625, belfort.Segments[0, 0].UA);
         }
+
+        [Fact]
+        public void ImageryTiler_Constructor_ValidParameters()
+        {
+            var tiler = new ImageryTiler(512, 1, 2048, 1);
+            Assert.Equal(512, tiler.TileSize);
+            Assert.Equal(new Size(2048), tiler.FullImageSize);
+            Assert.Equal(1, tiler.Resolution);
+            Assert.Equal(1, tiler.IdMapMultiplier);
+            Assert.Equal(512, tiler.IdMapTileSize);
+            Assert.Equal(new Size(2048), tiler.IdMapFullImageSize);
+        }
+
+        [Fact]
+        public void ImageryTiler_Constructor_InvalidIdMapMultiplier_ThrowsArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => new ImageryTiler(512, 1, 2048, 10));
+        }
+
+        [Fact]
+        public void ImageryTiler_TileOverlap_Computation_2048()
+        {
+            var tiler = new ImageryTiler(512, 1, 2048);
+            Assert.Equal(64, tiler.TileOverlap);
+        }
+
+        [Fact]
+        public void ImageryTiler_TileOverlap_Computation_4096()
+        {
+            var tiler = new ImageryTiler(512, 1, 4096);
+            Assert.Equal(128, tiler.TileOverlap);
+        }
+
+        [Fact]
+        public void ImageryTiler_TileOverlap_Computation_8192()
+        {
+            var tiler = new ImageryTiler(512, 1, 8192);
+            Assert.Equal(128, tiler.TileOverlap);
+        }
+
+        [Fact]
+        public void ImageryTiler_Segments_Creation()
+        {
+            var tiler = new ImageryTiler(512, 1, 2048);
+            Assert.NotNull(tiler.Segments);
+            Assert.Equal(5, tiler.Segments.GetLength(0));
+            Assert.Equal(5, tiler.Segments.GetLength(1));
+        }
+
+        [Fact]
+        public void ImageryTiler_Segments_Properties_2048()
+        {
+            var tiler = new ImageryTiler(512, 1, 2048);
+            var segment = tiler.Segments[0, 0];
+            Assert.Equal(0, segment.X);
+            Assert.Equal(0, segment.Y);
+            Assert.Equal(512, segment.Size);
+            Assert.Equal(0.001953125, segment.UA);
+            Assert.Equal(0.0625, segment.UB);
+            Assert.Equal(4.0625, segment.VB);
+        }
+
+        [Fact]
+        public void ImageryTiler_Segments_Properties_4096()
+        {
+            var tiler = new ImageryTiler(512, 1, 4096);
+            var segment = tiler.Segments[0, 0];
+            Assert.Equal(0, segment.X);
+            Assert.Equal(0, segment.Y);
+            Assert.Equal(512, segment.Size);
+            Assert.Equal(0.001953125, segment.UA);
+            Assert.Equal(0.125, segment.UB);
+            Assert.Equal(8.125, segment.VB);
+        }
+
+        [Fact]
+        public void ImageryTiler_Segments_Properties_8192()
+        {
+            var tiler = new ImageryTiler(512, 1, 8192);
+            var segment = tiler.Segments[0, 0];
+            Assert.Equal(0, segment.X);
+            Assert.Equal(0, segment.Y);
+            Assert.Equal(512, segment.Size);
+            Assert.Equal(0.001953125, segment.UA);
+            Assert.Equal(0.125, segment.UB);
+            Assert.Equal(16.125, segment.VB);
+        }
     }
 }

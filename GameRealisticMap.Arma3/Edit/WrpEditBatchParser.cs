@@ -118,7 +118,7 @@ namespace GameRealisticMap.Arma3.Edit
                 .Select(entry => new WrpSetElevationGrid(Convert.ToInt32(entry[0]), Convert.ToInt32(entry[1]), Convert.ToSingle(entry[2]))) ?? Enumerable.Empty<WrpSetElevationGrid>());
         }
 
-        private Matrix4x4 GetTransform(object[] array, string model)
+        internal Matrix4x4 GetTransform(object[] array, string model)
         {
             var position = GetVector((object[])array[3]);
             var vectorUp = GetVector((object[])array[4]);
