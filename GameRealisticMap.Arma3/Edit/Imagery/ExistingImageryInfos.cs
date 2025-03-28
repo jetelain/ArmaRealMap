@@ -38,7 +38,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
 
         public int IdMapMultiplier { get; set; }
 
-        public static ExistingImageryInfos? TryCreate(ProjectDrive projectDrive, string pboPrefix, float sizeInMeters)
+        public static ExistingImageryInfos? TryCreate(IProjectDrive projectDrive, string pboPrefix, float sizeInMeters)
         {
             var idmap00 = projectDrive.GetFullPath($"{pboPrefix}\\data\\layers\\M_{0:000}_{0:000}_lca.png");
             var satmap00 = projectDrive.GetFullPath($"{pboPrefix}\\data\\layers\\S_{0:000}_{0:000}_lco.png");

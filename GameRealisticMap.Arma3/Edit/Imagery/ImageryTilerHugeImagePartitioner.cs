@@ -4,7 +4,7 @@ using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Arma3.Edit.Imagery
 {
-    internal sealed class ImageryTilerHugeImagePartitioner : IHugeImagePartitioner
+    internal sealed class ImageryTilerHugeImagePartitioner : IHugeImagePartitioner, IImageryPartitioner
     {
         private readonly List<ImageryTile> parts;
         private readonly int multiplier = 1;

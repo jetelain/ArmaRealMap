@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
-using GameRealisticMap.Arma3.Assets;
+﻿using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using Pmad.HugeImages.Storage;
@@ -11,12 +9,12 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
 {
     internal sealed class IdMapReadStorage : IHugeImageStorageSlot
     {
-        private readonly ImageryTilerHugeImagePartitioner partitioner;
+        private readonly IImageryPartitioner partitioner;
         private readonly IGameFileSystem fileSystem;
         private readonly string path;
         private readonly Dictionary<string, TerrainMaterial> materials;
 
-        public IdMapReadStorage(ImageryTilerHugeImagePartitioner partitioner, IGameFileSystem fileSystem, string path, TerrainMaterialLibrary library, IArma3MapConfig config)
+        public IdMapReadStorage(IImageryPartitioner partitioner, IGameFileSystem fileSystem, string path, TerrainMaterialLibrary library, IArma3MapConfig config)
         {
             this.partitioner = partitioner;
             this.fileSystem = fileSystem;
@@ -76,7 +74,7 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
             return textures;
         }
 
-        private static Rgb24 GetColor(Rgba32 rgba32, List<Rgb24> textures)
+        internal static Rgb24 GetColor(Rgba32 rgba32, List<Rgb24> textures)
         {
             if (rgba32.B == 255)
             {

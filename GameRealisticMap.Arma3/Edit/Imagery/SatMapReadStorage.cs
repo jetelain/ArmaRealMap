@@ -7,11 +7,11 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
 {
     internal sealed class SatMapReadStorage : IHugeImageStorageSlot
     {
-        private readonly ImageryTilerHugeImagePartitioner partitioner;
+        private readonly IImageryPartitioner partitioner;
         private readonly IGameFileSystem fileSystem;
         private readonly string path;
 
-        public SatMapReadStorage(ImageryTilerHugeImagePartitioner partitioner, IGameFileSystem fileSystem, string path)
+        public SatMapReadStorage(IImageryPartitioner partitioner, IGameFileSystem fileSystem, string path)
         {
             this.partitioner = partitioner;
             this.fileSystem = fileSystem;

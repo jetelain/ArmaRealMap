@@ -1,10 +1,9 @@
-﻿using GameRealisticMap.Reporting;
-using Pmad.ProgressTracking;
+﻿using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Arma3.IO
 {
-    public class ProjectDrive : IGameFileSystem, IGameFileSystemWriter
+    public class ProjectDrive : IProjectDrive, IGameFileSystem, IGameFileSystemWriter
     {
         private readonly string mountPath;
         private readonly IGameFileSystem? secondarySource;
