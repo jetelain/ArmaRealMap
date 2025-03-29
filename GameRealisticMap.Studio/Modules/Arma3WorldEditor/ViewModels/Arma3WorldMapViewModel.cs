@@ -100,7 +100,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public TerrainSpacialIndex<TerrainObjectVM>? Objects { get; set; }
 
-        public ICommand SelectItemCommand => new RelayCommand(SelectItem);
+        public ICommand SelectItemCommand => new RelayCommand(SelectItem, _ => GrmMapEditMode == GrmMapEditMode.None);
 
         public ICommand AddToSelectionCommand => new RelayCommand(AddToSelection);
 
@@ -164,7 +164,10 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public void SelectItem(object? item)
         {
-            Select(GetEditable(item));
+            if (GrmMapEditMode == GrmMapEditMode.None)
+            {
+                Select(GetEditable(item));
+            }
         }
 
         private IEditablePointCollection? GetEditable(object? item)

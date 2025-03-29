@@ -212,9 +212,12 @@ namespace GameRealisticMap.Studio.Controls
                     }
                     else
                     {
-                        SelectItem?.Execute(selection);
+                        if (SelectItem?.CanExecute(selection) ?? false)
+                        {
+                            SelectItem?.Execute(selection);
+                            e.Handled = true;
+                        }
                     }
-                    e.Handled = true;
                 }
             }
             base.OnMouseLeftButtonDown(e);
