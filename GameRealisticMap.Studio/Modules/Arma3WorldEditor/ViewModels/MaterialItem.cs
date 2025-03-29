@@ -26,27 +26,33 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public static async Task<List<MaterialItem>> Create(Arma3WorldEditorViewModel parent, EditableWrp wrp, ProjectDrive projectDrive, string pboPrefix)
         {
-            var items = new List<MaterialItem>();
             var textures = await IdMapHelper.GetUsedTextureList(wrp, projectDrive);
-            if (textures.Count > 0)
+            if (textures.Count == 0)
             {
-                var lib = IoC.Get<GdtBrowserViewModel>();
-                foreach (var texture in textures)
+                return new List<MaterialItem>();
+            }
+            return await Create(parent, pboPrefix, textures);
+        }
+
+        public static async Task<List<MaterialItem>> Create(Arma3WorldEditorViewModel parent, string pboPrefix, List<GroundDetailTexture> textures)
+        {
+            var items = new List<MaterialItem>();
+            var lib = IoC.Get<GdtBrowserViewModel>();
+            foreach (var texture in textures)
+            {
+                var libTexture = await lib.Resolve(texture.ColorTexture);
+                if (libTexture == null)
                 {
-                    var libTexture = await lib.Resolve(texture.ColorTexture);
-                    if (libTexture == null)
+                    if (texture.ColorTexture.StartsWith(pboPrefix, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (texture.ColorTexture.StartsWith(pboPrefix, StringComparison.OrdinalIgnoreCase))
-                        {
-                            libTexture = await lib.Resolve("{PboPrefix}" + texture.ColorTexture.Substring(pboPrefix.Length));
-                        }
-                        else
-                        {
-                            libTexture = await lib.ImportExternal(texture.ColorTexture, texture.NormalTexture);
-                        }
+                        libTexture = await lib.Resolve("{PboPrefix}" + texture.ColorTexture.Substring(pboPrefix.Length));
                     }
-                    items.Add(new MaterialItem(parent, texture.ColorTexture, libTexture));
+                    else
+                    {
+                        libTexture = await lib.ImportExternal(texture.ColorTexture, texture.NormalTexture);
+                    }
                 }
+                items.Add(new MaterialItem(parent, texture.ColorTexture, libTexture));
             }
             return items;
         }
