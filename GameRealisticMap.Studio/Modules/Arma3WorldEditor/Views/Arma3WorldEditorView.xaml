@@ -136,7 +136,7 @@
 
                     <TextBlock Visibility="{Binding IsNotImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}"><Run Text="{x:Static r:Labels.ImageryIsNotDetectedCannotEditIt}" /></TextBlock>
 
-                    <StackPanel>
+                    <StackPanel Visibility="{Binding HasImagery, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal" >
                             <Button Margin="5" Padding="10" cal:Message.Attach="ExportSatMap">
                                 <Run Text="{x:Static r:Labels.ExportSatelliteImage}" />
@@ -144,7 +144,7 @@
                             <Button Margin="5" Padding="10" cal:Message.Attach="ExportIdMap">
                                 <Run Text="{x:Static r:Labels.ExportTextureMaskImage}" />
                             </Button>
-                            <Line X1="1" X2="1" Y1="0" Y2="30" StrokeThickness="1" Height="30" Width="2" Stroke="Gray" Margin="5 0" VerticalAlignment="Center" />
+                            <Line X1="1" X2="1" Y1="0" Y2="30" StrokeThickness="1" Height="30" Width="2" Stroke="Gray" Margin="5 0" VerticalAlignment="Center"  Visibility="{Binding IsImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             <Button Margin="5" Padding="10" cal:Message.Attach="ImportSatMap" Visibility="{Binding IsImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Run Text="{x:Static r:Labels.ImportSatelliteImage}" />
                             </Button>
@@ -157,7 +157,7 @@
                                     </ContextMenu>
                                 </Button.ContextMenu>
                             </Button>
-                            <TextBlock VerticalAlignment="Center">
+                            <TextBlock VerticalAlignment="Center" Visibility="{Binding IsImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Run Text="{x:Static r:Labels.CannotBeReversedWarning}" />
                             </TextBlock>
                         </StackPanel>
@@ -224,7 +224,7 @@
                             <DataGridTemplateColumn Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Padding="10 2" cal:Message.Attach="ReplaceMaterial">
+                                        <Button Padding="10 2" cal:Message.Attach="ReplaceMaterial" IsEnabled="{Binding DataContext.IsImageryEditable, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Expander}}">
                                             <Run Text="{x:Static r:Labels.Replace}"/>
                                         </Button>
                                     </DataTemplate>

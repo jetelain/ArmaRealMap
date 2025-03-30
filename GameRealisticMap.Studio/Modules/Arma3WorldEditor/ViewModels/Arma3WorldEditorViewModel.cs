@@ -301,6 +301,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public bool IsNotImageryEditable => GrmImagery == null;
 
+        public bool HasImagery => GrmImagery != null || GenericImagery != null;
+
         public ExistingImageryInfos? GrmImagery
         {
             get { return _imagery; }
@@ -309,6 +311,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 _imagery = value; 
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(nameof(Imagery));
+                NotifyOfPropertyChange(nameof(HasImagery));
                 NotifyOfPropertyChange(nameof(IsImageryEditable));
                 NotifyOfPropertyChange(nameof(IsNotImageryEditable)); 
             }
@@ -814,7 +817,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 Dependencies));
         }
 
-        public bool AreAllMaterialsFromLibrary => Materials.Count > 0 && Materials.All(m => m.IsFromLibrary) && GenericImagery == null;
+        public bool AreAllMaterialsFromLibrary => Materials.Count > 0 && Materials.All(m => m.IsFromLibrary) && GrmImagery != null;
 
         public GenericImageryInfos? GenericImagery
         {
@@ -824,6 +827,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 _genericImagery = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(nameof(Imagery));
+                NotifyOfPropertyChange(nameof(HasImagery));
             }
         }
 
