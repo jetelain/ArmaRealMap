@@ -13,16 +13,30 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
     internal class Arma3Dependencies : IArma3Dependencies
     {
         private readonly IArma3DataModule _dataModule;
+        private readonly IArma3ModsService _arma3ModsService;
 
         [ImportingConstructor]
-        public Arma3Dependencies(IArma3DataModule dataModule)
+        public Arma3Dependencies(IArma3DataModule dataModule, IArma3ModsService arma3ModsService)
         {
             _dataModule = dataModule;
+            _arma3ModsService = arma3ModsService;
         }
 
         public IEnumerable<string> ComputeModDependenciesPath(IEnumerable<string> usedFiles)
         {
-            return (_dataModule.ProjectDrive.SecondarySource as PboFileSystem)?.GetModPaths(usedFiles) ?? Enumerable.Empty<string>();
+            // Detect mods from used files
+            var mods = (_dataModule.ProjectDrive.SecondarySource as PboFileSystem)?.GetModPaths(usedFiles) ?? Enumerable.Empty<string>();
+
+            // Detect creator DLC dependencies
+            foreach (var cdlc in _arma3ModsService.CreatorDlc)
+            {
+                var prefix = cdlc.Prefix + "\\";
+                if (usedFiles.Any(f => f.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+                {
+                    mods = mods.Append(cdlc.Path);
+                }
+            }
+            return mods;
         }
 
         public IEnumerable<ModDependencyDefinition> ComputeModDependencies(IEnumerable<string> usedFiles)

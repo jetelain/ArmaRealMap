@@ -17,12 +17,12 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
 
         public string SteamId { get; }
 
-        public string SteamUri => $"steam://url/CommunityFilePage/{SteamId}";
+        public string SteamUri =>  Arma3ModsService.CreatorDlcIds.Contains(SteamId) ? $"steam://purchase/{SteamId}" :  $"steam://url/CommunityFilePage/{SteamId}";
 
-        public static async Task<List<MissingMod>> DetectMissingMods(IArma3DataModule arma3Data, IArma3ModsService mods, Arma3AssetsDependenciesOnly deps)
+        public static async Task<List<MissingMod>> DetectMissingMods(IArma3DataModule arma3Data, IArma3ModsService mods, ISubstituteDataService substituteDataService, Arma3AssetsDependenciesOnly deps)
         {
             var activeMods = arma3Data.ActiveMods.ToHashSet(StringComparer.OrdinalIgnoreCase);
-            var toEnablePaths = new List<string>();
+            var toEnable = new List<ModInfo>();
             var toInstallSteamId = new List<string>();
             foreach (var dependency in deps.Dependencies)
             {
@@ -35,12 +35,13 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
                 else if (!activeMods.Contains(mod.Path))
                 {
                     // => NOT ENABLED
-                    toEnablePaths.Add(mod.Path);
+                    toEnable.Add(mod);
                 }
             }
-            if (toEnablePaths.Count > 0)
+            if (toEnable.Count > 0)
             {
-                await arma3Data.ChangeActiveMods(arma3Data.ActiveMods.Concat(toEnablePaths));
+                await substituteDataService.EnsureDataInstalled(toEnable);
+                await arma3Data.ChangeActiveMods(arma3Data.ActiveMods.Concat(toEnable.Select(m => m.Path)));
             }
             if (toInstallSteamId != null)
             {

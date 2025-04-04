@@ -15,13 +15,15 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.ViewModels
     {
         private readonly IArma3DataModule _arma3;
         private readonly IArma3ModsService _modsService;
+        private readonly ISubstituteDataService _substituteDataService;
         private List<ModSetting>? mods;
 
         [ImportingConstructor]
-        public Arma3ModsSettingsViewModel(IArma3DataModule arma3, IArma3ModsService modsService)
+        public Arma3ModsSettingsViewModel(IArma3DataModule arma3, IArma3ModsService modsService, ISubstituteDataService substituteDataService)
         {
             _arma3 = arma3;
             _modsService = modsService;
+            _substituteDataService = substituteDataService;
         }
 
         public string SettingsPageName => "Mods";
@@ -45,7 +47,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.ViewModels
             var used = _arma3.ActiveMods.ToHashSet(StringComparer.OrdinalIgnoreCase);
 
             return _modsService.GetModsList()
-                .Select(d => new ModSetting(used.Contains(d.Path), d.Name, d.Path))
+                .Select(d => new ModSetting(used.Contains(d.Path), d))
                 .ToList();
         }
 
@@ -53,6 +55,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.ViewModels
         {
             if ( mods != null)
             {
+                await _substituteDataService.EnsureDataInstalled(mods.Where(m => m.IsActive).Select(m => m.ModInfo));
                 await _arma3.ChangeActiveMods(mods.Where(m => m.IsActive).Select(m => m.Path));
             }
         }

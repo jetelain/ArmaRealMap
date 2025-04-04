@@ -6,6 +6,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
     {
         List<ModInfo> GetModsList();
 
-        ModInfo? GetMod(string steamId);
+        ModInfo? GetMod(string steamId); 
+
+        IReadOnlyList<ModInfo> CreatorDlc { get; }
     }
 }
