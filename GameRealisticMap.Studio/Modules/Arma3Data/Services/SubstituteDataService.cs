@@ -44,7 +44,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
                 return Task.CompletedTask;
             }
 
-            _ = progressTool.RunTask("Install CDLC Substitute Files", async (progress) =>
+            _ = progressTool.RunTask(Labels.InstallSubstituteFiles, async (progress) =>
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0");

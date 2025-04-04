@@ -2816,6 +2816,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Install Substitute Files.
+        /// </summary>
+        public static string InstallSubstituteFiles {
+            get {
+                return ResourceManager.GetString("InstallSubstituteFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Install with Steam.
         /// </summary>
         public static string InstallWithSteam {
@@ -2893,6 +2902,24 @@ namespace GameRealisticMap.Studio {
         public static string LaunchTerrainBuilder {
             get {
                 return ResourceManager.GetString("LaunchTerrainBuilder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Launch with all enabled mods.
+        /// </summary>
+        public static string LaunchWithAllEnabledMods {
+            get {
+                return ResourceManager.GetString("LaunchWithAllEnabledMods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Launch with existing map mods.
+        /// </summary>
+        public static string LaunchWithExistingMapMods {
+            get {
+                return ResourceManager.GetString("LaunchWithExistingMapMods", resourceCulture);
             }
         }
         

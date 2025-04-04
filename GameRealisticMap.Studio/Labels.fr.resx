@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdvancedParameters" xml:space="preserve">
-    <value>Paramètres avancés</value>
-  </data>
-  <data name="Arma3MapConfig" xml:space="preserve">
-    <value>Configuration de Carte Arma 3</value>
-  </data>
   <data name="AssetAgricultural" xml:space="preserve">
     <value>Bâtiment agricole</value>
   </data>
@@ -141,11 +135,11 @@
   <data name="AssetCommercial" xml:space="preserve">
     <value>Bâtiment de bureau</value>
   </data>
-  <data name="AssetConfigFileIsMissing" xml:space="preserve">
-    <value>Le fichier de style de carte est manquant.</value>
-  </data>
   <data name="AssetDefaultAreas" xml:space="preserve">
     <value>Zones par défaut - Non urbain / nature</value>
+  </data>
+  <data name="AssetFence" xml:space="preserve">
+    <value>Cloture</value>
   </data>
   <data name="AssetFireHydrant" xml:space="preserve">
     <value>Bouche d'incendie</value>
@@ -179,6 +173,9 @@
   </data>
   <data name="AssetInformationBoard" xml:space="preserve">
     <value>Panneau d'information</value>
+  </data>
+  <data name="AssetMapConfig" xml:space="preserve">
+    <value>Paramètres de carte</value>
   </data>
   <data name="AssetMaterials" xml:space="preserve">
     <value>Surface du sol</value>
@@ -219,9 +216,6 @@
   <data name="AssetRocksAdditional" xml:space="preserve">
     <value>Zone rocheuse - Objets additionnels</value>
   </data>
-  <data name="AssetsConfiguration" xml:space="preserve">
-    <value>Style de carte</value>
-  </data>
   <data name="AssetScrub" xml:space="preserve">
     <value>Broussailles</value>
   </data>
@@ -246,6 +240,9 @@
   <data name="AssetWall" xml:space="preserve">
     <value>Mur</value>
   </data>
+  <data name="AssetWarMemorial" xml:space="preserve">
+    <value>Monument du souvenir</value>
+  </data>
   <data name="AssetWatercourse" xml:space="preserve">
     <value>Cours d'eau</value>
   </data>
@@ -258,74 +255,11 @@
   <data name="AssetWaterWell" xml:space="preserve">
     <value>Puis (eau)</value>
   </data>
-  <data name="BrowseAssets" xml:space="preserve">
-    <value>Parcourir les objets</value>
-  </data>
-  <data name="AssetFence" xml:space="preserve">
-    <value>Cloture</value>
-  </data>
-  <data name="AssetWarMemorial" xml:space="preserve">
-    <value>Monument du souvenir</value>
-  </data>
-  <data name="CoordinatesOfCenterOfMap" xml:space="preserve">
-    <value>Coordonnées du centre de la carte</value>
-  </data>
-  <data name="CoordinatesSouthWestOfMap" xml:space="preserve">
-    <value>ou coordonnées du sud-ouest de la carte</value>
-  </data>
-  <data name="CreateAMapConfiguration" xml:space="preserve">
-    <value>Créer une Configuration de carte</value>
-  </data>
-  <data name="CreateAMapConfigurationDescription" xml:space="preserve">
-    <value>Une configuration de carte définit un carré à extraire d'OpenStreetMap et lui associe un style de carte à utiliser pour le processus de génération.</value>
-  </data>
-  <data name="CreateAnAssetsConfiguration" xml:space="preserve">
-    <value>Créer un style de carte</value>
-  </data>
-  <data name="CreateAnAssetsConfigurationDescription" xml:space="preserve">
-    <value>Un style de carte définit les textures et objets à utiliser pour générer une carte. Vous pouvez créer votre propre style ou utilise d'un des style fourni.</value>
-  </data>
-  <data name="PboProjectDownload" xml:space="preserve">
-    <value>Télécharger Mikero's pboProject depuis le site officiel (gratuit)</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Modifier</value>
+  <data name="AssetWaysideCross" xml:space="preserve">
+    <value>Croix de chemin</value>
   </data>
   <data name="Found" xml:space="preserve">
     <value>✔ Trouvé</value>
-  </data>
-  <data name="GenerateAreasOnly" xml:space="preserve">
-    <value>Générer un HTML avec les zones uniquement</value>
-  </data>
-  <data name="GenerateIdMapImage" xml:space="preserve">
-    <value>Générer l'image id map</value>
-  </data>
-  <data name="GenerateMapForArma3" xml:space="preserve">
-    <value>Générer un fichier carte pour Arma 3</value>
-  </data>
-  <data name="GenerateModForArma3" xml:space="preserve">
-    <value>Générer un mod pour Arma 3</value>
-  </data>
-  <data name="GeneratePreview" xml:space="preserve">
-    <value>Générer un aperçu</value>
-  </data>
-  <data name="GenerateRawSatelliteImage" xml:space="preserve">
-    <value>Générer l'image satellite brute</value>
-  </data>
-  <data name="GenerateSatelliteImage" xml:space="preserve">
-    <value>Générer l'image satellite</value>
-  </data>
-  <data name="GenerateWithElevation" xml:space="preserve">
-    <value>Générer un HTML avec les zones et le dénivelé</value>
-  </data>
-  <data name="GettingStarted" xml:space="preserve">
-    <value>Démarrer</value>
-  </data>
-  <data name="GettingStartedDescription" xml:space="preserve">
-    <value>Créer une configuration de carte et un style qui va avec.</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>Accueil</value>
   </data>
   <data name="HomeIntro" xml:space="preserve">
     <value>Chaine d'outil pour générer des cartes de jeu à l'échelle réelle depuis les données d'OpenStreetMap.</value>
@@ -345,17 +279,6 @@
   <data name="LicenseNotApproved" xml:space="preserve">
     <value>❌ Licence non approuvée</value>
   </data>
-  <data name="MapSizeSquare" xml:space="preserve">
-    <value>Taille de la carte (carré)</value>
-  </data>
-  <data name="MetersUnit" xml:space="preserve">
-    <value>mètres</value>
-  </data>
-  <data name="MapUsageHint" xml:space="preserve">
-    <value>Pour choisir une zone :
-- Depuis un coin, appuyer sur la touche Ctrl, puis appuyer sur le bouton gauche de la souris ;
-- Depuis le centre, appuyer sur la touche Atl, puis appuyer sur le bouton gauche de la souris.</value>
-  </data>
   <data name="NotFound" xml:space="preserve">
     <value>❌ Non trouvé</value>
   </data>
@@ -371,68 +294,139 @@
   <data name="RequiredTools" xml:space="preserve">
     <value>Outils requis</value>
   </data>
-  <data name="SetupWithArma3Tools" xml:space="preserve">
-    <value>Configurer avec les outils Arma 3</value>
-  </data>
-  <data name="ViewOnOpenStreetMapOrg" xml:space="preserve">
-    <value>Voir sur OpenStreetMap.org</value>
+  <data name="RequiredToolsDescription" xml:space="preserve">
+    <value>Pour pouvoir configurer ou générer une carte, quelques outils supplémentaires sont requis.</value>
   </data>
   <data name="WarnRecommanded" xml:space="preserve">
     <value>⚠ Recommandé</value>
   </data>
+  <data name="SetupWithArma3Tools" xml:space="preserve">
+    <value>Configurer avec les outils Arma 3</value>
+  </data>
   <data name="YouCanAlsoMountDriveWithYourCustomTool" xml:space="preserve">
     <value>Vous pouvez aussi monter le disque avec un autre outil personnalisé</value>
   </data>
-  <data name="RequiredToolsDescription" xml:space="preserve">
-    <value>Pour pouvoir configurer ou générer une carte, quelques outils supplémentaires sont requis.</value>
+  <data name="PboProjectDownload" xml:space="preserve">
+    <value>Télécharger Mikero's pboProject depuis le site officiel (gratuit)</value>
   </data>
   <data name="PboProjectText" xml:space="preserve">
     <value>Mikero's pboProject permet de prendre en charge des cas avancés, mais il nécessite de la configuration et des connaissances supplémentaires. Cet outil est adapté uniquement pour les modders expérimentés.</value>
   </data>
-  <data name="CoordinatesHint" xml:space="preserve">
-    <value>Vous pouvez utiliser la carte en dessous pour sélectionner une zone (Ctrl+Souris, ou Alt+Souris)</value>
+  <data name="GettingStarted" xml:space="preserve">
+    <value>Démarrer</value>
+  </data>
+  <data name="GettingStartedDescription" xml:space="preserve">
+    <value>Créer une configuration de carte et un style qui va avec.</value>
+  </data>
+  <data name="CreateAnAssetsConfiguration" xml:space="preserve">
+    <value>Créer un style de carte</value>
+  </data>
+  <data name="CreateAnAssetsConfigurationDescription" xml:space="preserve">
+    <value>Un style de carte définit les textures et objets à utiliser pour générer une carte. Vous pouvez créer votre propre style ou utilise d'un des style fourni.</value>
+  </data>
+  <data name="BrowseAssets" xml:space="preserve">
+    <value>Parcourir les objets</value>
   </data>
   <data name="BrowseAssetsDescription" xml:space="preserve">
     <value>Parcourir tous les objets disponibles pour choisir les plus adaptés pour votre style de carte.</value>
   </data>
-  <data name="AssetMapConfig" xml:space="preserve">
-    <value>Paramètres de carte</value>
+  <data name="CreateAMapConfiguration" xml:space="preserve">
+    <value>Créer une Configuration de carte</value>
   </data>
-  <data name="AssetWaysideCross" xml:space="preserve">
-    <value>Croix de chemin</value>
+  <data name="CreateAMapConfigurationDescription" xml:space="preserve">
+    <value>Une configuration de carte définit un carré à extraire d'OpenStreetMap et lui associe un style de carte à utiliser pour le processus de génération.</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Accueil</value>
+  </data>
+  <data name="Arma3MapConfig" xml:space="preserve">
+    <value>Configuration de Carte Arma 3</value>
+  </data>
+  <data name="GeneratePreview" xml:space="preserve">
+    <value>Générer un aperçu</value>
+  </data>
+  <data name="GenerateWithElevation" xml:space="preserve">
+    <value>Générer un HTML avec les zones et le dénivelé</value>
+  </data>
+  <data name="GenerateAreasOnly" xml:space="preserve">
+    <value>Générer un HTML avec les zones uniquement</value>
+  </data>
+  <data name="GenerateRawSatelliteImage" xml:space="preserve">
+    <value>Générer l'image satellite brute</value>
+  </data>
+  <data name="GenerateSatelliteImage" xml:space="preserve">
+    <value>Générer l'image satellite</value>
+  </data>
+  <data name="GenerateIdMapImage" xml:space="preserve">
+    <value>Générer l'image id map</value>
+  </data>
+  <data name="GenerateMapForArma3" xml:space="preserve">
+    <value>Générer un fichier carte pour Arma 3</value>
+  </data>
+  <data name="GenerateModForArma3" xml:space="preserve">
+    <value>Générer un mod pour Arma 3</value>
+  </data>
+  <data name="CoordinatesOfCenterOfMap" xml:space="preserve">
+    <value>Coordonnées du centre de la carte</value>
+  </data>
+  <data name="CoordinatesSouthWestOfMap" xml:space="preserve">
+    <value>ou coordonnées du sud-ouest de la carte</value>
+  </data>
+  <data name="MapSizeSquare" xml:space="preserve">
+    <value>Taille de la carte (carré)</value>
+  </data>
+  <data name="MetersUnit" xml:space="preserve">
+    <value>mètres</value>
+  </data>
+  <data name="AssetsConfiguration" xml:space="preserve">
+    <value>Style de carte</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="CoordinatesHint" xml:space="preserve">
+    <value>Vous pouvez utiliser la carte en dessous pour sélectionner une zone (Ctrl+Souris, ou Alt+Souris)</value>
+  </data>
+  <data name="MapUsageHint" xml:space="preserve">
+    <value>Pour choisir une zone :
+- Depuis un coin, appuyer sur la touche Ctrl, puis appuyer sur le bouton gauche de la souris ;
+- Depuis le centre, appuyer sur la touche Atl, puis appuyer sur le bouton gauche de la souris.</value>
+  </data>
+  <data name="ViewOnOpenStreetMapOrg" xml:space="preserve">
+    <value>Voir sur OpenStreetMap.org</value>
+  </data>
+  <data name="AdvancedParameters" xml:space="preserve">
+    <value>Paramètres avancés</value>
+  </data>
+  <data name="AssetConfigFileIsMissing" xml:space="preserve">
+    <value>Le fichier de style de carte est manquant.</value>
   </data>
   <data name="AlmostDone" xml:space="preserve">
     <value>Presque terminé</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Annuler</value>
-  </data>
   <data name="MinutesLeft" xml:space="preserve">
     <value>{0:0.0} min restant</value>
-  </data>
-  <data name="OpenResult" xml:space="preserve">
-    <value>Ouvrir le résultat</value>
   </data>
   <data name="SecondsLeft" xml:space="preserve">
     <value>{0:0.0} sec restant</value>
   </data>
-  <data name="ShowError" xml:space="preserve">
-    <value>Afficher l'erreur</value>
-  </data>
   <data name="TaskProgress" xml:space="preserve">
     <value>Avancement de la tâche</value>
   </data>
-  <data name="All" xml:space="preserve">
-    <value>Tous</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annuler</value>
   </data>
-  <data name="ActiveMods" xml:space="preserve">
-    <value>Mods actifs</value>
+  <data name="OpenResult" xml:space="preserve">
+    <value>Ouvrir le résultat</value>
   </data>
-  <data name="AddAComposition" xml:space="preserve">
-    <value>Ajouter une composition</value>
+  <data name="ShowError" xml:space="preserve">
+    <value>Afficher l'erreur</value>
   </data>
-  <data name="AssetsBrowser" xml:space="preserve">
-    <value>Bibliothèque des objets</value>
+  <data name="Explorer" xml:space="preserve">
+    <value>Explorateur</value>
+  </data>
+  <data name="CompositionToolTitle" xml:space="preserve">
+    <value>Position des objets</value>
   </data>
   <data name="CompositionClipboardInvalid" xml:space="preserve">
     <value>Le presse papier ne contient pas de données reconnues</value>
@@ -440,26 +434,11 @@
   <data name="CompositionClipboardUnknownSize" xml:space="preserve">
     <value>Impossible de déterminer la taille et la position</value>
   </data>
-  <data name="CompositionToolTitle" xml:space="preserve">
-    <value>Position des objets</value>
+  <data name="ImportFromClipboad" xml:space="preserve">
+    <value>Importer depuis le presse papier</value>
   </data>
   <data name="DataSeemsValid" xml:space="preserve">
     <value>Les données semblent valides.</value>
-  </data>
-  <data name="DetectedType" xml:space="preserve">
-    <value>Type détecté</value>
-  </data>
-  <data name="Explorer" xml:space="preserve">
-    <value>Explorateur</value>
-  </data>
-  <data name="Filter" xml:space="preserve">
-    <value>Filtre</value>
-  </data>
-  <data name="ImportAssets" xml:space="preserve">
-    <value>Importer des objets</value>
-  </data>
-  <data name="ImportFromClipboad" xml:space="preserve">
-    <value>Importer depuis le presse papier</value>
   </data>
   <data name="ImportFromClipboardArma3Hint1" xml:space="preserve">
     <value>Dans la carte VR, placer les objets souhaités, puis exporter pour Terrain Builder et copier le valeur.</value>
@@ -467,11 +446,50 @@
   <data name="ImportFromClipboardArma3Hint2" xml:space="preserve">
     <value>L'export natif peut donner des résultats étranges, pour un meilleur résultat utiliser</value>
   </data>
+  <data name="AddAComposition" xml:space="preserve">
+    <value>Ajouter une composition</value>
+  </data>
+  <data name="AssetsBrowser" xml:space="preserve">
+    <value>Bibliothèque des objets</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tous</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtre</value>
+  </data>
+  <data name="DetectedType" xml:space="preserve">
+    <value>Type détecté</value>
+  </data>
   <data name="Matching" xml:space="preserve">
     <value>Résultat</value>
   </data>
+  <data name="ImportAssets" xml:space="preserve">
+    <value>Importer des objets</value>
+  </data>
   <data name="UsualTerrainMods" xml:space="preserve">
     <value>Mods de terrain usuels</value>
+  </data>
+  <data name="ActiveMods" xml:space="preserve">
+    <value>Mods actifs</value>
+  </data>
+  <data name="SomeModsAreMissing" xml:space="preserve">
+    <value>Certains mods sont manquants</value>
+  </data>
+  <data name="MissingModsHint" xml:space="preserve">
+    <value>Merci de les installer avec Steam, puis de recharger ce fichier.</value>
+  </data>
+  <data name="QuickStartFrom" xml:space="preserve">
+    <value>⚡Démarrage rapide à partir de :</value>
+  </data>
+  <data name="NaturalAreas" xml:space="preserve">
+    <value>Zones naturelles</value>
+  </data>
+  <data name="AddAVariation" xml:space="preserve">
+    <value>Ajouter une variation</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
   <data name="Label" xml:space="preserve">
     <value>Libellé</value>
@@ -479,68 +497,56 @@
   <data name="Probability" xml:space="preserve">
     <value>Probabilité</value>
   </data>
-  <data name="QuickStartFrom" xml:space="preserve">
-    <value>⚡Démarrage rapide à partir de :</value>
+  <data name="Density" xml:space="preserve">
+    <value>Densité moyenne</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Supprimer</value>
   </data>
-  <data name="RoadsAndBridges" xml:space="preserve">
-    <value>Routes et ponts</value>
-  </data>
-  <data name="SameAs" xml:space="preserve">
-    <value>Identique à</value>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Chargement...</value>
-  </data>
-  <data name="MissingModsHint" xml:space="preserve">
-    <value>Merci de les installer avec Steam, puis de recharger ce fichier.</value>
-  </data>
-  <data name="Model" xml:space="preserve">
-    <value>Modèle</value>
-  </data>
-  <data name="NaturalAreas" xml:space="preserve">
-    <value>Zones naturelles</value>
-  </data>
-  <data name="GroundMaterials" xml:space="preserve">
-    <value>Matériaux du sol</value>
-  </data>
   <data name="FencesWalls" xml:space="preserve">
     <value>Clôtures,murs</value>
-  </data>
-  <data name="Density" xml:space="preserve">
-    <value>Densité moyenne</value>
-  </data>
-  <data name="ClearWidth" xml:space="preserve">
-    <value>Largeur sans objets</value>
   </data>
   <data name="Buildings" xml:space="preserve">
     <value>Bâtiments</value>
   </data>
-  <data name="AddAVariation" xml:space="preserve">
-    <value>Ajouter une variation</value>
+  <data name="TextureSize" xml:space="preserve">
+    <value>Taille de la texture</value>
   </data>
-  <data name="SomeModsAreMissing" xml:space="preserve">
-    <value>Certains mods sont manquants</value>
+  <data name="GroundMaterials" xml:space="preserve">
+    <value>Matériaux du sol</value>
   </data>
   <data name="Texture" xml:space="preserve">
     <value>Texture</value>
   </data>
-  <data name="TextureSize" xml:space="preserve">
-    <value>Taille de la texture</value>
+  <data name="SameAs" xml:space="preserve">
+    <value>Identique à</value>
+  </data>
+  <data name="RoadsAndBridges" xml:space="preserve">
+    <value>Routes et ponts</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>Largeur</value>
   </data>
   <data name="TextureWidth" xml:space="preserve">
     <value>Largeur de la texture</value>
   </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
+  <data name="ClearWidth" xml:space="preserve">
+    <value>Largeur sans objets</value>
   </data>
   <data name="WaterTiles" xml:space="preserve">
     <value>Surface des lacs</value>
   </data>
-  <data name="Width" xml:space="preserve">
-    <value>Largeur</value>
+  <data name="Model" xml:space="preserve">
+    <value>Modèle</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Chargement...</value>
+  </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="ArmaBaseWorldHint" xml:space="preserve">
+    <value>La configuration de base définit l'éclairage, le ciel, les objets procéduraux au sol, et plein d'autres aspects. Tout peut être surchargé par chaque carte via son config.cpp.</value>
   </data>
   <data name="ArmaBaseWorldName" xml:space="preserve">
     <value>Nom de la configuration de base CfgWorlds</value>
@@ -548,71 +554,17 @@
   <data name="ArmaBaseWorldDependency" xml:space="preserve">
     <value>CfgPatches fournissant la configuration de base</value>
   </data>
-  <data name="ArmaBaseWorldHint" xml:space="preserve">
-    <value>La configuration de base définit l'éclairage, le ciel, les objets procéduraux au sol, et plein d'autres aspects. Tout peut être surchargé par chaque carte via son config.cpp.</value>
-  </data>
-  <data name="Configuration" xml:space="preserve">
-    <value>Configuration</value>
-  </data>
-  <data name="AddAnEmptySeed" xml:space="preserve">
-    <value>Ajouter une graine vide</value>
-  </data>
   <data name="AddAnObject" xml:space="preserve">
     <value>Ajouter un objet</value>
-  </data>
-  <data name="AddASeedFromAnObject" xml:space="preserve">
-    <value>Ajouter une graine à partir d'un objet</value>
-  </data>
-  <data name="ComputeMaximum" xml:space="preserve">
-    <value>Calculer le maximum</value>
-  </data>
-  <data name="Depth" xml:space="preserve">
-    <value>Profondeur</value>
-  </data>
-  <data name="FillingObjects" xml:space="preserve">
-    <value>Objets de remplissage</value>
-  </data>
-  <data name="FillingOptions" xml:space="preserve">
-    <value>Options de remplissage</value>
-  </data>
-  <data name="FillingSeedsObjects" xml:space="preserve">
-    <value>Graines/objets de remplissage</value>
-  </data>
-  <data name="FitRadius" xml:space="preserve">
-    <value>Rayon d'ajustement</value>
-  </data>
-  <data name="GeneratePreviewWithLinkedAreas" xml:space="preserve">
-    <value>Générer un aperçu avec les zones associées</value>
-  </data>
-  <data name="MakeObjectsEquiprobable" xml:space="preserve">
-    <value>Rendre les objets équiprobables</value>
-  </data>
-  <data name="MakeSeedsEquiprobable" xml:space="preserve">
-    <value>Rendre les graines équiprobables</value>
-  </data>
-  <data name="MaxScale" xml:space="preserve">
-    <value>Echelle Max</value>
-  </data>
-  <data name="MaxZ" xml:space="preserve">
-    <value>Décalage Z Max</value>
-  </data>
-  <data name="MinScale" xml:space="preserve">
-    <value>Echelle Min</value>
-  </data>
-  <data name="MinZ" xml:space="preserve">
-    <value>Décalage Z Min</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Nom</value>
   </data>
-  <data name="ObjectsPerM2" xml:space="preserve">
-    <value>objets/m²</value>
+  <data name="Size" xml:space="preserve">
+    <value>Taille</value>
   </data>
-  <data name="Preview" xml:space="preserve">
-    <value>Aperçu</value>
-  </data>
-  <data name="Radius" xml:space="preserve">
-    <value>Rayon</value>
+  <data name="FillingOptions" xml:space="preserve">
+    <value>Options de remplissage</value>
   </data>
   <data name="ProbabilityOfThisCollection" xml:space="preserve">
     <value>Probabilité de cette variation</value>
@@ -623,38 +575,59 @@
   <data name="RandomTo" xml:space="preserve">
     <value>jusqu'à</value>
   </data>
+  <data name="ObjectsPerM2" xml:space="preserve">
+    <value>objets/m²</value>
+  </data>
+  <data name="ComputeMaximum" xml:space="preserve">
+    <value>Calculer le maximum</value>
+  </data>
+  <data name="FillingObjects" xml:space="preserve">
+    <value>Objets de remplissage</value>
+  </data>
+  <data name="MakeObjectsEquiprobable" xml:space="preserve">
+    <value>Rendre les objets équiprobables</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Aperçu</value>
+  </data>
+  <data name="GeneratePreviewWithLinkedAreas" xml:space="preserve">
+    <value>Générer un aperçu avec les zones associées</value>
+  </data>
+  <data name="FillingSeedsObjects" xml:space="preserve">
+    <value>Graines/objets de remplissage</value>
+  </data>
+  <data name="AddAnEmptySeed" xml:space="preserve">
+    <value>Ajouter une graine vide</value>
+  </data>
+  <data name="AddASeedFromAnObject" xml:space="preserve">
+    <value>Ajouter une graine à partir d'un objet</value>
+  </data>
+  <data name="MakeSeedsEquiprobable" xml:space="preserve">
+    <value>Rendre les graines équiprobables</value>
+  </data>
   <data name="RemoveSeed" xml:space="preserve">
     <value>Supprimer la graine</value>
   </data>
-  <data name="Size" xml:space="preserve">
-    <value>Taille</value>
+  <data name="Radius" xml:space="preserve">
+    <value>Rayon</value>
   </data>
-  <data name="BridgeElements" xml:space="preserve">
-    <value>Eléments de pont</value>
+  <data name="FitRadius" xml:space="preserve">
+    <value>Rayon d'ajustement</value>
   </data>
-  <data name="BridgeEnd" xml:space="preserve">
-    <value>Fin</value>
+  <data name="MaxZ" xml:space="preserve">
+    <value>Décalage Z Max</value>
   </data>
-  <data name="BridgeMiddle" xml:space="preserve">
-    <value>Milieu</value>
+  <data name="MinZ" xml:space="preserve">
+    <value>Décalage Z Min</value>
   </data>
-  <data name="BridgeSingle" xml:space="preserve">
-    <value>Unique</value>
+  <data name="MaxScale" xml:space="preserve">
+    <value>Echelle Max</value>
   </data>
-  <data name="BridgeStart" xml:space="preserve">
-    <value>Début</value>
+  <data name="MinScale" xml:space="preserve">
+    <value>Echelle Min</value>
   </data>
-  <data name="Change" xml:space="preserve">
-    <value>Changer</value>
-  </data>
-  <data name="Clear" xml:space="preserve">
-    <value>Effacer</value>
-  </data>
-  <data name="ColorId" xml:space="preserve">
-    <value>Couleur Id</value>
-  </data>
-  <data name="ColorTexture" xml:space="preserve">
-    <value>Texture Couleur</value>
+  <data name="Depth" xml:space="preserve">
+    <value>Profondeur</value>
   </data>
   <data name="CountNone" xml:space="preserve">
     <value>aucun</value>
@@ -662,32 +635,53 @@
   <data name="CountItems" xml:space="preserve">
     <value>{0} éléments</value>
   </data>
-  <data name="Material" xml:space="preserve">
-    <value>Surface</value>
+  <data name="BridgeSingle" xml:space="preserve">
+    <value>Unique</value>
   </data>
-  <data name="NormalTexture" xml:space="preserve">
-    <value>Texture Normale</value>
+  <data name="BridgeStart" xml:space="preserve">
+    <value>Début</value>
   </data>
-  <data name="RoadConfiguration" xml:space="preserve">
-    <value>Configuration de la route</value>
+  <data name="BridgeMiddle" xml:space="preserve">
+    <value>Milieu</value>
   </data>
-  <data name="RoadRvMaterial" xml:space="preserve">
-    <value>RV Material</value>
-  </data>
-  <data name="RoadSatelliteColor" xml:space="preserve">
-    <value>Couleur rendu satellite</value>
+  <data name="BridgeEnd" xml:space="preserve">
+    <value>Fin</value>
   </data>
   <data name="TextureEnd" xml:space="preserve">
     <value>Texture de fin</value>
   </data>
+  <data name="Material" xml:space="preserve">
+    <value>Surface</value>
+  </data>
+  <data name="RoadSatelliteColor" xml:space="preserve">
+    <value>Couleur rendu satellite</value>
+  </data>
+  <data name="RoadRvMaterial" xml:space="preserve">
+    <value>RV Material</value>
+  </data>
+  <data name="BridgeElements" xml:space="preserve">
+    <value>Eléments de pont</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Changer</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Effacer</value>
+  </data>
+  <data name="RoadConfiguration" xml:space="preserve">
+    <value>Configuration de la route</value>
+  </data>
   <data name="UseSameTexteAs" xml:space="preserve">
     <value>Utiliser la même texture que</value>
   </data>
-  <data name="RangeObjectsPerM2" xml:space="preserve">
-    <value>{0} à {1} objets/m²</value>
+  <data name="ColorTexture" xml:space="preserve">
+    <value>Texture Couleur</value>
   </data>
-  <data name="SeedNumber" xml:space="preserve">
-    <value>Graine #{0}</value>
+  <data name="NormalTexture" xml:space="preserve">
+    <value>Texture Normale</value>
+  </data>
+  <data name="ColorId" xml:space="preserve">
+    <value>Couleur Id</value>
   </data>
   <data name="LoadingObjectsShapes" xml:space="preserve">
     <value>Chargement de la forme des objets...</value>
@@ -695,11 +689,17 @@
   <data name="GeneratingPreview" xml:space="preserve">
     <value>Génération de l'aperçu...</value>
   </data>
+  <data name="DensityResultsTooHigh" xml:space="preserve">
+    <value>{0:0.00} msec/100 m². La densité est trop élevée, vous devriez la réduire à {1}</value>
+  </data>
   <data name="DensityResultsOK" xml:space="preserve">
     <value>{0:0.00} msec/100 m². La densité est correcte.</value>
   </data>
-  <data name="DensityResultsTooHigh" xml:space="preserve">
-    <value>{0:0.00} msec/100 m². La densité est trop élevée, vous devriez la réduire à {1}</value>
+  <data name="RangeObjectsPerM2" xml:space="preserve">
+    <value>{0} à {1} objets/m²</value>
+  </data>
+  <data name="SeedNumber" xml:space="preserve">
+    <value>Graine #{0}</value>
   </data>
   <data name="AssetConcreteFootway" xml:space="preserve">
     <value>Chemin piéton urbain</value>
@@ -743,6 +743,9 @@
   <data name="AssetSingleLaneDirtPath" xml:space="preserve">
     <value>Chemin carrossable</value>
   </data>
+  <data name="AssetSingleLaneDirtRoad" xml:space="preserve">
+    <value>Route de terre</value>
+  </data>
   <data name="AssetTrail" xml:space="preserve">
     <value>Chemin</value>
   </data>
@@ -758,24 +761,21 @@
   <data name="AssetTwoLanesSecondaryRoad" xml:space="preserve">
     <value>Départementale - 2 voies</value>
   </data>
-  <data name="AssetSingleLaneDirtRoad" xml:space="preserve">
-    <value>Route de terre</value>
-  </data>
   <data name="Arma3AssetsConfiguration" xml:space="preserve">
     <value>Style de carte Arma 3</value>
   </data>
-  <data name="DoneSuccessfullyInSeconds" xml:space="preserve">
-    <value>✔ Terminé avec succès en {0:0.0} secondes</value>
+  <data name="ViewResultInWebBrowser" xml:space="preserve">
+    <value>Voir le résultat dans le navigateur web</value>
+  </data>
+  <data name="ViewInFileExplorer" xml:space="preserve">
+    <value>Voir dans l'explorateur de fichiers</value>
   </data>
   <data name="OpenArma3LauncherWithGeneratedModHint" xml:space="preserve">
     <value>Dans la section Mods, choisir la configuration "GRM - {0}".
 Vous pouvez éventuellement activer d'autres mods.</value>
   </data>
-  <data name="ViewInFileExplorer" xml:space="preserve">
-    <value>Voir dans l'explorateur de fichiers</value>
-  </data>
-  <data name="ViewResultInWebBrowser" xml:space="preserve">
-    <value>Voir le résultat dans le navigateur web</value>
+  <data name="DoneSuccessfullyInSeconds" xml:space="preserve">
+    <value>✔ Terminé avec succès en {0:0.0} secondes</value>
   </data>
   <data name="YouCanNowPrompt" xml:space="preserve">
     <value>Vous pouvez maintenant :</value>
@@ -798,11 +798,11 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="HelpHomeLink" xml:space="preserve">
     <value>https://github.com/jetelain/ArmaRealMap/wiki/Home-FR</value>
   </data>
-  <data name="DoneInMin" xml:space="preserve">
-    <value>Terminé en {0:0.0} min</value>
-  </data>
   <data name="DoneInMsec" xml:space="preserve">
     <value>Terminé en {0} msec</value>
+  </data>
+  <data name="DoneInMin" xml:space="preserve">
+    <value>Terminé en {0:0.0} min</value>
   </data>
   <data name="DoneInSec" xml:space="preserve">
     <value>Terminé en {0:0.0} sec</value>
@@ -813,11 +813,11 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="SelectedAssetConfigMissingModsHint" xml:space="preserve">
     <value>Le style de carte sélectionné nécessite des mods supplémentaires. Merci de les installer avec Steam:</value>
   </data>
-  <data name="UnsavedCloseConfirmTitle" xml:space="preserve">
-    <value>Confirmation</value>
-  </data>
   <data name="UnsavedCloseConfirmText" xml:space="preserve">
     <value>'{0}' pourrait avoir des modifications non enregistrées, voulez-vous les enregistrer ?</value>
+  </data>
+  <data name="UnsavedCloseConfirmTitle" xml:space="preserve">
+    <value>Confirmation</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Fermer</value>
@@ -825,11 +825,11 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="GenerateADemoWorld" xml:space="preserve">
     <value>Générer une carte de démonstration</value>
   </data>
-  <data name="GenerateDemoMod" xml:space="preserve">
-    <value>Générer un mod (prêt à l'emploi)</value>
-  </data>
   <data name="GenerateDemoWrpFile" xml:space="preserve">
     <value>Générer une carte (fichier wrp)</value>
+  </data>
+  <data name="GenerateDemoMod" xml:space="preserve">
+    <value>Générer un mod (prêt à l'emploi)</value>
   </data>
   <data name="Forest" xml:space="preserve">
     <value>Forêt</value>
@@ -843,32 +843,32 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="GeneralSettings" xml:space="preserve">
     <value>Général</value>
   </data>
-  <data name="PBOGenerationTool" xml:space="preserve">
-    <value>Génération de PBO</value>
+  <data name="UsePBOProject" xml:space="preserve">
+    <value>Utiliser Mikero's pboProject</value>
   </data>
   <data name="UseBuitinGenerator" xml:space="preserve">
     <value>Utiliser l'outil intégré</value>
   </data>
-  <data name="UsePBOProject" xml:space="preserve">
-    <value>Utiliser Mikero's pboProject</value>
-  </data>
-  <data name="GenerateFromTexture" xml:space="preserve">
-    <value>Générer à partir de la texture</value>
+  <data name="PBOGenerationTool" xml:space="preserve">
+    <value>Génération de PBO</value>
   </data>
   <data name="SatelliteRenderImage" xml:space="preserve">
     <value>Image de rendu satellite</value>
   </data>
+  <data name="GenerateFromTexture" xml:space="preserve">
+    <value>Générer à partir de la texture</value>
+  </data>
   <data name="SelectAnImage" xml:space="preserve">
     <value>Sélectionner une image</value>
+  </data>
+  <data name="CompositionTopView" xml:space="preserve">
+    <value>Vue du dessus</value>
   </data>
   <data name="CompositionFrontView" xml:space="preserve">
     <value>Vue de face</value>
   </data>
   <data name="CompositionSideView" xml:space="preserve">
     <value>Vue de coté</value>
-  </data>
-  <data name="CompositionTopView" xml:space="preserve">
-    <value>Vue du dessus</value>
   </data>
   <data name="Heading" xml:space="preserve">
     <value>Cap</value>
@@ -897,11 +897,11 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="LaunchArma3Hint" xml:space="preserve">
     <value>Lancer Arma 3 avec le profil par défaut et les mods requis.</value>
   </data>
-  <data name="AssetRailwaysStraight" xml:space="preserve">
-    <value>Rails droits</value>
-  </data>
   <data name="AssetRailwaysCrossing" xml:space="preserve">
     <value>Passage à niveau</value>
+  </data>
+  <data name="AssetRailwaysStraight" xml:space="preserve">
+    <value>Rails droits</value>
   </data>
   <data name="Railways" xml:space="preserve">
     <value>Voies ferrées</value>
@@ -912,44 +912,44 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="FenceEnds" xml:space="preserve">
     <value>Débuts et fins</value>
   </data>
-  <data name="FenceFillingStrategy" xml:space="preserve">
-    <value>Stratégie de remplissage</value>
+  <data name="FenceRightCorners" xml:space="preserve">
+    <value>Coins droits</value>
   </data>
   <data name="FenceLeftCorners" xml:space="preserve">
     <value>Coins gauche</value>
   </data>
-  <data name="FenceRightCorners" xml:space="preserve">
-    <value>Coins droits</value>
+  <data name="FenceStraigthSegments" xml:space="preserve">
+    <value>Segments droits</value>
   </data>
   <data name="FenceObjects" xml:space="preserve">
     <value>Objets</value>
   </data>
-  <data name="FenceStraigthSegments" xml:space="preserve">
-    <value>Segments droits</value>
-  </data>
   <data name="FenceType" xml:space="preserve">
     <value>Type</value>
-  </data>
-  <data name="FenceUseAnySize" xml:space="preserve">
-    <value>Utiliser n'importe quel segment, même si un plus large aurait été possible.</value>
-  </data>
-  <data name="FenceUseLargestFirst" xml:space="preserve">
-    <value>Utiliser les segments les plus grands lorsque possible (par défaut).</value>
-  </data>
-  <data name="FenceUseObjects" xml:space="preserve">
-    <value>Utiliser des objets avec une orientation aléatoire. Idéal pour les haies naturelles.</value>
   </data>
   <data name="FenceUseRigidSegments" xml:space="preserve">
     <value>Utiliser des segments rigides. Idéal pour les murs, les grillages, les haies taillées, etc.</value>
   </data>
+  <data name="FenceUseObjects" xml:space="preserve">
+    <value>Utiliser des objets avec une orientation aléatoire. Idéal pour les haies naturelles.</value>
+  </data>
+  <data name="FenceFillingStrategy" xml:space="preserve">
+    <value>Stratégie de remplissage</value>
+  </data>
+  <data name="FenceUseLargestFirst" xml:space="preserve">
+    <value>Utiliser les segments les plus grands lorsque possible (par défaut).</value>
+  </data>
+  <data name="FenceUseAnySize" xml:space="preserve">
+    <value>Utiliser n'importe quel segment, même si un plus large aurait été possible.</value>
+  </data>
   <data name="GenerateAnErrorReport" xml:space="preserve">
     <value>Générer un rapport d'erreur...</value>
   </data>
-  <data name="GenerateMapForArma3TB" xml:space="preserve">
-    <value>Générer des fichiers au format Terrain Builder</value>
-  </data>
   <data name="GenerateMapForArma3WRP" xml:space="preserve">
     <value>Générer un fichier au format WRP</value>
+  </data>
+  <data name="GenerateMapForArma3TB" xml:space="preserve">
+    <value>Générer des fichiers au format Terrain Builder</value>
   </data>
   <data name="LaunchTerrainBuilder" xml:space="preserve">
     <value>Lancer Terrain Builder (Anglais uniquement)</value>
@@ -963,18 +963,6 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="AssetCoastline" xml:space="preserve">
     <value>Par défaut - Littoral</value>
   </data>
-  <data name="CurrentVersion" xml:space="preserve">
-    <value>Actuel</value>
-  </data>
-  <data name="EditWithEdenEditor" xml:space="preserve">
-    <value>Modifier avec Eden Editor</value>
-  </data>
-  <data name="EditWithEdenEditorHelpLink" xml:space="preserve">
-    <value>https://github.com/jetelain/ArmaRealMap/wiki/Edit-With-Eden-Editor-FR</value>
-  </data>
-  <data name="EditWithEdenEditorHint" xml:space="preserve">
-    <value>Ouvrir la carte avec Eden Editor, ajouter des objets, cacher des objets, and utiliser l'export GameRealisticMap depuis le menu outils.</value>
-  </data>
   <data name="ExportedDataMapMismatch" xml:space="preserve">
     <value>Les données exportées sont pour la carte '{0}' mais la carte actuelle est '{1}'</value>
   </data>
@@ -984,60 +972,72 @@ Vous pouvez éventuellement activer d'autres mods.</value>
   <data name="ExportedDataStats" xml:space="preserve">
     <value>{0} objets à ajouter, {1} objets à supprimer, {2} changements de la grille de dénivelé</value>
   </data>
-  <data name="FeatureRequiresAdditionalMod" xml:space="preserve">
-    <value>Cette fonctionnalité nécessite un mod additionnel depuis le Workshop Steam :</value>
-  </data>
-  <data name="ImportChangesFromEdenEditor" xml:space="preserve">
-    <value>Importer des changements depuis 3DEN Editor</value>
-  </data>
-  <data name="ImportFromClipboardEdenHint" xml:space="preserve">
-    <value>Une fois que vous avez exporté les données, cliquer sur le bouton Actualiser, puis valider l'import.</value>
-  </data>
-  <data name="LaunchArma3EditHint" xml:space="preserve">
-    <value>Lance Arma 3 avec le profil par défaut et les mods recommandé (si installés)</value>
-  </data>
-  <data name="MapDescription" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="MapInformations" xml:space="preserve">
-    <value>Informations de la carte</value>
-  </data>
-  <data name="MapRevisionHistory" xml:space="preserve">
-    <value>Historique de révision</value>
-  </data>
-  <data name="ModDirectory" xml:space="preserve">
-    <value>Répertoire du mod</value>
-  </data>
-  <data name="PboPrefix" xml:space="preserve">
-    <value>Préfixe PBO</value>
-  </data>
-  <data name="Restore" xml:space="preserve">
-    <value>Restaurer</value>
+  <data name="RestoreDataLossMessage" xml:space="preserve">
+    <value>Restaurer une précédente version engendre la perte des modifications actuelles, voulez vous continuer ?</value>
   </data>
   <data name="RestoreTitle" xml:space="preserve">
     <value>Restaurer {0}</value>
   </data>
-  <data name="RestoreDataLossMessage" xml:space="preserve">
-    <value>Restaurer une précédente version engendre la perte des modifications actuelles, voulez vous continuer ?</value>
+  <data name="ImportChangesFromEdenEditor" xml:space="preserve">
+    <value>Importer des changements depuis 3DEN Editor</value>
   </data>
-  <data name="SeeHelpForDetailedInstructions" xml:space="preserve">
-    <value>Voir l'aide pour des instructions détaillées</value>
+  <data name="PboPrefix" xml:space="preserve">
+    <value>Préfixe PBO</value>
+  </data>
+  <data name="WrpLandRange" xml:space="preserve">
+    <value>Land range</value>
   </data>
   <data name="UsedMapConfiguration" xml:space="preserve">
     <value>Configuration de carte utilisée</value>
   </data>
-  <data name="WrpLandRange" xml:space="preserve">
-    <value>Land range</value>
+  <data name="MapDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ModDirectory" xml:space="preserve">
+    <value>Répertoire du mod</value>
+  </data>
+  <data name="CurrentVersion" xml:space="preserve">
+    <value>Actuel</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Restaurer</value>
+  </data>
+  <data name="MapRevisionHistory" xml:space="preserve">
+    <value>Historique de révision</value>
+  </data>
+  <data name="MapInformations" xml:space="preserve">
+    <value>Informations de la carte</value>
+  </data>
+  <data name="EditWithEdenEditor" xml:space="preserve">
+    <value>Modifier avec Eden Editor</value>
+  </data>
+  <data name="LaunchArma3EditHint" xml:space="preserve">
+    <value>Lance Arma 3 avec le profil par défaut et les mods recommandé (si installés)</value>
+  </data>
+  <data name="ImportFromClipboardEdenHint" xml:space="preserve">
+    <value>Une fois que vous avez exporté les données, cliquer sur le bouton Actualiser, puis valider l'import.</value>
+  </data>
+  <data name="EditWithEdenEditorHint" xml:space="preserve">
+    <value>Ouvrir la carte avec Eden Editor, ajouter des objets, cacher des objets, and utiliser l'export GameRealisticMap depuis le menu outils.</value>
+  </data>
+  <data name="FeatureRequiresAdditionalMod" xml:space="preserve">
+    <value>Cette fonctionnalité nécessite un mod additionnel depuis le Workshop Steam :</value>
+  </data>
+  <data name="SeeHelpForDetailedInstructions" xml:space="preserve">
+    <value>Voir l'aide pour des instructions détaillées</value>
+  </data>
+  <data name="EditWithEdenEditorHelpLink" xml:space="preserve">
+    <value>https://github.com/jetelain/ArmaRealMap/wiki/Edit-With-Eden-Editor-FR</value>
+  </data>
+  <data name="Arma3RecentWorldTooltip" xml:space="preserve">
+    <value>WorldName: {0}
+Dernière génération le {1}</value>
   </data>
   <data name="RecentGeneratedMaps" xml:space="preserve">
     <value>Carte récemment générées</value>
   </data>
   <data name="RecentGeneratedMapsHint" xml:space="preserve">
     <value>Utiliser l'éditeur Eden dans Arma 3 pour améliorer une care générée, and réintégrer ici les changements.</value>
-  </data>
-  <data name="Arma3RecentWorldTooltip" xml:space="preserve">
-    <value>WorldName: {0}
-Dernière génération le {1}</value>
   </data>
   <data name="FakeSatBlend" xml:space="preserve">
     <value>Mélange d'image satellite</value>
@@ -1048,17 +1048,29 @@ Dernière génération le {1}</value>
   <data name="FakeSatBlend1" xml:space="preserve">
     <value>Couleur des textures</value>
   </data>
-  <data name="Pixels" xml:space="preserve">
-    <value>pixels</value>
-  </data>
   <data name="Resolution" xml:space="preserve">
     <value>Résolution</value>
   </data>
   <data name="ResolutionUnit" xml:space="preserve">
     <value>mètres par pixels. [BETA] Seule la valeur '1' a été testée.</value>
   </data>
+  <data name="Pixels" xml:space="preserve">
+    <value>pixels</value>
+  </data>
   <data name="WorldNameHint" xml:space="preserve">
     <value>Nom technique, devrait être globalement unique.</value>
+  </data>
+  <data name="RowsSpacing" xml:space="preserve">
+    <value>Espacement des rangées</value>
+  </data>
+  <data name="NaturalRowUseObjects" xml:space="preserve">
+    <value>Utiliser des objets avec une orientation aléatoire. Idéal pour des plantes individuelles.</value>
+  </data>
+  <data name="NaturalRowUseRigidSegments" xml:space="preserve">
+    <value>Utiliser des segments rigides. Idéal pour des rangées pré-fabriquées.</value>
+  </data>
+  <data name="AssetFarmLandRow" xml:space="preserve">
+    <value>[BETA: Inutilisé] Rangées plein champs</value>
   </data>
   <data name="AssetOrchardRow" xml:space="preserve">
     <value>Rangée d'arbre fruitier</value>
@@ -1072,20 +1084,8 @@ Dernière génération le {1}</value>
   <data name="NaturalRows" xml:space="preserve">
     <value>Rangées naturelles</value>
   </data>
-  <data name="NaturalRowUseObjects" xml:space="preserve">
-    <value>Utiliser des objets avec une orientation aléatoire. Idéal pour des plantes individuelles.</value>
-  </data>
-  <data name="NaturalRowUseRigidSegments" xml:space="preserve">
-    <value>Utiliser des segments rigides. Idéal pour des rangées pré-fabriquées.</value>
-  </data>
-  <data name="RowsSpacing" xml:space="preserve">
-    <value>Espacement des rangées</value>
-  </data>
   <data name="AssetSmallOrchard" xml:space="preserve">
     <value>Arbres fruitier</value>
-  </data>
-  <data name="AssetFarmLandRow" xml:space="preserve">
-    <value>[BETA: Inutilisé] Rangées plein champs</value>
   </data>
   <data name="AssetStreetLamp" xml:space="preserve">
     <value>Lampadaire</value>
@@ -1099,20 +1099,11 @@ Dernière génération le {1}</value>
   <data name="DistanceBetweenStreetLamps" xml:space="preserve">
     <value>Distance entre les lampadaires</value>
   </data>
-  <data name="ImportNextPartPrompt" xml:space="preserve">
-    <value>Cliquer sur le bouton Actualiser lorsque la partie #{0} aura été copiée, pour continuer l'import.</value>
-  </data>
   <data name="PartHasBeenAlreadyImported" xml:space="preserve">
     <value>La partie #{0} a déjà été importée.</value>
   </data>
-  <data name="RelativeElevation" xml:space="preserve">
-    <value>Positon relative (au sol)</value>
-  </data>
-  <data name="NoValidObjectDefinitionFoundInFile" xml:space="preserve">
-    <value>Aucune définition valide d'objet n'a été trouvé dans le fichier.</value>
-  </data>
-  <data name="NumObjectsToImport" xml:space="preserve">
-    <value>{0} objets à importer</value>
+  <data name="ImportNextPartPrompt" xml:space="preserve">
+    <value>Cliquer sur le bouton Actualiser lorsque la partie #{0} aura été copiée, pour continuer l'import.</value>
   </data>
   <data name="ImportObjectsFromFile" xml:space="preserve">
     <value>Importer des objets depuis un fichier</value>
@@ -1120,17 +1111,26 @@ Dernière génération le {1}</value>
   <data name="ImportsObjects" xml:space="preserve">
     <value>Importer les objets</value>
   </data>
-  <data name="ElevationMode" xml:space="preserve">
-    <value>Mode d'altitude</value>
+  <data name="RelativeElevation" xml:space="preserve">
+    <value>Positon relative (au sol)</value>
   </data>
   <data name="AbsoluteElevation" xml:space="preserve">
     <value>Position absolue</value>
   </data>
-  <data name="InsideResidentialAreas" xml:space="preserve">
-    <value>Dans les zones résidentielles</value>
+  <data name="ElevationMode" xml:space="preserve">
+    <value>Mode d'altitude</value>
+  </data>
+  <data name="NoValidObjectDefinitionFoundInFile" xml:space="preserve">
+    <value>Aucune définition valide d'objet n'a été trouvé dans le fichier.</value>
+  </data>
+  <data name="NumObjectsToImport" xml:space="preserve">
+    <value>{0} objets à importer</value>
   </data>
   <data name="Sidewalks" xml:space="preserve">
     <value>Trottoirs</value>
+  </data>
+  <data name="InsideResidentialAreas" xml:space="preserve">
+    <value>Dans les zones résidentielles</value>
   </data>
   <data name="Never" xml:space="preserve">
     <value>Jamais</value>
@@ -1165,8 +1165,29 @@ Dernière génération le {1}</value>
   <data name="CriteriaIsResidential" xml:space="preserve">
     <value>appartient à une zone résidentielle</value>
   </data>
+  <data name="CriteriaIsCommercial" xml:space="preserve">
+    <value>dans une zone de bureaux</value>
+  </data>
   <data name="CriteriaIsIndustrial" xml:space="preserve">
     <value>appartient à une zone industrielle</value>
+  </data>
+  <data name="CriteriaIsRetail" xml:space="preserve">
+    <value>dans une zone commerciale</value>
+  </data>
+  <data name="CriteriaIsMilitary" xml:space="preserve">
+    <value>dans une zone militaire</value>
+  </data>
+  <data name="CriteriaIsFarmyard" xml:space="preserve">
+    <value>dans une zone agricole (n'inclus pas les champs)</value>
+  </data>
+  <data name="CriteriaIsUrban" xml:space="preserve">
+    <value>dans une zone urbaine/habitée</value>
+  </data>
+  <data name="CriteriaIsOcean" xml:space="preserve">
+    <value>dans l'océan</value>
+  </data>
+  <data name="CriteriaDistanceToOcean" xml:space="preserve">
+    <value>distance à l'océan (en mètres)</value>
   </data>
   <data name="CriteriaElevation" xml:space="preserve">
     <value>altitude par rapport au niveau de la mer en métres</value>
@@ -1174,41 +1195,8 @@ Dernière génération le {1}</value>
   <data name="CriteriaSlope" xml:space="preserve">
     <value>pente du terrain en degrés</value>
   </data>
-  <data name="Apply" xml:space="preserve">
-    <value>Appliquer</value>
-  </data>
-  <data name="AvailableCriterias" xml:space="preserve">
-    <value>Critères disponibles</value>
-  </data>
-  <data name="Condition" xml:space="preserve">
-    <value>Condition</value>
-  </data>
-  <data name="CriteriaDistanceToOcean" xml:space="preserve">
-    <value>distance à l'océan (en mètres)</value>
-  </data>
-  <data name="CriteriaDistanceToRoad" xml:space="preserve">
-    <value>distance de la route la plus proche (en mètres)</value>
-  </data>
-  <data name="CriteriaIsCommercial" xml:space="preserve">
-    <value>dans une zone de bureaux</value>
-  </data>
-  <data name="CriteriaIsFarmyard" xml:space="preserve">
-    <value>dans une zone agricole (n'inclus pas les champs)</value>
-  </data>
-  <data name="CriteriaIsMilitary" xml:space="preserve">
-    <value>dans une zone militaire</value>
-  </data>
-  <data name="CriteriaIsOcean" xml:space="preserve">
-    <value>dans l'océan</value>
-  </data>
-  <data name="CriteriaIsRetail" xml:space="preserve">
-    <value>dans une zone commerciale</value>
-  </data>
   <data name="CriteriaIsRoadMotorway" xml:space="preserve">
     <value>la route la plus proche est un autoroute</value>
-  </data>
-  <data name="CriteriaIsRoadPath" xml:space="preserve">
-    <value>la route la plus proche est une piste</value>
   </data>
   <data name="CriteriaIsRoadPrimary" xml:space="preserve">
     <value>la route la plus proche est une nationale</value>
@@ -1219,8 +1207,29 @@ Dernière génération le {1}</value>
   <data name="CriteriaIsRoadSimple" xml:space="preserve">
     <value>la route la plus proche est une rue</value>
   </data>
-  <data name="CriteriaIsUrban" xml:space="preserve">
-    <value>dans une zone urbaine/habitée</value>
+  <data name="CriteriaIsRoadPath" xml:space="preserve">
+    <value>la route la plus proche est une piste</value>
+  </data>
+  <data name="CriteriaDistanceToRoad" xml:space="preserve">
+    <value>distance de la route la plus proche (en mètres)</value>
+  </data>
+  <data name="TestRandomlyOnMap" xml:space="preserve">
+    <value>Tester aléatoirement sur la carte</value>
+  </data>
+  <data name="TestOnCurrentView" xml:space="preserve">
+    <value>Tester sur la vue actuelle</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Appliquer</value>
+  </data>
+  <data name="Condition" xml:space="preserve">
+    <value>Condition</value>
+  </data>
+  <data name="AvailableCriterias" xml:space="preserve">
+    <value>Critères disponibles</value>
+  </data>
+  <data name="TestOnAMap" xml:space="preserve">
+    <value>Tester sur une carte</value>
   </data>
   <data name="TagsEditor" xml:space="preserve">
     <value>Editeur d'étiquette</value>
@@ -1230,15 +1239,6 @@ Dernière génération le {1}</value>
   </data>
   <data name="TagsTesterStats" xml:space="preserve">
     <value>{0} points, {1:0.0}% correspondent, {2:0.0000} msec/point</value>
-  </data>
-  <data name="TestOnAMap" xml:space="preserve">
-    <value>Tester sur une carte</value>
-  </data>
-  <data name="TestOnCurrentView" xml:space="preserve">
-    <value>Tester sur la vue actuelle</value>
-  </data>
-  <data name="TestRandomlyOnMap" xml:space="preserve">
-    <value>Tester aléatoirement sur la carte</value>
   </data>
   <data name="Tags" xml:space="preserve">
     <value>Etiquettes</value>
@@ -1252,47 +1252,47 @@ Dernière génération le {1}</value>
   <data name="GeneratePreviewToBuiltInViewer" xml:space="preserve">
     <value>Générer dans l'outil intégré (le plus rapide)</value>
   </data>
-  <data name="TileSize" xml:space="preserve">
-    <value>Taille de tuile</value>
-  </data>
-  <data name="TotalImageSize" xml:space="preserve">
-    <value>Taille totale de l'image</value>
-  </data>
   <data name="OpenFolder" xml:space="preserve">
     <value>Ouvrir le dossier</value>
   </data>
   <data name="OpenImage" xml:space="preserve">
     <value>Ouvrir l'image</value>
   </data>
-  <data name="ImportTextureMaskImage" xml:space="preserve">
-    <value>Importer le masque de texture</value>
-  </data>
   <data name="ImportSatelliteImage" xml:space="preserve">
     <value>Importer l'image satellite</value>
   </data>
-  <data name="Imagery" xml:space="preserve">
-    <value>Imagerie</value>
-  </data>
-  <data name="ExportSatelliteImage" xml:space="preserve">
-    <value>Exporter l'image satellite</value>
+  <data name="ImportTextureMaskImage" xml:space="preserve">
+    <value>Importer le masque de texture</value>
   </data>
   <data name="ExportTextureMaskImage" xml:space="preserve">
     <value>Exporter le masque de texture</value>
   </data>
+  <data name="ExportSatelliteImage" xml:space="preserve">
+    <value>Exporter l'image satellite</value>
+  </data>
   <data name="CannotBeReversedWarning" xml:space="preserve">
     <value>⚠ Ces opérations ne peuvent pas être inversées, aucune sauvegarde n'est effectuée.</value>
   </data>
+  <data name="TileSize" xml:space="preserve">
+    <value>Taille de tuile</value>
+  </data>
+  <data name="TotalImageSize" xml:space="preserve">
+    <value>Taille totale de l'image</value>
+  </data>
+  <data name="Imagery" xml:space="preserve">
+    <value>Imagerie</value>
+  </data>
   <data name="ImageryIsNotDetectedCannotEditIt" xml:space="preserve">
     <value>L'imagerie n'est pas détectée, impossible de la modifier.</value>
-  </data>
-  <data name="LayerContours" xml:space="preserve">
-    <value>Courbes de niveau</value>
   </data>
   <data name="Layers" xml:space="preserve">
     <value>Calques</value>
   </data>
   <data name="EditOnOpenStreetMapOrg" xml:space="preserve">
     <value>Modifier sur OpenStreetMap.org</value>
+  </data>
+  <data name="LayerContours" xml:space="preserve">
+    <value>Courbes de niveau</value>
   </data>
   <data name="LayerOrchard" xml:space="preserve">
     <value>Vergers</value>
@@ -1324,47 +1324,41 @@ Dernière génération le {1}</value>
   <data name="AssetScree" xml:space="preserve">
     <value>Eboulis</value>
   </data>
-  <data name="Count" xml:space="preserve">
-    <value>Nombre</value>
-  </data>
-  <data name="Export" xml:space="preserve">
-    <value>Exporter</value>
-  </data>
-  <data name="ExportObjectsToFile" xml:space="preserve">
-    <value>Exporter les objets vers un fichier</value>
+  <data name="ImportFromFile" xml:space="preserve">
+    <value>Importer depuis un fichier</value>
   </data>
   <data name="ExportToFile" xml:space="preserve">
     <value>Exporter vers un fichier</value>
   </data>
-  <data name="ImportFromFile" xml:space="preserve">
-    <value>Importer depuis un fichier</value>
-  </data>
-  <data name="ApplyChanges" xml:space="preserve">
-    <value>Appliquer les changement</value>
+  <data name="Replace" xml:space="preserve">
+    <value>Remplacer</value>
   </data>
   <data name="Reduce" xml:space="preserve">
     <value>Réduire</value>
   </data>
+  <data name="Count" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="ExportObjectsToFile" xml:space="preserve">
+    <value>Exporter les objets vers un fichier</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
   <data name="ReduceObjects" xml:space="preserve">
     <value>Réduire des objets</value>
-  </data>
-  <data name="Replace" xml:space="preserve">
-    <value>Remplacer</value>
   </data>
   <data name="ReplaceObjects" xml:space="preserve">
     <value>Remplacer des objets</value>
   </data>
-  <data name="AffectedCount" xml:space="preserve">
-    <value>Nombre concerné</value>
+  <data name="ApplyChanges" xml:space="preserve">
+    <value>Appliquer les changement</value>
   </data>
-  <data name="EstimatedRemainCount" xml:space="preserve">
-    <value>Nombre estimé restant</value>
+  <data name="SourceModel" xml:space="preserve">
+    <value>Modèle à remplacer</value>
   </data>
-  <data name="InitialCount" xml:space="preserve">
-    <value>Nombre initial</value>
-  </data>
-  <data name="RemovalRate" xml:space="preserve">
-    <value>Taux de suppression</value>
+  <data name="TargetModel" xml:space="preserve">
+    <value>Modèle de remplacement</value>
   </data>
   <data name="ShiftX" xml:space="preserve">
     <value>Décalage X</value>
@@ -1375,44 +1369,47 @@ Dernière génération le {1}</value>
   <data name="ShiftZ" xml:space="preserve">
     <value>Décalage Z</value>
   </data>
-  <data name="SourceModel" xml:space="preserve">
-    <value>Modèle à remplacer</value>
+  <data name="AffectedCount" xml:space="preserve">
+    <value>Nombre concerné</value>
   </data>
-  <data name="TargetModel" xml:space="preserve">
-    <value>Modèle de remplacement</value>
+  <data name="RemovalRate" xml:space="preserve">
+    <value>Taux de suppression</value>
   </data>
-  <data name="FolderPath" xml:space="preserve">
-    <value>Chemin du dossier</value>
+  <data name="InitialCount" xml:space="preserve">
+    <value>Nombre initial</value>
   </data>
-  <data name="FilePath" xml:space="preserve">
-    <value>Chemin du fichier</value>
-  </data>
-  <data name="ExportObjectsToAFilePerObjectType" xml:space="preserve">
-    <value>Exporter les objets vers un fichier par type d'objet</value>
+  <data name="EstimatedRemainCount" xml:space="preserve">
+    <value>Nombre estimé restant</value>
   </data>
   <data name="ExportObjectsToASingleFile" xml:space="preserve">
     <value>Exporter les objets vers un seul fichier</value>
   </data>
-  <data name="ChangeType" xml:space="preserve">
-    <value>Changer la catégorie</value>
+  <data name="ExportObjectsToAFilePerObjectType" xml:space="preserve">
+    <value>Exporter les objets vers un fichier par type d'objet</value>
   </data>
-  <data name="CopyPath" xml:space="preserve">
-    <value>Copier le chemin</value>
+  <data name="FilePath" xml:space="preserve">
+    <value>Chemin du fichier</value>
+  </data>
+  <data name="FolderPath" xml:space="preserve">
+    <value>Chemin du dossier</value>
   </data>
   <data name="Preview3D" xml:space="preserve">
     <value>Aperçu 3D</value>
   </data>
+  <data name="CopyPath" xml:space="preserve">
+    <value>Copier le chemin</value>
+  </data>
+  <data name="ChangeType" xml:space="preserve">
+    <value>Changer la catégorie</value>
+  </data>
   <data name="RemoveFromList" xml:space="preserve">
     <value>Supprimer de la liste</value>
-  </data>
-  <data name="ElevationGrid" xml:space="preserve">
-    <value>Grille de dénivelé</value>
   </data>
   <data name="OpenMapEditor" xml:space="preserve">
     <value>Ouvrir l'éditeur de carte</value>
   </data>
-  <data name="ComputeDensityFromDefault" xml:space="preserve">
-    <value>Calculer depuis les valeurs par défaut</value>
+  <data name="ElevationGrid" xml:space="preserve">
+    <value>Grille de dénivelé</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Par défaut</value>
@@ -1420,14 +1417,32 @@ Dernière génération le {1}</value>
   <data name="DensityConfiguration" xml:space="preserve">
     <value>Configuration de la densité</value>
   </data>
+  <data name="PreviewCount" xml:space="preserve">
+    <value>Nombre d'aperçu</value>
+  </data>
+  <data name="PreviewSize" xml:space="preserve">
+    <value>Taille de l'aperçu</value>
+  </data>
   <data name="LargeAreas" xml:space="preserve">
     <value>Grande zones</value>
   </data>
-  <data name="NoiseFrequency" xml:space="preserve">
-    <value>Fréquence</value>
+  <data name="UseSpecificDensity" xml:space="preserve">
+    <value>Utiliser des valeurs spécifiques</value>
+  </data>
+  <data name="UseDefaultDensity" xml:space="preserve">
+    <value>Utiliser les valeurs par défaut</value>
+  </data>
+  <data name="ComputeDensityFromDefault" xml:space="preserve">
+    <value>Calculer depuis les valeurs par défaut</value>
+  </data>
+  <data name="Randomization" xml:space="preserve">
+    <value>Échantillonnage aléatoire</value>
   </data>
   <data name="NoiseProportion" xml:space="preserve">
     <value>Proportion de bruit</value>
+  </data>
+  <data name="NoiseType" xml:space="preserve">
+    <value>Type de bruit</value>
   </data>
   <data name="NoiseSamples" xml:space="preserve">
     <value>Echantillons</value>
@@ -1435,23 +1450,8 @@ Dernière génération le {1}</value>
   <data name="NoiseThreshold" xml:space="preserve">
     <value>Seuil</value>
   </data>
-  <data name="NoiseType" xml:space="preserve">
-    <value>Type de bruit</value>
-  </data>
-  <data name="PreviewCount" xml:space="preserve">
-    <value>Nombre d'aperçu</value>
-  </data>
-  <data name="PreviewSize" xml:space="preserve">
-    <value>Taille de l'aperçu</value>
-  </data>
-  <data name="Randomization" xml:space="preserve">
-    <value>Échantillonnage aléatoire</value>
-  </data>
-  <data name="UseDefaultDensity" xml:space="preserve">
-    <value>Utiliser les valeurs par défaut</value>
-  </data>
-  <data name="UseSpecificDensity" xml:space="preserve">
-    <value>Utiliser des valeurs spécifiques</value>
+  <data name="NoiseFrequency" xml:space="preserve">
+    <value>Fréquence</value>
   </data>
   <data name="DensityDefaultLargeAreasLabel" xml:space="preserve">
     <value>Par défaut {0}, Grandes zones {1}</value>
@@ -1462,11 +1462,11 @@ Dernière génération le {1}</value>
   <data name="Seed" xml:space="preserve">
     <value>Graine</value>
   </data>
-  <data name="UseConstant" xml:space="preserve">
-    <value>Utiliser une constante</value>
-  </data>
   <data name="UseRandomForEachArea" xml:space="preserve">
     <value>Utiliser une valeur aléatoire par zone</value>
+  </data>
+  <data name="UseConstant" xml:space="preserve">
+    <value>Utiliser une constante</value>
   </data>
   <data name="UseLibraryValue" xml:space="preserve">
     <value>Utiliser la valeur de la bibliothèque</value>
@@ -1480,8 +1480,8 @@ Dernière génération le {1}</value>
   <data name="Open" xml:space="preserve">
     <value>Ouvrir</value>
   </data>
-  <data name="Browse" xml:space="preserve">
-    <value>Parcourir...</value>
+  <data name="Preview3DWithClutter" xml:space="preserve">
+    <value>Aperçu 3D avec clutter</value>
   </data>
   <data name="BrowseGdt" xml:space="preserve">
     <value>Parcourir les textures de sol</value>
@@ -1489,32 +1489,32 @@ Dernière génération le {1}</value>
   <data name="BrowseGdtDescription" xml:space="preserve">
     <value>Parcourir les textures de sol existantes, or crée les siennes, pour choisir les plus adaptées pour votre style de carte.</value>
   </data>
-  <data name="CopyConfigurationFrom" xml:space="preserve">
-    <value>Copier la configuration de</value>
-  </data>
-  <data name="CreateAGroundDetailTexture" xml:space="preserve">
-    <value>Créer une texture de sol</value>
-  </data>
   <data name="CreateATexture" xml:space="preserve">
     <value>Créer une texture...</value>
   </data>
-  <data name="GdtCopyConfigurationHint" xml:space="preserve">
-    <value>Choisir la surface existante la plus approchante.</value>
+  <data name="ImportTextures" xml:space="preserve">
+    <value>Importer des textures</value>
   </data>
-  <data name="GdtNameHint" xml:space="preserve">
-    <value>Choisir le nom de manière judicieuse: il doit être globallement unique et ne peut pas être changé.</value>
-  </data>
-  <data name="GdtNonEditableReason" xml:space="preserve">
-    <value>Cette texture du sol provient du jeu de base ou d'un mod. Sa configuration ne peut pas être changée.</value>
+  <data name="Browse" xml:space="preserve">
+    <value>Parcourir...</value>
   </data>
   <data name="Generate" xml:space="preserve">
     <value>Générer</value>
   </data>
+  <data name="CopyConfigurationFrom" xml:space="preserve">
+    <value>Copier la configuration de</value>
+  </data>
+  <data name="GdtNameHint" xml:space="preserve">
+    <value>Choisir le nom de manière judicieuse: il doit être globallement unique et ne peut pas être changé.</value>
+  </data>
+  <data name="GdtCopyConfigurationHint" xml:space="preserve">
+    <value>Choisir la surface existante la plus approchante.</value>
+  </data>
+  <data name="CreateAGroundDetailTexture" xml:space="preserve">
+    <value>Créer une texture de sol</value>
+  </data>
   <data name="ImportAnExistingTextureFromProjectDrive" xml:space="preserve">
     <value>Importer une texture existante du Project Drive</value>
-  </data>
-  <data name="ImportExistingFile" xml:space="preserve">
-    <value>Importer le fichier existant</value>
   </data>
   <data name="ImportFromAnImage" xml:space="preserve">
     <value>Importer depuis une image</value>
@@ -1522,11 +1522,11 @@ Dernière génération le {1}</value>
   <data name="ImportImage" xml:space="preserve">
     <value>Importer l'image</value>
   </data>
-  <data name="ImportTextures" xml:space="preserve">
-    <value>Importer des textures</value>
+  <data name="ImportExistingFile" xml:space="preserve">
+    <value>Importer le fichier existant</value>
   </data>
-  <data name="Preview3DWithClutter" xml:space="preserve">
-    <value>Aperçu 3D avec clutter</value>
+  <data name="GdtNonEditableReason" xml:space="preserve">
+    <value>Cette texture du sol provient du jeu de base ou d'un mod. Sa configuration ne peut pas être changée.</value>
   </data>
   <data name="ConvertColors" xml:space="preserve">
     <value>Convertir les couleurs</value>
@@ -1564,11 +1564,11 @@ Dernière génération le {1}</value>
   <data name="SaveFullMap" xml:space="preserve">
     <value>Enregistrer la carte complète</value>
   </data>
-  <data name="SaveWrpOnly" xml:space="preserve">
-    <value>Enregistrer seulement le fichier WRP</value>
-  </data>
   <data name="SaveFullMapDescription" xml:space="preserve">
     <value>Utiliser cette option pour avoir une copie complète de la carte, ce qui inclus les routes, l'image satellite, et le masque de texture.</value>
+  </data>
+  <data name="SaveWrpOnly" xml:space="preserve">
+    <value>Enregistrer seulement le fichier WRP</value>
   </data>
   <data name="SaveWrpOnlyDescription" xml:space="preserve">
     <value>Utiliser cette option pour effectuer une sauvegarde de la position des objets.</value>
@@ -1603,14 +1603,17 @@ Dernière génération le {1}</value>
   <data name="CenterOn" xml:space="preserve">
     <value>centrée sur</value>
   </data>
-  <data name="GenericMapConfiguration" xml:space="preserve">
-    <value>Configuration de Carte Générique</value>
+  <data name="GenericMapGenerate" xml:space="preserve">
+    <value>Générer les données</value>
   </data>
   <data name="GenericMapExportProfile" xml:space="preserve">
     <value>Profil d'exportation</value>
   </data>
-  <data name="GenericMapGenerate" xml:space="preserve">
-    <value>Générer les données</value>
+  <data name="TargetDirectory" xml:space="preserve">
+    <value>Répertoire cible</value>
+  </data>
+  <data name="GenericMapConfiguration" xml:space="preserve">
+    <value>Configuration de Carte Générique</value>
   </data>
   <data name="GenericMapTitle" xml:space="preserve">
     <value>Générique</value>
@@ -1618,13 +1621,19 @@ Dernière génération le {1}</value>
   <data name="GenericMapDescription" xml:space="preserve">
     <value>Générer une carte de dénivelé, une image satellite et des formes pour utilisation avec n'importe quel autre moteur de jeu ou logiciel 3d.</value>
   </data>
-  <data name="TargetDirectory" xml:space="preserve">
-    <value>Répertoire cible</value>
-  </data>
   <data name="CreateGenericMapConfigurationDescription" xml:space="preserve">
     <value>Définir les coordonnées pour la génération de données</value>
   </data>
   <data name="PrivateServiceRoadThreshold" xml:space="preserve">
     <value>Seuil des routes privées</value>
+  </data>
+  <data name="LaunchWithExistingMapMods" xml:space="preserve">
+    <value>Lancer avec les mods existants de la carte</value>
+  </data>
+  <data name="LaunchWithAllEnabledMods" xml:space="preserve">
+    <value>Lancer avec tous les mods actifs</value>
+  </data>
+  <data name="InstallSubstituteFiles" xml:space="preserve">
+    <value>Installer les fichiers de substitution</value>
   </data>
 </root>

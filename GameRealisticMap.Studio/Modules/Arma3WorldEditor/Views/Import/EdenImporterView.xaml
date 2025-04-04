@@ -53,10 +53,10 @@
                     </TextBlock>
                     <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
                         <RadioButton Margin="10 0 0 0" GroupName="LaunchMode" IsChecked="{Binding LaunchDependenciesOnly}">
-                            <Run Text="Launch with existing map mods"/>
+                            <Run Text="{x:Static r:Labels.LaunchWithExistingMapMods}"/>
                         </RadioButton>
                         <RadioButton Margin="10 0 0 0" GroupName="LaunchMode">
-                            <Run Text="Launch with all enabled mods"/>
+                            <Run Text="{x:Static r:Labels.LaunchWithAllEnabledMods}"/>
                         </RadioButton>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10 5 10 10">
