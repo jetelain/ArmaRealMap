@@ -22,31 +22,31 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data.Services
             _arma3ModsService = arma3ModsService;
         }
 
-        public IEnumerable<string> ComputeModDependenciesPath(IEnumerable<string> usedFiles)
+        private IEnumerable<string> ComputeModDependenciesPath(IEnumerable<string> usedFiles)
         {
-            // Detect mods from used files
-            var mods = (_dataModule.ProjectDrive.SecondarySource as PboFileSystem)?.GetModPaths(usedFiles) ?? Enumerable.Empty<string>();
-
-            // Detect creator DLC dependencies
-            foreach (var cdlc in _arma3ModsService.CreatorDlc)
-            {
-                var prefix = cdlc.Prefix + "\\";
-                if (usedFiles.Any(f => f.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
-                {
-                    mods = mods.Append(cdlc.Path);
-                }
-            }
-            return mods;
+            return (_dataModule.ProjectDrive.SecondarySource as PboFileSystem)?.GetModPaths(usedFiles) ?? Enumerable.Empty<string>();
         }
 
         public IEnumerable<ModDependencyDefinition> ComputeModDependencies(IEnumerable<string> usedFiles)
         {
             var workshopPath = Arma3ToolsHelper.GetArma3WorkshopPath().TrimEnd('\\');
 
+            // Detect creator DLC dependencies
+            var cdlcList = new List<ModInfo>();
+            foreach (var cdlc in _arma3ModsService.CreatorDlc)
+            {
+                var prefix = cdlc.Prefix + "\\";
+                if (usedFiles.Any(f => f.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+                {
+                    cdlcList.Add(cdlc);
+                }
+            }
+
             return ComputeModDependenciesPath(usedFiles)
                 .Select(path => GetSteamId(workshopPath, path))
                 .Where(s => s != null)
                 .Select(m => new ModDependencyDefinition(m!))
+                .Concat(cdlcList.Select(c => new ModDependencyDefinition(c.SteamId!, Path.GetFileName(c.Path))))
                 .ToList();
         }
 

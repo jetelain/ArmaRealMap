@@ -2,6 +2,7 @@
 using System.Runtime.Versioning;
 using System.Text;
 using GameRealisticMap.Arma3.Assets;
+using GameRealisticMap.Arma3.GameLauncher;
 using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3.Aerial
@@ -91,7 +92,7 @@ namespace GameRealisticMap.Arma3.Aerial
         private Process StartArma3()
         {
             var workshop = Arma3ToolsHelper.GetArma3WorkshopPath();
-            var mods = string.Join(";", dependencies.Select(d => Path.Combine(workshop, d.SteamId)).Concat(new[] { Path.Combine(workshop, "3016661145") }));
+            var mods = string.Join(";", dependencies.Select(d => Arma3Helper.ToArmaPath(d, workshop)).Concat(new[] { Path.Combine(workshop, "3016661145") }));
 
             var process = Process.Start(new ProcessStartInfo()
             {

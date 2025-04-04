@@ -36,7 +36,7 @@ namespace GameRealisticMap.Arma3.GameLauncher
                 var doc = new XDocument(new XElement("addons-presets",
                     new XElement("last-update", DateTime.Now),
                     new XElement("published-ids",
-                        dependencies.Select(d => new XElement("id", "steam:" + d.SteamId))
+                        dependencies.Where(d => !d.IsCdlc).Select(d => new XElement("id", "steam:" + d.SteamId))
                         .Concat(new[] { new XElement("id", "local:" + localModpath.ToUpperInvariant().TrimEnd('\\') + "\\") })),
                     new XElement("dlcs-appids")));
                 Directory.CreateDirectory(directory);
