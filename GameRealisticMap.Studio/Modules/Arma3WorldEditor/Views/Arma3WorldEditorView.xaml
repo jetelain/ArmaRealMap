@@ -144,7 +144,7 @@
                             <Button Margin="5" Padding="10" cal:Message.Attach="ExportIdMap">
                                 <Run Text="{x:Static r:Labels.ExportTextureMaskImage}" />
                             </Button>
-                            <Line X1="1" X2="1" Y1="0" Y2="30" StrokeThickness="1" Height="30" Width="2" Stroke="Gray" Margin="5 0" VerticalAlignment="Center"  Visibility="{Binding IsImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <Line X1="1" X2="1" Y1="0" Y2="30" StrokeThickness="1" Height="30" Width="2" Stroke="Gray" Margin="5 0" VerticalAlignment="Center" />
                             <Button Margin="5" Padding="10" cal:Message.Attach="ImportSatMap" Visibility="{Binding IsImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Run Text="{x:Static r:Labels.ImportSatelliteImage}" />
                             </Button>
@@ -157,7 +157,10 @@
                                     </ContextMenu>
                                 </Button.ContextMenu>
                             </Button>
-                            <TextBlock VerticalAlignment="Center" Visibility="{Binding IsImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Button Margin="5" Padding="10" cal:Message.Attach="RestoreImagery" Visibility="{Binding IsNotImageryEditable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Run Text="{x:Static r:Labels.RestoreImagery}" />
+                            </Button>
+                            <TextBlock VerticalAlignment="Center">
                                 <Run Text="{x:Static r:Labels.CannotBeReversedWarning}" />
                             </TextBlock>
                         </StackPanel>

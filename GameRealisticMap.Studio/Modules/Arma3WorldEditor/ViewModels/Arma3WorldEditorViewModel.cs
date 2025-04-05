@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Media;
+using System.Windows;
 using BIS.Core.Config;
 using BIS.Core.Streams;
 using BIS.WRP;
@@ -13,6 +13,7 @@ using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Arma3.Edit.Imagery;
+using GameRealisticMap.Arma3.Edit.Imagery.Generic;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Arma3.GameLauncher;
@@ -39,8 +40,6 @@ using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Memory;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp;
-using GameRealisticMap.Arma3.Edit.Imagery.Generic;
 
 namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 {
@@ -96,6 +95,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             World = StreamHelper.Read<AnyWrp>(filePath).GetEditableWrp();
 
+            if (LicensingGuard.IsProtected(World))
+            {
+                CloseDueToProtection();
+                return;
+            }
+
             ConfigFile = ReadGameConfig(filePath, worldName);
 
             savedRevision = ConfigFile?.Revision ?? 0;
@@ -137,6 +142,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             NotifyOfPropertyChange(nameof(TreeName));
 
             await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
+        }
+
+        private void CloseDueToProtection()
+        {
+            World = null;
+            _ = TryCloseAsync();
+            MessageBox.Show(Labels.ProtectedMapMessage, Labels.Denied, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         internal void UpdateBackupsList(string filePath)
@@ -800,6 +812,16 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public ExistingImageryInfos GetConfig()
         {
             return GrmImagery ?? new ExistingImageryInfos(0, 0, 0, ConfigFile?.PboPrefix ?? string.Empty);
+        }
+
+        public void RestoreImagery()
+        {
+            var world = World;
+            var imagery = GenericImagery;
+            if (world != null && imagery != null)
+            {
+                IoC.Get<IProgressTool>().Run(new RestoreImageryTask(this, world, imagery, arma3Data.ProjectDrive));
+            }
         }
     }
 }

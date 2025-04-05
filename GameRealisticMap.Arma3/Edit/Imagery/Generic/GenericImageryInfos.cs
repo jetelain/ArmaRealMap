@@ -206,15 +206,24 @@ namespace GameRealisticMap.Arma3.Edit.Imagery.Generic
 
         public HugeImage<Rgb24> GetIdMap(IGameFileSystem fileSystem, TerrainMaterialLibrary materials)
         {
-            var parts = new ImageryTilerHugeImagePartitioner(OtherTileInfos.Select(o => o.GrmTile).ToList(), IdMapMultiplier);
-            return new HugeImage<Rgb24>(new GenericIdMapReadStorage(this, fileSystem, materials), new Size(TotalSize * IdMapMultiplier), new HugeImageSettingsBase(), parts, new Rgb24());
+            return GetIdMap<Rgb24>(fileSystem, materials);
         }
-
 
         public HugeImage<Rgb24> GetSatMap(IGameFileSystem fileSystem)
         {
+            return GetSatMap<Rgb24>(fileSystem);
+        }
+
+        public HugeImage<TPixel> GetIdMap<TPixel>(IGameFileSystem fileSystem, TerrainMaterialLibrary materials) where TPixel : unmanaged, IPixel<TPixel>
+        {
+            var parts = new ImageryTilerHugeImagePartitioner(OtherTileInfos.Select(o => o.GrmTile).ToList(), IdMapMultiplier);
+            return new HugeImage<TPixel>(new GenericIdMapReadStorage(this, fileSystem, materials), new Size(TotalSize * IdMapMultiplier), new HugeImageSettingsBase(), parts, new TPixel());
+        }
+
+        public HugeImage<TPixel> GetSatMap<TPixel>(IGameFileSystem fileSystem) where TPixel : unmanaged, IPixel<TPixel>
+        {
             var parts = new ImageryTilerHugeImagePartitioner(OtherTileInfos.Select(o => o.GrmTile).ToList(), 1);
-            return new HugeImage<Rgb24>(new GenericSatMapReadStorage(this, fileSystem), new Size(TotalSize), new HugeImageSettingsBase(), parts, new Rgb24());
+            return new HugeImage<TPixel>(new GenericSatMapReadStorage(this, fileSystem), new Size(TotalSize), new HugeImageSettingsBase(), parts, new TPixel());
         }
     }
 }

@@ -26,7 +26,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             this.libTexture = libTexture;
         }
 
-        public static async Task<List<MaterialItem>> Create(Arma3WorldEditorViewModel parent, EditableWrp wrp, ProjectDrive projectDrive, string pboPrefix)
+        public static async Task<List<MaterialItem>> Create(Arma3WorldEditorViewModel parent, EditableWrp wrp, IGameFileSystem projectDrive, string pboPrefix)
         {
             var textures = await IdMapHelper.GetUsedTextureList(wrp, projectDrive);
             if (textures.Count == 0)
