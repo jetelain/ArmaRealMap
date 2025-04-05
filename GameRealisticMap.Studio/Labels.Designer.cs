@@ -1799,6 +1799,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Dependencies.
+        /// </summary>
+        public static string Dependencies {
+            get {
+                return ResourceManager.GetString("Dependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Depth.
         /// </summary>
         public static string Depth {
@@ -3688,6 +3697,15 @@ namespace GameRealisticMap.Studio {
         public static string RecentGeneratedMapsHint {
             get {
                 return ResourceManager.GetString("RecentGeneratedMapsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Recompute.
+        /// </summary>
+        public static string Recompute {
+            get {
+                return ResourceManager.GetString("Recompute", resourceCulture);
             }
         }
         

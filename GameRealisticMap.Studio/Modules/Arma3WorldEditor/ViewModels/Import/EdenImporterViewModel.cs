@@ -183,7 +183,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
 
             if (LaunchDependenciesOnly)
             {
-                dependencies = parent.Dependencies.ToList();
+                dependencies = parent.Dependencies.Items.ToList();
             }
             else
             {

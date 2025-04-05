@@ -102,7 +102,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             if (depEntry != null)
             {
                 using var stream = depEntry.Open();
-                parent.Dependencies = await JsonSerializer.DeserializeAsync<List<ModDependencyDefinition>>(stream) ?? new List<ModDependencyDefinition>();
+                parent.Dependencies.Items = await JsonSerializer.DeserializeAsync<List<ModDependencyDefinition>>(stream) ?? new List<ModDependencyDefinition>();
             }
 
             if (parent.ConfigFile != null)

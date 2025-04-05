@@ -15,12 +15,14 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
     {
         private readonly Arma3WorldEditorViewModel parent;
         private string texture;
+        private string normalTexture;
         private GdtDetailViewModel? libTexture;
 
-        public MaterialItem(Arma3WorldEditorViewModel parent, string texture, GdtDetailViewModel? libTexture)
+        public MaterialItem(Arma3WorldEditorViewModel parent, string texture, string normalTexture, GdtDetailViewModel? libTexture)
         {
             this.parent = parent;
             this.texture = texture;
+            this.normalTexture = normalTexture;
             this.libTexture = libTexture;
         }
 
@@ -45,7 +47,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                             libTexture = await lib.ImportExternal(texture.ColorTexture, texture.NormalTexture);
                         }
                     }
-                    items.Add(new MaterialItem(parent, texture.ColorTexture, libTexture));
+                    items.Add(new MaterialItem(parent, texture.ColorTexture, texture.NormalTexture, libTexture));
                 }
             }
             return items;
@@ -55,6 +57,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         { 
             get { return texture; } 
             set { Set(ref texture, value); } 
+        }
+
+        public string NormalTexture
+        {
+            get { return normalTexture; }
+            set { Set(ref normalTexture, value); }
         }
 
         public GdtDetailViewModel? LibraryItem
