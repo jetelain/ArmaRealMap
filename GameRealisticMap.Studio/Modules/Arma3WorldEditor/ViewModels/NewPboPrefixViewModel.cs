@@ -76,7 +76,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     worldVM.ProjectDrive.CreateDirectory(worldVM.ConfigFile.Roads);
                     new RoadsSerializer(worldVM.ProjectDrive).Serialize(worldVM.ConfigFile.Roads, worldVM.Roads.Roads.Where(r => !r.IsRemoved), worldVM.Roads.RoadTypeInfos);
                 }
-                await worldVM.SaveDependencies(FilePath);
+                await worldVM.Dependencies.Save(FilePath);
                 worldVM.UpdateBackupsList(FilePath);
                 worldVM.IsRoadsDirty = false;
             }

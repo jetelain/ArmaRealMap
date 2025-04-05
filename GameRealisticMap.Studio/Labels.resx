@@ -1627,4 +1627,19 @@ Last generated on {1}</value>
   <data name="PrivateServiceRoadThreshold" xml:space="preserve">
     <value>Private Service Road Threshold</value>
   </data>
+  <data name="LaunchWithExistingMapMods" xml:space="preserve">
+    <value>Launch with existing map mods</value>
+  </data>
+  <data name="LaunchWithAllEnabledMods" xml:space="preserve">
+    <value>Launch with all enabled mods</value>
+  </data>
+  <data name="InstallSubstituteFiles" xml:space="preserve">
+    <value>Install Substitute Files</value>
+  </data>
+  <data name="Dependencies" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="Recompute" xml:space="preserve">
+    <value>Recompute</value>
+  </data>
 </root>

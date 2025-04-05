@@ -12,7 +12,7 @@ namespace GameRealisticMap.Arma3.GameLauncher
             var arma3 = Arma3ToolsHelper.GetArma3Path();
             var workshop = Arma3ToolsHelper.GetArma3WorkshopPath();
 
-            var mods = string.Join(";", dependencies.Select(d => Path.Combine(workshop, d.SteamId)).Concat(new[] { localModpath }));
+            var mods = string.Join(";", dependencies.Select(d => ToArmaPath(d, workshop)).Distinct().Concat(new[] { localModpath }));
 
             Process.Start(new ProcessStartInfo()
             {
@@ -21,6 +21,15 @@ namespace GameRealisticMap.Arma3.GameLauncher
                 WorkingDirectory = arma3,
                 Arguments = $"\"-world={worldName}\" \"-mod={mods}\""
             });
+        }
+
+        public static string ToArmaPath(ModDependencyDefinition definition, string workshopPath)
+        {
+            if (definition.IsCdlc)
+            {
+                return definition.CdlcPath!;
+            }
+            return Path.Combine(workshopPath, definition.SteamId);
         }
     }
 }

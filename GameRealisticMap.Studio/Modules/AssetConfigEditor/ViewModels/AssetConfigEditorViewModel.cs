@@ -209,7 +209,7 @@ namespace GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels
         private async Task<Arma3Assets> AutoEnableMods(string filePath)
         {
             var deps = await Arma3Assets.LoadDependenciesFromFile(filePath);
-            MissingMods = await MissingMod.DetectMissingMods(_arma3Data, IoC.Get<IArma3ModsService>(), deps);
+            MissingMods = await MissingMod.DetectMissingMods(_arma3Data, IoC.Get<IArma3ModsService>(), IoC.Get<ISubstituteDataService>(), deps);
             NotifyOfPropertyChange(nameof(HasMissingMods));
             NotifyOfPropertyChange(nameof(MissingMods));
             try

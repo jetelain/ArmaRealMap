@@ -498,5 +498,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
         {
             DisplayName = IsDirty ? Title + "*" : Title;
         }
+
+        public bool IsGameData => _itemType == GdtCatalogItemType.GameData;
     }
 }

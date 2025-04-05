@@ -50,6 +50,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.MassEdit
                 {
                     materialItem.LibraryItem = _libraryItem;
                     materialItem.ColorTexture = material.GetColorTexturePath(config);
+                    materialItem.NormalTexture = material.GetNormalTexturePath(config);
                     return TryCloseAsync(false);
                 }
             }

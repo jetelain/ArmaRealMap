@@ -5,11 +5,17 @@ namespace GameRealisticMap.Arma3.Assets
     public class ModDependencyDefinition
     {
         [JsonConstructor]
-        public ModDependencyDefinition(string steamId)
+        public ModDependencyDefinition(string steamId, string? cdlcPath = null)
         {
             SteamId = steamId;
+            CdlcPath = cdlcPath;
         }
 
         public string SteamId { get; }
+
+        public string? CdlcPath { get; }
+
+        [JsonIgnore]
+        public bool IsCdlc => !string.IsNullOrEmpty(CdlcPath);
     }
 }
