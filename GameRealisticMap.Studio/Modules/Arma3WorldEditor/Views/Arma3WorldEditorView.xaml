@@ -287,6 +287,26 @@
                 </StackPanel>
             </Expander>
 
+            <Expander IsExpanded="True" Margin="10">
+                <Expander.Header>
+                    <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.Dependencies}"/></TextBlock>
+                </Expander.Header>
+                <StackPanel Margin="10">
+                    <StackPanel Margin="0" Orientation="Horizontal" >
+                        <Button Margin="5" Padding="10" cal:Message.Attach="{x:Static r:Labels.Recompute}" DataContext="{Binding Dependencies}">
+                            <Run Text="Re-compute dependencies" />
+                        </Button>
+                    </StackPanel>
+
+                    <DataGrid ItemsSource="{Binding Dependencies.Mods}" AutoGenerateColumns="false" MaxHeight="500" grm:ScrollBehaviors.WheelBubble="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{x:Static r:Labels.Name}" Binding="{Binding Name}" IsReadOnly="True" Width="500" />
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                </StackPanel>
+            </Expander>
+            
         </StackPanel>
     </ScrollViewer>
 </UserControl>

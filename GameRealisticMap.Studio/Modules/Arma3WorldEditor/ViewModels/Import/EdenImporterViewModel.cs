@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Arma3.GameLauncher;
+using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.Arma3Data.Services;
 using GameRealisticMap.Studio.Toolkit;
 using NLog;
@@ -39,6 +40,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
         public bool IsClipboardValid => !IsWorking && string.IsNullOrEmpty(ClipboardError) && string.IsNullOrEmpty(ClipboardWarning);
 
         public WrpEditBatch? Batch { get; set; }
+
+        public bool LaunchDependenciesOnly { get; set; } = true;
 
         public bool IsReadyToImport => Batch != null && Batch.IsComplete && string.IsNullOrEmpty(ClipboardError);
 
@@ -175,15 +178,30 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
                 ShellHelper.OpenUri("steam://url/CommunityFilePage/3016661145");
                 return Task.CompletedTask;
             }
-            var dependencies = parent.Dependencies.ToList();
+
+            List< ModDependencyDefinition> dependencies;
+
+            if (LaunchDependenciesOnly)
+            {
+                dependencies = parent.Dependencies.Items.ToList();
+            }
+            else
+            {
+                var used = IoC.Get<IArma3DataModule>().ActiveMods.ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                dependencies = installed.Where(i => !string.IsNullOrEmpty(i.SteamId) && used.Contains(i.Path))
+                    .Select(i => new ModDependencyDefinition(i.SteamId!, i.IsCdlc ? Path.GetFileName(i.Path) : null))
+                    .ToList();
+            }
+
             dependencies.Add(new ModDependencyDefinition("450814997")); // CBA3 (required by Export to GameRealisticMap)
             dependencies.Add(new ModDependencyDefinition("3016661145")); // Export to GameRealisticMap
             AddIfInstalled(installed, dependencies, "882231372"); // Eden Extended Objects
             AddIfInstalled(installed, dependencies, "1923321700"); // O&T Expansion Eden
             AddIfInstalled(installed, dependencies, "2822758266"); // Deformer
-            // XXX: Add a settings page for that
 
             Arma3Helper.Launch(dependencies, parent.TargetModDirectory, Path.GetFileNameWithoutExtension(parent.FileName));
+
             return Task.CompletedTask;
         }
 

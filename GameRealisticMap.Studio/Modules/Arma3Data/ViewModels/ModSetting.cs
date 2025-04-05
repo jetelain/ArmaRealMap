@@ -1,18 +1,21 @@
-﻿namespace GameRealisticMap.Studio.Modules.Arma3Data.ViewModels
+﻿using GameRealisticMap.Studio.Modules.Arma3Data.Services;
+
+namespace GameRealisticMap.Studio.Modules.Arma3Data.ViewModels
 {
     internal class ModSetting
     {
-        public ModSetting(bool isActive, string name, string path)
+        public ModSetting(bool isActive, ModInfo modInfo)
         {
             IsActive = isActive;
-            Name = name;
-            Path = path;
+            ModInfo = modInfo;
         }
 
         public bool IsActive { get; set; }
 
-        public string Name { get; }    
+        public string Name => ModInfo.Name;
 
-        public string Path { get; }
+        public string Path => ModInfo.Path;
+
+        public ModInfo ModInfo { get; }
     }
 }

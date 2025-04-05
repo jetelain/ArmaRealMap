@@ -210,7 +210,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
                     try
                     {
                         var deps = await Arma3Assets.LoadDependenciesFromFile(fullpath);
-                        MissingMods = await MissingMod.DetectMissingMods(_arma3DataModule, IoC.Get<IArma3ModsService>(), deps);
+                        MissingMods = await MissingMod.DetectMissingMods(_arma3DataModule, IoC.Get<IArma3ModsService>(), IoC.Get<ISubstituteDataService>(), deps);
                     }
                     catch
                     {

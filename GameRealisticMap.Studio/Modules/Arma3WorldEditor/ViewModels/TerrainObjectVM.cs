@@ -9,6 +9,7 @@ using BIS.WRP;
 using Caliburn.Micro;
 using GameRealisticMap.Geometries;
 using GameRealisticMap.Studio.Controls;
+using GameRealisticMap.Studio.Modules.Arma3Data;
 using GameRealisticMap.Studio.Modules.AssetBrowser.Services;
 using Gemini.Modules.Inspector;
 using Gemini.Modules.Inspector.Inspectors;
@@ -72,7 +73,6 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         public string Model 
         { 
             get => obj.Model; 
-            set { /* Not yet supported */ } 
         }
 
         public bool IsRemoved 
@@ -96,9 +96,19 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             {
                 if (inspectors == null)
                 {
+                    var editorWrapper = new TerrainObjectPropertiesVM(obj, IoC.Get<IArma3DataModule>().Library);
+
                     inspectors =
                         new InspectableObjectBuilder()
                             .WithEditor(this, r => r.Model, new TextBoxEditorViewModel<string>())
+                            .WithEditor(editorWrapper, r => r.Name, new TextBoxEditorViewModel<string>())
+                            .WithEditor(editorWrapper, r => r.X, new TextBoxEditorViewModel<float>())
+                            .WithEditor(editorWrapper, r => r.Y, new TextBoxEditorViewModel<float>())
+                            .WithEditor(editorWrapper, r => r.Z, new TextBoxEditorViewModel<float>())
+                            .WithEditor(editorWrapper, r => r.Pitch, new TextBoxEditorViewModel<float>())
+                            .WithEditor(editorWrapper, r => r.Roll, new TextBoxEditorViewModel<float>())
+                            .WithEditor(editorWrapper, r => r.Yaw, new TextBoxEditorViewModel<float>())
+                            .WithEditor(editorWrapper, r => r.Scale, new TextBoxEditorViewModel<float>())
                             .ToInspectableObject()
                             .Inspectors;
                 }

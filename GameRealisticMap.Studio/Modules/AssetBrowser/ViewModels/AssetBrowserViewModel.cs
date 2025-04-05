@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -101,6 +102,13 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
                 await DoImportBuiltin(usual.SteamId, usual.Name).ConfigureAwait(false);
                 return;
             }
+            if (mod.IsCdlc)
+            {
+                var cdlcModels = Directory.GetFiles(_arma3DataModule.ProjectDrive.GetFullPath(mod.Prefix), "*.p3d", SearchOption.AllDirectories).ToList();
+                await DoImport(cdlcModels, mod.Name).ConfigureAwait(false);
+                return;
+            }
+
             var pbo = new PboFileSystem(Enumerable.Empty<string>(), new[] { mod.Path });
             var models = pbo.FindAll($"*.p3d").ToList();
             var screenShots = pbo.FindAll($"land_*.jpg").ToList();
