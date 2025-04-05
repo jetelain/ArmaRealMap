@@ -1642,4 +1642,13 @@ Last generated on {1}</value>
   <data name="Recompute" xml:space="preserve">
     <value>Recompute</value>
   </data>
+  <data name="RestoreImagery" xml:space="preserve">
+    <value>Restore Imagery</value>
+  </data>
+  <data name="Denied" xml:space="preserve">
+    <value>Denied</value>
+  </data>
+  <data name="ProtectedMapMessage" xml:space="preserve">
+    <value>You are not allowed to edit or to export data from this map.</value>
+  </data>
 </root>

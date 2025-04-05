@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Media;
+using System.Windows;
 using BIS.Core.Config;
 using BIS.Core.Streams;
 using BIS.WRP;
@@ -13,6 +13,7 @@ using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
 using GameRealisticMap.Arma3.Edit;
 using GameRealisticMap.Arma3.Edit.Imagery;
+using GameRealisticMap.Arma3.Edit.Imagery.Generic;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.GameEngine.Roads;
 using GameRealisticMap.Arma3.GameLauncher;
@@ -60,6 +61,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
         private List<ObjectStatsItem> objectStatsItems = new List<ObjectStatsItem>();
         private List<MaterialItem> _materials = new List<MaterialItem>();
         private string? initialFilePath;
+        private GenericImageryInfos? _genericImagery;
 
         public Arma3WorldEditorViewModel(IArma3DataModule arma3Data, IWindowManager windowManager, IArma3RecentHistory history, IArma3BackupService worldBackup) 
         {
@@ -93,6 +95,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             World = StreamHelper.Read<AnyWrp>(filePath).GetEditableWrp();
 
+            if (LicensingGuard.IsProtected(World))
+            {
+                CloseDueToProtection();
+                return;
+            }
+
             ConfigFile = ReadGameConfig(filePath, worldName);
 
             savedRevision = ConfigFile?.Revision ?? 0;
@@ -105,10 +113,23 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
             if (ConfigFile != null && WrpCompiler.SeemsGeneratedByUs(World, ConfigFile.PboPrefix))
             {
-                Imagery = ExistingImageryInfos.TryCreate(arma3Data.ProjectDrive, ConfigFile.PboPrefix, SizeInMeters!.Value);
+                GrmImagery = ExistingImageryInfos.TryCreate(arma3Data.ProjectDrive, ConfigFile.PboPrefix, SizeInMeters!.Value);
 
                 Materials = await MaterialItem.Create(this, World, arma3Data.ProjectDrive, ConfigFile.PboPrefix);
             }
+
+            if (GrmImagery == null)
+            {
+                var pboPrefix = ConfigFile?.PboPrefix ?? "";
+
+                var other = GenericImagery = await GenericImageryInfos.TryCreate(arma3Data.ProjectDrive, World, pboPrefix);
+
+                if (other != null)
+                {
+                    Materials = await MaterialItem.Create(this, pboPrefix, other.GetGroundDetailTextures().ToList());
+                }
+            }
+
 
             if (Roads != null)
             {
@@ -121,6 +142,13 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             NotifyOfPropertyChange(nameof(TreeName));
 
             await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
+        }
+
+        private void CloseDueToProtection()
+        {
+            World = null;
+            _ = TryCloseAsync();
+            MessageBox.Show(Labels.ProtectedMapMessage, Labels.Denied, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         internal void UpdateBackupsList(string filePath)
@@ -243,14 +271,24 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
             set { _backups = value; NotifyOfPropertyChange(); }
         }
 
-        public bool IsImageryEditable => Imagery != null;
+        public bool IsImageryEditable => GrmImagery != null;
 
-        public bool IsNotImageryEditable => Imagery == null;
+        public bool IsNotImageryEditable => GrmImagery == null;
 
-        public ExistingImageryInfos? Imagery
+        public bool HasImagery => GrmImagery != null || GenericImagery != null;
+
+        public ExistingImageryInfos? GrmImagery
         {
             get { return _imagery; }
-            set { _imagery = value; NotifyOfPropertyChange(); NotifyOfPropertyChange(nameof(IsImageryEditable)); NotifyOfPropertyChange(nameof(IsNotImageryEditable)); }
+            set 
+            { 
+                _imagery = value; 
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(Imagery));
+                NotifyOfPropertyChange(nameof(HasImagery));
+                NotifyOfPropertyChange(nameof(IsImageryEditable));
+                NotifyOfPropertyChange(nameof(IsNotImageryEditable)); 
+            }
         }
 
         public bool IsRoadsDirty 
@@ -509,7 +547,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public Task ExportSatMap()
         {
-            if (_imagery != null)
+            var imagery = Imagery;
+            if (imagery != null)
             {
                 var dialog = new SaveFileDialog();
                 dialog.Filter = "PNG|*.png";
@@ -518,7 +557,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 {
                     var filename = dialog.FileName;
                     IoC.Get<IProgressTool>()
-                        .RunTask(GameRealisticMap.Studio.Labels.ExportSatelliteImage, ui => DoExport(ui, filename, _imagery.GetSatMap(arma3Data.ProjectDrive)));
+                        .RunTask(GameRealisticMap.Studio.Labels.ExportSatelliteImage, ui => DoExport(ui, filename, imagery.GetSatMap(arma3Data.ProjectDrive)));
                 }
             }
             return Task.CompletedTask;
@@ -526,7 +565,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public async Task ExportIdMap()
         {
-            if (_imagery != null)
+            var imagery = Imagery;
+            if (imagery != null)
             {
                 var dialog = new SaveFileDialog();
                 dialog.Filter = "PNG|*.png";
@@ -536,7 +576,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                     var filename = dialog.FileName;
                     var materials = await GetExportMaterialLibrary();
                     _ = IoC.Get<IProgressTool>()
-                        .RunTask(GameRealisticMap.Studio.Labels.ExportTextureMaskImage, ui => DoExport(ui, filename, _imagery.GetIdMap(arma3Data.ProjectDrive, materials)));
+                        .RunTask(GameRealisticMap.Studio.Labels.ExportTextureMaskImage, ui => DoExport(ui, filename, imagery.GetIdMap(arma3Data.ProjectDrive, materials)));
 
                 }
             }
@@ -744,7 +784,21 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
                 Dependencies.Items));
         }
 
-        public bool AreAllMaterialsFromLibrary => Materials.Count > 0 && Materials.All(m => m.IsFromLibrary);
+        public bool AreAllMaterialsFromLibrary => Materials.Count > 0 && Materials.All(m => m.IsFromLibrary) && GrmImagery != null;
+
+        public GenericImageryInfos? GenericImagery
+        {
+            get { return _genericImagery; }
+            set
+            {
+                _genericImagery = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(Imagery));
+                NotifyOfPropertyChange(nameof(HasImagery));
+            }
+        }
+
+        public IImageryInfos? Imagery => (IImageryInfos?)GrmImagery ?? GenericImagery;
 
         public Task RegenerateMaterialsFromLibrary()
         {
@@ -757,7 +811,17 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels
 
         public ExistingImageryInfos GetConfig()
         {
-            return Imagery ?? new ExistingImageryInfos(0, 0, 0, ConfigFile?.PboPrefix ?? string.Empty);
+            return GrmImagery ?? new ExistingImageryInfos(0, 0, 0, ConfigFile?.PboPrefix ?? string.Empty);
+        }
+
+        public void RestoreImagery()
+        {
+            var world = World;
+            var imagery = GenericImagery;
+            if (world != null && imagery != null)
+            {
+                IoC.Get<IProgressTool>().Run(new RestoreImageryTask(this, world, imagery, arma3Data.ProjectDrive));
+            }
         }
     }
 }
