@@ -1642,4 +1642,16 @@ Last generated on {1}</value>
   <data name="Recompute" xml:space="preserve">
     <value>Recompute</value>
   </data>
+  <data name="BehaviorWithSlopeLandContactObjects" xml:space="preserve">
+    <value>Behavior with land contact objects:</value>
+  </data>
+  <data name="TryToCompensate" xml:space="preserve">
+    <value>Substitute if possible, otherwise try to compensate</value>
+  </data>
+  <data name="MakeObjectsFollowTheTerrain" xml:space="preserve">
+    <value>Substitute if possible, otherwise make objects follow the terrain</value>
+  </data>
+  <data name="IgnoreObjectsWillBeDistordedIfPitchOrRollIsUsedInEden" xml:space="preserve">
+    <value>Ignore (objects will be distorded if pitch or roll is used in Eden)</value>
+  </data>
 </root>

@@ -14,6 +14,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "GameRealisticMap", "Arma3", "modelinfo.json");
 
+        private readonly Dictionary<string, bool?> slopelandcontact = new Dictionary<string, bool?>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, ModelInfo> indexByName = new Dictionary<string, ModelInfo>(StringComparer.OrdinalIgnoreCase);
         private readonly IGameFileSystem fileSystem;
 
@@ -245,6 +246,50 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             var model = new ModelInfo(name, path, odol.BoundingCenter.Vector3);
             indexByName.Add(name, model);
             return true;
+        }
+
+        public bool? IsSlopeLandContact(string path)
+        {
+            if (!slopelandcontact.TryGetValue(path, out var isSlopeLandContact))
+            {
+                using (var file = fileSystem.OpenFileIfExists(path))
+                {
+                    if (file != null)
+                    {
+                        var infos = StreamHelper.Read<P3D>(file);
+                        var placement = infos.LODs.FirstOrDefault(l => l.Resolution == 1E+13f)?.NamedProperties?.FirstOrDefault(n => n.Item1 == "placement")?.Item2;
+                        isSlopeLandContact = !string.IsNullOrEmpty(placement) && placement.StartsWith("slope", StringComparison.OrdinalIgnoreCase);
+                    }
+                    else
+                    {
+                        isSlopeLandContact = null;
+                    }
+                }
+                slopelandcontact.Add(path, isSlopeLandContact);
+            }
+            return isSlopeLandContact;
+        }
+
+        public string? TryGetNoLandContact(string path)
+        {                
+            // Some models have a "_nolc" variant (No LandContact)
+            if (path.EndsWith("_f.p3d", StringComparison.OrdinalIgnoreCase))
+            {
+                var altPath = path.Substring(0, path.Length - 6) + "_nolc_f.p3d";
+                if (TryResolveByPath(altPath, out var model))
+                {
+                    return model.Path;
+                }
+            }
+            else if (path.EndsWith(".p3d", StringComparison.OrdinalIgnoreCase))
+            {
+                var altPath = path.Substring(0, path.Length - 4) + "_nolc.p3d";
+                if (TryResolveByPath(altPath, out var model))
+                {
+                    return model.Path;
+                }
+            }
+            return null;
         }
     }
 }

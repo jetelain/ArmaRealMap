@@ -21,6 +21,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
         private static readonly Logger logger = NLog.LogManager.GetLogger("EdenImporter");
 
         private readonly Arma3WorldEditorViewModel parent;
+        private SlopeLandContactBehavior _slopeLandContactBehavior = SlopeLandContactBehavior.TryToCompensate;
 
         public EdenImporterViewModel(Arma3WorldEditorViewModel parent)
         {
@@ -44,6 +45,21 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
         public bool LaunchDependenciesOnly { get; set; } = true;
 
         public bool IsReadyToImport => Batch != null && Batch.IsComplete && string.IsNullOrEmpty(ClipboardError);
+
+        public SlopeLandContactBehavior SlopeLandContactBehavior
+        {
+            get { return _slopeLandContactBehavior; }
+            set
+            {
+                if (value != _slopeLandContactBehavior)
+                {
+                    _slopeLandContactBehavior = value;
+                    NotifyOfPropertyChange();
+
+                    ClipboardRefresh();
+                }
+            }
+        }
 
         public Task ClipboardRefresh()
         {
@@ -74,9 +90,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
             using var task = new BasicProgressSystem(this, logger);
             try
             {
-                var parser = new WrpEditBatchParser(task, parent.ProjectDrive);
+                var parser = new WrpEditBatchParser(task, parent.Library);
 
-                var batch = parser.ParseFromText(value);
+                var batch = parser.ParseFromText(value, _slopeLandContactBehavior);
                 if (!string.IsNullOrEmpty(batch.WorldName))
                 {
                     ClipboardError = string.Empty;
