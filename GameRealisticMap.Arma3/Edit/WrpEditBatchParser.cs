@@ -106,7 +106,7 @@ namespace GameRealisticMap.Arma3.Edit
             return exportData;
         }
 
-        private string NoLandContact(string path, SlopeLandContactBehavior contactBehavior)
+        internal string NoLandContact(string path, SlopeLandContactBehavior contactBehavior)
         {
             if (contactBehavior == SlopeLandContactBehavior.Ignore)
             {

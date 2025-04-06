@@ -1,6 +1,8 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Arma3.Edit;
+using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Reporting;
+using Moq;
 
 namespace GameRealisticMap.Arma3.Test.Edit
 {
@@ -246,6 +248,59 @@ namespace GameRealisticMap.Arma3.Test.Edit
                                        0, -0, 1, 0,
                                        0, 1, 0, 0,
                                        0, 0, 0, 1), result);
+        }
+
+        [Fact]
+        public void NoLandContact_ShouldReturnPath_WhenBehaviorIsIgnore()
+        {
+            var path = @"path\to\model.p3d";
+            var result = _parser.NoLandContact(path, SlopeLandContactBehavior.Ignore);
+            Assert.Equal(path, result);
+        }
+
+        [Fact]
+        public void NoLandContact_ShouldReturnNoLandContactPath_WhenBehaviorIsNotIgnore()
+        {
+            var path = @"path\to\model.p3d";
+            var noLandContactPath = @"path\to\model_no_land_contact.p3d";
+            var libraryMock = new Mock<IModelInfoLibrary>();
+            libraryMock.Setup(lib => lib.TryGetNoLandContact(path)).Returns(noLandContactPath);
+            var parser = new WrpEditBatchParser(new NoProgressSystem(), libraryMock.Object);
+
+            var result = parser.NoLandContact(path, SlopeLandContactBehavior.TryToCompensate);
+            Assert.Equal(noLandContactPath, result);
+        }
+
+        [Fact]
+        public void NoLandContact_ShouldReturnOriginalPath_WhenNoLandContactPathIsNull()
+        {
+            var path = @"path\to\model.p3d";
+            var libraryMock = new Mock<IModelInfoLibrary>();
+            libraryMock.Setup(lib => lib.TryGetNoLandContact(path)).Returns((string)null);
+            var parser = new WrpEditBatchParser(new NoProgressSystem(), libraryMock.Object);
+
+            var result = parser.NoLandContact(path, SlopeLandContactBehavior.TryToCompensate);
+            Assert.Equal(path, result);
+        }
+
+        [Fact]
+        public void Parse_ClassEntry_ShouldAddToModelsDictionary_NoLandContactVariant()
+        {
+            var path = @"path\to\model.p3d";
+            var noLandContactPath = @"path\to\model_no_land_contact.p3d";
+            var libraryMock = new Mock<IModelInfoLibrary>();
+            libraryMock.Setup(lib => lib.TryGetNoLandContact(path)).Returns(noLandContactPath);
+            var parser = new WrpEditBatchParser(new NoProgressSystem(), libraryMock.Object);
+
+            var entries = new List<string> { 
+                @"["".class"", ""modelName"", ""\path\to\model""]",
+                @"["".add"", ""modelName"", [], [ 0, 0, 0 ],[ 0, 1, 0 ],[ 0, 0, 1 ],[ 0, 1, 0 ], 1]"
+            };
+
+            var result = parser.Parse(entries, SlopeLandContactBehavior.TryToCompensate);
+
+            Assert.Single(result.Add);
+            Assert.Equal("path\\to\\model_no_land_contact.p3d", result.Add[0].Model);
         }
     }
 }
