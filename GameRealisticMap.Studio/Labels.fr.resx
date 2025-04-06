@@ -1643,13 +1643,13 @@ Dernière génération le {1}</value>
     <value>Recalculer</value>
   </data>
   <data name="BehaviorWithSlopeLandContactObjects" xml:space="preserve">
-    <value>Comportement avec les objets "slope land contact":</value>
+    <value>Comportement avec les objets "land contact":</value>
   </data>
   <data name="TryToCompensate" xml:space="preserve">
-    <value>Essayer de compenser</value>
+    <value>Substituer si possible, sinon essayer de compenser</value>
   </data>
   <data name="MakeObjectsFollowTheTerrain" xml:space="preserve">
-    <value>Faire suivre le terrain aux objets</value>
+    <value>Substituer si possible, sinon faire suivre le terrain aux objets</value>
   </data>
   <data name="IgnoreObjectsWillBeDistordedIfPitchOrRollIsUsedInEden" xml:space="preserve">
     <value>Ignorer (les objets seront déformés si pitch ou roll est utilisé dans Eden)</value>

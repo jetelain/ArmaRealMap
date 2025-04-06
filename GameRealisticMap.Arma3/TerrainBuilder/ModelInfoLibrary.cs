@@ -248,11 +248,11 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             return true;
         }
 
-        public bool? IsSlopeLandContact(string model)
+        public bool? IsSlopeLandContact(string path)
         {
-            if (!slopelandcontact.TryGetValue(model, out var isSlopeLandContact))
+            if (!slopelandcontact.TryGetValue(path, out var isSlopeLandContact))
             {
-                using (var file = fileSystem.OpenFileIfExists(model))
+                using (var file = fileSystem.OpenFileIfExists(path))
                 {
                     if (file != null)
                     {
@@ -265,9 +265,31 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                         isSlopeLandContact = null;
                     }
                 }
-                slopelandcontact.Add(model, isSlopeLandContact);
+                slopelandcontact.Add(path, isSlopeLandContact);
             }
             return isSlopeLandContact;
+        }
+
+        public string? TryGetNoLandContact(string path)
+        {                
+            // Some models have a "_nolc" variant (No LandContact)
+            if (path.EndsWith("_f.p3d", StringComparison.OrdinalIgnoreCase))
+            {
+                var altPath = path.Substring(0, path.Length - 6) + "_nolc_f.p3d";
+                if (TryResolveByPath(altPath, out var model))
+                {
+                    return model.Path;
+                }
+            }
+            else if (path.EndsWith(".p3d", StringComparison.OrdinalIgnoreCase))
+            {
+                var altPath = path.Substring(0, path.Length - 4) + "_nolc.p3d";
+                if (TryResolveByPath(altPath, out var model))
+                {
+                    return model.Path;
+                }
+            }
+            return null;
         }
     }
 }

@@ -14,6 +14,8 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
 
         bool TryRegister(string name, string path);
 
-        bool? IsSlopeLandContact(string model);
+        bool? IsSlopeLandContact(string path);
+
+        string? TryGetNoLandContact(string path);
     }
 }

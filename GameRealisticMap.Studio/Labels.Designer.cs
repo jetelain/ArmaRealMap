@@ -1142,7 +1142,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Behavior with slope land contact objects:.
+        ///   Recherche une chaîne localisée semblable à Behavior with land contact objects:.
         /// </summary>
         public static string BehaviorWithSlopeLandContactObjects {
             get {
@@ -3041,7 +3041,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Make objects follow the terrain.
+        ///   Recherche une chaîne localisée semblable à Substitute if possible, otherwise make objects follow the terrain.
         /// </summary>
         public static string MakeObjectsFollowTheTerrain {
             get {
@@ -4412,7 +4412,7 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Try to compensate.
+        ///   Recherche une chaîne localisée semblable à Substitute if possible, otherwise try to compensate.
         /// </summary>
         public static string TryToCompensate {
             get {

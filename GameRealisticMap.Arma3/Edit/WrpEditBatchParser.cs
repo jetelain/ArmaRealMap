@@ -74,7 +74,7 @@ namespace GameRealisticMap.Arma3.Edit
                             var modelPath = NormalizeModelPath((string)array[2]);
                             if (!string.IsNullOrEmpty(modelPath))
                             {
-                                models.Add((string)array[1], NormalizeModelPath((string)array[2]));
+                                models.Add((string)array[1], NoLandContact(modelPath, contactBehavior));
                             }
                             break;
                         case ".add":
@@ -104,6 +104,15 @@ namespace GameRealisticMap.Arma3.Edit
                 report.ReportOneDone();
             }
             return exportData;
+        }
+
+        private string NoLandContact(string path, SlopeLandContactBehavior contactBehavior)
+        {
+            if (contactBehavior == SlopeLandContactBehavior.Ignore)
+            {
+                return path;
+            }
+            return _library.TryGetNoLandContact(path) ?? path;
         }
 
         private static void ElevationData(WrpEditBatch exportData, object[] array)

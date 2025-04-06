@@ -11,7 +11,7 @@
     x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Import.EdenImporterView"
     Background="{DynamicResource EnvironmentWindowBackground}"
     Foreground="{DynamicResource EnvironmentWindowText}"
-    Width="840" Height="500" MinWidth="512" MinHeight="300" 
+    Width="840" Height="520" MinWidth="512" MinHeight="300" 
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="False"
     Title="{x:Static r:Labels.ImportChangesFromEdenEditor}">
@@ -84,11 +84,13 @@
                         <RadioButton Margin="10 0 0 0" IsChecked="{Binding SlopeLandContactBehavior, Converter={grm:EnumToBoolean {x:Static edit:SlopeLandContactBehavior.FollowTerrain}}}" GroupName="SlopeLandContactBehavior">
                             <Run Text="{x:Static r:Labels.MakeObjectsFollowTheTerrain}"/>
                         </RadioButton>
-                        <RadioButton Margin="10 0 0 0" IsChecked="{Binding SlopeLandContactBehavior, Converter={grm:EnumToBoolean {x:Static edit:SlopeLandContactBehavior.Ignore}}}" GroupName="SlopeLandContactBehavior">
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10 5 10 5">
+                        <RadioButton IsChecked="{Binding SlopeLandContactBehavior, Converter={grm:EnumToBoolean {x:Static edit:SlopeLandContactBehavior.Ignore}}}" GroupName="SlopeLandContactBehavior">
                             <Run Text="{x:Static r:Labels.IgnoreObjectsWillBeDistordedIfPitchOrRollIsUsedInEden}"/>
                         </RadioButton>
                     </StackPanel>
-
+                    
                     <ProgressBar Maximum="100" Minimum="0" Value="{Binding WorkingPercent}" Height="15" Margin="15 0"  Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                     <StackPanel Orientation="Horizontal" Margin="10" Visibility="{Binding IsClipboardNotValid, Converter={StaticResource BooleanToVisibilityConverter}}">

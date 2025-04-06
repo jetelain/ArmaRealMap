@@ -5,13 +5,13 @@ namespace GameRealisticMap.Arma3.Test.Edit
 {
     internal class ModelInfoLibraryMock : IModelInfoLibrary
     {
-        public bool? IsSlopeLandContact(string model)
+        public bool? IsSlopeLandContact(string path)
         {
-            if (model.Contains("slopelandcontact", StringComparison.OrdinalIgnoreCase))
+            if (path.Contains("slopelandcontact", StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
-            if (model.Contains("notfound"))
+            if (path.Contains("notfound"))
             {
                 return null;
             }
@@ -26,6 +26,11 @@ namespace GameRealisticMap.Arma3.Test.Edit
         public ModelInfo ResolveByPath(string path)
         {
             return new ModelInfo(Path.GetFileNameWithoutExtension(path.Replace('\\', Path.DirectorySeparatorChar)), path, new System.Numerics.Vector3());
+        }
+
+        public string? TryGetNoLandContact(string path)
+        {
+            return null;
         }
 
         public bool TryRegister(string name, string path)
