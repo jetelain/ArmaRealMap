@@ -1642,4 +1642,16 @@ Dernière génération le {1}</value>
   <data name="Recompute" xml:space="preserve">
     <value>Recalculer</value>
   </data>
+  <data name="BehaviorWithSlopeLandContactObjects" xml:space="preserve">
+    <value>Comportement avec les objets "slope land contact":</value>
+  </data>
+  <data name="TryToCompensate" xml:space="preserve">
+    <value>Essayer de compenser</value>
+  </data>
+  <data name="MakeObjectsFollowTheTerrain" xml:space="preserve">
+    <value>Faire suivre le terrain aux objets</value>
+  </data>
+  <data name="IgnoreObjectsWillBeDistordedIfPitchOrRollIsUsedInEden" xml:space="preserve">
+    <value>Ignorer (les objets seront déformés si pitch ou roll est utilisé dans Eden)</value>
+  </data>
 </root>

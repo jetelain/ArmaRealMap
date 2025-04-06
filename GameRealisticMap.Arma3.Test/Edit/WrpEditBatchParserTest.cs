@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using GameRealisticMap.Arma3.Edit;
-using GameRealisticMap.Arma3.Test.GameEngine;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.Test.Edit
@@ -10,7 +9,7 @@ namespace GameRealisticMap.Arma3.Test.Edit
         private readonly WrpEditBatchParser _parser;
         public WrpEditBatchParserTest()
         {
-            _parser = new WrpEditBatchParser(new NoProgressSystem(), new GameFileSystemMock());
+            _parser = new WrpEditBatchParser(new NoProgressSystem(), new ModelInfoLibraryMock());
         }
 
         [Fact]
@@ -184,6 +183,65 @@ namespace GameRealisticMap.Arma3.Test.Edit
             };
             var model = "defaultModel.p3d";
             var result = _parser.GetTransform(array, model);
+            Assert.Equal(new Matrix4x4(-1, 0, 0, 0,
+                                       0, -0, 1, 0,
+                                       0, 1, 0, 0,
+                                       0, 0, 0, 1), result);
+        }
+        [Fact]
+        public void GetTransform_ShouldCompensateForSlopeLandContact()
+        {
+            var array = new object[]
+            {
+                null, null, null,
+                new object[] { 0, 0, 0 },
+                new object[] { 0, 1, 0 },
+                new object[] { 0, 0, 1 },
+                new object[] { 0, 0.5, 0.5 },
+                1
+            };
+            var model = "slopeLandContactModel.p3d";
+            var result = _parser.GetTransform(array, model, SlopeLandContactBehavior.TryToCompensate);
+            Assert.Equal(new Matrix4x4(-1, 0, 0, 0,
+                                       0, 0.3162278f, 0.9486833f, 0,
+                                       0, 0.9486833f, -0.3162278f, 0,
+                                       0, 0, 0, 1), result);
+        }
+
+        [Fact]
+        public void GetTransform_ShouldFollowTerrainForSlopeLandContact()
+        {
+            var array = new object[]
+            {
+                null, null, null,
+                new object[] { 0, 0, 0 },
+                new object[] { 0, 1, 0 },
+                new object[] { 0, 0, 1 },
+                new object[] { 0, 0.5, 0.5 },
+                1
+            };
+            var model = "slopeLandContactModel.p3d";
+            var result = _parser.GetTransform(array, model, SlopeLandContactBehavior.FollowTerrain);
+            Assert.Equal(new Matrix4x4(1, 0, 0, 0,
+                                       0, 1, 0, 0,
+                                       0, 0, 1, 0,
+                                       0, 0, 0, 1), result);
+        }
+
+        [Fact]
+        public void GetTransform_ShouldIgnoreSlopeLandContact()
+        {
+            var array = new object[]
+            {
+                null, null, null,
+                new object[] { 0, 0, 0 },
+                new object[] { 0, 1, 0 },
+                new object[] { 0, 0, 1 },
+                new object[] { 0, 0.5, 0.5 },
+                1
+            };
+            var model = "slopeLandContactModel.p3d";
+            var result = _parser.GetTransform(array, model, SlopeLandContactBehavior.Ignore);
             Assert.Equal(new Matrix4x4(-1, 0, 0, 0,
                                        0, -0, 1, 0,
                                        0, 1, 0, 0,

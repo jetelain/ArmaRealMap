@@ -6,6 +6,8 @@
     xmlns:geminibehaviors="clr-namespace:Gemini.Framework.Behaviors;assembly=Gemini"
     xmlns:r="clr-namespace:GameRealisticMap.Studio"
     xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
+    xmlns:grm="clr-namespace:GameRealisticMap.Studio.Controls"
+    xmlns:edit="clr-namespace:GameRealisticMap.Arma3.Edit;assembly=GameRealisticMap.Arma3"
     x:Class="GameRealisticMap.Studio.Modules.Arma3WorldEditor.Views.Import.EdenImporterView"
     Background="{DynamicResource EnvironmentWindowBackground}"
     Foreground="{DynamicResource EnvironmentWindowText}"
@@ -42,17 +44,17 @@
 
                 <StackPanel>
                     <TextBlock FontSize="20"><Run Text="{x:Static r:Labels.EditWithEdenEditor}"/></TextBlock>
-                    <TextBlock Margin="10">
+                    <TextBlock Margin="10 10 10 0">
                         <Run Text="{x:Static r:Labels.FeatureRequiresAdditionalMod}" /> <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="steam://url/CommunityFilePage/3016661145">Export to GameRealisticMap</Hyperlink>
                     </TextBlock>
-                    <TextBlock Margin="10 5 10 10">
+                    <TextBlock Margin="10 10 10 0">
                         <Run Text="{x:Static r:Labels.EditWithEdenEditorHint}"/><LineBreak />
                         <Hyperlink b:HyperLinkBehaviors.ShellExecute="True" NavigateUri="{x:Static r:Links.EditWithEdenEditorHelpLink}">
                             <Run Text="{x:Static r:Labels.SeeHelpForDetailedInstructions}"/>
                         </Hyperlink>
                     </TextBlock>
-                    <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-                        <RadioButton Margin="10 0 0 0" GroupName="LaunchMode" IsChecked="{Binding LaunchDependenciesOnly}">
+                    <StackPanel Orientation="Horizontal" Margin="10 10 10 5">
+                        <RadioButton GroupName="LaunchMode" IsChecked="{Binding LaunchDependenciesOnly}">
                             <Run Text="{x:Static r:Labels.LaunchWithExistingMapMods}"/>
                         </RadioButton>
                         <RadioButton Margin="10 0 0 0" GroupName="LaunchMode">
@@ -67,9 +69,25 @@
                     </StackPanel>
                     
                     <TextBlock FontSize="20" Margin="0 10 0 0"><Run Text="{x:Static r:Labels.ImportFromClipboad}"/></TextBlock>
-                    <TextBlock Margin="10">
-                        <Run Text="{x:Static r:Labels.ImportFromClipboardEdenHint}"/><LineBreak />
+                    <TextBlock Margin="10 10 10 0">
+                        <Run Text="{x:Static r:Labels.ImportFromClipboardEdenHint}"/>
                     </TextBlock>
+
+                    <TextBlock Margin="10 10 10 0">
+                        <Run Text="{x:Static r:Labels.BehaviorWithSlopeLandContactObjects}"/>
+                    </TextBlock>
+
+                    <StackPanel Orientation="Horizontal" Margin="10 10 10 5">
+                        <RadioButton IsChecked="{Binding SlopeLandContactBehavior, Converter={grm:EnumToBoolean {x:Static edit:SlopeLandContactBehavior.TryToCompensate}}}" GroupName="SlopeLandContactBehavior">
+                            <Run Text="{x:Static r:Labels.TryToCompensate}"/>
+                        </RadioButton>
+                        <RadioButton Margin="10 0 0 0" IsChecked="{Binding SlopeLandContactBehavior, Converter={grm:EnumToBoolean {x:Static edit:SlopeLandContactBehavior.FollowTerrain}}}" GroupName="SlopeLandContactBehavior">
+                            <Run Text="{x:Static r:Labels.MakeObjectsFollowTheTerrain}"/>
+                        </RadioButton>
+                        <RadioButton Margin="10 0 0 0" IsChecked="{Binding SlopeLandContactBehavior, Converter={grm:EnumToBoolean {x:Static edit:SlopeLandContactBehavior.Ignore}}}" GroupName="SlopeLandContactBehavior">
+                            <Run Text="{x:Static r:Labels.IgnoreObjectsWillBeDistordedIfPitchOrRollIsUsedInEden}"/>
+                        </RadioButton>
+                    </StackPanel>
 
                     <ProgressBar Maximum="100" Minimum="0" Value="{Binding WorkingPercent}" Height="15" Margin="15 0"  Visibility="{Binding IsWorking, Converter={StaticResource BooleanToVisibilityConverter}}" />
 

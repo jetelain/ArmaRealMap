@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Numerics;
 using BIS.Core.Serialization;
-using BIS.Core.Streams;
-using BIS.P3D;
-using GameRealisticMap.Arma3.IO;
+using GameRealisticMap.Arma3.TerrainBuilder;
 using GameRealisticMap.Reporting;
 
 namespace GameRealisticMap.Arma3.Edit
@@ -11,18 +9,16 @@ namespace GameRealisticMap.Arma3.Edit
     public class WrpEditBatchParser
     {
         private readonly IProgressSystem _progressSystem;
-        private readonly IGameFileSystem _gameFileSystem;
+        private readonly IModelInfoLibrary _library;
 
         private static readonly Vector3 DefaultVectorDir = new Vector3(0, 0, 1); // North
         private static readonly Vector3 DefaultVectorUp = new Vector3(0, 1, 0); // Up
         private static readonly Vector3 DefaultVectorCross = Vector3.Cross(DefaultVectorDir, DefaultVectorUp);
 
-        private readonly Dictionary<string, bool> slopelandcontact = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
-
-        public WrpEditBatchParser(IProgressSystem progressSystem, IGameFileSystem gameFileSystem)
+        public WrpEditBatchParser(IProgressSystem progressSystem, IModelInfoLibrary library)
         {
             _progressSystem = progressSystem;
-            _gameFileSystem = gameFileSystem;
+            _library = library;
         }
 
         private static string NormalizeModelPath(string model)
@@ -39,17 +35,17 @@ namespace GameRealisticMap.Arma3.Edit
             return path;
         }
 
-        public WrpEditBatch ParseFromText(string text)
+        public WrpEditBatch ParseFromText(string text, SlopeLandContactBehavior contactBehavior = SlopeLandContactBehavior.TryToCompensate)
         {
-            return Parse(text.Split('\n').Select(l => l.Trim()).ToList());
+            return Parse(text.Split('\n').Select(l => l.Trim()).ToList(), contactBehavior);
         }
 
-        public WrpEditBatch ParseFromFile(string filePath)
+        public WrpEditBatch ParseFromFile(string filePath, SlopeLandContactBehavior contactBehavior = SlopeLandContactBehavior.TryToCompensate)
         {
-            return Parse(File.ReadAllLines(filePath));
+            return Parse(File.ReadAllLines(filePath), contactBehavior);
         }
 
-        public WrpEditBatch Parse(IReadOnlyCollection<string> entries)
+        public WrpEditBatch Parse(IReadOnlyCollection<string> entries, SlopeLandContactBehavior contactBehavior = SlopeLandContactBehavior.TryToCompensate)
         {
             using var report = _progressSystem.CreateStep("Parse", entries.Count);
             var exportData = new WrpEditBatch();
@@ -71,7 +67,7 @@ namespace GameRealisticMap.Arma3.Edit
                             var objectId = Convert.ToInt32(array[8]);
                             if (!string.IsNullOrEmpty(modelHide))
                             {
-                                exportData.Remove.Add(new WrpRemoveObject(GetTransform(array, modelHide), modelHide, objectId));
+                                exportData.Remove.Add(new WrpRemoveObject(GetTransform(array, modelHide, contactBehavior), modelHide, objectId));
                             }
                             break;
                         case ".class":
@@ -84,7 +80,7 @@ namespace GameRealisticMap.Arma3.Edit
                         case ".add":
                             if (models.TryGetValue((string)array[1], out var modelAdd))
                             {
-                                exportData.Add.Add(new WrpAddObject(GetTransform(array, modelAdd), modelAdd));
+                                exportData.Add.Add(new WrpAddObject(GetTransform(array, modelAdd, contactBehavior), modelAdd));
                             }
                             break;
 
@@ -118,24 +114,34 @@ namespace GameRealisticMap.Arma3.Edit
                 .Select(entry => new WrpSetElevationGrid(Convert.ToInt32(entry[0]), Convert.ToInt32(entry[1]), Convert.ToSingle(entry[2]))) ?? Enumerable.Empty<WrpSetElevationGrid>());
         }
 
-        internal Matrix4x4 GetTransform(object[] array, string model)
+        internal Matrix4x4 GetTransform(object[] array, string model, SlopeLandContactBehavior contactBehavior = SlopeLandContactBehavior.TryToCompensate)
         {
             var position = GetVector((object[])array[3]);
             var vectorUp = GetVector((object[])array[4]);
             var vectorDir = GetVector((object[])array[5]);
             var matrix = Matrix4x4.CreateWorld(position, -vectorDir, vectorUp);
-            if (IsSlopeLandContact(model))
+            if (contactBehavior != SlopeLandContactBehavior.Ignore && IsSlopeLandContact(model))
             {
                 // If object is SlopeLandContact, it means that engine will make matrix relative
                 // to surfaceNormal so we have to compensate it
-                var surfaceNormal = GetVector((object[])array[6]);
-                if (surfaceNormal != DefaultVectorUp)
+                if (contactBehavior == SlopeLandContactBehavior.TryToCompensate)
                 {
-                    var normalCompensation = Vector3.Lerp(DefaultVectorUp, surfaceNormal, -1);
-                    var normalFixMatrix = Matrix4x4.CreateWorld(Vector3.Zero, -Vector3.Cross(normalCompensation, DefaultVectorCross), normalCompensation);
-                    var newVectorUp = Vector3.Transform(vectorUp, normalFixMatrix);
-                    var newVectorDir = Vector3.Cross(newVectorUp, Vector3.Cross(vectorDir, vectorUp)); // ensure perfectly normal to newVectorUp
-                    matrix = Matrix4x4.CreateWorld(position, -newVectorDir, newVectorUp);
+                    var surfaceNormal = GetVector((object[])array[6]);
+                    if (surfaceNormal != DefaultVectorUp)
+                    {
+                        var normalCompensation = Vector3.Lerp(DefaultVectorUp, surfaceNormal, -1);
+                        var normalFixMatrix = Matrix4x4.CreateWorld(Vector3.Zero, -Vector3.Cross(normalCompensation, DefaultVectorCross), normalCompensation);
+                        var newVectorUp = Vector3.Transform(vectorUp, normalFixMatrix);
+                        var newVectorDir = Vector3.Cross(newVectorUp, Vector3.Cross(vectorDir, vectorUp)); // ensure perfectly normal to newVectorUp
+                        matrix = Matrix4x4.CreateWorld(position, -newVectorDir, newVectorUp);
+                    }
+                }
+                else if ( contactBehavior == SlopeLandContactBehavior.FollowTerrain)
+                {
+                    // Remove pitch/roll rotations as the game engine will make the object to follow the terrain
+                    var tbInitial = new WrpAddObject(matrix, model).ToTerrainBuilder(_library);
+                    var tbFixex = new TerrainBuilderObject(tbInitial.Model, tbInitial.Point, tbInitial.Elevation, tbInitial.ElevationMode, tbInitial.Yaw, 0, 0, tbInitial.Scale);
+                    return tbFixex.ToWrpTransform();
                 }
             }
             return matrix;
@@ -143,24 +149,12 @@ namespace GameRealisticMap.Arma3.Edit
 
         private bool IsSlopeLandContact(string model)
         {
-            if (!slopelandcontact.TryGetValue(model, out var isSlopeLandContact))
+            var isSlopeLandContact = _library.IsSlopeLandContact(model);
+            if (isSlopeLandContact == null)
             {
-                using (var file = _gameFileSystem.OpenFileIfExists(model))
-                {
-                    if (file != null)
-                    {
-                        var infos = StreamHelper.Read<P3D>(file);
-                        var placement = infos.LODs.FirstOrDefault(l => l.Resolution == 1E+13f)?.NamedProperties?.FirstOrDefault(n => n.Item1 == "placement")?.Item2;
-                        isSlopeLandContact = !string.IsNullOrEmpty(placement) && placement.StartsWith("slope", StringComparison.OrdinalIgnoreCase);
-                    }
-                    else
-                    {
-                        _progressSystem.WriteLine($"Model '{model}' was not found, unknown SlopeLandContact");
-                    }
-                }
-                slopelandcontact.Add(model, isSlopeLandContact);
+                _progressSystem.WriteLine($"Model '{model}' was not found, unknown SlopeLandContact");
             }
-            return isSlopeLandContact;
+            return isSlopeLandContact ?? false;
         }
 
         private Vector3 GetVector(object[] armaVector)

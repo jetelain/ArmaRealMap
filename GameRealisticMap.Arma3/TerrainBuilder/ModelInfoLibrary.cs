@@ -14,6 +14,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "GameRealisticMap", "Arma3", "modelinfo.json");
 
+        private readonly Dictionary<string, bool?> slopelandcontact = new Dictionary<string, bool?>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, ModelInfo> indexByName = new Dictionary<string, ModelInfo>(StringComparer.OrdinalIgnoreCase);
         private readonly IGameFileSystem fileSystem;
 
@@ -245,6 +246,28 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
             var model = new ModelInfo(name, path, odol.BoundingCenter.Vector3);
             indexByName.Add(name, model);
             return true;
+        }
+
+        public bool? IsSlopeLandContact(string model)
+        {
+            if (!slopelandcontact.TryGetValue(model, out var isSlopeLandContact))
+            {
+                using (var file = fileSystem.OpenFileIfExists(model))
+                {
+                    if (file != null)
+                    {
+                        var infos = StreamHelper.Read<P3D>(file);
+                        var placement = infos.LODs.FirstOrDefault(l => l.Resolution == 1E+13f)?.NamedProperties?.FirstOrDefault(n => n.Item1 == "placement")?.Item2;
+                        isSlopeLandContact = !string.IsNullOrEmpty(placement) && placement.StartsWith("slope", StringComparison.OrdinalIgnoreCase);
+                    }
+                    else
+                    {
+                        isSlopeLandContact = null;
+                    }
+                }
+                slopelandcontact.Add(model, isSlopeLandContact);
+            }
+            return isSlopeLandContact;
         }
     }
 }
