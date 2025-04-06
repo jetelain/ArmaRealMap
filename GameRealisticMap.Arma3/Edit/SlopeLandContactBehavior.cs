@@ -3,12 +3,12 @@
     public enum SlopeLandContactBehavior
     {
         /// <summary>
-        /// Substitue if a "no land contact" version exists, otherwise tries to compensate according to the slope of the terrain.
+        /// Substitute if a "no land contact" version exists, otherwise tries to compensate according to the slope of the terrain.
         /// </summary>
         TryToCompensate,
 
         /// <summary>
-        /// Substitue if a "no land contact" version exists, otherwise make object follow terrain (removes pitch/roll rotations as the game engine will do what is required).
+        /// Substitute if a "no land contact" version exists, otherwise make object follow terrain (removes pitch/roll rotations as the game engine will do what is required).
         /// </summary>
         FollowTerrain,
 
