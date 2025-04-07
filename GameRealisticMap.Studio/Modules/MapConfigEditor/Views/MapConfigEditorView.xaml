@@ -61,11 +61,11 @@
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.CoordinatesOfCenterOfMap}" />
                 </Label>
-                <TextBox Width="200" Text="{Binding Center,Mode=TwoWay}" />
+                <TextBox Width="200" Padding="3" Text="{Binding Center,Mode=TwoWay}" />
                 <Label>
                     <Run Text="{x:Static r:Labels.CoordinatesSouthWestOfMap}"/>
                 </Label>
-                <TextBox Width="200" Text="{Binding SouthWest,Mode=TwoWay}" />
+                <TextBox Width="200" Padding="3" Text="{Binding SouthWest,Mode=TwoWay}" />
             </StackPanel>
             <TextBlock Margin="205 0 0 5" FontStyle="Italic"  Text="{x:Static r:Labels.CoordinatesHint}" />
 
@@ -75,10 +75,10 @@
                 </Label>
                 <ComboBox SelectedValue="{Binding GridSize,Mode=TwoWay}" ItemsSource="{Binding GridSizes}" />
                 <TextBlock Margin="10 0" FontSize="18">×</TextBlock>
-                <TextBox Width="50" Text="{Binding GridCellSize,Mode=TwoWay}" />
+                <TextBox Width="50" Padding="3" Text="{Binding GridCellSize,Mode=TwoWay}" />
                 <TextBlock Margin="10 0"><Run Text="{x:Static r:Labels.MetersUnit}"/></TextBlock>
                 <TextBlock Margin="10 0" FontSize="18">➜</TextBlock>
-                <TextBox Width="75" Text="{Binding MapSize,Mode=TwoWay}" />
+                <TextBox Width="75" Padding="3" Text="{Binding MapSize,Mode=TwoWay}" />
                 <TextBlock Margin="10 0"><Run Text="{x:Static r:Labels.MetersUnit}"/></TextBlock>
             </StackPanel>
 
@@ -135,8 +135,8 @@
                         <Label Width="200">
                             <Run Text="{x:Static r:Labels.TileSize}"/>
                         </Label>
-                        <toolkit:WatermarkTextBox Width="200" Text="{Binding Config.TileSize,Mode=TwoWay, ValidatesOnExceptions=True}"  Watermark="{Binding AutomaticTileSize}" />
-                        <TextBlock Margin="10 0">
+                        <toolkit:WatermarkTextBox Width="100" Text="{Binding Config.TileSize,Mode=TwoWay, ValidatesOnExceptions=True}"  Watermark="{Binding AutomaticTileSize}" />
+                        <TextBlock Margin="10 3">
                             <Run Text="{x:Static r:Labels.Pixels}" />
                         </TextBlock>
                     </StackPanel>
@@ -144,8 +144,8 @@
                         <Label Width="200">
                             <Run Text="{x:Static r:Labels.Resolution}"/>
                         </Label>
-                        <TextBox Width="200" Text="{Binding Config.Resolution,Mode=TwoWay, ValidatesOnExceptions=True}" />
-                        <TextBlock Margin="10 0">
+                        <TextBox Width="100" Padding="3" Text="{Binding Config.Resolution,Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock Margin="10 3">
                             <Run Text="{x:Static r:Labels.ResolutionUnit}" />
                         </TextBlock>
                     </StackPanel>
@@ -157,16 +157,89 @@
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">
-                            <Run Text="Satellite color"/>
+                            <Run Text="{x:Static r:Labels.ModDirectory}" />
                         </Label>
-                        <RadioButton GroupName="SatMapColor" IsChecked="{Binding UseColorCorrection}">Use color correction</RadioButton>
-                        <RadioButton GroupName="SatMapColor" IsChecked="{Binding UseRawColors}">Use raw colors (will appear brighter in-game, pre-beta 10 behavior)</RadioButton>
+                        <toolkit:WatermarkTextBox Width="500" Text="{Binding Config.TargetModDirectory, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticTargetModDirectory}"  />
+                    </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200">
+                            <Run Text="{x:Static r:Labels.PrivateServiceRoadThreshold}"/>
+                        </Label>
+                        <TextBox Width="100" Padding="3" Text="{Binding Config.PrivateServiceRoadThreshold, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock Margin="10 3">
+                            <Run Text="{x:Static r:Labels.MetersUnit}" />
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+            <Expander Margin="10">
+                <Expander.Header>
+                    <TextBlock Text="Satellite image options" />
+                </Expander.Header>
+                <StackPanel  Orientation="Vertical">
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200">
+                            <Run Text="Raw satellite color pre-processing"/>
+                        </Label>
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="Contrast" />
+                        </TextBlock>
+                        <TextBox Width="50" Margin="10 0 10 0" Padding="3" Text="{Binding Config.Satellite.Contrast,Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="Brightness" />
+                        </TextBlock>
+                        <TextBox Width="50" Margin="10 0 10 0" Padding="3" Text="{Binding Config.Satellite.Brightness,Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="Saturation" />
+                        </TextBlock>
+                        <TextBox Width="50" Margin="10 0 10 0" Padding="3" Text="{Binding Config.Satellite.Saturation,Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <Button Padding="10 0" cal:Message.Attach="TestSatelliteColor">
+                            <Run Text="Preview" />
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" >
+                        <Label Width="200">
+                            <Run Text="Satellite color correction (Arma 3)"/>
+                        </Label>
+                        <RadioButton Margin="0 3 10 3" GroupName="SatMapColor" IsChecked="{Binding UseColorCorrection}">Use color correction (colors will match real color in-game)</RadioButton>
+                        <RadioButton Margin="0 3 10 3" GroupName="SatMapColor" IsChecked="{Binding UseRawColors}">Use raw colors (will appear brighter in-game, pre-beta 10 behavior)</RadioButton>
+                    </StackPanel>
+                    <StackPanel Margin="10 5" Orientation="Horizontal" Visibility="{Binding ShowPreview, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>
+                                    <Run Text="Source" />
+                                </Label>
+                                <Label>
+                                    <Run Text="{Binding SatelliteImageProviderName, Mode=OneWay}" />
+                                </Label>
+                            </StackPanel>
+                            <Image Width="256" Height="256" Source="{Binding SatelliteImage1}" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Label>
+                                <Run Text="Raw Image (after pre-processing)" />
+                            </Label>
+                            <Image Width="256" Height="256" Source="{Binding SatelliteImage2}" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Label>
+                                <Run Text="Corrected image (before texture blend)" />
+                            </Label>
+                            <Image Width="256" Height="256" Source="{Binding SatelliteImage3}" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Label>
+                                <Run Text="Reference examples" />
+                            </Label>
+                            <Image Width="256" Height="256" Source="pack://application:,,,/GameRealisticMap.Studio;component/Resources/Arma3/satref.png" />
+                        </StackPanel>
                     </StackPanel>
                     <StackPanel Margin="10 5" Orientation="Horizontal" >
                         <Label Width="200">
                             <Run Text="{x:Static r:Labels.FakeSatBlend}"/>
                         </Label>
-                        <TextBox Width="50" Margin="0 0 10 0" Text="{Binding Config.FakeSatBlend,Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBox Width="50" Margin="0 0 10 0" Padding="3" Text="{Binding Config.FakeSatBlend,Mode=TwoWay, ValidatesOnExceptions=True}" />
 
                         <TextBlock VerticalAlignment="Center">
                             <Run Text="{x:Static r:Labels.FakeSatBlend0}" />
@@ -179,24 +252,8 @@
                             <Run Text="{x:Static r:Labels.FakeSatBlend1}" />
                         </TextBlock>
                     </StackPanel>
-                    <StackPanel Margin="10 5" Orientation="Horizontal" >
-                        <Label Width="200">
-                            <Run Text="{x:Static r:Labels.ModDirectory}" />
-                        </Label>
-                        <toolkit:WatermarkTextBox Width="500" Text="{Binding Config.TargetModDirectory, Mode=TwoWay, ValidatesOnExceptions=True}" Watermark="{Binding AutomaticTargetModDirectory}"  />
-                    </StackPanel>
-                    <StackPanel Margin="10 5" Orientation="Horizontal" >
-                        <Label Width="200">
-                            <Run Text="{x:Static r:Labels.PrivateServiceRoadThreshold}"/>
-                        </Label>
-                        <TextBox Width="200" Text="{Binding Config.PrivateServiceRoadThreshold, Mode=TwoWay, ValidatesOnExceptions=True}" />
-                        <TextBlock Margin="10 0">
-                            <Run Text="{x:Static r:Labels.MetersUnit}" />
-                        </TextBlock>
-                    </StackPanel>
                 </StackPanel>
             </Expander>
-
             <grm:LocationSelectorMap MapSelection="{Binding MapSelection, Mode=TwoWay}" />
 
         </StackPanel>

@@ -17,7 +17,7 @@ namespace GameRealisticMap.Arma3.Demo
     public sealed class Arma3GdtDemoMapGenerator : Arma3MapGenerator
     {
         public Arma3GdtDemoMapGenerator(IEnumerable<TerrainMaterialDefinition> definitions, ProjectDrive projectDrive, IPboCompilerFactory pboCompilerFactory)
-            : base(CreateAssets(definitions), projectDrive, pboCompilerFactory, new DefaultSourceLocations())
+            : base(CreateAssets(definitions), projectDrive, pboCompilerFactory, DefaultSourceLocations.Instance)
         {
 
         }

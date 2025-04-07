@@ -1,4 +1,5 @@
 ﻿using GameRealisticMap.Arma3.GameEngine;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Arma3
@@ -66,6 +67,8 @@ namespace GameRealisticMap.Arma3
                 IdMapMultiplier = 1;
             }
 
+            Satellite = arma3MapConfigJson.Satellite ?? new SatelliteImageOptions();
+
             Arma3ConfigHelper.ValidatePboPrefix(PboPrefix);
             Arma3ConfigHelper.ValidateWorldName(WorldName);
         }
@@ -119,5 +122,7 @@ namespace GameRealisticMap.Arma3
         public float PrivateServiceRoadThreshold { get; }
 
         public int IdMapMultiplier { get; }
+
+        public ISatelliteImageOptions Satellite { get; }
     }
 }

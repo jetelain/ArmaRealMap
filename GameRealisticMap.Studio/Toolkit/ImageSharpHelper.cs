@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
@@ -82,23 +83,9 @@ namespace GameRealisticMap.Studio.Toolkit
 
         internal static BitmapSource ToWpf(this Image<Bgra32> image)
         {
-            var bmp = new WriteableBitmap(image.Width, image.Height, image.Metadata.HorizontalResolution, image.Metadata.VerticalResolution, PixelFormats.Bgra32, null);
-            bmp.Lock();
-            try
-            {
-                image.ProcessPixelRows(pixels =>
-                {
-                    for (var y = 0; y < image.Height; y++)
-                    {
-                        bmp.WritePixels(new Int32Rect(0, y, image.Width, 1), pixels.GetRowSpan(y).ToArray(), image.Width * 4, 0);
-                    }
-                });
-            }
-            finally
-            {
-                bmp.Unlock();
-            }
-            return bmp;
+            var buffer = new byte[image.Width * image.Height * 4];
+            image.CopyPixelDataTo(new Span<byte>(buffer));
+            return BitmapSource.Create(image.Width, image.Height, 300, 300, PixelFormats.Bgra32, null, buffer, image.Width * 4);
         }
     }
 }

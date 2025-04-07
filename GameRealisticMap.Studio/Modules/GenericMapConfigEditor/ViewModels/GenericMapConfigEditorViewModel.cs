@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.Generic;
 using GameRealisticMap.Generic.Profiles;
 using GameRealisticMap.Studio.Modules.Explorer.ViewModels;
@@ -29,6 +30,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
         private double _resolution = 1;
         private float _privateServiceRoadThreshold = MapProcessingOptions.Default.PrivateServiceRoadThreshold;
 
+
         public GenericMapConfigEditorViewModel(IShell shell, IGrmConfigService grmConfig)
             : base(shell)
         {
@@ -42,6 +44,8 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
         public IEnumerable<IExplorerTreeItem> Children => Enumerable.Empty<IExplorerTreeItem>();
 
         public List<string> BuiltinExportProfiles { get; } = ExportProfile.GetBuiltinList();
+
+        public SatelliteImageOptions Satellite { get; private set; } = new SatelliteImageOptions();
 
         public async Task SaveTo(Stream stream)
         {
@@ -67,6 +71,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
         {
             using var stream = File.OpenRead(filePath);
             var config = await JsonSerializer.DeserializeAsync<GenericMapConfigJson>(stream);
+
             if (config != null)
             {
                 _center = config.Center ?? string.Empty;
@@ -77,6 +82,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
                 _targetDirectory = config.TargetDirectory ?? string.Empty;
                 _resolution = config.Resolution;
                 _privateServiceRoadThreshold = config.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
+                Satellite = config.Satellite ?? new SatelliteImageOptions();
 
                 NotifyOfPropertyChange(nameof(Center));
                 NotifyOfPropertyChange(nameof(SouthWest));
@@ -88,6 +94,7 @@ namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
                 NotifyOfPropertyChange(nameof(MapSelection));
                 NotifyOfPropertyChange(nameof(AutomaticTargetDirectory));
                 NotifyOfPropertyChange(nameof(Resolution));
+                NotifyOfPropertyChange(nameof(Satellite));
 
                 await IoC.Get<IRecentFilesService>().AddRecentFile(filePath);
             }

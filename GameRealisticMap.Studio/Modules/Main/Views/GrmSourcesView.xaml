@@ -12,27 +12,27 @@
 
         <StackPanel Orientation="Horizontal">
             <Label Width="150">MapToolkit SRTM15Plus</Label>
-            <TextBox Text="{Binding MapToolkitSRTM15Plus}" Width="450" />
+            <TextBox Text="{Binding MapToolkitSRTM15Plus}" Width="300" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Width="150">MapToolkit SRTM1</Label>
-            <TextBox Text="{Binding MapToolkitSRTM1}" Width="450" />
+            <TextBox Text="{Binding MapToolkitSRTM1}" Width="300" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Width="150">MapToolkit AW3D30</Label>
-            <TextBox Text="{Binding MapToolkitAW3D30}" Width="450" />
+            <TextBox Text="{Binding MapToolkitAW3D30}" Width="300" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Width="150">WeatherStats</Label>
-            <TextBox Text="{Binding WeatherStats}" Width="450" />
+            <TextBox Text="{Binding WeatherStats}" Width="300" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Width="150">OverpassApi Interpreter</Label>
-            <TextBox Text="{Binding OverpassApiInterpreter}" Width="450" />
+            <TextBox Text="{Binding OverpassApiInterpreter}" Width="300" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="150">S2Cloudless Base Path</Label>
-            <TextBox Text="{Binding S2CloudlessBasePath}" Width="450" />
+            <Label Width="150">Satellite Image Provider</Label>
+            <TextBox Text="{Binding SatelliteImageProvider}" Width="300" />
         </StackPanel>
 
 

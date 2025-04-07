@@ -27,7 +27,7 @@ namespace GameRealisticMap.Test
         public void EmptyDataDoesNotGenerateAnyError()
         {
             var progress = new TestProgressSystem(output);
-            var builders = new BuildersCatalog(new DefaultBuildersConfig(), new DefaultSourceLocations());
+            var builders = new BuildersCatalog(new DefaultBuildersConfig(), DefaultSourceLocations.Instance);
             var context = new BuildContext(builders, progress, TerrainAreaUTM.CreateFromCenter("0, 0", 1f, 256), new NoneOsmDataSource(), new MapProcessingOptions(), new MemoryHugeImageStorage());
             
             // Mock external sources

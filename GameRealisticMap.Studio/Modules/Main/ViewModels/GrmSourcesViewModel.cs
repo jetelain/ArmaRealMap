@@ -24,7 +24,7 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
             MapToolkitAW3D30 = sources.MapToolkitAW3D30;
             WeatherStats = sources.WeatherStats;
             OverpassApiInterpreter = sources.OverpassApiInterpreter;
-            S2CloudlessBasePath = sources.S2CloudlessBasePath;
+            SatelliteImageProvider = sources.SatelliteImageProvider;
         }
 
         public string SettingsPageName => "Sources";
@@ -41,7 +41,7 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 
         public Uri OverpassApiInterpreter { get; set; }
 
-        public Uri S2CloudlessBasePath { get; set; }
+        public Uri SatelliteImageProvider { get; set; }
 
         public async Task ApplyChangesAsync()
         {

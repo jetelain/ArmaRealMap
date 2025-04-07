@@ -40,11 +40,11 @@
                 <Label Width="200">
                     <Run Text="{x:Static r:Labels.CoordinatesOfCenterOfMap}" />
                 </Label>
-                <TextBox Width="200" Text="{Binding Center,Mode=TwoWay}" />
+                <TextBox Width="200" Padding="3" Text="{Binding Center,Mode=TwoWay}" />
                 <Label>
                     <Run Text="{x:Static r:Labels.CoordinatesSouthWestOfMap}"/>
                 </Label>
-                <TextBox Width="200" Text="{Binding SouthWest,Mode=TwoWay}" />
+                <TextBox Width="200" Padding="3" Text="{Binding SouthWest,Mode=TwoWay}" />
             </StackPanel>
             <TextBlock Margin="205 0 0 5" FontStyle="Italic"  Text="{x:Static r:Labels.CoordinatesHint}" />
 
@@ -54,10 +54,10 @@
                 </Label>
                 <ComboBox SelectedValue="{Binding GridSize,Mode=TwoWay}" ItemsSource="{Binding GridSizes}" />
                 <TextBlock Margin="10 0" FontSize="18">×</TextBlock>
-                <TextBox Width="50" Text="{Binding GridCellSize,Mode=TwoWay}" />
+                <TextBox Width="50" Padding="3" Text="{Binding GridCellSize,Mode=TwoWay}" />
                 <TextBlock Margin="10 0"><Run Text="{x:Static r:Labels.MetersUnit}"/></TextBlock>
                 <TextBlock Margin="10 0" FontSize="18">➜</TextBlock>
-                <TextBox Width="75" Text="{Binding MapSize,Mode=TwoWay}" />
+                <TextBox Width="75" Padding="3" Text="{Binding MapSize,Mode=TwoWay}" />
                 <TextBlock Margin="10 0"><Run Text="{x:Static r:Labels.MetersUnit}"/></TextBlock>
             </StackPanel>
 
@@ -87,7 +87,7 @@
                         <Label Width="200">
                             <Run Text="{x:Static r:Labels.Resolution}"/>
                         </Label>
-                        <TextBox Width="50" Text="{Binding Resolution,Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBox Width="50" Padding="3" Text="{Binding Resolution,Mode=TwoWay, ValidatesOnExceptions=True}" />
                         <TextBlock Margin="10 0">
                     <Run Text="{x:Static r:Labels.ResolutionUnit}" />
                         </TextBlock>
@@ -96,10 +96,27 @@
                         <Label Width="200">
                             <Run Text="{x:Static r:Labels.PrivateServiceRoadThreshold}"/>
                         </Label>
-                        <TextBox Width="200" Text="{Binding PrivateServiceRoadThreshold, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBox Width="100" Padding="3" Text="{Binding PrivateServiceRoadThreshold, Mode=TwoWay, ValidatesOnExceptions=True}" />
                         <TextBlock Margin="10 0">
                             <Run Text="{x:Static r:Labels.MetersUnit}" />
                         </TextBlock>
+                    </StackPanel>
+                    <StackPanel Margin="5" Orientation="Horizontal" >
+                        <Label Width="200">
+                            <Run Text="Satellite color pre-processing"/>
+                        </Label>
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="Contrast" />
+                        </TextBlock>
+                        <TextBox Width="50" Margin="10 0 10 0" Padding="3" Text="{Binding Satellite.Contrast, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="Brightness" />
+                        </TextBlock>
+                        <TextBox Width="50" Margin="10 0 10 0" Padding="3" Text="{Binding Satellite.Brightness, Mode=TwoWay, ValidatesOnExceptions=True}" />
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="Saturation" />
+                        </TextBlock>
+                        <TextBox Width="50" Margin="10 0 10 0" Padding="3" Text="{Binding Satellite.Saturation, Mode=TwoWay, ValidatesOnExceptions=True}" />
                     </StackPanel>
                 </StackPanel>
             </Expander>

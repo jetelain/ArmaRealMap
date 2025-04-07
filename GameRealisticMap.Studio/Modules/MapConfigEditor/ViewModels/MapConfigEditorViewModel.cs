@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using Caliburn.Micro;
 using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.Assets;
@@ -11,6 +12,7 @@ using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.GameLauncher;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
+using GameRealisticMap.Configuration;
 using GameRealisticMap.Preview;
 using GameRealisticMap.Satellite;
 using GameRealisticMap.Studio.Modules.Arma3Data;
@@ -25,15 +27,19 @@ using GameRealisticMap.Studio.Modules.Main.Services;
 using GameRealisticMap.Studio.Modules.Reporting;
 using GameRealisticMap.Studio.Toolkit;
 using Gemini.Framework.Services;
-using Pmad.HugeImages.Storage;
 using MapControl;
 using Microsoft.Win32;
+using Pmad.HugeImages.Storage;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 {
     internal class MapConfigEditorViewModel : MapConfigEditorBase, IExplorerRootTreeItem, IMainDocument
     {
         private readonly IArma3DataModule _arma3DataModule;
+        private bool _showPreview;
 
         public MapConfigEditorViewModel(IShell shell, IArma3DataModule arma3DataModule)
             : base(shell)
@@ -242,6 +248,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             using var stream = File.OpenRead(filePath);
             Config = await JsonSerializer.DeserializeAsync<Arma3MapConfigJson>(stream) ?? new Arma3MapConfigJson();
             Config.PrivateServiceRoadThreshold = Config.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
+            Config.Satellite = Config.Satellite ?? new SatelliteImageOptions();
             NotifyOfPropertyChange(nameof(Config));
             NotifyOfPropertyChange(nameof(SouthWest));
             NotifyOfPropertyChange(nameof(Center));
@@ -262,6 +269,7 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
             Config = new Arma3MapConfigJson();
             var assetConfig = _shell.Documents.OfType<AssetConfigEditorViewModel>().Select(r => r.FilePath ?? r.FileName).FirstOrDefault();
             Config.AssetConfigFile = assetConfig ?? BuiltinAssetConfigFiles.FirstOrDefault() ?? string.Empty;
+            Config.Satellite = Config.Satellite ?? new SatelliteImageOptions();
             NotifyOfPropertyChange(nameof(Config));
             NotifyOfPropertyChange(nameof(AssetConfigFile));
             await CheckDependencies();
@@ -629,6 +637,61 @@ namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
         {
             get { return !UseColorCorrection; }
             set { UseColorCorrection = !value; }
+        }
+
+        public bool ShowPreview
+        {
+            get { return _showPreview; }
+            set
+            {
+                if (_showPreview != value)
+                {
+                    _showPreview = value;
+                    NotifyOfPropertyChange();
+                }
+            }
+        }
+
+        public ImageSource SatelliteImage1 { get; private set; }
+        public ImageSource SatelliteImage2 { get; private set; }
+        public ImageSource SatelliteImage3 { get; private set; }
+        public string SatelliteImageProviderName { get; private set; }
+        public async Task TestSatelliteColor()
+        {
+            var area = MapSelection?.TerrainArea;
+            if (area == null)
+            {
+                return;
+            }
+            var sources = IoC.Get< IGrmConfigService>().GetSources();
+            using var satProvider = new SatelliteImageProvider(new Pmad.ProgressTracking.NoProgress(), sources);
+
+            var center = area.TerrainPointToLatLng(new Geometries.TerrainPoint(area.SizeInMeters/2, area.SizeInMeters / 2));
+            using var img0 = await satProvider.GetTile(center);
+            using var img1 = img0.CloneAs<Bgra32>();
+            img1.Mutate(d => d.Resize(256, 256));
+
+
+            using var img2 = img1.Clone();
+            img2.Mutate(d => d.Brightness(Config.Satellite!.Brightness).Contrast(Config.Satellite!.Contrast).Saturate(Config.Satellite!.Saturation));
+            
+            using var img3 = img2.Clone();
+            if (Config.UseColorCorrection)
+            {
+                Arma3ColorRender.Mutate(img3, Arma3ColorRender.FromArma3);
+            }
+
+            SatelliteImage1 = img1.ToWpf();
+            SatelliteImage2 = img2.ToWpf();
+            SatelliteImage3 = img3.ToWpf();
+            SatelliteImageProviderName = SatelliteImageProvider.GetName(sources);
+
+            NotifyOfPropertyChange(nameof(SatelliteImage1));
+            NotifyOfPropertyChange(nameof(SatelliteImage2));
+            NotifyOfPropertyChange(nameof(SatelliteImage3));
+            NotifyOfPropertyChange(nameof(SatelliteImageProviderName));
+
+            ShowPreview = true;
         }
     }
 }
