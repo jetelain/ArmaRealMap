@@ -85,7 +85,9 @@ namespace GameRealisticMap.Studio.Toolkit
         {
             var buffer = new byte[image.Width * image.Height * 4];
             image.CopyPixelDataTo(new Span<byte>(buffer));
-            return BitmapSource.Create(image.Width, image.Height, 300, 300, PixelFormats.Bgra32, null, buffer, image.Width * 4);
+            var dpiX = image.Metadata.HorizontalResolution;
+            var dpiY = image.Metadata.VerticalResolution;
+            return BitmapSource.Create(image.Width, image.Height, dpiX, dpiY, PixelFormats.Bgra32, null, buffer, image.Width * 4);
         }
     }
 }
