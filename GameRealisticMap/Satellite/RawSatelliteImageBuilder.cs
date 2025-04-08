@@ -32,9 +32,9 @@ namespace GameRealisticMap.Satellite
             //}
 
             var himage = new HugeImage<Rgba32>(context.HugeImageStorage, nameof(RawSatelliteImageBuilder), new Size(totalSize));
-            using (var report2 = scope.CreateInteger("S2C", himage.Parts.Sum(t => t.RealRectangle.Height)))
+            using (var report2 = scope.CreateInteger(SatelliteImageProvider.GetName(sources), himage.Parts.Sum(t => t.RealRectangle.Height)))
             {
-                using var src = new S2Cloudless(report2, sources);
+                using var src = new SatelliteImageProvider(report2, sources);
                 foreach (var part in himage.Parts)
                 {
                     await LoadPart(context, totalSize, part, report2, src).ConfigureAwait(false);
@@ -45,9 +45,10 @@ namespace GameRealisticMap.Satellite
             return new RawSatelliteImageData(himage);
         }
 
-        private async Task LoadPart(IBuildContext context, int totalSize, HugeImagePart<Rgba32> part, IProgressInteger report, S2Cloudless src)
+        private async Task LoadPart(IBuildContext context, int totalSize, HugeImagePart<Rgba32> part, IProgressInteger report, SatelliteImageProvider src)
         {
             var imageryResolution = context.Options.Resolution;
+            var options = context.Options.Satellite;
 
             using var token = await part.AcquireAsync().ConfigureAwait(false);
 
@@ -75,6 +76,12 @@ namespace GameRealisticMap.Satellite
             }).ConfigureAwait(false);
 
             img.Mutate(d => d.GaussianBlur(1f));
+
+            if ( options.Brightness != 1f || options.Contrast != 1f || options.Saturation != 1f)
+            {
+                img.Mutate(d => d.Brightness(options.Brightness).Contrast(options.Contrast).Saturate(options.Saturation));
+            }
+
         }
 
         public async ValueTask<RawSatelliteImageData> Read(IPackageReader package, IContext context)
@@ -96,7 +103,7 @@ namespace GameRealisticMap.Satellite
         private Image<Rgba32> LoadImage(IBuildContext context, int tileSize, IProgressInteger report, Vector2 start, int done)
         {
             var imageryResolution = context.Options.Resolution;
-            using var src = new S2Cloudless(report, sources);
+            using var src = new SatelliteImageProvider(report, sources);
             var img = new Image<Rgba32>(tileSize, tileSize);
             var parallel = 16;
             var dh = img.Height / parallel;

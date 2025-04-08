@@ -1,4 +1,6 @@
-﻿namespace GameRealisticMap.Generic
+﻿using GameRealisticMap.Configuration;
+
+namespace GameRealisticMap.Generic
 {
     public class GenericMapConfigJson
     {
@@ -17,6 +19,8 @@
         public string? TargetDirectory { get; set; }
 
         public float? PrivateServiceRoadThreshold { get; set; }
+
+        public SatelliteImageOptions? Satellite { get; set; }
 
         public GenericMapConfig ToMapConfig()
         {

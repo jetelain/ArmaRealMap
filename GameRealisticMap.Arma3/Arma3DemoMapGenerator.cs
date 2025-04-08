@@ -27,7 +27,7 @@ namespace GameRealisticMap.Arma3
         private readonly IDemoNaming demoNaming;
 
         public Arma3DemoMapGenerator(IArma3RegionAssets assets, ProjectDrive projectDrive, string name, IPboCompilerFactory pboCompilerFactory, IDemoNaming? demoNaming = null)
-            : base(assets, projectDrive, pboCompilerFactory, new DefaultSourceLocations())
+            : base(assets, projectDrive, pboCompilerFactory, DefaultSourceLocations.Instance)
         {
             this.name = name;
             this.demoNaming = demoNaming ?? new DefaultDemoNaming();

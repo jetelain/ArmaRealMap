@@ -1,20 +1,18 @@
 ﻿using System.Collections.Concurrent;
-using System.Net;
+using System.Text.RegularExpressions;
 using GameRealisticMap.Configuration;
-using GameRealisticMap.Reporting;
 using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats;
-using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.Satellite
 {
-    internal class S2Cloudless : IDisposable
+    public class SatelliteImageProvider : IDisposable
     {
         private const double Delta = 20_037_508.342_789;
 
-        private readonly string cacheLocation = Path.Combine(Path.GetTempPath(), "GameRealisticMap", "S2Cloudless");
+        private readonly string cacheLocation = Path.Combine(Path.GetTempPath(), "GameRealisticMap", "SatelliteImage");
         private readonly IProgressBase progress;
         private readonly HttpClient httpClient;
         private readonly SemaphoreSlim downloadSemaphore = new SemaphoreSlim(1, 1);
@@ -25,19 +23,46 @@ namespace GameRealisticMap.Satellite
 
         private const int MaxCachePressure = 5000; // Arround 2 GiB : 10000 * 197 KB per tile
 
-        private static readonly int zoomLevel = 15; // best compromise, almost equal to zoomLevel 16 result, 20% faster to process
-        private static readonly int halfTileCount = (int)Math.Pow(2, zoomLevel) / 2;
-        private static readonly int tileSize = 256;
+        private readonly int zoomLevel = 15; // best compromise with S2 Cloudless, almost equal to zoomLevel 16 result, 20% faster to process
+        private readonly int halfTileCount;
+        private readonly int tileSize = 256;
 
         private const double rMajor = 6378137; //Equatorial Radius, WGS84
         private const double shift = Math.PI * rMajor;
 
-        public S2Cloudless(IProgressBase progress, ISourceLocations sources)
+        private static readonly Regex ZoomRegex = new Regex(@"/([0-9]+)/\{[xy]\}/\{[xy]\}",RegexOptions.IgnoreCase);
+
+        public SatelliteImageProvider(IProgressBase progress, ISourceLocations sources)
         {
             this.progress = progress;
-            endPoint = sources.S2CloudlessBasePath.AbsoluteUri;
+            endPoint = sources.SatelliteImageProvider.ToString();
+            if (!endPoint.Contains("{x}"))
+            {
+                endPoint = $"{endPoint.TrimEnd('/')}/{zoomLevel}/{{y}}/{{x}}.jpg";
+            }
+            else if (endPoint.Contains("{z}"))
+            {
+                zoomLevel = 16;
+                endPoint = endPoint.Replace("{z}", zoomLevel.ToString());
+            }
+            else
+            {
+                var match = ZoomRegex.Match(endPoint);
+                if (match.Success && int.TryParse(match.Groups[1].Value, out var actualZoom))
+                {
+                    zoomLevel = actualZoom;
+                }
+            }
+            progress.WriteLine($"ZoomLevel={zoomLevel} EndPoint={endPoint}");
+
             httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0");
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "GameRealisticMap/1.0");
+            halfTileCount = (int)Math.Pow(2, zoomLevel) / 2;
+        }
+
+        public static string GetName(ISourceLocations sources)
+        {
+            return sources.SatelliteImageProvider.DnsSafeHost;
         }
 
         public static NetTopologySuite.Geometries.Point LatLonToWebMercator(GeoAPI.Geometries.Coordinate coordinate)
@@ -49,6 +74,22 @@ namespace GameRealisticMap.Satellite
         }
 
         public int ZoomLevel => zoomLevel;
+
+        public async Task<Image<Rgba32>> GetTile(GeoAPI.Geometries.Coordinate coordinate)
+        {
+            var meters = LatLonToWebMercator(coordinate);
+
+            var y = Delta - meters.Y;
+            var x = Delta + meters.X;
+
+            var tileX = x * halfTileCount / Delta;
+            var tileY = y * halfTileCount / Delta;
+
+            var tX = Math.Floor(tileX);
+            var tY = Math.Floor(tileY);
+
+            return await cache.GetOrAdd(((int)tX, (int)tY), k => LoadTile(k.Item1, k.Item2)).ConfigureAwait(false);
+        }
 
         public async Task<Rgba32> GetPixel(GeoAPI.Geometries.Coordinate coordinate)
         {
@@ -120,18 +161,19 @@ namespace GameRealisticMap.Satellite
 
         private async Task<Image<Rgba32>> LoadTile(int tX, int tY)
         {
-            var filePath = FormattableString.Invariant($"{zoomLevel}/{tY}/{tX}.jpg");
-
-            var cacheFile = System.IO.Path.Combine(cacheLocation, filePath);
+            var imageUri = new Uri(endPoint.Replace("{x}", tX.ToString()).Replace("{y}", tY.ToString()), UriKind.Absolute);
+            var cacheFile = Path.Combine(cacheLocation, imageUri.DnsSafeHost, imageUri.AbsolutePath.TrimStart('/'));
             if (!File.Exists(cacheFile))
             {
                 await downloadSemaphore.WaitAsync().ConfigureAwait(false);
                 try
                 {
-                    if (!File.Exists(cacheFile))
+                    if (!File.Exists(cacheFile) || (DateTime.Now - File.GetLastWriteTime(cacheFile)).TotalDays > 7)
                     {
-                        Directory.CreateDirectory(Path.GetDirectoryName(cacheFile));
-                        File.WriteAllBytes(cacheFile, await Load(new Uri(endPoint + filePath, UriKind.Absolute)).ConfigureAwait(false));
+                        // Most images providers ask to not cache the image for more than 7 days (to ensure enough API calls)
+
+                        Directory.CreateDirectory(Path.GetDirectoryName(cacheFile)!);
+                        File.WriteAllBytes(cacheFile, await Load(imageUri).ConfigureAwait(false));
                     }
                 }
                 finally
@@ -143,6 +185,10 @@ namespace GameRealisticMap.Satellite
             try
             {
                 var image = await Image.LoadAsync<Rgba32>(cacheFile).ConfigureAwait(false);
+                if (image.Width != tileSize || image.Height != tileSize)
+                {
+                    image.Mutate(x => x.Resize(tileSize, tileSize));
+                }
                 Interlocked.Increment(ref estimatedCachePressure);
                 return image;
             }

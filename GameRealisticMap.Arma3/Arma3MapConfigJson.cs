@@ -1,4 +1,6 @@
-﻿namespace GameRealisticMap.Arma3
+﻿using GameRealisticMap.Configuration;
+
+namespace GameRealisticMap.Arma3
 {
     public class Arma3MapConfigJson
     {
@@ -29,6 +31,8 @@
         public int IdMapMultiplier { get; set; } = 1;
 
         public float? PrivateServiceRoadThreshold { get; set; }
+
+        public SatelliteImageOptions? Satellite { get; set; }
 
         public Arma3MapConfig ToArma3MapConfig()
         {

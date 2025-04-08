@@ -1,4 +1,6 @@
-﻿namespace GameRealisticMap
+﻿using GameRealisticMap.Configuration;
+
+namespace GameRealisticMap
 {
     public class MapProcessingOptions : IMapProcessingOptions
     {
@@ -13,5 +15,7 @@
         public double Resolution { get; }
 
         public float PrivateServiceRoadThreshold { get; }
+
+        public ISatelliteImageOptions Satellite => new SatelliteImageOptions();
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 
 namespace GameRealisticMap.Configuration
 {
@@ -18,22 +13,22 @@ namespace GameRealisticMap.Configuration
             if (File.Exists(DefaultLocation))
             {
                 using var stream = File.OpenRead(DefaultLocation);
-                return await JsonSerializer.DeserializeAsync<SourceLocationsJson>(stream) ?? (ISourceLocations)new DefaultSourceLocations();
+                return await JsonSerializer.DeserializeAsync<SourceLocationsJson>(stream) ?? (ISourceLocations)DefaultSourceLocations.Instance;
             }
-            return new DefaultSourceLocations();
+            return DefaultSourceLocations.Instance;
         }
 
         public static async Task Save(ISourceLocations locations)
         {
             using var stream = File.Create(DefaultLocation);
-            await JsonSerializer.SerializeAsync(stream, new SourceLocationsJson() { 
-                 MapToolkitAW3D30 = locations.MapToolkitAW3D30, 
-                 MapToolkitSRTM1 = locations.MapToolkitSRTM1,
-                 MapToolkitSRTM15Plus = locations.MapToolkitSRTM15Plus,
-                 OverpassApiInterpreter = locations.OverpassApiInterpreter,
-                 S2CloudlessBasePath = locations.S2CloudlessBasePath,
-                 WeatherStats = locations.WeatherStats
-             });
+            await JsonSerializer.SerializeAsync(stream, new SourceLocationsJson(
+                locations.MapToolkitSRTM15Plus,
+                locations.MapToolkitSRTM1,
+                locations.MapToolkitAW3D30,
+                locations.WeatherStats,
+                locations.OverpassApiInterpreter,
+                null,
+                locations.SatelliteImageProvider));
         }
     }
 }
