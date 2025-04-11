@@ -150,7 +150,15 @@ namespace GameRealisticMap.Arma3.Edit
                     // Remove pitch/roll rotations as the game engine will make the object to follow the terrain
                     var tbInitial = new WrpAddObject(matrix, model).ToTerrainBuilder(_library);
                     var tbFixed = new TerrainBuilderObject(tbInitial.Model, tbInitial.Point, tbInitial.Elevation, tbInitial.ElevationMode, tbInitial.Yaw, 0, 0, tbInitial.Scale);
-                    return tbFixed.ToWrpTransform();
+                    matrix = tbFixed.ToWrpTransform();
+                }
+            }
+            if (array.Length > 7)
+            {
+                var scale = System.Convert.ToSingle(array[7]);
+                if (scale != 1)
+                {
+                    matrix = Matrix4x4.CreateScale(scale) * matrix;
                 }
             }
             return matrix;
