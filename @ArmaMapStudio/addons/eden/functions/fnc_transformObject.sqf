@@ -2,7 +2,7 @@
 
 params ['_mapObj'];
 
-(getModelInfo _mapObj) params ["", "_p3d"]; 
+(getModelInfo _mapObj) params ["", "_p3d", "", "_placingPoint"]; 
 
 if ( _p3d != "" ) then {
 	private _scale = getObjectScale _mapObj;
@@ -13,6 +13,11 @@ if ( _p3d != "" ) then {
 	private _classes =
 		(format ["getText (_x >> 'model') == '\%1' && getNumber (_x >> 'scope') >= 1", _p3d] configClasses (configfile >> "CfgVehicles")) + 
 		(format ["getText (_x >> 'model') == '%1' && getNumber (_x >> 'scope') >= 1", _p3d] configClasses (configfile >> "CfgVehicles"));
+
+	if ( _hasScale ) then {
+		private _zOffset = _placingPoint#2;
+		_realPos set [2, (_realPos select 2) + _zOffset - (_scale * _zOffset)];
+	};
 
 	if ( (count _classes) > 0 ) then {
 		private _entity = create3DENEntity ["Object", configName (_classes select 0), _realPos, false];
