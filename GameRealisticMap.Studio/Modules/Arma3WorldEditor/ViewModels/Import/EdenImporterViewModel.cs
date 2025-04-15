@@ -215,6 +215,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
             AddIfInstalled(installed, dependencies, "882231372"); // Eden Extended Objects
             AddIfInstalled(installed, dependencies, "1923321700"); // O&T Expansion Eden
             AddIfInstalled(installed, dependencies, "2822758266"); // Deformer
+            AddIfInstalled(installed, dependencies, "623475643"); // 3den Enhanced
 
             Arma3Helper.Launch(dependencies, parent.TargetModDirectory, Path.GetFileNameWithoutExtension(parent.FileName));
 

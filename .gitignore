@@ -386,3 +386,5 @@ healthchecksdb
 /Output
 *.zip
 /PDrive/z/arm/addons/nolc
+/@ArmaMapStudio/.hemttout
+*.dll

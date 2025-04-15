@@ -346,6 +346,48 @@ namespace GameRealisticMap.Arma3.Test.Edit
         }
 
         [Fact]
+        public void GetTransform_ShouldNotApplyScale_WhenScaleIsAlmostDefault1()
+        {
+            var array = new object[]
+            {
+                null, null, null,
+                new object[] { 100, 200, 300 },
+                new object[] { 0, 1, 0 },
+                new object[] { 0, 0, 1 },
+                new object[] { 0, 1, 0 },
+                0.9999 // Default scale factor
+            };
+            var model = "defaultScaleModel.p3d";
+            var result = _parser.GetTransform(array, model);
+
+            Assert.Equal(new Matrix4x4(-1, 0, 0, 0,
+                                       0, 0, 1, 0,
+                                       0, 1, 0, 0,
+                                       100, 300, 200, 1), result);
+        }
+
+        [Fact]
+        public void GetTransform_ShouldNotApplyScale_WhenScaleIsAlmostDefault2()
+        {
+            var array = new object[]
+            {
+                null, null, null,
+                new object[] { 100, 200, 300 },
+                new object[] { 0, 1, 0 },
+                new object[] { 0, 0, 1 },
+                new object[] { 0, 1, 0 },
+                1.0001 // Default scale factor
+            };
+            var model = "defaultScaleModel.p3d";
+            var result = _parser.GetTransform(array, model);
+
+            Assert.Equal(new Matrix4x4(-1, 0, 0, 0,
+                                       0, 0, 1, 0,
+                                       0, 1, 0, 0,
+                                       100, 300, 200, 1), result);
+        }
+
+        [Fact]
         public void GetTransform_ShouldHandleMissingScale()
         {
             var array = new object[]

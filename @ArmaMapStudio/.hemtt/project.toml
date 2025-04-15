@@ -1,0 +1,18 @@
+name = "Export to GameRealisticMap Studio"
+prefix = "grma3"
+author = "GrueArbre"
+template = "cba"
+mainprefix = "z"
+folder_optionals = false
+sig_version = 3
+
+[version]
+path = "addons/main/script_version.hpp"
+git_hash = 0
+
+[files]
+include = [
+    "mod.cpp",
+    "logo.paa",
+    "grma3aerial_x64.dll"
+]

@@ -156,7 +156,7 @@ namespace GameRealisticMap.Arma3.Edit
             if (array.Length > 7)
             {
                 var scale = System.Convert.ToSingle(array[7]);
-                if (scale != 1)
+                if (MathF.Abs(scale - 1) > 0.001)
                 {
                     matrix = Matrix4x4.CreateScale(scale) * matrix;
                 }
