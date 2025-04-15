@@ -1,7 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace GameRealisticMap.Arma3.Assets
 {
+    [DebuggerDisplay("{SteamId} ({CdlcPath})")]
     public class ModDependencyDefinition
     {
         [JsonConstructor]

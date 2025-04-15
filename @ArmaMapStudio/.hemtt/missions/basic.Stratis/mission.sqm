@@ -1,0 +1,790 @@
+version=54;
+class EditorData
+{
+	moveGridStep=1;
+	angleGridStep=0.2617994;
+	scaleGridStep=1;
+	autoGroupingDist=10;
+	toggles=1;
+	mods[]=
+	{
+		"3denEnhanced"
+	};
+	class ItemIDProvider
+	{
+		nextID=86;
+	};
+	class LayerIndexProvider
+	{
+		nextID=4;
+	};
+	class Camera
+	{
+		pos[]={3813.7781,193.21179,3668.5793};
+		dir[]={-0.79969841,-0.51678836,-0.3059358};
+		up[]={-0.4827024,0.85607964,-0.1846641};
+		aside[]={-0.35733995,-2.8900104e-07,0.93406147};
+	};
+};
+binarizationWanted=0;
+sourceName="basic";
+addons[]=
+{
+	"A3_Structures_F_Mark_VR_Shapes"
+};
+class AddonsMetaData
+{
+	class List
+	{
+		items=1;
+		class Item0
+		{
+			className="A3_Structures_F_Mark";
+			name="Arma 3 Marksmen - Buildings and Structures";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+	};
+};
+dlcs[]=
+{
+	"Mark"
+};
+randomSeed=11715454;
+class ScenarioData
+{
+	author="GrueArbre";
+};
+class CustomAttributes
+{
+};
+class Mission
+{
+	class Intel
+	{
+		timeOfChanges=1800.0002;
+		startWeather=0;
+		startWind=0.1;
+		startWaves=0.1;
+		forecastWeather=0;
+		forecastWind=0.1;
+		forecastWaves=0.1;
+		forecastLightnings=0.1;
+		wavesForced=1;
+		windForced=1;
+		year=2035;
+		day=28;
+		hour=13;
+		minute=37;
+		startFogDecay=0.014;
+		forecastFogDecay=0.014;
+	};
+	class Entities
+	{
+		items=1;
+		class Item0
+		{
+			dataType="Layer";
+			name="Intégrable à la carte (à supprimer)";
+			class Entities
+			{
+				items=30;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3807.6846,180.58627,3702.8557};
+						angles[]={0.087275781,0,0.19979759};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=56;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=1.5258789e-05;
+				};
+				class Item1
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3803.0244,180.04379,3698.0083};
+						angles[]={0.087275781,1.5707964,0.18293285};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=57;
+					type="Land_VR_Shape_01_cube_1m_F";
+				};
+				class Item2
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3802.981,179.36964,3707.8064};
+						angles[]={0.062418513,4.712389,0.12927569};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=58;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=1.5258789e-05;
+				};
+				class Item3
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3797.8687,178.88452,3702.8616};
+						angles[]={0.049958061,3.1415927,0.13173209};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=59;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=1.5258789e-05;
+				};
+				class Item4
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3806.3403,180.59325,3699.4897};
+						angles[]={0.089758366,0.78539819,0.20938319};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=60;
+					type="Land_VR_Shape_01_cube_1m_F";
+				};
+				class Item5
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3799.4482,179.25883,3699.47};
+						angles[]={0.06988623,2.3561945,0.15865518};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=61;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=1.5258789e-05;
+				};
+				class Item6
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3784.8201,178.71985,3722.3367};
+						angles[]={6.2531958,0,6.2706842};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=62;
+					type="Land_VR_Shape_01_cube_1m_F";
+				};
+				class Item7
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3780.1599,178.4677,3717.4893};
+						angles[]={6.1760983,1.5707964,0.047464538};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=63;
+					type="Land_VR_Shape_01_cube_1m_F";
+				};
+				class Item8
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3780.1165,178.56407,3727.2874};
+						angles[]={0.077348292,4.712389,6.2731786};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=64;
+					type="Land_VR_Shape_01_cube_1m_F";
+				};
+				class Item9
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3775.0042,178.59373,3722.3425};
+						angles[]={6.2506957,3.1415927,0.022495884};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=65;
+					type="Land_VR_Shape_01_cube_1m_F";
+				};
+				class Item10
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3783.4758,178.62543,3718.9707};
+						angles[]={6.2407117,0.78539819,6.2656889};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=66;
+					type="Land_VR_Shape_01_cube_1m_F";
+				};
+				class Item11
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3776.5837,178.43517,3718.9509};
+						angles[]={6.1342978,2.3561945,0.089757703};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=67;
+					type="Land_VR_Shape_01_cube_1m_F";
+				};
+				class Item12
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3774.4944,175.35689,3696.7285};
+						angles[]={6.2606869,0,0.13173209};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=68;
+					type="Land_VR_Shape_01_cube_1m_F";
+				};
+				class Item13
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3769.8342,174.711,3691.8811};
+						angles[]={0.0074931863,1.5707964,0.11942752};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=69;
+					type="Land_VR_Shape_01_cube_1m_F";
+				};
+				class Item14
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3769.7908,174.92177,3701.6792};
+						angles[]={6.228241,4.712389,0.12189404};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=70;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=3.0517578e-05;
+				};
+				class Item15
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3764.6785,174.14444,3696.7344};
+						angles[]={6.2631865,3.1415927,0.11696439};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=71;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=1.5258789e-05;
+				};
+				class Item16
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3773.1501,175.13318,3693.3625};
+						angles[]={6.2731848,0.78539819,0.12927616};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=72;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=3.0517578e-05;
+				};
+				class Item17
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3766.2581,174.29642,3693.3428};
+						angles[]={6.278194,2.3561945,0.11449862};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=73;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=3.0517578e-05;
+				};
+				class Item18
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3782.123,180.08229,3648.5569};
+						angles[]={0.057435457,0,0.034986377};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=74;
+					type="Land_VR_Shape_01_cube_1m_F";
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=0.75;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item19
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3777.4629,180.07532,3643.7095};
+						angles[]={0.0075011365,1.5707964,0.049958061};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=75;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=-1.5258789e-05;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=0.75;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item20
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3777.4194,179.51411,3653.5076};
+						angles[]={0.084795304,4.712389,0.064906895};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=76;
+					type="Land_VR_Shape_01_cube_1m_F";
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=0.75;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item21
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3772.3071,179.51584,3648.5627};
+						angles[]={0.08231058,3.1415927,0.072375387};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=77;
+					type="Land_VR_Shape_01_cube_1m_F";
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=0.75;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item22
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3780.7788,180.17767,3645.1909};
+						angles[]={0.039979152,0.78539819,0.032489564};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=78;
+					type="Land_VR_Shape_01_cube_1m_F";
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=0.75;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item23
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3773.8867,179.79703,3645.1711};
+						angles[]={0.042478051,2.3561945,0.072371267};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+					};
+					id=79;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=1.5258789e-05;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=0.75;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item24
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3802.6099,182.2363,3658.197};
+					};
+					side="Empty";
+					class Attributes
+					{
+					};
+					id=80;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=0.84411621;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=2.5;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item25
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3797.9497,181.52106,3653.3496};
+						angles[]={0,1.5707964,0};
+					};
+					side="Empty";
+					class Attributes
+					{
+					};
+					id=81;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=0.84410095;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=2.5;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item26
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3797.9063,181.72557,3663.1477};
+						angles[]={0,4.712389,0};
+					};
+					side="Empty";
+					class Attributes
+					{
+					};
+					id=82;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=0.84411621;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=2.5;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item27
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3792.7939,181.22017,3658.2029};
+						angles[]={0,3.1415927,0};
+					};
+					side="Empty";
+					class Attributes
+					{
+					};
+					id=83;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=0.84411621;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=2.5;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item28
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3801.2656,181.90509,3654.8311};
+						angles[]={0,0.78539819,0};
+					};
+					side="Empty";
+					class Attributes
+					{
+					};
+					id=84;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=0.84410095;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=2.5;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+				class Item29
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={3794.3735,181.31866,3654.8113};
+						angles[]={0,2.3561945,0};
+					};
+					side="Empty";
+					class Attributes
+					{
+					};
+					id=85;
+					type="Land_VR_Shape_01_cube_1m_F";
+					atlOffset=0.84411621;
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="ENH_objectScaling";
+							expression="    if (is3DEN) then    {        _this addEventHandler ['AttributesChanged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];        _this addEventHandler ['Dragged3DEN',        {            params ['_object'];            _object setObjectScale ((_object get3DENAttribute 'ENH_objectScaling') # 0);        }];    };    if (!isMultiplayer && _value != 1) then {[_this, _value] spawn {sleep 0.5; (_this select 0) setObjectScale (_this select 1)}};";
+							class Value
+							{
+								class data
+								{
+									singleType="SCALAR";
+									value=2.5;
+								};
+							};
+						};
+						nAttributes=1;
+					};
+				};
+			};
+			id=19;
+			atlOffset=0.86065674;
+		};
+	};
+};

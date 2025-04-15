@@ -385,3 +385,6 @@ healthchecksdb
 /GameRealisticMap.Arma3.CommandLine/Properties/launchSettings.json
 /Output
 *.zip
+/PDrive/z/arm/addons/nolc
+/@ArmaMapStudio/.hemttout
+*.dll

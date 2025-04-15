@@ -302,5 +302,110 @@ namespace GameRealisticMap.Arma3.Test.Edit
             Assert.Single(result.Add);
             Assert.Equal("path\\to\\model_no_land_contact.p3d", result.Add[0].Model);
         }
+
+        [Fact]
+        public void GetTransform_ShouldApplyScale_WhenScaleIsNotDefault()
+        {
+            var array = new object[]
+            {
+                null, null, null,
+                new object[] { 100, 200, 300 },
+                new object[] { 0, 1, 0 },
+                new object[] { 0, 0, 1 },
+                new object[] { 0, 1, 0 },
+                2 // Scale factor
+            };
+            var model = "scaledModel.p3d";
+            var result = _parser.GetTransform(array, model);
+
+            Assert.Equal(new Matrix4x4(-2, 0, 0, 0,
+                                       0, 0, 2, 0,
+                                       0, 2, 0, 0,
+                                       100, 300, 200, 1), result);
+        }
+
+        [Fact]
+        public void GetTransform_ShouldNotApplyScale_WhenScaleIsDefault()
+        {
+            var array = new object[]
+            {
+                null, null, null,
+                new object[] { 100, 200, 300 },
+                new object[] { 0, 1, 0 },
+                new object[] { 0, 0, 1 },
+                new object[] { 0, 1, 0 },
+                1 // Default scale factor
+            };
+            var model = "defaultScaleModel.p3d";
+            var result = _parser.GetTransform(array, model);
+
+            Assert.Equal(new Matrix4x4(-1, 0, 0, 0,
+                                       0, 0, 1, 0,
+                                       0, 1, 0, 0,
+                                       100, 300, 200, 1), result);
+        }
+
+        [Fact]
+        public void GetTransform_ShouldNotApplyScale_WhenScaleIsAlmostDefault1()
+        {
+            var array = new object[]
+            {
+                null, null, null,
+                new object[] { 100, 200, 300 },
+                new object[] { 0, 1, 0 },
+                new object[] { 0, 0, 1 },
+                new object[] { 0, 1, 0 },
+                0.9999 // Default scale factor
+            };
+            var model = "defaultScaleModel.p3d";
+            var result = _parser.GetTransform(array, model);
+
+            Assert.Equal(new Matrix4x4(-1, 0, 0, 0,
+                                       0, 0, 1, 0,
+                                       0, 1, 0, 0,
+                                       100, 300, 200, 1), result);
+        }
+
+        [Fact]
+        public void GetTransform_ShouldNotApplyScale_WhenScaleIsAlmostDefault2()
+        {
+            var array = new object[]
+            {
+                null, null, null,
+                new object[] { 100, 200, 300 },
+                new object[] { 0, 1, 0 },
+                new object[] { 0, 0, 1 },
+                new object[] { 0, 1, 0 },
+                1.0001 // Default scale factor
+            };
+            var model = "defaultScaleModel.p3d";
+            var result = _parser.GetTransform(array, model);
+
+            Assert.Equal(new Matrix4x4(-1, 0, 0, 0,
+                                       0, 0, 1, 0,
+                                       0, 1, 0, 0,
+                                       100, 300, 200, 1), result);
+        }
+
+        [Fact]
+        public void GetTransform_ShouldHandleMissingScale()
+        {
+            var array = new object[]
+            {
+                null, null, null,
+                new object[] { 100, 200, 300 },
+                new object[] { 0, 1, 0 },
+                new object[] { 0, 0, 1 },
+                new object[] { 0, 1, 0 }
+                // No scale provided
+            };
+            var model = "noScaleModel.p3d";
+            var result = _parser.GetTransform(array, model);
+
+            Assert.Equal(new Matrix4x4(-1, 0, 0, 0,
+                                       0, 0, 1, 0,
+                                       0, 1, 0, 0,
+                                       100, 300, 200, 1), result);
+        }
     }
 }
