@@ -1,0 +1,9 @@
+[default]
+workshop = [
+    "450814997", # CBA_A3's Workshop ID
+    "882231372", # Eden Extended Objects
+    "1923321700", # O&T Expansion Eden
+    "2822758266", # Deformer
+    "623475643" # 3den Enhanced
+]
+mission = "basic.Stratis"
