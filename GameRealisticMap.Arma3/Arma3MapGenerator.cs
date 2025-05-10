@@ -54,7 +54,7 @@ namespace GameRealisticMap.Arma3
         protected virtual BuildContext CreateBuildContext(IProgressScope progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
         {
             var builders = new BuildersCatalog(assets, sources);
-            return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
+            return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage, PackageHelper.GetPackageWriter(a3config, projectDrive));
         }
 
         [SupportedOSPlatform("windows")]

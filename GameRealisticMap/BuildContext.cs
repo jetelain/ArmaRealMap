@@ -1,4 +1,5 @@
-﻿using GameRealisticMap.Osm;
+﻿using GameRealisticMap.IO;
+using GameRealisticMap.Osm;
 using Pmad.HugeImages.Storage;
 using Pmad.ProgressTracking;
 
@@ -10,11 +11,13 @@ namespace GameRealisticMap
         private readonly Dictionary<Type, Task> datas = new Dictionary<Type, Task>();
         private readonly IProgressScope rootScope;
         private readonly IBuidersCatalog catalog;
+        private readonly IPackageWriter? writer;
 
-        public BuildContext(IBuidersCatalog catalog, IProgressScope rootScope, ITerrainArea area, IOsmDataSource source, IMapProcessingOptions imagery, IHugeImageStorage? his = null)
+        public BuildContext(IBuidersCatalog catalog, IProgressScope rootScope, ITerrainArea area, IOsmDataSource source, IMapProcessingOptions imagery, IHugeImageStorage? his = null, IPackageWriter? writer = null)
         {
             this.rootScope = rootScope;
             this.catalog = catalog;
+            this.writer = writer;
             Area = area;
             OsmSource = source;
             Options = imagery;
@@ -71,13 +74,25 @@ namespace GameRealisticMap
             var builder = catalog.Get<T>();
             return Task.Run(async () =>
             {
+                var name = builder.GetType().Name.Replace("Builder", "");
+
                 using (var scope = (parentScope ?? rootScope).CreateScope(builder.GetType().Name.Replace("Builder", "")))
                 {
+                    T value;
                     if (builder is IDataBuilderAsync<T> asyncBuilder)
                     {
-                        return await asyncBuilder.BuildAsync(this, scope).ConfigureAwait(false);
+                        value = await asyncBuilder.BuildAsync(this, scope).ConfigureAwait(false);
                     }
-                    return builder.Build(this, scope);
+                    else
+                    {
+                        value = builder.Build(this, scope);
+                    }
+                    if (writer != null)
+                    {
+                        var serializer = ContextSerializer.GetSerializer(builder);
+                        await serializer.Write(writer, value).ConfigureAwait(false);
+                    }
+                    return value;
                 }
             });
         }

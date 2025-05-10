@@ -34,6 +34,8 @@ namespace GameRealisticMap.Arma3
 
         public SatelliteImageOptions? Satellite { get; set; }
 
+        public bool IsPersisted { get; set; } = true;
+
         public Arma3MapConfig ToArma3MapConfig()
         {
             return new Arma3MapConfig(this);

@@ -11,11 +11,11 @@ using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Osm;
 using GameRealisticMap.Preview;
+using Pmad.Cartography;
+using Pmad.Cartography.DataCells.FileFormats;
 using Pmad.HugeImages;
 using Pmad.HugeImages.Processing;
 using Pmad.HugeImages.Storage;
-using Pmad.Cartography;
-using Pmad.Cartography.DataCells.FileFormats;
 using Pmad.ProgressTracking;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -42,7 +42,7 @@ namespace GameRealisticMap.Arma3
         private BuildContext CreateBuildContext(IProgressScope progress, Arma3MapConfig a3config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
         {
             var builders = new BuildersCatalog(assets, sources);
-            return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage);
+            return new BuildContext(builders, progress, a3config.TerrainArea, osmSource, a3config.Imagery, hugeImageStorage, PackageHelper.GetPackageWriter(a3config, projectDrive));
         }
 
         public async Task<string?> GenerateTerrainBuilderFiles(IProgressScope progress, Arma3MapConfig a3config, string targetDirectory)

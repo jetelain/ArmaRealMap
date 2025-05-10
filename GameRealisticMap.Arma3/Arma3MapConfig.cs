@@ -69,6 +69,8 @@ namespace GameRealisticMap.Arma3
 
             Satellite = arma3MapConfigJson.Satellite ?? new SatelliteImageOptions();
 
+            IsPersisted = arma3MapConfigJson.IsPersisted;
+
             Arma3ConfigHelper.ValidatePboPrefix(PboPrefix);
             Arma3ConfigHelper.ValidateWorldName(WorldName);
         }
@@ -124,5 +126,7 @@ namespace GameRealisticMap.Arma3
         public int IdMapMultiplier { get; }
 
         public ISatelliteImageOptions Satellite { get; }
+
+        public bool IsPersisted { get; }
     }
 }
