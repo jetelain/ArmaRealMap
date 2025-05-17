@@ -51,6 +51,11 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             }
         }
 
+        public string ProjectDriveBasePath 
+        { 
+            get { return Settings?.ProjectDriveBasePath ?? Arma3ToolsHelper.GetDefaultProjectDriveMappedPath(); }
+        }
+
         private void CommitSettings(WorkspaceSettings settings)
         {
             lock (this)
@@ -124,6 +129,22 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
                 return new PboProjectFactory();
             }
             return new PboCompilerFactory(Library, ProjectDrive);
+        }
+
+        public async Task SetProjectDriveBasePath(string projectDriveBasePath)
+        {
+            string? actualValue = projectDriveBasePath;
+            if (string.IsNullOrEmpty(projectDriveBasePath) || string.Equals(projectDriveBasePath, Arma3ToolsHelper.GetDefaultProjectDriveMappedPath(), StringComparison.OrdinalIgnoreCase))
+            {
+                actualValue = null;
+            }
+            var settings = Settings ?? new WorkspaceSettings();
+            if (actualValue != settings.ProjectDriveBasePath)
+            {
+                settings.ProjectDriveBasePath = actualValue;
+                CommitSettings(settings);
+                await Reload();
+            }
         }
     }
 }
