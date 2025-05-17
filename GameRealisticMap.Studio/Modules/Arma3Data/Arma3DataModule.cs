@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
@@ -56,6 +57,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             {
                 settings.Save();
                 Settings = settings;
+                Arma3ToolsHelper.WorkspaceSettings = settings;
             }
         }
 
@@ -67,6 +69,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
         private void Initialize(WorkspaceSettings settings)
         {
             Settings = settings;
+
+            Arma3ToolsHelper.WorkspaceSettings = settings;
 
             ProjectDrive = settings.CreateProjectDrive();
 

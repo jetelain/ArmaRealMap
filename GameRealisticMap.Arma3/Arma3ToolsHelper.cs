@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.Versioning;
-using GameRealisticMap.Reporting;
+using GameRealisticMap.Arma3.IO;
 using Microsoft.Win32;
 using Pmad.ProgressTracking;
 
@@ -8,6 +8,8 @@ namespace GameRealisticMap.Arma3
 {
     public static class Arma3ToolsHelper
     {
+        public static WorkspaceSettings? WorkspaceSettings { get; set; }
+
         public static void EnsureProjectDrive(bool auto = true)
         {
             if (OperatingSystem.IsWindows() && !Directory.Exists("P:\\"))
@@ -16,7 +18,21 @@ namespace GameRealisticMap.Arma3
                 string path = GetArma3ToolsPath();
                 if (!string.IsNullOrEmpty(path))
                 {
-                    var processs = Process.Start(Path.Combine(path, @"WorkDrive\WorkDrive.exe"), auto ? "/Mount /y" : "/Mount");
+                    var args = new List<string>
+                    {
+                        "/Mount"
+                    };
+                    if (auto)
+                    {
+                        args.Add("/y");
+                    }
+                    var customPath = GetCustomProjectDriveMappedPath();
+                    if (!string.IsNullOrEmpty(customPath))
+                    {
+                        args.Add("P");
+                        args.Add(customPath);
+                    }
+                    var processs = Process.Start(Path.Combine(path, @"WorkDrive\WorkDrive.exe"), args);
                     processs.WaitForExit();
                 }
             }
@@ -218,13 +234,50 @@ namespace GameRealisticMap.Arma3
             return @"C:\Program Files (x86)\Mikero\DePboTools\bin\pboProject.exe"; // Hard-coded because tool can only work from this location
         }
 
-        public static string GetProjectDrivePath()
+        public static string GetProjectDrivePath(WorkspaceSettings? settings = null)
         {
             if (Directory.Exists("P:"))
             {
                 return "P:";
             }
+            return GetCustomProjectDriveMappedPath(settings) ?? GetDefaultProjectDriveMappedPath();
+        }
+
+        /// <summary>
+        /// Default value used by Arma 3 Tools
+        /// </summary>
+        /// <returns></returns>
+        public static string GetDefaultProjectDriveMappedPath()
+        {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Arma 3 Projects");
+        }
+
+        /// <summary>
+        /// Get the custom project drive path from the settings
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        private static string? GetCustomProjectDriveMappedPath(WorkspaceSettings? settings = null)
+        {
+            var path = GetSettings(settings).ProjectDriveBasePath;
+            if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
+            {
+                return path;
+            }
+            return null;
+        }
+
+        private static WorkspaceSettings GetSettings(WorkspaceSettings? settings = null)
+        {
+            if (settings != null)
+            {
+                return settings;
+            }
+            if (WorkspaceSettings == null)
+            {
+                WorkspaceSettings = WorkspaceSettings.Load().GetAwaiter().GetResult();
+            }
+            return WorkspaceSettings;
         }
     }
 }
