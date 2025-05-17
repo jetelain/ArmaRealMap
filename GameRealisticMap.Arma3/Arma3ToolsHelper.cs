@@ -22,15 +22,15 @@ namespace GameRealisticMap.Arma3
                     {
                         "/Mount"
                     };
-                    if (auto)
-                    {
-                        args.Add("/y");
-                    }
                     var customPath = GetCustomProjectDriveMappedPath();
                     if (!string.IsNullOrEmpty(customPath))
                     {
                         args.Add("P");
                         args.Add(customPath);
+                    }
+                    if (auto)
+                    {
+                        args.Add("/y");
                     }
                     var processs = Process.Start(Path.Combine(path, @"WorkDrive\WorkDrive.exe"), args);
                     processs.WaitForExit();
