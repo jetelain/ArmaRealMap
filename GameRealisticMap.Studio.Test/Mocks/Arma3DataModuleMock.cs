@@ -16,7 +16,7 @@ namespace GameRealisticMap.Studio.Test.Mocks
         public IEnumerable<string> ActiveMods { get; set; } = new string[0];
 
         public bool UsePboProject { get; set; }
-        public string ProjectDriveBasePath { get => throw new NotImplementedException(); }
+        public string ProjectDriveBasePath { get; set; } = "DefaultProjectDriveBasePath";
 
         public event EventHandler<EventArgs>? Reloaded;
 
@@ -44,7 +44,8 @@ namespace GameRealisticMap.Studio.Test.Mocks
 
         public Task SetProjectDriveBasePath(string projectDriveBasePath)
         {
-            throw new NotImplementedException();
+            ProjectDriveBasePath = projectDriveBasePath;
+            return Task.CompletedTask;
         }
     }
 }
