@@ -25,9 +25,12 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
 
         IPboCompilerFactory CreatePboCompilerFactory();
 
+        Task SetProjectDriveBasePath(string projectDriveBasePath);
+
         event EventHandler<EventArgs> Reloaded;
 
         bool UsePboProject { get; set; }
 
+        string ProjectDriveBasePath { get; }
     }
 }
