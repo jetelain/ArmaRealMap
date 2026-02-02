@@ -29,7 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Pmad.Cartography" Version="0.1.8" />
+		<PackageReference Include="Pmad.Cartography" Version="0.1.20" />
 		<ProjectReference Include="..\weatherstats\WeatherStats\WeatherStats.csproj" />
 	</ItemGroup>
 
