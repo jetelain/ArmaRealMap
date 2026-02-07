@@ -22,6 +22,8 @@ namespace GameRealisticMap.Generic
 
         public SatelliteImageOptions? Satellite { get; set; }
 
+        public bool IsPersisted { get; set; }
+
         public GenericMapConfig ToMapConfig()
         {
             return new GenericMapConfig(this);

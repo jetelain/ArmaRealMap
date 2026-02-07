@@ -5,6 +5,8 @@ namespace GameRealisticMap
 {
     public interface IContext
     {
+        ITerrainArea Area { get; }
+
         T GetData<T>(IProgressScope? parentScope = null) where T : class;
 
         Task<T> GetDataAsync<T>(IProgressScope? parentScope = null) where T : class;

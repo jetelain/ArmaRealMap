@@ -10,6 +10,7 @@ using GameRealisticMap.Nature.Lakes;
 using GeoJSON.Text.Geometry;
 using Pmad.Cartography;
 using Pmad.Cartography.Contours;
+using Pmad.Cartography.DataCells;
 using Pmad.Geometry;
 using Pmad.Geometry.Shapes;
 using Pmad.ProgressTracking;
@@ -311,12 +312,21 @@ namespace GameRealisticMap.ElevationModel
         {
             var lakes = await package.ReadJson<List<LakeWithElevation>>("LakesElevation.json");
 
-            return new ElevationWithLakesData(context.GetData<ElevationData>().Elevation, lakes);
+            using var stream = package.ReadFile("ElevationWithLakes.ddc");
+
+            var grid = new ElevationGrid(DemDataCell.Load(stream).To<float>().AsPixelIsPoint());
+
+            return new ElevationWithLakesData(grid, lakes);
         }
 
-        public Task Write(IPackageWriter package, ElevationWithLakesData data)
+        public async Task Write(IPackageWriter package, ElevationWithLakesData data)
         {
-            return package.WriteJson("LakesElevation.json", data.Lakes);
+            await package.WriteJson("LakesElevation.json", data.Lakes);
+
+            using (var stream = package.CreateFile("ElevationWithLakes.ddc"))
+            {
+                data.Elevation.ToDataCell().Save(stream);
+            }
         }
     }
 }

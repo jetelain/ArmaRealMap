@@ -1,8 +1,8 @@
 ﻿using GameRealisticMap.Configuration;
 using GameRealisticMap.Generic.Exporters;
 using GameRealisticMap.Generic.Profiles;
+using GameRealisticMap.IO;
 using GameRealisticMap.Osm;
-using GameRealisticMap.Reporting;
 using Pmad.HugeImages.Storage;
 using Pmad.ProgressTracking;
 
@@ -33,10 +33,19 @@ namespace GameRealisticMap.Generic
             return CreateBuildContext(progress, config, osmSource, hugeImageStorage);
         }
 
+        internal IPackageWriter? GetPackageWriter(GenericMapConfig config)
+        {
+            if (config.IsPersisted)
+            {
+                return new FileSystemPackage(Path.Combine(config.TargetDirectory, ".grm"));
+            }
+            return null;
+        }
+
         protected virtual BuildContext CreateBuildContext(IProgressScope progress, GenericMapConfig config, IOsmDataSource osmSource, IHugeImageStorage? hugeImageStorage = null)
         {
             var builders = new BuildersCatalog(new DefaultBuildersConfig(), sources);
-            return new BuildContext(builders, progress, config.TerrainArea, osmSource, config, hugeImageStorage);
+            return new BuildContext(builders, progress, config.TerrainArea, osmSource, config, hugeImageStorage, GetPackageWriter(config));
         }
 
         public async Task Generate(IProgressScope progress, GenericMapConfig config)
