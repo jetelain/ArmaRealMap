@@ -1754,6 +1754,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Denied.
+        /// </summary>
+        public static string Denied {
+            get {
+                return ResourceManager.GetString("Denied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Average density.
         /// </summary>
         public static string Density {
@@ -3584,6 +3593,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à You are not allowed to edit or to export data from this map..
+        /// </summary>
+        public static string ProtectedMapMessage {
+            get {
+                return ResourceManager.GetString("ProtectedMapMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à ⚡ Quick start from :.
         /// </summary>
         public static string QuickStartFrom {
@@ -3904,6 +3922,15 @@ namespace GameRealisticMap.Studio {
         public static string RestoreDataLossMessage {
             get {
                 return ResourceManager.GetString("RestoreDataLossMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Restore Imagery.
+        /// </summary>
+        public static string RestoreImagery {
+            get {
+                return ResourceManager.GetString("RestoreImagery", resourceCulture);
             }
         }
         
