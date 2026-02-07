@@ -23,7 +23,7 @@ namespace GameRealisticMap.Arma3.IO
         public ProjectDrive CreateProjectDrive()
         {
             var drive = new ProjectDrive(
-                ProjectDriveBasePath ?? Arma3ToolsHelper.GetProjectDrivePath(), 
+                Arma3ToolsHelper.GetProjectDrivePath(this), 
                 new PboFileSystem(PboFileSystem.GetArma3Paths(Arma3BasePath ?? Arma3ToolsHelper.GetArma3Path()), ModsPaths));
             foreach(var pair in ProjectDriveMountPoints)
             {
@@ -34,7 +34,7 @@ namespace GameRealisticMap.Arma3.IO
 
         public ProjectDrive CreateProjectDriveStandalone()
         {
-            var drive = new ProjectDrive(ProjectDriveBasePath ?? Arma3ToolsHelper.GetProjectDrivePath());
+            var drive = new ProjectDrive(Arma3ToolsHelper.GetProjectDrivePath(this));
             foreach (var pair in ProjectDriveMountPoints)
             {
                 drive.AddMountPoint(pair.Key, pair.Value);

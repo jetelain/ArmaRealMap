@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using GameRealisticMap.Arma3;
 using GameRealisticMap.Arma3.GameEngine;
 using GameRealisticMap.Arma3.IO;
 using GameRealisticMap.Arma3.TerrainBuilder;
@@ -50,12 +51,18 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
             }
         }
 
+        public string ProjectDriveBasePath 
+        { 
+            get { return Settings?.ProjectDriveBasePath ?? Arma3ToolsHelper.GetDefaultProjectDriveMappedPath(); }
+        }
+
         private void CommitSettings(WorkspaceSettings settings)
         {
             lock (this)
             {
                 settings.Save();
                 Settings = settings;
+                Arma3ToolsHelper.WorkspaceSettings = settings;
             }
         }
 
@@ -67,6 +74,8 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
         private void Initialize(WorkspaceSettings settings)
         {
             Settings = settings;
+
+            Arma3ToolsHelper.WorkspaceSettings = settings;
 
             ProjectDrive = settings.CreateProjectDrive();
 
@@ -120,6 +129,22 @@ namespace GameRealisticMap.Studio.Modules.Arma3Data
                 return new PboProjectFactory();
             }
             return new PboCompilerFactory(Library, ProjectDrive);
+        }
+
+        public async Task SetProjectDriveBasePath(string projectDriveBasePath)
+        {
+            string? actualValue = projectDriveBasePath;
+            if (string.IsNullOrEmpty(projectDriveBasePath) || string.Equals(projectDriveBasePath, Arma3ToolsHelper.GetDefaultProjectDriveMappedPath(), StringComparison.OrdinalIgnoreCase))
+            {
+                actualValue = null;
+            }
+            var settings = Settings ?? new WorkspaceSettings();
+            if (actualValue != settings.ProjectDriveBasePath)
+            {
+                settings.ProjectDriveBasePath = actualValue;
+                CommitSettings(settings);
+                await Reload();
+            }
         }
     }
 }

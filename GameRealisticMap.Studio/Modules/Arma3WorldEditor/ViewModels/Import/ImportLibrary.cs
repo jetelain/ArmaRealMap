@@ -55,5 +55,15 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
         {
             return library.TryResolveByPath(path, out model);
         }
+
+        public bool? IsSlopeLandContact(string path)
+        {
+            return library.IsSlopeLandContact(path);
+        }
+
+        public string? TryGetNoLandContact(string path)
+        {
+            return library.TryGetNoLandContact(path);
+        }
     }
 }

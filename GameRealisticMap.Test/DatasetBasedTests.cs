@@ -139,7 +139,7 @@ namespace GameRealisticMap.Test
 
         private async Task<BuildContext> GetContextOnly(DatasetMap ds)
         {
-            var builders = new BuildersCatalog(new DefaultBuildersConfig(), new DefaultSourceLocations());
+            var builders = new BuildersCatalog(new DefaultBuildersConfig(), DefaultSourceLocations.Instance);
             var osm = await DatasetsLoader.Datasets.GetOsmDataSource(ds);
             var context = new BuildContext(builders, new TestProgressSystem(output), ds.TerrainArea, osm, new MapProcessingOptions(), new MemoryHugeImageStorage());
             context.SetData(new RawSatelliteImageData(new HugeImage<Rgba32>(context.HugeImageStorage, new Size(256, 256))));

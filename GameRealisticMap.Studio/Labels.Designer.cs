@@ -1142,6 +1142,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Behavior with land contact objects:.
+        /// </summary>
+        public static string BehaviorWithSlopeLandContactObjects {
+            get {
+                return ResourceManager.GetString("BehaviorWithSlopeLandContactObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Bridge elements.
         /// </summary>
         public static string BridgeElements {
@@ -2627,6 +2636,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ignore (objects will be distorded if pitch or roll is used in Eden).
+        /// </summary>
+        public static string IgnoreObjectsWillBeDistordedIfPitchOrRollIsUsedInEden {
+            get {
+                return ResourceManager.GetString("IgnoreObjectsWillBeDistordedIfPitchOrRollIsUsedInEden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Imagery.
         /// </summary>
         public static string Imagery {
@@ -3028,6 +3046,15 @@ namespace GameRealisticMap.Studio {
         public static string MakeObjectsEquiprobable {
             get {
                 return ResourceManager.GetString("MakeObjectsEquiprobable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Substitute if possible, otherwise make objects follow the terrain.
+        /// </summary>
+        public static string MakeObjectsFollowTheTerrain {
+            get {
+                return ResourceManager.GetString("MakeObjectsFollowTheTerrain", resourceCulture);
             }
         }
         
@@ -4408,6 +4435,15 @@ namespace GameRealisticMap.Studio {
         public static string TotalImageSize {
             get {
                 return ResourceManager.GetString("TotalImageSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Substitute if possible, otherwise try to compensate.
+        /// </summary>
+        public static string TryToCompensate {
+            get {
+                return ResourceManager.GetString("TryToCompensate", resourceCulture);
             }
         }
         

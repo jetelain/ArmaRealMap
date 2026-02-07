@@ -13,7 +13,7 @@ namespace GameRealisticMap.Studio.Modules.Main.Services
 
         public ISourceLocations GetSources()
         {
-            return sources ?? new DefaultSourceLocations();
+            return sources ?? DefaultSourceLocations.Instance;
         }
 
         public async Task Load()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +22,7 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
         private static readonly Logger logger = NLog.LogManager.GetLogger("EdenImporter");
 
         private readonly Arma3WorldEditorViewModel parent;
+        private SlopeLandContactBehavior _slopeLandContactBehavior = SlopeLandContactBehavior.TryToCompensate;
 
         public EdenImporterViewModel(Arma3WorldEditorViewModel parent)
         {
@@ -44,6 +46,21 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
         public bool LaunchDependenciesOnly { get; set; } = true;
 
         public bool IsReadyToImport => Batch != null && Batch.IsComplete && string.IsNullOrEmpty(ClipboardError);
+
+        public SlopeLandContactBehavior SlopeLandContactBehavior
+        {
+            get { return _slopeLandContactBehavior; }
+            set
+            {
+                if (value != _slopeLandContactBehavior)
+                {
+                    _slopeLandContactBehavior = value;
+                    NotifyOfPropertyChange();
+
+                    ClipboardRefresh();
+                }
+            }
+        }
 
         public Task ClipboardRefresh()
         {
@@ -74,9 +91,9 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
             using var task = new BasicProgressSystem(this, logger);
             try
             {
-                var parser = new WrpEditBatchParser(task, parent.ProjectDrive);
+                var parser = new WrpEditBatchParser(task, parent.Library);
 
-                var batch = parser.ParseFromText(value);
+                var batch = parser.ParseFromText(value, _slopeLandContactBehavior);
                 if (!string.IsNullOrEmpty(batch.WorldName))
                 {
                     ClipboardError = string.Empty;
@@ -195,14 +212,24 @@ namespace GameRealisticMap.Studio.Modules.Arma3WorldEditor.ViewModels.Import
             }
 
             dependencies.Add(new ModDependencyDefinition("450814997")); // CBA3 (required by Export to GameRealisticMap)
+#if DEBUG
+            dependencies.Add(new ModDependencyDefinition("3016661145", GetModPath()));
+#else
             dependencies.Add(new ModDependencyDefinition("3016661145")); // Export to GameRealisticMap
+#endif
             AddIfInstalled(installed, dependencies, "882231372"); // Eden Extended Objects
             AddIfInstalled(installed, dependencies, "1923321700"); // O&T Expansion Eden
             AddIfInstalled(installed, dependencies, "2822758266"); // Deformer
+            AddIfInstalled(installed, dependencies, "623475643"); // 3den Enhanced
 
             Arma3Helper.Launch(dependencies, parent.TargetModDirectory, Path.GetFileNameWithoutExtension(parent.FileName));
 
             return Task.CompletedTask;
+        }
+
+        private static string GetModPath([CallerFilePath] string currentPath = "")
+        {
+            return Path.GetFullPath(Path.Combine(Path.GetDirectoryName(currentPath)!, "..","..","..","..","..","@ArmaMapStudio",".hemttout","build"));
         }
 
         private static void AddIfInstalled(List<ModInfo> installed, List<ModDependencyDefinition> dependencies, string steamId)

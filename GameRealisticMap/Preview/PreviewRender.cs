@@ -15,7 +15,7 @@ namespace GameRealisticMap.Preview
         private readonly ISourceLocations sources;
 
         public PreviewRender(ITerrainArea terrainArea, IMapProcessingOptions imagery)
-            : this(terrainArea, imagery, new DefaultBuildersConfig(), new DefaultSourceLocations())
+            : this(terrainArea, imagery, new DefaultBuildersConfig(), DefaultSourceLocations.Instance)
         {
         }
 

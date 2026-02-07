@@ -12,6 +12,6 @@
 
         Uri OverpassApiInterpreter { get; }
 
-        Uri S2CloudlessBasePath { get; }
+        Uri SatelliteImageProvider { get; }
     }
 }

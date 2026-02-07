@@ -25,11 +25,11 @@
 		<PackageReference Include="OsmSharp.Geo" Version="6.2.0" />
 		<PackageReference Include="StringToExpression" Version="1.1.1" />
 		<PackageReference Include="Pmad.ProgressTracking" Version="0.1.28" />
-		<PackageReference Include="Pmad.HugeImages" Version="0.1.1" />
+		<PackageReference Include="Pmad.HugeImages" Version="0.1.4" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Pmad.Cartography" Version="0.1.8" />
+		<PackageReference Include="Pmad.Cartography" Version="0.1.20" />
 		<ProjectReference Include="..\weatherstats\WeatherStats\WeatherStats.csproj" />
 	</ItemGroup>
 
