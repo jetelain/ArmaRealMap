@@ -27,10 +27,20 @@ using GameRealisticMap.Satellite;
 
 namespace GameRealisticMap
 {
+    /// <summary>
+    /// Default <see cref="IBuidersCatalog"/> implementation that registers all standard terrain-feature
+    /// builders. Builders are registered in the constructor in approximate dependency order for readability,
+    /// though the actual build order is determined by lazy evaluation in <see cref="BuildContext"/>.
+    /// </summary>
     public class BuildersCatalog : IBuidersCatalog
     {
         private readonly Dictionary<Type, IBuilderAdapter> builders = new Dictionary<Type, IBuilderAdapter>();
 
+        /// <summary>
+        /// Initialises the catalog and registers all 47 standard terrain-feature builders.
+        /// </summary>
+        /// <param name="config">Domain-specific configuration for roads, buildings, and railways.</param>
+        /// <param name="sources">Paths to remote data caches (SRTM tiles, satellite tiles, weather data).</param>
         public BuildersCatalog(IBuildersConfig config, ISourceLocations sources)
         {
             Register(new OceanBuilder());

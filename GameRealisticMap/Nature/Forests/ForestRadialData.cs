@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Forests
 {
+    /// <summary>
+    /// Contains inset polygons within forest areas used for density-based interior tree placement.
+    /// Produced by eroding <see cref="ForestData"/> polygons inward by a configurable radius.
+    /// </summary>
     public class ForestRadialData : IBasicTerrainData
     {
         public const float Width = 25f;

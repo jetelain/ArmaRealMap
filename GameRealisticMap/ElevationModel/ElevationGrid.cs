@@ -6,6 +6,12 @@ using Pmad.Geometry;
 
 namespace GameRealisticMap.ElevationModel
 {
+    /// <summary>
+    /// A 2D grid of elevation values (metres above sea level) covering the terrain area.
+    /// Grid dimensions are <see cref="IElevationGridConfig.GridSize"/> × <see cref="IElevationGridConfig.GridSize"/>.
+    /// Cell <c>[col, row]</c> covers the terrain region starting at
+    /// <c>(col × GridCellSize, row × GridCellSize)</c> metres.
+    /// </summary>
     public class ElevationGrid : IElevationGrid, IElevationGridConfig
     {
         private readonly int size;

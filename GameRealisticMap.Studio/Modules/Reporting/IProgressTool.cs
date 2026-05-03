@@ -4,6 +4,12 @@ using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Modules.Reporting
 {
+    /// <summary>
+    /// Dockable tool panel that displays the progress of long-running background tasks
+    /// (map generation, PBO packaging, etc.). Provides <see cref="StartTask"/> to create
+    /// a scoped <see cref="IProgressTaskUI"/> and <see cref="RunTask"/> to execute an
+    /// async operation with optional confirmation prompt.
+    /// </summary>
     internal interface IProgressTool : ITool
     {
         bool IsRunning { get; }

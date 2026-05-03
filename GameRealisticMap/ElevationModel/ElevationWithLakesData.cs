@@ -4,6 +4,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ElevationModel
 {
+    /// <summary>
+    /// Elevation data with lake areas flattened to their computed water surface level.
+    /// Intermediate result between <see cref="RawElevationData"/> and the fully-constrained <see cref="ElevationData"/>.
+    /// </summary>
     public class ElevationWithLakesData : IGeoJsonData
     {
 

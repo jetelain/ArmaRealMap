@@ -17,6 +17,13 @@ using GameRealisticMap.ManMade.Roads.Libraries;
 
 namespace GameRealisticMap.Arma3.Assets
 {
+    /// <summary>
+    /// Full asset configuration for an Arma 3 region. Loaded from a JSON file and provides
+    /// all building definitions, cluster/basic collections, road types, terrain materials,
+    /// and mod dependencies needed to generate a complete terrain mod.
+    /// Implements <see cref="IArma3RegionAssets"/>, <see cref="IBuildersConfig"/>, and
+    /// <see cref="IBuildingSizeLibrary"/>.
+    /// </summary>
     public class Arma3Assets : Arma3AssetsDependenciesOnly, IArma3RegionAssets, IRoadTypeLibrary<Arma3RoadTypeInfos>, IBuildersConfig, IBuildingSizeLibrary
     {
         public const string BuiltinPrefix = "builtin:";

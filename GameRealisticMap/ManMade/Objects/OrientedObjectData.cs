@@ -5,6 +5,11 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Objects
 {
+    /// <summary>
+    /// Contains point objects with a defined orientation extracted from OSM nodes
+    /// (power poles, wind turbines, water towers, pylons, etc.).
+    /// Each object carries its position and heading so the correct facing model can be placed.
+    /// </summary>
     public class OrientedObjectData : IGeoJsonData
     {
         [JsonConstructor]

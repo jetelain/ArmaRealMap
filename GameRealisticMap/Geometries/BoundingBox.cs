@@ -5,6 +5,11 @@ using SixLabors.ImageSharp;
 
 namespace GameRealisticMap.Geometries
 {
+    /// <summary>
+    /// An oriented (rotated) bounding rectangle for a terrain object, such as a building footprint.
+    /// Stores the rectangle as center point, dimensions, and rotation angle rather than as four corner points,
+    /// enabling fast overlap tests and easy alignment to road orientation.
+    /// </summary>
     public class BoundingBox : IBoundingShape
     {
         private readonly Lazy<TerrainPolygon> terrainPolygon;

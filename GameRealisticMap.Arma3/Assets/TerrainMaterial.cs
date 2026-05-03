@@ -4,6 +4,10 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.Assets
 {
+    /// <summary>
+    /// Represents a single Arma 3 terrain surface material with its color representation
+    /// and RVMAT/texture paths. Referenced by <see cref="TerrainMaterialLibrary"/>.
+    /// </summary>
     public class TerrainMaterial
     {
         [JsonConstructor]

@@ -5,6 +5,11 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Watercourses
 {
+    /// <summary>
+    /// Contains river, stream, canal, and drain linear features extracted from OSM
+    /// (waterway=river, stream, canal, ditch, etc.).
+    /// Used for elevation constraint solving (water flows downhill) and riparian vegetation placement.
+    /// </summary>
     public class WatercoursesData : IBasicTerrainData
     {
         [JsonConstructor]

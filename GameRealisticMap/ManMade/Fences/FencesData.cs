@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Fences
 {
+    /// <summary>
+    /// Contains fence, wall, and hedgerow linear features extracted from OSM
+    /// (barrier=fence, barrier=wall, barrier=hedge, etc.).
+    /// </summary>
     public class FencesData : IGeoJsonData
     {
         [JsonConstructor]

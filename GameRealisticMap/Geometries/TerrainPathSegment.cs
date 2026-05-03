@@ -2,6 +2,11 @@
 
 namespace GameRealisticMap.Geometries
 {
+    /// <summary>
+    /// A contiguous sub-segment of a <see cref="TerrainPath"/> with pre-computed length and
+    /// the turn angle to the next segment. Used by road and fence generators to split paths at
+    /// sharp bends so that models can be placed correctly at each straight section.
+    /// </summary>
     public sealed class TerrainPathSegment
     {
         public TerrainPathSegment(List<TerrainPoint> points, float angleWithNext = float.NaN)

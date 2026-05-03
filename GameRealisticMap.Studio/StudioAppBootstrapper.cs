@@ -4,6 +4,10 @@ using System.Reflection;
 
 namespace GameRealisticMap.Studio
 {
+    /// <summary>
+    /// MEF-based application bootstrapper for the GameRealisticMap Studio WPF application.
+    /// Extends Gemini's <c>AppBootstrapper</c> to register modules and handle single-file publish scenarios.
+    /// </summary>
     public sealed class StudioAppBootstrapper : Gemini.AppBootstrapper
     {
         public override bool IsPublishSingleFileHandled => true;

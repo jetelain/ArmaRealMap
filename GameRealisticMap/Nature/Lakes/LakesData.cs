@@ -5,6 +5,11 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Lakes
 {
+    /// <summary>
+    /// Contains lake and pond water-body polygon areas extracted from OSM (natural=water).
+    /// Used as priority polygons (no forest/scrub inside lakes) and as input for
+    /// elevation flattening in <see cref="GameRealisticMap.ElevationModel.ElevationWithLakesBuilder"/>.
+    /// </summary>
     public class LakesData : IBasicTerrainData
     {
         [JsonConstructor]

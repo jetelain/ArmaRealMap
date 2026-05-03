@@ -8,6 +8,10 @@ using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Roads
 {
+    /// <summary>
+    /// Builds <see cref="SidewalksData"/> by generating sidewalk polygon strips alongside
+    /// road and footpath geometries from <see cref="RoadsData"/>.
+    /// </summary>
     internal class SidewalksBuilder : IDataBuilder<SidewalksData>
     {
         public const float Axis = 1f; // 50cm on each side of the road

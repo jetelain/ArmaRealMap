@@ -2,6 +2,11 @@
 
 namespace GameRealisticMap.ElevationModel
 {
+    /// <summary>
+    /// Raw elevation data downloaded from NASA SRTM, assembled into an <see cref="ElevationGrid"/>
+    /// covering the terrain area. This is the unprocessed source before lake-flattening
+    /// and road-constraint solving.
+    /// </summary>
     public class RawElevationData
     {
         public RawElevationData(ElevationGrid rawElevation)

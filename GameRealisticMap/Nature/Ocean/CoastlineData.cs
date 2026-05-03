@@ -4,6 +4,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Ocean
 {
+    /// <summary>
+    /// Contains raw coastline line geometries extracted from OSM (natural=coastline ways).
+    /// Used by <see cref="OceanBuilder"/> to construct the ocean polygon.
+    /// </summary>
     public class CoastlineData : IBasicTerrainData
     {
         public const float Width = 10f;

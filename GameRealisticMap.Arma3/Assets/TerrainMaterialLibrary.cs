@@ -5,6 +5,11 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.Assets
 {
+    /// <summary>
+    /// Maps logical terrain feature types (forest, grass, asphalt, water, etc.) to their
+    /// Arma 3 terrain material definitions (texture files, surface properties, material IDs).
+    /// Used when generating the IdMap and satellite/material texture layers.
+    /// </summary>
     public class TerrainMaterialLibrary
     {
         private readonly Dictionary<Rgb24, TerrainMaterial> indexByColor = new Dictionary<Rgb24, TerrainMaterial>();

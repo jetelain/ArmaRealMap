@@ -2,6 +2,10 @@
 
 namespace GameRealisticMap.Generic
 {
+    /// <summary>
+    /// JSON-serializable configuration for a generic (non-Arma3) map generation run.
+    /// Contains geographic bounds and processing options loaded from a <c>.grm</c> config file.
+    /// </summary>
     public class GenericMapConfigJson
     {
         public double Resolution { get; set; } = 1;

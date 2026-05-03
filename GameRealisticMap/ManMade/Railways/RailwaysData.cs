@@ -6,6 +6,9 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Railways
 {
+    /// <summary>
+    /// Contains railway line geometries and level-crossing locations extracted from OSM.
+    /// </summary>
     public class RailwaysData : IGeoJsonData, INonDefaultArea
     {
         [JsonConstructor]
