@@ -6,36 +6,64 @@
              xmlns:b="clr-namespace:GameRealisticMap.Studio.Behaviors"
              xmlns:r="clr-namespace:GameRealisticMap.Studio"
              xmlns:local="clr-namespace:GameRealisticMap.Studio.Modules.Arma3Data.Views"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
 
         <StackPanel Orientation="Horizontal">
-            <Label Width="150">MapToolkit SRTM15Plus</Label>
+            <Label Width="150"><x:Static Member="r:Labels.SourceMapToolkitSRTM15Plus"/></Label>
             <TextBox Text="{Binding MapToolkitSRTM15Plus}" Width="300" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="150">MapToolkit SRTM1</Label>
+            <Label Width="150"><x:Static Member="r:Labels.SourceMapToolkitSRTM1"/></Label>
             <TextBox Text="{Binding MapToolkitSRTM1}" Width="300" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="150">MapToolkit AW3D30</Label>
+            <Label Width="150"><x:Static Member="r:Labels.SourceMapToolkitAW3D30"/></Label>
             <TextBox Text="{Binding MapToolkitAW3D30}" Width="300" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="150">WeatherStats</Label>
+            <Label Width="150"><x:Static Member="r:Labels.SourceWeatherStats"/></Label>
             <TextBox Text="{Binding WeatherStats}" Width="300" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="150">OverpassApi Interpreter</Label>
+            <Label Width="150"><x:Static Member="r:Labels.SourceOverpassApiInterpreter"/></Label>
             <TextBox Text="{Binding OverpassApiInterpreter}" Width="300" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="150">Satellite Image Provider</Label>
+            <Label Width="150"><x:Static Member="r:Labels.SourceSatelliteImageProvider"/></Label>
             <TextBox Text="{Binding SatelliteImageProvider}" Width="300" />
         </StackPanel>
 
+        <Separator Margin="0,8,0,8" />
 
+        <StackPanel Orientation="Horizontal" Margin="0,4,0,4">
+            <Button Width="200" Margin="4,0" Padding="4" cal:Message.Attach="ResetToDefaults"><x:Static Member="r:Labels.SourceResetToDefaults"/></Button>
+        </StackPanel>
+
+        <Separator Margin="0,8,0,8" />
+
+        <Grid Margin="0,4,0,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="208" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0"  Grid.Column="0" Margin="4,0" Padding="4"  cal:Message.Attach="ClearElevationDataCache"><x:Static Member="r:Labels.SourceClearElevationDataCache"/></Button>
+
+            <StackPanel Grid.Row="1"  Grid.Column="0" VerticalAlignment="Center">
+                <Button Margin="4,0"  Padding="4" cal:Message.Attach="ClearOverpassDataCache"><x:Static Member="r:Labels.SourceClearOverpassDataCache"/></Button>
+            </StackPanel>
+
+            <TextBlock Grid.Row="1"  Grid.Column="1" TextWrapping="Wrap" Margin="4,4,4,0" HorizontalAlignment="Left">
+                <Run Text="{x:Static r:Labels.SourceOverpassRateLimitWarning}"/>
+            </TextBlock>
+        </Grid>
 
     </StackPanel>
 </UserControl>
