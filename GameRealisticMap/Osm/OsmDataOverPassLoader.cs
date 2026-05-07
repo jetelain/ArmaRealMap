@@ -21,7 +21,18 @@ namespace GameRealisticMap.Osm
         {
             if (Directory.Exists(CacheDirectory))
             {
-                Directory.Delete(CacheDirectory, true);
+                try
+                {
+                    Directory.Delete(CacheDirectory, true);
+                }
+                catch (System.IO.IOException)
+                {
+                    // Best-effort cache cleanup: ignore files that are in use or otherwise cannot be deleted.
+                }
+                catch (System.UnauthorizedAccessException)
+                {
+                    // Best-effort cache cleanup: ignore entries that cannot be deleted due to permissions.
+                }
             }
         }
 
