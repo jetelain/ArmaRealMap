@@ -1681,6 +1681,9 @@ Dernière génération le {1}</value>
   <data name="SourceClearOverpassDataCache" xml:space="preserve">
     <value>Vider le cache Overpass</value>
   </data>
+  <data name="SourceClearCacheError" xml:space="preserve">
+    <value>Échec du vidage du cache : {0}</value>
+  </data>
   <data name="SourceClearElevationDataCacheDone" xml:space="preserve">
     <value>Le cache des données d'élévation a été vidé.</value>
   </data>

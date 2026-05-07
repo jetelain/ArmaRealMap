@@ -4196,6 +4196,15 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Failed to clear cache: {0}.
+        /// </summary>
+        public static string SourceClearCacheError {
+            get {
+                return ResourceManager.GetString("SourceClearCacheError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Clear Elevation Data Cache.
         /// </summary>
         public static string SourceClearElevationDataCache {

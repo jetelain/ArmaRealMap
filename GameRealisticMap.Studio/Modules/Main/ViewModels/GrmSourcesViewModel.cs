@@ -72,8 +72,15 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
         /// </summary>
         public Task ClearElevationDataCache()
         {
-            DemHttpStorage.ClearDefaultCache();
-            MessageBox.Show(Labels.SourceClearElevationDataCacheDone, Labels.SourceClearElevationDataCache, MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                DemHttpStorage.ClearDefaultCache();
+                MessageBox.Show(Labels.SourceClearElevationDataCacheDone, Labels.SourceClearElevationDataCache, MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format(Labels.SourceClearCacheError, ex.Message), Labels.SourceClearElevationDataCache, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             return Task.CompletedTask;
         }
 
@@ -86,8 +93,15 @@ namespace GameRealisticMap.Studio.Modules.Main.ViewModels
         /// </summary>
         public Task ClearOverpassDataCache()
         {
-            OsmDataOverPassLoader.ClearCache();
-            MessageBox.Show(Labels.SourceClearOverpassDataCacheDone, Labels.SourceClearOverpassDataCache, MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                OsmDataOverPassLoader.ClearCache();
+                MessageBox.Show(Labels.SourceClearOverpassDataCacheDone, Labels.SourceClearOverpassDataCache, MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format(Labels.SourceClearCacheError, ex.Message), Labels.SourceClearOverpassDataCache, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             return Task.CompletedTask;
         }
 
