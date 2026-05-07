@@ -70,7 +70,7 @@ namespace GameRealisticMap.Configuration
         /// <summary>
         /// Loads source locations from <see cref="DefaultLocation"/>.
         /// Applies endpoint migrations when the stored config version is outdated.
-        /// Returns <see cref="DefaultSourceLocations.Instance"/> when no file exists or deserialization fails.
+        /// Returns <see cref="DefaultSourceLocations.Instance"/> when no file exists.
         /// </summary>
         public static Task<ISourceLocations> Load()
         {
@@ -80,7 +80,7 @@ namespace GameRealisticMap.Configuration
         /// <summary>
         /// Loads source locations from <paramref name="path"/>.
         /// Applies endpoint migrations when the stored config version is outdated.
-        /// Returns <see cref="DefaultSourceLocations.Instance"/> when no file exists or deserialization fails.
+        /// Returns <see cref="DefaultSourceLocations.Instance"/> when no file exists.
         /// </summary>
         public static async Task<ISourceLocations> Load(string path)
         {
@@ -106,20 +106,20 @@ namespace GameRealisticMap.Configuration
         }
 
         /// <summary>
-        /// Persists <paramref name="path"/> to <paramref name="location"/>
+        /// Persists <paramref name="locations"/> to <paramref name="path"/>
         /// and stamps the file with <see cref="CurrentConfigVersion"/>.
         /// </summary>
-        public static async Task Save(string location, ISourceLocations path)
+        public static async Task Save(string path, ISourceLocations locations)
         {
-            using var stream = File.Create(location);
+            using var stream = File.Create(path);
             await JsonSerializer.SerializeAsync(stream, new SourceLocationsJson(
-                path.MapToolkitSRTM15Plus,
-                path.MapToolkitSRTM1,
-                path.MapToolkitAW3D30,
-                path.WeatherStats,
-                path.OverpassApiInterpreter,
+                locations.MapToolkitSRTM15Plus,
+                locations.MapToolkitSRTM1,
+                locations.MapToolkitAW3D30,
+                locations.WeatherStats,
+                locations.OverpassApiInterpreter,
                 null,
-                path.SatelliteImageProvider,
+                locations.SatelliteImageProvider,
                 CurrentConfigVersion));
         }
     }

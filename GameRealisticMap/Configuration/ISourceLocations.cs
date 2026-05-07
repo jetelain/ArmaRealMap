@@ -32,7 +32,7 @@
 
         /// <summary>
         /// Google map compatible WMTS endpoint to satellite image.
-        /// Should have placeholders for {x}, {y}, and optionnaly for {z} (zoom level).
+        /// Should have placeholders for {x}, {y}, and optionally for {z} (zoom level).
         /// </summary>
         Uri SatelliteImageProvider { get; }
     }
