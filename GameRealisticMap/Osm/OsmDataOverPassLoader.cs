@@ -7,8 +7,9 @@ namespace GameRealisticMap.Osm
     {
         private readonly IProgressScope scope;
         private readonly ISourceLocations sources;
-        private readonly string cacheDirectory = Path.Combine(Path.GetTempPath(), "GameRealisticMap", "OverPass");
         private readonly int cacheDays = 1;
+
+        public static string CacheDirectory { get; } = Path.Combine(Path.GetTempPath(), "GameRealisticMap", "OverPass");
 
         public OsmDataOverPassLoader(IProgressScope scope, ISourceLocations sources)
         {
@@ -16,11 +17,19 @@ namespace GameRealisticMap.Osm
             this.sources = sources;
         }
 
+        public static void ClearCache()
+        {
+            if (Directory.Exists(CacheDirectory))
+            {
+                Directory.Delete(CacheDirectory, true);
+            }
+        }
+
         public async Task<IOsmDataSource> Load(ITerrainArea area)
         {
             var box = new LatLngBounds(area);
 
-            var cacheFileName = Path.Combine(cacheDirectory, FormattableString.Invariant($"{box.Name}.xml"));
+            var cacheFileName = Path.Combine(CacheDirectory, FormattableString.Invariant($"{box.Name}.xml"));
 
             await DownloadFromOverPass(box, cacheFileName);
 
@@ -34,7 +43,7 @@ namespace GameRealisticMap.Osm
             if (!File.Exists(cacheFileName) || (File.GetLastWriteTimeUtc(cacheFileName) < DateTime.UtcNow.AddDays(-cacheDays)))
             {
                 using var report = scope.CreateSingle("Download from OSM");
-                Directory.CreateDirectory(cacheDirectory);
+                Directory.CreateDirectory(CacheDirectory);
 
                 var qlbb = FormattableString.Invariant($"{box.Bottom},{box.Left},{box.Top},{box.Right}");
                 var query = FormattableString.Invariant(@$"[timeout:300];

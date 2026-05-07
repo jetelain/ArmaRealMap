@@ -1654,4 +1654,40 @@ Dernière génération le {1}</value>
   <data name="IgnoreObjectsWillBeDistordedIfPitchOrRollIsUsedInEden" xml:space="preserve">
     <value>Ignorer (les objets seront déformés si pitch ou roll est utilisé dans Eden)</value>
   </data>
+  <data name="SourceMapToolkitSRTM15Plus" xml:space="preserve">
+    <value>MapToolkit SRTM15Plus</value>
+  </data>
+  <data name="SourceMapToolkitSRTM1" xml:space="preserve">
+    <value>MapToolkit SRTM1</value>
+  </data>
+  <data name="SourceMapToolkitAW3D30" xml:space="preserve">
+    <value>MapToolkit AW3D30</value>
+  </data>
+  <data name="SourceWeatherStats" xml:space="preserve">
+    <value>Statistiques météo</value>
+  </data>
+  <data name="SourceOverpassApiInterpreter" xml:space="preserve">
+    <value>Interpréteur OverpassApi</value>
+  </data>
+  <data name="SourceSatelliteImageProvider" xml:space="preserve">
+    <value>Fournisseur d'images satellite</value>
+  </data>
+  <data name="SourceResetToDefaults" xml:space="preserve">
+    <value>Réinitialiser les sources</value>
+  </data>
+  <data name="SourceClearElevationDataCache" xml:space="preserve">
+    <value>Vider le cache d'élévation</value>
+  </data>
+  <data name="SourceClearOverpassDataCache" xml:space="preserve">
+    <value>Vider le cache Overpass</value>
+  </data>
+  <data name="SourceClearElevationDataCacheDone" xml:space="preserve">
+    <value>Le cache des données d'élévation a été vidé.</value>
+  </data>
+  <data name="SourceClearOverpassDataCacheDone" xml:space="preserve">
+    <value>Le cache des données Overpass a été vidé.</value>
+  </data>
+  <data name="SourceOverpassRateLimitWarning" xml:space="preserve">
+    <value>⚠ Attention : l'API Overpass impose un délai de 5 minutes entre deux requêtes identiques. Vider le cache trop fréquemment peut entraîner un blocage temporaire de l'API Overpass.</value>
+  </data>
 </root>
