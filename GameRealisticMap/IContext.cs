@@ -27,8 +27,8 @@ namespace GameRealisticMap
         Task<T> GetDataAsync<T>(IProgressScope? parentScope = null) where T : class;
 
         /// <summary>
-        /// Returns all built data objects whose type is assignable to <typeparamref name="T"/>.
-        /// Only includes data types that have already been built and cached in this context.
+        /// Builds (if not already cached) and returns all data objects in this context whose
+        /// concrete type is assignable to <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The base type to filter by.</typeparam>
         IEnumerable<T> GetOfType<T>() where T : class;

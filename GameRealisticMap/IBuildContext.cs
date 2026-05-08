@@ -23,7 +23,7 @@ namespace GameRealisticMap
 
         /// <summary>
         /// Processing options that control imagery resolution, road classification thresholds,
-        /// and satellite image source settings.
+        /// and satellite image post processing settings.
         /// </summary>
         IMapProcessingOptions Options { get; }
     }

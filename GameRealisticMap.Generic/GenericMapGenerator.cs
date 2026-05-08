@@ -11,7 +11,7 @@ namespace GameRealisticMap.Generic
     /// <summary>
     /// Map generator that writes terrain data to non-Arma3 formats (e.g. GeoJSON, PNG preview).
     /// Drives the same builder pipeline as <c>Arma3MapGenerator</c> but outputs generic files
-    /// useful for testing, previewing, or integrating with external GIS tools.
+    /// useful for testing, previewing, or exporting to other game engines.
     /// </summary>
     public class GenericMapGenerator
     {
