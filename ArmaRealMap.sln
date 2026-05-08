@@ -43,8 +43,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gemini", "gemini\src\Gemini
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gemini.Modules.Output", "gemini\src\Gemini.Modules.Output\Gemini.Modules.Output.csproj", "{20ECA174-C5EC-4357-AA5D-8104222147AC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherStats", "weatherstats\WeatherStats\WeatherStats.csproj", "{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameRealisticMap.Studio.Test", "GameRealisticMap.Studio.Test\GameRealisticMap.Studio.Test.csproj", "{21ED2BEA-8F91-437D-8C8B-E71AB91D8B78}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gemini.Modules.Inspector", "gemini\src\Gemini.Modules.Inspector\Gemini.Modules.Inspector.csproj", "{81601715-E57D-40E8-9274-693F37EC9D2F}"
@@ -423,26 +421,6 @@ Global
 		{20ECA174-C5EC-4357-AA5D-8104222147AC}.Release|x64.Build.0 = Release|Any CPU
 		{20ECA174-C5EC-4357-AA5D-8104222147AC}.Release|x86.ActiveCfg = Release|Any CPU
 		{20ECA174-C5EC-4357-AA5D-8104222147AC}.Release|x86.Build.0 = Release|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|ARM.Build.0 = Debug|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|x64.Build.0 = Debug|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Debug|x86.Build.0 = Debug|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|ARM.ActiveCfg = Release|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|ARM.Build.0 = Release|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|ARM64.Build.0 = Release|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|x64.ActiveCfg = Release|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|x64.Build.0 = Release|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|x86.ActiveCfg = Release|Any CPU
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36}.Release|x86.Build.0 = Release|Any CPU
 		{21ED2BEA-8F91-437D-8C8B-E71AB91D8B78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{21ED2BEA-8F91-437D-8C8B-E71AB91D8B78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21ED2BEA-8F91-437D-8C8B-E71AB91D8B78}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -579,7 +557,6 @@ Global
 		{6CD0D25B-6600-4FDD-B1BB-99DDBD909B5D} = {5FCFA982-ED2F-441E-A9D9-1CFD30FF6543}
 		{043F9084-71C4-4493-BFA7-B6129618A293} = {AD947998-A388-4783-B9A6-2410E046C91D}
 		{20ECA174-C5EC-4357-AA5D-8104222147AC} = {AD947998-A388-4783-B9A6-2410E046C91D}
-		{D5831A65-D8B9-4E88-9F9E-F8DFEA117B36} = {2BC1C49B-84B5-4AAA-89B6-72004913364E}
 		{21ED2BEA-8F91-437D-8C8B-E71AB91D8B78} = {5FCFA982-ED2F-441E-A9D9-1CFD30FF6543}
 		{81601715-E57D-40E8-9274-693F37EC9D2F} = {AD947998-A388-4783-B9A6-2410E046C91D}
 		{F0EE2154-32E1-4F53-831D-09A9A2B5336A} = {5FCFA982-ED2F-441E-A9D9-1CFD30FF6543}
@@ -587,7 +564,7 @@ Global
 		{8A475477-C826-4878-AB1B-AFA4472F5F74} = {5FCFA982-ED2F-441E-A9D9-1CFD30FF6543}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_MoveToResources = {"Items":[{"Extensions":".cs,.vb","Patterns":"$Namespace.$File.$Key|$File.$Key|StringResourceKey.$Key|$Namespace.StringResourceKey.$Key|nameof($File.$Key), ResourceType = typeof($File)|ErrorMessageResourceType = typeof($File), ErrorMessageResourceName = nameof($File.$Key)"},{"Extensions":".cshtml,.vbhtml","Patterns":"@$Namespace.$File.$Key|@$File.$Key|@StringResourceKey.$Key|@$Namespace.StringResourceKey.$Key"},{"Extensions":".cpp,.c,.hxx,.h","Patterns":"$File::$Key"},{"Extensions":".aspx,.ascx","Patterns":"<%$ Resources:$File,$Key %>|<%= $File.$Key %>|<%= $Namespace.$File.$Key %>"},{"Extensions":".xaml","Patterns":"\"{x:Static r:$File.$Key}\""},{"Extensions":".ts","Patterns":"resources.$Key"},{"Extensions":".html","Patterns":"{{ resources.$Key }}"}]}
 		SolutionGuid = {67E6979E-AD2E-4E18-82E9-C7B7D491C3E9}
+		RESX_MoveToResources = {"Items":[{"Extensions":".cs,.vb","Patterns":"$Namespace.$File.$Key|$File.$Key|StringResourceKey.$Key|$Namespace.StringResourceKey.$Key|nameof($File.$Key), ResourceType = typeof($File)|ErrorMessageResourceType = typeof($File), ErrorMessageResourceName = nameof($File.$Key)"},{"Extensions":".cshtml,.vbhtml","Patterns":"@$Namespace.$File.$Key|@$File.$Key|@StringResourceKey.$Key|@$Namespace.StringResourceKey.$Key"},{"Extensions":".cpp,.c,.hxx,.h","Patterns":"$File::$Key"},{"Extensions":".aspx,.ascx","Patterns":"<%$ Resources:$File,$Key %>|<%= $File.$Key %>|<%= $Namespace.$File.$Key %>"},{"Extensions":".xaml","Patterns":"\"{x:Static r:$File.$Key}\""},{"Extensions":".ts","Patterns":"resources.$Key"},{"Extensions":".html","Patterns":"{{ resources.$Key }}"}]}
 	EndGlobalSection
 EndGlobal
