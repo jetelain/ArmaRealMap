@@ -2,10 +2,10 @@
 
 Command-line interface for driving the Arma 3 generation pipeline without the Studio GUI.
 
-The command line can work on Linux/on Windows without Arma 3 installed but it will requires the `modelinfo.json` file
+The command line can work on Linux/on Windows without Arma 3 installed but it will require the `modelinfo.json` file
 alongside the map configuration file (`.grma3m`) from a previous run on Windows with Arma 3 and Arma 3 tools installed.
 
-On Windows the file is located in `%LOCALAPPDATA%\GameRealisticMap\Arma3`, and is automaticly generated 
+On Windows the file is located in `%LOCALAPPDATA%\GameRealisticMap\Arma3`, and is automatically generated 
 by the Studio application.
 
 The `genmod` will only work on Windows with Arma 3 and Arma 3 Tools installed.

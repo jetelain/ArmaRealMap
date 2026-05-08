@@ -50,14 +50,14 @@ This library converts the game-agnostic terrain data produced by `GameRealisticM
 
 `Arma3LayerGeneratorCatalog` holds all `ITerrainBuilderLayerGenerator` implementations. Each generator:
 
-1. Receives `IArma3RegionAssets` (region-specific model library).
+1. Receives the current `IArma3MapConfig`, `IContext`, and `IProgressScope`.
 2. Calls `context.GetData<TData>()` to fetch the relevant feature data.
-3. Returns `IEnumerable<TerrainBuilderObject>` (object placement records).
+3. Returns `Task<IEnumerable<TerrainBuilderObject>>` (object placement records).
 
 ```csharp
 public interface ITerrainBuilderLayerGenerator
 {
-    IEnumerable<TerrainBuilderObject> Generate(IArma3RegionAssets assets, IContext context);
+    Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope);
 }
 ```
 

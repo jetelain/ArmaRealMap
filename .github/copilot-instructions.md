@@ -82,7 +82,7 @@ public class ForestBuilder : IDataBuilder<ForestData>
 
 ---
 
-## Registered Builders (47 total in BuildersCatalog)
+## Registered Builders
 
 See `GameRealisticMap/BuildersCatalog.cs` for the authoritative list.
 
