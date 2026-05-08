@@ -34,9 +34,10 @@ The entry point for a full generation is `Arma3MapGenerator`.
 ## Layer Generation
 
 `Arma3LayerGeneratorCatalog` holds a list of `ITerrainBuilderLayerGenerator` implementations. Each generator:
-1. Receives the `IArma3RegionAssets` (asset library for the region).
-2. Calls `context.GetData<TData>()` to retrieve the relevant feature data.
-3. Returns a list of `TerrainBuilderObject` instances (object placement records).
+1. Receives the `IArma3RegionAssets` in the constructor (asset library for the region).
+2. Receives map configuration, context, and progress reporting scope with a `Generate` call.
+3. Calls `context.GetData<TData>()` to retrieve the relevant feature data.
+4. Returns a list of `TerrainBuilderObject` instances (object placement records).
 
 See [builders-reference.md](builders-reference.md#arma-3-layer-generators) for the full list of generators.
 
@@ -45,7 +46,7 @@ See [builders-reference.md](builders-reference.md#arma-3-layer-generators) for t
 ```csharp
 public interface ITerrainBuilderLayerGenerator
 {
-    Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3RegionAssets assets, IContext context);
+    Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3MapConfig config, IContext context, IProgressScope scope);
 }
 ```
 

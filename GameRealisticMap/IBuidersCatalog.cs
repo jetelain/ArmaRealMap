@@ -14,7 +14,7 @@
         /// <summary>
         /// Registers a builder for data type <typeparamref name="TData"/>.
         /// Each data type may only have one builder registered; registering a second builder
-        /// for the same type will overwrite the first.
+        /// will throw an exception (<see cref="ArgumentException">).
         /// </summary>
         /// <typeparam name="TData">The data type produced by <paramref name="builder"/>.</typeparam>
         /// <param name="builder">The builder instance to register.</param>

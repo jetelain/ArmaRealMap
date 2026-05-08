@@ -89,14 +89,14 @@ Registration groups (see [builders-reference.md](builders-reference.md) for the 
 | Group | Builders |
 |-------|---------|
 | Base terrain | `OceanBuilder`, `CoastlineBuilder` |
-| Remote data | `RawSatelliteImageBuilder`, `RawElevationBuilder` |
+| Remote data | `RawSatelliteImageBuilder`, `RawElevationBuilder`, `WeatherBuilder` |
 | OSM classification | `CategoryAreaBuilder` |
 | Man-made | `RoadsBuilder`, `BuildingsBuilder`, `RailwaysBuilder`, `FencesBuilder`, `FarmlandsBuilder`, `OrientedObjectBuilder`, `ProceduralStreetLampsBuilder`, `SidewalksBuilder`, `CitiesBuilder`, `VineyardBuilder`, `OrchardBuilder`, `AirportBuilder`, `AerowaysBuilder`, `AsphaltBuilder`, `CutlinesBuilder` |
 | Default urban areas | `DefaultResidentialAreasBuilder`, `DefaultCommercialAreasBuilder`, `DefaultIndustrialAreasBuilder`, `DefaultMilitaryAreasBuilder`, `DefaultRetailAreasBuilder`, `DefaultAgriculturalAreasBuilder` |
 | Nature | `ForestBuilder`, `ForestRadialBuilder`, `ForestEdgeBuilder`, `ScrubBuilder`, `ScrubRadialBuilder`, `RocksBuilder`, `LakesBuilder`, `WatercoursesBuilder`, `WatercourseRadialBuilder`, `TreesBuilder`, `TreeRowsBuilder`, `DefaultAreasBuilder` |
 | Nature surfaces | `SandSurfacesBuilder`, `MeadowsBuilder`, `GrassBuilder`, `IceSurfaceBuilder`, `ScreeBuilder` |
 | Elevation | `ElevationWithLakesBuilder`, `ElevationBuilder`, `ElevationContourBuilder`, `ElevationOutOfBoundsBuilder` |
-| Auxiliary | `ConditionEvaluatorBuilder`, `WeatherBuilder` |
+| Auxiliary | `ConditionEvaluatorBuilder` |
 
 ---
 
