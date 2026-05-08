@@ -22,7 +22,7 @@ See [data-pipeline.md](data-pipeline.md) for how builders are resolved and cache
 | Builder | Output Type | Source | Description |
 |---------|-------------|--------|-------------|
 | `RawElevationBuilder` | `RawElevationData` | NASA SRTM | Downloads SRTM 30 m tiles, assembles into an `ElevationGrid` covering the terrain area |
-| `RawSatelliteImageBuilder` | `RawSatelliteImageData` | Sentinel-2 (s2maps.eu) | Downloads and assembles satellite imagery as a `HugeImage<Rgba32>` |
+| `RawSatelliteImageBuilder` | `RawSatelliteImageData` | Satellite image | Downloads and assembles satellite imagery as a `HugeImage<Rgba32>` |
 | `WeatherBuilder` | `WeatherData` | Local config / cache | Wind direction and atmospheric statistics for the terrain's geographic location |
 
 ---
@@ -46,7 +46,7 @@ See [data-pipeline.md](data-pipeline.md) for how builders are resolved and cache
 | `FarmlandsBuilder` | `FarmlandsData` | OSM | Farmland and agricultural polygon areas |
 | `OrientedObjectBuilder` | `OrientedObjectData` | OSM | Point objects with a fixed orientation (power poles, water towers, wind turbines, etc.) |
 | `ProceduralStreetLampsBuilder` | `ProceduralStreetLampsData` | `RoadsData` | Generates street lamp positions along roads procedurally |
-| `SidewalksBuilder` | `SidewalksData` | `RoadsData` | Generates sidewalk polygons along roads with footpaths |
+| `SidewalksBuilder` | `SidewalksData` | `RoadsData` | Generates sidewalk paths along roads with footpaths |
 | `CitiesBuilder` | `CitiesData` | OSM | Named settlements (place=city/town/village/hamlet) as point features |
 | `VineyardBuilder` | `VineyardData` | OSM | Vineyard polygon areas (landuse=vineyard) |
 | `OrchardBuilder` | `OrchardData` | OSM | Orchard polygon areas (landuse=orchard) |

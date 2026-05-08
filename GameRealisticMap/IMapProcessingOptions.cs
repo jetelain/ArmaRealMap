@@ -24,7 +24,7 @@ namespace GameRealisticMap
         /// Applies to roads segments with flag <see cref="ManMade.WaySpecialSegment.PrivateService"/>.
         /// </summary>
         /// <remarks>
-        /// This used for optimization of the map: too many roads can cause performance issues. Default is <c>25</c>.
+        /// This is used for optimization of the map: too many roads can cause performance issues. Default is <c>25</c>.
         /// </remarks>
         float PrivateServiceRoadThreshold { get; }
 

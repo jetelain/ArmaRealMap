@@ -45,7 +45,7 @@ See [builders-reference.md](builders-reference.md#arma-3-layer-generators) for t
 ```csharp
 public interface ITerrainBuilderLayerGenerator
 {
-    IEnumerable<TerrainBuilderObject> Generate(IArma3RegionAssets assets, IContext context);
+    Task<IEnumerable<TerrainBuilderObject>> Generate(IArma3RegionAssets assets, IContext context);
 }
 ```
 

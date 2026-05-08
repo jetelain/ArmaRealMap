@@ -9,7 +9,7 @@ using SixLabors.ImageSharp.Processing;
 namespace GameRealisticMap.Satellite
 {
     /// <summary>
-    /// Downloads and caches Sentinel-2 cloudless satellite image tiles from the s2maps.eu tile server.
+    /// Downloads and caches satellite image tiles from configured source.
     /// Tiles are fetched in parallel and assembled into a single continuous raster image.
     /// Implements <see cref="IDisposable"/> to release the underlying HTTP client.
     /// </summary>

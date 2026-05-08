@@ -30,7 +30,7 @@ The conversion between the two systems is owned by `ITerrainArea` and performed 
 - **Origin**: south-west corner of the terrain area.
 - **X axis**: east (positive = east).
 - **Y axis**: north (positive = north).
-- **Precision**: ~1 cm accuracy up to 83 km from origin (backed by `float`, scaled ×100 for integer-based Clipper polygon operations).
+- **Precision**: ~1 cm accuracy up to 83 km from origin (backed by `float`, scaled ×1000 for integer-based Clipper polygon operations).
 - **Immutable** value type backed by `System.Numerics.Vector2`.
 
 ### Clipper scaling
@@ -108,7 +108,7 @@ cell(col, row) covers:
 | `TerrainPath` | Ordered list of `TerrainPoint` forming a polyline |
 | `TerrainPathSegment` | Single line segment between two `TerrainPoint` values |
 | `TerrainPolygon` | Closed polygon; may have holes. Backed by Clipper for boolean ops |
-| `BoundingBox` | Axis-aligned bounding rectangle in terrain space |
+| `BoundingBox` | Bounding rotated rectangle in terrain space |
 | `BoundingCircle` | Bounding circle for fast radius tests |
 | `SimpleSpacialIndex<T>` | Grid-based spatial index for fast proximity queries |
 | `TerrainSpacialIndex` | Specialised spatial index for `TerrainPolygon` lookup |

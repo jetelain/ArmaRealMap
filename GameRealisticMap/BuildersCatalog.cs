@@ -37,7 +37,7 @@ namespace GameRealisticMap
         private readonly Dictionary<Type, IBuilderAdapter> builders = new Dictionary<Type, IBuilderAdapter>();
 
         /// <summary>
-        /// Initialises the catalog and registers all 47 standard terrain-feature builders.
+        /// Initialises the catalog and registers all terrain-feature builders.
         /// </summary>
         /// <param name="config">Domain-specific configuration for roads, buildings, and railways.</param>
         /// <param name="sources">Paths to remote data sources (SRTM tiles, satellite tiles, weather data).</param>

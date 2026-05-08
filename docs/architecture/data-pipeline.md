@@ -82,7 +82,7 @@ The `SetData<T>(T value)` method allows injecting pre-built data (useful for tes
 
 ## BuildersCatalog
 
-`BuildersCatalog` (`GameRealisticMap/BuildersCatalog.cs`) is the default `IBuidersCatalog` implementation. Its constructor registers **all 47 standard builders** in sequence. The order does not affect correctness (lazy evaluation handles dependencies), but it reflects typical data dependency order for readability.
+`BuildersCatalog` (`GameRealisticMap/BuildersCatalog.cs`) is the default `IBuidersCatalog` implementation. Its constructor registers **all builders** in sequence. The order does not affect correctness (lazy evaluation handles dependencies), but it reflects typical data dependency order for readability.
 
 Registration groups (see [builders-reference.md](builders-reference.md) for the full table):
 
@@ -94,7 +94,7 @@ Registration groups (see [builders-reference.md](builders-reference.md) for the 
 | Man-made | `RoadsBuilder`, `BuildingsBuilder`, `RailwaysBuilder`, `FencesBuilder`, `FarmlandsBuilder`, `OrientedObjectBuilder`, `ProceduralStreetLampsBuilder`, `SidewalksBuilder`, `CitiesBuilder`, `VineyardBuilder`, `OrchardBuilder`, `AirportBuilder`, `AerowaysBuilder`, `AsphaltBuilder`, `CutlinesBuilder` |
 | Default urban areas | `DefaultResidentialAreasBuilder`, `DefaultCommercialAreasBuilder`, `DefaultIndustrialAreasBuilder`, `DefaultMilitaryAreasBuilder`, `DefaultRetailAreasBuilder`, `DefaultAgriculturalAreasBuilder` |
 | Nature | `ForestBuilder`, `ForestRadialBuilder`, `ForestEdgeBuilder`, `ScrubBuilder`, `ScrubRadialBuilder`, `RocksBuilder`, `LakesBuilder`, `WatercoursesBuilder`, `WatercourseRadialBuilder`, `TreesBuilder`, `TreeRowsBuilder`, `DefaultAreasBuilder` |
-| Nature surfaces | `SandSurfacesBuilder`, `MeadowsBuilder`, `GrassBuilder`, `VineyardBuilder`, `IceSurfaceBuilder`, `ScreeBuilder` |
+| Nature surfaces | `SandSurfacesBuilder`, `MeadowsBuilder`, `GrassBuilder`, `IceSurfaceBuilder`, `ScreeBuilder` |
 | Elevation | `ElevationWithLakesBuilder`, `ElevationBuilder`, `ElevationContourBuilder`, `ElevationOutOfBoundsBuilder` |
 | Auxiliary | `ConditionEvaluatorBuilder`, `WeatherBuilder` |
 
