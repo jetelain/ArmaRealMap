@@ -2,12 +2,16 @@
 
 ## What This Project Does
 
-GameRealisticMap (GRM) is a C# toolchain that generates realistic Arma 3 game maps from real-world geospatial data. It combines:
+GameRealisticMap (GRM) is a C# toolchain that **generates and edits** realistic Arma 3 game maps from real-world geospatial data. It combines:
 - **OpenStreetMap** data (roads, buildings, land use, water, trees…) via the Overpass API
 - **NASA SRTM** elevation data (automatic download)
 - **Sentinel-2 cloudless** satellite imagery (automatic download)
 
 The output is a fully playable Arma 3 map distributed as a `.pbo` mod.
+
+Beyond generation, GRM also supports **interactive map editing** through two complementary tools:
+- **Game Realistic Map Studio** (`GameRealisticMap.Studio`) — a WPF desktop application that lets users configure, generate, and **directly edit** the terrain (objects, materials, elevation) with live preview, without requiring a full regeneration.
+- **@ArmaMapStudio Arma 3 mod** (`@ArmaMapStudio/`) — an in-game mod that integrates with Arma 3's Eden editor to export placed objects back to GRM Studio, and supports in-game hidden-object editing.
 
 ---
 
@@ -18,9 +22,10 @@ The output is a fully playable Arma 3 map distributed as a `.pbo` mod.
 | `GameRealisticMap/` | Core engine: builder pattern, geometry, terrain feature data builders |
 | `GameRealisticMap.Arma3/` | Arma 3 output: WRP/PBO generation, object placement, satellite textures |
 | `GameRealisticMap.Generic/` | Non-Arma3 export formats |
-| `GameRealisticMap.Studio/` | WPF GUI application (Gemini framework) |
+| `GameRealisticMap.Studio/` | WPF GUI application (Gemini framework) — map generation, configuration, and interactive terrain editing |
 | `GameRealisticMap.CommandLine/` | CLI entry point |
 | `GameRealisticMap.Arma3.CommandLine/` | Arma 3-specific CLI |
+| `@ArmaMapStudio/` | Arma 3 mod — Eden editor export to Studio, in-game object editing |
 | `bis-file-formats/` | Git submodule — low-level Arma 3 file format I/O (WRP, PBO, P3D, PAA…) |
 
 ---
@@ -133,3 +138,4 @@ Layer generators live in `GameRealisticMap.Arma3/ManMade/` and `GameRealisticMap
 - `BuildContext.SetData<T>()` can inject pre-built data, bypassing the builder — used in tests and Studio live-editing.
 - `HugeImageStorage` is used for satellite and elevation images that are too large for normal RAM — they are memory-mapped to disk.
 - All documentation lives in `docs/architecture/`. The external wiki at https://github.com/jetelain/ArmaRealMap/wiki covers end-user topics.
+- For Studio-specific conventions (MVVM, XAML, MEF, localization): see `GameRealisticMap.Studio/INSTRUCTIONS.md`.

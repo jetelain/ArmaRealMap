@@ -2,9 +2,13 @@
 
 ## What Is It?
 
-GameRealisticMap (GRM) is a C# toolchain that generates realistic game maps from real-world geospatial data. It downloads OpenStreetMap cartography, NASA SRTM elevation data, and Sentinel-2 satellite imagery, then processes them into playable Arma 3 terrain packages (`.pbo` mods).
+GameRealisticMap (GRM) is a C# toolchain that **generates and edits** realistic game maps from real-world geospatial data. It downloads OpenStreetMap cartography, NASA SRTM elevation data, and Sentinel-2 satellite imagery, then processes them into playable Arma 3 terrain packages (`.pbo` mods).
 
-The system is designed for fully-automated, batch-driven generation while remaining configurable for custom map designs via the **Game Realistic Map Studio** WPF application.
+Beyond automated generation, GRM supports **interactive terrain editing** through two complementary tools:
+- **Game Realistic Map Studio** (`GameRealisticMap.Studio`) — a WPF desktop application for configuring, generating, and **directly editing** the terrain (objects, materials, elevation) with live preview, without a full regeneration.
+- **@ArmaMapStudio Arma 3 mod** (`@ArmaMapStudio/`) — an in-game mod that integrates with Arma 3's Eden editor to export placed objects back to GRM Studio, and supports in-game hidden-object editing.
+
+The system is designed for fully-automated, batch-driven generation while remaining configurable for custom map designs.
 
 ---
 
@@ -27,9 +31,10 @@ Generated maps **must** credit all three sources. See [README.md](../../README.m
 | `GameRealisticMap` | Class library | Core engine: builder pattern, geometry, terrain features (man-made & nature), elevation, satellite |
 | `GameRealisticMap.Arma3` | Class library | Arma 3 integration: WRP/PBO generation, TerrainBuilder output, material layers, asset system |
 | `GameRealisticMap.Generic` | Class library | Non-Arma3 export formats (generic profiles and exporters) |
-| `GameRealisticMap.Studio` | WPF application | GUI for map configuration, asset browser, terrain editor, density tools |
+| `GameRealisticMap.Studio` | WPF application | GUI for map configuration, generation, asset browser, and **interactive terrain editing** (objects, materials, elevation) — see [studio-guide.md](studio-guide.md) |
 | `GameRealisticMap.CommandLine` | Console app | Command-line interface for batch map generation |
 | `GameRealisticMap.Arma3.CommandLine` | Console app | Arma 3-specific CLI |
+| `@ArmaMapStudio` | Arma 3 mod | In-game mod: Eden editor export to GRM Studio, in-game hidden-object editing |
 | `bis-file-formats` | Git submodule | Low-level Arma 3 file format readers/writers (WRP, P3D, PAA, PBO, RTM, SQFC) |
 
 ---
