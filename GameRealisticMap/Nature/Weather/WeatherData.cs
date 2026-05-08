@@ -1,5 +1,5 @@
-﻿using WeatherStats;
-using WeatherStats.Stats;
+﻿using Pmad.WeatherStats;
+using Pmad.WeatherStats.Stats;
 
 namespace GameRealisticMap.Nature.Weather
 {

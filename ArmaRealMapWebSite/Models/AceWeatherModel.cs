@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WeatherStats.Stats;
+using Pmad.WeatherStats.Stats;
 
 namespace ArmaRealMapWebSite.Models
 {
