@@ -6,8 +6,8 @@ using GeoJSON.Text.Geometry;
 namespace GameRealisticMap.Nature.Forests
 {
     /// <summary>
-    /// Contains inset polygons within forest areas used for density-based interior tree placement.
-    /// Produced by eroding <see cref="ForestData"/> polygons inward by a configurable radius.
+    /// Contains the polygons that form a wide ring around forested areas (25 meters). 
+    /// Used to plant smaller, low-density trees near forests to avoid clear-cuts.
     /// </summary>
     public class ForestRadialData : IBasicTerrainData
     {

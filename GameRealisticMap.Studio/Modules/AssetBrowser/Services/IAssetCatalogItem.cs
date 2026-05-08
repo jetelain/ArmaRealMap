@@ -4,8 +4,7 @@ namespace GameRealisticMap.Studio.Modules.AssetBrowser.Services
 {
     /// <summary>
     /// Exposes the category and 3D bounding-box dimensions of a catalogued Arma 3 asset.
-    /// Used by generators to match assets to footprint sizes and by the asset browser
-    /// to filter models by category.
+    /// Used by the asset browser to filter models by category, and used by the map editor to determine the dimensions of the asset.
     /// </summary>
     public interface IAssetCatalogItem
     {

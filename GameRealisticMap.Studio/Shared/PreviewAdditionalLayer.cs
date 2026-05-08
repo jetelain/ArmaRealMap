@@ -5,8 +5,7 @@ namespace GameRealisticMap.Studio.Shared
 {
     /// <summary>
     /// An optional overlay layer added on top of a <see cref="PreviewMapData"/> preview.
-    /// Carries a named set of polygons, paths, or points (only one kind per instance)
-    /// drawn in a distinct colour to highlight specific geometry (e.g. condition test hits).
+    /// Carries a named set of polygons, paths, or points (only one kind per instance).
     /// </summary>
     public class PreviewAdditionalLayer
     {

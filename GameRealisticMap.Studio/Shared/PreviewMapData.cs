@@ -15,8 +15,7 @@ namespace GameRealisticMap.Studio.Shared
     /// Snapshot of the core terrain feature data sets used to render a 2D map preview
     /// (ocean, elevation, scrub, forest, buildings, roads, railways, watercourses).
     /// Populated from an <see cref="IContext"/> at construction time.
-    /// Optional <see cref="PreviewAdditionalLayer"/> overlays can be added to highlight
-    /// a specific feature under edit (e.g. the current condition test result).
+    /// Includes only base data sets, other data layers are optional (see <see cref="PreviewAdditionalLayer"/>).
     /// </summary>
     public class PreviewMapData
     {

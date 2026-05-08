@@ -6,8 +6,8 @@ using GeoJSON.Text.Geometry;
 namespace GameRealisticMap.Nature.Scrubs
 {
     /// <summary>
-    /// Contains inset polygons within scrub areas used for density-based interior shrub placement.
-    /// Produced by eroding <see cref="ScrubData"/> polygons inward by a configurable radius.
+    /// Contains the polygons that form a wide ring around scrub areas (15 meters). 
+    /// Used to plant smaller, low-density shrubs near scrub areas to avoid clear-cuts.
     /// </summary>
     public class ScrubRadialData : IBasicTerrainData
     {
