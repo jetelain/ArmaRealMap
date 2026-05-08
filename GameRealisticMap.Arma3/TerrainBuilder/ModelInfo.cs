@@ -6,9 +6,7 @@ using GameRealisticMap.IO.Converters;
 namespace GameRealisticMap.Arma3.TerrainBuilder
 {
     /// <summary>
-    /// Metadata for a single Arma 3 P3D model: its name, file path, and bounding box dimensions.
-    /// Used by <see cref="IModelInfoLibrary"/> to resolve model references and by generators
-    /// to match model sizes to building footprint dimensions.
+    /// Metadata for a single Arma 3 P3D model: its name, file path, and bounding center (required to generate WRP coordinates).
     /// </summary>
     [DebuggerDisplay("{Name}")]
     public class ModelInfo

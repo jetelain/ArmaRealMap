@@ -16,7 +16,7 @@ namespace GameRealisticMap
         /// Initialises processing options.
         /// </summary>
         /// <param name="resolution">Imagery resolution in metres per pixel (default 1.0).</param>
-        /// <param name="privateServiceRoadThreshold">Service roads narrower than this (in metres) are treated as private access roads (default 25).</param>
+        /// <param name="privateServiceRoadThreshold">Service roads shorter than this (in metres) are ignored (default 25).</param>
         public MapProcessingOptions(double resolution = 1, float privateServiceRoadThreshold = 25)
         {
             Resolution = resolution;

@@ -6,7 +6,7 @@ using GeoJSON.Text.Geometry;
 namespace GameRealisticMap.ManMade.Roads
 {
     /// <summary>
-    /// Contains sidewalk polygon areas generated alongside roads and pedestrian paths.
+    /// Contains sidewalk paths generated alongside roads and pedestrian paths.
     /// </summary>
     public class SidewalksData : IGeoJsonData
     {

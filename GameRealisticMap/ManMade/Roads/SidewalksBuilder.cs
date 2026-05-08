@@ -9,8 +9,8 @@ using Pmad.ProgressTracking;
 namespace GameRealisticMap.ManMade.Roads
 {
     /// <summary>
-    /// Builds <see cref="SidewalksData"/> by generating sidewalk polygon strips alongside
-    /// road and footpath geometries from <see cref="RoadsData"/>.
+    /// Builds <see cref="SidewalksData"/> by generating sidewalk paths alongside
+    /// road geometries from <see cref="RoadsData"/> within residential areas.
     /// </summary>
     internal class SidewalksBuilder : IDataBuilder<SidewalksData>
     {
