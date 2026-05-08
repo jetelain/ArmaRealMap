@@ -1,5 +1,7 @@
 # Data Pipeline & Builder Pattern
 
+> For a project-level overview see [`GameRealisticMap/README.md`](../../GameRealisticMap/README.md). This document is the in-depth reference for the builder pattern and `BuildContext` internals.
+
 ## Core Concept
 
 The entire map generation pipeline is built on a single pattern: **typed data builders**.

@@ -1,5 +1,7 @@
 # Coordinate System
 
+> For a project overview see [`GameRealisticMap/README.md`](../../GameRealisticMap/README.md).
+
 ## Overview
 
 GRM uses two coordinate systems:

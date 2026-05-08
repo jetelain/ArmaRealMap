@@ -7,7 +7,7 @@ GameRealisticMap (GRM) is a C# toolchain that **generates and edits** realistic 
 - **NASA SRTM** elevation data (automatic download)
 - **Sentinel-2 cloudless** satellite imagery (automatic download)
 
-The output is a fully playable Arma 3 map distributed as a `.pbo` mod.
+The output is a fully playable Arma 3 map distributed as a `.pbo` mod. **Arma 3 is currently the only supported generation target**, but the architecture separates a game-agnostic core (`GameRealisticMap`) from game-specific output layers to enable support for other games in the future.
 
 Beyond generation, GRM also supports **interactive map editing** through two complementary tools:
 - **Game Realistic Map Studio** (`GameRealisticMap.Studio`) — a WPF desktop application that lets users configure, generate, and **directly edit** the terrain (objects, materials, elevation) with live preview, without requiring a full regeneration.
@@ -17,14 +17,16 @@ Beyond generation, GRM also supports **interactive map editing** through two com
 
 ## Project Structure
 
+Each project has a `README.md` at its root with a focused description.
+
 | Project | Purpose |
 |---------|---------|
 | `GameRealisticMap/` | Core engine: builder pattern, geometry, terrain feature data builders |
 | `GameRealisticMap.Arma3/` | Arma 3 output: WRP/PBO generation, object placement, satellite textures |
-| `GameRealisticMap.Generic/` | Non-Arma3 export formats |
+| `GameRealisticMap.Generic/` | Non-Arma3 export formats — foundation for future game targets |
 | `GameRealisticMap.Studio/` | WPF GUI application (Gemini framework) — map generation, configuration, and interactive terrain editing |
 | `GameRealisticMap.CommandLine/` | CLI entry point |
-| `GameRealisticMap.Arma3.CommandLine/` | Arma 3-specific CLI |
+| `GameRealisticMap.Arma3.CommandLine/` | Arma 3-specific CLI (`genmod`, `genwrp`, `gentb`, `layer` verbs) |
 | `@ArmaMapStudio/` | Arma 3 mod — Eden editor export to Studio, in-game object editing |
 | `bis-file-formats/` | Git submodule — low-level Arma 3 file format I/O (WRP, PBO, P3D, PAA…) |
 

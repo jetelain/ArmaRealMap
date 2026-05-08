@@ -1,5 +1,7 @@
 # Builders Reference
 
+> For the builder pattern internals see [data-pipeline.md](data-pipeline.md). For a project overview see [`GameRealisticMap/README.md`](../../GameRealisticMap/README.md).
+
 Complete catalog of all data builders registered in `BuildersCatalog`. Each row shows the builder class, the data type it produces, its primary data source, and a short description.
 
 See [data-pipeline.md](data-pipeline.md) for how builders are resolved and cached.

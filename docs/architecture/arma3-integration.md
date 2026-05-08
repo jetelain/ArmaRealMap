@@ -1,5 +1,7 @@
 # Arma 3 Integration
 
+> For a project-level overview see [`GameRealisticMap.Arma3/README.md`](../../GameRealisticMap.Arma3/README.md). This document is the in-depth reference for configuration, the imagery pipeline, and WRP/PBO compilation.
+
 ## Overview
 
 `GameRealisticMap.Arma3` converts generic terrain data (`*Data` objects from `GameRealisticMap`) into Arma 3 map packages ready to be loaded as a mod. The output is:

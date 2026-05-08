@@ -1,5 +1,7 @@
 # Game Realistic Map Studio
 
+> For a project-level overview and editing workflow see [`GameRealisticMap.Studio/README.md`](../../GameRealisticMap.Studio/README.md). For development conventions (MVVM, XAML, MEF, localization) see [`GameRealisticMap.Studio/INSTRUCTIONS.md`](../../GameRealisticMap.Studio/INSTRUCTIONS.md). This document is the detailed module reference.
+
 ## Overview
 
 Game Realistic Map Studio is a WPF desktop application built on the [Gemini](https://github.com/tgjones/gemini) IDE framework. It provides a guided workflow for designing, configuring, and generating Arma 3 maps without requiring command-line usage.
