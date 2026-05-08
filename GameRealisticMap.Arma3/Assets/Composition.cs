@@ -9,8 +9,7 @@ namespace GameRealisticMap.Arma3.Assets
 {
     /// <summary>
     /// A multi-component object assembly composed of one or more <see cref="CompositionObject"/> records,
-    /// each with its own relative position, rotation, and model. Used by <c>BuildingGenerator</c>
-    /// to place buildings that consist of multiple P3D parts (e.g. walls + roof + windows).
+    /// each with its own relative position, rotation, and model. 
     /// </summary>
     public class Composition
     {

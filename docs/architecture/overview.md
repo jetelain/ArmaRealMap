@@ -57,32 +57,32 @@ Each project has its own `README.md` with a focused description. The table below
 
 ```
   ┌──────────────────────────────────────────────────────────┐
-  │  Configuration (Arma3MapConfig / GenericMapConfig)        │
-  │    World name, area center/SW, grid size, resolution…     │
+  │  Configuration (Arma3MapConfig / GenericMapConfig)       │
+  │    World name, area center/SW, grid size, resolution…    │
   └───────────────────────┬──────────────────────────────────┘
                           │
   ┌───────────────────────▼──────────────────────────────────┐
-  │  BuildContext + BuildersCatalog                           │
-  │    OSM data (OverPass) + SRTM (NASA) + Sentinel-2         │
+  │  BuildContext + BuildersCatalog                          │
+  │    OSM data (OverPass) + SRTM (NASA) + Sentinel-2        │
   └───────────────────────┬──────────────────────────────────┘
                           │  lazy GetData<T>() calls
              ┌────────────┼────────────┐
              │            │            │
-  ┌──────────▼──┐  ┌──────▼──┐  ┌─────▼────────┐
+  ┌──────────▼──┐  ┌──────▼──┐  ┌──────▼───────┐
   │ Nature data │  │ ManMade │  │  Elevation   │
   │ Forests     │  │ Roads   │  │  + Satellite │
   │ Lakes, etc. │  │ Bldgs…  │  │              │
-  └──────────┬──┘  └──────┬──┘  └─────┬────────┘
+  └──────────┬──┘  └──────┬──┘  └──────┬───────┘
              └────────────┴────────────┘
                           │
   ┌───────────────────────▼──────────────────────────────────┐
-  │  Arma3LayerGeneratorCatalog                               │
-  │    Generic *Data → TerrainBuilderObjects (CSV)            │
+  │  Arma3LayerGeneratorCatalog                              │
+  │    Generic *Data → TerrainBuilderObjects (CSV)           │
   └───────────────────────┬──────────────────────────────────┘
                           │
   ┌───────────────────────▼──────────────────────────────────┐
-  │  WRP + PBO compilation                                    │
-  │    Elevation grid, imagery tiles, object placement        │
+  │  WRP + PBO compilation                                   │
+  │    Elevation grid, imagery tiles, object placement       │
   └──────────────────────────────────────────────────────────┘
 ```
 

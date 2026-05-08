@@ -11,7 +11,6 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
     /// Represents a single placed object in Arma 3's TerrainBuilder CSV format.
     /// Encodes the P3D model path, terrain-space position (with a fixed X offset of 200000),
     /// yaw/pitch/roll rotation, scale, and elevation mode (relative to terrain or absolute).
-    /// Collections of these are written to <c>.tml</c> layer files consumed by TerrainBuilder.
     /// </summary>
     public sealed class TerrainBuilderObject
     {
