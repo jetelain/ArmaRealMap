@@ -5,6 +5,11 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Forests
 {
+    /// <summary>
+    /// Contains edge/fringe polygons at the boundary of forest areas.
+    /// Used by the forest-edge generator to place edge-specific vegetation (shrubs, young trees)
+    /// that differs from the interior forest density.
+    /// </summary>
     public class ForestEdgeData : IBasicTerrainData
     {
         public const float Width = 2f;

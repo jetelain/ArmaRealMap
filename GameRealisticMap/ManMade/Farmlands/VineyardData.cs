@@ -6,6 +6,9 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Farmlands
 {
+    /// <summary>
+    /// Contains vineyard polygon areas extracted from OSM (landuse=vineyard).
+    /// </summary>
     public class VineyardData : IBasicTerrainData
     {
         [JsonConstructor]

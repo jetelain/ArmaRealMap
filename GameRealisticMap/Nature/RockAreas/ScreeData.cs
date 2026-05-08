@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.RockAreas
 {
+    /// <summary>
+    /// Contains scree and talus slope polygon areas extracted from OSM (natural=scree).
+    /// Represents loose rock debris on steep slopes.
+    /// </summary>
     public class ScreeData : IBasicTerrainData
     {
         [JsonConstructor]

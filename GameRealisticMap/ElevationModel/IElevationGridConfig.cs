@@ -2,6 +2,10 @@
 
 namespace GameRealisticMap.ElevationModel
 {
+    /// <summary>
+    /// Read-only configuration properties of an elevation grid:
+    /// cell size and grid dimensions.
+    /// </summary>
     public interface IElevationGridConfig
     {
         int Size { get; }

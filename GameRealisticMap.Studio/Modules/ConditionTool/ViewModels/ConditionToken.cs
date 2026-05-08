@@ -10,6 +10,11 @@ using GameRealisticMap.Algorithms;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
+    /// <summary>
+    /// Represents a single syntax-highlighted token in a condition expression string.
+    /// Carries the token type, display text, source position, tooltip hint, and
+    /// WPF colour for rendering in the condition editor panel.
+    /// </summary>
     public class ConditionToken
     {
         private static readonly HashSet<string> neural = new HashSet<string>()

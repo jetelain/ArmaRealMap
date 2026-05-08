@@ -4,6 +4,11 @@ using GameRealisticMap.Nature;
 
 namespace GameRealisticMap.ManMade
 {
+    /// <summary>
+    /// Contains land-use area polygons classified into categories: residential, commercial,
+    /// industrial, military, retail, and agricultural. Derived from OSM landuse tags.
+    /// Used as input for default urban-area fill builders and for biome-level rendering decisions.
+    /// </summary>
     public class CategoryAreaData : INonDefaultArea
     {
         public static BuildingTypeId[] Categories = new[] {

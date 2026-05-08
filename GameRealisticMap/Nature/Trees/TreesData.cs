@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Trees
 {
+    /// <summary>
+    /// Contains individual tree point features extracted from OSM (natural=tree nodes).
+    /// Each tree has a position and optional species/type tag.
+    /// </summary>
     public class TreesData : IGeoJsonData
     {
         [JsonConstructor]

@@ -18,6 +18,12 @@ using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
 {
+    /// <summary>
+    /// Document editor for <c>.grm</c> generic map configuration files.
+    /// Lets the user specify geographic coordinates, resolution, and export profiles,
+    /// then triggers GeoJSON / preview exports via the background progress tool.
+    /// Appears as a root node in the Explorer tree.
+    /// </summary>
     internal class GenericMapConfigEditorViewModel : MapConfigEditorBase, IExplorerRootTreeItem, IMainDocument
     {
         private readonly IGrmConfigService grmConfig;

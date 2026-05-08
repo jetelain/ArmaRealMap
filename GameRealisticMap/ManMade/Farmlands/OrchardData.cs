@@ -6,6 +6,9 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Farmlands
 {
+    /// <summary>
+    /// Contains orchard polygon areas extracted from OSM (landuse=orchard).
+    /// </summary>
     public class OrchardData : IBasicTerrainData
     {
         [JsonConstructor]

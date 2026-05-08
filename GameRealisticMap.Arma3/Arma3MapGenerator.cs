@@ -16,6 +16,10 @@ using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3
 {
+    /// <summary>
+    /// Entry point for generating a complete Arma 3 map. Orchestrates the full pipeline:
+    /// OSM data download → BuildContext creation → layer generation → WRP compilation → PBO packaging.
+    /// </summary>
     public class Arma3MapGenerator
     {
         protected readonly IArma3RegionAssets assets;

@@ -7,6 +7,17 @@ using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.ConditionTool.ViewModels
 {
+    /// <summary>
+    /// Abstract base view-model for condition expression editors.
+    /// Manages the current <typeparamref name="TCondition"/> object, parses/regenerates
+    /// syntax tokens for the editor highlight display, and delegates test execution to an
+    /// <see cref="IConditionSampleProvider{TGeometry}"/>.
+    /// Concrete subclasses: <see cref="PointConditionVM"/>, <see cref="PathConditionVM"/>,
+    /// <see cref="PolygonConditionVM"/>.
+    /// </summary>
+    /// <typeparam name="TCondition">The strongly-typed condition class (e.g. <c>PointCondition</c>).</typeparam>
+    /// <typeparam name="TContext">The evaluation context type for the condition.</typeparam>
+    /// <typeparam name="TGeometry">The geometry type the condition filters (point / path / polygon).</typeparam>
     public abstract class ConditionVMBase<TCondition,TContext,TGeometry> : PropertyChangedBase, IConditionVM 
         where TCondition : class, ICondition<TContext>
         where TContext : IConditionContext<TGeometry>

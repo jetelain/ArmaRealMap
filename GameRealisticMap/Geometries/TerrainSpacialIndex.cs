@@ -4,6 +4,13 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Geometries
 {
+    /// <summary>
+    /// A <see cref="SimpleSpacialIndex{T}"/> specialised for <see cref="ITerrainEnvelope"/> objects.
+    /// Automatically extracts bounding-box corners from the <see cref="ITerrainEnvelope.MinPoint"/>
+    /// and <see cref="ITerrainEnvelope.MaxPoint"/> properties, so callers do not need to supply
+    /// bounds manually on each insert.
+    /// </summary>
+    /// <typeparam name="T">The type of spatial objects stored. Must implement <see cref="ITerrainEnvelope"/>.</typeparam>
     public class TerrainSpacialIndex<T> : SimpleSpacialIndex<T> where T : class, ITerrainEnvelope
     {
         public TerrainSpacialIndex(ITerrainArea map)

@@ -4,6 +4,12 @@ using Coordinate = GeoAPI.Geometries.Coordinate;
 
 namespace GameRealisticMap
 {
+    /// <summary>
+    /// Standard <see cref="ITerrainArea"/> implementation that uses a UTM (Universal Transverse Mercator)
+    /// projection for WGS-84 ↔ terrain-space coordinate conversion.
+    /// The south-west corner of the terrain area is pinned to a fixed UTM easting/northing;
+    /// all <see cref="Geometries.TerrainPoint"/> values are offsets in metres from that origin.
+    /// </summary>
     public class TerrainAreaUTM : ITerrainArea
     {
         private static readonly EagerLoad eagerUTM = new EagerLoad(false) { UTM_MGRS = true, Extensions = new EagerLoad_Extensions() { MGRS = false } };
@@ -11,6 +17,12 @@ namespace GameRealisticMap
 
         private readonly UniversalTransverseMercator startPointUTM;
 
+        /// <summary>
+        /// Initialises a terrain area from a known UTM south-west corner.
+        /// </summary>
+        /// <param name="startPointUTM">UTM coordinate of the south-west corner (origin point of the terrain).</param>
+        /// <param name="gridCellSize">Size of each heightmap grid cell in metres.</param>
+        /// <param name="gridSize">Number of grid cells along each axis (terrain is square).</param>
         public TerrainAreaUTM(UniversalTransverseMercator startPointUTM, float gridCellSize, int gridSize)
         {
             this.startPointUTM = startPointUTM;
@@ -20,21 +32,35 @@ namespace GameRealisticMap
             TerrainBounds = TerrainPolygon.FromRectangle(TerrainPoint.Empty, new TerrainPoint(SizeInMeters, SizeInMeters));
         }
 
+        /// <summary>
+        /// Creates a <see cref="TerrainAreaUTM"/> from a WGS-84 string describing the south-west corner.
+        /// The string is parsed by CoordinateSharp (e.g. <c>"48.666667 N, 6.166667 E"</c>).
+        /// </summary>
         public static TerrainAreaUTM CreateFromSouthWest(string southWest, float gridCellSize, int gridSize)
         {
             return CreateFromSouthWest(CoordinateSharp.Coordinate.Parse(southWest), gridCellSize, gridSize);
         }
 
+        /// <summary>
+        /// Creates a <see cref="TerrainAreaUTM"/> from a CoordinateSharp coordinate representing the south-west corner.
+        /// </summary>
         public static TerrainAreaUTM CreateFromSouthWest(CoordinateSharp.Coordinate southWest, float gridCellSize, int gridSize)
         {
             return new TerrainAreaUTM(southWest.UTM, gridCellSize, gridSize);
         }
 
+        /// <summary>
+        /// Creates a <see cref="TerrainAreaUTM"/> from a WGS-84 string describing the map center.
+        /// The south-west corner is computed by subtracting half the total terrain size.
+        /// </summary>
         public static TerrainAreaUTM CreateFromCenter(string center, float gridCellSize, int gridSize)
         {
             return CreateFromCenter(CoordinateSharp.Coordinate.Parse(center), gridCellSize, gridSize);
         }
 
+        /// <summary>
+        /// Creates a <see cref="TerrainAreaUTM"/> from a CoordinateSharp coordinate representing the map center.
+        /// </summary>
         public static TerrainAreaUTM CreateFromCenter(CoordinateSharp.Coordinate center, float gridCellSize, int gridSize)
         {
             var halfSize = gridCellSize * gridSize / 2;

@@ -6,6 +6,9 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Farmlands
 {
+    /// <summary>
+    /// Contains farmland and cultivated field polygon areas extracted from OSM (landuse=farmland, landuse=allotments).
+    /// </summary>
     public class FarmlandsData : IBasicTerrainData
     {
         [JsonConstructor]

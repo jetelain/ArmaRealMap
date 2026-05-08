@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Surfaces
 {
+    /// <summary>
+    /// Contains sandy surface polygon areas extracted from OSM
+    /// (natural=sand, natural=beach, natural=dune).
+    /// </summary>
     public class SandSurfacesData : IBasicTerrainData
     {
         [JsonConstructor]

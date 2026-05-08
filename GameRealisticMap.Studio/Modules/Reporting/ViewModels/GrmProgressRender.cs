@@ -6,6 +6,11 @@ using Pmad.ProgressTracking.Wpf;
 
 namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 {
+    /// <summary>
+    /// WPF progress renderer for GRM tasks. Extends <c>WpfProgressRender</c> from Pmad
+    /// to also echo task start/end lines to the Gemini Output panel and NLog logger,
+    /// providing a persistent text log alongside the live progress bar UI.
+    /// </summary>
     public class GrmProgressRender : WpfProgressRender
     {
         private static readonly Logger logger = LogManager.GetLogger("Task");

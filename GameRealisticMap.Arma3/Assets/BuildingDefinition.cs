@@ -6,6 +6,11 @@ using GameRealisticMap.ManMade.Buildings;
 
 namespace GameRealisticMap.Arma3.Assets
 {
+    /// <summary>
+    /// Defines one or more candidate 3D model assemblies (<see cref="Composition"/>) for a building
+    /// category and size class. The generator selects the best-fitting composition based on
+    /// the actual building footprint dimensions from OSM.
+    /// </summary>
     public class BuildingDefinition
     {
         public BuildingDefinition(Vector2 size, Composition composition)

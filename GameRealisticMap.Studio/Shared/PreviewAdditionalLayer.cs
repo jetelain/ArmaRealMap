@@ -3,6 +3,10 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Studio.Shared
 {
+    /// <summary>
+    /// An optional overlay layer added on top of a <see cref="PreviewMapData"/> preview.
+    /// Carries a named set of polygons, paths, or points (only one kind per instance).
+    /// </summary>
     public class PreviewAdditionalLayer
     {
         public PreviewAdditionalLayer(string name, List<TerrainPolygon> polygons)

@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.RockAreas
 {
+    /// <summary>
+    /// Contains rocky outcrop and bare-rock polygon areas extracted from OSM
+    /// (natural=rock, natural=bare_rock).
+    /// </summary>
     public class RocksData : IBasicTerrainData
     {
         [JsonConstructor]
