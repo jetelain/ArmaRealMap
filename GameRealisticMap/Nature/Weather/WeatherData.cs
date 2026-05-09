@@ -1,8 +1,14 @@
-﻿using WeatherStats;
-using WeatherStats.Stats;
+﻿using Pmad.WeatherStats;
+using Pmad.WeatherStats.Stats;
 
 namespace GameRealisticMap.Nature.Weather
 {
+    /// <summary>
+    /// Contains atmospheric statistics for the terrain's geographic location,
+    /// including dominant wind direction and precipitation data.
+    /// Used to orient wind-sensitive objects (wind turbines, flags) and configure
+    /// in-game weather presets.
+    /// </summary>
     public class WeatherData
     {
         public WeatherData(YearWeatherStatsPoint? data)

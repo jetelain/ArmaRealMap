@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Forests
 {
+    /// <summary>
+    /// Contains forest and woodland polygon areas extracted from OSM
+    /// (landuse=forest, natural=wood). Has higher priority than scrub and other surface types.
+    /// </summary>
     public class ForestData : IBasicTerrainData
     {
         [JsonConstructor]

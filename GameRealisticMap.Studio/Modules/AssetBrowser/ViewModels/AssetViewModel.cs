@@ -5,6 +5,11 @@ using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.AssetBrowser.ViewModels
 {
+    /// <summary>
+    /// View-model for a single Arma 3 P3D asset entry displayed in the asset browser.
+    /// Wraps an <c>AssetCatalogItem</c> and exposes its name, path, mod ID, category,
+    /// and a lazily-loaded preview image URI.
+    /// </summary>
     public class AssetViewModel : PropertyChangedBase
     {
         private readonly AssetCatalogItem item;

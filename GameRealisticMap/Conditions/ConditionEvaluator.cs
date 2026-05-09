@@ -6,7 +6,7 @@ using GameRealisticMap.ManMade.Buildings;
 using GameRealisticMap.ManMade.Places;
 using GameRealisticMap.ManMade.Roads;
 using GameRealisticMap.Nature.Ocean;
-using WeatherStats.Stats;
+using Pmad.WeatherStats.Stats;
 
 namespace GameRealisticMap.Conditions
 {

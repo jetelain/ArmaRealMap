@@ -3,6 +3,11 @@ using GameRealisticMap.Studio.Modules.AssetConfigEditor.ViewModels;
 
 namespace GameRealisticMap.Studio.Modules.Reporting.ViewModels
 {
+    /// <summary>
+    /// A labelled <see cref="System.Windows.Input.ICommand"/> displayed as a clickable
+    /// button in the <see cref="SuccessViewModel"/> dialog after a task completes.
+    /// Typical uses: "Open in Explorer", "Launch Arma 3", "View Log".
+    /// </summary>
     public class SuccessAction : ICommandWithLabel
     {
         private readonly Action action;

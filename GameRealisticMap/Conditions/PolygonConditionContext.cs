@@ -1,7 +1,7 @@
 ﻿using GameRealisticMap.Geometries;
 using GameRealisticMap.ManMade.Buildings;
 using MathNet.Numerics;
-using WeatherStats.Stats;
+using Pmad.WeatherStats.Stats;
 
 namespace GameRealisticMap.Conditions
 {

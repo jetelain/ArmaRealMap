@@ -2,6 +2,11 @@
 
 namespace GameRealisticMap.Arma3
 {
+    /// <summary>
+    /// JSON-serializable representation of an <see cref="Arma3MapConfig"/>.
+    /// Loaded from a <c>.grma3m</c> (for GameRealisticMap Arma 3 Map, JSON format) config file and 
+    /// converted to <see cref="Arma3MapConfig"/> at runtime.
+    /// </summary>
     public class Arma3MapConfigJson
     {
         public int? TileSize { get; set; }

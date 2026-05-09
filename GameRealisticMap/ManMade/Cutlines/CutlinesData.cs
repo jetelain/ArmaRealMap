@@ -12,6 +12,11 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Cutlines
 {
+    /// <summary>
+    /// Contains forest cutline corridor polygons extracted from OSM
+    /// (power=line corridors, natural=tree_row gaps, man_made=cutline).
+    /// Cutlines are used as priority polygons that remove forest coverage.
+    /// </summary>
     public class CutlinesData : IGeoJsonData//, INonDefaultArea
     {
         [JsonConstructor]

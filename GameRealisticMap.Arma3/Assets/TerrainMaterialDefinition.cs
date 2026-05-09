@@ -12,7 +12,7 @@ namespace GameRealisticMap.Arma3.Assets
             Surface = surface;
             Data = data;
             Title = title;
-            if (surface != null && !surface.Match(Path.GetFileNameWithoutExtension(material.ColorTexture)))
+            if (surface != null && !surface.Match(Arma3Path.GetFileNameWithoutExtension(material.ColorTexture)))
             {
 #if DEBUG
                 throw new ArgumentException($"Pattern '{surface.Files}' does not matches material file '{material.ColorTexture}'");

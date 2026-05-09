@@ -9,6 +9,11 @@ using NetTopologySuite.Operation.Distance;
 
 namespace GameRealisticMap.Geometries
 {
+    /// <summary>
+    /// An ordered sequence of <see cref="TerrainPoint"/> values forming a polyline in local terrain space.
+    /// Used to represent linear features such as roads, rivers, fences, and railway lines.
+    /// Can be converted to a buffered <see cref="TerrainPolygon"/> for area operations.
+    /// </summary>
     [DebuggerDisplay("{Length}m {FirstPoint} to {LastPoint}")]
     public class TerrainPath : ITerrainEnvelope, ITerrainGeo
     {

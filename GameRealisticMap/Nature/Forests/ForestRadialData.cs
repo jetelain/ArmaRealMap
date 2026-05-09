@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Forests
 {
+    /// <summary>
+    /// Contains the polygons that form a wide ring around forested areas (25 meters). 
+    /// Used to plant smaller, low-density trees near forests to avoid clear-cuts.
+    /// </summary>
     public class ForestRadialData : IBasicTerrainData
     {
         public const float Width = 25f;

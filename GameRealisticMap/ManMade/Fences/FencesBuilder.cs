@@ -4,6 +4,10 @@ using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Fences
 {
+    /// <summary>
+    /// Builds <see cref="FencesData"/> by extracting OSM barrier ways
+    /// (fence, wall, hedge, retaining wall, etc.).
+    /// </summary>
     internal class FencesBuilder : IDataBuilder<FencesData>
     {
         private static FenceTypeId? GetFenceTypeId(TagsCollectionBase tags)

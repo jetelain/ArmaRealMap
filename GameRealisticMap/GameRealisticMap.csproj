@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<DefineConstants>PARALLEL</DefineConstants>
@@ -25,12 +25,12 @@
 		<PackageReference Include="OsmSharp.Geo" Version="6.2.0" />
 		<PackageReference Include="StringToExpression" Version="1.1.1" />
 		<PackageReference Include="Pmad.ProgressTracking" Version="0.1.28" />
-		<PackageReference Include="Pmad.HugeImages" Version="0.1.1" />
+		<PackageReference Include="Pmad.HugeImages" Version="0.1.4" />
+		<PackageReference Include="Pmad.WeatherStats" Version="0.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Pmad.Cartography" Version="0.1.8" />
-		<ProjectReference Include="..\weatherstats\WeatherStats\WeatherStats.csproj" />
+		<PackageReference Include="Pmad.Cartography" Version="0.1.23" />
 	</ItemGroup>
 
 	<ItemGroup>

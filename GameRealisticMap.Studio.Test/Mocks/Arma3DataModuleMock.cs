@@ -16,6 +16,7 @@ namespace GameRealisticMap.Studio.Test.Mocks
         public IEnumerable<string> ActiveMods { get; set; } = new string[0];
 
         public bool UsePboProject { get; set; }
+        public string ProjectDriveBasePath { get; set; } = "DefaultProjectDriveBasePath";
 
         public event EventHandler<EventArgs>? Reloaded;
 
@@ -38,6 +39,12 @@ namespace GameRealisticMap.Studio.Test.Mocks
 
         public Task SaveLibraryCache()
         {
+            return Task.CompletedTask;
+        }
+
+        public Task SetProjectDriveBasePath(string projectDriveBasePath)
+        {
+            ProjectDriveBasePath = projectDriveBasePath;
             return Task.CompletedTask;
         }
     }

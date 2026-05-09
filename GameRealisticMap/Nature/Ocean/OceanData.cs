@@ -4,6 +4,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Ocean
 {
+    /// <summary>
+    /// Contains ocean/sea polygon areas derived from OSM coastline ways.
+    /// The ocean polygon is the inverse of the land polygon within the terrain bounds.
+    /// </summary>
     public class OceanData : IBasicTerrainData
     {
         public OceanData(List<TerrainPolygon> polygons, List<TerrainPolygon> land, bool isIsland)

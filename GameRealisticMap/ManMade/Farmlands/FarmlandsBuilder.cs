@@ -6,6 +6,9 @@ using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Farmlands
 {
+    /// <summary>
+    /// Builds <see cref="FarmlandsData"/> from OSM farmland and allotment area polygons.
+    /// </summary>
     internal class FarmlandsBuilder : BasicBuilderBase<FarmlandsData>
     {
         protected override FarmlandsData CreateWrapper(List<TerrainPolygon> polygons)

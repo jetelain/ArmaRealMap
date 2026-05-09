@@ -2,6 +2,11 @@
 
 namespace GameRealisticMap.ElevationModel
 {
+    /// <summary>
+    /// Associates a lake polygon (<see cref="Nature.Lakes.LakesData"/>) with its
+    /// computed water surface elevation in metres. Used during elevation constraint solving
+    /// to flatten the grid within each lake to a consistent level.
+    /// </summary>
     public class LakeWithElevation
     {
         public LakeWithElevation(TerrainPolygon terrainPolygon, float borderElevation, float waterElevation)

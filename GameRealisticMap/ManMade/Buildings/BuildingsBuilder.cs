@@ -9,6 +9,11 @@ using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Buildings
 {
+    /// <summary>
+    /// Builds <see cref="BuildingsData"/> using a multi-pass algorithm:
+    /// extract footprint bounds from OSM → merge small adjacent buildings → add node-based buildings
+    /// → remove road overlaps → crop to road buffers → classify by type and size.
+    /// </summary>
     internal class BuildingsBuilder : IDataBuilder<BuildingsData>
     {
         private readonly IBuildingSizeLibrary library;

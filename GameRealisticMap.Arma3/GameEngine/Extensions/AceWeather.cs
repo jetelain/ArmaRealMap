@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameRealisticMap.Nature.Weather;
-using WeatherStats;
-using WeatherStats.Stats;
+using Pmad.WeatherStats;
+using Pmad.WeatherStats.Stats;
 
 namespace GameRealisticMap.Arma3.GameEngine.Extensions
 {

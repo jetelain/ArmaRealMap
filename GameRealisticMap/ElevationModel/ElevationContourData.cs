@@ -4,6 +4,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ElevationModel
 {
+    /// <summary>
+    /// Contour line paths derived from <see cref="ElevationData"/> at a fixed contour interval.
+    /// Used for map overview rendering (e.g. topographic preview images), not written to WRP.
+    /// </summary>
     public sealed class ElevationContourData : IGeoJsonData
     {
         public ElevationContourData(List<TerrainPath> contours)

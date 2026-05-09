@@ -7,9 +7,9 @@ using Pmad.Geometry;
 namespace GameRealisticMap.Geometries
 {
     /// <summary>
-    /// Coordinates 
-    /// 
-    /// Good for up to 83 Km with 1 cm precision
+    /// A 2D point in local terrain space, measured in metres from the south-west corner of the terrain area.
+    /// X increases eastward, Y increases northward. Origin (0, 0) is the south-west corner.
+    /// Precise to approximately 1 cm for terrain areas up to 83 km across.
     /// </summary>
     [JsonConverter(typeof(TerrainPointJsonConverter))]
     public class TerrainPoint : IEquatable<TerrainPoint>, IPosition, ITerrainEnvelope

@@ -4,6 +4,13 @@ using System.Numerics;
 
 namespace GameRealisticMap.Geometries
 {
+    /// <summary>
+    /// A simple grid-based spatial index for fast proximity and bounding-box overlap queries.
+    /// Items are bucketed into grid cells based on their axis-aligned bounding box; queries only
+    /// examine cells that overlap the search region. Supports lock-based
+    /// area reservations for concurrent object placement.
+    /// </summary>
+    /// <typeparam name="T">The type of objects stored in the index. Must be a reference type.</typeparam>
     public class SimpleSpacialIndex<T> : IEnumerable<T>
         where T : class
     {

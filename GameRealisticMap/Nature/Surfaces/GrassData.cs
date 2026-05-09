@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Surfaces
 {
+    /// <summary>
+    /// Contains short-grass and lawn polygon areas extracted from OSM
+    /// (landuse=grass, leisure=park, leisure=pitch, etc.).
+    /// </summary>
     public class GrassData : IBasicTerrainData
     {
         [JsonConstructor]

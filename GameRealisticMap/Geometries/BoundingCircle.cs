@@ -3,6 +3,10 @@ using GeoAPI.Geometries;
 
 namespace GameRealisticMap.Geometries
 {
+    /// <summary>
+    /// A circular bounding shape for terrain objects that do not have a fixed rectangular footprint.
+    /// Provides a fast overlap approximation for circular or near-circular objects.
+    /// </summary>
     public class BoundingCircle : IBoundingShape
     {
         private readonly Lazy<TerrainPolygon> polygon;
