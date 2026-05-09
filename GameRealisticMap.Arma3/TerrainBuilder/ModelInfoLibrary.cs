@@ -67,7 +67,7 @@ namespace GameRealisticMap.Arma3.TerrainBuilder
                 {
                     return false;
                 }
-                var name = UniqueName(Path.GetFileNameWithoutExtension(path));
+                var name = UniqueName(Arma3Path.GetFileNameWithoutExtension(path));
                 model = new ModelInfo(name, path, odol.BoundingCenter.Vector3);
                 indexByName.Add(name, model);
             }

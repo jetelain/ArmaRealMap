@@ -52,7 +52,7 @@ namespace GameRealisticMap.Arma3.Demo
             foreach (var def in assets.Materials.Definitions)
             {
                 var center = new Geometries.TerrainPoint((x + (squareSize / 2)), a3config.SizeInMeters - (y + (squareSize / 2)));
-                cities.Add(City.Square(center, squareSize / 2, def.Title ?? Path.GetFileNameWithoutExtension(def.Material.ColorTexture)));
+                cities.Add(City.Square(center, squareSize / 2, def.Title ?? Arma3Path.GetFileNameWithoutExtension(def.Material.ColorTexture)));
                 x += squareSize;
                 if ((x + squareSize) >= a3config.SizeInMeters)
                 {

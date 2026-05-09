@@ -141,7 +141,7 @@ namespace GameRealisticMap.Arma3.GameEngine
                 {
                     if (IsLandConfigRequired(odol))
                     {
-                        sw.WriteLine($"class land_{Path.GetFileNameWithoutExtension(model)};");
+                        sw.WriteLine($"class land_{Arma3Path.GetFileNameWithoutExtension(model)};");
                     }
                 }
             }

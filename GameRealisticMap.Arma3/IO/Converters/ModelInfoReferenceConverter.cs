@@ -27,7 +27,7 @@ namespace GameRealisticMap.Arma3.IO.Converters
                     {
                         throw new ApplicationException($"Model '{path}' was not found. Did you have installed and enabled all required mods?");
                     }
-                    return new ModelInfo("(UNRESOLVED)" + Path.GetFileNameWithoutExtension(path), path, Vector3.Zero);
+                    return new ModelInfo("(UNRESOLVED)" + Arma3Path.GetFileNameWithoutExtension(path), path, Vector3.Zero);
                 }
                 return model;
             }
