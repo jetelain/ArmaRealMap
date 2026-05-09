@@ -96,7 +96,7 @@ namespace GameRealisticMap.Arma3.Test.TerrainBuilder
         }
 
         [Fact]
-        public async Task ResolveByPath_FileNotFound_ThrowsApplicationException()
+        public void ResolveByPath_FileNotFound_ThrowsApplicationException()
         {
             var fs = new GameFileSystemMock();
             var lib = new ModelInfoLibrary(fs);

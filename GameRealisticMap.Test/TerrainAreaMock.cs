@@ -5,7 +5,7 @@ namespace GameRealisticMap.Test
 {
     /// <summary>
     /// Minimal ITerrainArea implementation for unit tests.
-    /// Uses an identity coordinate transform (terrain point == lat/lng coords scaled by 1000).
+    /// Uses an identity coordinate transform (terrain point == lat/lng coords scaled by sizeInMeters).
     /// </summary>
     internal class TerrainAreaMock : ITerrainArea
     {
@@ -28,11 +28,6 @@ namespace GameRealisticMap.Test
         public int GridSize { get; }
 
         public TerrainPolygon TerrainBounds { get; }
-
-        public bool IsInside(TerrainPoint point)
-        {
-            return point.X >= 0 && point.X <= sizeInMeters && point.Y >= 0 && point.Y <= sizeInMeters;
-        }
 
         public TerrainPoint LatLngToTerrainPoint(Coordinate latLng)
         {

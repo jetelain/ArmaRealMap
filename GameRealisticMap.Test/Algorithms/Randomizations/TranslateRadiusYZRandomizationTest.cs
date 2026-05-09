@@ -76,7 +76,7 @@ namespace GameRealisticMap.Test.Algorithms.Randomizations
             {
                 var m = op.GetMatrix(random, Vector3.Zero);
                 var length = MathF.Sqrt(m.M42 * m.M42 + m.M43 * m.M43);
-                Assert.Equal(radius, length, 4f);
+                Assert.Equal(radius, length, 4);
             }
         }
     }

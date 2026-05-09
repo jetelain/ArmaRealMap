@@ -47,8 +47,8 @@ namespace GameRealisticMap.Test
             var latLng = area.TerrainPointToLatLng(original);
             var roundTripped = area.LatLngToTerrainPoint(latLng);
 
-            Assert.Equal(original.X, roundTripped.X, 0); // within 1 m
-            Assert.Equal(original.Y, roundTripped.Y, 0);
+            Assert.Equal(original.X, roundTripped.X, 1);
+            Assert.Equal(original.Y, roundTripped.Y, 1);
         }
 
         [Fact]
