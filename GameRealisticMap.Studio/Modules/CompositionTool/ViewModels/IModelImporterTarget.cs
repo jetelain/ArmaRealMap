@@ -9,6 +9,9 @@ using GameRealisticMap.Arma3.TerrainBuilder;
 
 namespace GameRealisticMap.Studio.Modules.CompositionTool.ViewModels
 {
+    /// <summary>
+    /// Target that accepts compositions from the asset library, or from the clipboard.
+    /// </summary>
     internal interface IModelImporterTarget
     {
         void AddComposition(Composition composition, ObjectPlacementDetectedInfos detected);

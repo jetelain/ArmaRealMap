@@ -9,6 +9,10 @@ using Gemini.Modules.Shell.Views;
 
 namespace GameRealisticMap.Studio.Modules.Main.ViewModels
 {
+    /// <summary>
+    /// Top-level shell view model for the Studio IDE window. Extends Gemini's shell
+    /// with GRM-specific title bar updates and layout persistence.
+    /// </summary>
     [Export(typeof(IShell))]
     public class ShellViewModel : Gemini.Modules.Shell.ViewModels.ShellViewModel
     {

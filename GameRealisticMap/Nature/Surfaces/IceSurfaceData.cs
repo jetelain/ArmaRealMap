@@ -5,6 +5,9 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Surfaces
 {
+    /// <summary>
+    /// Contains glacier and permanent ice polygon areas extracted from OSM (natural=glacier).
+    /// </summary>
     public class IceSurfaceData : IBasicTerrainData
     {
         [JsonConstructor]

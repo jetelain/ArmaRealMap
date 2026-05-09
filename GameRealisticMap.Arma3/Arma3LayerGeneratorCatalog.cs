@@ -14,8 +14,19 @@ using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3
 {
+    /// <summary>
+    /// Registry of all <see cref="ITerrainBuilderLayerGenerator"/> instances for a map generation run.
+    /// Instantiate with an <see cref="IArma3RegionAssets"/> to get all generators pre-configured
+    /// for the target region's asset library.
+    /// </summary>
     public class Arma3LayerGeneratorCatalog
     {
+        /// <summary>
+        /// Initialises the catalog and registers all standard layer generators for both
+        /// man-made features (buildings, roads, railways, fences, …) and nature
+        /// (forests, scrubs, lakes, rocks, trees, watercourses, …).
+        /// </summary>
+        /// <param name="assets">Region-specific asset library providing 3D models and terrain materials.</param>
         public Arma3LayerGeneratorCatalog(IArma3RegionAssets assets)
         {
             // All generators

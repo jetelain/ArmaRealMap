@@ -4,6 +4,11 @@ using GameRealisticMap.Geometries;
 
 namespace GameRealisticMap.Arma3
 {
+    /// <summary>
+    /// Full configuration for generating an Arma 3 terrain map.
+    /// Implements <see cref="IArma3MapConfig"/>, <see cref="IMapProcessingOptions"/>, and <see cref="IPboConfig"/>.
+    /// Typically loaded from an <see cref="Arma3MapConfigJson"/> file.
+    /// </summary>
     public class Arma3MapConfig : IArma3MapConfig, IMapProcessingOptions, IPboConfig
     {
         public static int[] ValidIdMapMultipliers { get; } = new int[] { 1, 2, 4 };

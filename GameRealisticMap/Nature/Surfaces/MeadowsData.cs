@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Surfaces
 {
+    /// <summary>
+    /// Contains meadow and natural grassland polygon areas extracted from OSM
+    /// (landuse=meadow, natural=grassland).
+    /// </summary>
     public class MeadowsData : IBasicTerrainData
     {
         [JsonConstructor]

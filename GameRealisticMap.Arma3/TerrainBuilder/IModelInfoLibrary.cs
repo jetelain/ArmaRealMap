@@ -2,6 +2,11 @@
 
 namespace GameRealisticMap.Arma3.TerrainBuilder
 {
+    /// <summary>
+    /// Provides lookup of <see cref="ModelInfo"/> by model name or P3D path.
+    /// 
+    /// Implemented by <see cref="ModelInfoLibrary"/> which scans the Arma 3 P:\ drive and the configured mods.
+    /// </summary>
     public interface IModelInfoLibrary
     {
         ModelInfo ResolveByName(string name);

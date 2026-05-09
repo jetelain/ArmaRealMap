@@ -10,6 +10,12 @@ using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.GenericMapConfigEditor.ViewModels
 {
+    /// <summary>
+    /// Abstract base document editor for both generic and Arma 3 map configurations.
+    /// Manages geographic extent settings (centre/south-west coordinates, grid size,
+    /// cell resolution) and the <see cref="Shared.LocationSelection"/> workflow that
+    /// resolves user-entered coordinates to a concrete <see cref="ITerrainArea"/>.
+    /// </summary>
     internal abstract class MapConfigEditorBase : PersistedDocument
     {
         protected readonly IShell _shell;

@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Objects
 {
+    /// <summary>
+    /// Contains street lamp positions generated procedurally at regular intervals along roads.
+    /// Positions are derived from <see cref="Roads.RoadsData"/> rather than individual OSM nodes.
+    /// </summary>
     public class ProceduralStreetLampsData : IGeoJsonData
     {
         [JsonConstructor]

@@ -36,6 +36,12 @@ using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.Studio.Modules.MapConfigEditor.ViewModels
 {
+    /// <summary>
+    /// Document editor for <c>.grma3m</c> Arma 3 map configuration files.
+    /// Manages geographic settings, asset library selection, world generation options,
+    /// and all Arma 3-specific build steps (WRP, PBO, satellite imagery, aerial screenshots).
+    /// Appears as a root node in the Explorer tree and implements <c>IMainDocument</c>.
+    /// </summary>
     internal class MapConfigEditorViewModel : MapConfigEditorBase, IExplorerRootTreeItem, IMainDocument
     {
         private readonly IArma3DataModule _arma3DataModule;

@@ -3,7 +3,7 @@ using ArmaRealMapWebSite.Models;
 using GameRealisticMap.Arma3.GameEngine.Extensions;
 using GameRealisticMap.Nature.Weather;
 using Microsoft.AspNetCore.Mvc;
-using WeatherStats.Databases;
+using Pmad.WeatherStats.Databases;
 
 namespace ArmaRealMapWebSite.Controllers
 {

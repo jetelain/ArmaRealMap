@@ -8,6 +8,10 @@ using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Roads
 {
+    /// <summary>
+    /// Builds <see cref="RoadsData"/> by parsing OSM highway ways, classifying road types,
+    /// resolving bridges/tunnels/embankments, and merging connected segments into continuous paths.
+    /// </summary>
     public class RoadsBuilder : IDataBuilder<RoadsData>, IDataSerializer<RoadsData>
     {
         private readonly IRoadTypeLibrary<IRoadTypeInfos> library;

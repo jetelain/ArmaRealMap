@@ -16,7 +16,7 @@ namespace GameRealisticMap.Algorithms.Randomizations
 
         public Matrix4x4 GetMatrix(Random random, Vector3 modelCenter)
         {
-            return Matrix4x4.CreateTranslation(0, MathHelper.ToRadians(RandomHelper.GetBetween(random, Min, Max)), 0);
+            return Matrix4x4.CreateTranslation(0, 0, RandomHelper.GetBetween(random, Min, Max));
         }
     }
 }

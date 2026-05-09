@@ -10,6 +10,11 @@ using GameRealisticMap.ManMade.Roads.Libraries;
 
 namespace GameRealisticMap.Arma3.Assets
 {
+    /// <summary>
+    /// Provides all region-specific 3D models, terrain materials, and configuration for a
+    /// geographic biome or style region. Passed to every <see cref="ITerrainBuilderLayerGenerator"/>.
+    /// The default implementation is <see cref="Arma3Assets"/>, loaded from a JSON asset config file.
+    /// </summary>
     public interface IArma3RegionAssets : IBuildersConfig
     {
         IRoadTypeLibrary<Arma3RoadTypeInfos> RoadTypeLibrary { get; }

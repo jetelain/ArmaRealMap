@@ -6,6 +6,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Surfaces
 {
+    /// <summary>
+    /// Contains paved surface area polygons (parking lots, plazas, service areas)
+    /// extracted from OSM (amenity=parking, highway=pedestrian with area=yes, etc.).
+    /// </summary>
     public class AsphaltData : IBasicTerrainData
     {
         [JsonConstructor]

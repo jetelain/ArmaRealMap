@@ -8,6 +8,11 @@ using SixLabors.ImageSharp.Processing;
 
 namespace GameRealisticMap.Satellite
 {
+    /// <summary>
+    /// Downloads and caches satellite image tiles from configured source.
+    /// Tiles are fetched in parallel and assembled into a single continuous raster image.
+    /// Implements <see cref="IDisposable"/> to release the underlying HTTP client.
+    /// </summary>
     public class SatelliteImageProvider : IDisposable
     {
         private const double Delta = 20_037_508.342_789;

@@ -11,6 +11,12 @@ using GameRealisticMap.Nature.Watercourses;
 
 namespace GameRealisticMap.Studio.Shared
 {
+    /// <summary>
+    /// Snapshot of the core terrain feature data sets used to render a 2D map preview
+    /// (ocean, elevation, scrub, forest, buildings, roads, railways, watercourses).
+    /// Populated from an <see cref="IContext"/> at construction time.
+    /// Includes only base data sets, other data layers are optional (see <see cref="PreviewAdditionalLayer"/>).
+    /// </summary>
     public class PreviewMapData
     {
         public PreviewMapData(IContext context)

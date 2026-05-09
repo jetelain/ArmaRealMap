@@ -6,6 +6,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Buildings
 {
+    /// <summary>
+    /// Contains all building footprint polygons classified by type (residential, commercial, industrial, etc.)
+    /// and size. Buildings have been de-duplicated, road-cropped, and collision-resolved.
+    /// </summary>
     public class BuildingsData : IGeoJsonData, INonDefaultArea
     {
         [JsonConstructor]

@@ -18,6 +18,11 @@ using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Arma3
 {
+    /// <summary>
+    /// A map generator that uses synthetic data instead of real OSM/SRTM downloads,
+    /// useful for testing asset configurations and the generation pipeline without
+    /// specifying a real geographic area.
+    /// </summary>
     public class Arma3DemoMapGenerator : Arma3MapGenerator
     {
         private static readonly string arrowModel = "A3\\Misc_F\\Helpers\\Sign_Arrow_Large_F.p3d";

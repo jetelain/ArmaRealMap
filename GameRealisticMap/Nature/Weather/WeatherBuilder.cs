@@ -1,6 +1,6 @@
 ﻿using GameRealisticMap.Configuration;
 using Pmad.ProgressTracking;
-using WeatherStats.Databases;
+using Pmad.WeatherStats.Databases;
 
 namespace GameRealisticMap.Nature.Weather
 {

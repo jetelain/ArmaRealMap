@@ -19,7 +19,7 @@ namespace GameRealisticMap.Studio {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Labels {
@@ -4223,6 +4223,78 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Failed to clear cache: {0}.
+        /// </summary>
+        public static string SourceClearCacheError {
+            get {
+                return ResourceManager.GetString("SourceClearCacheError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Clear Elevation Data Cache.
+        /// </summary>
+        public static string SourceClearElevationDataCache {
+            get {
+                return ResourceManager.GetString("SourceClearElevationDataCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Elevation data cache has been cleared..
+        /// </summary>
+        public static string SourceClearElevationDataCacheDone {
+            get {
+                return ResourceManager.GetString("SourceClearElevationDataCacheDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Clear Overpass Data Cache.
+        /// </summary>
+        public static string SourceClearOverpassDataCache {
+            get {
+                return ResourceManager.GetString("SourceClearOverpassDataCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Overpass data cache has been cleared..
+        /// </summary>
+        public static string SourceClearOverpassDataCacheDone {
+            get {
+                return ResourceManager.GetString("SourceClearOverpassDataCacheDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à MapToolkit AW3D30.
+        /// </summary>
+        public static string SourceMapToolkitAW3D30 {
+            get {
+                return ResourceManager.GetString("SourceMapToolkitAW3D30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à MapToolkit SRTM1.
+        /// </summary>
+        public static string SourceMapToolkitSRTM1 {
+            get {
+                return ResourceManager.GetString("SourceMapToolkitSRTM1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à MapToolkit SRTM15Plus.
+        /// </summary>
+        public static string SourceMapToolkitSRTM15Plus {
+            get {
+                return ResourceManager.GetString("SourceMapToolkitSRTM15Plus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Model to replace.
         /// </summary>
         public static string SourceModel {
@@ -4232,11 +4304,56 @@ namespace GameRealisticMap.Studio {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à OverpassApi Interpreter.
+        /// </summary>
+        public static string SourceOverpassApiInterpreter {
+            get {
+                return ResourceManager.GetString("SourceOverpassApiInterpreter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à ⚠ Warning: Overpass API enforces a rate limit — the same request can only be made once every 5 minutes. Clearing the cache too frequently may cause temporary blocks from the Overpass API..
+        /// </summary>
+        public static string SourceOverpassRateLimitWarning {
+            get {
+                return ResourceManager.GetString("SourceOverpassRateLimitWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Reset Sources to Defaults.
+        /// </summary>
+        public static string SourceResetToDefaults {
+            get {
+                return ResourceManager.GetString("SourceResetToDefaults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Satellite Image Provider.
+        /// </summary>
+        public static string SourceSatelliteImageProvider {
+            get {
+                return ResourceManager.GetString("SourceSatelliteImageProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Source texture.
         /// </summary>
         public static string SourceTexture {
             get {
                 return ResourceManager.GetString("SourceTexture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à WeatherStats.
+        /// </summary>
+        public static string SourceWeatherStats {
+            get {
+                return ResourceManager.GetString("SourceWeatherStats", resourceCulture);
             }
         }
         

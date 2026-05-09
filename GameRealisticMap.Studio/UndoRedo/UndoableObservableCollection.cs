@@ -6,6 +6,13 @@ using Gemini.Modules.UndoRedo;
 
 namespace GameRealisticMap.Studio.UndoRedo
 {
+    /// <summary>
+    /// An <see cref="ObservableCollection{T}"/> whose <c>Add</c>, <c>Remove</c>, and <c>Move</c>
+    /// operations can be recorded in a Gemini <c>IUndoRedoManager</c>.
+    /// Use <see cref="UndoRedoManagerExtensions"/> to bind this collection to an undo/redo manager
+    /// so that all mutations are undoable in the Studio editor.
+    /// Also supports bulk <c>AddRange</c> / <c>RemoveRange</c> with a single change notification.
+    /// </summary>
     public class UndoableObservableCollection<T> : ObservableCollection<T>, IList<T>
     {
         public UndoableObservableCollection()

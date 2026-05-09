@@ -5,6 +5,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Scrubs
 {
+    /// <summary>
+    /// Contains the polygons that form a wide ring around scrub areas (15 meters). 
+    /// Used to plant smaller, low-density shrubs near scrub areas to avoid clear-cuts.
+    /// </summary>
     public class ScrubRadialData : IBasicTerrainData
     {
         public const float Width = 15f;

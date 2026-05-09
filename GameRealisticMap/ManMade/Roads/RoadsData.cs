@@ -6,6 +6,11 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.ManMade.Roads
 {
+    /// <summary>
+    /// Contains all road network data extracted from OSM for the terrain area.
+    /// Roads are classified by type (motorway, primary, residential, track, etc.),
+    /// with bridge, tunnel, and embankment segments identified separately.
+    /// </summary>
     public class RoadsData : IGeoJsonData, INonDefaultArea
     {
         [JsonConstructor]

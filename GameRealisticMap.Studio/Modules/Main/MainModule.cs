@@ -12,6 +12,10 @@ using Gemini.Framework.Services;
 
 namespace GameRealisticMap.Studio.Modules.Main
 {
+    /// <summary>
+    /// Gemini module that bootstraps the main Studio shell: registers menu commands,
+    /// opens the default layout, and wires up the project explorer and asset browser.
+    /// </summary>
     [Export(typeof(IModule))]
     public class MainModule : ModuleBase
     {

@@ -10,6 +10,11 @@ using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.Geometries
 {
+    /// <summary>
+    /// A closed polygon in local terrain space (coordinates in metres).
+    /// Supports holes, boolean operations via ClipperLib, and conversion to NetTopologySuite geometry.
+    /// Used throughout the pipeline to represent area features (forests, lakes, buildings, etc.).
+    /// </summary>
     public class TerrainPolygon : ITerrainEnvelope, IEquatable<TerrainPolygon>, ITerrainGeo
     {
         internal static readonly List<List<TerrainPoint>> NoHoles = new List<List<TerrainPoint>>(0);

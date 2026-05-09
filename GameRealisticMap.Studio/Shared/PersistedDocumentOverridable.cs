@@ -8,6 +8,12 @@ using Gemini.Framework;
 
 namespace GameRealisticMap.Studio.Shared
 {
+    /// <summary>
+    /// Base class for Gemini documents backed by a file on disk.
+    /// Provides dirty-state tracking, file path/name management, save/load lifecycle,
+    /// and tab title updates. Extend and override <c>DoLoad</c> / <c>DoSave</c> to
+    /// implement format-specific serialisation.
+    /// </summary>
     public abstract class PersistedDocumentOverridable : Document, IPersistedDocument
     {
         private bool _isDirty;

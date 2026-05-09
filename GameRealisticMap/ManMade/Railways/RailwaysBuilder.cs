@@ -5,6 +5,10 @@ using Pmad.ProgressTracking;
 
 namespace GameRealisticMap.ManMade.Railways
 {
+    /// <summary>
+    /// Builds <see cref="RailwaysData"/> by extracting OSM railway ways and identifying
+    /// level crossings where railways intersect roads.
+    /// </summary>
     internal class RailwaysBuilder : IDataBuilder<RailwaysData>
     {
         private readonly IRailwayCrossingResolver crossingResolver;

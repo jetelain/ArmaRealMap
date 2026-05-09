@@ -4,6 +4,10 @@ using GeoJSON.Text.Geometry;
 
 namespace GameRealisticMap.Nature.Trees
 {
+    /// <summary>
+    /// Contains tree-row line features extracted from OSM (natural=tree_row ways).
+    /// Represents linear alignments of trees along roads or field boundaries.
+    /// </summary>
     public class TreeRowsData : IGeoJsonData
     {
         public TreeRowsData(List<TerrainPath> rows)

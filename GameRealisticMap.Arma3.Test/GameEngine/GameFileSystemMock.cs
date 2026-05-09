@@ -38,7 +38,7 @@ namespace GameRealisticMap.Arma3.Test.GameEngine
             return TextFiles.ContainsKey(path) || BinaryFiles.ContainsKey(path);
         }
 
-        public IEnumerable<string> FindAll(string pattern)
+        public virtual IEnumerable<string> FindAll(string pattern)
         {
             throw new NotImplementedException();
         }
