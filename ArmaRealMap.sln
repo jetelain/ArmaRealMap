@@ -57,7 +57,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatasetGenerator", "tests\D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatasetsLoader", "tests\DatasetsLoader\DatasetsLoader.csproj", "{8A475477-C826-4878-AB1B-AFA4472F5F74}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github", "Github", "{01A6A807-D5E5-409F-87BA-7FAFDB2654CE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{01A6A807-D5E5-409F-87BA-7FAFDB2654CE}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
 		.github\workflows\dotnet-linux.yml = .github\workflows\dotnet-linux.yml
