@@ -13,7 +13,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using Xunit.Abstractions;
 
-namespace GameRealisticMap.Test
+namespace GameRealisticMap.Test.Integration
 {
 
     public class DatasetBasedTests
