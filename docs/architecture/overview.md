@@ -95,7 +95,7 @@ For Arma 3-specific output details, see [arma3-integration.md](arma3-integration
 
 | Technology | Purpose |
 |-----------|---------|
-| .NET 8 / C# | Runtime |
+| .NET 10 / C# | Runtime |
 | [OsmSharp](https://github.com/OsmSharp/core) | Parsing OSM XML/PBF data |
 | [CoordinateSharp](https://github.com/Tronald/CoordinateSharp) | UTM ↔ WGS-84 coordinate conversion |
 | [NetTopologySuite](https://github.com/NetTopologySuite/NetTopologySuite) / GeoAPI | Geometry operations |
