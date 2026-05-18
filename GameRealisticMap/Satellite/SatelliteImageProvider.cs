@@ -136,8 +136,8 @@ namespace GameRealisticMap.Satellite
         private void ClearCache()
         {
             // Just clear the reference to the images, and let the GC do the work to release memory,
-            // as we don't known if a thread has still a reference to one of the images
-            // Synchronization overhead does not worth it
+            // as we don't know if a thread has still a reference to one of the images
+            // The synchronization overhead is not worth it.
             cache.Clear(); 
             estimatedCachePressure = 0;
         }
