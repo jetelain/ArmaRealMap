@@ -137,7 +137,10 @@ namespace GameRealisticMap.Satellite
         {
             foreach (var img in cache.Values)
             {
-                img.Dispose();
+                if (img.IsCompletedSuccessfully)
+                {
+                    img.Result.Dispose();
+                }
             }
             cache.Clear();
             estimatedCachePressure = 0;
