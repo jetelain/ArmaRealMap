@@ -9,6 +9,13 @@ namespace GameRealisticMap.Arma3.Test
 
         IHugeImageStorage IContext.HugeImageStorage => HugeImageStorage;
 
+        public ITerrainArea Area { get; }
+
+        public ContextMock(ITerrainArea? area = null)
+        {
+            Area = area ?? new TerrainAreaUTM(new CoordinateSharp.UniversalTransverseMercator("Q", 14, 581943.5, 2111989.8), 1000, 1000);
+        }
+
         public void Dispose()
         {
             HugeImageStorage.Dispose();

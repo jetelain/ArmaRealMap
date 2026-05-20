@@ -191,14 +191,24 @@ namespace GameRealisticMap.ElevationModel
             return new LatLngBounds(context.Area, wantedView.Shell);
         }
 
-        public ValueTask<RawElevationData> Read(IPackageReader package, IContext context)
+        public async ValueTask<RawElevationData> Read(IPackageReader package, IContext context)
         {
-            return ValueTask.FromResult<RawElevationData>(new RawElevationData(context.GetData<ElevationData>().Elevation, new List<string>(), new ElevationMinMax[0]));
+            using var stream = package.ReadFile("RawElevation.ddc");
+
+            var grid = new ElevationGrid(DemDataCell.Load(stream).To<float>().AsPixelIsPoint());
+
+            var json = await package.ReadJson<RawElevationJson>("RawElevation.json");
+
+            return new RawElevationData(grid, json.Credits, json.OutOfBounds);
         }
 
-        public Task Write(IPackageWriter package, RawElevationData data)
+        public async Task Write(IPackageWriter package, RawElevationData data)
         {
-            return Task.CompletedTask;
+            using (var stream = package.CreateFile("RawElevation.ddc"))
+            {
+                data.RawElevation.ToDataCell().Save(stream);
+            }
+            await package.WriteJson("RawElevation.json", new RawElevationJson(data.Credits, data.OutOfBounds));
         }
     }
 }

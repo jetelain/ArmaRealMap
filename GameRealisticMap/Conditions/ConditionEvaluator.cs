@@ -22,7 +22,7 @@ namespace GameRealisticMap.Conditions
         internal const float MaxRoadBoxSearch = 75f;
         internal const float MaxRoadDistance = MaxRoadBoxSearch * 1.414f; // MaxRoadBoxSearch * sqrt(2)
 
-        public ConditionEvaluator(IBuildContext context)
+        public ConditionEvaluator(IContext context)
         {
             this.areas = context.GetData<CategoryAreaData>();
             this.cities = context.GetData<CitiesData>();

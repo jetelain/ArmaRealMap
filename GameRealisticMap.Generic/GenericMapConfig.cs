@@ -33,6 +33,8 @@ namespace GameRealisticMap.Generic
             PrivateServiceRoadThreshold = genericMapConfigJson.PrivateServiceRoadThreshold ?? MapProcessingOptions.Default.PrivateServiceRoadThreshold;
 
             Satellite = genericMapConfigJson.Satellite ?? new SatelliteImageOptions();
+
+            IsPersisted = genericMapConfigJson.IsPersisted;
         }
 
         public TerrainAreaUTM TerrainArea { get; }
@@ -46,6 +48,8 @@ namespace GameRealisticMap.Generic
         public float PrivateServiceRoadThreshold { get; }
 
         public ISatelliteImageOptions Satellite { get; }
+
+        public bool IsPersisted { get; } = false;
 
         public static string GetAutomaticName(ITerrainArea area)
         {

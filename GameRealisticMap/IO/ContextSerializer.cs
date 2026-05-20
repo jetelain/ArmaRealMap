@@ -1,6 +1,4 @@
-﻿using System.IO.Compression;
-
-namespace GameRealisticMap.IO
+﻿namespace GameRealisticMap.IO
 {
     public class ContextSerializer
     {
@@ -14,26 +12,6 @@ namespace GameRealisticMap.IO
         internal static IDataSerializer<TData> GetSerializer<TData>(IDataBuilder<TData> builder) where TData : class
         {
             return (builder as IDataSerializer<TData>) ?? new DefaultDataSerializer<TData>();
-        }
-
-        public async Task Write(IPackageWriter writer, IContext context)
-        {
-            foreach(var step in catalog.VisitAll(new ContextWriter(writer, context)))
-            {
-                await step;
-            }
-        }
-
-        public Task WriteToDirectory(string path, IContext context)
-        {
-            return Write(new FileSystemPackage(path), context);
-        }
-
-        public async Task WriteToZip(string path, IContext context)
-        {
-            using var archive = new ZipArchive(File.Create(path), ZipArchiveMode.Create);
-
-            await Write(new ZipPackageWriter(archive), context);
         }
 
         public IContext ReadLazy(IPackageReader reader)

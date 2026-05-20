@@ -1,6 +1,6 @@
 ﻿namespace GameRealisticMap.IO
 {
-    internal class FileSystemPackage : IPackageReader, IPackageWriter
+    public sealed class FileSystemPackage : IPackageReader, IPackageWriter
     {
         private readonly string basePath;
 
@@ -13,6 +13,12 @@
 
         public Stream CreateFile(string filename)
         {
+            var target = Path.Combine(basePath, filename);
+            var targetDirectory = Path.GetDirectoryName(target);
+            if (!string.IsNullOrEmpty(targetDirectory) && !Directory.Exists(targetDirectory)) 
+            {
+                Directory.CreateDirectory(targetDirectory);
+            }
             return File.Create(Path.Combine(basePath, filename));
         }
 

@@ -1,5 +1,9 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Pmad.HugeImages;
+using Pmad.HugeImages.IO;
+using Pmad.HugeImages.Storage;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.IO
 {
@@ -29,6 +33,30 @@ namespace GameRealisticMap.IO
             using (var stream = package.CreateFile(filename))
             {
                 await JsonSerializer.SerializeAsync(stream, data, options ?? DefaultOptions);
+            }
+        }
+
+
+        public static async Task WriteHugeImage<TPixel>(this IPackageWriter package, string filename, HugeImage<TPixel> data)
+            where TPixel : unmanaged, IPixel<TPixel>
+        {
+            using (var stream = package.CreateFile(filename))
+            {
+                await data.SaveAsync(stream);
+            }
+        }
+
+        public static async Task<HugeImage<TPixel>> ReadHugeImage<TPixel>(this IPackageReader package, string filename, IHugeImageStorage storage, string name)
+            where TPixel : unmanaged, IPixel<TPixel>
+        {
+            using (var stream = package.ReadFile(filename))
+            {
+                var copyStorage = storage as IHugeImageStorageCanCopy;
+                if (copyStorage != null)
+                {
+                    return await HugeImageIO.LoadCopyAsync<TPixel>(stream, copyStorage, name);
+                }
+                return await HugeImageIO.LoadCloneAsync<TPixel>(stream, storage, name);
             }
         }
     }

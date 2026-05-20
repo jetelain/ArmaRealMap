@@ -12,6 +12,8 @@ namespace GameRealisticMap.IO
 
         public IHugeImageStorage HugeImageStorage => throw new NotImplementedException();
 
+        public ITerrainArea Area => throw new NotImplementedException();
+
         public ContextReader(IPackageReader package, IBuidersCatalog catalog)
         {
             this.package = package;

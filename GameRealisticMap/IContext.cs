@@ -10,6 +10,13 @@ namespace GameRealisticMap
     public interface IContext
     {
         /// <summary>
+        /// The geographic area being processed. Provides coordinate conversion between
+        /// WGS-84 lat/lng and local terrain space (<see cref="Geometries.TerrainPoint"/>),
+        /// and exposes the terrain grid dimensions.
+        /// </summary>
+        ITerrainArea Area { get; }
+
+        /// <summary>
         /// Gets or builds data of type <typeparamref name="T"/> synchronously.
         /// If the data has already been built, returns the cached result.
         /// Blocks the calling thread until the data is available.
