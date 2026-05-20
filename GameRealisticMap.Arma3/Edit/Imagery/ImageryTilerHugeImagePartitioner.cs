@@ -15,6 +15,12 @@ namespace GameRealisticMap.Arma3.Edit.Imagery
             parts = imageryTiler.All.OrderBy(i => i.X).ThenBy(i => i.Y).ToList();
         }
 
+        public ImageryTilerHugeImagePartitioner(List<ImageryTile> parts, int multiplier)
+        {
+            this.multiplier = multiplier;
+            this.parts = parts;
+        }
+
         public List<HugeImagePartDefinition> CreateParts(Size size)
         {
             return parts.Select(i => new HugeImagePartDefinition(

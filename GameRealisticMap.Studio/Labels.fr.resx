@@ -1693,4 +1693,13 @@ Dernière génération le {1}</value>
   <data name="SourceOverpassRateLimitWarning" xml:space="preserve">
     <value>⚠ Attention : l'API Overpass impose un délai de 5 minutes entre deux requêtes identiques. Vider le cache trop fréquemment peut entraîner un blocage temporaire de l'API Overpass.</value>
   </data>
+  <data name="RestoreImagery" xml:space="preserve">
+    <value>Restaurer l'imagerie</value>
+  </data>
+  <data name="Denied" xml:space="preserve">
+    <value>Refusé</value>
+  </data>
+  <data name="ProtectedMapMessage" xml:space="preserve">
+    <value>Vous n'êtes pas autorisé à modifier, ou à exporter des données de cette carte.</value>
+  </data>
 </root>

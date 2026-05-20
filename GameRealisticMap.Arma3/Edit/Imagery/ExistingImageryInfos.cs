@@ -9,7 +9,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GameRealisticMap.Arma3.Edit.Imagery
 {
-    public class ExistingImageryInfos : IArma3MapConfig
+    public class ExistingImageryInfos : IArma3MapConfig, IImageryInfos
     {
         public ExistingImageryInfos(int tileSize, double resolution, float sizeInMeters, string proPrefix, int idMapMultiplier = 1)
         {
